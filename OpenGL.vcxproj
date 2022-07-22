@@ -325,8 +325,6 @@
     <None Include="dep\glm\gtx\vector_angle.inl" />
     <None Include="dep\glm\gtx\vector_query.inl" />
     <None Include="dep\glm\gtx\wrap.inl" />
-    <None Include="res\obj\MODEL_.blend" />
-    <None Include="res\obj\MODEL_.blend1" />
     <None Include="res\shaders\LineShader.shader" />
     <None Include="res\shaders\SpiritShader.shader" />
     <None Include="res\shaders\testS.shader" />
@@ -660,18 +658,6 @@
     <Image Include="res\tex\BAKED.png" />
     <Image Include="res\tex\testImg.jpg" />
     <Image Include="res\tex\testImg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="res\obj\cube.obj" />
-    <Object Include="res\obj\monkey.obj" />
-    <Object Include="res\obj\monkey2.obj" />
-    <Object Include="res\obj\sphere.obj" />
-    <Object Include="res\obj\sphere2.obj" />
-    <Object Include="res\obj\torus.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="res\obj\monkey.txt" />
-    <Text Include="res\obj\sphere.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

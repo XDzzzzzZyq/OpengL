@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Environment.h"
+#include "DebugLine.h"
 
 #include "Spirit.h"
 
@@ -30,6 +31,7 @@ public:
 	std::unordered_map<int, Light*>			 light_list; //num | pointer
 	std::unordered_map<int, Environment*>	 envir_list;
 	std::unordered_map<int, Spirit*>        spirit_list;
+	std::unordered_map<int, DebugLine*>      dLine_list;
 
 	void UseCamera(Camera* camera);
 	void UseCamera(const int& cam_id);
@@ -41,8 +43,19 @@ public:
 
 	void UseEnvironment(Environment* envir);
 	void UseEnvironment(const int& envir_id);
+	
+	void UseDebugLine(DebugLine* dline);
+
+	template<typename T>
+	void UseObject(T* obj);
 
 	void FrameClean() const;
 	void Render();
 };
+
+template<typename T>
+void Renderer::UseObject(T* obj)
+{
+
+}
 

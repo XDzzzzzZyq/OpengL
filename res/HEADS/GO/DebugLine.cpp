@@ -9,22 +9,34 @@ DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 		VertData.push_back(end[i]);
 	}
 
+	{	//dLine_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
+	//
+	//BufferLayout layout;
+	//layout.Push<float>(3); //3D position
+	//
+	//dLine_vertArry.AddBuffer(dLine_vertBuffer, layout);
+	//
+	//std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,1 };
+	//GLuint* index = indexArray->data();
+	//
+	//dLine_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
+	}
 
-	dLine_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
-
-	BufferLayout layout;
-	layout.Push<float>(3); //3D position
-
-	dLine_vertArry.AddBuffer(dLine_vertBuffer, layout);
-
-	std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,1 };
-	GLuint* index = indexArray->data();
-
-	dLine_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
 
 	SetDLineShader();
-
 	o_name = "Debug Line." + GetObjectID();
+	multiLine = false;
+}
+
+DebugLine::DebugLine(const std::vector<std::vector<float>>& vertices)
+{
+	for (const auto& vert : vertices) {
+		LOOP(3) {
+			VertData.push_back(vert[i]);
+		}
+	}
+	multiLine = true;
+	vert_count = vertices.size();
 }
 
 DebugLine::~DebugLine()
@@ -46,7 +58,9 @@ void DebugLine::RenderDline(const glm::mat4& cam_Trans, const glm::mat4& cam_pro
 
 	dLine_shader.SetValue("U_cam_trans", cam_Trans);
 	dLine_shader.SetValue("U_ProjectM", cam_projec);
-	dLine_shader.SetValue("SpiritOpacity", dLine_opacity);
+	dLine_shader.SetValue("U_Trans", o_Transform);
+	dLine_shader.SetValue("dlineOpacity", dLine_opacity);
+	dLine_shader.SetValue("U_color", dLine_color);
 
 	if (using_smooth)
 		glEnable(GL_LINE_SMOOTH);
@@ -58,9 +72,23 @@ void DebugLine::RenderDline(const glm::mat4& cam_Trans, const glm::mat4& cam_pro
 
 	if (using_stipple)
 		glLineStipple(5, 0x0c0f);
+	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glDrawElements(GL_LINE, dLine_index.count(), GL_UNSIGNED_INT, nullptr);
 
+	//glDrawElements(GL_LINE, dLine_index.count(), GL_UNSIGNED_INT, nullptr);
+	if (multiLine)
+	{
+		glVertexPointer(3, GL_FLOAT, 0, VertData.data());
+		glDrawArrays(GL_LINES, 0, vert_count);
+	}
+	else
+	{
+		glVertexPointer(3, GL_FLOAT, 0, VertData.data());
+		glDrawArrays(GL_LINES, 0, 2);
+	}
+
+
+	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopAttrib();
 	if (using_smooth)
 		glDisable(GL_LINE_SMOOTH);

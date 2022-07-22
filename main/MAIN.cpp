@@ -77,13 +77,14 @@ void render(GLFWwindow* window) {
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
 
-	Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f,1.0f,0.3f));
+	Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f,1.0f,1.0f));
 	pointLight2.GenFloatData();
 
 	renderer.UseLight(&pointLight1);
 	renderer.UseLight(&pointLight2);
 
 	DebugLine line(glm::vec3(-10, -10, 0), glm::vec3(10, 10, 0));
+	renderer.UseDebugLine(&line);
 	
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -105,6 +106,8 @@ void render(GLFWwindow* window) {
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
 	while (!glfwWindowShouldClose(window))
 	{
+		//GLDEBUG
+		//DEBUG("no")
 		FrameCount++;
 		/* Render here */
 		
@@ -121,15 +124,11 @@ void render(GLFWwindow* window) {
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 50, 0.0f));
 		//go1.SetRot(glm::vec3(rotateX, rotateY, rotateZ));
 		
-
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		renderer.GetActiveCamera()->CameraEventActivate(window);
 		
 		go1.o_shader.SetValue("z_inp", 100*(blend-0.5f));
 		go1.o_shader.SetValue("blen",3, &testfloat[0]);
-		
-		go1.ApplyTransform();
-		camera.ApplyTransform();
 		
 		pointLight1.SetColor(LightColor);
 		pointLight1.SetPos(ImVec4_vec3_Uni(LightPos,10.0f));
@@ -139,17 +138,14 @@ void render(GLFWwindow* window) {
 		pointLight2.SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
 		pointLight2.light_power = blend * 20;
 		pointLight2.GenFloatData();
+
+		line.SetPos(glm::vec3(rotateX,0,0));
+		line.dLine_color = glm::vec3(1, (90-rotateY)/90, (90 - rotateZ) / 90);
+		line.ApplyTransform();
 		//cout << pointLight1.light_color << endl;
 		renderer.is_light_changed = true;
-
-#if 1
-		line.RenderDline(camera.o_InvTransform,camera.cam_frustum);
 		renderer.Render();
-#else
-		camera.GenFloatData();
-		go1.RenderObj(*renderer.GetActiveCamera(), renderer.light_list);
-		go2.RenderObj(*renderer.GetActiveCamera(), renderer.light_list);
-#endif	
+
 		{
 			ImGui::BeginMainMenuBar();
 /*			ImGui::BeginMenuBar();*/
@@ -177,7 +173,7 @@ void render(GLFWwindow* window) {
 // 				DEBUG(renderer.GetActiveCamera()->is_TransF_changed)
 // 				DEBUG(renderer.GetActiveCamera()->is_TransF_changed)
 				rotateX = rotateY = rotateZ = 0.0f;
-				
+				line.using_stipple = !line.using_stipple;
 			}
 
 			ImGui::End();

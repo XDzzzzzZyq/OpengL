@@ -47,7 +47,6 @@ in vec3 pix_pos;
 in vec4 normal_color;
 in vec4 Snormal_color;
 
-uniform vec4 U_color;
 uniform sampler2D U_Texture;
 uniform float blen[3];
 
@@ -156,7 +155,6 @@ void main(){
 	}					   
 						   
 	vec4 uvcolor = texture(U_Texture,uv);
-	vec4 solidcolor = U_color;
 
 	color = uvcolor * vec4(Vec3Film(LightMap.Diffuse_map + LightMap.Specular_map*2), 1.0f);
 	//color = Snormal_color;

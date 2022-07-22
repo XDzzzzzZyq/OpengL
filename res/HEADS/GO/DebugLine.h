@@ -19,21 +19,27 @@ private:
 	VertexArray dLine_vertArry;
 	std::vector<float> VertData;
 
-	bool using_stipple = false, using_smooth = true;
+	int vert_count = 2;
 
 	float dLine_width = 5;
-	float dLine_opacity = 0.8f;
+	float dLine_opacity = 1.0f;
 public:
+	bool using_stipple = false, using_smooth = true, multiLine = false;
+	glm::vec3 dLine_color = glm::vec3{ 1.0f,1.0f,1.0f };
+
 	mutable Shaders dLine_shader;
 
 	glm::vec3 dLine_start, dLine_end;
 
 	DebugLine(const glm::vec3& start, const glm::vec3& end);
+	DebugLine(const std::vector<std::vector<float>>& vertices);
+
 	~DebugLine();
 
 	void SetDebugLineParas(bool stipple, bool smooth, float width, float opacity);
 
 	void RenderDline(const glm::mat4& cam_Trans, const glm::mat4& cam_projec);
+
 	void SetDLineShader();
 
 	void DeleteDLine();

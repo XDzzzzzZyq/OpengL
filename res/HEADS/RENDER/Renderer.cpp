@@ -3,7 +3,7 @@
 Renderer::Renderer()
 {
 	DEBUG("Renderer Open")
-		glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 
@@ -89,6 +89,15 @@ void Renderer::UseEnvironment(const int& envir_id)
 	}
 }
 
+void Renderer::UseDebugLine(DebugLine* dline)
+{
+	if (dLine_list.find(dline->GetObjectID()) == dLine_list.end())
+	{
+		dLine_list[dline->GetObjectID()] = dline;
+		
+	}
+}
+
 void Renderer::FrameClean() const
 {
 	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -104,16 +113,17 @@ void Renderer::Render() {
 	if (cam_list.find(0)==cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
 
 	////////////    MESHES    ////////////
+	cam_list[0]->ApplyTransform();
 	cam_list[0]->GenFloatData();
 	if (is_light_changed)
 	{
-		for (auto obj = mesh_list.begin(); obj != mesh_list.end(); obj++)
+		for (const auto& obj : mesh_list)
 		{
 
-			if (obj->second->is_rendered)
+			if (obj.second->is_rendered)
 			{
-				obj->second->ApplyTransform();
-				obj->second->RenderObj(*cam_list[0], light_list);
+				obj.second->ApplyTransform();
+				obj.second->RenderObj(*cam_list[0], light_list);
 				//std::cout << cam_list[0]->o_InvTransform;
 			}
 		}
@@ -121,13 +131,13 @@ void Renderer::Render() {
 	}
 	else
 	{
-		for (auto obj = mesh_list.begin(); obj != mesh_list.end(); obj++)
+		for (const auto& obj : mesh_list)
 		{
 
-			if (obj->second->is_rendered)
+			if (obj.second->is_rendered)
 			{
-				obj->second->ApplyTransform();
-				obj->second->RenderObj(*cam_list[0], emptyLight);
+				obj.second->ApplyTransform();
+				obj.second->RenderObj(*cam_list[0], emptyLight);
 
 
 			}
@@ -137,11 +147,16 @@ void Renderer::Render() {
 
 	//////////// DEBUG MESHES ////////////
 
+	for (const auto& dLine : dLine_list)
+	{
+		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+	}
+
 	////////////    IOCONS    ////////////
 
-	for (auto light = light_list.begin(); light != light_list.end(); light++)
+	for (const auto& light : light_list)
 	{
-		light->second->light_spirit.RenderSpirit(vec3_stdVec6(light->second->o_position,light->second->light_color) , cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position,light.second->light_color) , cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
 	}
 
 

@@ -13,7 +13,32 @@
 #include "operator.h"
 
 #define DEBUG(x) std::cout<<x<<"\n";
-#define GLDEBUG std::cout<<glGetError()<<"\n";
+#define GLDEBUG glDebug_xdz();
+
+inline void glDebug_xdz() {
+	switch (glGetError())
+	{
+	case GL_NO_ERROR:
+		DEBUG("GL_NO_ERROR")
+			break;
+	case GL_INVALID_ENUM:
+		DEBUG("GL_INVALID_ENUM")
+			break;
+	case GL_INVALID_VALUE:
+		DEBUG("GL_INVALID_VALUE")
+			break;
+	case GL_INVALID_OPERATION:
+		DEBUG("INVALID_OPERATION")
+			break;
+	case GL_INVALID_FRAMEBUFFER_OPERATION:
+		DEBUG("GL_INVALID_FRAMEBUFFER_OPERATION")
+			break;
+	case GL_OUT_OF_MEMORY:
+		DEBUG("GL_OUT_OF_MEMORY")
+			break;
+	}
+
+}
 
 inline float getrand() {
 
