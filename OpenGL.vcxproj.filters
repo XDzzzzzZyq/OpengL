@@ -533,6 +533,8 @@
     <None Include="res\shaders\testS.shader" />
     <None Include="res\shaders\SpiritShader.shader" />
     <None Include="res\shaders\LineShader.shader" />
+    <None Include="res\obj\MODEL_.blend" />
+    <None Include="res\obj\MODEL_.blend1" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\IndexBuffer.h">
@@ -1515,5 +1517,17 @@
     <Image Include="res\tex\avatar1.png">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\obj\cube.obj" />
+    <Object Include="res\obj\monkey.obj" />
+    <Object Include="res\obj\monkey2.obj" />
+    <Object Include="res\obj\sphere.obj" />
+    <Object Include="res\obj\sphere2.obj" />
+    <Object Include="res\obj\torus.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\obj\monkey.txt" />
+    <Text Include="res\obj\sphere.txt" />
   </ItemGroup>
 </Project>
