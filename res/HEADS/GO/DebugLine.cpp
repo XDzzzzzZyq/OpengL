@@ -23,6 +23,8 @@ DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 	dLine_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
 
 	SetDLineShader();
+
+	o_name = "Debug Line." + GetObjectID();
 }
 
 DebugLine::~DebugLine()

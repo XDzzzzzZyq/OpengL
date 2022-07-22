@@ -51,6 +51,8 @@ struct Reading
 	std::vector<float> vertex;
 	std::vector<float> center = { 0,0,0 };
 	int count[4] = { 0,0,0,0 };
+
+	std::string name = "";
 };
 
 struct Face

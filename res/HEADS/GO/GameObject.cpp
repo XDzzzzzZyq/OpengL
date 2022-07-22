@@ -18,5 +18,5 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-
+	DEBUG(o_name+" is Destroyed")
 }

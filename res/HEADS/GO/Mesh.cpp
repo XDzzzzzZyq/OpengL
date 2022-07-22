@@ -7,6 +7,9 @@ Mesh::Mesh(const char* path)
 {
 
 	read = ReadObj(path,true);
+
+	o_name = read.name;
+
 	std::cout << "\n";
 	VertData = read.vertex.data();
 	center = stdVec3_vec3(read.center);

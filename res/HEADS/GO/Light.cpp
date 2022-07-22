@@ -9,6 +9,26 @@ Light::Light(LightType type, float power, glm::vec3 color)
 
 	light_spirit.spr_type = LIGHTSPIRIT;
 	light_spirit.SetTex();
+
+	o_name = ParseLightName() + GetObjectID();
+}
+
+std::string Light::ParseLightName() const
+{
+	switch (light_type)
+	{
+	case NONELIGHT:
+		return "None Light";
+	case POINTLIGHT:
+		return "Point Light.";
+
+	case SUNLIGHT: 
+		return "Sun.";
+
+	case SPOTLIGHT:
+		return "Spot Light.";
+
+	}
 }
 
 void Light::GenFloatData() const

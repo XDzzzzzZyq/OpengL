@@ -20,6 +20,9 @@ Spirit::Spirit()
 
 	r_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
 	SetSpiritShader();
+
+	o_name = "Spirit." + GetObjectID();
+	
 }
 
 Spirit::~Spirit()

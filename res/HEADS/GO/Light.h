@@ -10,7 +10,7 @@
 
 enum LightType
 {
-	NONETEXTURE, POINTLIGHT, SUNLIGHT, SPOTLIGHT
+	NONELIGHT, POINTLIGHT, SUNLIGHT, SPOTLIGHT
 };
 
 class Light : public GameObject, public Transform
@@ -21,7 +21,7 @@ public:
 
 	bool is_shadow = true;
 	bool is_used = true;
-	int light_type = LightType::NONETEXTURE;
+	int light_type = LightType::NONELIGHT;
 	float light_power;
 	glm::vec3 light_color = glm::vec3(1.0f); //3f
 
@@ -37,6 +37,8 @@ public:
 	void EnableShadow(const bool& state) {
 		is_shadow = state;
 	}
+
+	std::string ParseLightName() const;
 
 	mutable std::vector<float> light_floatData;
 	void GenFloatData() const; // 5f + 6f(trans) +2f(spot)
