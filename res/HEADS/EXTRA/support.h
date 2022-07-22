@@ -61,6 +61,8 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 
 	int vert_count = 0;
 
+	//timer.Tick();
+	//Timer timer2;
 	while (!obj.eof())
 	{
 		getline(obj, a);
@@ -127,7 +129,7 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 				result.vertex.emplace_back(0.0f);
 				result.vertex.emplace_back(0.0f);
 
-				vertIndex[(face.pos) / 3].push_back(result.count[3]*3+vert_count);
+				vertIndex[(face.pos) / 3].push_back(result.count[3] * 3 + vert_count);
 
 				vert_count++;
 				if (vert_count >= 3)
@@ -144,6 +146,9 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 		}
 	}
 
+
+	//timer.Tick();
+	//Timer timer3;
 	if (is_smooth)
 	{
 		LOOP(vertIndex.size()) {
@@ -170,7 +175,9 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 
 			}
 		}
+
 	}
+	//timer.Tick();
 	for (int i = 0;i < result.count[0];i++)
 	{
 		result.center[0] += result.result[0][3 * i + 0] / (result.count[0] + 1);

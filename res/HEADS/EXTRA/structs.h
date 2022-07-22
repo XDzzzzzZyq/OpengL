@@ -27,21 +27,30 @@ struct ShaderPair {
 
 struct Timer
 {
-	time_t start, end = 0;
+	time_t start, end, tick, temp = 0;
 	time_t __duration = 0;
 	int fact = 1;
 	Timer(int fact) :fact(fact) {
 		start = clock();
 	}
 	Timer() {
+		std::cout <<"[ Thread Start ]\n";
 		fact = 1;
 		start = clock();
+	}
+
+	void Tick() {
+		/*std::cout << 000000 << "\n";*/
+		tick = clock();
+		__duration = tick - temp;
+		temp = tick;
+		std::cout /*<< "\r"*/ << "\_[ duration = " << __duration * fact << "ms ]\n";
 	}
 
 	~Timer() {
 		end = clock();
 		__duration = end - start;
-		std::cout << "\r" << "[[ duration = " << (end - start) * fact << "ms ]";
+		std::cout /*<< "\r"*/ << "[ Whole Time = " << __duration * fact << "ms ]\n";
 	}
 };
 
