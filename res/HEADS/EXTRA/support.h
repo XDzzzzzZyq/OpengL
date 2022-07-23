@@ -165,9 +165,11 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 			result.count[3]++;
 		}
 		else if (last == "o ") {
-			if (last == "o")continue;
-
-			result.name += last.c_str();
+			while (str >> last)
+			{
+				if (last == "o")continue;
+				result.name += last.c_str();
+			}
 		}
 	}
 

@@ -149,6 +149,7 @@ void Renderer::Render() {
 
 	for (const auto& dLine : dLine_list)
 	{
+		dLine.second->ApplyTransform();
 		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
 	}
 

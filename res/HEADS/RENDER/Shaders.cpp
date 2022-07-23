@@ -139,7 +139,6 @@ GLuint Shaders::getVarID(const char* name) const
 void Shaders::SetValue(const std::string& name, const int& v0, const int& v1, const int& v2, const float& v3)
 {
 	int id = getVarID(name.c_str());
-	UseShader();
 	glUniform4f(id, v0, v1, v2, v3);
 }
 

@@ -56,20 +56,3 @@ inline std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vec)
 	stream << "]\n";
 	return stream;
 }
-
-inline std::string operator+(const std::string& content, int number) {
-	std::string temp = "";
-	char t = 0;
-	while (true) {
-		t = number % 10 + '0';
-		temp = t + temp;
-		number /= 10;
-		if (number == 0) {
-			return content + temp;
-		}
-	}
-}
-
-inline std::string operator+=(std::string content, int number) {
-	return content = content + number;
-}

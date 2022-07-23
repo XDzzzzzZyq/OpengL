@@ -533,6 +533,7 @@
     <None Include="res\shaders\testS.shader" />
     <None Include="res\shaders\SpiritShader.shader" />
     <None Include="res\shaders\LineShader.shader" />
+    <None Include="res\shaders\IBRShader.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\IndexBuffer.h">

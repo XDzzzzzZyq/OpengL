@@ -9,7 +9,7 @@ Camera::Camera(float w, float h, float per, float n, float f)
 	cam_frustum = glm::perspective(glm::radians(per), w / h, n, f);
 
 	EventInit();
-	o_name = "Camera." + GetObjectID();
+	o_name = "Camera." + std::to_string(GetObjectID());
 }
 
 Camera::Camera()

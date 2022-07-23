@@ -13,6 +13,7 @@
 
 #include "EventListener.h"
 #include "DebugLine.h"
+#include "Environment.h"
 
 
 #include "ImGui/imgui.h"
@@ -86,6 +87,10 @@ void render(GLFWwindow* window) {
 	DebugLine line(glm::vec3(-10, -10, 0), glm::vec3(10, 10, 0));
 	renderer.UseDebugLine(&line);
 	
+	Environment environment("", 3);
+	//renderer.UseEnvironment(&environment);
+	
+	
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
@@ -104,14 +109,15 @@ void render(GLFWwindow* window) {
 	float FrameCount = 0;
 	
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
+
 	while (!glfwWindowShouldClose(window))
 	{
-		//GLDEBUG
-		//DEBUG("no")
+		
 		FrameCount++;
 		/* Render here */
 		
-		renderer.FrameClean();
+		//environment.BindFrameBuffer();
+		
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -139,19 +145,24 @@ void render(GLFWwindow* window) {
 		pointLight2.light_power = blend * 20;
 		pointLight2.GenFloatData();
 
+		renderer.is_light_changed = true;
+
 		line.SetPos(glm::vec3(rotateX,0,0));
 		line.dLine_color = glm::vec3(1, (90-rotateY)/90, (90 - rotateZ) / 90);
-		line.ApplyTransform();
-		//cout << pointLight1.light_color << endl;
-		renderer.is_light_changed = true;
+		
+
+		environment.BindFrameBuffer();
+		renderer.FrameClean();
+
 		renderer.Render();
+		environment.UnBindFrameBuffer();
+		environment.RenderEnvironment();
 
 		{
 			ImGui::BeginMainMenuBar();
 /*			ImGui::BeginMenuBar();*/
 			if (ImGui::BeginMenu("File"))
 			{
-				//cout << "niu\n";
 				ImGui::EndMenu();
 			}
 /*			ImGui::EndMenuBar();*/
@@ -179,7 +190,6 @@ void render(GLFWwindow* window) {
 			ImGui::End();
 		}
 
-		//renderer.Render();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

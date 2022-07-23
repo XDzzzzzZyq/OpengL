@@ -9,22 +9,10 @@ DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 		VertData.push_back(end[i]);
 	}
 
-	{	//dLine_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
-	//
-	//BufferLayout layout;
-	//layout.Push<float>(3); //3D position
-	//
-	//dLine_vertArry.AddBuffer(dLine_vertBuffer, layout);
-	//
-	//std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,1 };
-	//GLuint* index = indexArray->data();
-	//
-	//dLine_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
-	}
-
 
 	SetDLineShader();
-	o_name = "Debug Line." + GetObjectID();
+
+	o_name = "Debug Line." + std::to_string(GetObjectID());
 	multiLine = false;
 }
 
@@ -101,9 +89,10 @@ void DebugLine::RenderDline(const glm::mat4& cam_Trans, const glm::mat4& cam_pro
 void DebugLine::SetDLineShader()
 {
 	dLine_shader = Shaders("res/shaders/LineShader.shader");
+
 	dLine_shader.UseShader();
 	//dLine_shader.SetValue("blen", 0.5f);
-	dLine_shader.SetValue("U_color", 1.0f, 1.0f, 1.0f, 1.0f);
+	dLine_shader.SetValue("U_color", 1.0f, 1.0f, 1.0f);
 }
 
 void DebugLine::DeleteDLine()

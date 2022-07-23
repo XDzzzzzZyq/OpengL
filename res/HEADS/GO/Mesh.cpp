@@ -99,8 +99,7 @@ void Mesh::SetObjShader(std::string path)
 
 void Mesh::SetTex(std::string path, GLuint slot)
 {
-	o_tex.texType = TextureType::IMAGE_TEXTURE;
-	o_tex = Texture(path, GL_REPEAT);
+	o_tex = Texture(path, IMAGE_TEXTURE ,GL_REPEAT);
 	o_tex.Bind(slot);
 
 	o_shader.UseShader();

@@ -16,5 +16,9 @@ public:
 
 	void Bind() const;
 	void Unbind() const;
+
+	unsigned int GetVertArrayID() const {
+		return m_renderID;
+	}
 };
 

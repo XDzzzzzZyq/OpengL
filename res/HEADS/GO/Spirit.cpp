@@ -21,7 +21,7 @@ Spirit::Spirit()
 	r_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
 	SetSpiritShader();
 
-	o_name = "Spirit." + GetObjectID();
+	o_name = "Spirit." + std::to_string(GetObjectID());
 	
 }
 
@@ -67,8 +67,7 @@ void Spirit::SetSpiritShader()
 
 void Spirit::SetTex()
 {
-	r_tex.texType = TextureType::IMAGE_TEXTURE;
-	r_tex = Texture(ParsePath(), GL_REPEAT);
+	r_tex = Texture(ParsePath(), IMAGE_TEXTURE, GL_REPEAT);
 	r_tex.Bind(spr_type);
 
 	r_shader.UseShader();

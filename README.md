@@ -18,6 +18,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 - [x] transform matrix
 - [x] invert transform matrix
 - [x] unique ID generator
+- [x] object name generator
 - [ ] select operation
 - [ ] transform handle
 
@@ -63,7 +64,8 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [x] diffuse
     - [x] specular
     - [x] environment
-    - [ ] HDR environment
+    - [ ] IBL environment
+    - [ ] IBL lighting
     - [ ] AO
     - [ ] shadow
 
