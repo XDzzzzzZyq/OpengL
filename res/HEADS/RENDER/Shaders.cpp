@@ -110,7 +110,7 @@ void Shaders::UseShader() const
 	glUseProgram(program_id);
 }
 
-void Shaders::UnuseShader()
+void Shaders::UnuseShader() const
 {
 	//glDeleteProgram(program_id);
 	glUseProgram(0);

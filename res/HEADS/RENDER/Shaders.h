@@ -20,7 +20,7 @@ public:
 	~Shaders();
 
 	void UseShader() const;
-	void UnuseShader();
+	void UnuseShader() const;
 
 	void DelShad() const;
 

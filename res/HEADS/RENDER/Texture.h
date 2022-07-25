@@ -7,7 +7,7 @@
 
 enum TextureType
 {
-	NONE_TEXTURE, IMAGE_TEXTURE, HDR_TEXTURE
+	NONE_TEXTURE, IMAGE_TEXTURE, HDR_TEXTURE, BUFFER_TEXTURE
 };
 
 class Texture
@@ -20,7 +20,7 @@ private:
 	GLuint Tex_ID;
 	
 public:
-	TextureType texType = TextureType::NONE_TEXTURE;
+	TextureType Tex_type = TextureType::NONE_TEXTURE;
 	mutable GLuint Tex_slot;
 
 	Texture(const std::string& texpath, TextureType tex_type,GLuint Tile_type);
@@ -31,7 +31,7 @@ public:
 
 
 	void Bind(GLuint slot = 0) const;
-	void Unbind();
+	void Unbind() const;
 
 	inline int GetW()const { return im_w; }
 	inline int GetH()const { return im_h; }

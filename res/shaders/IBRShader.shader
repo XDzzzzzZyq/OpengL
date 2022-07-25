@@ -26,12 +26,18 @@ void main(){
 layout(location = 0) out vec4 color;
 
 in vec2 screen_uv;
+vec4 screen_color;
+vec4 hdr_color;
 
-uniform sampler2D IBRtexture;
+uniform sampler2D screen_texture;
+uniform sampler2D hdr_texture;
+uniform vec3 pure_color;
 
 void main(){		   
-						  
-	//color = vec4(uv,0.0f,1.0f);
-	//color = 1 - texture(IBRtexture,screen_uv);
-	color = vec4(1.0f,1.0f,0.0f,1.0f);
+	screen_color = texture(screen_texture,screen_uv);
+	hdr_color = texture(hdr_texture,screen_uv);
+	color =  vec4(1.0f,1.0f,0.0f,1.0f) * (1 - screen_color[3]) + screen_color * screen_color[3];
+	//color = vec4(screen_color[3],screen_color[3],screen_color[3],1.0f);
+	//color = texture(IBRtexture,screen_uv);
+	//color = vec4(1.0f,1.0f,0.0f,1.0f);
 };

@@ -87,8 +87,8 @@ void render(GLFWwindow* window) {
 	DebugLine line(glm::vec3(-10, -10, 0), glm::vec3(10, 10, 0));
 	renderer.UseDebugLine(&line);
 	
-	Environment environment("", 3);
-	//renderer.UseEnvironment(&environment);
+	Environment environment("res/tex/hdr/room.hdr");
+	renderer.UseEnvironment(&environment);
 	
 	
 	ImGui::CreateContext();
@@ -151,12 +151,9 @@ void render(GLFWwindow* window) {
 		line.dLine_color = glm::vec3(1, (90-rotateY)/90, (90 - rotateZ) / 90);
 		
 
-		environment.BindFrameBuffer();
-		renderer.FrameClean();
 
 		renderer.Render();
-		environment.UnBindFrameBuffer();
-		environment.RenderEnvironment();
+
 
 		{
 			ImGui::BeginMainMenuBar();

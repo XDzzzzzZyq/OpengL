@@ -111,6 +111,21 @@
     <ClCompile Include="res\HEADS\RENDER\Material.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\GO\Empty.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\COMPO\Field.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\COMPO\PostProcessing.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\RenderBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\FrameBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">
@@ -1497,6 +1512,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\GO\Empty.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\COMPO\Field.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\COMPO\PostProcessing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\RenderBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

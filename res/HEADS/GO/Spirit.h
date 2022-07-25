@@ -31,10 +31,10 @@ private:
 	float spirit_opacity = 0.8f;
 
 	std::vector<float> VertData = {
-		-1.0f,1.0f,0.0f,0.0f,0.0f,
-		1.0f,1.0f,0.0f,1.0f,0.0f,
-		-1.0f,-1.0f,0.0f,0.0f,1.0f,
-		1.0f,-1.0f,0.0f,1.0f,1.0f
+		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
+		 1.0f, 1.0f, 0.0f,		1.0f, 0.0f,
+		-1.0f,-1.0f, 0.0f,		0.0f, 1.0f,
+		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
 	};
 public:
 

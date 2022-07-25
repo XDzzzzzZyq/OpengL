@@ -7,6 +7,8 @@
 #include "Light.h"
 #include "Environment.h"
 #include "DebugLine.h"
+#include "PostProcessing.h"
+#include "FrameBuffer.h"
 
 #include "Spirit.h"
 
@@ -19,6 +21,7 @@ class Renderer
 {
 private:
 	std::unordered_map<int, Light*> emptyLight;
+	FrameBuffer framebuffer;
 public:
 	Renderer();
 	~Renderer();
@@ -33,6 +36,13 @@ public:
 	std::unordered_map<int, Spirit*>        spirit_list;
 	std::unordered_map<int, DebugLine*>      dLine_list;
 
+
+	template<typename T>
+	void UseObject(T* obj);
+
+	void FrameClean() const;
+	void Render();
+
 	void UseCamera(Camera* camera);
 	void UseCamera(const int& cam_id);
 	Camera* GetActiveCamera();
@@ -43,14 +53,9 @@ public:
 
 	void UseEnvironment(Environment* envir);
 	void UseEnvironment(const int& envir_id);
-	
+	Environment* GetActiveEnvironment();
+
 	void UseDebugLine(DebugLine* dline);
-
-	template<typename T>
-	void UseObject(T* obj);
-
-	void FrameClean() const;
-	void Render();
 };
 
 template<typename T>

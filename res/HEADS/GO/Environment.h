@@ -6,6 +6,7 @@
 
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 #include "support.h"
 #include "structs.h"
@@ -21,33 +22,32 @@ enum EnvironmentType
 class Environment : public GameObject, public Transform
 {
 private:
-	GLuint framebuffer_id = 0, renderBuffer_id = 0, buff_tex_id=0;
+	GLuint framebuffer_id = 0, renderBuffer_id = 0, buff_tex_id = 0;
 
 	std::vector<float> screenQuad = {
 		// positions		// texCoords
-		-1.0f,  1.0f,		0.0f, 1.0f,
-		-1.0f, -1.0f,		0.0f, 0.0f,
-		 1.0f, -1.0f,		1.0f, 0.0f,
-		-1.0f,  1.0f,		0.0f, 1.0f,
-		 1.0f, -1.0f,		1.0f, 0.0f,
-		 1.0f,  1.0f,		1.0f, 1.0f
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		 1.0f, 1.0f,	1.0f, 1.0f,
+		-1.0f,-1.0f,	0.0f, 0.0f,
+		 1.0f,-1.0f,	1.0f, 0.0f
 
 	};
 
 	VertexArray o_vertArry;
 	VertexBuffer o_vertBuffer;
+	IndexBuffer o_indexBuffer;
 
 public:
 	Shaders envir_shader;
 
-	Texture envir_HDR;
+	Texture frame_buffer, envir_hdr;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
 	bool use_envir = false;
 
 	float envir_power = 0.0f;
 	glm::vec3 envir_color = glm::vec3(0.1f);
 
-	Environment(const std::string& texpath, GLuint slot);
+	Environment(const std::string& texpath);
 	Environment();
 	~Environment();
 

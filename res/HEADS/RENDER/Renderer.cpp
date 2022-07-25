@@ -19,6 +19,89 @@ Renderer::~Renderer()
 
 }
 //////////////////////////////////////////////
+
+void Renderer::FrameClean() const
+{
+	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
+	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	//glClearDepth(-10.0f);
+	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
+void Renderer::Render() {
+
+	if (cam_list.find(0)==cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
+	if (envir_list.find(0)==envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
+
+
+	glDisable(GL_DEPTH_TEST);
+	envir_list[0]->RenderEnvironment();
+
+	envir_list[0]->BindFrameBuffer();
+
+	FrameClean();
+
+
+	glEnable(GL_DEPTH_TEST);
+	////////////    MESHES    ////////////
+	cam_list[0]->ApplyTransform();
+	cam_list[0]->GenFloatData();
+	if (is_light_changed)
+	{
+		for (const auto& obj : mesh_list)
+		{
+
+			if (obj.second->is_rendered)
+			{
+				obj.second->ApplyTransform();
+				obj.second->RenderObj(*cam_list[0], light_list);
+				//std::cout << cam_list[0]->o_InvTransform;
+			}
+		}
+		is_light_changed = false;
+	}
+	else
+	{
+		for (const auto& obj : mesh_list)
+		{
+
+			if (obj.second->is_rendered)
+			{
+				obj.second->ApplyTransform();
+				obj.second->RenderObj(*cam_list[0], emptyLight);
+
+
+			}
+		}
+	}
+	
+	//////////// DEBUG MESHES ////////////
+
+	for (const auto& dLine : dLine_list)
+	{
+		dLine.second->ApplyTransform();
+		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+	}
+
+	////////////    IOCONS    ////////////
+
+	for (const auto& light : light_list)
+	{
+		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position,light.second->light_color) , cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+	}
+
+
+	envir_list[0]->UnBindFrameBuffer();
+	glDisable(GL_DEPTH_TEST);
+}
+
+
+////////////////////////////////////// END RENDERING ///////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Renderer::UseCamera(Camera* camera)
 {
 	if (cam_list.find(camera->GetObjectID()) == cam_list.end())
@@ -89,77 +172,16 @@ void Renderer::UseEnvironment(const int& envir_id)
 	}
 }
 
+Environment* Renderer::GetActiveEnvironment()
+{
+	return envir_list[0];
+}
+
 void Renderer::UseDebugLine(DebugLine* dline)
 {
 	if (dLine_list.find(dline->GetObjectID()) == dLine_list.end())
 	{
 		dLine_list[dline->GetObjectID()] = dline;
-		
+
 	}
 }
-
-void Renderer::FrameClean() const
-{
-	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-	//glClearDepth(-10.0f);
-	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::Render() {
-
-	if (cam_list.find(0)==cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
-
-	////////////    MESHES    ////////////
-	cam_list[0]->ApplyTransform();
-	cam_list[0]->GenFloatData();
-	if (is_light_changed)
-	{
-		for (const auto& obj : mesh_list)
-		{
-
-			if (obj.second->is_rendered)
-			{
-				obj.second->ApplyTransform();
-				obj.second->RenderObj(*cam_list[0], light_list);
-				//std::cout << cam_list[0]->o_InvTransform;
-			}
-		}
-		is_light_changed = false;
-	}
-	else
-	{
-		for (const auto& obj : mesh_list)
-		{
-
-			if (obj.second->is_rendered)
-			{
-				obj.second->ApplyTransform();
-				obj.second->RenderObj(*cam_list[0], emptyLight);
-
-
-			}
-		}
-	}
-	
-
-	//////////// DEBUG MESHES ////////////
-
-	for (const auto& dLine : dLine_list)
-	{
-		dLine.second->ApplyTransform();
-		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
-	}
-
-	////////////    IOCONS    ////////////
-
-	for (const auto& light : light_list)
-	{
-		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position,light.second->light_color) , cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
-	}
-
-
-}
-

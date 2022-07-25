@@ -153,6 +153,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\RENDER\FrameBuffer.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\RenderBuffer.cpp" />
+    <ClCompile Include="res\HEADS\COMPO\Field.cpp" />
+    <ClCompile Include="res\HEADS\COMPO\PostProcessing.cpp" />
+    <ClCompile Include="res\HEADS\GO\Empty.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Material.cpp" />
     <ClCompile Include="res\HEADS\GO\DebugMesh.cpp" />
     <ClCompile Include="res\HEADS\COMPO\Transform.cpp" />
@@ -331,6 +336,11 @@
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="res\HEADS\RENDER\FrameBuffer.h" />
+    <ClInclude Include="res\HEADS\RENDER\RenderBuffer.h" />
+    <ClInclude Include="res\HEADS\COMPO\Field.h" />
+    <ClInclude Include="res\HEADS\COMPO\PostProcessing.h" />
+    <ClInclude Include="res\HEADS\GO\Empty.h" />
     <ClInclude Include="res\HEADS\RENDER\Material.h" />
     <ClInclude Include="res\HEADS\GO\DebugMesh.h" />
     <ClInclude Include="res\HEADS\COMPO\Transform.h" />

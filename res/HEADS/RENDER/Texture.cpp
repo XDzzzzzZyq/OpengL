@@ -2,15 +2,16 @@
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
-	:m_path(texpath), m_buffer(nullptr),texType(tex_type),
+	:m_path(texpath), m_buffer(nullptr),Tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
 	//std::cout << Tex_ID << std::endl;
 	stbi_set_flip_vertically_on_load(1);
 
-	switch (texType)
+	switch (tex_type)
 	{
 	case IMAGE_TEXTURE:
+
 		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		glGenTextures(1, &Tex_ID);
@@ -38,8 +39,8 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, im_w, im_h, 0, GL_RGB, GL_FLOAT, m_buffer_f);
 		std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
@@ -48,13 +49,17 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		if (m_buffer_f) {
 			stbi_image_free(m_buffer_f);
 		}
-	case NONE_TEXTURE:
+	case BUFFER_TEXTURE:
 
 		glGenTextures(1, &Tex_ID);
 		glBindTexture(GL_TEXTURE_2D, Tex_ID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_W, SCREEN_H, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
 }
@@ -81,7 +86,7 @@ void Texture::Bind(GLuint slot /*= 0*/) const
 	Tex_slot = slot;
 }
 
-void Texture::Unbind()
+void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

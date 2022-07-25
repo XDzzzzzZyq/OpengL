@@ -1,6 +1,6 @@
 #include "Environment.h"
 
-Environment::Environment(const std::string& texpath, GLuint slot)
+Environment::Environment(const std::string& texpath)
 {
 	//envir_HDR = Texture(texpath, IMAGE_TEXTURE, GL_REPEAT);
 	//
@@ -8,9 +8,13 @@ Environment::Environment(const std::string& texpath, GLuint slot)
 	//
 	envir_shader = Shaders("res/shaders/IBRShader.shader");
 
-	envir_HDR = Texture("", NONE_TEXTURE, GL_NEAREST);
-	envir_HDR.Bind(slot);
-	envir_HDR.Tex_slot = slot;
+	frame_buffer = Texture("", BUFFER_TEXTURE, GL_NEAREST);
+	frame_buffer.Bind(frame_buffer.Tex_type);
+	frame_buffer.Tex_slot = frame_buffer.Tex_type;
+
+	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_NEAREST);
+	envir_hdr.Bind(envir_hdr.Tex_type);
+	envir_hdr.Tex_slot = envir_hdr.Tex_type;
 
 	glGenRenderbuffers(1, &renderBuffer_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer_id);
@@ -18,7 +22,8 @@ Environment::Environment(const std::string& texpath, GLuint slot)
 
 	glGenFramebuffers(1, &framebuffer_id);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_id);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, envir_HDR.GetTexID(), 0);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frame_buffer.GetTexID(), 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer_id);
 	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -40,10 +45,19 @@ Environment::Environment(const std::string& texpath, GLuint slot)
 
 	o_vertArry.AddBuffer(o_vertBuffer, layout);
 
+	std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
+	GLuint* index = indexArray->data();
+
+	o_indexBuffer = IndexBuffer(index, indexArray->size() * sizeof(GLuint)); 
+
+	envir_shader.UseShader();
+
+	envir_shader.SetValue("hdr_texture", envir_hdr.Tex_type);
+	envir_shader.SetValue("screen_texture", frame_buffer.Tex_type);
+
 	envir_shader.UnuseShader();
-	envir_HDR.Unbind();
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	frame_buffer.Unbind();
+	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 Environment::Environment()
@@ -68,14 +82,12 @@ void Environment::ChangeEnvirType(const EnvironmentType& type) const
 
 void Environment::BindFrameBuffer() const
 {
-	glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer_id);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_id);
 }
 
 void Environment::UnBindFrameBuffer() const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 void Environment::GenFloatData() const
@@ -85,11 +97,15 @@ void Environment::GenFloatData() const
 
 void Environment::RenderEnvironment() const
 {
+	o_vertArry.Bind();
 	envir_shader.UseShader();
-	
-	glBindVertexArray(o_vertArry.GetVertArrayID());
+	o_indexBuffer.Bind();
+	frame_buffer.Bind(frame_buffer.Tex_type);
 
-	envir_HDR.Bind();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	
+	o_indexBuffer.Unbind();
+	envir_shader.UnuseShader();
+	frame_buffer.Unbind();
+	o_vertArry.Unbind();
 }
