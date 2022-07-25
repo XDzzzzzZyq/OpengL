@@ -61,16 +61,16 @@ void Transform::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& 
 	is_invTransF_changed = true;
 	rotQua = glm::qua<float>(glm::radians(o_rot));
 	rotQua = glm::rotate(rotQua, angle, axis);
-	rotMat = glm::mat4_cast(rotQua);
+	o_rotMat = glm::mat4_cast(rotQua);
 	o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
 
 	o_position -= anch;
-	o_position = anch + rotMat * o_position;
+	o_position = anch + o_rotMat * o_position;
 
 	o_Transform = glm::translate(o_Transform, o_position);
 
-	o_dir_up = rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
-	o_dir_right = rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
+	o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
+	o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
 }
 
 void Transform::LookAt(const glm::vec3& tar)
@@ -80,10 +80,10 @@ void Transform::LookAt(const glm::vec3& tar)
 	
 	//rotMat = glm::lookAt(o_position, tar, o_dir_up);
 	rotQua = glm::quatLookAt(glm::normalize(tar - o_position), o_dir_up);
-	rotMat = glm::mat4_cast(rotQua);
+	o_rotMat = glm::mat4_cast(rotQua);
 	
-	o_dir_up = rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
-	o_dir_right = rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
+	o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
+	o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
 
 	o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
 
@@ -97,14 +97,14 @@ void Transform::ApplyTransform()
 	{
 		//DEBUG("apply");
 		//rotMat = glm::mat4_cast(glm::qua<float>(glm::radians(o_rot)));
-		rotMat = glm::mat4_cast(rotQua);
+		o_rotMat = glm::mat4_cast(rotQua);
 		o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
-		o_Transform = glm::translate(rotMat * o_Transform, o_position);
+		o_Transform = glm::translate(o_rotMat * o_Transform, o_position);
 
 		if (is_rot_changed)
 		{
-			o_dir_up = rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
-			o_dir_right = rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
+			o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
+			o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
 			is_rot_changed = false;
 
 		}

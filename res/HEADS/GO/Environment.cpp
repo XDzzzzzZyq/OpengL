@@ -12,7 +12,7 @@ Environment::Environment(const std::string& texpath)
 	frame_buffer.Bind(frame_buffer.Tex_type);
 	frame_buffer.Tex_slot = frame_buffer.Tex_type;
 
-	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_NEAREST);
+	envir_hdr = Texture(texpath, IMAGE_TEXTURE, GL_NEAREST);
 	envir_hdr.Bind(envir_hdr.Tex_type);
 	envir_hdr.Tex_slot = envir_hdr.Tex_type;
 
@@ -95,16 +95,20 @@ void Environment::GenFloatData() const
 
 }
 
-void Environment::RenderEnvironment() const
+void Environment::RenderEnvironment(const glm::mat4& cam_rotM, float fov)
 {
 	o_vertArry.Bind();
 	envir_shader.UseShader();
 	o_indexBuffer.Bind();
 	frame_buffer.Bind(frame_buffer.Tex_type);
+	envir_hdr.Bind(envir_hdr.Tex_type);
 
+	envir_shader.SetValue("cam_rotM", cam_rotM);
+	envir_shader.SetValue("cam_fov", fov);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	
 	o_indexBuffer.Unbind();
+	envir_hdr.Unbind();
 	envir_shader.UnuseShader();
 	frame_buffer.Unbind();
 	o_vertArry.Unbind();

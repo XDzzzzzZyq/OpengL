@@ -60,7 +60,7 @@ public:
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;
 
-	void RenderEnvironment() const;
+	void RenderEnvironment(const glm::mat4& cam_rotM, float fov);
 
 
 };

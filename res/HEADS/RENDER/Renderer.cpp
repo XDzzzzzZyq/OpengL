@@ -12,6 +12,9 @@ Renderer::Renderer()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendEquation(GL_FUNC_ADD);
+
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
 Renderer::~Renderer()
@@ -27,6 +30,7 @@ void Renderer::FrameClean() const
 	//glClearDepth(-10.0f);
 	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,9 +41,6 @@ void Renderer::Render() {
 	if (envir_list.find(0)==envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
 
-	glDisable(GL_DEPTH_TEST);
-	envir_list[0]->RenderEnvironment();
-
 	envir_list[0]->BindFrameBuffer();
 
 	FrameClean();
@@ -49,6 +50,8 @@ void Renderer::Render() {
 	////////////    MESHES    ////////////
 	cam_list[0]->ApplyTransform();
 	cam_list[0]->GenFloatData();
+
+	envir_list[0]->envir_hdr.Bind();
 	if (is_light_changed)
 	{
 		for (const auto& obj : mesh_list)
@@ -77,6 +80,7 @@ void Renderer::Render() {
 			}
 		}
 	}
+	envir_list[0]->envir_hdr.Unbind();
 	
 	//////////// DEBUG MESHES ////////////
 
@@ -96,6 +100,7 @@ void Renderer::Render() {
 
 	envir_list[0]->UnBindFrameBuffer();
 	glDisable(GL_DEPTH_TEST);
+	envir_list[0]->RenderEnvironment(cam_list[0]->o_rotMat, glm::radians(cam_list[0]->cam_pers));
 }
 
 

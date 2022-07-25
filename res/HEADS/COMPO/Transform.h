@@ -11,9 +11,11 @@
 class Transform
 {
 private:
-	glm::mat4 rotMat;
-	glm::qua<float> rotQua;
+	
 public:
+	glm::mat4 o_rotMat;
+	glm::qua<float> rotQua;
+
 	Transform();
 	~Transform();
 

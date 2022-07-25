@@ -33,11 +33,33 @@ uniform sampler2D screen_texture;
 uniform sampler2D hdr_texture;
 uniform vec3 pure_color;
 
-void main(){		   
+uniform mat4 cam_rotM;
+uniform float cam_fov;
+
+vec4 ray_dir;
+vec2 reUV;
+vec2 equirectangularUV;
+
+vec2 genHdrUV(vec3 dir){
+	float spin = atan(dir[2]/dir[0]);
+	float elevation = atan(dir[1]/sqrt(dir[0]*dir[0]+dir[2]*dir[2]));
+	if(dir[0]>0){
+		spin-=3.1415926f;
+	}
+	return vec2(((spin/3.1415926f)/2)+0.5, (elevation/-3.1415926f+1)/2);
+}
+
+vec2 reMapUV(vec2 uv){
+	return uv*2-vec2(1.0f,1.0f);
+}
+
+void main(){		 
+	reUV  = reMapUV(screen_uv);
+	ray_dir =  cam_rotM * vec4(vec3(-1,-1,1)*normalize(vec3(reUV*tan(cam_fov/2),1)),1);
+
 	screen_color = texture(screen_texture,screen_uv);
-	hdr_color = texture(hdr_texture,screen_uv);
-	color =  vec4(1.0f,1.0f,0.0f,1.0f) * (1 - screen_color[3]) + screen_color * screen_color[3];
-	//color = vec4(screen_color[3],screen_color[3],screen_color[3],1.0f);
-	//color = texture(IBRtexture,screen_uv);
-	//color = vec4(1.0f,1.0f,0.0f,1.0f);
+	hdr_color = texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir))));
+
+	color =  hdr_color * (1 - screen_color[3]) + screen_color * screen_color[3];
+
 };

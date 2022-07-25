@@ -48,6 +48,7 @@ in vec4 normal_color;
 in vec4 Snormal_color;
 
 uniform sampler2D U_Texture;
+uniform sampler2D Envir_Texture;
 uniform float blen[3];
 
 uniform float L_point[41]; //count + 5 points
@@ -118,10 +119,19 @@ vec3 Vec3Bisector(vec3 a, vec3 b){
 	return normalize(normalize(a)*0.5 + normalize(b)*0.5);
 }
 
+vec2 genHdrUV(vec3 dir){
+	float spin = atan(dir[2]/dir[0]);
+	float elevation = atan(dir[1]/sqrt(dir[0]*dir[0]+dir[2]*dir[2]));
+	if(dir[0]>0){
+		spin-=3.1415926f;
+	}
+	return vec2(((spin/3.1415926f)/2)+0.5, (elevation/-3.1415926f+1)/2);
+}
+
 LightMapStruct LightMap;
 float Dis_fac, DiffuseStrength, SpecularStrength;
 
-vec3 LightRay, CamRay;
+vec3 LightRay, CamRay, ReflectRay;
 
 void main(){
 	DiffuseStrength = 0.0f;
@@ -143,6 +153,7 @@ void main(){
 
 		LightRay = pix_pos-pL_list[i].pos;
 		CamRay = pix_pos-vec3(Scene_data[0], Scene_data[1], Scene_data[2]);
+		ReflectRay = reflect(normalize(CamRay),normalize(LightRay));
 		Dis_fac = 1/length(LightRay);
 
 		//DIFFUSE
@@ -155,6 +166,7 @@ void main(){
 	}					   
 						   
 	vec4 uvcolor = texture(U_Texture,uv);
+	vec3 reflectcolor = vec3(texture(Envir_Texture, genHdrUV(ReflectRay)));
 
 	color = uvcolor * vec4(Vec3Film(LightMap.Diffuse_map + LightMap.Specular_map*2), 1.0f);
 	//color = Snormal_color;

@@ -50,21 +50,28 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [ ] sun light
   - [ ] spot light
 - Environment
-  - [ ] AVAILABLE
+  - [x] AVAILABLE
+  - [x] HDR texture
+  - [ ] z-Fog
+  - [ ] atmosphere shading
 
 #### **Render**
 
 - **Algorithms**
 
   - [x] Z-buffer
+  - [ ] Stencil-buffer
   - [x] Fimic convert
+  - [ ] Gamma convert
+  - [ ] outLine shader
+  - [ ] FXAA
 
   - Blinn-Phong
 
     - [x] diffuse
     - [x] specular
     - [x] environment
-    - [ ] IBL environment
+    - [x] IBL environment
     - [ ] IBL lighting
     - [ ] AO
     - [ ] shadow

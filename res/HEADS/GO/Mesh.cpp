@@ -101,12 +101,16 @@ void Mesh::SetTex(std::string path, GLuint slot)
 {
 	o_tex = Texture(path, IMAGE_TEXTURE ,GL_REPEAT);
 	o_tex.Bind(slot);
+	o_tex.Tex_slot = slot;
 
 	o_shader.UseShader();
 	//o_shader.SetValue("blen", 0.5f);
 	o_shader.SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
 	o_shader.SetValue("U_Texture", slot);
+	o_shader.SetValue("Envir_Texture", HDR_TEXTURE);
 
+	o_shader.UnuseShader();
+	o_tex.Unbind();
 }
 
 void Mesh::SetCenter()

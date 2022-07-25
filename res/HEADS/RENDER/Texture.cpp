@@ -24,6 +24,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+
 		std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//std::cout << im_bpp << std::endl;
@@ -83,10 +86,11 @@ void Texture::Bind(GLuint slot /*= 0*/) const
 {
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
-	Tex_slot = slot;
+	//Tex_slot = slot;
 }
 
 void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(0);
 }

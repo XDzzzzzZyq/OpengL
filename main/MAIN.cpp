@@ -48,7 +48,7 @@ void render(GLFWwindow* window) {
 	glfwSetScrollCallback(window, scrollCall);
 	
 	Renderer renderer;
-	Camera camera(10.0f, 10.0f, 50, 0.0f, 300.0f);
+	Camera camera(10.0f, 10.0f, 70, 0.0f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
 	camera.ApplyTransform();
 	camera.GetInvTransform();
