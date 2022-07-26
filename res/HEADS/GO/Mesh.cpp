@@ -97,7 +97,7 @@ void Mesh::SetObjShader(std::string path)
 	//std::cout<<"aaa\n";
 }
 
-void Mesh::SetTex(std::string path, GLuint slot)
+void Mesh::SetTex(std::string path, TextureType slot)
 {
 	o_tex = Texture(path, IMAGE_TEXTURE ,GL_REPEAT);
 	o_tex.Bind(slot);

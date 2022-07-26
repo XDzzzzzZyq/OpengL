@@ -59,12 +59,12 @@ void render(GLFWwindow* window) {
 
 	Mesh go1("res/obj/monkey2.obj");
 	go1.SetObjShader("res/shaders/testS.shader");
-	go1.SetTex("res/tex/avatar2.png", 0);
+	go1.SetTex("res/tex/avatar2.png", IMAGE_TEXTURE);
 	go1.SetCenter();
 
 	Mesh go2("res/obj/torus.obj");
 	go2.SetObjShader("res/shaders/testS.shader");
-	go2.SetTex("res/tex/avatar1.png", 1);
+	go2.SetTex("res/tex/avatar1.png", IMAGE_TEXTURE);
 	go2.SetCenter();
 	go2.SetPos(glm::vec3(4, 0, 0));
 	go2.SetScale(glm::vec3(1.5f));

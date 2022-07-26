@@ -36,7 +36,7 @@ public:
 	void RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& light_list);
 
 	void SetObjShader(std::string path);
-	void SetTex(std::string path, GLuint slot);
+	void SetTex(std::string path, TextureType slot);
 	void SetCenter();
 
 	void Report() {
