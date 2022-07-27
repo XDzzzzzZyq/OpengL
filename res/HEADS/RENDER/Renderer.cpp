@@ -51,7 +51,7 @@ void Renderer::Render() {
 	cam_list[0]->ApplyTransform();
 	cam_list[0]->GenFloatData();
 
-	envir_list[0]->envir_hdr.Bind();
+	envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
 	if (is_light_changed)
 	{
 		for (const auto& obj : mesh_list)

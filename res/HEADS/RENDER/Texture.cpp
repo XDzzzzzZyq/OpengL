@@ -35,6 +35,8 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		}
 		break;
 	case HDR_TEXTURE:
+
+		/*
 		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		glGenTextures(1, &Tex_ID);
@@ -51,7 +53,31 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		//std::cout << im_bpp << std::endl;
 		if (m_buffer_f) {
 			stbi_image_free(m_buffer_f);
+		}*/
+
+		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+
+		glGenTextures(1, &Tex_ID);
+		glBindTexture(GL_TEXTURE_2D, Tex_ID);
+		// std::cout << Tex_ID << std::endl;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//std::cout << im_bpp << std::endl;
+		if (m_buffer) {
+			stbi_image_free(m_buffer);
 		}
+
+		break;
 	case BUFFER_TEXTURE:
 
 		glGenTextures(1, &Tex_ID);
@@ -63,6 +89,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+		break;
 	}
 	
 }

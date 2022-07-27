@@ -153,7 +153,7 @@ void main(){
 
 		LightRay = pix_pos-pL_list[i].pos;
 		CamRay = pix_pos-vec3(Scene_data[0], Scene_data[1], Scene_data[2]);
-		ReflectRay = reflect(normalize(CamRay),normalize(LightRay));
+		ReflectRay = reflect(normalize(CamRay), vec3(Snormal_color));
 		Dis_fac = 1/length(LightRay);
 
 		//DIFFUSE
@@ -166,9 +166,10 @@ void main(){
 	}					   
 						   
 	vec4 uvcolor = texture(U_Texture,uv);
-	vec3 reflectcolor = vec3(texture(Envir_Texture, genHdrUV(ReflectRay)));
+	vec3 reflectcolor = vec3(texture(Envir_Texture, genHdrUV(-ReflectRay)));
 
-	color = uvcolor * vec4(Vec3Film(LightMap.Diffuse_map + LightMap.Specular_map*2), 1.0f);
+	//color = uvcolor * vec4(Vec3Film(LightMap.Diffuse_map + LightMap.Specular_map*2), 1.0f);
+	color = vec4(reflectcolor,1.0f);
 	//color = Snormal_color;
 	//color = vec4(Vec3Film(LightMap.Specular_map), 1.0f);
 };

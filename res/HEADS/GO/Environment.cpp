@@ -12,7 +12,7 @@ Environment::Environment(const std::string& texpath)
 	frame_buffer.Bind(frame_buffer.Tex_type);
 	frame_buffer.Tex_slot = frame_buffer.Tex_type;
 
-	envir_hdr = Texture(texpath, IMAGE_TEXTURE, GL_NEAREST);
+	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_NEAREST);
 	envir_hdr.Bind(envir_hdr.Tex_type);
 	envir_hdr.Tex_slot = envir_hdr.Tex_type;
 

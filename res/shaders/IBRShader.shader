@@ -58,7 +58,7 @@ void main(){
 	ray_dir =  cam_rotM * vec4(vec3(-1,-1,1)*normalize(vec3(reUV*tan(cam_fov/2),1)),1);
 
 	screen_color = texture(screen_texture,screen_uv);
-	hdr_color = texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir))));
+	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);
 
 	color =  hdr_color * (1 - screen_color[3]) + screen_color * screen_color[3];
 
