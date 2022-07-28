@@ -2,6 +2,9 @@
 
 FrameBuffer::FrameBuffer()
 {
+
+	renderBuffer = RenderBuffer();
+
 	BufferTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
 	BufferTexture.Bind(BufferTexture.Tex_type);
 	BufferTexture.Tex_slot = BufferTexture.Tex_type;
@@ -35,4 +38,14 @@ void FrameBuffer::BindFrameBuffer() const
 void FrameBuffer::UnbindFrameBuffer() const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void FrameBuffer::BindFrameBufferTex() const
+{
+	BufferTexture.Bind(BUFFER_TEXTURE);
+}
+
+void FrameBuffer::UnbindFrameBufferTex() const
+{
+	BufferTexture.Unbind();
 }

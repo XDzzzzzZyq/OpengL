@@ -15,6 +15,9 @@ public:
 	void BindFrameBuffer() const;
 	void UnbindFrameBuffer() const;
 
+	void BindFrameBufferTex() const;
+	void UnbindFrameBufferTex() const;
+
 	GLuint GetFrameBufferID() const { return fb_ID; }
 	GLuint GetFrameBufferTextureID() const { return fb_tex_ID; }
 };

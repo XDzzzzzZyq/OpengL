@@ -56,3 +56,8 @@ inline std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vec)
 	stream << "]\n";
 	return stream;
 }
+
+template <typename T>
+inline std::vector<T> operator+(const std::vector<T>& base, const glm::vec3& inp) {
+
+}

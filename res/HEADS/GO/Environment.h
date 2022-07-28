@@ -7,12 +7,15 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "FrameBuffer.h"
 
 #include "support.h"
 #include "structs.h"
 #include "Shaders.h"
 
 #include "glm/glm.hpp"
+
+#include <optional>
 
 enum EnvironmentType
 {
@@ -38,6 +41,8 @@ private:
 	IndexBuffer o_indexBuffer;
 
 public:
+	std::optional<FrameBuffer> envir_frameBuffer;
+	
 	Shaders envir_shader;
 
 	Texture frame_buffer, envir_hdr;

@@ -80,10 +80,15 @@ void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& l
 	glDrawElements(GL_TRIANGLES, o_index.count(), GL_UNSIGNED_INT, nullptr);
 
 	//o_Transform = glm::mat4(1.0f);
+
+#if 0
 	o_index.Unbind();
 	o_shader.UnuseShader();
 	o_vertArry.Unbind();
 	o_tex.Unbind();
+#endif
+
+
 }
 
 void Mesh::SetObjShader(std::string path)
