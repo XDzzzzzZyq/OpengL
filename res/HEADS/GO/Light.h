@@ -20,7 +20,7 @@ public:
 	Spirit light_spirit;
 
 	bool is_shadow = true;
-	bool is_used = true;
+
 	int light_type = LightType::NONELIGHT;
 	float light_power;
 	glm::vec3 light_color = glm::vec3(1.0f); //3f

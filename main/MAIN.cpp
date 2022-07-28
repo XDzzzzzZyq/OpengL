@@ -86,6 +86,7 @@ void render(GLFWwindow* window) {
 
 	DebugLine line(glm::vec3(-10, -10, 0), glm::vec3(10, 10, 0));
 	renderer.UseDebugLine(&line);
+	line.is_viewport = false;
 	
 	Environment environment("res/tex/hdr/room.hdr");
 	renderer.UseEnvironment(&environment);

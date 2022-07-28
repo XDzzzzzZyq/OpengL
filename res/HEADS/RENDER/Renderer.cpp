@@ -3,7 +3,7 @@
 Renderer::Renderer()
 {
 	DEBUG("Renderer Open")
-	glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 
@@ -33,12 +33,19 @@ void Renderer::FrameClean() const
 
 }
 
+
+
+
+
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
 void Renderer::Render() {
 
-	if (cam_list.find(0)==cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
-	if (envir_list.find(0)==envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
+	if (cam_list.find(0) == cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
+	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
 
 	envir_list[0]->BindFrameBuffer();
@@ -56,13 +63,11 @@ void Renderer::Render() {
 	{
 		for (const auto& obj : mesh_list)
 		{
+			if (!obj.second->is_viewport)continue;
 
-			if (obj.second->is_rendered)
-			{
-				obj.second->ApplyTransform();
-				obj.second->RenderObj(*cam_list[0], light_list);
-				//std::cout << cam_list[0]->o_InvTransform;
-			}
+			obj.second->ApplyTransform();
+			obj.second->RenderObj(*cam_list[0], light_list);
+			//std::cout << cam_list[0]->o_InvTransform;
 		}
 		is_light_changed = false;
 	}
@@ -73,28 +78,30 @@ void Renderer::Render() {
 
 			if (obj.second->is_rendered)
 			{
+				if (!obj.second->is_viewport)continue;
+
 				obj.second->ApplyTransform();
 				obj.second->RenderObj(*cam_list[0], emptyLight);
-
-
 			}
 		}
 	}
 	envir_list[0]->envir_hdr.Unbind();
-	
+
 	//////////// DEBUG MESHES ////////////
 
 	for (const auto& dLine : dLine_list)
 	{
+		if (!dLine.second->is_viewport)continue;
 		dLine.second->ApplyTransform();
 		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
 	}
 
-	////////////    IOCONS    ////////////
+	////////////    ICONS    ////////////
 
 	for (const auto& light : light_list)
 	{
-		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position,light.second->light_color) , cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+		if(light.second->light_spirit.is_viewport)continue;
+		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
 	}
 
 
@@ -106,6 +113,21 @@ void Renderer::Render() {
 
 ////////////////////////////////////// END RENDERING ///////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Renderer::UseCamera(Camera* camera)
 {

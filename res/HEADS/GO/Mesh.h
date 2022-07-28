@@ -38,10 +38,6 @@ public:
 	void SetObjShader(std::string path);
 	void SetTex(std::string path, TextureType slot);
 	void SetCenter();
-
-	void Report() {
-		DEBUG(1);
-	}
 	
 	void DeleteObj();
 };
