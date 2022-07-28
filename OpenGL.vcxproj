@@ -90,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL\dep\GLFW\include;D:\Blender\proj\OpenGL\dep\GLEW\include;D:\Blender\proj\OpenGL\dep;D:\Blender\proj\OpenGL\res\HEADS\GO;D:\Blender\proj\OpenGL\res\HEADS\EXTRA;D:\Blender\proj\OpenGL\res\HEADS\RENDER;D:\Blender\proj\OpenGL\res\HEADS;D:\Blender\proj\OpenGL\res\HEADS\COMPO</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -111,7 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL\dep\GLFW\include;D:\Blender\proj\OpenGL\dep\GLEW\include;D:\Blender\proj\OpenGL\dep;D:\Blender\proj\OpenGL\res\HEADS\GO;D:\Blender\proj\OpenGL\res\HEADS\EXTRA;D:\Blender\proj\OpenGL\res\HEADS\RENDER;D:\Blender\proj\OpenGL\res\HEADS;D:\Blender\proj\OpenGL\res\HEADS\COMPO</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -153,8 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="res\HEADS\RENDER\FrameBuffer.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\RenderBuffer.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\FrameBuffer.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\RenderBuffer.cpp" />
     <ClCompile Include="res\HEADS\COMPO\Field.cpp" />
     <ClCompile Include="res\HEADS\COMPO\PostProcessing.cpp" />
     <ClCompile Include="res\HEADS\GO\Empty.cpp" />
@@ -182,13 +182,14 @@
     <ClCompile Include="res\HEADS\GO\Mesh.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ImGuiWIndow.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BufferLayout.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\IndexBuffer.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\IndexBuffer.cpp" />
     <ClCompile Include="res\HEADS\stb_image\stb_image.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\VertexBuffer.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\VertexBuffer.cpp" />
     <ClCompile Include="res\HEADS\RENDER\VertexArray.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Shaders.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp" />
     <ClCompile Include="res\HEADS\GO\Spirit.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl" />
@@ -338,8 +339,8 @@
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="res\HEADS\RENDER\FrameBuffer.h" />
-    <ClInclude Include="res\HEADS\RENDER\RenderBuffer.h" />
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\FrameBuffer.h" />
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\RenderBuffer.h" />
     <ClInclude Include="res\HEADS\COMPO\Field.h" />
     <ClInclude Include="res\HEADS\COMPO\PostProcessing.h" />
     <ClInclude Include="res\HEADS\GO\Empty.h" />
@@ -655,15 +656,16 @@
     <ClInclude Include="res\HEADS\GO\Mesh.h" />
     <ClInclude Include="res\HEADS\RENDER\ImGuiWIndow.h" />
     <ClInclude Include="res\HEADS\RENDER\BufferLayout.h" />
-    <ClInclude Include="res\HEADS\RENDER\IndexBuffer.h" />
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h" />
     <ClInclude Include="res\HEADS\stb_image\stb_image.h" />
     <ClInclude Include="res\HEADS\EXTRA\structs.h" />
     <ClInclude Include="res\HEADS\EXTRA\support.h" />
-    <ClInclude Include="res\HEADS\RENDER\VertexBuffer.h" />
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h" />
     <ClInclude Include="res\HEADS\RENDER\VertexArray.h" />
     <ClInclude Include="res\HEADS\RENDER\Shaders.h" />
     <ClInclude Include="res\HEADS\RENDER\Texture.h" />
     <ClInclude Include="res\HEADS\GO\Spirit.h" />
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\avatar1.png" />

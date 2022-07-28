@@ -18,10 +18,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="res\HEADS\RENDER\IndexBuffer.cpp">
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\IndexBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\VertexBuffer.cpp">
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\VertexBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\RENDER\VertexArray.cpp">
@@ -120,10 +120,13 @@
     <ClCompile Include="res\HEADS\COMPO\PostProcessing.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\RenderBuffer.cpp">
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\RenderBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\FrameBuffer.cpp">
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\FrameBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -553,7 +556,7 @@
     <None Include="res\shaders\PointsShader.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="res\HEADS\RENDER\IndexBuffer.h">
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\EXTRA\structs.h">
@@ -562,7 +565,7 @@
     <ClInclude Include="res\HEADS\EXTRA\support.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\VertexBuffer.h">
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\VertexArray.h">
@@ -1525,10 +1528,13 @@
     <ClInclude Include="res\HEADS\COMPO\PostProcessing.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\RenderBuffer.h">
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\RenderBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\FrameBuffer.h">
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\FrameBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
