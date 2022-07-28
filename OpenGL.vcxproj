@@ -163,7 +163,7 @@
     <ClCompile Include="res\HEADS\COMPO\Transform.cpp" />
     <ClCompile Include="res\HEADS\GO\Environment.cpp" />
     <ClCompile Include="res\HEADS\GO\DebugLine.cpp" />
-    <ClCompile Include="res\HEADS\GO\DebugPoint.cpp" />
+    <ClCompile Include="res\HEADS\GO\DebugPoints.cpp" />
     <ClCompile Include="res\HEADS\COMPO\EventListener.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
     <ClCompile Include="res\HEADS\GO\ImagePlane.cpp" />
@@ -332,6 +332,8 @@
     <None Include="dep\glm\gtx\wrap.inl" />
     <None Include="res\shaders\IBRShader.shader" />
     <None Include="res\shaders\LineShader.shader" />
+    <None Include="res\shaders\PointsShader.shader" />
+    <None Include="res\shaders\PointsShader_proj.shader" />
     <None Include="res\shaders\SpiritShader.shader" />
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
@@ -346,7 +348,7 @@
     <ClInclude Include="res\HEADS\COMPO\Transform.h" />
     <ClInclude Include="res\HEADS\GO\Environment.h" />
     <ClInclude Include="res\HEADS\GO\DebugLine.h" />
-    <ClInclude Include="res\HEADS\GO\DebugPoint.h" />
+    <ClInclude Include="res\HEADS\GO\DebugPoints.h" />
     <ClInclude Include="res\HEADS\COMPO\EventListener.h" />
     <ClInclude Include="res\HEADS\EXTRA\operator.h" />
     <ClInclude Include="res\HEADS\EXTRA\xdz_math.h" />

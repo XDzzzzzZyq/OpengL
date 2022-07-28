@@ -93,7 +93,7 @@
     <ClCompile Include="res\HEADS\GO\DebugLine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\GO\DebugPoint.cpp">
+    <ClCompile Include="res\HEADS\GO\DebugPoints.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\GO\Environment.cpp">
@@ -549,6 +549,8 @@
     <None Include="res\shaders\SpiritShader.shader" />
     <None Include="res\shaders\LineShader.shader" />
     <None Include="res\shaders\IBRShader.shader" />
+    <None Include="res\shaders\PointsShader_proj.shader" />
+    <None Include="res\shaders\PointsShader.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\IndexBuffer.h">
@@ -1496,7 +1498,7 @@
     <ClInclude Include="res\HEADS\GO\DebugLine.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\GO\DebugPoint.h">
+    <ClInclude Include="res\HEADS\GO\DebugPoints.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\GO\Environment.h">
