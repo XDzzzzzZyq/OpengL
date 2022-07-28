@@ -7,7 +7,7 @@ Light::Light(LightType type, float power, glm::vec3 color)
 	light_color = color;
 	GenFloatData();
 
-	light_spirit.spr_type = LIGHTSPIRIT;
+	light_spirit.spr_type = LIGHT_SPIRIT;
 	light_spirit.SetTex();
 
 	o_name = ParseLightName() + std::to_string(GetObjectID());

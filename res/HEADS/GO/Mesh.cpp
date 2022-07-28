@@ -52,19 +52,20 @@ void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& l
 	o_shader.UseShader();
 	o_tex.Bind(o_tex.Tex_slot);
 
-	//o_shader.SetValue("U_Texture", o_tex.Tex_slot);
-	//transform settings
-#if 0
-	o_Transform = cam.cam_frustum * cam.GetInvTransform() * o_Transform;
-	o_shader.SetValue("U_ProjectM", o_Transform);
-	DEBUG(o_Transform)
-#else
+
 	//std::cout << o_Transform;
-	o_shader.SetValue("U_obj_trans", o_Transform);
-	o_shader.SetValue("U_cam_trans", cam.GetInvTransform());
-	o_shader.SetValue("U_ProjectM", cam.cam_frustum);
-	o_shader.SetValue("Scene_data",8 , cam.cam_floatData.data());
-#endif
+	if(is_Uniform_changed)
+		o_shader.SetValue("U_obj_trans", o_Transform);
+
+	if (cam.is_invUniform_changed)
+		o_shader.SetValue("U_cam_trans", cam.o_InvTransform);
+
+	if(cam.is_frustum_changed)
+		o_shader.SetValue("U_ProjectM", cam.cam_frustum);
+
+	if(cam.is_Uniform_changed || cam.is_frustum_changed)
+		o_shader.SetValue("Scene_data",8 , cam.cam_floatData.data());
+
 	if (!light_list.empty())
 	{
 		LightFloatArray lightdata(light_list);
@@ -72,8 +73,7 @@ void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& l
 		//o_shader.SetValue("L_sun", lightdata.sun_count * (5 + 6) + 1, lightdata.sun.data());
 		//o_shader.SetValue("L_spot", lightdata.spot_count * (5 + 6 + 2) + 1, lightdata.spot.data());
 	}
-	else {
-	}
+
 	//light settings
 
 

@@ -23,6 +23,8 @@ public:
 	mutable bool is_TransF_changed = true;
 	mutable bool is_invTransF_changed = true;
 	mutable bool is_rot_changed = true;
+	mutable bool is_Uniform_changed = false;
+	mutable bool is_invUniform_changed = false;
 
 	mutable glm::mat4 o_Transform = glm::mat4(1.0f);
 	mutable glm::mat4 o_InvTransform = glm::mat4(1.0f);

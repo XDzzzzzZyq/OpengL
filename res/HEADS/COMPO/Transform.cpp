@@ -110,6 +110,7 @@ void Transform::ApplyTransform()
 		}
 		is_invTransF_changed = true;
 		is_TransF_changed = false;
+		is_Uniform_changed = true;
 	}
 
 }
@@ -129,6 +130,7 @@ glm::mat4 Transform::GetInvTransform() const
 		//std::cout << o_InvTransform;
 		//std::cout << o_Transform;
 		//DEBUG("+++++++++++++++++++++++++++++++")
+		is_invUniform_changed = true;
 		return o_InvTransform;
 	}
 	return o_InvTransform;

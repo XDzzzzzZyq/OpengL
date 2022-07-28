@@ -237,31 +237,16 @@ inline glm::vec3 ImVec4_vec3_Uni(const ImVec4& color, const float& fac) {
 }
 
 inline glm::vec3 stdVec3_vec3(const std::vector<float>& inp) {
-	glm::vec3 result;
-	result[0] = inp[0];
-	result[1] = inp[1];
-	result[2] = inp[2];
-	return result;
+	return glm::vec3{	inp[0], inp[1], inp[2]};
 }
 
 inline std::vector<float> vec3_stdVec3(const glm::vec3& inp) {
-	std::vector<float> result(3);
-	result[0] = inp[0];
-	result[1] = inp[1];
-	result[2] = inp[2];
-	return result;
+	return std::vector<float>{	inp[0], inp[1], inp[2]};
 }
 
 inline std::vector<float> vec3_stdVec6(const glm::vec3& inp, const glm::vec3& inp2) {
-	std::vector<float> result(6);
-	result[0] = inp[0];
-	result[1] = inp[1];
-	result[2] = inp[2];
 
-	result[0 + 3] = inp2[0];
-	result[1 + 3] = inp2[1];
-	result[2 + 3] = inp2[2];
-	return result;
+	return std::vector<float>{inp[0], inp[1], inp[2], inp2[0], inp2[1], inp2[2]};
 }
 
 inline float float_dist(const float& a, const float& b) {

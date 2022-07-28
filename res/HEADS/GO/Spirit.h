@@ -9,6 +9,7 @@
 
 #include "Texture.h"
 #include "Shaders.h"
+#include "Camera.h"
 
 #include "support.h"
 
@@ -16,7 +17,7 @@
 
 enum SpiritType
 {
-	NONESPIRIT,LIGHTSPIRIT,CAMSPIRIT,ENVIRNSPIRIT
+	NONE_SPIRIT, LIGHT_SPIRIT, CAM_SPIRIT, ENVIRN_SPIRIT, PARTIC_SPIRIT
 };
 
 class Spirit : public GameObject
@@ -28,8 +29,6 @@ private:
 	IndexBuffer r_index;
 	Texture r_tex;
 
-	float spirit_opacity = 0.8f;
-
 	std::vector<float> VertData = {
 		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
 		 1.0f, 1.0f, 0.0f,		1.0f, 0.0f,
@@ -37,8 +36,9 @@ private:
 		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
 	};
 public:
+	float spirit_opacity = 0.8f;
 
-	SpiritType spr_type = SpiritType::NONESPIRIT;
+	SpiritType spr_type = SpiritType::NONE_SPIRIT;
 	mutable Shaders r_shader;
 
 	Spirit();
@@ -46,7 +46,7 @@ public:
 
 
 
-	void RenderSpirit(const std::vector<float>& light_pos, const glm::mat4& cam_Trans, const glm::mat4& cam_projec);
+	void RenderSpirit(const std::vector<float>& light_pos, const Camera& cam);
 
 	void SetSpiritShader();
 	std::string ParsePath() const;

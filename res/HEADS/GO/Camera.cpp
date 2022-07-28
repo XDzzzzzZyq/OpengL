@@ -14,8 +14,7 @@ Camera::Camera(float w, float h, float per, float n, float f)
 
 Camera::Camera()
 {
-	DEBUG("cam c")
-		cam_w = 0;
+	cam_w = 0;
 	cam_h = 0;
 }
 
@@ -49,90 +48,34 @@ void Camera::GenFloatData() const
 		o_rot[1],
 		o_rot[2],
 
-		cam_w / cam_h,
+		cam_w / cam_h,              //ratio
 		glm::radians(cam_pers)
 	};
+}
+
+void Camera::ChangeCamRatio(float w, float h)
+{
+	cam_w = w;
+	cam_h = h;
+
+	cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
+	is_frustum_changed = true;
+}
+
+void Camera::ChangeCamPersp(float persp)
+{
+	cam_pers = persp;
+	cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
+	is_frustum_changed = true;
 }
 
 void Camera::CameraEventActivate(GLFWwindow* window)
 {
 
-	//std::cout << scroll_x << "," << scroll_y << "\n";
 	UpdateEvent(window, evt_IDlist);
 	//if (evt_KM.GenStateDara() != 0)
 		if (EventList.find(evt_KM) != EventList.end())
 			EventList[evt_KM]();
-	//DEBUG(evt_IDlist.size())
-
-	//locol
-// 	switch (evt_KM.FirstKey)
-// 	{
-// 
-// 	case 1:
-// 		switch (evt_KM.mouse)
-// 		{
-// 		case -1:
-// 			break;
-// 		case 0:
-// 
-// 			break;
-// 		case 1:
-// 
-// 			break;
-// 		case 2:
-// 			//DEBUG("SHIFT + MMB")
-			//SHIFT_MMB();
-// 		}
-// 		break;
-// 	case 2:
-// 		switch (ListenMouseEvent(window))
-// 		{
-// 		case -1:
-// 			break;
-// 		case 0:
-// 
-// 			break;
-// 		case 1:
-// 
-// 			break;
-// 		case 2:
-// 			//DEBUG("CTRL + MMB")
-//			CTRL_MMB();
-// 		}
-// 		break;
-// 	case 3:
-// 		switch (ListenMouseEvent(window))
-// 		{
-// 		case -1:
-// 			break;
-// 		case 0:
-// 
-// 			break;
-// 		case 1:
-// 
-// 			break;
-// 		case 2:
-// 			//DEBUG("ALT + MMB")
-// 			ALT_MMB();
-// 		}
-// 		break;
-// 	case 0:
-// 		switch (ListenMouseEvent(window))
-// 		{
-// 		case -1:
-// 			break;
-// 		case 0:
-// 
-// 			break;
-// 		case 1:
-// 
-// 			break;
-// 		case 2:
-// 			//DEBUG("MMB")
-// 			MMB();
-// 		}
-// 		break;
-// 	}
 }
 
 void Camera::SHIFT_MMB()

@@ -30,7 +30,7 @@ Spirit::~Spirit()
 	DeleteSpirit();
 }
 
-void Spirit::RenderSpirit(const std::vector<float>& light_data, const glm::mat4& cam_Trans, const glm::mat4& cam_projec)
+void Spirit::RenderSpirit(const std::vector<float>& light_data, const Camera& cam)
 {
 	r_vertArry.Bind();
 	r_index.Bind();
@@ -41,8 +41,13 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, const glm::mat4&
 
 	//std::cout << o_Transform;
 	r_shader.SetValue("Light_data",6 ,light_data.data());
-	r_shader.SetValue("U_cam_trans", cam_Trans);
-	r_shader.SetValue("U_ProjectM", cam_projec);
+
+	if(cam.is_invUniform_changed)
+		r_shader.SetValue("U_cam_trans", cam.o_InvTransform);
+
+	if(cam.is_frustum_changed)
+		r_shader.SetValue("U_ProjectM", cam.cam_frustum);
+
 	r_shader.SetValue("SpiritOpacity", spirit_opacity);
 	r_shader.SetValue("U_Scale", SPIRIT_SIZE);
 	//light settings
@@ -60,21 +65,19 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, const glm::mat4&
 void Spirit::SetSpiritShader()
 {
 	r_shader = Shaders("res/shaders/SpiritShader.shader");
-	//std::cout << "Shader:" << (glGetError()) << "\n";
-	r_shader.UseShader();
 
 }
 
 void Spirit::SetTex()
 {
 	r_tex = Texture(ParsePath(), IMAGE_TEXTURE, GL_REPEAT);
-	r_tex.Bind(spr_type);
+	//r_tex.Bind(spr_type);
 
 	r_shader.UseShader();
 	//o_shader.SetValue("blen", 0.5f);
 	r_shader.SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
 	r_shader.SetValue("U_Texture", spr_type);
-
+	r_shader.UnuseShader();
 }
 
 
@@ -99,15 +102,15 @@ std::string Spirit::ParsePath() const
 {
 	switch (spr_type)
 	{
-	case NONESPIRIT:
+	case NONE_SPIRIT:
 		//DEBUG(111111)
 		return "res/tex/spirit/BAKED.png";
-	case LIGHTSPIRIT:
+	case LIGHT_SPIRIT:
 		//DEBUG(222222)
 		return "res/tex/spirit/light.png";
-	case CAMSPIRIT:
+	case CAM_SPIRIT:
 		return "res/tex/spirit/BAKED.png";
-	case ENVIRNSPIRIT:
+	case ENVIRN_SPIRIT:
 		return "res/tex/spirit/BAKED.png";
 
 	}
