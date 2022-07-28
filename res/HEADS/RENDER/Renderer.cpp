@@ -56,6 +56,7 @@ void Renderer::Render() {
 	glEnable(GL_DEPTH_TEST);
 	////////////    MESHES    ////////////
 	cam_list[0]->ApplyTransform();
+	cam_list[0]->GetInvTransform();
 	cam_list[0]->GenFloatData();
 
 	envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
@@ -100,14 +101,26 @@ void Renderer::Render() {
 
 	for (const auto& light : light_list)
 	{
-		if(light.second->light_spirit.is_viewport)continue;
-		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+		if (!light.second->light_spirit.is_viewport)continue;
+		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), *cam_list[0]);
 	}
 
 
 	envir_list[0]->UnBindFrameBuffer();
 	glDisable(GL_DEPTH_TEST);
 	envir_list[0]->RenderEnvironment(cam_list[0]->o_rotMat, glm::radians(cam_list[0]->cam_pers));
+
+	////////////  RESET  ///////////
+
+	//DEBUG(cam_list[0]->is_invUniform_changed)
+
+
+
+	cam_list[0]->is_invUniform_changed = false;
+
+	cam_list[0]->is_frustum_changed = false;
+
+
 }
 
 

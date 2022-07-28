@@ -126,9 +126,7 @@ GLuint Shaders::getVarID(const char* name) const
 	this->UseShader();
 	//std::cout << program_id << "\n";
 	if (m_ValLocCache.find(name)!=m_ValLocCache.end())
-	{
 		return m_ValLocCache[name];
-	}
 
 	int id = glGetUniformLocation(program_id, name);
 	if (id == -1)std::cout << name << " do not exist!" << std::endl;
@@ -196,4 +194,10 @@ void Shaders::SetValue(const std::string& name, const glm::vec4& vec4)
 {
 	int id = getVarID(name.c_str());
 	glUniform4f(id, vec4[0], vec4[1], vec4[2], vec4[3]);
+}
+
+void Shaders::SetValueVec3(const std::string& name, GLsizei count, float* va0)
+{
+	int id = getVarID(name.c_str());
+	glUniform3fv(id, count, va0);
 }

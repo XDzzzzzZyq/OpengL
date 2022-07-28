@@ -39,5 +39,6 @@ public:
 	void SetValue(const std::string& name, const GLuint& v0);
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
 	void SetValue(const std::string& name, GLsizei count, const float* va0);
+	void SetValueVec3(const std::string& name, GLsizei count, float* va0);
 };
 
