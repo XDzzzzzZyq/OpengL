@@ -53,13 +53,17 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, const Camera& ca
 	//light settings
 
 
+
 	glDrawElements(GL_TRIANGLES, r_index.count(), GL_UNSIGNED_INT, nullptr);
+
 
 	//o_Transform = glm::mat4(1.0f);
 	r_index.Unbind();
 	r_shader.UnuseShader();
 	r_vertArry.Unbind();
 	r_tex.Unbind();
+
+
 }
 
 void Spirit::SetSpiritShader()
@@ -70,7 +74,8 @@ void Spirit::SetSpiritShader()
 
 void Spirit::SetTex()
 {
-	r_tex = Texture(ParsePath(), IMAGE_TEXTURE, GL_REPEAT);
+	r_tex = Texture(ParsePath(), PNG_TEXTURE, GL_REPEAT);
+	r_tex.Tex_slot = PNG_TEXTURE;
 	//r_tex.Bind(spr_type);
 
 	r_shader.UseShader();

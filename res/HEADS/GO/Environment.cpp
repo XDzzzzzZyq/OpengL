@@ -6,11 +6,11 @@ Environment::Environment(const std::string& texpath)
 	//
 	
 	//
-	envir_shader = Shaders("res/shaders/IBRShader.shader");
+	envir_shader = Shaders("res/shaders/IBRShader.shader");	
 
-	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_NEAREST);
-	envir_hdr.Bind(envir_hdr.Tex_type);
-	envir_hdr.Tex_slot = envir_hdr.Tex_type;
+	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_REPEAT);
+	envir_hdr.Bind(envir_hdr.Tex_type); 
+	//envir_hdr.Tex_slot = envir_hdr.Tex_type;
 
 #if 0
 
@@ -41,7 +41,7 @@ Environment::Environment(const std::string& texpath)
 
 #else
 
-	envir_frameBuffer = FrameBuffer();
+	envir_frameBuffer = FrameBuffer();	
 
 #endif
 
@@ -69,7 +69,7 @@ Environment::Environment(const std::string& texpath)
 	envir_shader.UnuseShader();
 	//frame_buffer.Unbind();
 
-	envir_frameBuffer->UnbindFrameBuffer();
+	envir_frameBuffer->UnbindFrameBuffer();	
 	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 

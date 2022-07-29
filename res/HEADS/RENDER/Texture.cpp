@@ -2,7 +2,7 @@
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
-	:m_path(texpath), m_buffer(nullptr),Tex_type(tex_type),
+	:m_path(texpath), m_buffer(nullptr),Tex_type(tex_type), Tex_slot(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
 	//std::cout << Tex_ID << std::endl;
@@ -10,7 +10,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 	switch (tex_type)
 	{
-	case IMAGE_TEXTURE:
+	case PNG_TEXTURE:
 
 		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
@@ -119,5 +119,5 @@ void Texture::Bind(GLuint slot /*= 0*/) const
 void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glActiveTexture(0);
+	//glActiveTexture(0);
 }

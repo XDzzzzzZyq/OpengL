@@ -24,9 +24,7 @@ public:
 
 	void DelShad() const;
 
-	inline GLuint getID() {
-		return program_id;
-	}
+	inline GLuint getID() const {	return program_id; }
 	inline GLuint getVarID(const char* name) const;
 
 	void SetValue(const std::string& name, const glm::mat4& projection);
@@ -39,6 +37,6 @@ public:
 	void SetValue(const std::string& name, const GLuint& v0);
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
 	void SetValue(const std::string& name, GLsizei count, const float* va0);
-	void SetValueVec3L(const std::string& name, GLsizei count, float* va0);
+	void SetValueVec3L(const std::string& name, GLsizei count, const float* va0);
 };
 

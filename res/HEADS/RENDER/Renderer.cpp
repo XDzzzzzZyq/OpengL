@@ -43,11 +43,11 @@ void Renderer::FrameClean() const
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
 void Renderer::Render() {
-
+	DEBUG("----------------------------")
 	if (cam_list.find(0) == cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
 	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
-
+	//GLDEBUG
 	envir_list[0]->BindFrameBuffer();
 
 	FrameClean();
@@ -58,12 +58,13 @@ void Renderer::Render() {
 	cam_list[0]->ApplyTransform();
 	cam_list[0]->GetInvTransform();
 	cam_list[0]->GenFloatData();
-
 	envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
+
 	if (is_light_changed)
 	{
 		for (const auto& obj : mesh_list)
 		{
+
 			if (!obj.second->is_viewport)continue;
 
 			obj.second->ApplyTransform();
@@ -86,8 +87,9 @@ void Renderer::Render() {
 			}
 		}
 	}
-	envir_list[0]->envir_hdr.Unbind();
 
+	envir_list[0]->envir_hdr.Unbind();
+	
 	//////////// DEBUG MESHES ////////////
 
 	for (const auto& dLine : dLine_list)
@@ -95,6 +97,13 @@ void Renderer::Render() {
 		if (!dLine.second->is_viewport)continue;
 		dLine.second->ApplyTransform();
 		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+	}
+	GLDEBUG
+	for (const auto& dPoints : dPoints_list)
+	{
+		if (!dPoints.second->is_viewport)continue;
+		dPoints.second->ApplyTransform();
+		dPoints.second->RenderDebugPoint(*cam_list[0]);
 	}
 
 	////////////    ICONS    ////////////
@@ -109,8 +118,7 @@ void Renderer::Render() {
 	envir_list[0]->UnBindFrameBuffer();
 	glDisable(GL_DEPTH_TEST);
 	envir_list[0]->RenderEnvironment(cam_list[0]->o_rotMat, glm::radians(cam_list[0]->cam_pers));
-
-	////////////  RESET  ///////////
+		////////////  RESET  ///////////
 
 	//DEBUG(cam_list[0]->is_invUniform_changed)
 
@@ -119,7 +127,6 @@ void Renderer::Render() {
 	cam_list[0]->is_invUniform_changed = false;
 
 	cam_list[0]->is_frustum_changed = false;
-
 
 }
 
@@ -222,6 +229,15 @@ void Renderer::UseDebugLine(DebugLine* dline)
 	if (dLine_list.find(dline->GetObjectID()) == dLine_list.end())
 	{
 		dLine_list[dline->GetObjectID()] = dline;
+
+	}
+}
+
+void Renderer::UseDebugPoints(DebugPoints* dpoints)
+{
+	if (dPoints_list.find(dpoints->GetObjectID()) == dPoints_list.end())
+	{
+		dPoints_list[dpoints->GetObjectID()] = dpoints;
 
 	}
 }

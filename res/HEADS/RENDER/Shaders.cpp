@@ -196,7 +196,7 @@ void Shaders::SetValue(const std::string& name, const glm::vec4& vec4)
 	glUniform4f(id, vec4[0], vec4[1], vec4[2], vec4[3]);
 }
 
-void Shaders::SetValueVec3L(const std::string& name, GLsizei count, float* va0)
+void Shaders::SetValueVec3L(const std::string& name, GLsizei count,const float* va0)
 {
 	int id = getVarID(name.c_str());
 	glUniform3fv(id, count*3, va0);

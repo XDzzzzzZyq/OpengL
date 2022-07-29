@@ -13,6 +13,7 @@
 
 #include "EventListener.h"
 #include "DebugLine.h"
+#include "DebugPoints.h"
 #include "Environment.h"
 
 
@@ -52,24 +53,26 @@ void render(GLFWwindow* window) {
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
 	camera.ApplyTransform();
 	camera.GetInvTransform();
-
 	renderer.UseCamera(&camera);
+	DEBUG("-------------------------------")
 	
 	/* Loop until the user closes the window */
 
 	Mesh go1("res/obj/monkey2.obj");
 	go1.SetObjShader("res/shaders/testS.shader");
-	go1.SetTex("res/tex/avatar2.png", IMAGE_TEXTURE);
+	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
 	go1.SetCenter();
+	DEBUG("-------------------------------")
 
 	Mesh go2("res/obj/torus.obj");
 	go2.SetObjShader("res/shaders/testS.shader");
-	go2.SetTex("res/tex/avatar1.png", IMAGE_TEXTURE);
+	go2.SetTex("res/tex/avatar1.png", PNG_TEXTURE);
 	go2.SetCenter();
 	go2.SetPos(glm::vec3(4, 0, 0));
 	go2.SetScale(glm::vec3(1.5f));
 	go2.ApplyTransform();
-	
+	DEBUG("-------------------------------")
+
 	renderer.UseMesh(&go1);
 	renderer.UseMesh(&go2);
 	
@@ -77,20 +80,37 @@ void render(GLFWwindow* window) {
 	pointLight1.SetPos(glm::vec3(2.0f, 2.0f, 2.0f));
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
+	DEBUG("-------------------------------")
+		
 
 	Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f,1.0f,1.0f));
 	pointLight2.GenFloatData();
+	DEBUG("-------------------------------")
 
 	renderer.UseLight(&pointLight1);
 	renderer.UseLight(&pointLight2);
 
+
 	DebugLine line(glm::vec3(-10, -10, 0), glm::vec3(10, 10, 0));
 	renderer.UseDebugLine(&line);
 	line.is_viewport = false;
-	
+	DEBUG("-------------------------------")
+
 	Environment environment("res/tex/hdr/room.hdr");
 	renderer.UseEnvironment(&environment);
-	
+	DEBUG("-------------------------------")
+
+	DebugPoints points;
+	points.PushDebugPoint( 5,  5,  5);
+	points.PushDebugPoint( 5, -5,  5);
+	points.PushDebugPoint( 5,  5, -5);
+	points.PushDebugPoint( 5, -5, -5);
+	points.PushDebugPoint(-5,  5,  5);
+	points.PushDebugPoint(-5, -5,  5);
+	points.PushDebugPoint(-5,  5, -5);
+	points.PushDebugPoint(-5, -5, -5);
+	renderer.UseDebugPoints(&points);
+	DEBUG("-------------------------------")
 	
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);

@@ -7,6 +7,7 @@
 #include "Light.h"
 #include "Environment.h"
 #include "DebugLine.h"
+#include "DebugPoints.h"
 #include "PostProcessing.h"
 #include "FrameBuffer.h"
 
@@ -35,6 +36,7 @@ public:
 	std::unordered_map<int, Environment*>	 envir_list;
 	std::unordered_map<int, Spirit*>        spirit_list;
 	std::unordered_map<int, DebugLine*>      dLine_list;
+	std::unordered_map<int, DebugPoints*>  dPoints_list;
 
 
 	template<typename T>
@@ -56,6 +58,7 @@ public:
 	Environment* GetActiveEnvironment();
 
 	void UseDebugLine(DebugLine* dline);
+	void UseDebugPoints(DebugPoints* dpoints);
 };
 
 template<typename T>

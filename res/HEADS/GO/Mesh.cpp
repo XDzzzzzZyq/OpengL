@@ -33,6 +33,7 @@ Mesh::Mesh(const char* path)
 	GLuint* index = indexArray->data();
 
 	o_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
+
 }
 
 Mesh::Mesh()
@@ -47,9 +48,13 @@ Mesh::~Mesh()
 
 void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& light_list)
 {
+	
 	o_vertArry.Bind();
+
 	o_index.Bind();
+
 	o_shader.UseShader();
+
 	o_tex.Bind(o_tex.Tex_slot);
 
 
@@ -81,7 +86,7 @@ void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& l
 
 	//o_Transform = glm::mat4(1.0f);
 
-#if 0
+#if 1
 	o_index.Unbind();
 	o_shader.UnuseShader();
 	o_vertArry.Unbind();
@@ -104,7 +109,7 @@ void Mesh::SetObjShader(std::string path)
 
 void Mesh::SetTex(std::string path, TextureType slot)
 {
-	o_tex = Texture(path, IMAGE_TEXTURE ,GL_REPEAT);
+	o_tex = Texture(path, slot ,GL_REPEAT);
 	o_tex.Bind(slot);
 	o_tex.Tex_slot = slot;
 

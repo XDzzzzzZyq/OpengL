@@ -5,6 +5,7 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shaders.h"
+#include "Transform.h"
 
 #include "StorageBuffer.h"
 
@@ -14,7 +15,7 @@ enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT
 };
 
-class DebugPoints : public GameObject
+class DebugPoints : public GameObject, public Transform
 {
 
 private:
@@ -46,10 +47,11 @@ public:
 	DebugPoints(const std::vector<float>& pos_list);
 	~DebugPoints();
 
-	void RenderDebugPoint(Camera* camera) const;
+	void RenderDebugPoint(const Camera& camera);
 
 	void SetDebugPointsShader(PointType type, bool proj);
 	void PushDebugPoint(const glm::vec3& point);
+	void PushDebugPoint(float x, float y, float z);
 	void PushDebugPoints(const std::vector<glm::vec3>& points);
 
 	void DeleteDebugPoints() const;

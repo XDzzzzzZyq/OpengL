@@ -2,7 +2,21 @@
 
 DebugPoints::DebugPoints()
 {
+	dp_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
 
+	BufferLayout layout;
+	layout.Push<float>(3); //3D position
+
+	dp_vertArry.AddBuffer(dp_vertBuffer, layout);
+
+	std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
+	GLuint* index = indexArray->data();
+
+	dp_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
+
+	o_name = "DebugPoints." + std::to_string(GetObjectID());
+
+	SetDebugPointsShader(SQUARE_POINT, true);
 }
 
 DebugPoints::DebugPoints(const std::vector<float>& pos_list)
@@ -22,6 +36,8 @@ DebugPoints::DebugPoints(const std::vector<float>& pos_list)
 	dp_pos_list = pos_list;
 
 	o_name = "DebugPoints." + std::to_string(GetObjectID());
+
+	SetDebugPointsShader(SQUARE_POINT, true);
 }
 
 DebugPoints::~DebugPoints()
@@ -29,12 +45,14 @@ DebugPoints::~DebugPoints()
 	DeleteDebugPoints();
 }
 
-void DebugPoints::RenderDebugPoint(Camera* camera) const
+void DebugPoints::RenderDebugPoint(const Camera& camera)
 {
+
+	
 	dp_vertArry.Bind();
 	dp_index.Bind();
 
-
+	//dp_pos_buffer.BindBuffer();
 	dp_shader[(int)is_proj].UseShader();
 
 
@@ -42,11 +60,12 @@ void DebugPoints::RenderDebugPoint(Camera* camera) const
 	//transform settings
 
 	//std::cout << o_Transform;
-	dp_shader[(int)is_proj].SetValue("Light_data", dp_pos_list.size(), dp_pos_list.data());
-	dp_shader[(int)is_proj].SetValue("U_cam_trans", camera->o_InvTransform);
-	dp_shader[(int)is_proj].SetValue("U_ProjectM", camera->cam_frustum);
-	dp_shader[(int)is_proj].SetValue("U_Opacity", dp_opacity);
-	dp_shader[(int)is_proj].SetValue("U_Scale", dp_scale);
+	dp_shader[(int)is_proj].SetValue("pos_count", dp_pos_list.size()/3);	
+	dp_shader[(int)is_proj].SetValue("testList", dp_pos_list.size(), dp_pos_list.data());	
+	dp_shader[(int)is_proj].SetValue("U_cam_trans", camera.o_InvTransform);	
+	dp_shader[(int)is_proj].SetValue("U_ProjectM", camera.cam_frustum);	
+	dp_shader[(int)is_proj].SetValue("U_Opacity", dp_opacity);	
+	dp_shader[(int)is_proj].SetValue("U_Scale", dp_scale);	
 	//light settings
 
 
@@ -54,8 +73,10 @@ void DebugPoints::RenderDebugPoint(Camera* camera) const
 
 	//o_Transform = glm::mat4(1.0f);
 	dp_index.Unbind();
+	//dp_pos_buffer.UnbindBuffer();
 	dp_shader[(int)is_proj].UnuseShader();
 	dp_vertArry.Unbind();
+
 }
 
 void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
@@ -64,7 +85,8 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 	is_proj = proj;
 
 	dp_shader[0] = Shaders("res/shaders/PointsShader.shader");
-	dp_shader[1] = Shaders("res/shaders/PointsShadedp_proj.shader");
+	dp_shader[1] = Shaders("res/shaders/PointsShader_proj.shader");
+	
 }
 
 void DebugPoints::PushDebugPoint(const glm::vec3& point)
@@ -72,6 +94,13 @@ void DebugPoints::PushDebugPoint(const glm::vec3& point)
 	dp_pos_list.push_back(point[0]);
 	dp_pos_list.push_back(point[1]);
 	dp_pos_list.push_back(point[2]);
+}
+
+void DebugPoints::PushDebugPoint(float x, float y, float z)
+{
+	dp_pos_list.push_back(x);
+	dp_pos_list.push_back(y);
+	dp_pos_list.push_back(z);
 }
 
 void DebugPoints::PushDebugPoints(const std::vector<glm::vec3>& points)
