@@ -1,6 +1,6 @@
 # OpenGL_Test
 
-Opengl renderer development from XDzZyq
+##### Opengl renderer development from XDzZyq
 
 # RECORD
 
@@ -21,36 +21,25 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 - [x] object name generator
 - [ ] select operation
 - [ ] transform handle
-
-- Mesh
-  - [x] AVAILABLE
+- [x] Mesh
   - [x] smooth normal
   - [ ] dynamic mesh
-
-- Spirit
-  - [x] AVAILABLE
+- [x] Spirit
   - [ ] batch rendering
-
-- Camera
+- [x] Camera
   - [x] frustum matrix
-  - [x] AVAILABLE
   - [ ] Debug outline
   - [x] Camera transform
   - [ ] dynamic parameters
-
-- Debug Line
-  - [x] AVAILABLE
-- Debug Mesh
-  - [ ] AVAILABLE
-
-- Image Plane
-  - [ ] AVAILABLE
-- Light
+- [x] Debug Line
+- [ ] Debug Mesh
+- [ ] Debug Points
+- [ ] Image Plane
+- [x] Light
   - [x] point light
   - [ ] sun light
   - [ ] spot light
-- Environment
-  - [x] AVAILABLE
+- [x] Environment
   - [x] HDR texture
   - [ ] z-Fog
   - [ ] atmosphere shading
@@ -65,29 +54,32 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [ ] Gamma convert
   - [ ] outLine shader
   - [ ] FXAA
-
+- [ ] multi-pass composition
   - Blinn-Phong
 
     - [x] diffuse
     - [x] specular
     - [x] environment
     - [x] IBL environment
-    - [ ] IBL lighting
+    - [x] IBL lighting
+      - [ ] roughness blur
     - [ ] AO
-    - [ ] shadow
-
+  - [ ] shadow
+      - [ ] shadow map
+    - [ ] soft shadow
   - PBR
 
     - [ ] material system
-
-    - [ ] pbr diffuse
+  
+  - [ ] pbr diffuse
     - [ ] pbr specular
-
-  - Ray tracing ?
-
+- Ray tracing ?
+- **Shader**
+  - [ ] dynamic compiling
+    - [ ] node system
+  - [ ] shader storage buffer
 - **Advance**
-
-  - mode switch
+- mode switch
   - visible switch
   - dynamic exposure  
 
@@ -95,17 +87,19 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 - [ ] Imgui parameters input
 - [ ] files management
+- [ ] node system
 
 #### **Other**
 
 - [x] objects pool (renderer class)
   - [x] pool rendering
     - [ ] advance speed up
-
-- [x] .obj importer
+- [x] model importer
+  - [x] .obj importer
   - [ ] advance speed up
-- [ ] .png importer
-  - [ ] texture & material importer
-
+- [x] texture importer
+  - [x] .png importer
+- [ ] .hdr importer
+  - [ ] multi-texture importer
 - [x] Event listener
 - [x] Timer (struct)

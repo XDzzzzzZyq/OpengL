@@ -554,6 +554,7 @@
     <None Include="res\shaders\IBRShader.shader" />
     <None Include="res\shaders\PointsShader_proj.shader" />
     <None Include="res\shaders\PointsShader.shader" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

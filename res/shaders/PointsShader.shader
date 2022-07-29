@@ -2,9 +2,12 @@
 #version 330 core
 
 layout(location = 0) in vec3 position;
+layout(std430, binding = 3) buffer posbuffer{
+
+	float3 pos_list;
+};
 
 
-uniform vec3 pos_list[6];
 uniform vec3 point_color;
 out vec3 L_color;
 

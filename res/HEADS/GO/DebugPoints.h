@@ -6,6 +6,8 @@
 #include "IndexBuffer.h"
 #include "Shaders.h"
 
+#include "StorageBuffer.h"
+
 #include "Camera.h"
 
 enum PointType {
@@ -19,6 +21,7 @@ private:
 	VertexArray dp_vertArry;
 	VertexBuffer dp_vertBuffer;
 	IndexBuffer dp_index;
+	StorageBuffer dp_pos_buffer;
 
 	std::vector<float> VertData = {
 	-1.0f, 1.0f, 0.0f,
