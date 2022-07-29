@@ -73,7 +73,7 @@ void Camera::CameraEventActivate(GLFWwindow* window)
 {
 
 	UpdateEvent(window, evt_IDlist);
-	//if (evt_KM.GenStateDara() != 0)
+	if (evt_KM.GenStateData() != 0)
 		if (EventList.find(evt_KM) != EventList.end())
 			EventList[evt_KM]();
 }
@@ -116,5 +116,6 @@ void Camera::MMB()
 
 
 	is_TransF_changed = true;
+	is_rot_changed = true;
 }
 

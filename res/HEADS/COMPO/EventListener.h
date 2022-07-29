@@ -25,15 +25,7 @@ struct KeyMouseEvent
 		return FirstKey == p.FirstKey && SecondKey == p.SecondKey && Norm_key == p.Norm_key && mouse == p.mouse;
 	}
 
-	int GenStateDara() const {
-		int data = 0;
-		data += FirstKey * 1000;
-		data += FirstKey * 100;
-		data += Norm_key * 1;
-		data += mouse * 1;
-
-		return data;
-	}
+	int GenStateData() const;
 };
 
 struct hash_fn
@@ -41,13 +33,7 @@ struct hash_fn
 	
 	std::size_t operator() (const KeyMouseEvent& inp) const
 	{
-		std::size_t data = 0;
-		data += inp.FirstKey * 1000;
-		data += inp.FirstKey * 100;
-		data += inp.Norm_key * 1;
-		data += inp.mouse * 1;
-
-		return data;
+		return inp.GenStateData();
 	}
 };
 
@@ -56,7 +42,8 @@ class EventListener
 protected:
 	mutable KeyMouseEvent evt_KM;
 public:
-	bool is_pressed = false;
+	bool is_key_pressed = false;
+	bool is_mouse_pressed = false;
 	mutable double mouse_x, mouse_y, mouse_b_x, mouse_b_y = 0.0f;
 	double scr_up, scr_down;
 

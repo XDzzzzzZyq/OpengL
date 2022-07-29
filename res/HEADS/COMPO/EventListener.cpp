@@ -68,9 +68,12 @@ void EventListener::UpdateEvent(GLFWwindow* window, const std::vector<int>& IDli
 		evt_KM.SecondKey = ListenSpecialKeyEvent(window, evt_KM.FirstKey);
 	}
 
-	evt_KM.Norm_key = ListenNormalKeyEvent(window,IDlist);
+	if(!(bool)IDlist.size())
+		evt_KM.Norm_key = ListenNormalKeyEvent(window,IDlist);
 
 	evt_KM.mouse = ListenMouseEvent(window);
+
+	//DEBUG(evt_KM.GenStateData())
 }
 
 KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int upd, int prss)
@@ -86,3 +89,12 @@ KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int upd,
 	return result;
 }
 
+int KeyMouseEvent::GenStateData() const
+{
+	int data = 0;
+	data += (FirstKey) * (SecondKey + 2) * 4;
+	data += Norm_key * 1;
+	data += mouse * 1;
+
+	return data;
+}
