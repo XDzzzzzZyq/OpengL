@@ -76,15 +76,15 @@ void EventListener::UpdateEvent(GLFWwindow* window, const std::vector<int>& IDli
 	//DEBUG(evt_KM.GenStateData())
 }
 
-KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int upd, int prss)
+KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m)
 {
 	KeyMouseEvent result;
 	result.FirstKey = k1;
 	result.SecondKey = k2;
 	result.Norm_key = k3;
 	result.mouse = m;
-	result.is_update = (bool)upd;
-	result.is_pressed = (bool)prss;
+	result.is_update = false;
+	result.is_pressed = false;
 
 	return result;
 }

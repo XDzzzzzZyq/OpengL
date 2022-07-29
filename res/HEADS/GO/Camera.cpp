@@ -20,10 +20,10 @@ Camera::Camera()
 
 void Camera::EventInit()
 {
-	EventList[GenIntEvent(0, 0, 0, 2, 0, 0)] = std::bind(&Camera::MMB, this);
-	EventList[GenIntEvent(1, 0, 0, 2, 0, 0)] = std::bind(&Camera::SHIFT_MMB, this);
-	EventList[GenIntEvent(2, 0, 0, 2, 0, 0)] = std::bind(&Camera::CTRL_MMB, this);
-	EventList[GenIntEvent(3, 0, 0, 2, 0, 0)] = std::bind(&Camera::ALT_MMB, this);
+	EventList[GenIntEvent(0, 0, 0, 2)] = std::bind(&Camera::MMB,	   this);
+	EventList[GenIntEvent(1, 0, 0, 2)] = std::bind(&Camera::SHIFT_MMB, this);
+	EventList[GenIntEvent(2, 0, 0, 2)] = std::bind(&Camera::CTRL_MMB,  this);
+	EventList[GenIntEvent(3, 0, 0, 2)] = std::bind(&Camera::ALT_MMB,   this);
 }
 
 Camera::~Camera()

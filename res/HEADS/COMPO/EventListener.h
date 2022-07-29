@@ -44,6 +44,7 @@ protected:
 public:
 	bool is_key_pressed = false;
 	bool is_mouse_pressed = false;
+	
 	mutable double mouse_x, mouse_y, mouse_b_x, mouse_b_y = 0.0f;
 	double scr_up, scr_down;
 
@@ -60,7 +61,7 @@ public:
 	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
 	void UpdateEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
 
-	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int upd, int prss);
+	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m);
 
 	//EVENTS
 // 	virtual void EventUpdate();
