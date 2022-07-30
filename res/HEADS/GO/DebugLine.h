@@ -8,6 +8,7 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shaders.h"
+#include "Camera.h"
 
 #include "support.h"
 
@@ -17,11 +18,11 @@ private:
 	VertexBuffer dLine_vertBuffer;
 	IndexBuffer dLine_index;
 	VertexArray dLine_vertArry;
-	std::vector<float> VertData;
+	std::vector<float> dLine_pos_list;
 
 	int vert_count = 2;
 
-	float dLine_width = 5;
+	float dLine_width = 2;
 	float dLine_opacity = 1.0f;
 public:
 	bool using_stipple = false, using_smooth = true, multiLine = false;
@@ -31,17 +32,22 @@ public:
 
 	glm::vec3 dLine_start, dLine_end;
 
+
 	DebugLine(const glm::vec3& start, const glm::vec3& end);
-	DebugLine(const std::vector<std::vector<float>>& vertices);
+	DebugLine(const std::vector<glm::vec3>& vertices);
+	DebugLine();
 
 	~DebugLine();
 
 	void SetDebugLineParas(bool stipple, bool smooth, float width, float opacity);
 
-	void RenderDline(const glm::mat4& cam_Trans, const glm::mat4& cam_projec);
+	void PushDebugLine(const glm::vec3& point);
+	void PushDebugLine(float x, float y, float z);
+	void PushDebugLines(const std::vector<glm::vec3>& points);
+
+	void RenderDdbugLine(const Camera& camera);
 
 	void SetDLineShader();
-
 	void DeleteDLine();
 
 };

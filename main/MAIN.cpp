@@ -91,9 +91,10 @@ void render(GLFWwindow* window) {
 	renderer.UseLight(&pointLight2);
 
 
-	DebugLine line(glm::vec3(-10, -10, 0), glm::vec3(10, 10, 0));
+	DebugLine line;
+	line.PushDebugLine(5, 5, 5);
 	renderer.UseDebugLine(&line);
-	line.is_viewport = false;
+	//line.is_viewport = false;
 	DEBUG("-------------------------------")
 
 	Environment environment("res/tex/hdr/room.hdr");
@@ -102,13 +103,7 @@ void render(GLFWwindow* window) {
 
 	DebugPoints points;
 	points.PushDebugPoint( 5,  5,  5);
- 	points.PushDebugPoint( 5, -5,  5);
- 	points.PushDebugPoint( 5,  5, -5);
- 	points.PushDebugPoint( 5, -5, -5);
- 	points.PushDebugPoint(-5,  5,  5);
- 	points.PushDebugPoint(-5, -5,  5);
- 	points.PushDebugPoint(-5,  5, -5);
- 	points.PushDebugPoint(-5, -5, -5);
+
 	renderer.UseDebugPoints(&points);
 	DEBUG("-------------------------------")
 	
@@ -201,8 +196,9 @@ void render(GLFWwindow* window) {
 				//std::cout << renderer.GetActiveCamera()->cam_frustum<<"\n";
 // 				DEBUG(renderer.GetActiveCamera()->is_TransF_changed)
 // 				DEBUG(renderer.GetActiveCamera()->is_TransF_changed)
-				rotateX = rotateY = rotateZ = 0.0f;
-				line.using_stipple = !line.using_stipple;
+				glm::vec3 newpoint = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+				points.PushDebugPoint(newpoint);
+				line.PushDebugLine(newpoint);
 			}
 
 			ImGui::End();

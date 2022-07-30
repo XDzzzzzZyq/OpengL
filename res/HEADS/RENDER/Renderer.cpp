@@ -96,7 +96,7 @@ void Renderer::Render() {
 	{
 		if (!dLine.second->is_viewport)continue;
 		dLine.second->ApplyTransform();
-		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
+		dLine.second->RenderDdbugLine(*cam_list[0]);
 	}
 
 	for (const auto& dPoints : dPoints_list)
