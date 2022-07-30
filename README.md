@@ -15,12 +15,12 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 #### **Objects**
 
-- [x] transform matrix
-- [x] invert transform matrix
+- [x] baisc transform
+- [ ] transform handle
 - [x] unique ID generator
 - [x] object name generator
 - [ ] select operation
-- [ ] transform handle
+
 - [x] Mesh
   - [x] smooth normal
   - [ ] dynamic mesh
