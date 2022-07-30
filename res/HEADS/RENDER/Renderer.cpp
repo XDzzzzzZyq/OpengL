@@ -43,7 +43,7 @@ void Renderer::FrameClean() const
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
 void Renderer::Render() {
-	DEBUG("----------------------------")
+	
 	if (cam_list.find(0) == cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
 	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
@@ -98,7 +98,7 @@ void Renderer::Render() {
 		dLine.second->ApplyTransform();
 		dLine.second->RenderDline(cam_list[0]->o_InvTransform, cam_list[0]->cam_frustum);
 	}
-	GLDEBUG
+	
 	for (const auto& dPoints : dPoints_list)
 	{
 		if (!dPoints.second->is_viewport)continue;
@@ -114,7 +114,7 @@ void Renderer::Render() {
 		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), *cam_list[0]);
 	}
 
-
+	GLDEBUG
 	envir_list[0]->UnBindFrameBuffer();
 	glDisable(GL_DEPTH_TEST);
 	envir_list[0]->RenderEnvironment(cam_list[0]->o_rotMat, glm::radians(cam_list[0]->cam_pers));

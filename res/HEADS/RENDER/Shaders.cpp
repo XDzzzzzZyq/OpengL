@@ -170,20 +170,6 @@ void Shaders::SetValue(const std::string& name, const GLuint& v0)
 	glUniform1i(id, v0);
 }
 
-// void Shaders::SetValue(const std::string& name, GLsizei count, const GLint* va0)
-// {
-// 	int id = getVarID(name.c_str());
-// 	glUniform1iv(id, count, va0);
-// }
-
-void Shaders::SetValue(const std::string& name, GLsizei count, const float* va0)
-{
-	int id = getVarID(name.c_str());
-	glUniform1fv(id, count, va0);
-
-	
-}
-
 void Shaders::SetValue(const std::string& name, const glm::vec3& vec3)
 {
 	int id = getVarID(name.c_str());
@@ -196,8 +182,59 @@ void Shaders::SetValue(const std::string& name, const glm::vec4& vec4)
 	glUniform4f(id, vec4[0], vec4[1], vec4[2], vec4[3]);
 }
 
-void Shaders::SetValueVec3L(const std::string& name, GLsizei count,const float* va0)
+void Shaders::SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE)
 {
 	int id = getVarID(name.c_str());
-	glUniform3fv(id, count*3, va0);
+	switch (TYPE)
+	{
+	case NULL_ARRAY:
+
+		break;
+	case VEC1_ARRAY:
+		glUniform1fv(id, count, va0);
+		break;
+	case VEC2_ARRAY:
+		glUniform2fv(id, count*2, va0);
+		break;
+	case VEC3_ARRAY:
+		glUniform3fv(id, count*3, va0);
+		break;
+	case VEC4_ARRAY:
+		glUniform4fv(id, count*4, va0);
+		break;
+	case MAT4_ARRAY:
+		glUniform4fv(id, count*4, va0);
+		break;
+	default:
+		break;
+	}
 }
+
+void Shaders::SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE)
+{
+	int id = getVarID(name.c_str());
+	switch (TYPE)
+	{
+	case NULL_ARRAY:
+
+		break;
+	case VEC1_ARRAY:
+		glUniform1iv(id, count, va0);
+		break;
+	case VEC2_ARRAY:
+		glUniform2iv(id, count * 2, va0);
+		break;
+	case VEC3_ARRAY:
+		glUniform3iv(id, count * 3, va0);
+		break;
+	case VEC4_ARRAY:
+		glUniform4iv(id, count * 4, va0);
+		break;
+	case MAT4_ARRAY:
+		glUniform4iv(id, count * 4, va0);
+		break;
+	default:
+		break;
+	}
+}
+

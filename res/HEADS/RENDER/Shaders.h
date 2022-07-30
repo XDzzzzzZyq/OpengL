@@ -7,6 +7,11 @@
 #include <unordered_map>
 #include "structs.h"
 
+enum ArrayType
+{
+	NULL_ARRAY, VEC1_ARRAY, VEC2_ARRAY, VEC3_ARRAY, VEC4_ARRAY, MAT4_ARRAY
+};
+
 
 class Shaders
 {
@@ -36,7 +41,7 @@ public:
 	void SetValue(const std::string& name, const int& v0);
 	void SetValue(const std::string& name, const GLuint& v0);
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
-	void SetValue(const std::string& name, GLsizei count, const float* va0);
-	void SetValueVec3L(const std::string& name, GLsizei count, const float* va0);
+	void SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE);
+	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
 };
 
