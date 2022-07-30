@@ -1,6 +1,6 @@
 # OpenGL_Test
 
-##### Opengl renderer development from XDzZyq
+##### Opengl based renderer development from XDzZyq
 
 # RECORD
 
@@ -33,7 +33,9 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [ ] dynamic parameters
 - [x] Debug Line
 - [ ] Debug Mesh
-- [ ] Debug Points
+- [x] Debug Points
+  - [x] multi-points push
+  - [x] dynamic color
 - [ ] Image Plane
 - [x] Light
   - [x] point light
@@ -52,7 +54,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [ ] Stencil-buffer
   - [x] Fimic convert
   - [ ] Gamma convert
-  - [ ] outLine shader
+  - [ ] outline shader
   - [ ] FXAA
 - [ ] multi-pass composition
   - Blinn-Phong
@@ -64,14 +66,14 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [x] IBL lighting
       - [ ] roughness blur
     - [ ] AO
-  - [ ] shadow
+    - [ ] shadow
       - [ ] shadow map
-    - [ ] soft shadow
+      - [ ] soft shadow
   - PBR
 
     - [ ] material system
   
-  - [ ] pbr diffuse
+    - [ ] pbr diffuse
     - [ ] pbr specular
 - Ray tracing ?
 - **Shader**
@@ -84,7 +86,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - dynamic exposure  
 
 #### **UI**
-
+- [x] Basic debug
 - [ ] Imgui parameters input
 - [ ] files management
 - [ ] node system
