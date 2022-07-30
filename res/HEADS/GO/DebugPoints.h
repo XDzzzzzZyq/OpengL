@@ -12,12 +12,11 @@
 #include "Camera.h"
 
 enum PointType {
-	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT
+	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT
 };
 
 class DebugPoints : public GameObject, public Transform
 {
-
 private:
 	VertexArray dp_vertArry;
 	VertexBuffer dp_vertBuffer;
@@ -34,7 +33,7 @@ private:
 public:
 	PointType dp_type = SQUARE_POINT;
 	bool is_proj = true;
-
+	bool is_list_changed = true;
 	bool is_scaled;
 	mutable Shaders dp_shader[2]; //no proj | using proj
 

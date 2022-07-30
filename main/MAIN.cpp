@@ -102,13 +102,13 @@ void render(GLFWwindow* window) {
 
 	DebugPoints points;
 	points.PushDebugPoint( 5,  5,  5);
-	points.PushDebugPoint( 5, -5,  5);
-	points.PushDebugPoint( 5,  5, -5);
-	points.PushDebugPoint( 5, -5, -5);
-	points.PushDebugPoint(-5,  5,  5);
-	points.PushDebugPoint(-5, -5,  5);
-	points.PushDebugPoint(-5,  5, -5);
-	points.PushDebugPoint(-5, -5, -5);
+ 	points.PushDebugPoint( 5, -5,  5);
+ 	points.PushDebugPoint( 5,  5, -5);
+ 	points.PushDebugPoint( 5, -5, -5);
+ 	points.PushDebugPoint(-5,  5,  5);
+ 	points.PushDebugPoint(-5, -5,  5);
+ 	points.PushDebugPoint(-5,  5, -5);
+ 	points.PushDebugPoint(-5, -5, -5);
 	renderer.UseDebugPoints(&points);
 	DEBUG("-------------------------------")
 	
@@ -155,7 +155,7 @@ void render(GLFWwindow* window) {
 		renderer.GetActiveCamera()->CameraEventActivate(window);
 		
 		go1.o_shader.SetValue("z_inp", 100*(blend-0.5f));
-		go1.o_shader.SetValue("blen",3, &testfloat[0]);
+		go1.o_shader.SetValue("blen",3, &testfloat[0], VEC1_ARRAY);
 		
 		pointLight1.SetColor(LightColor);
 		pointLight1.SetPos(ImVec4_vec3_Uni(LightPos,10.0f));

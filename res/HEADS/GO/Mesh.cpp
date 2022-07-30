@@ -69,12 +69,12 @@ void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& l
 		o_shader.SetValue("U_ProjectM", cam.cam_frustum);
 
 	if(cam.is_Uniform_changed || cam.is_frustum_changed)
-		o_shader.SetValue("Scene_data",8 , cam.cam_floatData.data());
+		o_shader.SetValue("Scene_data",8 , cam.cam_floatData.data(),VEC1_ARRAY);
 
 	if (!light_list.empty())
 	{
 		LightFloatArray lightdata(light_list);
-		o_shader.SetValue("L_point", lightdata.point_count * (5 + 3) + 1, lightdata.point.data());
+		o_shader.SetValue("L_point", lightdata.point_count * (5 + 3) + 1, lightdata.point.data(),VEC1_ARRAY);
 		//o_shader.SetValue("L_sun", lightdata.sun_count * (5 + 6) + 1, lightdata.sun.data());
 		//o_shader.SetValue("L_spot", lightdata.spot_count * (5 + 6 + 2) + 1, lightdata.spot.data());
 	}

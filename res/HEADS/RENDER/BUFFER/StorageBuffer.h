@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-
+#include "support.h"
 
 class StorageBuffer  //shader storage buffer object SSBO
 {
@@ -27,22 +27,25 @@ public:
 };
 
 template <typename T>
-void StorageBuffer::UpdateStorageBuffer(const std::vector<T>& src)
+void StorageBuffer::UpdateStorageBuffer(const std::vector<T>& list)
 {
 	BindBuffer();
-
-	GLvoid* ptr = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
-	memcpy(ptr, src.data(), src.size() * sizeof(T));
+	GLDEBUG
+	GLvoid* ptr = glMapNamedBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
+	GLDEBUG
+	memcpy(ptr, list.data(), list.size() * sizeof(T));
 
 	UnbindBuffer();
 }
 
 template <typename T>
-void StorageBuffer::GenStorageBuffer(const std::vector<T>& src)
+void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
 {
+
 	BindBuffer();
-	glBufferData(GL_SHADER_STORAGE_BUFFER, src.size() * sizeof(T), src.data(), GL_DYNAMIC_COPY);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_DYNAMIC_COPY);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, ssbo_id);
+	DEBUG( list.size() * sizeof(T))
 	UnbindBuffer();
 }
 

@@ -21,9 +21,9 @@ void main(){
 	L_color = vec3(Light_data[3], Light_data[4], Light_data[5]);
 	uv = uvIn;
 
-	post_cam_trans = U_Scale * transpose( mat4(mat3(U_cam_trans)) );
+	post_cam_trans = transpose( mat4(mat3(U_cam_trans)) );
 
-	gl_Position = U_ProjectM * U_cam_trans * (post_cam_trans * vec4(position, 1.0f) + vec4(L_pos, 0.0f)) - vec4(0,0,0.01f,0);
+	gl_Position = U_ProjectM * U_cam_trans * (post_cam_trans * vec4(U_Scale * position, 1.0f) + vec4(L_pos, 0.0f)) - vec4(0,0,0.01f,0);
 	
 };
 

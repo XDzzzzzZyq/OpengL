@@ -3,6 +3,7 @@
 StorageBuffer::StorageBuffer()
 {
 	glGenBuffers(1, &ssbo_id);
+	ssbo_base = 3;
 }
 
 StorageBuffer::~StorageBuffer()

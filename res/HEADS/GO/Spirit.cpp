@@ -40,7 +40,7 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, const Camera& ca
 	//transform settings
 
 	//std::cout << o_Transform;
-	r_shader.SetValue("Light_data",6 ,light_data.data());
+	r_shader.SetValue("Light_data",6 ,light_data.data(),VEC1_ARRAY);
 
 	if(cam.is_invUniform_changed)
 		r_shader.SetValue("U_cam_trans", cam.o_InvTransform);
