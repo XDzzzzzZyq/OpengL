@@ -69,15 +69,6 @@ void Camera::ChangeCamPersp(float persp)
 	is_frustum_changed = true;
 }
 
-void Camera::CameraEventActivate(GLFWwindow* window)
-{
-
-	UpdateEvent(window, evt_IDlist);
-	if (evt_KM.GenStateData() != 0)
-		if (EventList.find(evt_KM) != EventList.end())
-			EventList[evt_KM]();
-}
-
 void Camera::SHIFT_MMB()
 {
 	o_position += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;

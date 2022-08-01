@@ -65,10 +65,10 @@ public:
 
 	//EVENTS
 // 	virtual void EventUpdate();
-//  
-//  	virtual void SHIFT_MMB();
-//  	virtual void CTRL_MMB();
-//  	virtual void ALT_MMB();
-//  	virtual void MMB();
+	void EventActivate(GLFWwindow* window);
+	virtual void SHIFT_MMB() {}
+	virtual void CTRL_MMB() {}
+	virtual void ALT_MMB() {}
+	virtual void MMB() {}
 };
 

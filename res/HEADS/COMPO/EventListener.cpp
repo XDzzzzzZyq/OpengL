@@ -89,6 +89,14 @@ KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m)
 	return result;
 }
 
+void EventListener::EventActivate(GLFWwindow* window)
+{
+	UpdateEvent(window, evt_IDlist);
+	if (evt_KM.GenStateData() != 0)
+		if (EventList.find(evt_KM) != EventList.end())
+			EventList[evt_KM]();
+}
+
 int KeyMouseEvent::GenStateData() const
 {
 	int data = 0;

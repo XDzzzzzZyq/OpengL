@@ -147,7 +147,7 @@ void render(GLFWwindow* window) {
 		//go1.SetRot(glm::vec3(rotateX, rotateY, rotateZ));
 		
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
-		renderer.GetActiveCamera()->CameraEventActivate(window);
+		renderer.GetActiveCamera()->EventActivate(window);
 		
 		go1.o_shader.SetValue("z_inp", 100*(blend-0.5f));
 		go1.o_shader.SetValue("blen",3, &testfloat[0], VEC1_ARRAY);

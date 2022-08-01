@@ -31,7 +31,7 @@ public:
 	void ChangeCamRatio(float w, float h);
 	void ChangeCamPersp(float persp);
 
-	void CameraEventActivate(GLFWwindow* window);
+	//void CameraEventActivate(GLFWwindow* window);
 	void SHIFT_MMB();
 	void CTRL_MMB();
 	void ALT_MMB();
@@ -47,10 +47,6 @@ static float scroll_dir;
 static bool a = false;
 
 static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
-// 	scroll_x = xoffset;
-// 	scroll_y = yoffset;
 	a = true;
 	scroll_dir = yoffset;
-	//DEBUG(yoffset)
-/*	std::cout << xoffset << "," << yoffset << "\n";*/
 }
