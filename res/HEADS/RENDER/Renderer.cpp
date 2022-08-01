@@ -51,8 +51,6 @@ void Renderer::Render() {
 	envir_list[0]->BindFrameBuffer();
 
 	FrameClean();
-
-
 	glEnable(GL_DEPTH_TEST);
 	////////////    MESHES    ////////////
 	cam_list[0]->ApplyTransform();

@@ -12,29 +12,29 @@
 #include "xdz_math.h"
 #include "operator.h"
 
-#define DEBUG(x) std::cout<<x<<"\n";
-#define GLDEBUG glDebug_xdz();
+#define DEBUG(x) std::cout<<(x)<<"\n";
+#define GLDEBUG std::cout<<__func__<<" : "<<__LINE__<<" : "<<glDebug_xdz()<<"\n";
 
-inline void glDebug_xdz() {
+inline std::string glDebug_xdz() {
 	switch (glGetError())
 	{
 	case GL_NO_ERROR:
-		DEBUG("GL_NO_ERROR")
+		return"GL_NO_ERROR";
 			break;
 	case GL_INVALID_ENUM:
-		DEBUG("GL_INVALID_ENUM")
+		return"GL_INVALID_ENUM";
 			break;
 	case GL_INVALID_VALUE:
-		DEBUG("GL_INVALID_VALUE")
+		return"GL_INVALID_VALUE";
 			break;
 	case GL_INVALID_OPERATION:
-		DEBUG("INVALID_OPERATION")
+		return"INVALID_OPERATION";
 			break;
 	case GL_INVALID_FRAMEBUFFER_OPERATION:
-		DEBUG("GL_INVALID_FRAMEBUFFER_OPERATION")
+		return"GL_INVALID_FRAMEBUFFER_OPERATION";
 			break;
 	case GL_OUT_OF_MEMORY:
-		DEBUG("GL_OUT_OF_MEMORY")
+		return"GL_OUT_OF_MEMORY";
 			break;
 	}
 
