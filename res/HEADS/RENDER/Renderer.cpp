@@ -43,7 +43,7 @@ void Renderer::FrameClean() const
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
 void Renderer::Render() {
-	
+
 	if (cam_list.find(0) == cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
 	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
@@ -67,6 +67,7 @@ void Renderer::Render() {
 
 			obj.second->ApplyTransform();
 			obj.second->RenderObj(*cam_list[0], light_list);
+			obj.second->is_Uniform_changed = false;
 			//std::cout << cam_list[0]->o_InvTransform;
 		}
 		is_light_changed = false;
@@ -76,18 +77,16 @@ void Renderer::Render() {
 		for (const auto& obj : mesh_list)
 		{
 
-			if (obj.second->is_rendered)
-			{
-				if (!obj.second->is_viewport)continue;
+			if (!obj.second->is_viewport)continue;
 
-				obj.second->ApplyTransform();
-				obj.second->RenderObj(*cam_list[0], emptyLight);
-			}
+			obj.second->ApplyTransform();
+			obj.second->RenderObj(*cam_list[0], emptyLight);
+			obj.second->is_Uniform_changed = false;
 		}
 	}
 
 	envir_list[0]->envir_hdr.Unbind();
-	
+
 	//////////// DEBUG MESHES ////////////
 
 	for (const auto& dLine : dLine_list)
@@ -95,6 +94,7 @@ void Renderer::Render() {
 		if (!dLine.second->is_viewport)continue;
 		dLine.second->ApplyTransform();
 		dLine.second->RenderDdbugLine(*cam_list[0]);
+		dLine.second->is_Uniform_changed = false;
 	}
 
 	for (const auto& dPoints : dPoints_list)
@@ -102,6 +102,7 @@ void Renderer::Render() {
 		if (!dPoints.second->is_viewport)continue;
 		dPoints.second->ApplyTransform();
 		dPoints.second->RenderDebugPoint(*cam_list[0]);
+		dPoints.second->is_Uniform_changed = false;
 	}
 
 	////////////    ICONS    ////////////
@@ -115,15 +116,14 @@ void Renderer::Render() {
 
 	envir_list[0]->UnBindFrameBuffer();
 	glDisable(GL_DEPTH_TEST);
-	envir_list[0]->RenderEnvironment(cam_list[0]->o_rotMat, glm::radians(cam_list[0]->cam_pers));
-		////////////  RESET  ///////////
+	envir_list[0]->RenderEnvironment(*cam_list[0]);
+	////////////  RESET  ///////////
 
-	//DEBUG(cam_list[0]->is_invUniform_changed)
+//DEBUG(cam_list[0]->is_invUniform_changed)
 
 
 
 	cam_list[0]->is_invUniform_changed = false;
-
 	cam_list[0]->is_frustum_changed = false;
 
 }

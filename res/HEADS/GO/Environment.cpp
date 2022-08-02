@@ -12,38 +12,7 @@ Environment::Environment(const std::string& texpath)
 	envir_hdr.Bind(envir_hdr.Tex_type); 
 	//envir_hdr.Tex_slot = envir_hdr.Tex_type;
 
-#if 0
-
-
-
-	frame_buffer = Texture("", BUFFER_TEXTURE, GL_NEAREST);
-	frame_buffer.Bind(frame_buffer.Tex_type);
-	frame_buffer.Tex_slot = frame_buffer.Tex_type;
-
-	glGenRenderbuffers(1, &renderBuffer_id);
-	glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer_id);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_W, SCREEN_H);
-
-	glGenFramebuffers(1, &framebuffer_id);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_id);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frame_buffer.GetTexID(), 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer_id);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	{
-		DEBUG("framebuffer error")
-	}
-	else
-	{
-		std::cout << "framebuffer is complete\n";
-	}
-
-#else
-
 	envir_frameBuffer = FrameBuffer();	
-
-#endif
 
 	
 	o_name = "Environment." + std::to_string(GetObjectID());
@@ -110,7 +79,7 @@ void Environment::GenFloatData() const
 
 }
 
-void Environment::RenderEnvironment(const glm::mat4& cam_rotM, float fov)
+void Environment::RenderEnvironment(const Camera& cam)
 {
 	o_vertArry.Bind();
 	envir_shader.UseShader();
@@ -119,8 +88,8 @@ void Environment::RenderEnvironment(const glm::mat4& cam_rotM, float fov)
 	envir_frameBuffer->BindFrameBufferTex();
 	envir_hdr.Bind(envir_hdr.Tex_type);
 
-	envir_shader.SetValue("cam_rotM", cam_rotM);
-	envir_shader.SetValue("cam_fov", fov);
+	envir_shader.SetValue("cam_rotM", cam.o_rotMat);
+	envir_shader.SetValue("cam_fov", glm::radians(cam.cam_pers));
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	
 	o_indexBuffer.Unbind();

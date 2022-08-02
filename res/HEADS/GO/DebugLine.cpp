@@ -124,6 +124,7 @@ void DebugLine::RenderDdbugLine(const Camera& camera)
 		glDisable(GL_LINE_STIPPLE);
 
 	dLine_shader.UnuseShader();
+	
 }
 
 void DebugLine::SetDLineShader()

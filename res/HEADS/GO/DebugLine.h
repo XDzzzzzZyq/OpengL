@@ -10,7 +10,7 @@
 #include "Shaders.h"
 #include "Camera.h"
 
-#include "support.h"
+#include "Parameters.h"
 
 class DebugLine : public GameObject, public Transform
 {
