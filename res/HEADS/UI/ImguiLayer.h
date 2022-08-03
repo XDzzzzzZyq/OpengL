@@ -14,6 +14,7 @@ class ImguiLayer
 {
 private:
 	std::map<std::string, ImguiItem> item_list;
+	
 public:
 	ImguiLayer();
 	ImguiLayer(const std::string& name);
@@ -21,6 +22,10 @@ public:
 
 	std::string uly_name;
 	unsigned int uly_ID = 0;
+
+	bool using_size = false;
+	bool fixed_size = false;
+	ImVec2 uly_size;
 
 	ImLayerType uly_type = NONE_UILAYER;
 	

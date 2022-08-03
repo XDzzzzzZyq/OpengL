@@ -22,6 +22,10 @@ public:
 	template<typename T>
 	void SetItemDefulValue(T deful);
 
+	bool using_size = false;
+	bool fixed_size = false;
+	ImVec2 uitm_size;
+
 	ImItemType uitm_type = NONE_INP;
 	std::string uitm_name = "";
 	Parameters uitm_para;
