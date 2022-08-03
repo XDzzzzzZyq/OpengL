@@ -87,6 +87,9 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 #### **UI**
 - [x] Basic debug
+- [ ] Docking (1/2)
+- [x] Multi-viewports
+- [x] UI manager
 - [ ] Imgui parameters input
 - [ ] files management
 - [ ] node system
