@@ -30,9 +30,9 @@ template <typename T>
 void StorageBuffer::UpdateStorageBuffer(const std::vector<T>& list)
 {
 	BindBuffer();
-	GLDEBUG
+	//GLDEBUG
 	GLvoid* ptr = glMapNamedBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
-	GLDEBUG
+	//GLDEBUG
 	memcpy(ptr, list.data(), list.size() * sizeof(T));
 
 	UnbindBuffer();
@@ -45,7 +45,7 @@ void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
 	BindBuffer();
 	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_DYNAMIC_COPY);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, ssbo_id);
-	DEBUG( list.size() * sizeof(T))
+	//DEBUG( list.size() * sizeof(T))
 	UnbindBuffer();
 }
 

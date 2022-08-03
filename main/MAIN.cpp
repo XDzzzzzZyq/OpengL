@@ -20,6 +20,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
+#include "ImguiManager.h"
 
 using std::cout;
 using std::endl;
@@ -49,6 +50,8 @@ void render(GLFWwindow* window) {
 	glfwSetScrollCallback(window, scrollCall);
 	
 	Renderer renderer;
+	ImguiManager UI;
+
 	Camera camera(10.0f, 10.0f, 70, 0.0f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
 	camera.ApplyTransform();
@@ -108,38 +111,51 @@ void render(GLFWwindow* window) {
 	DEBUG("-------------------------------")
 	
 	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiStyle& style = ImGui::GetStyle();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+	io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+
 	ImGui_ImplOpenGL3_Init();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+
 
 	ImGui::StyleColorsDark();
+
+
 
 	static float scale = 0.3f;
 	static float blend = 0.5f;
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
 	static float rotateZ = 0.0f;
-	double mouse_x, mouse_y = 0.0f;
+	double mouse_x =0.0f, mouse_y = 0.0f;
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	AverageTime<500> AvTime;
 	float FrameCount = 0;
 	
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
-
 	while (!glfwWindowShouldClose(window))
 	{
 		
 		FrameCount++;
 		/* Render here */
 		
-		//environment.BindFrameBuffer();
-		
 
 		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
+		ImGui_ImplGlfw_NewFrame();		
 		ImGui::NewFrame();
-
-		AvTime.Add(ImGui::GetIO().Framerate);
+		AvTime.Add(io.Framerate);
 
 		
 		go1.SetScale(glm::vec3(scale));
@@ -167,47 +183,62 @@ void render(GLFWwindow* window) {
 		line.SetPos(glm::vec3(rotateX,0,0));
 		line.dLine_color = glm::vec3(1, (90-rotateY)/90, (90 - rotateZ) / 90);
 		
+		
 
 
+		
+		ImGui::SetCurrentContext(ImGui::GetCurrentContext());
+		
+		//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		renderer.Render();
-
-
 		{
+
 			ImGui::BeginMainMenuBar();
-/*			ImGui::BeginMenuBar();*/
+			/*			ImGui::BeginMenuBar();*/
 			if (ImGui::BeginMenu("File"))
 			{
 				ImGui::EndMenu();
 			}
-/*			ImGui::EndMenuBar();*/
+			/*			ImGui::EndMenuBar();*/
 			ImGui::EndMainMenuBar();
-			ImGui::Begin("__Parameters__");                     
+			ImGui::Begin("__Parameters__");
+
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / AvTime.result, AvTime.result/*ImGui::GetIO().Framerate*/);
-			ImGui::Text("MOUSE_POS : [%.1f : %.1f]",mouse_x,mouse_y);
-			ImGui::SliderFloat("SCALE", &scale, 0.0f, 1.0f);          
+			ImGui::Text("MOUSE_POS : [%.1f : %.1f]", mouse_x, mouse_y);
+			ImGui::Text("SCREEN : [%.i : %.i]", ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+			ImGui::SliderFloat	("SCALE", &scale, 0.0f, 1.0f);
 			ImGui::SliderFloat("POWER", &blend, 0.0f, 1.0f);
 			ImGui::SliderFloat("X", &rotateX, -90.0f, 90.0f);
 			ImGui::SliderFloat("Y", &rotateY, -90.0f, 90.0f);
 			ImGui::SliderFloat("Z", &rotateZ, -90.0f, 90.0f);
-			ImGui::ColorEdit3("Light Color", (float*)&LightColor); 
+			ImGui::ColorEdit3("Light Color", (float*)&LightColor);
 			ImGui::ColorEdit3("Light Position", (float*)&LightPos);
 
 			if (ImGui::Button("Debug"))
 			{
-				//std::cout << renderer.GetActiveCamera()->cam_frustum<<"\n";
-// 				DEBUG(renderer.GetActiveCamera()->is_TransF_changed)
-// 				DEBUG(renderer.GetActiveCamera()->is_TransF_changed)
 				glm::vec3 newpoint = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
 				points.PushDebugPoint(newpoint);
 				line.PushDebugLine(newpoint);
 			}
 
 			ImGui::End();
+			
+			UI.RenderUI();
+		}
+		
+		ImGui::Render();
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
 		}
 
-		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+		
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 

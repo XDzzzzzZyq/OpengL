@@ -6,70 +6,39 @@
 
 enum ParaType
 {
-	NONE_PARA, FLOAT_PARA, INT_PARA, STRING_PARA, VEC2_PARA, VEC3_PARA, VEC4_PARA
+	NONE_PARA, FLOAT_PARA, INT_PARA, BOOL_PARA, STRING_PARA, VEC2_PARA, VEC3_PARA, VEC4_PARA
+};
+
+struct ParaData
+{
+	ParaData() {}
+	ParaData(const ParaData& copy);
+	~ParaData() {}
+	mutable float fdata=0.0f;
+	mutable int idata=0;
+	mutable std::string sdata="";
+	mutable bool bdata=false;
+	mutable float v2data[2] = { 0.0f,0.0f };
+	mutable float v3data[3] = {0.0f,0.0f,0.0f };
+	mutable float v4data[4] = {0.0f,0.0f,0.0f ,0.0f };
 };
 
 class Parameters
 {
 public:
 	Parameters();
+	Parameters(const ParaType& type);
+	Parameters(const Parameters& para); //copy
 	~Parameters();
 
 	bool is_para_changed;
 	unsigned int para_uniformID = 0;
 	std::string para_name;
 	ParaType para_type;
+	ParaData para_data;
 
 	Parameters GenParaItem(ParaType type);
+	ParaData* GetParaPtr() { return &para_data; }
+	void Rename(const std::string& name) { para_name = name; }
 };
 
-namespace Para {
-
-	class Float : public Parameters {
-		float para = 0.0f;
-		float* GetParaPtr() { return &para; }
-		float GetPara() const { return para; }
-
-		Float() { para_type = FLOAT_PARA; }
-	};
-
-	class Int : public Parameters {
-		int para = 0;
-		int* GetParaPtr() { return &para; }
-		int GetPara() const { return para; }
-
-		Int() { para_type = INT_PARA; }
-	};
-
-	class String : public Parameters {
-		std::string para = "";
-		std::string* GetParaPtr() { return &para; }
-		std::string GetPara() const { return para; }
-
-		String() { para_type = STRING_PARA; }
-	};
-
-	class Vec2 : public Parameters {
-		glm::vec2 para = glm::vec2(0, 0);
-		glm::vec2* GetParaPtr() { return &para; }
-		glm::vec2 GetPara() const { return para; }
-
-		Vec2() { para_type = VEC2_PARA; }
-	};
-
-	class Vec3 : public Parameters {
-		glm::vec3 para = glm::vec3(0, 0, 0);
-		glm::vec3* GetParaPtr() { return &para; }
-		glm::vec3 GetPara() const { return para; }
-
-		Vec3() { para_type = VEC3_PARA; }
-	};
-
-	class Vec4 : public Parameters {
-		glm::vec4 para = glm::vec4(0, 0, 0, 0);
-		glm::vec4* GetParaPtr() { return &para; }
-		glm::vec4 GetPara() const { return para; }
-
-		Vec4() { para_type = VEC4_PARA; }
-	};
-}

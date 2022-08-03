@@ -13,6 +13,7 @@
 #include "operator.h"
 
 #define DEBUG(x) std::cout<<(x)<<"\n";
+#define DEBUGS(x) std::cout<__func__<<" : "<<__LINE__<<" : "<<(x)<<"\n";<
 #define GLDEBUG std::cout<<__func__<<" : "<<__LINE__<<" : "<<glDebug_xdz()<<"\n";
 
 inline std::string glDebug_xdz() {
