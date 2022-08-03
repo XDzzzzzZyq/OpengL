@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\UI\ImguiSubMenu.cpp" />
+    <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiItem.cpp" />
     <ClCompile Include="res\HEADS\UI\Nodes.cpp" />
     <ClCompile Include="res\HEADS\COMPO\Parameters.cpp" />
@@ -345,6 +347,8 @@
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="res\HEADS\UI\ImguiSubMenu.h" />
+    <ClInclude Include="res\HEADS\UI\ImguiMenu.h" />
     <ClInclude Include="res\HEADS\UI\ImguiItem.h" />
     <ClInclude Include="res\HEADS\UI\Nodes.h" />
     <ClInclude Include="res\HEADS\COMPO\Parameters.h" />

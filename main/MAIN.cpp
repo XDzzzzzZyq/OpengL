@@ -30,6 +30,8 @@ using std::string;
 
 void render(GLFWwindow* window) {
 	glfwMakeContextCurrent(window);
+	ImGui::CreateContext();
+	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -110,26 +112,26 @@ void render(GLFWwindow* window) {
 	renderer.UseDebugPoints(&points);
 	DEBUG("-------------------------------")
 	
-	ImGui::CreateContext();
 
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGuiStyle& style = ImGui::GetStyle();
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
-	io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+	//ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//ImGuiStyle& style = ImGui::GetStyle();
+	//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+	//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
 
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
+	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
+	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
+
+	if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		UI.GetStyle().WindowRounding = 0.0f;
+		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
 
-	ImGui_ImplOpenGL3_Init();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-
-
-	ImGui::StyleColorsDark();
+	UI.ManagerInit(window);
 
 
 
@@ -152,10 +154,9 @@ void render(GLFWwindow* window) {
 		/* Render here */
 		
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();		
-		ImGui::NewFrame();
-		AvTime.Add(io.Framerate);
+		UI.NewFrame();
+
+		AvTime.Add(UI.GetIO().Framerate);
 
 		
 		go1.SetScale(glm::vec3(scale));
@@ -182,16 +183,12 @@ void render(GLFWwindow* window) {
 
 		line.SetPos(glm::vec3(rotateX,0,0));
 		line.dLine_color = glm::vec3(1, (90-rotateY)/90, (90 - rotateZ) / 90);
-		
-		
 
-
-		
-		ImGui::SetCurrentContext(ImGui::GetCurrentContext());
+		//ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 		
 		//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		renderer.Render();
-		{
+		
 
 			ImGui::BeginMainMenuBar();
 			/*			ImGui::BeginMenuBar();*/
@@ -224,11 +221,11 @@ void render(GLFWwindow* window) {
 			ImGui::End();
 			
 			UI.RenderUI();
-		}
+		
 		
 		ImGui::Render();
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
 			ImGui::UpdatePlatformWindows();

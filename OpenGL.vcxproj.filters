@@ -144,6 +144,12 @@
     <ClCompile Include="res\HEADS\UI\ImguiItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\UI\ImguiSubMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">
@@ -1566,6 +1572,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\UI\ImguiItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\ImguiMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\ImguiSubMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
