@@ -87,10 +87,16 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 #### **UI**
 - [x] Basic debug
-- [ ] Docking (1/2)
+- [x] Docking
 - [x] Multi-viewports
+    - [x] Viewport
 - [x] UI manager
-- [ ] Imgui parameters input
+    - [x] Parameters Layer
+    - [x] Menu Layer
+    - [ ] Tool Layer
+    - [ ] Content Layer
+- [x] Imgui parameters flow
+
 - [ ] files management
 - [ ] node system
 
