@@ -65,3 +65,10 @@ inline std::vector<T> operator+(const std::vector<T>& base, const glm::vec3& inp
 inline std::string operator+=(const std::string& bas, const std::string& add) {
 	return bas + add;
 }
+
+inline ImVec2 operator+(const ImVec2& a, const ImVec2& b) {
+	ImVec2 c;
+	c.x = a.x + b.x;
+	c.y = a.y + b.y;
+	return c;
+}

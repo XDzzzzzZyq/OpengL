@@ -15,12 +15,38 @@ Renderer::Renderer()
 
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	framebuffer = FrameBuffer();
 }
 
 Renderer::~Renderer()
 {
 
 }
+
+void Renderer::AddFrameBuffer()
+{
+	framebuffer_list.push_back(FrameBuffer());
+
+	framebuffer_count++;
+}
+
+void Renderer::BindFrameBuffer(int slot)
+{
+	framebuffer_list[slot].BindFrameBuffer();
+}
+
+void Renderer::EndFrameBuffer(int slot)
+{
+	framebuffer_list[slot].UnbindFrameBuffer();
+}
+
+GLuint Renderer::GetFrameBufferTexture(int slot)
+{
+	//return framebuffer_list[slot].BufferTexture.GetTexID();
+	return framebuffer.BufferTexture.GetTexID();
+}
+
 //////////////////////////////////////////////
 
 void Renderer::FrameClean() const
@@ -32,14 +58,16 @@ void Renderer::FrameClean() const
 
 
 }
-
-
-
-
-
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
 void Renderer::Render() {
@@ -48,7 +76,9 @@ void Renderer::Render() {
 	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	//GLDEBUG
+	
 	envir_list[0]->BindFrameBuffer();
+
 
 	FrameClean();
 	glEnable(GL_DEPTH_TEST);
@@ -113,12 +143,14 @@ void Renderer::Render() {
 		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), *cam_list[0]);
 	}
 
-
 	envir_list[0]->UnBindFrameBuffer();
 	glDisable(GL_DEPTH_TEST);
+	framebuffer.BindFrameBuffer();
 	envir_list[0]->RenderEnvironment(*cam_list[0]);
+	framebuffer.UnbindFrameBuffer();
 	////////////  RESET  ///////////
 	
+
 	cam_list[0]->is_invUniform_changed = false;
 	cam_list[0]->is_frustum_changed = false;
 	is_scr_changed = false;
@@ -126,22 +158,18 @@ void Renderer::Render() {
 }
 
 
-////////////////////////////////////// END RENDERING ///////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+////////////////////////////////////// END RENDERING /////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 void Renderer::UseCamera(Camera* camera)

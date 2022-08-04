@@ -191,13 +191,13 @@ void render(GLFWwindow* window) {
 
 		//ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 		
-		//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		renderer.Render();
 
 			ImGui::Begin("__Parameters__");
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / AvTime.result, AvTime.result/*ImGui::GetIO().Framerate*/);
 			ImGui::Text("MOUSE_POS : [%.1f : %.1f]", mouse_x, mouse_y);
-			ImGui::Text("SCREEN : [%.i : %.i]", ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+			ImGui::Text("SCREEN : [%.i : %.i]", ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
 			ImGui::SliderFloat	("SCALE", &scale, 0.0f, 1.0f);
 			ImGui::SliderFloat("POWER", &blend, 0.0f, 1.0f);
 			ImGui::SliderFloat("X", &rotateX, -90.0f, 90.0f);
@@ -216,7 +216,20 @@ void render(GLFWwindow* window) {
 			ImGui::End();
 			
 			UI.RenderUI();
-		
+			
+			ImGui::Begin("Viewport");
+
+			ImGui::GetWindowDrawList()->AddImage(
+				
+				(ImTextureID)renderer.GetFrameBufferTexture(0),
+				ImGui::GetWindowPos(),
+				ImGui::GetWindowPos()+ImVec2(SCREEN_W, SCREEN_W),
+				ImVec2(0, 1),
+				ImVec2(1, 0)
+
+			);
+
+			ImGui::End();
 		
 		ImGui::Render();
 

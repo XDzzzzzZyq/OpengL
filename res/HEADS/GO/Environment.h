@@ -26,8 +26,6 @@ enum EnvironmentType
 class Environment : public GameObject, public Transform
 {
 private:
-	GLuint framebuffer_id = 0, renderBuffer_id = 0, buff_tex_id = 0;
-
 	std::vector<float> screenQuad = {
 		// positions		// texCoords
 		-1.0f, 1.0f,	0.0f, 1.0f,

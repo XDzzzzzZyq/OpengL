@@ -38,6 +38,12 @@ public:
 	std::unordered_map<int, DebugLine*>      dLine_list;
 	std::unordered_map<int, DebugPoints*>  dPoints_list;
 
+	std::vector<FrameBuffer> framebuffer_list;
+	int framebuffer_count = -1;
+	void AddFrameBuffer();
+	void BindFrameBuffer(int slot);
+	void EndFrameBuffer(int slot);
+	GLuint GetFrameBufferTexture(int slot);
 
 	template<typename T>
 	void UseObject(T* obj);
