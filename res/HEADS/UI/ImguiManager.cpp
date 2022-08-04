@@ -60,7 +60,7 @@ void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& 
 
 Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::string& it_name)
 {
-
+	return &FindImguiLayer("test layer")->FindImguiItem("testB")->uitm_para;
 }
 
 void ImguiManager::RenderUI() const
