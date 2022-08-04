@@ -8,32 +8,32 @@ ImguiItem::ImguiItem()
 ImguiItem::ImguiItem(ImItemType type, const std::string& name)
 {
 	uitm_type = type;
-
+	notagname = uitm_name = name;
 	switch (type)
 	{
 	case NONE_INP:
 		uitm_name = "NONE";
 		break;
 	case TEXT_INP:
-		uitm_name = "TEXT : "+name;
+
 		uitm_para = Parameters(INT_PARA);
 		break;
 	case FLOAT_INP:
-		uitm_name = "FLOAT : " + name;
+
 		uitm_para = Parameters(FLOAT_PARA);
 		break;
 	case RGB_INP:
-		uitm_name = "RGB : " + name;
+
 		uitm_para = Parameters(VEC3_PARA);
 		break;
 	case BUTTON_INP:
-		uitm_name = "BUTTON : " + name;
+
 		break;
 	case IMAGE_INP:
-		uitm_name = "IMAGE : " + name;
+
 		break;
 	case BOOL_INP:
-		uitm_name = "BOOL : " + name;
+
 		uitm_para = Parameters(BOOL_PARA);
 		break;
 	default:
@@ -75,5 +75,64 @@ ImguiItem::ImguiItem(const Parameters& para)
 
 ImguiItem::~ImguiItem()
 {
+
+}
+
+void ImguiItem::Rename(const std::string& name) const
+{
+	uitm_name = name;
+	notagname = name;
+}
+
+std::string ImguiItem::GetTagName() const
+{
+	switch (uitm_type)
+	{
+	case NONE_INP:
+
+		break;
+	case TEXT_INP:
+
+		return "[TEXT] ";
+		break;
+	case FLOAT_INP:
+
+		return "[FLOAT] ";
+		break;
+	case RGB_INP:
+
+		return "[RGB] ";
+		break;
+	case BUTTON_INP:
+
+		return "[BUTTON] ";
+		break;
+	case IMAGE_INP:
+
+		return "[IMAGE] ";
+		break;
+	case BOOL_INP:
+
+		return "[BOOL] ";
+		break;
+	default:
+		break;
+	}
+}
+
+void ImguiItem::EnableTagName() const
+{
+	if (!show_tag_name) {
+		uitm_name = GetTagName() + uitm_name;
+		show_tag_name = true;
+	}
+
+}
+
+void ImguiItem::DisableTagName() const
+{
+
+	uitm_name = notagname;
+	show_tag_name = false;
 
 }

@@ -61,3 +61,7 @@ template <typename T>
 inline std::vector<T> operator+(const std::vector<T>& base, const glm::vec3& inp) {
 
 }
+
+inline std::string operator+=(const std::string& bas, const std::string& add) {
+	return bas + add;
+}

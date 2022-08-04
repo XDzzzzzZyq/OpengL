@@ -21,6 +21,7 @@ struct ParaData
 	mutable float v2data[2] = { 0.0f,0.0f };
 	mutable float v3data[3] = {0.0f,0.0f,0.0f };
 	mutable float v4data[4] = {0.0f,0.0f,0.0f ,0.0f };
+	mutable float data_range[2] = { -10.0f, 10.0f };
 };
 
 class Parameters

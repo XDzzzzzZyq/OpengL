@@ -9,13 +9,13 @@
 
 enum ImLayerType
 {
-	NONE_UILAYER, PARAS_UILAYER, TOOLS_UILAYER
+	NONE_UILAYER, PARAS_UILAYER, TOOLS_UILAYER, VIEWPORT_UILAYER
 };
 
 class ImguiLayer
 {
 private:
-	std::map<std::string, ImguiItem> item_list;
+	mutable std::map<std::string, ImguiItem> item_list;
 	
 public:
 	ImguiLayer();
@@ -29,14 +29,18 @@ public:
 	bool fixed_size = false;
 	ImVec2 uly_size;
 
+	bool is_docking = true;
+
 	ImLayerType uly_type = NONE_UILAYER;
 	
 	
 	void PushItem(const ImguiItem& item);
 	void PushItem(ImItemType type);      //quick push
+	ImguiItem* FindImguiItem(const std::string& name)const;
 
 	bool uly_activate = true;
 	bool uly_is_rendered = true;
+	bool uly_show_type = false;
 	void RenderLayer() const;
 };
 

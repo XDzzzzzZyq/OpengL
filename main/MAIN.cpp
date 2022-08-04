@@ -133,7 +133,13 @@ void render(GLFWwindow* window) {
 
 	UI.ManagerInit(window);
 
+	UI.FindImguiLayer("test layer")->FindImguiItem("testB")->ButtonFunc = [&] {
 
+		glm::vec3 newpoint = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+		points.PushDebugPoint(newpoint);
+		line.PushDebugLine(newpoint);
+
+	};
 
 	static float scale = 0.3f;
 	static float blend = 0.5f;
@@ -155,7 +161,6 @@ void render(GLFWwindow* window) {
 		
 
 		UI.NewFrame();
-
 		AvTime.Add(UI.GetIO().Framerate);
 
 		
@@ -198,8 +203,8 @@ void render(GLFWwindow* window) {
 			}
 			/*			ImGui::EndMenuBar();*/
 			ImGui::EndMainMenuBar();
-			ImGui::Begin("__Parameters__");
 
+			ImGui::Begin("__Parameters__");
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / AvTime.result, AvTime.result/*ImGui::GetIO().Framerate*/);
 			ImGui::Text("MOUSE_POS : [%.1f : %.1f]", mouse_x, mouse_y);
 			ImGui::Text("SCREEN : [%.i : %.i]", ImGui::GetWindowWidth(), ImGui::GetWindowHeight());

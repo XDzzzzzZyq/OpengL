@@ -150,6 +150,9 @@
     <ClCompile Include="res\HEADS\UI\ImguiSubMenu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\UI\DefultViewports.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">

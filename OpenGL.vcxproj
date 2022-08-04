@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\UI\DefultViewports.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiSubMenu.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiItem.cpp" />
