@@ -118,14 +118,11 @@ void Renderer::Render() {
 	glDisable(GL_DEPTH_TEST);
 	envir_list[0]->RenderEnvironment(*cam_list[0]);
 	////////////  RESET  ///////////
-
-//DEBUG(cam_list[0]->is_invUniform_changed)
-
-
-
+	
 	cam_list[0]->is_invUniform_changed = false;
 	cam_list[0]->is_frustum_changed = false;
-
+	is_scr_changed = false;
+	
 }
 
 

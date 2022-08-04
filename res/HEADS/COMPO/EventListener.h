@@ -18,11 +18,12 @@ struct KeyMouseEvent
 	int SecondKey;
 	int Norm_key = GLFW_KEY_UNKNOWN;
 	int mouse;
+	int scr;
 	bool is_update = false;
 	bool is_pressed = false;
 
 	bool operator==(const KeyMouseEvent& p) const {
-		return FirstKey == p.FirstKey && SecondKey == p.SecondKey && Norm_key == p.Norm_key && mouse == p.mouse;
+		return FirstKey == p.FirstKey && SecondKey == p.SecondKey && Norm_key == p.Norm_key && mouse == p.mouse && scr == p.scr;
 	}
 
 	int GenStateData() const;
@@ -61,14 +62,17 @@ public:
 	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
 	void UpdateEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
 
-	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m);
+	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
 
 	//EVENTS
 // 	virtual void EventUpdate();
 	void EventActivate(GLFWwindow* window);
-	virtual void SHIFT_MMB() {}
-	virtual void CTRL_MMB() {}
-	virtual void ALT_MMB() {}
-	virtual void MMB() {}
 };
 
+inline extern float scroll_dir = 80;;
+inline extern bool is_scr_changed = false;
+inline static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
+	is_scr_changed = true;
+	scroll_dir = yoffset;
+	//DEBUG(scroll_dir)
+}

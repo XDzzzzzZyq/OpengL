@@ -31,11 +31,11 @@ public:
 	void ChangeCamRatio(float w, float h);
 	void ChangeCamPersp(float persp);
 
-	//void CameraEventActivate(GLFWwindow* window);
 	void SHIFT_MMB();
 	void CTRL_MMB();
 	void ALT_MMB();
 	void MMB();
+	void SCROLL();
 
 	void EventInit();
 	
@@ -43,10 +43,3 @@ public:
 	~Camera();
 };
 
-static float scroll_dir;
-static bool a = false;
-
-static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
-	a = true;
-	scroll_dir = yoffset;
-}

@@ -162,8 +162,6 @@ void render(GLFWwindow* window) {
 
 		UI.NewFrame();
 		AvTime.Add(UI.GetIO().Framerate);
-
-		
 		go1.SetScale(glm::vec3(scale));
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 50, 0.0f));
 		//go1.SetRot(glm::vec3(rotateX, rotateY, rotateZ));
