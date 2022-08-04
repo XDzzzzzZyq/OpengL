@@ -39,6 +39,10 @@ public:
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;
 	ImguiLayer* FindImguiLayer(const std::string& name)const;
+	ImguiItem* FindImguiItem(const std::string& layer, const std::string& name) const;
+
+	void PushImguiMenu(const ImguiMenu& Menu);
+	ImguiMenu* FindImguiMenu(const std::string& name)const;
 
 
 	void SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func);

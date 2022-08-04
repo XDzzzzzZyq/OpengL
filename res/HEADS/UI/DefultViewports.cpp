@@ -13,5 +13,10 @@ void ImguiManager::DefultViewports() {
 
 	PushImguiLayer(layer1);
 
+	ImguiMenu menu1("FILE");
+	menu1.PushSubMenu(ImguiMenuItem("test", "ctrl + A"));
+	menu1.PushSubMenu(ImguiMenuItem("test2", "ctrl + S"));
+
+	PushImguiMenu(menu1);
 
 }

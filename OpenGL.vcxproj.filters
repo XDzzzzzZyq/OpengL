@@ -147,7 +147,7 @@
     <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiSubMenu.cpp">
+    <ClCompile Include="res\HEADS\UI\ImguiMenuItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\UI\DefultViewports.cpp">
@@ -1580,7 +1580,7 @@
     <ClInclude Include="res\HEADS\UI\ImguiMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiSubMenu.h">
+    <ClInclude Include="res\HEADS\UI\ImguiMenuItem.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

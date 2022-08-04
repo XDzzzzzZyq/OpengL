@@ -14,8 +14,7 @@ enum ImLayerType
 
 class ImguiLayer
 {
-private:
-	mutable std::map<std::string, ImguiItem> item_list;
+	
 	
 public:
 	ImguiLayer();
@@ -32,7 +31,7 @@ public:
 	bool is_docking = true;
 
 	ImLayerType uly_type = NONE_UILAYER;
-	
+	mutable std::map<std::string, ImguiItem> item_list;
 	
 	void PushItem(const ImguiItem& item);
 	void PushItem(ImItemType type);      //quick push

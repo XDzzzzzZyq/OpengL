@@ -31,7 +31,7 @@ void ImguiManager::NewFrame() const
 
 void ImguiManager::PushImguiLayer(const ImguiLayer& layer)
 {
-	layer_list.insert(std::pair<std::string, ImguiLayer>(layer.uly_name, layer));
+	layer_list[layer.uly_name] = layer;
 	layer_list[ACTIVE] = layer;
 }
 
@@ -53,6 +53,24 @@ ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 	return nullptr;
 }
 
+ImguiItem* ImguiManager::FindImguiItem(const std::string& layer, const std::string& name) const
+{
+	return FindImguiLayer(layer)->FindImguiItem(name);
+}
+
+void ImguiManager::PushImguiMenu(const ImguiMenu& Menu)
+{
+	menu_list[Menu.menu_name] = Menu;
+}
+
+ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
+{
+	if (menu_list.find(name) != menu_list.end())
+		return &menu_list[name];
+	DEBUG("[ no menu named " + name + " ]")
+		return nullptr;
+}
+
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)
 {
 	FindImguiLayer("test layer")->FindImguiItem("testB")->ButtonFunc = func;
@@ -60,14 +78,19 @@ void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& 
 
 Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::string& it_name)
 {
-	return &FindImguiLayer("test layer")->FindImguiItem("testB")->uitm_para;
+	return &FindImguiLayer(ly_name)->FindImguiItem(it_name)->uitm_para;
 }
 
 void ImguiManager::RenderUI() const
 {
+	ImGui::BeginMainMenuBar();
+	/*			ImGui::BeginMenuBar();*/
 	for (const auto& menu : menu_list) {
-			//menu.second.RenderMenu();
+		menu.second.RenderMenu();
 	}
+	/*			ImGui::EndMenuBar();*/
+	ImGui::EndMainMenuBar();
+
 
 
 	for (const auto& layer : layer_list) {

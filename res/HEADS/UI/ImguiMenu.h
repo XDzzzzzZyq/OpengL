@@ -10,20 +10,21 @@
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-#include "ImguiSubMenu.h"
+#include "ImguiMenuItem.h"
 
 class ImguiMenu
 {
 public:
 	ImguiMenu();
+	ImguiMenu(const std::string& name);
 	~ImguiMenu();
 	
-	std::string menu_name = "";
+	mutable std::string menu_name = "";
 
-	std::map<std::string, ImguiSubMenu> subm_list;
-	void PushSubMenu(const ImguiSubMenu& subm);
+	std::map<std::string, ImguiMenuItem> subm_list;
+	void PushSubMenu(const ImguiMenuItem& subm);
 
-	void RenderMenu();
+	void RenderMenu() const;
 	
 };
 
