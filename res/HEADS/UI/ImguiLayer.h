@@ -3,10 +3,15 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
-#include "ImguiItem.h"
+
+#include "ITEM/ParaInput.h"
+#include "ITEM/Viewport.h"
+#include "ITEM/Text.h"
+#include "ITEM/Button.h"
+
 #include <unordered_map>
 #include <map>
-
+#define ACTIVE "ACTIVE LAYER"
 enum ImLayerType
 {
 	NONE_UILAYER, PARAS_UILAYER, TOOLS_UILAYER, VIEWPORT_UILAYER
@@ -27,19 +32,23 @@ public:
 	bool using_size = false;
 	bool fixed_size = false;
 	ImVec2 uly_size;
+	ImVec2 GetLayerSize();
 
 	bool is_docking = true;
 
 	ImLayerType uly_type = NONE_UILAYER;
-	mutable std::map<std::string, ImguiItem> item_list;
+	mutable std::unordered_map<std::string, ImguiItem*> item_list;
+	mutable std::vector<std::string> name_list;
 	
-	void PushItem(const ImguiItem& item);
+	void PushItem(ImguiItem* item);
 	void PushItem(ImItemType type);      //quick push
 	ImguiItem* FindImguiItem(const std::string& name)const;
 
-	bool uly_activate = true;
+	mutable bool uly_activate = true;
 	bool uly_is_rendered = true;
 	bool uly_show_type = false;
+	mutable std::function<void(void)> pre_RenderLayer = [] {};
+	mutable std::function<void(void)> extra_RenderLayer = [] {};
 	void RenderLayer() const;
 };
 

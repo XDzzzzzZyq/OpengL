@@ -10,6 +10,12 @@ ImguiManager::ImguiManager()
 	DefultViewports();
 }
 
+ImguiManager::ImguiManager(GLFWwindow* window)
+	:window(window)
+{
+
+}
+
 ImguiManager::~ImguiManager()
 {
 
@@ -37,7 +43,10 @@ void ImguiManager::PushImguiLayer(const ImguiLayer& layer)
 
 void ImguiManager::SetActiveImguiLayer(const std::string& name) const
 {
-	
+	if (layer_list.find(name) == layer_list.end())
+		return;
+	active_layer_name = name;
+	layer_list[ACTIVE] = layer_list[name];
 }
 
 ImguiLayer* ImguiManager::GetActiveImguiLayer() const
@@ -73,16 +82,28 @@ ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
 
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)
 {
-	FindImguiLayer("test layer")->FindImguiItem("testB")->ButtonFunc = func;
+	if (FindImguiItem(ly_name, it_name)) {
+		DEBUG(ly_name+" "+it_name)
+			FindImguiItem(ly_name, it_name)->ButtonFunc = func;
+	}
+	else {
+		DEBUG("button not found")
+	}
+		
 }
 
 Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::string& it_name)
 {
-	return &FindImguiLayer(ly_name)->FindImguiItem(it_name)->uitm_para;
+	return FindImguiLayer(ly_name)->FindImguiItem(it_name)->GetPara();
 }
 
 void ImguiManager::RenderUI() const
 {
+	if (ParaUpdate)
+		ParaUpdate();
+
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
 	ImGui::BeginMainMenuBar();
 	/*			ImGui::BeginMenuBar();*/
 	for (const auto& menu : menu_list) {
@@ -95,8 +116,30 @@ void ImguiManager::RenderUI() const
 
 	for (const auto& layer : layer_list) {
 		if (layer.second.uly_is_rendered)
-			if(layer.first!= ACTIVE)
+			if(layer.first!= ACTIVE && layer.first != active_layer_name)
 				layer.second.RenderLayer();
 	}
+	layer_list[active_layer_name].RenderLayer();
+
+	ImGui::Render();
+
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		if (window) {
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(window);
+		}
+		else
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
+
+	}
+
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }

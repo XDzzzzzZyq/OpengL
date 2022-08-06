@@ -7,26 +7,27 @@
 #include <optional>
 #include <functional>
 #include <type_traits>
+#include <cstdarg>
 
-#define ACTIVE "ACTIVE LAYER"
+
 
 enum ImItemType
 {
-	NONE_INP, TEXT_INP, FLOAT_INP, RGB_INP, RGBA_INP, BUTTON_INP, IMAGE_INP, BOOL_INP
+	NONE_INP,
+	TEXT_INP, FLOAT_INP, INT_INP, RGB_INP, RGBA_INP,
+	BUTTON_INP, BOOL_INP,
+	IMAGE_OUTP, TEXT_OUTP,
+	VIEWPORT_OUTP
 };
 
 class ImguiItem
 {
 private:
-	mutable std::string notagname;
+
 public:
 	ImguiItem();
 	ImguiItem(ImItemType type, const std::string& name);
-	ImguiItem(const Parameters& para);
 	~ImguiItem();
-
-	template<typename T>
-	void SetItemDefulValue(T deful);
 
 	mutable bool using_size = false;
 	mutable bool fixed_size = false;
@@ -35,59 +36,51 @@ public:
 
 	ImItemType uitm_type = NONE_INP;
 	mutable std::string uitm_name = "";
-	Parameters uitm_para;
+	mutable std::string notagname = "";
 
 	mutable std::function<void(void)> ButtonFunc = [] {};
-	void CallButtonFunc() { ButtonFunc(); }
-
 
 	void Rename(const std::string& name) const;
 	std::string GetTagName()const;
 	void EnableTagName() const ;
 	void DisableTagName() const;
 	const char* GetCharName() const { return uitm_name.c_str(); }
-	void SetRange(float min, float max) const { uitm_para.para_data.data_range[0] = min;
-												uitm_para.para_data.data_range[1] = max;	}
 
+	// for all items
+	virtual void RenderItem() const {
+		DEBUG("no render function overrided")
+			return;
+	}
+
+	// for all paras
+	virtual Parameters* GetPara() {
+		DEBUG(uitm_name + " is not a paraInp")
+			return nullptr;
+	}
+
+	// for all buttons
+	virtual void CallButtonFunc() const {
+		DEBUG(uitm_name + " is not a button")
+			return;
+	}
+
+	// for all text
+	virtual void SetArgsList(float length, ...) const {
+		DEBUG(uitm_name + " is not a text")
+			return;
+	}
+
+	virtual void SetArgsList(int length, float* f1) const {
+		DEBUG(uitm_name + " is not a text")
+			return;
+	}
+
+	virtual void ResetUV(const ImVec2& min, const ImVec2& max){
+		DEBUG(uitm_name + " is not a viewport")
+			return;
+	}
+	virtual void ResetBufferID(GLuint id) {
+		DEBUG(uitm_name + " is not a viewport")
+			return;
+	}
 };
-
-template<typename T>
-void ImguiItem::SetItemDefulValue(T deful)
-{
-
-	if (std::is_same<T,int>)
-	{
-		uitm_para->para_data.idata = deful;
-
-	}else if (std::is_same<T, bool>)
-	{
-		uitm_para->para_data.bdata = deful;
-
-	}
-	else if (std::is_same<T, float>)
-	{
-		uitm_para->para_data.fdata = deful;
-
-	}
-	else if (std::is_same<T, std::string>)
-	{
-		uitm_para->para_data.sdata = deful;
-
-	}
-	else if (std::is_same<T, glm::vec2>)
-	{
-		uitm_para->para_data.v2data = deful;
-
-	}
-	else if (std::is_same<T, glm::vec3>)
-	{
-		uitm_para->para_data.v3data = deful;
-
-	}
-	else if (std::is_same<T, glm::vec4>)
-	{
-		uitm_para->para_data.v4data = deful;
-
-	}
-}
-

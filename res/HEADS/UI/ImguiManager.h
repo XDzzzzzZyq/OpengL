@@ -19,10 +19,13 @@ private:
 	mutable std::map<std::string, ImguiMenu> menu_list;
 	ImGuiIO& io=ImGui::GetIO();
 	ImGuiStyle& style=ImGui::GetStyle();
+
+	GLFWwindow* window=nullptr;
 public:
 
 
 	ImguiManager();
+	ImguiManager(GLFWwindow* window);
 	~ImguiManager();
 
 	void ManagerInit(GLFWwindow* window);
@@ -34,8 +37,10 @@ public:
 	void DefultViewports();
 
 	void NewFrame() const;
+	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
 
 	void PushImguiLayer(const ImguiLayer& layer);
+	mutable std::string active_layer_name;
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;
 	ImguiLayer* FindImguiLayer(const std::string& name)const;
@@ -44,9 +49,10 @@ public:
 	void PushImguiMenu(const ImguiMenu& Menu);
 	ImguiMenu* FindImguiMenu(const std::string& name)const;
 
-
 	void SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func);
 	Parameters* GetParaValue(const std::string& ly_name, const std::string& it_name);
+
+	mutable std::function<void(void)> ParaUpdate = [] {};
 
 	void RenderUI() const;
 };

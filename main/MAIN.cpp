@@ -50,7 +50,7 @@ void render(GLFWwindow* window) {
 	}
 
 	glfwSetScrollCallback(window, scrollCall);
-	
+
 	Renderer renderer;
 	ImguiManager UI;
 
@@ -60,16 +60,16 @@ void render(GLFWwindow* window) {
 	camera.GetInvTransform();
 	renderer.UseCamera(&camera);
 	DEBUG("-------------------------------")
-	
-	/* Loop until the user closes the window */
 
-	Mesh go1("res/obj/monkey2.obj");
+		/* Loop until the user closes the window */
+
+		Mesh go1("res/obj/monkey2.obj");
 	go1.SetObjShader("res/shaders/testS.shader");
 	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
 	go1.SetCenter();
 	DEBUG("-------------------------------")
 
-	Mesh go2("res/obj/torus.obj");
+		Mesh go2("res/obj/torus.obj");
 	go2.SetObjShader("res/shaders/testS.shader");
 	go2.SetTex("res/tex/avatar1.png", PNG_TEXTURE);
 	go2.SetCenter();
@@ -78,21 +78,21 @@ void render(GLFWwindow* window) {
 	go2.ApplyTransform();
 	DEBUG("-------------------------------")
 
-	renderer.UseMesh(&go1);
+		renderer.UseMesh(&go1);
 	renderer.UseMesh(&go2);
-	
+
 	Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1.SetPos(glm::vec3(2.0f, 2.0f, 2.0f));
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
 	DEBUG("-------------------------------")
-		
 
-	Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f,1.0f,1.0f));
+
+		Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	pointLight2.GenFloatData();
 	DEBUG("-------------------------------")
 
-	renderer.UseLight(&pointLight1);
+		renderer.UseLight(&pointLight1);
 	renderer.UseLight(&pointLight2);
 
 
@@ -102,25 +102,25 @@ void render(GLFWwindow* window) {
 	//line.is_viewport = false;
 	DEBUG("-------------------------------")
 
-	Environment environment("res/tex/hdr/room.hdr");
+		Environment environment("res/tex/hdr/room.hdr");
 	renderer.UseEnvironment(&environment);
 	DEBUG("-------------------------------")
 
-	DebugPoints points;
-	points.PushDebugPoint( 5,  5,  5);
+		DebugPoints points;
+	points.PushDebugPoint(5, 5, 5);
 
 	renderer.UseDebugPoints(&points);
 	DEBUG("-------------------------------")
-	
 
-	//ImGuiIO& io = ImGui::GetIO(); (void)io;
-	//ImGuiStyle& style = ImGui::GetStyle();
-	//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
-	//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
 
-	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+		//ImGuiIO& io = ImGui::GetIO(); (void)io;
+		//ImGuiStyle& style = ImGui::GetStyle();
+		//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+		//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+
+		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
@@ -133,50 +133,65 @@ void render(GLFWwindow* window) {
 
 	UI.ManagerInit(window);
 
-	UI.FindImguiLayer("test layer")->FindImguiItem("testB")->ButtonFunc = [&] {
-
-		glm::vec3 newpoint = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
-		points.PushDebugPoint(newpoint);
-		line.PushDebugLine(newpoint);
-
-		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
-	};
-
 	static float scale = 0.3f;
 	static float blend = 0.5f;
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
 	static float rotateZ = 0.0f;
-	double mouse_x =0.0f, mouse_y = 0.0f;
+	double mouse_x = 0.0f, mouse_y = 0.0f;
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	AverageTime<500> AvTime;
 	float FrameCount = 0;
-	
+
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
+
+	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
+		DEBUG(2)
+			glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+		points.PushDebugPoint(newpoint1);
+		line.PushDebugLine(newpoint1);
+
+		});
+	UI.SetButtonFunc("test layer", "testB", [&] {
+		DEBUG(1)
+			glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+		points.PushDebugPoint(newpoint2);
+		line.PushDebugLine(newpoint2);
+
+		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
+		});
+
+	UI.ParaUpdate = [&] {
+		FrameCount++;
+		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, mouse_x, mouse_y);
+		UI.FindImguiItem("__Parameters__", "Application average %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
+		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
+
+		scale = UI.GetParaValue("__Parameters__", "SCALE")->para_data.fdata;
+		blend = UI.GetParaValue("__Parameters__", "POWER")->para_data.fdata;
+		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
+		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
+		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
+	};
+
 	while (!glfwWindowShouldClose(window))
 	{
-		
-		FrameCount++;
 		/* Render here */
-		
 
 		UI.NewFrame();
 		AvTime.Add(UI.GetIO().Framerate);
 		go1.SetScale(glm::vec3(scale));
-		/*go1.SetScale(glm::vec3(UI.GetParaValue("test layer", "test")->para_data.fdata));*/  ////////////  GetData
+		//go1.SetScale(glm::vec3(UI.GetParaValue("test layer", "test")->para_data.fdata));  ////////////  GetData
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 50, 0.0f));
 		//go1.SetRot(glm::vec3(rotateX, rotateY, rotateZ));
-		
+
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		renderer.GetActiveCamera()->EventActivate(window);
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
-		
-		go1.o_shader.SetValue("z_inp", 100*(blend-0.5f));
-		go1.o_shader.SetValue("blen",3, &testfloat[0], VEC1_ARRAY);
-		
+
 		pointLight1.SetColor(LightColor);
-		pointLight1.SetPos(ImVec4_vec3_Uni(LightPos,10.0f));
+		pointLight1.SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
 		pointLight1.light_power = blend * 50;
 		pointLight1.GenFloatData();
 
@@ -186,64 +201,12 @@ void render(GLFWwindow* window) {
 
 		renderer.is_light_changed = true;
 
-		line.SetPos(glm::vec3(rotateX,0,0));
-		line.dLine_color = glm::vec3(1, (90-rotateY)/90, (90 - rotateZ) / 90);
+		line.SetPos(glm::vec3(rotateX, 0, 0));
+		line.dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
 
-		//ImGui::SetCurrentContext(ImGui::GetCurrentContext());
-		
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		renderer.Render();
+		UI.RenderUI();
 
-			ImGui::Begin("__Parameters__");
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / AvTime.result, AvTime.result/*ImGui::GetIO().Framerate*/);
-			ImGui::Text("MOUSE_POS : [%.1f : %.1f]", mouse_x, mouse_y);
-			ImGui::Text("SCREEN : [%.i : %.i]", ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-			ImGui::SliderFloat	("SCALE", &scale, 0.0f, 1.0f);
-			ImGui::SliderFloat("POWER", &blend, 0.0f, 1.0f);
-			ImGui::SliderFloat("X", &rotateX, -90.0f, 90.0f);
-			ImGui::SliderFloat("Y", &rotateY, -90.0f, 90.0f);
-			ImGui::SliderFloat("Z", &rotateZ, -90.0f, 90.0f);
-			ImGui::ColorEdit3("Light Color", (float*)&LightColor);
-			ImGui::ColorEdit3("Light Position", (float*)&LightPos);
-
-			if (ImGui::Button("Debug"))
-			{
-				glm::vec3 newpoint = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
-				points.PushDebugPoint(newpoint);
-				line.PushDebugLine(newpoint);
-			}
-
-			ImGui::End();
-			
-			UI.RenderUI();
-			
-			ImGui::Begin("Viewport");
-
-			ImGui::GetWindowDrawList()->AddImage(
-				
-				(ImTextureID)renderer.GetFrameBufferTexture(0),
-				ImGui::GetWindowPos(),
-				ImGui::GetWindowPos()+ImVec2(SCREEN_W, SCREEN_W),
-				ImVec2(0, 1),
-				ImVec2(1, 0)
-
-			);
-
-			ImGui::End();
-		
-		ImGui::Render();
-
-		if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
-
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
@@ -253,7 +216,7 @@ void render(GLFWwindow* window) {
 
 	}
 	cout << endl << "finished" << endl;
-	cout << GameObject::count <<" object(s)" << endl;
+	cout << GameObject::count << " object(s)" << endl;
 }
 
 int main(void)

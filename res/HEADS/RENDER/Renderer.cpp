@@ -15,6 +15,9 @@ Renderer::Renderer()
 
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilFunc(GL_ALWAYS,1,0xff);
+	glStencilMask(0xff);
+
 
 	framebuffer = FrameBuffer();
 }
@@ -81,6 +84,7 @@ void Renderer::Render() {
 
 
 	FrameClean();
+	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_DEPTH_TEST);
 	////////////    MESHES    ////////////
 	cam_list[0]->ApplyTransform();
@@ -116,7 +120,7 @@ void Renderer::Render() {
 	}
 
 	envir_list[0]->envir_hdr.Unbind();
-
+	glDisable(GL_STENCIL_TEST);
 	//////////// DEBUG MESHES ////////////
 
 	for (const auto& dLine : dLine_list)
@@ -144,7 +148,10 @@ void Renderer::Render() {
 	}
 
 	envir_list[0]->UnBindFrameBuffer();
+	//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+	//glStencilMask(0x00);
 	glDisable(GL_DEPTH_TEST);
+
 	framebuffer.BindFrameBuffer();
 	envir_list[0]->RenderEnvironment(*cam_list[0]);
 	framebuffer.UnbindFrameBuffer();

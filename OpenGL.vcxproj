@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\ParaInput.cpp" />
     <ClCompile Include="res\HEADS\UI\DefultViewports.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiMenuItem.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp" />
@@ -198,6 +200,8 @@
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp" />
     <ClCompile Include="res\HEADS\GO\Spirit.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\Viewport.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl" />
@@ -348,6 +352,8 @@
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="res\HEADS\UI\ITEM\Button.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\ParaInput.h" />
     <ClInclude Include="res\HEADS\UI\ImguiMenuItem.h" />
     <ClInclude Include="res\HEADS\UI\ImguiMenu.h" />
     <ClInclude Include="res\HEADS\UI\ImguiItem.h" />
@@ -682,6 +688,8 @@
     <ClInclude Include="res\HEADS\RENDER\Texture.h" />
     <ClInclude Include="res\HEADS\GO\Spirit.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\Viewport.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\avatar1.png" />
