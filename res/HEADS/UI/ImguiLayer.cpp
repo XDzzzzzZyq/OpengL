@@ -42,7 +42,7 @@ void ImguiLayer::PushItem(ImguiItem* item)
 		
 	}
 	item_list.insert(std::pair<std::string, ImguiItem*>(item->uitm_name, item));
-	name_list.push_back(item->uitm_name);
+	item_name_list.push_back(item->uitm_name);
 }
 
 void ImguiLayer::PushItem(ImItemType type)
@@ -59,12 +59,19 @@ ImguiItem* ImguiLayer::FindImguiItem(const std::string& name) const
 	return nullptr;
 }
 
+ImguiItem* ImguiLayer::FindImguiItem(int id) const
+{
+	if (id > item_list.size() - 1)
+		return nullptr;
+	return item_list[item_name_list[id]];
+}
+
 void ImguiLayer::RenderLayer() const
 {
 	ImGui::Begin(uly_name.c_str(), &uly_activate);
 	if (pre_RenderLayer)
 		pre_RenderLayer();
-	for (const auto& name : name_list) {
+	for (const auto& name : item_name_list) {
 		const auto& item = item_list[name];
 		uly_show_type ? item->EnableTagName() : item->DisableTagName();
 		item->RenderItem();

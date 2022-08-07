@@ -27,7 +27,7 @@ public:
 	~ImguiLayer();
 
 	std::string uly_name;
-	unsigned int uly_ID = 0;
+	mutable unsigned int uly_ID = 0;
 
 	bool using_size = false;
 	bool fixed_size = false;
@@ -39,11 +39,12 @@ public:
 
 	ImLayerType uly_type = NONE_UILAYER;
 	mutable std::unordered_map<std::string, ImguiItem*> item_list;
-	mutable std::vector<std::string> name_list;
+	mutable std::vector<std::string> item_name_list;
 	
 	void PushItem(ImguiItem* item);
 	void PushItem(ImItemType type);      //quick push
 	ImguiItem* FindImguiItem(const std::string& name)const;
+	ImguiItem* FindImguiItem(int id)const;   //start with 0
 
 	mutable bool uly_activate = true;
 	bool uly_is_rendered = true;

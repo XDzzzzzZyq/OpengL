@@ -43,6 +43,8 @@ void ImguiManager::PushImguiLayer(const ImguiLayer& layer)
 {
 	layer_list[layer.uly_name] = layer;
 	layer_list[ACTIVE] = layer;
+	layer_name_list.push_back(layer.uly_name);
+	layer.uly_ID = layer_name_list.size();
 }
 
 void ImguiManager::SetActiveImguiLayer(const std::string& name) const
@@ -66,9 +68,27 @@ ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 	return nullptr;
 }
 
+ImguiLayer* ImguiManager::FindImguiLayer(int id) const
+{
+	if (id > layer_name_list.size())
+		return nullptr;
+
+	return &layer_list[layer_name_list[id - 1]];
+}
+
 ImguiItem* ImguiManager::FindImguiItem(const std::string& layer, const std::string& name) const
 {
 	return FindImguiLayer(layer)->FindImguiItem(name);
+}
+
+ImguiItem* ImguiManager::FindImguiItem(int id, const std::string& name) const
+{
+	return FindImguiLayer(id)->FindImguiItem(name);
+}
+
+ImguiItem* ImguiManager::FindImguiItem(int id, int item_id) const
+{
+	return FindImguiLayer(id)->FindImguiItem(item_id);
 }
 
 void ImguiManager::PushImguiMenu(const ImguiMenu& Menu)

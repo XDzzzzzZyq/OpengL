@@ -43,10 +43,16 @@ public:
 
 	void PushImguiLayer(const ImguiLayer& layer);
 	mutable std::string active_layer_name;
+	mutable std::vector<std::string> layer_name_list;
+
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;
 	ImguiLayer* FindImguiLayer(const std::string& name)const;
+	ImguiLayer* FindImguiLayer(int id)const;
 	ImguiItem* FindImguiItem(const std::string& layer, const std::string& name) const;
+	ImguiItem* FindImguiItem(int id, const std::string& name) const;
+	ImguiItem* FindImguiItem(int id, int item_id) const;
+
 
 	void PushImguiMenu(const ImguiMenu& Menu);
 	ImguiMenu* FindImguiMenu(const std::string& name)const;
