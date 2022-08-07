@@ -13,16 +13,18 @@
 
 #include "Spirit.h"
 
-#include "GL/glew.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <vector>
 #include <unordered_map>
+#include <optional>
 
 
 class Renderer
 {
 private:
 	std::unordered_map<int, Light*> emptyLight;
-	FrameBuffer framebuffer;
+	std::optional<FrameBuffer> framebuffer;
 public:
 	Renderer();
 	~Renderer();
@@ -43,6 +45,7 @@ public:
 	void AddFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);
+	void FrameBufferResize(int slot, const ImVec2& size);
 	GLuint GetFrameBufferTexture(int slot);
 
 	template<typename T>

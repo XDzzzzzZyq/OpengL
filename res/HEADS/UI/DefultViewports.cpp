@@ -24,11 +24,11 @@ void ImguiManager::DefultViewports() {
 	layer2.PushItem(new UI::ParaInput(FLOAT_INP, "Z", -90.0f, 90.0f));
 	layer2.PushItem(new UI::ParaInput(RGB_INP, "Light Color"));
 	layer2.PushItem(new UI::ParaInput(RGB_INP, "Light Position"));
-	layer1.PushItem(new UI::Button("Debug"));
+	layer2.PushItem(new UI::Button("Debug"));
 	PushImguiLayer(layer2);
 
 	ImguiLayer layer3("Viewport");
-	layer3.PushItem(new UI::Viewport(0, ImVec2(SCREEN_W, SCREEN_W)));
+	layer3.PushItem(new UI::Viewport(0, ImVec2(SCREEN_W, SCREEN_H)));
 	PushImguiLayer(layer3);
 
 	ImguiMenu menu1("FILE");

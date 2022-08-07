@@ -29,6 +29,7 @@ public:
 	mutable std::vector<float> cam_floatData;
 	void GenFloatData() const; // 6f(trans) + 1f(ratio) + 1f(angle)
 	void ChangeCamRatio(float w, float h);
+	void ChangeCamRatio(const ImVec2& size);
 	void ChangeCamPersp(float persp);
 
 	void SHIFT_MMB();

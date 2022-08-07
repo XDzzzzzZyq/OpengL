@@ -2,6 +2,22 @@
 
 Renderer::Renderer()
 {
+	if (glewInit() != GLEW_OK) {
+		std::cout << "glew error" << std::endl;
+	}
+	else {
+		std::cout << "glew has no error" << std::endl;
+	}
+
+	if (glGetError() != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Error: " << glGetError() << std::endl;
+	}
+	else {
+		std::cout << "OpenGL has no error " << std::endl;
+	}
+
+
 	DEBUG("Renderer Open")
 		glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -44,10 +60,16 @@ void Renderer::EndFrameBuffer(int slot)
 	framebuffer_list[slot].UnbindFrameBuffer();
 }
 
+void Renderer::FrameBufferResize(int slot, const ImVec2& size)
+{
+	GetActiveEnvironment()->envir_frameBuffer->Resize(size);
+	framebuffer->Resize(size);
+}
+
 GLuint Renderer::GetFrameBufferTexture(int slot)
 {
 	//return framebuffer_list[slot].BufferTexture.GetTexID();
-	return framebuffer.BufferTexture.GetTexID();
+	return framebuffer->BufferTexture.GetTexID();
 }
 
 //////////////////////////////////////////////
@@ -152,9 +174,9 @@ void Renderer::Render() {
 	//glStencilMask(0x00);
 	glDisable(GL_DEPTH_TEST);
 
-	framebuffer.BindFrameBuffer();
+	framebuffer->BindFrameBuffer();
 	envir_list[0]->RenderEnvironment(*cam_list[0]);
-	framebuffer.UnbindFrameBuffer();
+	framebuffer->UnbindFrameBuffer();
 	////////////  RESET  ///////////
 	
 

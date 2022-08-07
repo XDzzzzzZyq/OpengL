@@ -31,8 +31,9 @@ public:
 
 	bool using_size = false;
 	bool fixed_size = false;
-	ImVec2 uly_size;
-	ImVec2 GetLayerSize();
+	mutable bool is_size_changed = false;
+	mutable ImVec2 uly_size;
+	ImVec2 GetLayerSize() const;
 
 	bool is_docking = true;
 
@@ -49,6 +50,7 @@ public:
 	bool uly_show_type = false;
 	mutable std::function<void(void)> pre_RenderLayer = [] {};
 	mutable std::function<void(void)> extra_RenderLayer = [] {};
+	mutable std::function<void(void)> resize_event = [] {};
 	void RenderLayer() const;
 };
 

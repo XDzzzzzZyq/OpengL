@@ -47,40 +47,20 @@ public:
 	const char* GetCharName() const { return uitm_name.c_str(); }
 
 	// for all items
-	virtual void RenderItem() const {
-		DEBUG("no render function overrided")
-			return;
-	}
+	virtual void RenderItem() const { DEBUG("no render function overrided")return; }
 
 	// for all paras
-	virtual Parameters* GetPara() {
-		DEBUG(uitm_name + " is not a paraInp")
-			return nullptr;
-	}
+	virtual Parameters* GetPara() { DEBUG(uitm_name + " is not a paraInp")return nullptr; }
 
 	// for all buttons
-	virtual void CallButtonFunc() const {
-		DEBUG(uitm_name + " is not a button")
-			return;
-	}
+	virtual void CallButtonFunc() const { DEBUG(uitm_name + " is not a button")return; }
 
 	// for all text
-	virtual void SetArgsList(float length, ...) const {
-		DEBUG(uitm_name + " is not a text")
-			return;
-	}
+	virtual void SetArgsList(float length, ...) const { DEBUG(uitm_name + " is not a text")	return; }
+	virtual void SetArgsList(int length, float* f1) const { DEBUG(uitm_name + " is not a text")return; }
 
-	virtual void SetArgsList(int length, float* f1) const {
-		DEBUG(uitm_name + " is not a text")
-			return;
-	}
-
-	virtual void ResetUV(const ImVec2& min, const ImVec2& max){
-		DEBUG(uitm_name + " is not a viewport")
-			return;
-	}
-	virtual void ResetBufferID(GLuint id) {
-		DEBUG(uitm_name + " is not a viewport")
-			return;
-	}
+	// for all viewport
+	virtual void ResetUV(const ImVec2& min, const ImVec2& max) { DEBUG(uitm_name + " is not a viewport")return; }
+	virtual void ResetSize(const ImVec2& size) { DEBUG(uitm_name + " is not a viewport")return; }
+	virtual void ResetBufferID(GLuint id) { DEBUG(uitm_name + " is not a viewport")	return; }
 };

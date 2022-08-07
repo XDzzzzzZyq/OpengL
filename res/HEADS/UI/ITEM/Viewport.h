@@ -17,8 +17,9 @@ namespace UI {
 		Viewport(GLuint texID, const ImVec2& vp_size);
 		~Viewport();
 
-		void ResetUV(const ImVec2& min, const ImVec2& max);
-		void ResetBufferID(GLuint id);
+		void ResetUV(const ImVec2& min, const ImVec2& max) override;
+		void ResetSize(const ImVec2& size) override;
+		void ResetBufferID(GLuint id) override;
 		void RenderItem() const override;
 	};
 }

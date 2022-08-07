@@ -64,6 +64,15 @@ void Camera::ChangeCamRatio(float w, float h)
 	is_frustum_changed = true;
 }
 
+void Camera::ChangeCamRatio(const ImVec2& size)
+{
+	cam_w = size.x;
+	cam_h = size.y;
+
+	cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
+	is_frustum_changed = true;
+}
+
 void Camera::ChangeCamPersp(float persp)
 {
 	cam_pers = persp;

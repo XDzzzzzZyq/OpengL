@@ -2,7 +2,6 @@
 
 ImguiManager::ImguiManager()
 {
-
 	layer_list[ACTIVE] = ImguiLayer(); //Active slot
 
 	io = ImGui::GetIO(); (void)io;
@@ -14,6 +13,11 @@ ImguiManager::ImguiManager(GLFWwindow* window)
 	:window(window)
 {
 
+	layer_list[ACTIVE] = ImguiLayer(); //Active slot
+
+	io = ImGui::GetIO(); (void)io;
+
+	DefultViewports();
 }
 
 ImguiManager::~ImguiManager()

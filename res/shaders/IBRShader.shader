@@ -35,6 +35,7 @@ uniform vec3 pure_color;
 
 uniform mat4 cam_rotM;
 uniform float cam_fov;
+uniform float cam_ratio;
 
 vec4 ray_dir;
 vec2 reUV;
@@ -55,7 +56,7 @@ vec2 reMapUV(vec2 uv){
 
 void main(){		 
 	reUV  = reMapUV(screen_uv);
-	ray_dir =  cam_rotM * vec4(vec3(-1,-1,1)*normalize(vec3(reUV*tan(cam_fov/2),1)),1);
+	ray_dir =  cam_rotM * vec4(vec3(-1,-1,1)*normalize( vec3(reUV * tan(cam_fov/2) * vec2(cam_ratio, 1) ,1)  ) ,1);
 
 	screen_color = texture(screen_texture,screen_uv);
 	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);

@@ -99,6 +99,21 @@ Texture::Texture()
 
 }
 
+Texture::Texture(GLuint Tile_type, int x, int y)
+	:m_path(""), m_buffer(nullptr), Tex_type(BUFFER_TEXTURE), Tex_slot(BUFFER_TEXTURE),
+	im_bpp(8), im_h(y), im_w(x)
+{
+	glGenTextures(1, &Tex_ID);
+	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 Texture::~Texture()
 {
 
@@ -107,6 +122,28 @@ Texture::~Texture()
 void Texture::DelTexture() const
 {
 	glDeleteTextures(1, &Tex_ID);
+}
+
+void Texture::Resize(const ImVec2& size)
+{
+	im_h = size.y;
+	im_w = size.x;
+	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
+void Texture::Resize(float x, float y)
+{
+	im_h = y;
+	im_w = x;
+	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 void Texture::Bind(GLuint slot /*= 0*/) const

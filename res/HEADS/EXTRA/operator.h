@@ -19,6 +19,12 @@ inline std::ostream& operator<<(std::ostream& stream, const glm::vec3& vec)
 	return stream;
 }
 
+inline std::ostream& operator<<(std::ostream& stream, const ImVec2& vec)
+{
+	stream << "[ " << vec[0] << " , " << vec[1] << " ]\n";
+	return stream;
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const glm::mat4& vec)
 {
 	stream.setf(std::ios_base::fixed, std::ios_base::floatfield);
@@ -67,8 +73,15 @@ inline std::string operator+=(const std::string& bas, const std::string& add) {
 }
 
 inline ImVec2 operator+(const ImVec2& a, const ImVec2& b) {
-	ImVec2 c;
-	c.x = a.x + b.x;
-	c.y = a.y + b.y;
+	ImVec2 c(a.x + b.x, a.y + b.y);
 	return c;
+}
+
+inline ImVec2 operator-(const ImVec2& a, const ImVec2& b) {
+	ImVec2 c(a.x - b.x, a.y - b.y);
+	return c;
+}
+
+inline bool operator==(const ImVec2& a, const ImVec2& b) {
+	return a.x==b.x&&a.y==b.y;
 }

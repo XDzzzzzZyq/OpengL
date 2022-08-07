@@ -12,6 +12,8 @@
 #include <vector>
 #include <map>
 
+/*#define ParaUpdate ParaUpdate*/
+
 class ImguiManager
 {
 private:

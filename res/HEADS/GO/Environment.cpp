@@ -84,18 +84,18 @@ void Environment::RenderEnvironment(const Camera& cam)
 	o_vertArry.Bind();
 	envir_shader.UseShader();
 	o_indexBuffer.Bind();
-	//frame_buffer.Bind(frame_buffer.Tex_type);
 	envir_frameBuffer->BindFrameBufferTex();
 	envir_hdr.Bind(envir_hdr.Tex_type);
 
+	/*if(cam.is_invTransF_changed)*/
 	envir_shader.SetValue("cam_rotM", cam.o_rotMat);
 	envir_shader.SetValue("cam_fov", glm::radians(cam.cam_pers));
+	envir_shader.SetValue("cam_ratio", cam.cam_w / cam.cam_h);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	
 	o_indexBuffer.Unbind();
 	envir_hdr.Unbind();
 	envir_shader.UnuseShader();
-	//frame_buffer.Unbind();
 	envir_frameBuffer->UnbindFrameBufferTex();
 	o_vertArry.Unbind();
 }

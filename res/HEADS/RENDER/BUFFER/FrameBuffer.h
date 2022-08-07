@@ -15,6 +15,9 @@ public:
 	void BindFrameBuffer() const;
 	void UnbindFrameBuffer() const;
 
+	void Resize(const ImVec2& size);
+	void Resize(float w,float h);
+
 	void BindFrameBufferTex() const;
 	void UnbindFrameBufferTex() const;
 

@@ -15,11 +15,20 @@ ImguiLayer::~ImguiLayer()
 
 }
 
-ImVec2 ImguiLayer::GetLayerSize()
+ImVec2 ImguiLayer::GetLayerSize() const
 {
-	uly_size.x = ImGui::GetWindowContentRegionMax().x - ImGui::GetWindowContentRegionMin().x;
-	uly_size.y = ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y;
-	return uly_size;
+	if (ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin() == uly_size) {
+		is_size_changed = false;
+		return uly_size;
+	}
+	else
+	{
+		uly_size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
+		is_size_changed = true;
+		return uly_size;
+	}
+
+
 }
 
 void ImguiLayer::PushItem(ImguiItem* item)
@@ -63,5 +72,11 @@ void ImguiLayer::RenderLayer() const
 	if(extra_RenderLayer)
 		extra_RenderLayer();
 
+	GetLayerSize();
+	if (is_size_changed)
+		if(resize_event)
+			resize_event();
+
+	is_size_changed = false;
 	ImGui::End();
 }

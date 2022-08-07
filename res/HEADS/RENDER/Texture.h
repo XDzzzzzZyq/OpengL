@@ -24,11 +24,13 @@ public:
 	mutable GLuint Tex_slot;
 
 	Texture(const std::string& texpath, TextureType tex_type,GLuint Tile_type);
+	Texture(GLuint Tile_type, int x, int y);    //for fbo
 	Texture();
 	~Texture();
 
 	void DelTexture() const;
-
+	void Resize(const ImVec2& size);
+	void Resize(float x, float y);
 
 	void Bind(GLuint slot = 0) const;
 	void Unbind() const;

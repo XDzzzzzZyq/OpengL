@@ -33,26 +33,8 @@ void render(GLFWwindow* window) {
 	ImGui::CreateContext();
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 
-	GLenum error = glGetError();
-	if (error != GL_NO_ERROR)
-	{
-		std::cout << "OpenGL Error: " << error << std::endl;
-	}
-	else {
-		std::cout << "OpenGL has no error " << std::endl;
-	}
-
-	if (glewInit() != GLEW_OK) {
-		cout << "glew error" << endl;
-	}
-	else {
-		cout << "glew has no error" << endl;
-	}
-
-	glfwSetScrollCallback(window, scrollCall);
-
 	Renderer renderer;
-	ImguiManager UI;
+	ImguiManager UI(window);
 
 	Camera camera(10.0f, 10.0f, 70, 0.0f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
@@ -90,16 +72,14 @@ void render(GLFWwindow* window) {
 
 		Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	pointLight2.GenFloatData();
+	renderer.UseLight(&pointLight1);
+	renderer.UseLight(&pointLight2);
 	DEBUG("-------------------------------")
 
-		renderer.UseLight(&pointLight1);
-	renderer.UseLight(&pointLight2);
 
-
-	DebugLine line;
+		DebugLine line;
 	line.PushDebugLine(5, 5, 5);
 	renderer.UseDebugLine(&line);
-	//line.is_viewport = false;
 	DEBUG("-------------------------------")
 
 		Environment environment("res/tex/hdr/room.hdr");
@@ -120,7 +100,7 @@ void render(GLFWwindow* window) {
 		//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
 		//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
 
-		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
@@ -147,20 +127,27 @@ void render(GLFWwindow* window) {
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
-		DEBUG(2)
 			glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
 		points.PushDebugPoint(newpoint1);
 		line.PushDebugLine(newpoint1);
 
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
-		DEBUG(1)
 			glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
 		points.PushDebugPoint(newpoint2);
 		line.PushDebugLine(newpoint2);
-
 		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
+		std::cout << UI.FindImguiLayer("Viewport")->uly_size;
 		});
+	UI.FindImguiLayer("Viewport")->resize_event = [&] {
+		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size+ImVec2(10,50);
+		glViewport(0, 0, view_size.x, view_size.y);
+		camera.ChangeCamRatio(view_size);
+		renderer.FrameBufferResize(0, view_size);
+		UI.FindImguiItem("Viewport", "Viewport")->ResetSize(view_size);
+		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
+	
+	};
 
 	UI.ParaUpdate = [&] {
 		FrameCount++;
@@ -174,7 +161,7 @@ void render(GLFWwindow* window) {
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
 	};
-
+	UI.GetCurrentWindow();
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
@@ -182,9 +169,7 @@ void render(GLFWwindow* window) {
 		UI.NewFrame();
 		AvTime.Add(UI.GetIO().Framerate);
 		go1.SetScale(glm::vec3(scale));
-		//go1.SetScale(glm::vec3(UI.GetParaValue("test layer", "test")->para_data.fdata));  ////////////  GetData
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 50, 0.0f));
-		//go1.SetRot(glm::vec3(rotateX, rotateY, rotateZ));
 
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		renderer.GetActiveCamera()->EventActivate(window);
@@ -215,7 +200,7 @@ void render(GLFWwindow* window) {
 		//std::cout << "\r" << timer.duration << "ms";
 
 	}
-	cout << endl << "finished" << endl;
+	cout << endl << "[ Finished ]" << endl;
 	cout << GameObject::count << " object(s)" << endl;
 }
 

@@ -7,7 +7,6 @@ FrameBuffer::FrameBuffer()
 
 	BufferTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
 	BufferTexture.Bind(BufferTexture.Tex_type);
-	BufferTexture.Tex_slot = BufferTexture.Tex_type;
 
 	glGenFramebuffers(1, &fb_ID);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
@@ -38,6 +37,25 @@ void FrameBuffer::BindFrameBuffer() const
 void FrameBuffer::UnbindFrameBuffer() const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void FrameBuffer::Resize(const ImVec2& size)
+{
+	BufferTexture.Resize(size);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferTexture.GetTexID(), 0);
+
+	renderBuffer.Resize(size);
+
+}
+
+void FrameBuffer::Resize(float w, float h)
+{
+	BufferTexture.Resize(w,h);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferTexture.GetTexID(), 0);
+
+	renderBuffer.Resize(w, h);
 }
 
 void FrameBuffer::BindFrameBufferTex() const

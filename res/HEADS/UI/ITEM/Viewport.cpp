@@ -16,6 +16,12 @@ void UI::Viewport::ResetUV(const ImVec2& min, const ImVec2& max)
 	uv_max = max;
 }
 
+void UI::Viewport::ResetSize(const ImVec2& size)
+{
+	vp_size = size;
+
+}
+
 void UI::Viewport::ResetBufferID(GLuint id)
 {
 	vp_fboTex_ID = id;
@@ -23,6 +29,7 @@ void UI::Viewport::ResetBufferID(GLuint id)
 
 void UI::Viewport::RenderItem() const
 {
+
 	ImGui::GetWindowDrawList()->AddImage(
 
 		(ImTextureID)vp_fboTex_ID,
@@ -32,6 +39,7 @@ void UI::Viewport::RenderItem() const
 		ImVec2(1, 0)
 
 	);
+	ImGui::Text("[ %.1f , %.1f ]", vp_size.x, vp_size.y);
 }
 
 UI::Viewport::Viewport(GLuint texID, const ImVec2& vp_size)
