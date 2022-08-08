@@ -2,7 +2,7 @@
 
 ImguiManager::ImguiManager()
 {
-	layer_list[ACTIVE] = ImguiLayer(); //Active slot
+	active_layer_id = 0;
 
 	io = ImGui::GetIO(); (void)io;
 	
@@ -13,7 +13,7 @@ ImguiManager::ImguiManager(GLFWwindow* window)
 	:window(window)
 {
 
-	layer_list[ACTIVE] = ImguiLayer(); //Active slot
+	active_layer_id = 0;
 
 	io = ImGui::GetIO(); (void)io;
 
@@ -41,39 +41,38 @@ void ImguiManager::NewFrame() const
 
 void ImguiManager::PushImguiLayer(const ImguiLayer& layer)
 {
-	layer_list[layer.uly_name] = layer;
-	layer_list[ACTIVE] = layer;
-	layer_name_list.push_back(layer.uly_name);
-	layer.uly_ID = layer_name_list.size();
+	layer.uly_ID = layer_list.size(); //start with 0
+	layer_list.push_back(layer);
+	active_layer_id = layer.uly_ID;
+	layer_name_buffer[layer.uly_name] = layer.uly_ID;
 }
 
 void ImguiManager::SetActiveImguiLayer(const std::string& name) const
 {
-	if (layer_list.find(name) == layer_list.end())
+	if (layer_name_buffer.find(name) == layer_name_buffer.end())
 		return;
-	active_layer_name = name;
-	layer_list[ACTIVE] = layer_list[name];
+	active_layer_id = layer_name_buffer[name];
 }
 
 ImguiLayer* ImguiManager::GetActiveImguiLayer() const
 {
-	return &layer_list[ACTIVE];
+	return &layer_list[active_layer_id];
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 {
-	if(layer_list.find(name)!=layer_list.end())
-		return &layer_list[name];
+	if(layer_name_buffer.find(name) != layer_name_buffer.end())
+		return &layer_list[layer_name_buffer[name]];
 	DEBUG("[ no layer named " + name + " ]")
 	return nullptr;
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(int id) const
 {
-	if (id > layer_name_list.size())
+	if (id > layer_list.size())
 		return nullptr;
 
-	return &layer_list[layer_name_list[id - 1]];
+	return &layer_list[id];
 }
 
 ImguiItem* ImguiManager::FindImguiItem(const std::string& layer, const std::string& name) const
@@ -93,13 +92,15 @@ ImguiItem* ImguiManager::FindImguiItem(int id, int item_id) const
 
 void ImguiManager::PushImguiMenu(const ImguiMenu& Menu)
 {
-	menu_list[Menu.menu_name] = Menu;
+	Menu.menu_id = menu_list.size();
+	menu_list.push_back(Menu);
+	menu_name_buffer[Menu.menu_name] = Menu.menu_id;
 }
 
 ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
 {
-	if (menu_list.find(name) != menu_list.end())
-		return &menu_list[name];
+	if (menu_name_buffer.find(name) != menu_name_buffer.end())
+		return &menu_list[menu_name_buffer[name]];
 	DEBUG("[ no menu named " + name + " ]")
 		return nullptr;
 }
@@ -131,7 +132,7 @@ void ImguiManager::RenderUI() const
 	ImGui::BeginMainMenuBar();
 	/*			ImGui::BeginMenuBar();*/
 	for (const auto& menu : menu_list) {
-		menu.second.RenderMenu();
+		menu.RenderMenu();
 	}
 	/*			ImGui::EndMenuBar();*/
 	ImGui::EndMainMenuBar();
@@ -139,11 +140,10 @@ void ImguiManager::RenderUI() const
 
 
 	for (const auto& layer : layer_list) {
-		if (layer.second.uly_is_rendered)
-			if(layer.first!= ACTIVE && layer.first != active_layer_name)
-				layer.second.RenderLayer();
+		if(layer.uly_ID != active_layer_id)
+			layer.RenderLayer();
 	}
-	layer_list[active_layer_name].RenderLayer();
+	layer_list[active_layer_id].RenderLayer();
 
 	ImGui::Render();
 

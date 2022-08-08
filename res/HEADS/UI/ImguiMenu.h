@@ -20,6 +20,7 @@ public:
 	~ImguiMenu();
 	
 	mutable std::string menu_name = "";
+	mutable int menu_id;
 
 	std::map<std::string, ImguiMenuItem> subm_list;
 	void PushSubMenu(const ImguiMenuItem& subm);

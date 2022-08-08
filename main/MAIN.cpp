@@ -88,28 +88,20 @@ void render(GLFWwindow* window) {
 
 		DebugPoints points;
 	points.PushDebugPoint(5, 5, 5);
-
 	renderer.UseDebugPoints(&points);
 	DEBUG("-------------------------------")
-
-
-		//ImGuiIO& io = ImGui::GetIO(); (void)io;
-		//ImGuiStyle& style = ImGui::GetStyle();
-		//io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
-		//io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+		/////////////////////////////////
 
 	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 
-	if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		UI.GetStyle().WindowRounding = 0.0f;
-		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
+// 	if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+// 	{
+// 		UI.GetStyle().WindowRounding = 0.0f;
+// 		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
+// 	}
 
 	UI.ManagerInit(window);
 
@@ -165,11 +157,11 @@ void render(GLFWwindow* window) {
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
-
+		FrameCount++;
 		UI.NewFrame();
 		AvTime.Add(UI.GetIO().Framerate);
 		go1.SetScale(glm::vec3(scale));
-		go1.SetRot(glm::vec3(0.0f, FrameCount / 50, 0.0f));
+		go1.SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
 
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		renderer.GetActiveCamera()->EventActivate(window);

@@ -17,8 +17,8 @@
 class ImguiManager
 {
 private:
-	mutable std::map<std::string, ImguiLayer> layer_list;
-	mutable std::map<std::string, ImguiMenu> menu_list;
+	mutable std::vector<ImguiLayer> layer_list;
+	mutable std::vector<ImguiMenu> menu_list;
 	ImGuiIO& io=ImGui::GetIO();
 	ImGuiStyle& style=ImGui::GetStyle();
 
@@ -42,8 +42,9 @@ public:
 	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
 
 	void PushImguiLayer(const ImguiLayer& layer);
-	mutable std::string active_layer_name;
-	mutable std::vector<std::string> layer_name_list;
+	mutable int active_layer_id;
+	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
+	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID
 
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;

@@ -37,6 +37,7 @@ public:
 	ImItemType uitm_type = NONE_INP;
 	mutable std::string uitm_name = "";
 	mutable std::string notagname = "";
+	mutable int uitm_id = -1;
 
 	mutable std::function<void(void)> ButtonFunc = [] {};
 
