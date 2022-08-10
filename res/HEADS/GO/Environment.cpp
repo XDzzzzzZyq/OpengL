@@ -87,10 +87,14 @@ void Environment::RenderEnvironment(Camera* cam)
 	envir_frameBuffer->BindFrameBufferTex();
 	envir_hdr.Bind(envir_hdr.Tex_type);
 
-	/*if(cam.is_invTransF_changed)*/
-	envir_shader.SetValue("cam_rotM", cam->o_rotMat);
-	envir_shader.SetValue("cam_fov", glm::radians(cam->cam_pers));
-	envir_shader.SetValue("cam_ratio", cam->cam_w / cam->cam_h);
+	if(cam->is_invUniform_changed)
+		envir_shader.SetValue("cam_rotM", cam->o_rotMat);
+
+	if (cam->is_frustum_changed) {
+		envir_shader.SetValue("cam_fov", glm::radians(cam->cam_pers));
+		envir_shader.SetValue("cam_ratio", cam->cam_w / cam->cam_h);
+	}
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	
 	//o_indexBuffer.Unbind();
