@@ -19,7 +19,6 @@ void UI::Viewport::ResetUV(const ImVec2& min, const ImVec2& max)
 void UI::Viewport::ResetSize(const ImVec2& size)
 {
 	vp_size = size;
-
 }
 
 void UI::Viewport::ResetBufferID(GLuint id)

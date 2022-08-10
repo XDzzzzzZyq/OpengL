@@ -133,19 +133,20 @@ void render(GLFWwindow* window) {
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size+ImVec2(10,50);
+		if ((int)view_size.x % 2)
+			view_size.x++;
 		glViewport(0, 0, view_size.x, view_size.y);
 		camera.ChangeCamRatio(view_size);
 		renderer.FrameBufferResize(0, view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetSize(view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
-	
+		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->frame_buffer.GetTexID());
 	};
 
 	UI.ParaUpdate = [&] {
 		FrameCount++;
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, mouse_x, mouse_y);
 		UI.FindImguiItem("__Parameters__", "Application average %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
-		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 
 		scale = UI.GetParaValue("__Parameters__", "SCALE")->para_data.fdata;
 		blend = UI.GetParaValue("__Parameters__", "POWER")->para_data.fdata;
@@ -190,7 +191,7 @@ void render(GLFWwindow* window) {
 		/* Poll for and process events */
 		glfwPollEvents();
 		//std::cout << "\r" << timer.duration << "ms";
-
+		//GLDEBUG
 	}
 	cout << endl << "[ Finished ]" << endl;
 	cout << GameObject::count << " object(s)" << endl;
