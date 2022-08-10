@@ -19,6 +19,9 @@ public:
 		is_rendered = r;
 	}
 
+	mutable bool is_selected = false;
+	mutable bool is_activated = false;
+
 	GameObject();
 	~GameObject();
 	//glm::rotate(vec<3, T, Q> const& v, T const& angle, vec<3, T, Q> const& normal)

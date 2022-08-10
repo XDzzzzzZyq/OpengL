@@ -30,7 +30,7 @@ Spirit::~Spirit()
 	DeleteSpirit();
 }
 
-void Spirit::RenderSpirit(const std::vector<float>& light_data, const Camera& cam)
+void Spirit::RenderSpirit(const std::vector<float>& light_data,Camera* cam)
 {
 	r_vertArry.Bind();
 	r_index.Bind();
@@ -42,11 +42,11 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, const Camera& ca
 	//std::cout << o_Transform;
 	r_shader.SetValue("Light_data",6 ,light_data.data(),VEC1_ARRAY);
 
-	if(cam.is_invUniform_changed)
-		r_shader.SetValue("U_cam_trans", cam.o_InvTransform);
+	if(cam->is_invUniform_changed)
+		r_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 
-	if(cam.is_frustum_changed)
-		r_shader.SetValue("U_ProjectM", cam.cam_frustum);
+	if(cam->is_frustum_changed)
+		r_shader.SetValue("U_ProjectM", cam->cam_frustum);
 
 	r_shader.SetValue("SpiritOpacity", spirit_opacity);
 	r_shader.SetValue("U_Scale", SPIRIT_SIZE);
@@ -58,10 +58,10 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, const Camera& ca
 
 
 	//o_Transform = glm::mat4(1.0f);
-	r_index.Unbind();
-	r_shader.UnuseShader();
-	r_vertArry.Unbind();
-	r_tex.Unbind();
+	//r_index.Unbind();
+	//r_shader.UnuseShader();
+	//r_vertArry.Unbind();
+	//r_tex.Unbind();
 
 
 }

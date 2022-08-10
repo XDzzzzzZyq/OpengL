@@ -33,7 +33,7 @@ public:
 	Mesh();
 	~Mesh();
 
-	void RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& light_list);
+	void RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_list);
 
 	void SetObjShader(std::string path);
 	void SetTex(std::string path, TextureType slot);

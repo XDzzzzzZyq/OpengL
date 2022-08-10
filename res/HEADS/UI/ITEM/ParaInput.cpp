@@ -27,6 +27,10 @@ UI::ParaInput::ParaInput(ImItemType type, const std::string& name)
 
 		uitm_para = Parameters(VEC3_PARA);
 		break;
+	case RGBA_INP:
+
+		uitm_para = Parameters(VEC4_PARA);
+		break;
 	case BOOL_INP:
 
 		uitm_para = Parameters(BOOL_PARA);

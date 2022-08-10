@@ -45,7 +45,7 @@ public:
 	void PushDebugLine(float x, float y, float z);
 	void PushDebugLines(const std::vector<glm::vec3>& points);
 
-	void RenderDdbugLine(const Camera& camera);
+	void RenderDdbugLine(Camera* camera);
 
 	void SetDLineShader();
 	void DeleteDLine();

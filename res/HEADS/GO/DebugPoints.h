@@ -46,7 +46,7 @@ public:
 	DebugPoints(const std::vector<float>& pos_list);
 	~DebugPoints();
 
-	void RenderDebugPoint(const Camera& camera);
+	void RenderDebugPoint(Camera* camera);
 
 	void SetDebugPointsShader(PointType type, bool proj);
 	void PushDebugPoint(const glm::vec3& point);

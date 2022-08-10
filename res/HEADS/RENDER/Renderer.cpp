@@ -122,7 +122,7 @@ void Renderer::Render() {
 			if (!obj.second->is_viewport)continue;
 
 			obj.second->ApplyTransform();
-			obj.second->RenderObj(*cam_list[0], light_list);
+			obj.second->RenderObj(cam_list[0], light_list);
 			obj.second->is_Uniform_changed = false;
 			//std::cout << cam_list[0]->o_InvTransform;
 		}
@@ -136,7 +136,7 @@ void Renderer::Render() {
 			if (!obj.second->is_viewport)continue;
 
 			obj.second->ApplyTransform();
-			obj.second->RenderObj(*cam_list[0], emptyLight);
+			obj.second->RenderObj(cam_list[0], emptyLight);
 			obj.second->is_Uniform_changed = false;
 		}
 	}
@@ -149,7 +149,7 @@ void Renderer::Render() {
 	{
 		if (!dLine.second->is_viewport)continue;
 		dLine.second->ApplyTransform();
-		dLine.second->RenderDdbugLine(*cam_list[0]);
+		dLine.second->RenderDdbugLine(cam_list[0]);
 		dLine.second->is_Uniform_changed = false;
 	}
 
@@ -157,7 +157,7 @@ void Renderer::Render() {
 	{
 		if (!dPoints.second->is_viewport)continue;
 		dPoints.second->ApplyTransform();
-		dPoints.second->RenderDebugPoint(*cam_list[0]);
+		dPoints.second->RenderDebugPoint(cam_list[0]);
 		dPoints.second->is_Uniform_changed = false;
 	}
 
@@ -166,7 +166,7 @@ void Renderer::Render() {
 	for (const auto& light : light_list)
 	{
 		if (!light.second->light_spirit.is_viewport)continue;
-		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), *cam_list[0]);
+		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]);
 	}
 
 	envir_list[0]->UnBindFrameBuffer();
@@ -175,7 +175,7 @@ void Renderer::Render() {
 	glDisable(GL_DEPTH_TEST);
 
 	framebuffer->BindFrameBuffer();
-	envir_list[0]->RenderEnvironment(*cam_list[0]);
+	envir_list[0]->RenderEnvironment(cam_list[0]);
 	framebuffer->UnbindFrameBuffer();
 	////////////  RESET  ///////////
 	

@@ -46,7 +46,7 @@ Mesh::~Mesh()
 	DeleteObj();
 }
 
-void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& light_list)
+void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_list)
 {
 	
 	o_vertArry.Bind();
@@ -62,14 +62,14 @@ void Mesh::RenderObj(const Camera& cam, const std::unordered_map<int, Light*>& l
 	if(is_Uniform_changed)
 		o_shader.SetValue("U_obj_trans", o_Transform);
 
-	if (cam.is_invUniform_changed)
-		o_shader.SetValue("U_cam_trans", cam.o_InvTransform);
+	if (cam->is_invUniform_changed)
+		o_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 
-	if(cam.is_frustum_changed)
-		o_shader.SetValue("U_ProjectM", cam.cam_frustum);
+	if(cam->is_frustum_changed)
+		o_shader.SetValue("U_ProjectM", cam->cam_frustum);
 
-	if(cam.is_Uniform_changed || cam.is_frustum_changed)
-		o_shader.SetValue("Scene_data",8 , cam.cam_floatData.data(),VEC1_ARRAY);
+	if(cam->is_Uniform_changed || cam->is_frustum_changed)
+		o_shader.SetValue("Scene_data",8 , cam->cam_floatData.data(),VEC1_ARRAY);
 
 	if (!light_list.empty())
 	{

@@ -78,17 +78,17 @@ void DebugLine::PushDebugLines(const std::vector<glm::vec3>& points)
 	}
 }
 
-void DebugLine::RenderDdbugLine(const Camera& camera)
+void DebugLine::RenderDdbugLine(Camera* camera)
 {
 	if (dLine_pos_list.size() < 2)return;
 
 	dLine_shader.UseShader();
 
-	if(camera.is_invUniform_changed)
-		dLine_shader.SetValue("U_cam_trans",camera.o_InvTransform);
+	if(camera->is_invUniform_changed)
+		dLine_shader.SetValue("U_cam_trans",camera->o_InvTransform);
 
-	if(camera.is_frustum_changed)
-		dLine_shader.SetValue("U_ProjectM", camera.cam_frustum);
+	if(camera->is_frustum_changed)
+		dLine_shader.SetValue("U_ProjectM", camera->cam_frustum);
 
 	if(is_Uniform_changed)
 		dLine_shader.SetValue("U_Trans", o_Transform);

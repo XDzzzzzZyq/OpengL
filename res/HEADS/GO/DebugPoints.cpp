@@ -46,7 +46,7 @@ DebugPoints::~DebugPoints()
 	DeleteDebugPoints();
 }
 
-void DebugPoints::RenderDebugPoint(const Camera& camera)
+void DebugPoints::RenderDebugPoint(Camera* camera)
 {
 
 	
@@ -66,11 +66,11 @@ void DebugPoints::RenderDebugPoint(const Camera& camera)
 	}
 		
 
-	if(camera.is_invUniform_changed)
-		dp_shader[(int)is_proj].SetValue("U_cam_trans", camera.o_InvTransform);	
+	if(camera->is_invUniform_changed)
+		dp_shader[(int)is_proj].SetValue("U_cam_trans", camera->o_InvTransform);	
 
-	if(camera.is_frustum_changed)
-		dp_shader[(int)is_proj].SetValue("U_ProjectM", camera.cam_frustum);	
+	if(camera->is_frustum_changed)
+		dp_shader[(int)is_proj].SetValue("U_ProjectM", camera->cam_frustum);	
 
 	dp_shader[(int)is_proj].SetValue("U_Opacity", dp_opacity);	
 	dp_shader[(int)is_proj].SetValue("U_Scale", dp_scale);	
@@ -80,10 +80,10 @@ void DebugPoints::RenderDebugPoint(const Camera& camera)
 	glDrawElementsInstanced(GL_TRIANGLES, dp_index.count(), GL_UNSIGNED_INT, nullptr, dp_pos_list.size()/3);
 
 	//o_Transform = glm::mat4(1.0f);
-	dp_index.Unbind();
-	dp_pos_buffer.UnbindBuffer();
-	dp_shader[(int)is_proj].UnuseShader();
-	dp_vertArry.Unbind();
+	//dp_index.Unbind();
+	//dp_pos_buffer.UnbindBuffer();
+	//dp_shader[(int)is_proj].UnuseShader();
+	//dp_vertArry.Unbind();
 
 	is_list_changed = false;
 }
