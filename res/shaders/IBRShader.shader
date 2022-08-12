@@ -21,9 +21,11 @@ void main(){
 
 
 #shader fragment
-#version 330 core
+#version 430 core
 
 layout(location = 0) out vec4 color;
+layout(location = 1) out vec4 IDcolor;
+layout(location = 2) out vec4 RANDcolor;
 
 in vec2 screen_uv;
 vec4 screen_color;
@@ -36,6 +38,8 @@ uniform vec3 pure_color;
 uniform mat4 cam_rotM;
 uniform float cam_fov;
 uniform float cam_ratio;
+uniform vec3 ID_color;
+uniform vec3 RAND_color;
 
 vec4 ray_dir;
 vec2 reUV;
@@ -62,5 +66,6 @@ void main(){
 	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);
 
 	color =  hdr_color * (1 - screen_color[3]) + screen_color * screen_color[3];
-
+	IDcolor = vec4(ID_color, 1.0f);
+	RANDcolor = vec4(RAND_color, 1.0f);
 };

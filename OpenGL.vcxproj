@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\UI\ITEM\Outline.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\ParaInput.cpp" />
     <ClCompile Include="res\HEADS\UI\DefultViewports.cpp" />
@@ -352,6 +353,7 @@
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="res\HEADS\UI\ITEM\Outline.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Button.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\ParaInput.h" />
     <ClInclude Include="res\HEADS\UI\ImguiMenuItem.h" />

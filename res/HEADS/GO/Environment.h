@@ -60,6 +60,7 @@ public:
 
 	void BindFrameBuffer() const;
 	void UnBindFrameBuffer() const;
+	void SwapFrameBuffer(FBType type);
 
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;

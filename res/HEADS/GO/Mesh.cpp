@@ -5,7 +5,7 @@
 
 Mesh::Mesh(const char* path)
 {
-
+	o_type = GO_MESH;
 	read = ReadObj(path,true);
 
 	o_name = read.name;
@@ -81,7 +81,6 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 
 	//light settings
 
-
 	glDrawElements(GL_TRIANGLES, o_index.count(), GL_UNSIGNED_INT, nullptr);
 
 	//o_Transform = glm::mat4(1.0f);
@@ -103,6 +102,7 @@ void Mesh::SetObjShader(std::string path)
 	o_shader.UseShader();
 	//matrix = glm::translate(matrix, o_position);
 	o_shader.SetValue("U_ProjectM", o_Transform);
+	o_shader.SetValue("ID_color", id_color);
 	//o_shader.SetVal1f("is", 0.5f);
 	//std::cout<<"aaa\n";
 }
@@ -118,6 +118,7 @@ void Mesh::SetTex(std::string path, TextureType slot)
 	o_shader.SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
 	o_shader.SetValue("U_Texture", slot);
 	o_shader.SetValue("Envir_Texture", HDR_TEXTURE);
+	o_shader.SetValue("RAND_color", id_color_rand);
 
 	o_shader.UnuseShader();
 	o_tex.Unbind();

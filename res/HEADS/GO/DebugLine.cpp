@@ -2,6 +2,7 @@
 
 DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 {
+	o_type = GO_DL;
 	LOOP(3) {
 		dLine_pos_list.push_back(start[i]);
 	}
@@ -18,6 +19,7 @@ DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 
 DebugLine::DebugLine(const std::vector<glm::vec3>& vertices)
 {
+	o_type = GO_DL;
 	for (const auto& vert : vertices) {
 		LOOP(3) {
 			dLine_pos_list.push_back(vert[i]);
@@ -134,6 +136,9 @@ void DebugLine::SetDLineShader()
 	dLine_shader.UseShader();
 	//dLine_shader.SetValue("blen", 0.5f);
 	dLine_shader.SetValue("U_color", 1.0f, 1.0f, 1.0f);
+	dLine_shader.SetValue("ID_color", id_color);
+	dLine_shader.SetValue("RAND_color", id_color_rand);
+	dLine_shader.UnuseShader();
 }
 
 void DebugLine::DeleteDLine()

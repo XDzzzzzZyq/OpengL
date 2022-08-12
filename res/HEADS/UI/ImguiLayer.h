@@ -52,6 +52,12 @@ public:
 	mutable std::function<void(void)> pre_RenderLayer = [] {};
 	mutable std::function<void(void)> extra_RenderLayer = [] {};
 	mutable std::function<void(void)> resize_event = [] {};
-	void RenderLayer() const;
+	virtual void RenderLayer() const;
+
+	//for outline                                    |  TYPE  |  NAME  |
+	virtual void SetOutLine(const std::vector<std::tuple<int, std::string>>& name_list, const std::vector<int>& depth_list) {
+		DEBUG(uly_name + " is not a Outline") return;
+	}
+	mutable std::function<void(void)> set_active = [] {};
 };
 

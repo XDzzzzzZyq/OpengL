@@ -37,9 +37,11 @@ void main(){
 
 
 #shader fragment
-#version 330 core
+#version 430 core
 
 layout(location = 0) out vec4 color;
+layout(location = 1) out vec4 IDcolor;
+layout(location = 2) out vec4 RANDcolor;
 
 in vec2 uv;
 in vec4 testcolor;
@@ -50,6 +52,8 @@ in vec4 Snormal_color;
 uniform sampler2D U_Texture;
 uniform sampler2D Envir_Texture;
 uniform float blen[3];
+uniform vec3 ID_color;
+uniform vec3 RAND_color;
 
 uniform float L_point[41]; //count + 5 points
 uniform float L_sun[23]; //count + 2 suns
@@ -57,6 +61,8 @@ uniform float L_spot[40]; //count + 3 spots
 
 uniform float Scene_data[8];//   | pos3f | rot3f | ratio1f | angle1f | + 
 						    //   |           CAMREA_DATA             | + |       POST_PROCESS        |
+
+
 
 struct pointLight{
 	float is_shadow;
@@ -139,7 +145,8 @@ void main(){
 	LightMap.Specular_map = vec3(0.0f,0.0f,0.0f);
 	//color = U_color;
 
-	
+	IDcolor=vec4(ID_color/10, 1.0f);
+	RANDcolor = vec4(RAND_color, 1.0f);
 
 	//Generate PL_LIST & pL_list Shading
 	for(int i = 0;i<L_point[0];i++){

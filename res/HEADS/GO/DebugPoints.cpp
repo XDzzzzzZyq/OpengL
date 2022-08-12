@@ -2,6 +2,7 @@
 
 DebugPoints::DebugPoints()
 {
+	o_type = GO_DP;
 	dp_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
 
 	BufferLayout layout;
@@ -17,11 +18,11 @@ DebugPoints::DebugPoints()
 	o_name = "DebugPoints." + std::to_string(GetObjectID());
 
 	SetDebugPointsShader(SQUARE_POINT, true);
-	//dp_pos_buffer.GenStorageBuffer(dp_pos_list);
 }
 
 DebugPoints::DebugPoints(const std::vector<float>& pos_list)
 {
+	o_type = GO_DP;
 	dp_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
 
 	BufferLayout layout;
@@ -96,6 +97,12 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 	dp_shader[0] = Shaders("res/shaders/PointsShader.shader");
 	dp_shader[1] = Shaders("res/shaders/PointsShader_proj.shader");
 	
+	dp_shader[0].UseShader();
+	dp_shader[0].SetValue("ID_color", id_color);
+	dp_shader[0].SetValue("RAND_color", id_color_rand);
+	dp_shader[1].UseShader();
+	dp_shader[1].SetValue("ID_color", id_color);
+	dp_shader[1].SetValue("RAND_color", id_color_rand);
 }
 
 void DebugPoints::PushDebugPoint(const glm::vec3& point)

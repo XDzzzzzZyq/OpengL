@@ -36,16 +36,19 @@ void main(){
 #version 330 core
 
 layout(location = 0) out vec4 color;
+layout(location = 1) out vec4 IDcolor;
+layout(location = 2) out vec4 RANDcolor;
 
 in vec3 L_color;
 
 uniform float U_Opacity;
+uniform vec3 ID_color;
+uniform vec3 RAND_color;
 
 void main(){		   
 						   
 	//color = vec4(uv,0.0f,1.0f);
 	color = vec4(L_color, U_Opacity);
-	//color = L_color;
-	//color = uvcolor;
-	//color = vec4(1.0f,1.0f,1.0f,1.0f);
+	IDcolor = vec4(ID_color, 1.0f);
+	RANDcolor = vec4(RAND_color, 1.0f);
 };

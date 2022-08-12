@@ -115,14 +115,16 @@ void render(GLFWwindow* window) {
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	AverageTime<500> AvTime;
 	float FrameCount = 0;
-
+	int tex_type = 0;
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
 			glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
 		points.PushDebugPoint(newpoint1);
 		line.PushDebugLine(newpoint1);
-
+		tex_type++;
+		if (tex_type > 2)tex_type = 0;
+		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)tex_type);
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 			glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
@@ -154,7 +156,7 @@ void render(GLFWwindow* window) {
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
 	};
-	UI.GetCurrentWindow();
+	UI.GetCurrentWindow();GLDEBUG
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
@@ -192,6 +194,7 @@ void render(GLFWwindow* window) {
 		glfwPollEvents();
 		//std::cout << "\r" << timer.duration << "ms";
 		//GLDEBUG
+		//DEBUG(GL_COLOR_ATTACHMENT1 == GL_COLOR_ATTACHMENT0+ ID_FB)
 	}
 	cout << endl << "[ Finished ]" << endl;
 	cout << GameObject::count << " object(s)" << endl;

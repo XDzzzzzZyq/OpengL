@@ -2,7 +2,7 @@
 
 Spirit::Spirit()
 {
-	
+	o_type = GO_SPIRIT;
 	//std::cout << VertData[100] << std::endl;
 	r_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
 
@@ -69,7 +69,10 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data,Camera* cam)
 void Spirit::SetSpiritShader()
 {
 	r_shader = Shaders("res/shaders/SpiritShader.shader");
-
+	r_shader.UseShader();
+	r_shader.SetValue("ID_color", id_color);
+	r_shader.SetValue("RAND_color", id_color_rand);
+	r_shader.UnuseShader();
 }
 
 void Spirit::SetTex()
@@ -100,7 +103,6 @@ void Spirit::DeleteSpirit()
 	r_index.DelIndBuff();
 	r_vertBuffer.DelVertBuff();
 	r_vertArry.DelVertArr();
-
 }
 
 std::string Spirit::ParsePath() const

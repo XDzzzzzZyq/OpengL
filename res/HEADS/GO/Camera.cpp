@@ -5,6 +5,7 @@
 Camera::Camera(float w, float h, float per, float n, float f)
 	:cam_w(w), cam_h(h), cam_pers(per), cam_near(n), cam_far(f)
 {
+	o_type = GO_CAM;
 	//cam_frustum = glm::ortho(-cam_w / 2, cam_w / 2, -cam_h / 2, cam_h / 2, cam_near, cam_far);
 	cam_frustum = glm::perspective(glm::radians(per), w / h, n, f); //fov angle from y axis
 
@@ -14,6 +15,7 @@ Camera::Camera(float w, float h, float per, float n, float f)
 
 Camera::Camera()
 {
+	o_type = GO_CAM;
 	cam_w = 0;
 	cam_h = 0;
 }

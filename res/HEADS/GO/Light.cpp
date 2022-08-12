@@ -2,6 +2,7 @@
 
 Light::Light(LightType type, float power, glm::vec3 color)
 {
+	o_type = GO_LIGHT;
 	light_type = type;
 	light_power = power;
 	light_color = color;
