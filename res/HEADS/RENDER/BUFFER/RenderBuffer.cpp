@@ -9,7 +9,8 @@ RenderBuffer::RenderBuffer()
 
 RenderBuffer::~RenderBuffer()
 {
-
+	//glDeleteRenderbuffers(1, &rb_ID);
+	DEBUG("RB dele")
 }
 
 void RenderBuffer::BindRenderBuffer() const

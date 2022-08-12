@@ -40,6 +40,9 @@ public:
 	std::unordered_map<int, DebugLine*>      dLine_list;
 	std::unordered_map<int, DebugPoints*>  dPoints_list;
 
+	//std::vector<GameObject> selec_list;
+	//std::vector<std::tuple<int, std::string>> GetOutlineData();
+
 	std::vector<FrameBuffer> framebuffer_list;
 	int framebuffer_count = -1;
 	void AddFrameBuffer();
@@ -48,12 +51,10 @@ public:
 	void FrameBufferResize(int slot, const ImVec2& size);
 	GLuint GetFrameBufferTexture(int slot);
 
-	template<typename T>
-	void UseObject(T* obj);
-
 	void FrameClean() const;
 	void Render();
 
+	bool is_GOlist_changed = true;
 	void UseCamera(Camera* camera);
 	void UseCamera(const int& cam_id);
 	Camera* GetActiveCamera();
@@ -69,10 +70,4 @@ public:
 	void UseDebugLine(DebugLine* dline);
 	void UseDebugPoints(DebugPoints* dpoints);
 };
-
-template<typename T>
-void Renderer::UseObject(T* obj)
-{
-
-}
 

@@ -35,7 +35,7 @@ Renderer::Renderer()
 	glStencilMask(0xff);
 
 
-	framebuffer = FrameBuffer();
+	framebuffer = FrameBuffer(COMBINE_FB);
 }
 
 Renderer::~Renderer()
@@ -45,7 +45,7 @@ Renderer::~Renderer()
 
 void Renderer::AddFrameBuffer()
 {
-	framebuffer_list.push_back(FrameBuffer());
+	framebuffer_list.push_back(FrameBuffer(COMBINE_FB));
 
 	framebuffer_count++;
 }
@@ -203,6 +203,7 @@ void Renderer::Render() {
 
 void Renderer::UseCamera(Camera* camera)
 {
+	is_GOlist_changed = true;
 	if (cam_list.find(camera->GetObjectID()) == cam_list.end())
 	{
 		cam_list[camera->GetObjectID()] = camera;
@@ -216,6 +217,7 @@ void Renderer::UseCamera(Camera* camera)
 
 void Renderer::UseCamera(const int& cam_id)
 {
+	is_GOlist_changed = true;
 	if (cam_list.find(cam_id) != cam_list.end())
 	{
 		cam_list[0] = cam_list[cam_id];
@@ -231,6 +233,7 @@ Camera* Renderer::GetActiveCamera()
 //////////////////////////////////////////////
 void Renderer::UseMesh(Mesh* mesh)
 {
+	is_GOlist_changed = true;
 	if (mesh_list.find(mesh->GetObjectID()) == mesh_list.end())
 	{
 		mesh_list[mesh->GetObjectID()] = mesh;
@@ -241,6 +244,7 @@ void Renderer::UseMesh(Mesh* mesh)
 //////////////////////////////////////////////
 void Renderer::UseLight(Light* light)
 {
+	is_GOlist_changed = true;
 	if (light_list.find(light->GetObjectID()) == light_list.end())
 	{
 		is_light_changed = true;
@@ -252,6 +256,7 @@ void Renderer::UseLight(Light* light)
 
 void Renderer::UseEnvironment(Environment* envir)
 {
+	is_GOlist_changed = true;
 	if (envir_list.find(envir->GetObjectID()) == envir_list.end())
 	{
 		envir_list[envir->GetObjectID()] = envir;
@@ -265,6 +270,7 @@ void Renderer::UseEnvironment(Environment* envir)
 
 void Renderer::UseEnvironment(const int& envir_id)
 {
+	is_GOlist_changed = true;
 	if (envir_list.find(envir_id) != envir_list.end())
 	{
 		envir_list[0] = envir_list[envir_id];
@@ -278,6 +284,7 @@ Environment* Renderer::GetActiveEnvironment()
 
 void Renderer::UseDebugLine(DebugLine* dline)
 {
+	is_GOlist_changed = true;
 	if (dLine_list.find(dline->GetObjectID()) == dLine_list.end())
 	{
 		dLine_list[dline->GetObjectID()] = dline;
@@ -287,6 +294,7 @@ void Renderer::UseDebugLine(DebugLine* dline)
 
 void Renderer::UseDebugPoints(DebugPoints* dpoints)
 {
+	is_GOlist_changed = true;
 	if (dPoints_list.find(dpoints->GetObjectID()) == dPoints_list.end())
 	{
 		dPoints_list[dpoints->GetObjectID()] = dpoints;

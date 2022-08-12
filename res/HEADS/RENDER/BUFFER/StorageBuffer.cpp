@@ -1,14 +1,28 @@
 #include "StorageBuffer.h"
 
 StorageBuffer::StorageBuffer()
+	:ssbo_base(3), ssbo_type(NONE_LIST)
 {
 	glGenBuffers(1, &ssbo_id);
-	ssbo_base = 3;
+
+}
+
+StorageBuffer::StorageBuffer(SSBType type)
+	:ssbo_base(3), ssbo_type(type)
+{
+	glGenBuffers(1, &ssbo_id);
+}
+
+StorageBuffer::StorageBuffer(SSBType type, int base)
+	: ssbo_base(base), ssbo_type(type)
+{
+	glGenBuffers(1, &ssbo_id);
 }
 
 StorageBuffer::~StorageBuffer()
 {
 	glDeleteBuffers(1, &ssbo_id);
+	DEBUG("SB dele")
 }
 
 void StorageBuffer::BindBuffer() const

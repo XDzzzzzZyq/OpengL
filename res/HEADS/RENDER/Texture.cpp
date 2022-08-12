@@ -146,8 +146,10 @@ void Texture::Resize(float x, float y)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void Texture::Bind(GLuint slot /*= 0*/) const
+void Texture::Bind(GLuint slot) const
 {
+	if (slot == -1)
+		slot = Tex_slot;
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 	//Tex_slot = slot;

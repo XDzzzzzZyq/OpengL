@@ -6,6 +6,11 @@
 
 #include "support.h"
 
+enum SSBType
+{
+	NONE_LIST, FLOAT_LIST, INT_LIST, VEC2_LIST, VEC3_LIST
+};
+
 class StorageBuffer  //shader storage buffer object SSBO
 {
 private:
@@ -13,11 +18,15 @@ private:
 	GLuint ssbo_base = 3;
 public:
 	StorageBuffer();
+	StorageBuffer(SSBType type);
+	StorageBuffer(SSBType type, int base);
 	~StorageBuffer();
 
 	void BindBuffer() const;
 	void UnbindBuffer() const;
 	void SetBufferBase(int base);
+
+	SSBType ssbo_type = NONE_LIST;
 
 	template <typename T>
 	void GenStorageBuffer(const std::vector<T>& src);

@@ -29,10 +29,11 @@ public:
 	~Texture();
 
 	void DelTexture() const;
+	void SlotAdd(int delt) { Tex_slot += delt; }
 	void Resize(const ImVec2& size);
 	void Resize(float x, float y);
 
-	void Bind(GLuint slot = 0) const;
+	void Bind(GLuint slot = -1) const;
 	void Unbind() const;
 
 	inline int GetW()const { return im_w; }
