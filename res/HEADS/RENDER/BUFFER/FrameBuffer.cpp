@@ -2,33 +2,13 @@
 
 FrameBuffer::FrameBuffer()
 {
-	fb_type = COMBINE_FB;
-	renderBuffer = RenderBuffer();
-
-	BufferTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
-	BufferTexture.Bind(BufferTexture.Tex_type);
-
-	glGenFramebuffers(1, &fb_ID);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, BufferTexture.GetTexID(), 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer.GetRenderBufferID());
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	{
-		DEBUG("framebuffer error")
-	}
-	else
-	{
-		std::cout << "framebuffer is complete\n";
-	}
 }
 
 
 FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	:fb_type(type), using_list(false)
 {
-	//DEBUG(type)
+	
 	renderBuffer = RenderBuffer();
 
 	BufferTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
@@ -40,8 +20,8 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type, GL_TEXTURE_2D, BufferTexture.GetTexID(), 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type + 1, GL_TEXTURE_2D,IDTexture.GetTexID(), 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer.GetRenderBufferID());
-
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
+	
 	//glDrawBuffer(fb_type);GLDEBUG
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
@@ -53,7 +33,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	}
 	GLenum attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 	glDrawBuffers(2, attachments);
-
+	
 	//UnbindFrameBuffer();
 }
 
@@ -65,7 +45,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 
-	GLenum* attachments = new GLenum(count);
+	GLenum* attachments = new GLenum[count];
 
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
@@ -81,7 +61,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	}
 	va_end(arg_ptr);
 
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer.GetRenderBufferID());
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
@@ -93,13 +73,12 @@ FrameBuffer::FrameBuffer(int count, ...)
 	}
 	glDrawBuffers(count, attachments);
 	UnbindFrameBuffer();
+	delete[] attachments;
 }
 
 FrameBuffer::~FrameBuffer()
 {
-	//glDeleteFramebuffers(1, &fb_ID);
-	//BufferTexture.DelTexture();
-	DEBUG("FB dele")
+	//DEBUG("FB dele")
 }
 
 void FrameBuffer::BindFrameBuffer() const
@@ -115,7 +94,7 @@ void FrameBuffer::UnbindFrameBuffer() const
 void FrameBuffer::Resize(const ImVec2& size, bool all)
 {
 
-	renderBuffer.Resize(size);
+	renderBuffer->Resize(size);
 
 	if (using_list) {
 		for (auto& tex : fb_tex_list) 
@@ -131,7 +110,7 @@ void FrameBuffer::Resize(const ImVec2& size, bool all)
 void FrameBuffer::Resize(float w, float h, bool all)
 {
 
-	renderBuffer.Resize(w, h);
+	renderBuffer->Resize(w, h);
 	if (using_list) {
 		for (auto& tex : fb_tex_list)
 			tex.Resize(w, h);
@@ -141,6 +120,22 @@ void FrameBuffer::Resize(float w, float h, bool all)
 		BufferTexture.Resize(w, h);
 	}
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+}
+
+FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y)
+{
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, fb_ID);
+
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+	FBPixel Pixel;
+	glReadPixels(x, y, 1, 1, GL_RGB_INTEGER, GL_UNSIGNED_INT, &Pixel);
+
+	glReadBuffer(GL_NONE);
+
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+
+	return Pixel;
 }
 
 void FrameBuffer::BindFrameBufferTex() const
@@ -163,4 +158,14 @@ void FrameBuffer::BindFrameBufferTex(int count, ...) const
 void FrameBuffer::UnbindFrameBufferTex() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void FrameBuffer::Del() const
+{
+	renderBuffer->Del();
+	BufferTexture.DelTexture();
+	IDTexture.DelTexture();
+
+	for (auto& tex : fb_tex_list)
+		tex.DelTexture();
 }

@@ -22,7 +22,6 @@ StorageBuffer::StorageBuffer(SSBType type, int base)
 StorageBuffer::~StorageBuffer()
 {
 	glDeleteBuffers(1, &ssbo_id);
-	DEBUG("SB dele")
 }
 
 void StorageBuffer::BindBuffer() const

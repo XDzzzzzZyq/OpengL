@@ -10,7 +10,7 @@ RenderBuffer::RenderBuffer()
 RenderBuffer::~RenderBuffer()
 {
 	//glDeleteRenderbuffers(1, &rb_ID);
-	DEBUG("RB dele")
+	//DEBUG("RB dele")
 }
 
 void RenderBuffer::BindRenderBuffer() const
@@ -22,6 +22,11 @@ void RenderBuffer::BindRenderBuffer() const
 void RenderBuffer::UnbindRenderBuffer() const
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+}
+
+void RenderBuffer::Del() const
+{
+	glDeleteRenderbuffers(1, &rb_ID);
 }
 
 void RenderBuffer::Resize(float w, float h)

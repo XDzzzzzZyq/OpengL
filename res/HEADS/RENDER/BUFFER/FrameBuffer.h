@@ -2,10 +2,17 @@
 #include "Texture.h"
 #include "RenderBuffer.h"
 #include <cstdarg>
+#include <optional>
 
 enum FBType
 {
 	NONE_FB=-1, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB, NORMAL_FB, DIFF_FB, SPEC_FB, SHADOW_FB, DEPTH_FB = GL_COLOR_ATTACHMENT0 - GL_DEPTH_ATTACHMENT
+};
+
+struct FBPixel
+{
+	int R, G, B;
+	int GetID() { return R + G * 256 + B * 256 * 256; }
 };
 
 class FrameBuffer
@@ -15,7 +22,7 @@ private:
 public:
 	Texture BufferTexture;
 	Texture IDTexture;
-	RenderBuffer renderBuffer;
+	std::optional<RenderBuffer> renderBuffer;
 
 	FBType fb_type = NONE_FB;
 	mutable std::unordered_map<FBType, int> fb_type_list;      //  tex_type -> tex_index
@@ -33,9 +40,13 @@ public:
 	void Resize(const ImVec2& size, bool all = false);
 	void Resize(float w,float h, bool all = false);
 
+	FBPixel ReadPix(GLuint x, GLuint y);
+
 	void BindFrameBufferTex() const;
 	void BindFrameBufferTex(int count, ...) const;
 	void UnbindFrameBufferTex() const;
+
+	void Del() const;
 
 	GLuint GetFrameBufferID() const { return fb_ID; }
 };

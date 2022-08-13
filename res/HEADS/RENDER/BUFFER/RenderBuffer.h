@@ -13,6 +13,9 @@ public:
 
 	void BindRenderBuffer() const;
 	void UnbindRenderBuffer() const;
+
+	void Del() const;
+
 	void Resize(float w, float h);
 	void Resize(const ImVec2& size);
 
