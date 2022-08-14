@@ -36,6 +36,8 @@ Renderer::Renderer()
 
 
 	framebuffer = FrameBuffer(COMBINE_FB);
+
+	EventInit();
 }
 
 Renderer::~Renderer()
@@ -80,6 +82,21 @@ GLuint Renderer::GetFrameBufferTexture(int slot)
 {
 	//return framebuffer_list[slot].BufferTexture.GetTexID();
 	return framebuffer->BufferTexture.GetTexID();
+}
+
+
+void Renderer::EventInit()
+{
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&Renderer::LMB_CLICK,			this);
+}
+
+void Renderer::LMB_CLICK()
+{
+	if (IsClick()) {
+		int id = GetSelectID(mouse_x, mouse_y);
+		if (name_buff.find(id) != name_buff.end())
+			DEBUG(name_buff[id]);
+	}
 }
 
 //////////////////////////////////////////////
@@ -266,7 +283,7 @@ void Renderer::UseLight(Light* light)
 		light_list[light->GetObjectID()] = light;
 		spirit_list[light->light_spirit.GetObjectID()] = &light->light_spirit;
 		name_list.push_back(std::tuple<int, std::string>(light->o_type, light->o_name));
-		name_buff[light->GetObjectID()] = light->o_name;
+		name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
 	}
 
 }

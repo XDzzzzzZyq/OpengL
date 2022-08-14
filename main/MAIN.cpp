@@ -133,6 +133,8 @@ void render(GLFWwindow* window) {
 		line.PushDebugLine(newpoint2);
 		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
 		std::cout << UI.FindImguiLayer("Viewport")->uly_size;
+
+
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
@@ -156,10 +158,6 @@ void render(GLFWwindow* window) {
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
-
-		renderer.GetSelectID(mouse_x, mouse_y);
-
-		UI.FindImguiLayer("Viewport")->EventActivate();
 	};
 	UI.GetCurrentWindow();GLDEBUG
 	while (!glfwWindowShouldClose(window))
@@ -170,8 +168,8 @@ void render(GLFWwindow* window) {
 		Event.UpdateEvent(window);
 		AvTime.Add(UI.GetIO().Framerate);
 
-
-
+		renderer.EventActivate();
+		UI.FindImguiLayer("Viewport")->EventActivate();
 
 		/* Render here */
 

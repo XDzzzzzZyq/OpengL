@@ -11,6 +11,8 @@
 #include "PostProcessing.h"
 #include "FrameBuffer.h"
 
+#include "EventListener.h"
+
 #include "Spirit.h"
 
 #include <GL/glew.h>
@@ -20,7 +22,7 @@
 #include <optional>
 
 
-class Renderer
+class Renderer : public EventListener
 {
 private:
 	std::unordered_map<int, Light*> emptyLight;
@@ -31,6 +33,7 @@ public:
 	~Renderer();
 
 	//state
+public:
 	bool is_light_changed = false;
 
 	std::unordered_map<int, Camera*>		   cam_list;
@@ -41,6 +44,7 @@ public:
 	std::unordered_map<int, DebugLine*>      dLine_list;
 	std::unordered_map<int, DebugPoints*>  dPoints_list;
 
+public:
 	std::vector<GameObject> selec_list;
 	std::vector<std::tuple<int, std::string>> name_list;
 	std::vector<std::tuple<int, std::string>> GetOutlineData() { return name_list; }
@@ -48,6 +52,7 @@ public:
 
 	int GetSelectID(GLuint x, GLuint y);
 
+public:
 	std::vector<FrameBuffer> framebuffer_list;
 	int framebuffer_count = -1;
 	void AddFrameBuffer();
@@ -55,8 +60,12 @@ public:
 	void EndFrameBuffer(int slot);
 	void FrameBufferResize(int slot, const ImVec2& size);
 	GLuint GetFrameBufferTexture(int slot);
-	
 
+public:
+	void EventInit();
+	void LMB_CLICK();
+
+public:
 	void FrameClean() const;
 	void Render();
 

@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\UI\LAYER\ParamControl.cpp" />
+    <ClCompile Include="res\HEADS\UI\LAYER\Outline.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Outline.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\ParaInput.cpp" />
@@ -201,8 +203,9 @@
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp" />
     <ClCompile Include="res\HEADS\GO\Spirit.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\Viewport.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\TextureView.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
+    <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl" />
@@ -353,6 +356,8 @@
     <None Include="res\shaders\testS.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="res\HEADS\UI\LAYER\ParamControl.h" />
+    <ClInclude Include="res\HEADS\UI\LAYER\Outline.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Outline.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Button.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\ParaInput.h" />
@@ -690,8 +695,9 @@
     <ClInclude Include="res\HEADS\RENDER\Texture.h" />
     <ClInclude Include="res\HEADS\GO\Spirit.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\Viewport.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\TextureView.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />
+    <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\avatar1.png" />
