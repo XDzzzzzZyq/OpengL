@@ -24,8 +24,6 @@ void main(){
 #version 430 core
 
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 IDcolor;
-layout(location = 2) out vec4 RANDcolor;
 
 in vec2 screen_uv;
 vec4 screen_color;
@@ -66,6 +64,6 @@ void main(){
 	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);
 
 	color =  hdr_color * (1 - screen_color[3]) + screen_color * screen_color[3];
-	IDcolor = vec4(ID_color, 1.0f);
-	RANDcolor = vec4(RAND_color, 1.0f);
+	//IDcolor = vec4(ID_color, 1.0f);
+	//RANDcolor = vec4(RAND_color, 1.0f);
 };

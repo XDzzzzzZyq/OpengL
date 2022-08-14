@@ -32,8 +32,8 @@ void UI::Viewport::RenderItem() const
 	ImGui::GetWindowDrawList()->AddImage(
 
 		(ImTextureID)vp_fboTex_ID,
-		ImGui::GetWindowPos(),
-		ImGui::GetWindowPos() + vp_size,
+		ImGui::GetWindowPos() + ImVec2(0,23),
+		ImGui::GetWindowPos() + vp_size + ImVec2(0, 23),
 		ImVec2(0, 1),
 		ImVec2(1, 0)
 

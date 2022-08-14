@@ -93,7 +93,8 @@ void FrameBuffer::UnbindFrameBuffer() const
 
 void FrameBuffer::Resize(const ImVec2& size, bool all)
 {
-
+	fb_w = size[0];
+	fb_h = size[1];
 	renderBuffer->Resize(size);
 
 	if (using_list) {
@@ -109,7 +110,8 @@ void FrameBuffer::Resize(const ImVec2& size, bool all)
 
 void FrameBuffer::Resize(float w, float h, bool all)
 {
-
+	fb_w = w;
+	fb_h = h;
 	renderBuffer->Resize(w, h);
 	if (using_list) {
 		for (auto& tex : fb_tex_list)
@@ -122,19 +124,23 @@ void FrameBuffer::Resize(float w, float h, bool all)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 }
 
-FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y)
+//https://docs.gl/gl3/glReadPixels
+FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, fb_ID);
 
-	glReadBuffer(GL_COLOR_ATTACHMENT0);
+	glReadBuffer(GL_COLOR_ATTACHMENT0 + type);
 
 	FBPixel Pixel;
-	glReadPixels(x, y, 1, 1, GL_RGB_INTEGER, GL_UNSIGNED_INT, &Pixel);
+	float pix[4];
+	glReadPixels(x, fb_h - y + 40, 1, 1, GL_RGBA, GL_FLOAT, pix);
+	glReadPixels(x, fb_h - y + 40, 1, 1, GL_RGBA, GL_FLOAT, &Pixel);
 
 	glReadBuffer(GL_NONE);
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-
+	//DEBUG(glm::round(pix[0]*10))
+	//DEBUG(pix[3])
 	return Pixel;
 }
 

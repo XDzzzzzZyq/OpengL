@@ -11,14 +11,15 @@ enum FBType
 
 struct FBPixel
 {
-	int R, G, B;
-	int GetID() { return R + G * 256 + B * 256 * 256; }
+	GLuint RGBA[4];
+	int GetID() { return RGBA[0]; }
 };
 
 class FrameBuffer
 {
 private:
 	GLuint fb_ID = 0, fb_attach = 0;
+	float fb_w = SCREEN_W, fb_h = SCREEN_H;
 public:
 	Texture BufferTexture;
 	Texture IDTexture;
@@ -40,7 +41,7 @@ public:
 	void Resize(const ImVec2& size, bool all = false);
 	void Resize(float w,float h, bool all = false);
 
-	FBPixel ReadPix(GLuint x, GLuint y);
+	FBPixel ReadPix(GLuint x, GLuint y, FBType type);
 
 	void BindFrameBufferTex() const;
 	void BindFrameBufferTex(int count, ...) const;
@@ -49,5 +50,6 @@ public:
 	void Del() const;
 
 	GLuint GetFrameBufferID() const { return fb_ID; }
+	GLuint GetFBTextureID(FBType type) const { return fb_tex_list[fb_type_list[type]].GetTexID(); }
 };
 

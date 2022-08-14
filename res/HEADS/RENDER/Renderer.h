@@ -25,6 +25,7 @@ class Renderer
 private:
 	std::unordered_map<int, Light*> emptyLight;
 	std::optional<FrameBuffer> framebuffer;
+	std::unordered_map<int, std::string> name_buff;
 public:
 	Renderer();
 	~Renderer();
@@ -40,8 +41,12 @@ public:
 	std::unordered_map<int, DebugLine*>      dLine_list;
 	std::unordered_map<int, DebugPoints*>  dPoints_list;
 
-	//std::vector<GameObject> selec_list;
-	//std::vector<std::tuple<int, std::string>> GetOutlineData();
+	std::vector<GameObject> selec_list;
+	std::vector<std::tuple<int, std::string>> name_list;
+	std::vector<std::tuple<int, std::string>> GetOutlineData() { return name_list; }
+	std::string GetObjectName(int ID);
+
+	int GetSelectID(GLuint x, GLuint y);
 
 	std::vector<FrameBuffer> framebuffer_list;
 	int framebuffer_count = -1;
@@ -50,6 +55,7 @@ public:
 	void EndFrameBuffer(int slot);
 	void FrameBufferResize(int slot, const ImVec2& size);
 	GLuint GetFrameBufferTexture(int slot);
+	
 
 	void FrameClean() const;
 	void Render();

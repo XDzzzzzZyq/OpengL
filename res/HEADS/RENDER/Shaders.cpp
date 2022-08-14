@@ -1,5 +1,5 @@
 ﻿#include "Shaders.h"
-static ShaderPair ParseShader(const std::string& path) {
+ShaderPair ParseShader(const std::string& path) {
 	std::ifstream stream(path);
 
 	std::string line;
@@ -36,7 +36,7 @@ static ShaderPair ParseShader(const std::string& path) {
 	return { shaders[0].str(),shaders[1].str() };
 }
 
-static GLuint CompileShader(GLuint TYPE, const std::string& source) {
+GLuint CompileShader(GLuint TYPE, const std::string& source) {
 	GLuint id = glCreateShader(TYPE);
 	const char* src = source.c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
 
@@ -45,7 +45,7 @@ static GLuint CompileShader(GLuint TYPE, const std::string& source) {
 	//std::cout << id << std::endl;
 	glCompileShader(id);
 	
-
+	//delete src;
 	int status = 0;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	
@@ -54,21 +54,22 @@ static GLuint CompileShader(GLuint TYPE, const std::string& source) {
 		int length;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 		char* message = new char[length];
+		
 		glGetShaderInfoLog(id, length, &length, message);
 		std::cout << "shader error" << std::endl;
 		std::cout << message << std::endl;
-
+		//delete message;
 		return 0;
 	}
 	else {
 		std::string type = TYPE == GL_VERTEX_SHADER ? "Vertex" : "Frag";
 		std::cout << type << " is complied successfully!" << std::endl;
 	}
-
+	//delete src;
 	return id;
 }
 
-static GLuint CreatShader(const std::string& verShader, const std::string& fragShader) {
+GLuint CreatShader(const std::string& verShader, const std::string& fragShader) {
 	GLuint program = glCreateProgram();
 
 	GLuint vs = CompileShader(GL_VERTEX_SHADER, verShader);
@@ -83,6 +84,7 @@ static GLuint CreatShader(const std::string& verShader, const std::string& fragS
 	
 	glDeleteShader(vs);
 	glDeleteShader(fs);
+	//std::cout << program << " " << vs << " " << fs << " \n";
 	
 	return program;
 }
@@ -92,8 +94,6 @@ Shaders::Shaders(const std::string& path)
 	m_shaders = ParseShader(path);
 
 	program_id = CreatShader(m_shaders.verShader, m_shaders.fragShader);
-	//std::cout << "CreateShader:" << (glGetError()) << "\n";
-	//std::cout << m_shaders.verShader << "\n";
 }
 
 Shaders::Shaders()
@@ -112,7 +112,6 @@ void Shaders::UseShader() const
 
 void Shaders::UnuseShader() const
 {
-	//glDeleteProgram(program_id);
 	glUseProgram(0);
 }
 
