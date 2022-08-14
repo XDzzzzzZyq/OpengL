@@ -7,6 +7,10 @@
 #include "ImGui/imgui_impl_opengl3.h"
 
 #include "ImguiLayer.h"
+#include "LAYER/Viewport.h"
+#include "LAYER/Outline.h"
+#include "LAYER/ParamControl.h"
+
 #include "ImguiMenu.h"
 
 #include <vector>
@@ -17,7 +21,7 @@
 class ImguiManager
 {
 private:
-	mutable std::vector<ImguiLayer> layer_list;
+	mutable std::vector<ImguiLayer*> layer_list;
 	mutable std::vector<ImguiMenu> menu_list;
 	ImGuiIO& io=ImGui::GetIO();
 	ImGuiStyle& style=ImGui::GetStyle();
@@ -41,7 +45,7 @@ public:
 	void NewFrame() const;
 	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
 
-	void PushImguiLayer(const ImguiLayer& layer);
+	void PushImguiLayer(ImguiLayer* layer);
 	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
 	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID

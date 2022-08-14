@@ -8,7 +8,7 @@
 #include "EventListener.h"
 
 #include "ITEM/ParaInput.h"
-#include "ITEM/Viewport.h"
+#include "ITEM/TextureView.h"
 #include "ITEM/Text.h"
 #include "ITEM/Button.h"
 
@@ -22,6 +22,9 @@ enum ImLayerType
 
 class ImguiLayer : public EventListener
 {
+private:
+	mutable ImVec2 content_pos;
+	mutable ImVec2 content_size;
 	
 public:
 	ImguiLayer();
@@ -36,6 +39,7 @@ public:
 	mutable bool is_size_changed = false;
 	mutable ImVec2 uly_size;
 	ImVec2 GetLayerSize() const;
+	void UpdateLayerPos();
 
 	bool is_docking = true;
 
@@ -54,7 +58,7 @@ public:
 	mutable std::function<void(void)> pre_RenderLayer = [] {};
 	mutable std::function<void(void)> extra_RenderLayer = [] {};
 	mutable std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer() const;
+	virtual void RenderLayer() const { DEBUG("no render function overrided")return; };
 
 	//for outline                                    |  TYPE  |  NAME  |
 	virtual void SetOutLine(const std::vector<std::tuple<int, std::string>>& name_list, const std::vector<int>& depth_list) {

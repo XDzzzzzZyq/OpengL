@@ -39,12 +39,12 @@ void ImguiManager::NewFrame() const
 	ImGui::NewFrame();
 }
 
-void ImguiManager::PushImguiLayer(const ImguiLayer& layer)
+void ImguiManager::PushImguiLayer(ImguiLayer* layer)
 {
-	layer.uly_ID = layer_list.size(); //start with 0
+	layer->uly_ID = layer_list.size(); //start with 0
 	layer_list.push_back(layer);
-	active_layer_id = layer.uly_ID;
-	layer_name_buffer[layer.uly_name] = layer.uly_ID;
+	active_layer_id = layer->uly_ID;
+	layer_name_buffer[layer->uly_name] = layer->uly_ID;
 }
 
 void ImguiManager::SetActiveImguiLayer(const std::string& name) const
@@ -56,13 +56,13 @@ void ImguiManager::SetActiveImguiLayer(const std::string& name) const
 
 ImguiLayer* ImguiManager::GetActiveImguiLayer() const
 {
-	return &layer_list[active_layer_id];
+	return layer_list[active_layer_id];
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 {
 	if(layer_name_buffer.find(name) != layer_name_buffer.end())
-		return &layer_list[layer_name_buffer[name]];
+		return layer_list[layer_name_buffer[name]];
 	DEBUG("[ no layer named " + name + " ]")
 	return nullptr;
 }
@@ -72,7 +72,7 @@ ImguiLayer* ImguiManager::FindImguiLayer(int id) const
 	if (id > layer_list.size())
 		return nullptr;
 
-	return &layer_list[id];
+	return layer_list[id];
 }
 
 ImguiItem* ImguiManager::FindImguiItem(const std::string& layer, const std::string& name) const
@@ -140,10 +140,10 @@ void ImguiManager::RenderUI() const
 
 
 	for (const auto& layer : layer_list) {
-		if(layer.uly_ID != active_layer_id)
-			layer.RenderLayer();
+		if(layer->uly_ID != active_layer_id)
+			layer->RenderLayer();
 	}
-	layer_list[active_layer_id].RenderLayer();
+	layer_list[active_layer_id]->RenderLayer();
 
 	ImGui::Render();
 

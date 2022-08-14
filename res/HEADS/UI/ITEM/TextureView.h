@@ -3,7 +3,7 @@
 
 namespace UI {
 
-	class Viewport : public ImguiItem
+	class TextureView : public ImguiItem
 	{
 	private:
 		GLuint vp_fboTex_ID = 0;
@@ -12,10 +12,12 @@ namespace UI {
 		ImVec2 uv_max;
 		ImVec2 vp_size;
 
-		Viewport();
-		Viewport(GLuint texID);
-		Viewport(GLuint texID, const ImVec2& vp_size);
-		~Viewport();
+		TextureView();
+		TextureView(const std::string& name, GLuint texID);
+		TextureView(const std::string& name, GLuint texID, const ImVec2& vp_size);
+		~TextureView();
+
+		bool show_size;
 
 		void ResetUV(const ImVec2& min, const ImVec2& max) override;
 		void ResetSize(const ImVec2& size) override;

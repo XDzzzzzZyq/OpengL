@@ -33,6 +33,15 @@ ImVec2 ImguiLayer::GetLayerSize() const
 
 }
 
+void ImguiLayer::UpdateLayerPos()
+{
+	content_pos = ImGui::GetWindowContentRegionMin();
+	content_size = ImGui::GetWindowContentRegionMax()-content_pos;
+
+	DEBUG(content_pos)
+		DEBUG(content_size)
+}
+
 void ImguiLayer::PushItem(ImguiItem* item)
 {
 	int repeat_count = 0;
@@ -69,37 +78,6 @@ ImguiItem* ImguiLayer::FindImguiItem(int id) const
 	return item_list[id];
 }
 
-void ImguiLayer::RenderLayer() const
-{
-	if (!uly_is_rendered)
-		return;
-
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
-		if (pre_RenderLayer)
-			pre_RenderLayer();
-
-		for (const auto& item : item_list) {
-			uly_show_type ? item->EnableTagName() : item->DisableTagName();
-			item->RenderItem();
-		}
-		if (extra_RenderLayer)
-			extra_RenderLayer();
-
-		GetLayerSize();
-		if (is_size_changed)
-			if (resize_event)
-				resize_event();
-
-		is_size_changed = false;
-		ImGui::End();
-	}
-	else {
-		uly_is_rendered = false;
-		ImGui::End();
-	}
-
-}
-
 void ImguiLayer::EventInit()
 {
 	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&ImguiLayer::LMB, this);
@@ -107,7 +85,5 @@ void ImguiLayer::EventInit()
 
 void ImguiLayer::LMB()
 {
-	if(!is_mouse_pressed)
-	DEBUG("CLICK")
-		is_mouse_pressed = true;
+	//if (IsClick());
 }
