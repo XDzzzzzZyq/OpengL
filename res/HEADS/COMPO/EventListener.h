@@ -44,8 +44,8 @@ public:
 	static KeyMouseEvent evt_KM;
 	GLFWwindow* window;
 public:
-	bool is_key_pressed = false;
-	bool is_mouse_pressed = false;
+	static bool is_key_pressed;
+	static bool is_mouse_pressed;
 	
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	double scr_up, scr_down;

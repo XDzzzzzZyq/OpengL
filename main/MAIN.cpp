@@ -158,6 +158,8 @@ void render(GLFWwindow* window) {
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
 
 		renderer.GetSelectID(mouse_x, mouse_y);
+
+		UI.FindImguiLayer("Viewport")->EventActivate();
 	};
 	UI.GetCurrentWindow();GLDEBUG
 	while (!glfwWindowShouldClose(window))

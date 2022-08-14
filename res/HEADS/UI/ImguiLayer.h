@@ -4,6 +4,9 @@
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+
+#include "EventListener.h"
+
 #include "ITEM/ParaInput.h"
 #include "ITEM/Viewport.h"
 #include "ITEM/Text.h"
@@ -17,9 +20,8 @@ enum ImLayerType
 	NONE_UILAYER, PARAS_UILAYER, TOOLS_UILAYER, VIEWPORT_UILAYER
 };
 
-class ImguiLayer
+class ImguiLayer : public EventListener
 {
-	
 	
 public:
 	ImguiLayer();
@@ -59,5 +61,8 @@ public:
 		DEBUG(uly_name + " is not a Outline") return;
 	}
 	mutable std::function<void(void)> set_active = [] {};
+
+	void EventInit();
+	void LMB();
 };
 

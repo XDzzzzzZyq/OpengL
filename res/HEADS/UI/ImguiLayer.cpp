@@ -3,11 +3,13 @@
 ImguiLayer::ImguiLayer()
 {
 	uly_name = "";
+	EventInit();
 }
 
 ImguiLayer::ImguiLayer(const std::string& name)
 {
 	uly_name = name;
+	EventInit();
 }
 
 ImguiLayer::~ImguiLayer()
@@ -96,4 +98,16 @@ void ImguiLayer::RenderLayer() const
 		ImGui::End();
 	}
 
+}
+
+void ImguiLayer::EventInit()
+{
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&ImguiLayer::LMB, this);
+}
+
+void ImguiLayer::LMB()
+{
+	if(!is_mouse_pressed)
+	DEBUG("CLICK")
+		is_mouse_pressed = true;
 }

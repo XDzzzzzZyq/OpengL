@@ -140,7 +140,7 @@ FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 	//DEBUG(glm::round(pix[0]*10))
-	//DEBUG(pix[3])
+	//DEBUG(pix[0])
 	return Pixel;
 }
 

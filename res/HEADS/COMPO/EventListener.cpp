@@ -2,6 +2,10 @@
 
 KeyMouseEvent EventListener::evt_KM;
 
+bool EventListener::is_key_pressed;
+
+bool EventListener::is_mouse_pressed;
+
 double EventListener::mouse_x;
 
 double EventListener::mouse_y;
@@ -28,7 +32,8 @@ int EventListener::ListenMouseEvent(GLFWwindow* window) const
 {
 	LOOP(3) 
 		if (glfwGetMouseButton(window, i) == GLFW_PRESS)
-			return i;
+			return i + 1;
+	is_mouse_pressed = false;
 	return 0;
 }
 
@@ -41,6 +46,7 @@ int EventListener::ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const
 			if (ignor != i + 1)
 				return i + 1;
 
+	is_key_pressed = false;
 	return 0;//no key is pressed
 }
 
