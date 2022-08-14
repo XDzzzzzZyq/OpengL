@@ -46,6 +46,11 @@ public:
 public:
 	static bool is_key_pressed;
 	static bool is_mouse_pressed;
+	static bool is_key_pressed_b;
+	static bool is_mouse_pressed_b;
+	bool IsClick() const {
+		return is_mouse_pressed_b == false && is_mouse_pressed == true;
+	}
 	
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	double scr_up, scr_down;
@@ -66,8 +71,6 @@ public:
 
 	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
 
-	//EVENTS
-// 	virtual void EventUpdate();
 	void EventActivate();
 };
 
@@ -76,5 +79,4 @@ inline extern bool is_scr_changed = false;
 inline static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
 	is_scr_changed = true;
 	scroll_dir = yoffset;
-	//DEBUG(scroll_dir)
 }

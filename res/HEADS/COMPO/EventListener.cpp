@@ -6,6 +6,10 @@ bool EventListener::is_key_pressed;
 
 bool EventListener::is_mouse_pressed;
 
+bool EventListener::is_key_pressed_b;
+
+bool EventListener::is_mouse_pressed_b;
+
 double EventListener::mouse_x;
 
 double EventListener::mouse_y;
@@ -29,10 +33,17 @@ EventListener::~EventListener()
 }
 
 int EventListener::ListenMouseEvent(GLFWwindow* window) const
-{
+{ 
+	is_mouse_pressed_b = is_mouse_pressed;
+
+	//update
 	LOOP(3) 
-		if (glfwGetMouseButton(window, i) == GLFW_PRESS)
+		if (glfwGetMouseButton(window, i) == GLFW_PRESS) {
+			is_mouse_pressed = true;
 			return i + 1;
+		}
+
+
 	is_mouse_pressed = false;
 	return 0;
 }
@@ -43,8 +54,9 @@ int EventListener::ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const
 {
 	LOOP(3)
 		if (glfwGetKey(window, 340 + i) == GLFW_PRESS)
-			if (ignor != i + 1)
+			if (ignor != i + 1) {
 				return i + 1;
+			}
 
 	is_key_pressed = false;
 	return 0;//no key is pressed
@@ -89,8 +101,6 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 	}
 
 	evt_KM.mouse = ListenMouseEvent(window);
-
-	//DEBUG(evt_KM.GenStateData())
 }
 
 KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
@@ -109,7 +119,6 @@ KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
 
 void EventListener::EventActivate()
 {
-	//DEBUG(evt_KM.GenStateData())
 	if (evt_KM.GenStateData() != 0)
 		if (EventList.find(evt_KM) != EventList.end())
 			EventList[evt_KM]();

@@ -132,15 +132,12 @@ FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 	glReadBuffer(GL_COLOR_ATTACHMENT0 + type);
 
 	FBPixel Pixel;
-	float pix[4];
-	glReadPixels(x, fb_h - y + 40, 1, 1, GL_RGBA, GL_FLOAT, pix);
 	glReadPixels(x, fb_h - y + 40, 1, 1, GL_RGBA, GL_FLOAT, &Pixel);
 
 	glReadBuffer(GL_NONE);
 
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-	//DEBUG(glm::round(pix[0]*10))
-	//DEBUG(pix[0])
+	Pixel.RGBA[0] = glm::round(Pixel.RGBA[0] * 10);
 	return Pixel;
 }
 

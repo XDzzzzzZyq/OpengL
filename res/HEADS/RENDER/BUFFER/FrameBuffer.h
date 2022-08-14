@@ -11,7 +11,7 @@ enum FBType
 
 struct FBPixel
 {
-	GLuint RGBA[4];
+	float RGBA[4];
 	int GetID() { return RGBA[0]; }
 };
 
