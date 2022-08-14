@@ -1,6 +1,21 @@
 #include "EventListener.h"
 
+KeyMouseEvent EventListener::evt_KM;
+
+double EventListener::mouse_x;
+
+double EventListener::mouse_y;
+
+double EventListener::mouse_b_x;
+
+double EventListener::mouse_b_y;
+
 EventListener::EventListener()
+{
+}
+
+EventListener::EventListener(GLFWwindow* window)
+	:window(window)
 {
 }
 
@@ -40,7 +55,7 @@ int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<in
 	return 0;
 }
 
-void EventListener::UpdateEvent(GLFWwindow* window, const std::vector<int>& IDlist) const
+void EventListener::UpdateEvent(GLFWwindow* window) const
 {
 	mouse_b_x = mouse_x;
 	mouse_b_y = mouse_y;
@@ -57,8 +72,8 @@ void EventListener::UpdateEvent(GLFWwindow* window, const std::vector<int>& IDli
 		evt_KM.SecondKey = ListenSpecialKeyEvent(window, evt_KM.FirstKey);
 	}
 
-	if(!(bool)IDlist.size())
-		evt_KM.Norm_key = ListenNormalKeyEvent(window,IDlist);
+	if(!(bool)evt_IDlist.size())
+		evt_KM.Norm_key = ListenNormalKeyEvent(window,evt_IDlist);
 
 	if (is_scr_changed) {
 		evt_KM.scr = scroll_dir;
@@ -86,10 +101,9 @@ KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
 	return result;
 }
 
-void EventListener::EventActivate(GLFWwindow* window)
+void EventListener::EventActivate()
 {
-	UpdateEvent(window, evt_IDlist);
-
+	//DEBUG(evt_KM.GenStateData())
 	if (evt_KM.GenStateData() != 0)
 		if (EventList.find(evt_KM) != EventList.end())
 			EventList[evt_KM]();

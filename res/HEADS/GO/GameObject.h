@@ -33,5 +33,4 @@ public:
 
 	GameObject();
 	~GameObject();
-	//glm::rotate(vec<3, T, Q> const& v, T const& angle, vec<3, T, Q> const& normal)
 };

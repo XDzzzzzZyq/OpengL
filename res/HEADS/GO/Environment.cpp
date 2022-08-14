@@ -2,10 +2,7 @@
 
 Environment::Environment(const std::string& texpath)
 {
-	//envir_HDR = Texture(texpath, IMAGE_TEXTURE, GL_REPEAT);
-	//
-	
-	//
+
 	o_type = GO_ENVIR;
 	envir_shader = Shaders("res/shaders/IBRShader.shader");	
 
@@ -51,7 +48,9 @@ Environment::Environment()
 
 Environment::~Environment()
 {
-
+	envir_shader.DelShad();
+	envir_hdr.DelTexture();
+	envir_frameBuffer->Del();
 }
 
 void Environment::ChangeEnvirTexture(const std::string& texpath) const

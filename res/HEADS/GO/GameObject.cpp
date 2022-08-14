@@ -25,5 +25,5 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	DEBUG(" >>[ "+o_name + " ]")
+	DEBUG(" >>[ " + o_name + " (ID=" + std::to_string(id) + ") ]")
 }

@@ -35,6 +35,7 @@ void render(GLFWwindow* window) {
 
 	Renderer renderer;
 	ImguiManager UI(window);
+	EventListener Event;
 
 	Camera camera(10.0f, 10.0f, 70, 0.0f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
@@ -134,7 +135,7 @@ void render(GLFWwindow* window) {
 		std::cout << UI.FindImguiLayer("Viewport")->uly_size;
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
-		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size+ImVec2(10,50);
+		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
 		if ((int)view_size.x % 2)
 			view_size.x++;
 		glViewport(0, 0, view_size.x, view_size.y);
@@ -142,7 +143,7 @@ void render(GLFWwindow* window) {
 		renderer.FrameBufferResize(0, view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetSize(view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
-		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->frame_buffer.GetTexID());
+		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};
 
 	UI.ParaUpdate = [&] {
@@ -155,19 +156,28 @@ void render(GLFWwindow* window) {
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
+
+		renderer.GetSelectID(mouse_x, mouse_y);
 	};
 	UI.GetCurrentWindow();GLDEBUG
 	while (!glfwWindowShouldClose(window))
 	{
-		/* Render here */
+		/* Update here */
 		FrameCount++;
 		UI.NewFrame();
+		Event.UpdateEvent(window);
 		AvTime.Add(UI.GetIO().Framerate);
+
+
+
+
+		/* Render here */
+
 		go1.SetScale(glm::vec3(scale));
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
 
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
-		renderer.GetActiveCamera()->EventActivate(window);
+		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 
 		pointLight1.SetColor(LightColor);
@@ -229,5 +239,6 @@ int main(void)
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 	glfwTerminate();
+
 	return 0;
 }

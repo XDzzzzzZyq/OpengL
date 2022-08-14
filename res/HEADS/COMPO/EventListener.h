@@ -40,18 +40,20 @@ struct hash_fn
 
 class EventListener
 {
-protected:
-	mutable KeyMouseEvent evt_KM;
+public:
+	static KeyMouseEvent evt_KM;
+	GLFWwindow* window;
 public:
 	bool is_key_pressed = false;
 	bool is_mouse_pressed = false;
 	
-	mutable double mouse_x, mouse_y, mouse_b_x, mouse_b_y = 0.0f;
+	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	double scr_up, scr_down;
 
 	std::vector<int> evt_IDlist;
 
 	EventListener();
+	EventListener(GLFWwindow* window);
 	~EventListener();
 
 
@@ -60,13 +62,13 @@ public:
 	int ListenMouseEvent(GLFWwindow* window) const;
 	int ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const;
 	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
-	void UpdateEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
+	void UpdateEvent(GLFWwindow* window) const;
 
 	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
 
 	//EVENTS
 // 	virtual void EventUpdate();
-	void EventActivate(GLFWwindow* window);
+	void EventActivate();
 };
 
 inline extern float scroll_dir = 80;;

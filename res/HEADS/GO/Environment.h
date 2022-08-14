@@ -44,7 +44,7 @@ public:
 	
 	Shaders envir_shader;
 
-	Texture frame_buffer, envir_hdr;
+	Texture envir_hdr;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
 	bool use_envir = false;
 
