@@ -56,6 +56,6 @@ void main(){
 						   
 	//color = vec4(uv,0.0f,1.0f);
 	color = vec4(L_color, U_Opacity);
-	IDcolor=vec4(ID_color/10, 1.0f);
+	IDcolor=vec4(ID_color/256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 };

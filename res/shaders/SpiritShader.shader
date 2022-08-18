@@ -54,6 +54,6 @@ void main(){
 	vec4 uvcolor = texture(U_Texture,uv);
 	//color = vec4(uv,0.0f,1.0f);
 	color = vec4(L_color, vec3(uvcolor)[0]*SpiritOpacity);
-	IDcolor=vec4(ID_color/10, 1.0f);
+	IDcolor=vec4(ID_color/256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 };

@@ -145,7 +145,7 @@ void main(){
 	LightMap.Specular_map = vec3(0.0f,0.0f,0.0f);
 	//color = U_color;
 
-	IDcolor=vec4(ID_color/10, 1.0f);
+	IDcolor=vec4(ID_color/256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 
 	//Generate PL_LIST & pL_list Shading
