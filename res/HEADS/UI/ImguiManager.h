@@ -8,7 +8,7 @@
 
 #include "ImguiLayer.h"
 #include "LAYER/Viewport.h"
-#include "LAYER/Outline.h"
+#include "LAYER/Outliner.h"
 #include "LAYER/ParamControl.h"
 
 #include "ImguiMenu.h"
@@ -24,7 +24,7 @@ private:
 	mutable std::vector<ImguiLayer*> layer_list;
 	mutable std::vector<ImguiMenu> menu_list;
 	ImGuiIO& io=ImGui::GetIO();
-	ImGuiStyle& style=ImGui::GetStyle();
+	ImGuiStyle& m_style=ImGui::GetStyle();
 
 	GLFWwindow* window=nullptr;
 public:
@@ -38,7 +38,7 @@ public:
 	void SetConfigFlag(ImGuiConfigFlags_ flag) const { io.ConfigFlags |= flag; };
 	void SetBackendFlag(ImGuiBackendFlags_ flag) const { io.BackendFlags |= flag; };
 	ImGuiIO& GetIO()const { return io; }
-	ImGuiStyle& GetStyle()const { return style; }
+	ImGuiStyle& GetStyle()const { return m_style; }
 
 	void DefultViewports();
 

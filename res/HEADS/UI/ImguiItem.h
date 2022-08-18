@@ -27,7 +27,7 @@ private:
 public:
 	ImguiItem();
 	ImguiItem(ImItemType type, const std::string& name);
-	~ImguiItem();
+	virtual ~ImguiItem();
 
 	mutable bool using_size = false;
 	mutable bool fixed_size = false;
@@ -38,8 +38,6 @@ public:
 	mutable std::string uitm_name = "";
 	mutable std::string notagname = "";
 	mutable int uitm_id = -1;
-
-	mutable std::function<void(void)> ButtonFunc = [] {};
 
 	void Rename(const std::string& name) const;
 	std::string GetTagName()const;
@@ -54,7 +52,9 @@ public:
 	virtual Parameters* GetPara() { DEBUG(uitm_name + " is not a paraInp")return nullptr; }
 
 	// for all buttons
+	mutable std::function<void(void)> ButtonFunc = [] {};
 	virtual void CallButtonFunc() const { DEBUG(uitm_name + " is not a button")return; }
+	mutable bool is_button_pressed;
 
 	// for all text
 	virtual void SetArgsList(float length, ...) const { DEBUG(uitm_name + " is not a text")	return; }

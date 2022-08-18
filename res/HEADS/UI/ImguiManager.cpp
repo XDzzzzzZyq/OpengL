@@ -5,6 +5,7 @@ ImguiManager::ImguiManager()
 	active_layer_id = 0;
 
 	io = ImGui::GetIO(); (void)io;
+	m_style = ImGui::GetStyle();
 	
 	DefultViewports();
 }
@@ -16,7 +17,6 @@ ImguiManager::ImguiManager(GLFWwindow* window)
 	active_layer_id = 0;
 
 	io = ImGui::GetIO(); (void)io;
-
 	DefultViewports();
 }
 
@@ -30,6 +30,10 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui::StyleColorsDark();
+
+	ImGui::GetStyle().Colors[ImGuiCol_Header] = ImVec4(1, 1, 1, 0);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = ImVec4(1, 1, 1, 0.4);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = ImVec4(1, 1, 1, 0.2);
 }
 
 void ImguiManager::NewFrame() const

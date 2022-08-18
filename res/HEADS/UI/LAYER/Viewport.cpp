@@ -8,6 +8,7 @@ Viewport::Viewport()
 Viewport::Viewport(const std::string& name)
 {
 	uly_name = name;
+	PushItem(new UI::TextureView("Viewport", 0, ImVec2(SCREEN_W, SCREEN_H)));
 }
 
 Viewport::Viewport(const std::string& name, GLuint texID)
@@ -34,15 +35,16 @@ void Viewport::RenderLayer() const
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
-		for (const auto& item : item_list) {
-			item->RenderItem();
-		}
+		item_list[0]->RenderItem();
 
 		GetLayerSize();
 		if (is_size_changed)
 			if (resize_event)
 				resize_event();
+		if(IsChangeEnd())
+			DEBUG(123123)
 
+		is_size_changed_b = is_size_changed;
 		is_size_changed = false;
 		ImGui::End();
 	}

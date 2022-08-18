@@ -36,18 +36,23 @@ public:
 public:
 	bool is_light_changed = false;
 
-	std::unordered_map<int, Camera*>		   cam_list;
-	std::unordered_map<int, Mesh* >		      mesh_list;
-	std::unordered_map<int, Light*>			 light_list; //num | pointer
-	std::unordered_map<int, Environment*>	 envir_list;
-	std::unordered_map<int, Spirit*>        spirit_list;
-	std::unordered_map<int, DebugLine*>      dLine_list;
-	std::unordered_map<int, DebugPoints*>  dPoints_list;
+	std::unordered_map<int, Camera*>			   cam_list;
+	std::unordered_map<int, Mesh* >			      mesh_list;
+	std::unordered_map<int, Light*>				 light_list; //num | pointer
+	std::unordered_map<int, Environment*>		 envir_list;
+	std::unordered_map<int, Spirit*>	        spirit_list;
+	std::unordered_map<int, DebugLine*>	         dLine_list;
+	std::unordered_map<int, DebugPoints*>	   dPoints_list;
 
 public:
+
+	bool is_GOlist_changed = true;
+	int active_GO_ID;
 	std::vector<GameObject> selec_list;
-	std::vector<std::tuple<int, std::string>> name_list;
-	std::vector<std::tuple<int, std::string>> GetOutlineData() { return name_list; }
+	std::vector<int>parent_index_list;
+	OutlineData outline_list;
+	OutlineData* GetOutlineData() { return &outline_list; }
+	std::vector<int> GetParentRelatData() { return parent_index_list; }
 	std::string GetObjectName(int ID);
 
 	int GetSelectID(GLuint x, GLuint y);
@@ -69,7 +74,7 @@ public:
 	void FrameClean() const;
 	void Render();
 
-	bool is_GOlist_changed = true;
+public:
 	void UseCamera(Camera* camera);
 	void UseCamera(const int& cam_id);
 	Camera* GetActiveCamera();

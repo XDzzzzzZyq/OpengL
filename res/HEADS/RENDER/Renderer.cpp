@@ -94,8 +94,14 @@ void Renderer::LMB_CLICK()
 {
 	if (IsClick()) {
 		int id = GetSelectID(mouse_x, mouse_y);
+		int A_ID_BUFFER = active_GO_ID;
 		if (name_buff.find(id) != name_buff.end())
-			DEBUG(name_buff[id]);
+			active_GO_ID = id;
+		else
+			active_GO_ID = 0;
+
+		is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
+
 	}
 }
 
@@ -212,6 +218,7 @@ void Renderer::Render() {
 	cam_list[0]->is_invUniform_changed = false;
 	cam_list[0]->is_frustum_changed = false;
 	is_scr_changed = false;
+	is_GOlist_changed = false;
 	
 }
 
@@ -232,12 +239,13 @@ void Renderer::Render() {
 
 void Renderer::UseCamera(Camera* camera)
 {
-	is_GOlist_changed = true;
 	if (cam_list.find(camera->GetObjectID()) == cam_list.end())
 	{
+		is_GOlist_changed = true;
 		cam_list[camera->GetObjectID()] = camera;
 		cam_list[0] = camera;
-		name_list.push_back(std::tuple<int, std::string>(camera->o_type, camera->o_name));
+		outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
+		parent_index_list.push_back(-1);
 		name_buff[camera->GetObjectID()] = camera->o_name;
 	}
 	else {
@@ -247,9 +255,9 @@ void Renderer::UseCamera(Camera* camera)
 
 void Renderer::UseCamera(const int& cam_id)
 {
-	is_GOlist_changed = true;
 	if (cam_list.find(cam_id) != cam_list.end())
 	{
+		is_GOlist_changed = true;
 		cam_list[0] = cam_list[cam_id];
 	}
 
@@ -263,11 +271,12 @@ Camera* Renderer::GetActiveCamera()
 //////////////////////////////////////////////
 void Renderer::UseMesh(Mesh* mesh)
 {
-	is_GOlist_changed = true;
 	if (mesh_list.find(mesh->GetObjectID()) == mesh_list.end())
 	{
+		is_GOlist_changed = true;
 		mesh_list[mesh->GetObjectID()] = mesh;
-		name_list.push_back(std::tuple<int, std::string>(mesh->o_type, mesh->o_name));
+		outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
+		parent_index_list.push_back(-1);
 		name_buff[mesh->GetObjectID()] = mesh->o_name;
 	}
 
@@ -276,13 +285,14 @@ void Renderer::UseMesh(Mesh* mesh)
 //////////////////////////////////////////////
 void Renderer::UseLight(Light* light)
 {
-	is_GOlist_changed = true;
 	if (light_list.find(light->GetObjectID()) == light_list.end())
 	{
+		is_GOlist_changed = true;
 		is_light_changed = true;
 		light_list[light->GetObjectID()] = light;
 		spirit_list[light->light_spirit.GetObjectID()] = &light->light_spirit;
-		name_list.push_back(std::tuple<int, std::string>(light->o_type, light->o_name));
+		outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
+		parent_index_list.push_back(-1);
 		name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
 	}
 
@@ -290,13 +300,14 @@ void Renderer::UseLight(Light* light)
 
 void Renderer::UseEnvironment(Environment* envir)
 {
-	is_GOlist_changed = true;
 	if (envir_list.find(envir->GetObjectID()) == envir_list.end())
 	{
+		is_GOlist_changed = true;
 		envir_list[envir->GetObjectID()] = envir;
 		envir_list[0] = envir;
 		name_buff[envir->GetObjectID()] = envir->o_name;
-		name_list.push_back(std::tuple<int, std::string>(envir->o_type, envir->o_name));
+		outline_list.push_back(OutlineElement(envir->o_type, envir->GetObjectID(), envir->o_name, 0));
+		parent_index_list.push_back(-1);
 	}
 	else {
 		envir_list[0] = envir;
@@ -305,9 +316,9 @@ void Renderer::UseEnvironment(Environment* envir)
 
 void Renderer::UseEnvironment(const int& envir_id)
 {
-	is_GOlist_changed = true;
 	if (envir_list.find(envir_id) != envir_list.end())
 	{
+		is_GOlist_changed = true;
 		envir_list[0] = envir_list[envir_id];
 	}
 }
@@ -319,22 +330,24 @@ Environment* Renderer::GetActiveEnvironment()
 
 void Renderer::UseDebugLine(DebugLine* dline)
 {
-	is_GOlist_changed = true;
 	if (dLine_list.find(dline->GetObjectID()) == dLine_list.end())
 	{
+		is_GOlist_changed = true;
 		dLine_list[dline->GetObjectID()] = dline;
-		name_list.push_back(std::tuple<int, std::string>(dline->o_type, dline->o_name));
+		outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
 		name_buff[dline->GetObjectID()] = dline->o_name;
+		parent_index_list.push_back(-1);
 	}
 }
 
 void Renderer::UseDebugPoints(DebugPoints* dpoints)
 {
-	is_GOlist_changed = true;
 	if (dPoints_list.find(dpoints->GetObjectID()) == dPoints_list.end())
 	{
+		is_GOlist_changed = true;
 		dPoints_list[dpoints->GetObjectID()] = dpoints;
-		name_list.push_back(std::tuple<int, std::string>(dpoints->o_type, dpoints->o_name));
+		outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
 		name_buff[dpoints->GetObjectID()] = dpoints->o_name;
+		parent_index_list.push_back(-1);
 	}
 }

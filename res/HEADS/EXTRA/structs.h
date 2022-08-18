@@ -95,3 +95,17 @@ struct AverageTime
 		delete timelist;
 	}
 };
+
+struct OutlineElement
+{
+	int TYPE;
+	int ID;
+	std::string NAME;
+	int LEVEL;
+
+	OutlineElement(int a, int id, const std::string& b, int c) 
+		:TYPE(a), ID(id), NAME(b), LEVEL(c)
+	{}
+};
+//			| TYPE |    NAME   | LEVEL |
+typedef std::vector<OutlineElement> OutlineData;

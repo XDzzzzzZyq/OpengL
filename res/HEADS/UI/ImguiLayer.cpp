@@ -19,6 +19,7 @@ ImguiLayer::~ImguiLayer()
 
 ImVec2 ImguiLayer::GetLayerSize() const
 {
+
 	if (ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin() == uly_size) {
 		is_size_changed = false;
 		return uly_size;
@@ -29,8 +30,6 @@ ImVec2 ImguiLayer::GetLayerSize() const
 		is_size_changed = true;
 		return uly_size;
 	}
-
-
 }
 
 void ImguiLayer::UpdateLayerPos()
@@ -38,18 +37,17 @@ void ImguiLayer::UpdateLayerPos()
 	content_pos = ImGui::GetWindowContentRegionMin();
 	content_size = ImGui::GetWindowContentRegionMax()-content_pos;
 
-	DEBUG(content_pos)
-		DEBUG(content_size)
 }
 
 void ImguiLayer::PushItem(ImguiItem* item)
 {
 	int repeat_count = 0;
 	std::string name = item->uitm_name;
-	while (item_name_buffer.find(item->uitm_name) != item_name_buffer.end())
+	std::string name2 = item->uitm_name;
+	while (item_name_buffer.find(name2) != item_name_buffer.end())
 	{
 		repeat_count++;
-		item->Rename(name + ("." + std::to_string(repeat_count)));
+		name2 = name2 + ("." + std::to_string(repeat_count));
 		
 	}
 	item->uitm_id = item_list.size();

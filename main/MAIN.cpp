@@ -50,6 +50,7 @@ void render(GLFWwindow* window) {
 	go1.SetObjShader("res/shaders/testS.shader");
 	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
 	go1.SetCenter();
+	renderer.UseMesh(&go1);
 	DEBUG("-------------------------------")
 
 		Mesh go2("res/obj/torus.obj");
@@ -59,12 +60,10 @@ void render(GLFWwindow* window) {
 	go2.SetPos(glm::vec3(4, 0, 0));
 	go2.SetScale(glm::vec3(1.5f));
 	go2.ApplyTransform();
+	renderer.UseMesh(&go2);
 	DEBUG("-------------------------------")
 
-		renderer.UseMesh(&go1);
-	renderer.UseMesh(&go2);
-
-	Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+		Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1.SetPos(glm::vec3(2.0f, 2.0f, 2.0f));
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
@@ -93,16 +92,16 @@ void render(GLFWwindow* window) {
 	DEBUG("-------------------------------")
 		/////////////////////////////////
 
-	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 
-// 	if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-// 	{
-// 		UI.GetStyle().WindowRounding = 0.0f;
-// 		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
-// 	}
+	// 	if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	// 	{
+	// 		UI.GetStyle().WindowRounding = 0.0f;
+	// 		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
+	// 	}
 
 	UI.ManagerInit(window);
 
@@ -120,7 +119,7 @@ void render(GLFWwindow* window) {
 	float testfloat[3] = { 0.0f,0.5f,1.0f };
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
-			glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+		glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
 		points.PushDebugPoint(newpoint1);
 		line.PushDebugLine(newpoint1);
 		tex_type++;
@@ -128,7 +127,7 @@ void render(GLFWwindow* window) {
 		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)tex_type);
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
-			glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
 		points.PushDebugPoint(newpoint2);
 		line.PushDebugLine(newpoint2);
 		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
@@ -147,7 +146,6 @@ void render(GLFWwindow* window) {
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};
-
 	UI.ParaUpdate = [&] {
 		FrameCount++;
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, mouse_x, mouse_y);
@@ -159,7 +157,9 @@ void render(GLFWwindow* window) {
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
 	};
-	UI.GetCurrentWindow();GLDEBUG
+	UI.GetCurrentWindow();
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Update here */
@@ -167,9 +167,14 @@ void render(GLFWwindow* window) {
 		UI.NewFrame();
 		Event.UpdateEvent(window);
 		AvTime.Add(UI.GetIO().Framerate);
-
 		renderer.EventActivate();
 		UI.FindImguiLayer("Viewport")->EventActivate();
+
+		if (renderer.is_GOlist_changed) {
+			UI.FindImguiLayer("Outliner")->SetActiveData(renderer.active_GO_ID);
+			UI.FindImguiLayer("Outliner")->SetObjectList(renderer.GetOutlineData());
+		}
+
 
 		/* Render here */
 
@@ -202,9 +207,6 @@ void render(GLFWwindow* window) {
 
 		/* Poll for and process events */
 		glfwPollEvents();
-		//std::cout << "\r" << timer.duration << "ms";
-		//GLDEBUG
-		//DEBUG(GL_COLOR_ATTACHMENT1 == GL_COLOR_ATTACHMENT0+ ID_FB)
 	}
 	cout << endl << "[ Finished ]" << endl;
 	cout << GameObject::count << " object(s)" << endl;

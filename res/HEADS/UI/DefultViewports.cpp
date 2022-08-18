@@ -2,7 +2,7 @@
 
 void ImguiManager::DefultViewports() {
 
-	ParamControl* layer1 = new ParamControl("test layer");
+	ImguiLayer* layer1 = new ParamControl("test layer");
 	layer1->uly_type = PARAS_UILAYER;
 	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "test"));
 	layer1->PushItem(new UI::ParaInput(INT_INP, "test"));
@@ -14,7 +14,7 @@ void ImguiManager::DefultViewports() {
 
 	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "test")->para_data.fdata);
 
-	ParamControl* layer2=new ParamControl("__Parameters__");
+	ImguiLayer* layer2=new ParamControl("__Parameters__");
 	layer2->PushItem(new UI::Text("Application average %.3f ms/frame (%.1f FPS)"));
 	layer2->PushItem(new UI::Text("MOUSE_POS : [%.1f : %.1f]"));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "SCALE", 0.0f, 1.0f, 0.3f));
@@ -27,9 +27,11 @@ void ImguiManager::DefultViewports() {
 	layer2->PushItem(new UI::Button("Debug"));
 	PushImguiLayer(layer2);
 
-	Viewport* layer3 = new Viewport("Viewport");
-	layer3->PushItem(new UI::TextureView("Viewport", 0, ImVec2(SCREEN_W, SCREEN_H)));
-	PushImguiLayer(layer3);
+	ImguiLayer* viewport = new Viewport("Viewport");
+	PushImguiLayer(viewport);
+
+	ImguiLayer* outline = new Outliner("Outliner");
+	PushImguiLayer(outline);
 
 	ImguiMenu menu1("FILE");
 	menu1.PushSubMenu(ImguiMenuItem("test", "ctrl + A"));

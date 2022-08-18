@@ -165,16 +165,19 @@
     <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\Outline.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\Outline.cpp">
+    <ClCompile Include="res\HEADS\UI\LAYER\Outliner.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\UI\LAYER\ParamControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\UI\ImguiTheme.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1619,16 +1622,19 @@
     <ClInclude Include="res\HEADS\UI\ITEM\Button.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\Outline.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\Outline.h">
+    <ClInclude Include="res\HEADS\UI\LAYER\Outliner.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\UI\LAYER\ParamControl.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\ImguiTheme.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
