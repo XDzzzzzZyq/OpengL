@@ -65,7 +65,7 @@ public:
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;
 
-	void RenderEnvironment(Camera* cam);
+	void RenderEnvironment(Camera* cam, int act = -1);
 
 
 };

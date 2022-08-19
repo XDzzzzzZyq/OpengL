@@ -153,7 +153,7 @@ void FrameBuffer::BindFrameBufferTex(int count, ...) const
 	va_start(arg_ptr, count);
 	LOOP(count) {
 		int type = va_arg(arg_ptr, int);
-		fb_tex_list[fb_type_list[(FBType)type]].Bind();
+		fb_tex_list[fb_type_list[(FBType)type]].Bind(BUFFER_TEXTURE + type);
 	}
 	va_end(arg_ptr);
 }

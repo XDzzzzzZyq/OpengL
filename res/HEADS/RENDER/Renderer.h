@@ -48,7 +48,7 @@ public:
 
 	bool is_GOlist_changed = true;
 	int active_GO_ID;
-	std::vector<GameObject> selec_list;
+	std::vector<int> selec_list;
 	std::vector<int>parent_index_list;
 	OutlineData outline_list;
 	OutlineData* GetOutlineData() { return &outline_list; }
@@ -67,12 +67,15 @@ public:
 	GLuint GetFrameBufferTexture(int slot);
 
 public:
+	bool multi_select = false;
 	void EventInit();
 	void LMB_CLICK();
+	void SHIFT();
 
 public:
 	void FrameClean() const;
 	void Render();
+	void Reset();
 
 public:
 	void UseCamera(Camera* camera);

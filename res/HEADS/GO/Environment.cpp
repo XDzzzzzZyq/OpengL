@@ -29,8 +29,9 @@ Environment::Environment(const std::string& texpath)
 
 	envir_shader.UseShader();
 
-	envir_shader.SetValue("hdr_texture", HDR_TEXTURE);
-	envir_shader.SetValue("screen_texture", BUFFER_TEXTURE);
+	envir_shader.SetValue("hdr_texture",         HDR_TEXTURE);
+	envir_shader.SetValue("screen_texture",      BUFFER_TEXTURE + COMBINE_FB);
+	envir_shader.SetValue("id_texture",          BUFFER_TEXTURE + ID_FB);
 	envir_shader.SetValue("ID_color", id_color);
 	envir_shader.SetValue("RAND_color", id_color_rand);
 
@@ -84,16 +85,18 @@ void Environment::GenFloatData() const
 
 }
 
-void Environment::RenderEnvironment(Camera* cam)
+void Environment::RenderEnvironment(Camera* cam, int act)
 {
 	o_vertArry.Bind();
 	envir_shader.UseShader();
 	o_indexBuffer.Bind();
 	envir_frameBuffer->BindFrameBufferTex(3,COMBINE_FB,ID_FB,RAND_FB);
 	envir_hdr.Bind();
-
 	if(cam->is_invUniform_changed)
 		envir_shader.SetValue("cam_rotM", cam->o_rotMat);
+
+	if(act != -1)
+		envir_shader.SetValue("activeID", (float)act);
 
 	if (cam->is_frustum_changed) {
 		envir_shader.SetValue("cam_fov", glm::radians(cam->cam_pers));

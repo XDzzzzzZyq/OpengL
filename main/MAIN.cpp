@@ -44,8 +44,6 @@ void render(GLFWwindow* window) {
 	renderer.UseCamera(&camera);
 	DEBUG("-------------------------------")
 
-		/* Loop until the user closes the window */
-
 		Mesh go1("res/obj/monkey2.obj");
 	go1.SetObjShader("res/shaders/testS.shader");
 	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
@@ -123,8 +121,8 @@ void render(GLFWwindow* window) {
 		points.PushDebugPoint(newpoint1);
 		line.PushDebugLine(newpoint1);
 		tex_type++;
-		if (tex_type > 2)tex_type = 0;
-		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)tex_type);
+		if (tex_type > 1)tex_type = 0;
+		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type*2));
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
@@ -160,6 +158,8 @@ void render(GLFWwindow* window) {
 	UI.GetCurrentWindow();
 
 
+
+	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Update here */

@@ -31,7 +31,7 @@ Renderer::Renderer()
 
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilFunc(GL_ALWAYS,1,0xff);
+	glStencilFunc(GL_ALWAYS, 1, 0xff);
 	glStencilMask(0xff);
 
 
@@ -87,7 +87,8 @@ GLuint Renderer::GetFrameBufferTexture(int slot)
 
 void Renderer::EventInit()
 {
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&Renderer::LMB_CLICK,			this);
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&Renderer::LMB_CLICK, this);
+	EventList[GenIntEvent(1, 0, 0, 0, 0)] = std::bind(&Renderer::SHIFT, this);
 }
 
 void Renderer::LMB_CLICK()
@@ -95,24 +96,36 @@ void Renderer::LMB_CLICK()
 	if (IsClick()) {
 		int id = GetSelectID(mouse_x, mouse_y);
 		int A_ID_BUFFER = active_GO_ID;
+
+
 		if (name_buff.find(id) != name_buff.end())
 			active_GO_ID = id;
 		else
 			active_GO_ID = 0;
 
-		is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
-
+		if (multi_select) {
+			is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
+		}
+		else {
+			is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
+		}
 	}
+}
+
+void Renderer::SHIFT()
+{
+	multi_select = true;
 }
 
 //////////////////////////////////////////////
 
 void Renderer::FrameClean() const
 {
-	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	//glClearDepth(-10.0f);
 	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	//glClearDepth(-10.0f);
+	
 
 
 }
@@ -134,7 +147,7 @@ void Renderer::Render() {
 	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	//GLDEBUG
-	
+
 	envir_list[0]->BindFrameBuffer();
 
 
@@ -145,7 +158,7 @@ void Renderer::Render() {
 	cam_list[0]->ApplyTransform();
 	cam_list[0]->GetInvTransform();
 	cam_list[0]->GenFloatData();
-	
+
 
 	if (is_light_changed)
 	{
@@ -210,18 +223,27 @@ void Renderer::Render() {
 	glDisable(GL_DEPTH_TEST);
 
 	framebuffer->BindFrameBuffer();
-	envir_list[0]->RenderEnvironment(cam_list[0]);
+	envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID);
 	framebuffer->UnbindFrameBuffer();
-	////////////  RESET  ///////////
-	
 
+	Reset();
+}
+
+
+void Renderer::Reset()
+{
+	////////////  RESET  ///////////
+
+	if (multi_select) {
+		multi_select = false;
+		if (selec_list.size())
+			selec_list.clear();
+	}
 	cam_list[0]->is_invUniform_changed = false;
 	cam_list[0]->is_frustum_changed = false;
 	is_scr_changed = false;
 	is_GOlist_changed = false;
-	
 }
-
 
 ////////////////////////////////////// END RENDERING /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
