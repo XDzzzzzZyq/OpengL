@@ -92,17 +92,20 @@ void main(){
 	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);
 
 	color =  hdr_color * (1 - screen_color[3]) + vec4(vec3(screen_color),1.0f) * screen_color[3];
-	IDcolor = texture(id_texture, screen_uv);
-	IDcolor[3] = 1.0f;
-	IDcolor = GetSelect(IDcolor, activeID);
-	vec2 div = (vec2(gl_FragCoord)/screen_uv);
 
-	//color = Conv3_3(id_texture, div, screen_uv, 3);
-	//color = IDcolor;
-	outline = (vec4(1,1,1,2)-IDcolor) * Conv3_3(id_texture, div, screen_uv, 1, activeID);
-	if(outline[0]>0.1){
-		color = vec4(1,1,1,1);
+	if(activeID!=0){
+		IDcolor = texture(id_texture, screen_uv);
+		IDcolor[3] = 1.0f;
+		IDcolor = GetSelect(IDcolor, activeID);
+		vec2 div = (vec2(gl_FragCoord)/screen_uv);
+		//color = Conv3_3(id_texture, div, screen_uv, 3);
+		//color = IDcolor;
+		outline = (vec4(1,1,1,2)-IDcolor) * Conv3_3(id_texture, div, screen_uv, 1, activeID);
+		if(outline[0]>0.1){
+			color = vec4(1,1,1,1);
+		}	
 	}
+
 	//color = Conv3_3(id_texture, div, screen_uv, 3);
 	IDcolor = vec4(ID_color, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
