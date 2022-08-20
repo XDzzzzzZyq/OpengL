@@ -27,7 +27,7 @@ void main(){
 
 	post_cam_trans = transpose( mat4(mat3(U_cam_trans)) );
 
-	gl_Position = U_ProjectM * U_cam_trans * (post_cam_trans * vec4(0.1 * U_Scale * position, 1.0f) + inst_pos) - vec4(0,0,0.01f,0);
+	gl_Position = U_ProjectM * U_cam_trans * (post_cam_trans * vec4(0.1 * U_Scale * position, 1.0f) + inst_pos);
 	
 };
 

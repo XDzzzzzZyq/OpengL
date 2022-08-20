@@ -37,7 +37,7 @@ void render(GLFWwindow* window) {
 	ImguiManager UI(window);
 	EventListener Event;
 
-	Camera camera(10.0f, 10.0f, 70, 0.0f, 300.0f);
+	Camera camera(10.0f, 10.0f, 70, 5.0f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
 	camera.ApplyTransform();
 	camera.GetInvTransform();

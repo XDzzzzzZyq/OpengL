@@ -9,7 +9,7 @@ uniform mat4 U_Trans;
 
 void main(){
 
-	gl_Position = U_ProjectM * U_cam_trans * U_Trans * vec4(position, 1.0f) - vec4(0,0,0.01f,0);
+	gl_Position = U_ProjectM * U_cam_trans * U_Trans * vec4(position, 1.0f);
 	
 };
 

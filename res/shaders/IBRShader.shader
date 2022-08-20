@@ -71,9 +71,9 @@ vec4 GetSelect(vec4 col, float act){
 	return col;
 }
 
-vec4 Conv3_3(sampler2D tex, vec2 res, vec2 uv, int rad, float act){
+vec4 Conv3_3(sampler2D tex, ivec2 res, vec2 uv, int rad, float act){
 	vec4 result = vec4(0.0f);
-	vec2 offest = vec2(1) / res;
+	vec2 offest = 3*vec2(1) / res;
 	for(int i = -rad; i<=rad; i++){
 		for(int j = -rad; j<=rad; j++){
 			result += GetSelect(texture(tex, uv + offest * vec2( i , j )), act);
@@ -93,14 +93,11 @@ void main(){
 
 	color =  hdr_color * (1 - screen_color[3]) + vec4(vec3(screen_color),1.0f) * screen_color[3];
 
-	if(activeID!=0){
+	if(activeID != 0){
 		IDcolor = texture(id_texture, screen_uv);
 		IDcolor[3] = 1.0f;
 		IDcolor = GetSelect(IDcolor, activeID);
-		vec2 div = (vec2(gl_FragCoord)/screen_uv);
-		//color = Conv3_3(id_texture, div, screen_uv, 3);
-		//color = IDcolor;
-		outline = (vec4(1,1,1,2)-IDcolor) * Conv3_3(id_texture, div, screen_uv, 1, activeID);
+		outline = (vec4(1,1,1,2)-IDcolor) * Conv3_3(id_texture, textureSize(id_texture, 0), screen_uv, 1, activeID);
 		if(outline[0]>0.1){
 			color = vec4(1,1,1,1);
 		}	

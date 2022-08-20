@@ -20,7 +20,7 @@ uniform float z_inp;
 void main(){
 	uv = uvIn;
 	
-	gl_Position = U_ProjectM * U_cam_trans * U_obj_trans * vec4(position,1.0f) - vec4(0,0,0.01f,0);
+	gl_Position = U_ProjectM * U_cam_trans * U_obj_trans * vec4(position,1.0f);
 	testcolor = vec4(position,1.0f);
 
 	Snormal_color = vec4(normalize(mat3(U_obj_trans) * smo_normal), 1.0f);
