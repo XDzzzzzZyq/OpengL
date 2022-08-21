@@ -94,32 +94,32 @@ void Renderer::EventInit()
 void Renderer::LMB_CLICK()
 {
 	if (IsClick()) {
-		int id = GetSelectID(mouse_x, mouse_y);
-		int A_ID_BUFFER = active_GO_ID;
+		pre_act_go_ID = active_GO_ID;
 
-		if (name_buff.find(id) != name_buff.end()){
-			active_GO_ID = id;
-			if (A_ID_BUFFER != 0 && obj_list.find(A_ID_BUFFER) != obj_list.end())
-				obj_list[A_ID_BUFFER]->is_selected = false;
+		active_GO_ID = GetSelectID(mouse_x, mouse_y);
 
-			if(obj_list.find(id)!=obj_list.end())
-				obj_list[id]->is_selected = true;
+		if (name_buff.find(active_GO_ID) != name_buff.end()){
+			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
+				obj_list[pre_act_go_ID]->is_selected = false;
+
+			if(obj_list.find(active_GO_ID)!=obj_list.end())
+				obj_list[active_GO_ID]->is_selected = true;
 		}
 		else{
 			active_GO_ID = 0; 
-			if (A_ID_BUFFER != 0 && obj_list.find(A_ID_BUFFER) != obj_list.end())
-				obj_list[A_ID_BUFFER]->is_selected = false;
+			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
+				obj_list[pre_act_go_ID]->is_selected = false;
 		}
 
 		if (multi_select) {
-			is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
+			is_selected_changed = pre_act_go_ID != active_GO_ID;
 		}
 		else {
-			is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
+			is_selected_changed = pre_act_go_ID != active_GO_ID;
 		}
 
 		for (auto i : spirit_id_buff) {
-			if (i == id) {
+			if (i == active_GO_ID) {
 				is_spirit_selected = true;
 				return;
 			}
@@ -139,7 +139,7 @@ void Renderer::SHIFT()
 
 //////////////////////////////////////////////
 
-void Renderer::FrameClean() const
+void Renderer::UpdateFrame()
 {
 	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
@@ -147,6 +147,15 @@ void Renderer::FrameClean() const
 	//glClearDepth(-10.0f);
 	
 
+	if (is_outliner_selected) {
+		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
+			obj_list[pre_act_go_ID]->is_selected = false;
+
+		if (obj_list.find(active_GO_ID) != obj_list.end())
+			obj_list[active_GO_ID]->is_selected = true;
+
+		is_outliner_selected = false;
+	}
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +180,7 @@ void Renderer::Render() {
 	envir_list[0]->BindFrameBuffer();
 
 
-	FrameClean();
+	UpdateFrame();
 	//glEnable(GL_STENCIL_TEST);
 	glEnable(GL_DEPTH_TEST);
 	////////////    MESHES    ////////////
@@ -276,7 +285,6 @@ void Renderer::Reset()
 	cam_list[0]->is_invUniform_changed = false;
 	cam_list[0]->is_frustum_changed = false;
 	is_scr_changed = false;
-	is_GOlist_changed = false;
 }
 
 

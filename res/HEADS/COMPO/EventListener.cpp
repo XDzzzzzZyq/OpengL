@@ -3,20 +3,24 @@
 KeyMouseEvent EventListener::evt_KM;
 
 bool EventListener::is_key_pressed;
-
 bool EventListener::is_mouse_pressed;
-
 bool EventListener::is_key_pressed_b;
-
 bool EventListener::is_mouse_pressed_b;
-
 double EventListener::mouse_x;
-
 double EventListener::mouse_y;
-
 double EventListener::mouse_b_x;
-
 double EventListener::mouse_b_y;
+bool EventListener::is_spirit_selected = false;
+bool EventListener::is_GOlist_changed = true;
+bool EventListener::is_selected_changed = true;
+bool EventListener::is_outliner_selected = false;
+
+int EventListener::active_GO_ID;
+int EventListener::pre_act_go_ID;
+
+std::vector<int> EventListener::selec_list;
+std::vector<int> EventListener::parent_index_list;
+OutlineData EventListener::outline_list;
 
 EventListener::EventListener()
 {

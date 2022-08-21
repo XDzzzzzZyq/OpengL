@@ -47,14 +47,6 @@ public:
 	std::unordered_map<int, DebugPoints*>	   dPoints_list;
 
 public:
-	bool is_spirit_selected = false;
-	bool is_GOlist_changed = true;
-	int active_GO_ID;
-	std::vector<int> selec_list;
-	std::vector<int>parent_index_list;
-	OutlineData outline_list;
-	OutlineData* GetOutlineData() { return &outline_list; }
-	std::vector<int> GetParentRelatData() { return parent_index_list; }
 	std::string GetObjectName(int ID);
 
 	int GetSelectID(GLuint x, GLuint y);
@@ -75,7 +67,7 @@ public:
 	void SHIFT();
 
 public:
-	void FrameClean() const;
+	void UpdateFrame();
 	void Render();
 	void Reset();
 

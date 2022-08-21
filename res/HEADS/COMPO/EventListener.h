@@ -51,19 +51,30 @@ public:
 	bool IsClick() const {
 		return is_mouse_pressed_b == false && is_mouse_pressed == true;
 	}
-	
+public:
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	double scr_up, scr_down;
 
 	std::vector<int> evt_IDlist;
-
+public:
+	static bool is_spirit_selected;
+	static bool is_GOlist_changed;
+	static bool is_selected_changed;
+	static bool is_outliner_selected;
+	static int active_GO_ID;
+	static int pre_act_go_ID;
+	static std::vector<int> selec_list;
+	static std::vector<int>parent_index_list;
+	static OutlineData outline_list;
+	OutlineData* GetOutlineData() { return &outline_list; }
+	std::vector<int> GetParentRelatData() { return parent_index_list; }
+public:
 	EventListener();
 	EventListener(GLFWwindow* window);
 	~EventListener();
 
-
+public:
 	std::unordered_map<KeyMouseEvent, std::function<void()>, hash_fn> EventList;
-
 	int ListenMouseEvent(GLFWwindow* window) const;
 	int ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const;
 	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
