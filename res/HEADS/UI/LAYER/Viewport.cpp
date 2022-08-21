@@ -28,6 +28,11 @@ Viewport::~Viewport()
 
 }
 
+void Viewport::UpdateLayer()
+{
+
+}
+
 void Viewport::RenderLayer() const
 {
 	if (!uly_is_rendered)
@@ -38,11 +43,11 @@ void Viewport::RenderLayer() const
 		item_list[0]->RenderItem();
 
 		GetLayerSize();
-		if (is_size_changed)
+
+
+		if (IsChangeEnd())
 			if (resize_event)
 				resize_event();
-		if(IsChangeEnd())
-			DEBUG(123123)
 
 		is_size_changed_b = is_size_changed;
 		is_size_changed = false;

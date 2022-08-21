@@ -34,6 +34,7 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui::GetStyle().Colors[ImGuiCol_Header] = ImVec4(1, 1, 1, 0);
 	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = ImVec4(1, 1, 1, 0.4);
 	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = ImVec4(1, 1, 1, 0.2);
+	ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
 }
 
 void ImguiManager::NewFrame() const
@@ -126,7 +127,7 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return FindImguiLayer(ly_name)->FindImguiItem(it_name)->GetPara();
 }
 
-void ImguiManager::RenderUI() const
+void ImguiManager::RenderUI()
 {
 	if (ParaUpdate)
 		ParaUpdate();
@@ -141,10 +142,9 @@ void ImguiManager::RenderUI() const
 	/*			ImGui::EndMenuBar();*/
 	ImGui::EndMainMenuBar();
 
-
-
 	for (const auto& layer : layer_list) {
-		if(layer->uly_ID != active_layer_id)
+		if (layer->uly_ID != active_layer_id)
+			layer->UpdateLayer();
 			layer->RenderLayer();
 	}
 	layer_list[active_layer_id]->RenderLayer();
@@ -167,7 +167,6 @@ void ImguiManager::RenderUI() const
 		}
 
 	}
-
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }

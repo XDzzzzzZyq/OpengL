@@ -23,26 +23,48 @@ void Outliner::SetObjectList(OutlineData* data)
 	actIndex = -1;
 	LOOP(ol_data.size())
 	{
-		if (ol_data[i].ID == actID) {
-			PushItem(new UI::OpaButton("[ " + ol_data[i].NAME + " ]"));
-			actIndex = i;
-		}
-		else {
-			PushItem(new UI::OpaButton(ol_data[i].NAME));
-		}
-
-		
-		item_list[item_list.size()-1]->ResetSize(size);
+		PushItem(new UI::OpaButton(ol_data[i].NAME, ol_data[i].ID));
+		id2index[ol_data[i].ID] = item_list.size() - 1;
+		index2id[item_list.size() - 1] = ol_data[i].ID;
+		item_list[item_list.size() - 1]->ResetSize(size);
 	}
-}
-
-void Outliner::SetActiveData(int ID)
-{
-	actID = ID;
 }
 
 void Outliner::UpdateStyle()
 {
+
+}
+
+void Outliner::UpdateLayer()
+{
+	if (is_GOlist_changed) {
+		SetObjectList(&outline_list);
+	}
+
+	LOOP(item_list.size()) {
+		if (item_list[i]->is_activated) {
+			if (i != actIndex) {
+				is_selected_changed = true;
+				pre_act_go_ID = active_GO_ID;
+				active_GO_ID = index2id[i];
+
+				is_outliner_selected = true;
+			}
+		}
+
+	}
+
+	if (is_selected_changed) {
+		if (pre_act_go_ID != 0)
+			FindImguiItem(id2index[pre_act_go_ID])->is_activated = false;
+		if (active_GO_ID != 0) {
+			actIndex = id2index[active_GO_ID];
+			FindImguiItem(actIndex)->is_activated = true;
+		}
+
+	}
+
+
 
 }
 
@@ -53,32 +75,18 @@ void Outliner::RenderLayer() const
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
-		ImVec2 p = ImGui::GetCursorScreenPos()-ImVec2(0,2);
+		ImVec2 p = ImGui::GetCursorScreenPos() - ImVec2(0, 2);
 		GetLayerSize();
-		//if(item_list[0])
-		//	ol_width = item_list[0]->GetPara()->para_data.idata;
 		LOOP(round(uly_size.y / (ol_width * 2)) + 1) {
 			float frac = i == round(uly_size.y / (ol_width * 2)) ? uly_size.y - (2 * i + 1) * ol_width : 0;
 			frac = frac < -ol_width ? -ol_width : frac;
 			ImGui::GetForegroundDrawList()->AddRectFilled(p + ImVec2(0, i * ol_width * 2), p + ImVec2(uly_size.x, (2 * i + 1) * ol_width + frac), IM_COL32(255, 255, 255, 20));
 		}
 
-		int i = 0;
 		ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.1f, 0.5f));
 		for (auto& item : item_list) {
-			if (i == actIndex) {
-				ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
-				item->RenderItem();
-				ImGui::PopStyleVar();
-			}
-			else
-			{
-				item->RenderItem();
-			}
-
-			i++;
+			item->RenderItem();
 		}
-
 		ImGui::PopStyleVar();
 
 		if (is_size_changed)
@@ -91,4 +99,5 @@ void Outliner::RenderLayer() const
 		uly_is_rendered = false;
 		ImGui::End();
 	}
+
 }

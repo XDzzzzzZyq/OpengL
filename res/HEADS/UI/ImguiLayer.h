@@ -66,12 +66,12 @@ public:
 	mutable std::function<void(void)> pre_RenderLayer = [] {};
 	mutable std::function<void(void)> extra_RenderLayer = [] {};
 	mutable std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer() const { DEBUG("no render function overrided")return; };
+	virtual void RenderLayer() const { DEBUG("no Render function overrided")return; };
+	virtual void UpdateLayer() {};
 
 	//for outline          |  TYPE  |  NAME  |
-	virtual void SetObjectList(OutlineData* data) { DEBUG(uly_name + " is not a Outline") return; }
+	virtual void SetObjectList(OutlineData* data){ DEBUG(uly_name + " is not a Outline") return; }
 	mutable std::function<void(void)> set_active = [] {};
-	virtual void SetActiveData(int ID) { DEBUG(uly_name + " is not a Outline") return; };
 
 	void EventInit();
 	void LMB();

@@ -107,5 +107,5 @@ struct OutlineElement
 		:TYPE(a), ID(id), NAME(b), LEVEL(c)
 	{}
 };
-//			| TYPE |    NAME   | LEVEL |
+//			| TYPE | ID | NAME | LEVEL |
 typedef std::vector<OutlineElement> OutlineData;

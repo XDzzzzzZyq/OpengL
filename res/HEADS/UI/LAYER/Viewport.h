@@ -13,6 +13,8 @@ public:
 	Viewport(const std::string& name, GLuint texID, const ImVec2& vp_size);
 	~Viewport();
 public:
+
+	void UpdateLayer() override;
 	void RenderLayer() const override;
 };
 

@@ -37,7 +37,7 @@ void render(GLFWwindow* window) {
 	ImguiManager UI(window);
 	EventListener Event;
 
-	Camera camera(10.0f, 10.0f, 70, 5.0f, 300.0f);
+	Camera camera(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
 	camera.ApplyTransform();
 	camera.GetInvTransform();
@@ -170,12 +170,6 @@ void render(GLFWwindow* window) {
 		renderer.EventActivate();
 		UI.FindImguiLayer("Viewport")->EventActivate();
 
-		if (renderer.is_GOlist_changed) {
-			UI.FindImguiLayer("Outliner")->SetActiveData(renderer.active_GO_ID);
-			UI.FindImguiLayer("Outliner")->SetObjectList(renderer.GetOutlineData());
-		}
-
-
 		/* Render here */
 
 		go1.SetScale(glm::vec3(scale));
@@ -201,6 +195,9 @@ void render(GLFWwindow* window) {
 
 		renderer.Render();
 		UI.RenderUI();
+
+		Event.is_selected_changed = false;
+		Event.is_GOlist_changed = false;
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

@@ -5,10 +5,13 @@
 class Outliner : public ImguiLayer, public ImguiTheme
 {
 private:
-	OutlineData ol_data;
+	mutable OutlineData ol_data;
+	std::unordered_map<int, int> id2index;
+	std::unordered_map<int, int> index2id;
 	mutable int ol_width = 30;
-	int actID;
-	int actIndex;
+	mutable int actID;
+	mutable int actIndex;
+	mutable int actIndex_b;
 	ImFont* fontA;
 public:
 	Outliner();
@@ -16,10 +19,10 @@ public:
 	~Outliner();
 
 public:
-	void SetObjectList(OutlineData* data) override;
-	void SetActiveData(int ID) override;
+	void SetObjectList(OutlineData* data)override;
 	void UpdateStyle();
 
+	void UpdateLayer() override;
 	void RenderLayer() const override;
 };
 

@@ -15,7 +15,7 @@ enum ImItemType
 {
 	NONE_INP,
 	TEXT_INP, FLOAT_INP, INT_INP, RGB_INP, RGBA_INP,
-	BUTTON_INP, BOOL_INP,
+	BUTTON_INP, BOOL_INP, SELECT_INP,
 	IMAGE_OUTP, TEXT_OUTP,
 	VIEWPORT_OUTP
 };
@@ -28,23 +28,25 @@ public:
 	ImguiItem();
 	ImguiItem(ImItemType type, const std::string& name);
 	virtual ~ImguiItem();
-
+public:
 	mutable bool using_size = false;
 	mutable bool fixed_size = false;
 	mutable bool show_tag_name = false;
 	ImVec2 uitm_size;
-
+public:
+	mutable bool is_activated = false;
+public:
 	ImItemType uitm_type = NONE_INP;
 	mutable std::string uitm_name = "";
 	mutable std::string notagname = "";
 	mutable int uitm_id = -1;
-
+public:
 	void Rename(const std::string& name) const;
 	std::string GetTagName()const;
 	void EnableTagName() const ;
 	void DisableTagName() const;
 	const char* GetCharName() const { return uitm_name.c_str(); }
-
+public:
 	// for all items
 	virtual void RenderItem() const { DEBUG("no render function overrided")return; }
 

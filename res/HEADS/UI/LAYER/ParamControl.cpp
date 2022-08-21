@@ -30,6 +30,7 @@ void ParamControl::RenderLayer() const
 			uly_show_type ? item->EnableTagName() : item->DisableTagName();
 			item->RenderItem();
 		}
+
 		if (extra_RenderLayer)
 			extra_RenderLayer();
 
