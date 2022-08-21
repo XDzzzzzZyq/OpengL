@@ -10,7 +10,7 @@ Environment::Environment(const std::string& texpath)
 	envir_hdr.Bind(); 
 	//envir_hdr.Tex_slot = envir_hdr.Tex_type;
 
-	envir_frameBuffer = FrameBuffer(3, COMBINE_FB, ID_FB, RAND_FB);	
+	envir_frameBuffer = FrameBuffer(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);	
 
 	o_name = "Environment." + std::to_string(GetObjectID());
 
@@ -32,6 +32,7 @@ Environment::Environment(const std::string& texpath)
 	envir_shader.SetValue("hdr_texture",         HDR_TEXTURE);
 	envir_shader.SetValue("screen_texture",      BUFFER_TEXTURE + COMBINE_FB);
 	envir_shader.SetValue("id_texture",          BUFFER_TEXTURE + ID_FB);
+	envir_shader.SetValue("select_texture",		 BUFFER_TEXTURE + ALPHA_FB);
 	envir_shader.SetValue("ID_color", id_color);
 	envir_shader.SetValue("RAND_color", id_color_rand);
 
@@ -90,7 +91,7 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 	o_vertArry.Bind();
 	envir_shader.UseShader();
 	o_indexBuffer.Bind();
-	envir_frameBuffer->BindFrameBufferTex(3,COMBINE_FB,ID_FB,RAND_FB);
+	envir_frameBuffer->BindFrameBufferTex(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);
 	envir_hdr.Bind();
 	if(cam->is_invUniform_changed)
 		envir_shader.SetValue("cam_rotM", cam->o_rotMat);

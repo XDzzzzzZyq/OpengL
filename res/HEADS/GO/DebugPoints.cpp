@@ -58,8 +58,12 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	//transform settings
 
 	//std::cout << o_Transform;
-	dp_shader[(int)is_proj].SetValue("pos_count", dp_pos_list.size()/3);	
+	if (is_list_changed)
+		dp_shader[(int)is_proj].SetValue("pos_count", dp_pos_list.size()/3);	
+
 	dp_shader[(int)is_proj].SetValue("point_color", dp_color);
+
+	dp_shader[(int)is_proj].SetValue("is_selected", (int)is_selected);
 
 	if (is_list_changed) {
 		dp_pos_buffer.GenStorageBuffer(dp_pos_list);

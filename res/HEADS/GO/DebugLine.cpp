@@ -95,6 +95,8 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	if(is_Uniform_changed)
 		dLine_shader.SetValue("U_Trans", o_Transform);
 
+	dLine_shader.SetValue("is_selected", (int)is_selected);
+
 	dLine_shader.SetValue("dlineOpacity", dLine_opacity);
 	dLine_shader.SetValue("U_color", dLine_color);
 

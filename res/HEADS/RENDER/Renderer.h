@@ -28,6 +28,7 @@ private:
 	std::unordered_map<int, Light*> emptyLight;
 	std::optional<FrameBuffer> framebuffer;
 	std::unordered_map<int, std::string> name_buff;
+	std::vector<int> spirit_id_buff;
 public:
 	Renderer();
 	~Renderer();
@@ -36,6 +37,7 @@ public:
 public:
 	bool is_light_changed = false;
 
+	std::unordered_map<int, GameObject*>		   obj_list; //for selectables
 	std::unordered_map<int, Camera*>			   cam_list;
 	std::unordered_map<int, Mesh* >			      mesh_list;
 	std::unordered_map<int, Light*>				 light_list; //num | pointer
@@ -45,7 +47,7 @@ public:
 	std::unordered_map<int, DebugPoints*>	   dPoints_list;
 
 public:
-
+	bool is_spirit_selected = false;
 	bool is_GOlist_changed = true;
 	int active_GO_ID;
 	std::vector<int> selec_list;

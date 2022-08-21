@@ -97,11 +97,19 @@ void Renderer::LMB_CLICK()
 		int id = GetSelectID(mouse_x, mouse_y);
 		int A_ID_BUFFER = active_GO_ID;
 
-
-		if (name_buff.find(id) != name_buff.end())
+		if (name_buff.find(id) != name_buff.end()){
 			active_GO_ID = id;
-		else
-			active_GO_ID = 0;
+			if (A_ID_BUFFER != 0 && obj_list.find(A_ID_BUFFER) != obj_list.end())
+				obj_list[A_ID_BUFFER]->is_selected = false;
+
+			if(obj_list.find(id)!=obj_list.end())
+				obj_list[id]->is_selected = true;
+		}
+		else{
+			active_GO_ID = 0; 
+			if (A_ID_BUFFER != 0 && obj_list.find(A_ID_BUFFER) != obj_list.end())
+				obj_list[A_ID_BUFFER]->is_selected = false;
+		}
 
 		if (multi_select) {
 			is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
@@ -109,6 +117,18 @@ void Renderer::LMB_CLICK()
 		else {
 			is_GOlist_changed = A_ID_BUFFER != active_GO_ID;
 		}
+
+		for (auto i : spirit_id_buff) {
+			if (i == id) {
+				is_spirit_selected = true;
+				return;
+			}
+			else {
+				is_spirit_selected = false;
+			}
+
+		}
+
 	}
 }
 
@@ -223,12 +243,26 @@ void Renderer::Render() {
 	glDisable(GL_DEPTH_TEST);
 
 	framebuffer->BindFrameBuffer();
-	envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID);
-	framebuffer->UnbindFrameBuffer();
 
+
+	envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID*(int)(!is_spirit_selected));
+	framebuffer->UnbindFrameBuffer();
+	//DEBUG(is_spirit_selected)
 	Reset();
 }
 
+////////////////////////////////////// END RENDERING /////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//++++++++                                                                                ++++++++++//
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Renderer::Reset()
 {
@@ -245,18 +279,7 @@ void Renderer::Reset()
 	is_GOlist_changed = false;
 }
 
-////////////////////////////////////// END RENDERING /////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//++++++++                                                                                ++++++++++//
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 void Renderer::UseCamera(Camera* camera)
@@ -265,6 +288,7 @@ void Renderer::UseCamera(Camera* camera)
 	{
 		is_GOlist_changed = true;
 		cam_list[camera->GetObjectID()] = camera;
+		obj_list[camera->GetObjectID()] = camera;
 		cam_list[0] = camera;
 		outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
 		parent_index_list.push_back(-1);
@@ -297,6 +321,7 @@ void Renderer::UseMesh(Mesh* mesh)
 	{
 		is_GOlist_changed = true;
 		mesh_list[mesh->GetObjectID()] = mesh;
+		obj_list[mesh->GetObjectID()] = mesh;
 		outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
 		parent_index_list.push_back(-1);
 		name_buff[mesh->GetObjectID()] = mesh->o_name;
@@ -316,6 +341,7 @@ void Renderer::UseLight(Light* light)
 		outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
 		parent_index_list.push_back(-1);
 		name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
+		spirit_id_buff.push_back(light->light_spirit.GetObjectID());
 	}
 
 }
@@ -356,6 +382,7 @@ void Renderer::UseDebugLine(DebugLine* dline)
 	{
 		is_GOlist_changed = true;
 		dLine_list[dline->GetObjectID()] = dline;
+		obj_list[dline->GetObjectID()] = dline;
 		outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
 		name_buff[dline->GetObjectID()] = dline->o_name;
 		parent_index_list.push_back(-1);
@@ -368,6 +395,7 @@ void Renderer::UseDebugPoints(DebugPoints* dpoints)
 	{
 		is_GOlist_changed = true;
 		dPoints_list[dpoints->GetObjectID()] = dpoints;
+		obj_list[dpoints->GetObjectID()] = dpoints;
 		outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
 		name_buff[dpoints->GetObjectID()] = dpoints->o_name;
 		parent_index_list.push_back(-1);

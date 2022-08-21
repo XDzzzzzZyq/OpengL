@@ -42,6 +42,7 @@ void main(){
 layout(location = 0) out vec4 color;
 layout(location = 1) out vec4 IDcolor;
 layout(location = 2) out vec4 RANDcolor;
+layout(location = 3) out vec4 SELECcolor;
 
 in vec2 uv;
 in vec4 testcolor;
@@ -54,6 +55,7 @@ uniform sampler2D Envir_Texture;
 uniform float blen[3];
 uniform vec3 ID_color;
 uniform vec3 RAND_color;
+uniform int is_selected;
 
 uniform float L_point[41]; //count + 5 points
 uniform float L_sun[23]; //count + 2 suns
@@ -174,6 +176,7 @@ void main(){
 						   
 	vec4 uvcolor = texture(U_Texture,uv);
 	vec3 reflectcolor = vec3(texture(Envir_Texture, genHdrUV(-ReflectRay)));
+	SELECcolor = vec4(is_selected);
 
 	//color = uvcolor * vec4(Vec3Film(LightMap.Diffuse_map + LightMap.Specular_map*2), 1.0f);
 	color = vec4(reflectcolor,1.0f);

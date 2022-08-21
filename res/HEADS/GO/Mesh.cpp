@@ -71,6 +71,8 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 	if(cam->is_Uniform_changed || cam->is_frustum_changed)
 		o_shader.SetValue("Scene_data",8 , cam->cam_floatData.data(),VEC1_ARRAY);
 
+	o_shader.SetValue("is_selected", (int)is_selected);
+
 	if (!light_list.empty())
 	{
 		LightFloatArray lightdata(light_list);
