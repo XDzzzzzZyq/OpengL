@@ -35,6 +35,7 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = ImVec4(1, 1, 1, 0.4);
 	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = ImVec4(1, 1, 1, 0.2);
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
+
 }
 
 void ImguiManager::NewFrame() const

@@ -3,11 +3,16 @@
 Outliner::Outliner()
 {
 	uly_name = "Outliner";
+
+
 }
 
 Outliner::Outliner(const std::string& name)
 {
 	uly_name = name;
+
+	ImGui::GetIO().Fonts->AddFontDefault();
+	fontA = ImGui::GetIO().Fonts->AddFontFromFileTTF("res/fonts/GenJyuuGothicX-Bold.ttf", 18.0f, NULL, ImGui::GetIO().Fonts->GetGlyphRangesJapanese());
 }
 
 Outliner::~Outliner()
@@ -84,9 +89,11 @@ void Outliner::RenderLayer() const
 		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.1f, 0.5f));
+		ImGui::PushFont(fontA);
 		for (auto& item : item_list) {
 			item->RenderItem();
 		}
+		ImGui::PopFont();
 		ImGui::PopStyleVar();
 
 		if (is_size_changed)
