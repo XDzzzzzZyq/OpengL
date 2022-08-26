@@ -67,6 +67,6 @@ public:
 
 	mutable std::function<void(void)> ParaUpdate = [] {};
 
-	void RenderUI();
+	void RenderUI(bool rend = true);
 };
 

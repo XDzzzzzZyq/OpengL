@@ -6,7 +6,7 @@ ImguiManager::ImguiManager()
 
 	io = ImGui::GetIO(); (void)io;
 	m_style = ImGui::GetStyle();
-	
+
 	DefultViewports();
 }
 
@@ -66,10 +66,10 @@ ImguiLayer* ImguiManager::GetActiveImguiLayer() const
 
 ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 {
-	if(layer_name_buffer.find(name) != layer_name_buffer.end())
+	if (layer_name_buffer.find(name) != layer_name_buffer.end())
 		return layer_list[layer_name_buffer[name]];
 	DEBUG("[ no layer named " + name + " ]")
-	return nullptr;
+		return nullptr;
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(int id) const
@@ -113,13 +113,13 @@ ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)
 {
 	if (FindImguiItem(ly_name, it_name)) {
-		DEBUG(ly_name+" "+it_name)
+		DEBUG(ly_name + " " + it_name)
 			FindImguiItem(ly_name, it_name)->ButtonFunc = func;
 	}
 	else {
 		DEBUG("button not found")
 	}
-		
+
 }
 
 Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::string& it_name)
@@ -127,27 +127,30 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return FindImguiLayer(ly_name)->FindImguiItem(it_name)->GetPara();
 }
 
-void ImguiManager::RenderUI()
+void ImguiManager::RenderUI(bool rend)
 {
-	if (ParaUpdate)
-		ParaUpdate();
+	if (rend) {
+		if (ParaUpdate)
+			ParaUpdate();
 
-	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-	ImGui::BeginMainMenuBar();
-	/*			ImGui::BeginMenuBar();*/
-	for (const auto& menu : menu_list) {
-		menu.RenderMenu();
+		ImGui::BeginMainMenuBar();
+		/*			ImGui::BeginMenuBar();*/
+		for (const auto& menu : menu_list) {
+			menu.RenderMenu();
+		}
+		/*			ImGui::EndMenuBar();*/
+		ImGui::EndMainMenuBar();
+
+		for (const auto& layer : layer_list) {
+			if (layer->uly_ID != active_layer_id) {
+				layer->UpdateLayer();
+				layer->RenderLayer();
+			}
+		}
+		layer_list[active_layer_id]->RenderLayer();
 	}
-	/*			ImGui::EndMenuBar();*/
-	ImGui::EndMainMenuBar();
-
-	for (const auto& layer : layer_list) {
-		if (layer->uly_ID != active_layer_id)
-			layer->UpdateLayer();
-			layer->RenderLayer();
-	}
-	layer_list[active_layer_id]->RenderLayer();
 
 	ImGui::Render();
 
