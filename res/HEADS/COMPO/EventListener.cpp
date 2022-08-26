@@ -128,6 +128,13 @@ void EventListener::EventActivate()
 			EventList[evt_KM]();
 }
 
+void EventListener::Reset()
+{
+	is_selected_changed = false;
+	is_GOlist_changed = false;
+	is_scr_changed = false;
+}
+
 int KeyMouseEvent::GenStateData() const
 {
 	int data = 0;

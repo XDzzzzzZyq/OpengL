@@ -83,6 +83,7 @@ public:
 	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
 
 	void EventActivate();
+	void Reset();
 };
 
 inline extern float scroll_dir = 80;;
