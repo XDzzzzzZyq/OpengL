@@ -50,13 +50,12 @@ vec4 ray_dir;
 vec2 reUV;
 vec2 equirectangularUV;
 
+const vec2 invAtan = vec2(0.1591, 0.3183);
 vec2 genHdrUV(vec3 dir){
-	float spin = atan(dir[2]/dir[0]);
-	float elevation = atan(dir[1]/sqrt(dir[0]*dir[0]+dir[2]*dir[2]));
-	if(dir[0]>0){
-		spin-=3.1415926f;
-	}
-	return vec2(((spin/3.1415926f)/2)+0.5, (elevation/-3.1415926f+1)/2);
+    vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
+    uv *= invAtan;
+    uv += 0.5;
+    return -uv+vec2(0.5,1);
 }
 
 vec2 reMapUV(vec2 uv){
@@ -80,18 +79,17 @@ vec4 Conv3_3(sampler2D tex, ivec2 res, vec2 uv, int rad){
 			result += texture(tex, uv + offest * vec2( i , j )) / pow(2*rad+1,2);
 		}
 	}
-	//result  = vec4(4*rad*rad)-result;
-
-	//result = result/(4*rad*rad);
 	return vec4(result[3]);
 }
 
-void main(){		 
+void main(){		
+
 	reUV  = reMapUV(screen_uv);
 	ray_dir =  cam_rotM * vec4(vec3(-1,-1,1)*normalize( vec3(reUV * tan(cam_fov/2) * vec2(cam_ratio, 1) ,1)  ) ,1);
 
 	screen_color = texture(screen_texture,screen_uv);
 	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);
+	//hdr_color = vec4(texture((hdr_texture,SampleSphericalMap(normalize(vec3(ray_dir)))1.0f);
 
 	color =  hdr_color * (1 - screen_color[3]) + vec4(vec3(screen_color),1.0f) * screen_color[3];
 
@@ -101,6 +99,7 @@ void main(){
 		outline = vec4(vec3(max(pow(IDcolor[3] * (1-outline[3]), 0.1),0)), 1);
 		color += outline;
 	}
+
 	IDcolor = vec4(ID_color, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 };

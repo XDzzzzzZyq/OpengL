@@ -127,13 +127,12 @@ vec3 Vec3Bisector(vec3 a, vec3 b){
 	return normalize(normalize(a)*0.5 + normalize(b)*0.5);
 }
 
+const vec2 invAtan = vec2(0.1591, 0.3183);
 vec2 genHdrUV(vec3 dir){
-	float spin = atan(dir[2]/dir[0]);
-	float elevation = atan(dir[1]/sqrt(dir[0]*dir[0]+dir[2]*dir[2]));
-	if(dir[0]>0){
-		spin-=3.1415926f;
-	}
-	return vec2(((spin/3.1415926f)/2)+0.5, (elevation/-3.1415926f+1)/2);
+    vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
+    uv *= invAtan;
+    uv += 0.5;
+    return -uv+vec2(0.5,1);
 }
 
 LightMapStruct LightMap;
