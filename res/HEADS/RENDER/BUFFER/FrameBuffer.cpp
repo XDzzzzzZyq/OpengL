@@ -141,14 +141,15 @@ FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 	return Pixel;
 }
 
-void FrameBuffer::BindFrameBufferTex() const
-{
-	BufferTexture.Bind();
-	IDTexture.Bind();
-}
-
 void FrameBuffer::BindFrameBufferTex(int count, ...) const
 {
+	if (count == 0) {
+		for (auto& fb : fb_tex_list)
+			fb.Bind();
+
+		return;
+	}
+
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
 	LOOP(count) {

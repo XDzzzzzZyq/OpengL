@@ -12,7 +12,7 @@ enum FBType
 struct FBPixel
 {
 	float RGBA[4];
-	int GetID() { return RGBA[0]; }
+	int GetID() const { return RGBA[0]; }
 };
 
 class FrameBuffer
@@ -43,8 +43,7 @@ public:
 
 	FBPixel ReadPix(GLuint x, GLuint y, FBType type);
 
-	void BindFrameBufferTex() const;
-	void BindFrameBufferTex(int count, ...) const;
+	void BindFrameBufferTex(int count = 0, ...) const;
 	void UnbindFrameBufferTex() const;
 
 	void Del() const;
