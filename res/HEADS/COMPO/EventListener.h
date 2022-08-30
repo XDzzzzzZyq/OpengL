@@ -78,6 +78,14 @@ public:
 	int ListenMouseEvent(GLFWwindow* window) const;
 	int ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const;
 	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
+
+	static float scroll_dir;
+	static bool is_scr_changed;
+	static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
+		is_scr_changed = true;
+		scroll_dir = yoffset;
+	}
+
 	void UpdateEvent(GLFWwindow* window) const;
 
 	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
@@ -85,10 +93,3 @@ public:
 	void EventActivate();
 	void Reset();
 };
-
-inline extern float scroll_dir = 80;;
-inline extern bool is_scr_changed = false;
-inline static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
-	is_scr_changed = true;
-	scroll_dir = yoffset;
-}

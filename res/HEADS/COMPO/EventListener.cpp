@@ -77,12 +77,15 @@ int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<in
 	return 0;
 }
 
+float EventListener::scroll_dir = 80;
+bool EventListener::is_scr_changed = false;
+
 void EventListener::UpdateEvent(GLFWwindow* window) const
 {
 	mouse_b_x = mouse_x;
 	mouse_b_y = mouse_y;
 	glfwGetCursorPos(window, &mouse_x, &mouse_y);
-	glfwSetScrollCallback(window, scrollCall);
+	glfwSetScrollCallback(window, EventListener::scrollCall);
 	//spe_key update
 	if (ListenSpecialKeyEvent(window, 0) == 0)
 	{
