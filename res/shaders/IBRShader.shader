@@ -6,11 +6,11 @@ layout(location = 1) in vec2 aScreen_uv;
 
 out vec2 screen_uv;
 
-void main(){
-	
+void main() {
+
 	screen_uv = aScreen_uv;
-	gl_Position = vec4(aPos,0.0f,1.0f);
-	
+	gl_Position = vec4(aPos, 0.0f, 1.0f);
+
 };
 
 
@@ -45,58 +45,84 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 
 uniform float activeID;
+uniform float U_gamma;
 
 vec4 ray_dir;
 vec2 reUV;
 vec2 equirectangularUV;
 
 const vec2 invAtan = vec2(0.1591, 0.3183);
-vec2 genHdrUV(vec3 dir){
-    vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
-    uv *= invAtan;
-    uv += 0.5;
-    return -uv+vec2(0.5,1);
+vec2 genHdrUV(vec3 dir) {
+	vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
+	uv *= invAtan;
+	uv += 0.5;
+	return -uv + vec2(0.5, 1);
 }
 
-vec2 reMapUV(vec2 uv){
-	return uv*2-vec2(1.0f,1.0f);
+vec2 reMapUV(vec2 uv) {
+	return uv * 2 - vec2(1.0f, 1.0f);
 }
 
-vec4 GetSelect(vec4 col, float act){
+vec4 GetSelect(vec4 col, float act) {
 	col[3] = 1.0f;
-	col -= vec4((act+1)/256, 0, 0, 0);
-	if(col[0]>=0 || col[0]<=-0.005){
-		col = vec4(1,1,1,1);
+	col -= vec4((act + 1) / 256, 0, 0, 0);
+	if (col[0] >= 0 || col[0] <= -0.005) {
+		col = vec4(1, 1, 1, 1);
 	}
 	return col;
 }
 
-vec4 Conv3_3(sampler2D tex, ivec2 res, vec2 uv, int rad){
+vec4 Conv3_3(sampler2D tex, ivec2 res, vec2 uv, int rad) {
 	vec4 result = vec4(0.0f);
 	vec2 offest = 1.5 * vec2(1) / res;
-	for(int i = -rad; i<=rad; i++){
-		for(int j = -rad; j<=rad; j++){
-			result += texture(tex, uv + offest * vec2( i , j )) / pow(2*rad+1,2);
+	for (int i = -rad; i <= rad; i++) {
+		for (int j = -rad; j <= rad; j++) {
+			result += texture(tex, uv + offest * vec2(i, j)) / pow(2 * rad + 1, 2);
 		}
 	}
 	return vec4(result[3]);
 }
 
-void main(){		
+float ACESFilm(float x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
 
-	reUV  = reMapUV(screen_uv);
-	ray_dir =  cam_rotM * vec4(vec3(-1,-1,1)*normalize( vec3(reUV * tan(cam_fov/2) * vec2(cam_ratio, 1) ,1)  ) ,1);
+	return (x * (a * x + b)) / (x * (c * x + d) + e);
+}
 
-	screen_color = texture(screen_texture,screen_uv);
-	hdr_color = vec4(texture(hdr_texture,genHdrUV(normalize(vec3(ray_dir)))).rgb,1.0f);
+vec3 Vec3Film(vec3 x, float fac, float gamma)
+{
+	x[0] = ACESFilm(x[0] * fac);
+	x[1] = ACESFilm(x[1] * fac);
+	x[2] = ACESFilm(x[2] * fac);
+	return pow(x, vec3(1.0/gamma));
+}
+
+vec4 Vec4Film(vec4 x, float fac, float gamma)
+{
+	x.rgb = Vec3Film(x.rgb, fac, gamma);
+	return x;
+}
+
+void main() {
+
+	reUV =  reMapUV(screen_uv);
+	ray_dir = cam_rotM * vec4(vec3(-1, -1, 1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 1);
+
+	screen_color = Vec4Film(texture(screen_texture, screen_uv), 1.0f, U_gamma);
+	hdr_color = vec4(Vec3Film(texture(hdr_texture, genHdrUV(normalize(vec3(ray_dir)))).rgb, 1.0f, U_gamma), 1.0f);
 	//hdr_color = vec4(texture((hdr_texture,SampleSphericalMap(normalize(vec3(ray_dir)))1.0f);
 
-	color =  hdr_color * (1 - screen_color[3]) + vec4(vec3(screen_color),1.0f) * screen_color[3];
+	color = hdr_color * (1 - screen_color[3]) + vec4(vec3(screen_color), 1.0f) * screen_color[3];
 
-	if(activeID != 0){
+	if (activeID != 0) {
 		IDcolor = texture(select_texture, screen_uv);
 		outline = IDcolor * Conv3_3(select_texture, textureSize(select_texture, 0), screen_uv, 2);
-		outline = vec4(vec3(max(pow(IDcolor[3] * (1-outline[3]), 0.1),0)), 1);
+		outline = vec4(vec3(max(pow(IDcolor[3] * (1 - outline[3]), 0.1), 0)), 1);
 		color += outline;
 	}
 

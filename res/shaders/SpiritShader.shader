@@ -16,15 +16,15 @@ mat4 post_cam_trans;
 uniform mat4 U_ProjectM;
 uniform float U_Scale;
 
-void main(){
+void main() {
 	L_pos = vec3(Light_data[0], Light_data[1], Light_data[2]);
 	L_color = vec3(Light_data[3], Light_data[4], Light_data[5]);
 	uv = uvIn;
 
-	post_cam_trans = transpose( mat4(mat3(U_cam_trans)) );
+	post_cam_trans = transpose(mat4(mat3(U_cam_trans)));
 
 	gl_Position = U_ProjectM * U_cam_trans * (post_cam_trans * vec4(U_Scale * position, 1.0f) + vec4(L_pos, 0.0f));
-	
+
 };
 
 
@@ -49,11 +49,11 @@ uniform float SpiritOpacity;
 uniform vec3 ID_color;
 uniform vec3 RAND_color;
 
-void main(){		   
-						   
-	vec4 uvcolor = texture(U_Texture,uv);
+void main() {
+
+	vec4 uvcolor = texture(U_Texture, uv);
 	//color = vec4(uv,0.0f,1.0f);
-	color = vec4(L_color, vec3(uvcolor)[0]*SpiritOpacity);
-	IDcolor=vec4(ID_color/256, 1.0f);
+	color = vec4(L_color, vec3(uvcolor)[0] * SpiritOpacity);
+	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 };

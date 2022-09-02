@@ -16,13 +16,13 @@ mat4 post_cam_trans;
 uniform mat4 U_ProjectM;
 uniform float U_Scale;
 
-void main(){
+void main() {
 	L_color = point_color;
 
-	post_cam_trans = 0.1 * U_Scale * transpose( mat4(mat3(U_cam_trans)) );
+	post_cam_trans = 0.1 * U_Scale * transpose(mat4(mat3(U_cam_trans)));
 
 	gl_Position = U_ProjectM * U_cam_trans * (post_cam_trans * vec4(position, 1.0f) + vec4(testList[gl_InstanceID], 0.0f));
-	
+
 };
 
 
@@ -47,11 +47,11 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 uniform int is_selected;
 
-void main(){		   
-						   
+void main() {
+
 	//color = vec4(uv,0.0f,1.0f);
 	color = vec4(L_color, U_Opacity);
-	IDcolor = vec4(ID_color/256, 1.0f);
+	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 	SELECcolor = vec4(is_selected);
 };

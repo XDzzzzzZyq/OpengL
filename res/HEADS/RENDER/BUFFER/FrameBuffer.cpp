@@ -12,8 +12,8 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	renderBuffer = RenderBuffer();
 
 	BufferTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
-	IDTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
-	IDTexture.SlotAdd(1);
+	//IDTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
+	//IDTexture.SlotAdd(1);
 	//BufferTexture.Bind(BufferTexture.Tex_type);
 
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
@@ -52,7 +52,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	LOOP(count) {
 		int type = va_arg(arg_ptr, int);
 		fb_type_list[(FBType)type] = i;
-		fb_tex_list.push_back(Texture("", BUFFER_TEXTURE, GL_NEAREST));
+		fb_tex_list.push_back(Texture("", (FBType)type == COMBINE_FB ? HDR_TEXTURE : BUFFER_TEXTURE, GL_NEAREST));
 		fb_tex_list[i].SlotAdd(type);
 
 		attachments[i] = GL_COLOR_ATTACHMENT0 + type;

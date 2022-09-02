@@ -104,5 +104,7 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 		envir_shader.SetValue("cam_ratio", cam->cam_w / cam->cam_h);
 	}
 
+	envir_shader.SetValue("U_gamma", envir_gamma);
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

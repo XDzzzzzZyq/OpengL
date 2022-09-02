@@ -146,7 +146,7 @@ void render(GLFWwindow* window) {
 	};
 	UI.ParaUpdate = [&] {
 		FrameCount++;
-		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, mouse_x, mouse_y);
+		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
 		UI.FindImguiItem("__Parameters__", "Application average %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
 
 		scale = UI.GetParaValue("__Parameters__", "SCALE")->para_data.fdata;
@@ -154,6 +154,7 @@ void render(GLFWwindow* window) {
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
+		renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 	};
 	UI.GetCurrentWindow();
 
@@ -168,14 +169,12 @@ void render(GLFWwindow* window) {
 		Event.UpdateEvent(window);
 		AvTime.Add(UI.GetIO().Framerate);
 		renderer.EventActivate();
-		UI.FindImguiLayer("Viewport")->EventActivate();
 
 		/* Render here */
 
 		go1.SetScale(glm::vec3(scale));
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
 
-		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 
@@ -195,9 +194,7 @@ void render(GLFWwindow* window) {
 
 		renderer.Render();
 		UI.RenderUI();
-
-		Event.is_selected_changed = false;
-		Event.is_GOlist_changed = false;
+		Event.Reset();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -207,6 +204,7 @@ void render(GLFWwindow* window) {
 	}
 	cout << endl << "[ Finished ]" << endl;
 	cout << GameObject::count << " object(s)" << endl;
+	DEBUG(std::to_string(1000/AvTime.result)+"ms")
 }
 
 int main(void)

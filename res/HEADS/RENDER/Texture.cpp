@@ -22,7 +22,6 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
 
-
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -36,39 +35,29 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		break;
 	case HDR_TEXTURE:
 
-		/*
 		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
-
-		glGenTextures(1, &Tex_ID);
-		glBindTexture(GL_TEXTURE_2D, Tex_ID);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, im_w, im_h, 0, GL_RGB, GL_FLOAT, m_buffer_f);
-		std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
-		glBindTexture(GL_TEXTURE_2D, 0);
-		//std::cout << im_bpp << std::endl;
-		if (m_buffer_f) {
-			stbi_image_free(m_buffer_f);
-		}*/
-
-		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
-
 		glGenTextures(1, &Tex_ID);
 		glBindTexture(GL_TEXTURE_2D, Tex_ID);
 		// std::cout << Tex_ID << std::endl;
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR/*_MIPMAP_LINEAR*/);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR/*_MIPMAP_LINEAR*/);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
 
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-
+#if 0
 		glGenerateMipmap(GL_TEXTURE_2D);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
+		GLfloat maxAnti;
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
+		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
+#else
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);	
+#endif
+
 
 		std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
 		glBindTexture(GL_TEXTURE_2D, 0);

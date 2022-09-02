@@ -7,10 +7,10 @@ uniform mat4 U_cam_trans;
 uniform mat4 U_ProjectM;
 uniform mat4 U_Trans;
 
-void main(){
+void main() {
 
 	gl_Position = U_ProjectM * U_cam_trans * U_Trans * vec4(position, 1.0f);
-	
+
 };
 
 
@@ -34,11 +34,11 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 uniform int is_selected;
 
-void main(){		   
-						  
+void main() {
+
 	//color = vec4(uv,0.0f,1.0f);
 	color = vec4(U_color, dlineOpacity);
-	IDcolor = vec4(ID_color/256, 1.0f);
+	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 	SELECcolor = vec4(is_selected);
 };

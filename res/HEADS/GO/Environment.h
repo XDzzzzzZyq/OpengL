@@ -48,7 +48,7 @@ public:
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
 	bool use_envir = false;
 
-	float envir_power = 0.0f;
+	float envir_gamma = 2.2f;
 	glm::vec3 envir_color = glm::vec3(0.1f);
 
 	Environment(const std::string& texpath);
