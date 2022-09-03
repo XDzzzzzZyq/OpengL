@@ -54,10 +54,11 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [x] Dynamic frame buffer
   - [ ] Stencil-buffer
   - [x] Fimic convert
-  - [ ] Gamma convert
-  - [ ] outline shader (high-light)
+  - [x] Gamma convert
+  - [x] HDR rendering
+  - [x] outline shader (high-light)
   - [ ] FXAA
-- [ ] multi-pass composition
+- [ ] multi-pass composition (deferred rendering)
   - Blinn-Phong
 
     - [x] diffuse
@@ -77,25 +78,29 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [ ] pbr diffuse
     - [ ] pbr specular
 - Ray tracing ?
+
 - **Shader**
   - [ ] dynamic compiling
+  - [ ] dynamic uniform
     - [ ] node system
-  - [ ] shader storage buffer
+  - [x] shader storage buffer
 - **Advance**
 - mode switch
-  - visible switch
-  - dynamic exposure  
+- visible switch
+- dynamic exposure  
 
 #### **UI**
-- [x] Basic debug
+- [x] Basic Debug
 - [x] Docking
 - [x] Multi-viewports
     - [x] Viewport
+- [ ] Theme System
 - [x] UI manager
     - [x] Parameters Layer
     - [x] Menu Layer
-    - [ ] Tool Layer
-    - [ ] OutLine Layer
+    - [ ] Tools Layer
+    - [x] OutLiner Layer
+    - [ ] Transform(Property) Layer
 - [x] Imgui parameters flow
 
 - [ ] files management
@@ -111,7 +116,9 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [ ] advance speed up
 - [x] texture importer
   - [x] .png importer
-- [ ] .hdr importer
+- [x] .hdr importer
   - [ ] multi-texture importer
 - [x] Event listener
+    - [x] Advanced (globle event)
+    - [ ] Advanced (...)
 - [x] Timer (struct)
