@@ -52,7 +52,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	LOOP(count) {
 		int type = va_arg(arg_ptr, int);
 		fb_type_list[(FBType)type] = i;
-		fb_tex_list.push_back(Texture("", (FBType)type == COMBINE_FB ? HDR_TEXTURE : BUFFER_TEXTURE, GL_NEAREST));
+		fb_tex_list.push_back(Texture("", (FBType)type == COMBINE_FB ? HDR_BUFFER_TEXTURE : BUFFER_TEXTURE, GL_NEAREST));
 		fb_tex_list[i].SlotAdd(type);
 
 		attachments[i] = GL_COLOR_ATTACHMENT0 + type;

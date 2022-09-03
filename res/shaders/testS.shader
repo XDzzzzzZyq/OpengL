@@ -178,7 +178,6 @@ void main() {
 	SELECcolor = vec4(is_selected);
 	
 	//color = uvcolor * vec4(Vec3Film(LightMap.Diffuse_map + LightMap.Specular_map*2), 1.0f);
+
 	color = vec4(reflectcolor, 1.0f);
-	//color = Snormal_color;
-	//color = vec4(Vec3Film(LightMap.Specular_map), 1.0f);
 };

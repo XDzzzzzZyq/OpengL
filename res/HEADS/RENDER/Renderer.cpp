@@ -2,24 +2,19 @@
 
 Renderer::Renderer()
 {
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK) 
 		std::cout << "glew error" << std::endl;
-	}
-	else {
+	else 
 		std::cout << "glew has no error" << std::endl;
-	}
 
 	if (glGetError() != GL_NO_ERROR)
-	{
 		std::cout << "OpenGL Error: " << glGetError() << std::endl;
-	}
-	else {
+	else
 		std::cout << "OpenGL has no error " << std::endl;
-	}
 
 
 	DEBUG("Renderer Open")
-		glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 
@@ -33,6 +28,8 @@ Renderer::Renderer()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilFunc(GL_ALWAYS, 1, 0xff);
 	glStencilMask(0xff);
+
+	glEnable(GL_CONVOLUTION_2D);
 
 
 	framebuffer = FrameBuffer(COMBINE_FB);
@@ -98,15 +95,15 @@ void Renderer::LMB_CLICK()
 
 		active_GO_ID = GetSelectID(mouse_x, mouse_y);
 
-		if (name_buff.find(active_GO_ID) != name_buff.end()){
+		if (name_buff.find(active_GO_ID) != name_buff.end()) {
 			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
 				obj_list[pre_act_go_ID]->is_selected = false;
 
-			if(obj_list.find(active_GO_ID)!=obj_list.end())
+			if (obj_list.find(active_GO_ID) != obj_list.end())
 				obj_list[active_GO_ID]->is_selected = true;
 		}
-		else{
-			active_GO_ID = 0; 
+		else {
+			active_GO_ID = 0;
 			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
 				obj_list[pre_act_go_ID]->is_selected = false;
 		}
@@ -145,7 +142,7 @@ void Renderer::UpdateFrame()
 	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 	//glClearDepth(-10.0f);
-	
+
 
 	if (is_outliner_selected) {
 		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
@@ -170,92 +167,97 @@ void Renderer::UpdateFrame()
 //++++++++                                                                                ++++++++++//
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
-void Renderer::Render() {
+void Renderer::Render(bool rend, bool buff) {
 
 	if (cam_list.find(0) == cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
 	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	//GLDEBUG
+	glEnable(GL_BLEND);
 
-	envir_list[0]->BindFrameBuffer();
-
+	if (buff)
+		envir_list[0]->BindFrameBuffer();
 
 	UpdateFrame();
-	//glEnable(GL_STENCIL_TEST);
-	glEnable(GL_DEPTH_TEST);
-	////////////    MESHES    ////////////
-	cam_list[0]->ApplyTransform();
-	cam_list[0]->GetInvTransform();
-	cam_list[0]->GenFloatData();
+	if (rend) {
+		//glEnable(GL_STENCIL_TEST);
+		glEnable(GL_DEPTH_TEST);
+		////////////    MESHES    ////////////
+		cam_list[0]->ApplyTransform();
+		cam_list[0]->GetInvTransform();
+		cam_list[0]->GenFloatData();
 
 
-	if (is_light_changed)
-	{
-		envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
-		for (const auto& obj : mesh_list)
+		if (is_light_changed)
 		{
+			envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
+			for (const auto& obj : mesh_list)
+			{
 
-			if (!obj.second->is_viewport)continue;
+				if (!obj.second->is_viewport)continue;
 
-			obj.second->ApplyTransform();
-			obj.second->RenderObj(cam_list[0], light_list);
-			obj.second->is_Uniform_changed = false;
+				obj.second->ApplyTransform();
+				obj.second->RenderObj(cam_list[0], light_list);
+				obj.second->is_Uniform_changed = false;
+			}
+			is_light_changed = false;
+			envir_list[0]->envir_hdr.Unbind();
 		}
-		is_light_changed = false;
-		envir_list[0]->envir_hdr.Unbind();
-	}
-	else
-	{
-		envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
-		for (const auto& obj : mesh_list)
+		else
 		{
+			envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
+			for (const auto& obj : mesh_list)
+			{
 
-			if (!obj.second->is_viewport)continue;
+				if (!obj.second->is_viewport)continue;
 
-			obj.second->ApplyTransform();
-			obj.second->RenderObj(cam_list[0], emptyLight);
-			obj.second->is_Uniform_changed = false;
+				obj.second->ApplyTransform();
+				obj.second->RenderObj(cam_list[0], emptyLight);
+				obj.second->is_Uniform_changed = false;
+			}
+			envir_list[0]->envir_hdr.Unbind();
 		}
-		envir_list[0]->envir_hdr.Unbind();
+
+		//glDisable(GL_STENCIL_TEST);
+		//////////// DEBUG MESHES ////////////
+
+		for (const auto& dLine : dLine_list)
+		{
+			if (!dLine.second->is_viewport)continue;
+			dLine.second->ApplyTransform();
+			dLine.second->RenderDdbugLine(cam_list[0]);
+			dLine.second->is_Uniform_changed = false;
+		}
+
+		for (const auto& dPoints : dPoints_list)
+		{
+			if (!dPoints.second->is_viewport)continue;
+			dPoints.second->ApplyTransform();
+			dPoints.second->RenderDebugPoint(cam_list[0]);
+			dPoints.second->is_Uniform_changed = false;
+		}
+
+		////////////    ICONS    ////////////
+
+		for (const auto& light : light_list)
+		{
+			if (!light.second->light_spirit.is_viewport)continue;
+			light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]);
+		}
 	}
 
-	//glDisable(GL_STENCIL_TEST);
-	//////////// DEBUG MESHES ////////////
+	if (buff) {
+		envir_list[0]->UnBindFrameBuffer();
+		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+		//glStencilMask(0x00);
+		
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 
-	for (const auto& dLine : dLine_list)
-	{
-		if (!dLine.second->is_viewport)continue;
-		dLine.second->ApplyTransform();
-		dLine.second->RenderDdbugLine(cam_list[0]);
-		dLine.second->is_Uniform_changed = false;
+		framebuffer->BindFrameBuffer();
+		envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
+		framebuffer->UnbindFrameBuffer();
 	}
-
-	for (const auto& dPoints : dPoints_list)
-	{
-		if (!dPoints.second->is_viewport)continue;
-		dPoints.second->ApplyTransform();
-		dPoints.second->RenderDebugPoint(cam_list[0]);
-		dPoints.second->is_Uniform_changed = false;
-	}
-
-	////////////    ICONS    ////////////
-
-	for (const auto& light : light_list)
-	{
-		if (!light.second->light_spirit.is_viewport)continue;
-		light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]);
-	}
-
-	envir_list[0]->UnBindFrameBuffer();
-	//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
-	//glStencilMask(0x00);
-	glDisable(GL_DEPTH_TEST);
-
-	framebuffer->BindFrameBuffer();
-
-
-	envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID*(int)(!is_spirit_selected));
-	framebuffer->UnbindFrameBuffer();
 	//DEBUG(is_spirit_selected)
 	Reset();
 }
@@ -284,7 +286,6 @@ void Renderer::Reset()
 	}
 	cam_list[0]->is_invUniform_changed = false;
 	cam_list[0]->is_frustum_changed = false;
-	is_scr_changed = false;
 }
 
 

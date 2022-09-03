@@ -72,9 +72,11 @@ vec4 GetSelect(vec4 col, float act) {
 	return col;
 }
 
-vec4 Conv3_3(sampler2D tex, ivec2 res, vec2 uv, int rad) {
+vec2 tex_offset = 1.0 / textureSize(select_texture, 0);
+
+vec4 Conv3_3(sampler2D tex, vec2 uv, int rad) {
 	vec4 result = vec4(0.0f);
-	vec2 offest = 1.5 * vec2(1) / res;
+	vec2 offest = 1.5 * vec2(1) * tex_offset;
 	for (int i = -rad; i <= rad; i++) {
 		for (int j = -rad; j <= rad; j++) {
 			result += texture(tex, uv + offest * vec2(i, j)) / pow(2 * rad + 1, 2);
@@ -121,7 +123,7 @@ void main() {
 
 	if (activeID != 0) {
 		IDcolor = texture(select_texture, screen_uv);
-		outline = IDcolor * Conv3_3(select_texture, textureSize(select_texture, 0), screen_uv, 2);
+		outline = IDcolor * Conv3_3(select_texture, screen_uv, 2);
 		outline = vec4(vec3(max(pow(IDcolor[3] * (1 - outline[3]), 0.1), 0)), 1);
 		color += outline;
 	}

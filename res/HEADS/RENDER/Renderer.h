@@ -68,7 +68,7 @@ public:
 
 public:
 	void UpdateFrame();
-	void Render();
+	void Render(bool rend = true, bool buff = true);
 	void Reset();
 
 public:

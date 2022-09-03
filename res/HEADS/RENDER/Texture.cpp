@@ -7,15 +7,14 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 {
 	//std::cout << Tex_ID << std::endl;
 	stbi_set_flip_vertically_on_load(1);
-
+	glGenTextures(1, &Tex_ID);
+	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 	switch (tex_type)
 	{
 	case PNG_TEXTURE:
 
 		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		glGenTextures(1, &Tex_ID);
-		glBindTexture(GL_TEXTURE_2D, Tex_ID);
 		// std::cout << Tex_ID << std::endl;
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -33,11 +32,11 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 			stbi_image_free(m_buffer);
 		}
 		break;
+
 	case HDR_TEXTURE:
 
 		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
-		glGenTextures(1, &Tex_ID);
-		glBindTexture(GL_TEXTURE_2D, Tex_ID);
+
 		// std::cout << Tex_ID << std::endl;
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR/*_MIPMAP_LINEAR*/);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR/*_MIPMAP_LINEAR*/);
@@ -46,7 +45,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f);
 
-#if 0
+#if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
@@ -65,12 +64,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
 		}
-
 		break;
-	case BUFFER_TEXTURE:
 
-		glGenTextures(1, &Tex_ID);
-		glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	case BUFFER_TEXTURE:
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
@@ -79,6 +75,17 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		break;
+
+	case HDR_BUFFER_TEXTURE:
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_FLOAT, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		break;
+
 	}
 	
 }
@@ -118,7 +125,11 @@ void Texture::Resize(const ImVec2& size)
 	im_h = size.y;
 	im_w = size.x;
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	if(Tex_type == PNG_TEXTURE || Tex_type == BUFFER_TEXTURE)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -129,7 +140,11 @@ void Texture::Resize(float x, float y)
 	im_h = y;
 	im_w = x;
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	
+	if(Tex_type == PNG_TEXTURE || Tex_type == BUFFER_TEXTURE)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

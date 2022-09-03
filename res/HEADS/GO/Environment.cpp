@@ -33,8 +33,8 @@ Environment::Environment(const std::string& texpath)
 	envir_shader.SetValue("screen_texture",      BUFFER_TEXTURE + COMBINE_FB);
 	envir_shader.SetValue("id_texture",          BUFFER_TEXTURE + ID_FB);
 	envir_shader.SetValue("select_texture",		 BUFFER_TEXTURE + ALPHA_FB);
-	envir_shader.SetValue("ID_color", id_color);
-	envir_shader.SetValue("RAND_color", id_color_rand);
+	envir_shader.SetValue("ID_color",            id_color);
+	envir_shader.SetValue("RAND_color",          id_color_rand);
 
 	envir_shader.UnuseShader();
 	//frame_buffer.Unbind();
