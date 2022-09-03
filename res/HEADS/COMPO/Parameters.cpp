@@ -31,15 +31,21 @@ Parameters::Parameters(const ParaType& type)
 
 		break;
 	case VEC2_PARA:
-		
+		para_data.v2data[0] = 0;
+		para_data.v2data[1] = 0;
 
 		break;
 	case VEC3_PARA:
-		
+		para_data.v3data[0] = 0;
+		para_data.v3data[1] = 0;
+		para_data.v3data[2] = 0;
 
 		break;
 	case VEC4_PARA:
-		
+		para_data.v4data[0] = 0;
+		para_data.v4data[1] = 0;
+		para_data.v4data[2] = 0;
+		para_data.v4data[3] = 0;
 
 		break;
 	}

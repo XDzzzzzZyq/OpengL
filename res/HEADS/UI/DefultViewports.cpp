@@ -11,7 +11,6 @@ void ImguiManager::DefultViewports() {
 	layer1->PushItem(new UI::Button("testB"));
 	layer1->PushItem(new UI::Text("test[%.1f]"));
 	PushImguiLayer(layer1);
-
 	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "test")->para_data.fdata);
 
 	ImguiLayer* layer2=new ParamControl("__Parameters__");
@@ -23,6 +22,7 @@ void ImguiManager::DefultViewports() {
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "X", -90.0f, 90.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "Y", -90.0f, 90.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "Z", -90.0f, 90.0f));
+	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "GAMMA", 0.0f, 30.0f, 3.3f));
 	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Color"));
 	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Position"));
 	layer2->PushItem(new UI::Button("Debug"));

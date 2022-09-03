@@ -132,7 +132,7 @@ void UI::ParaInput::RenderItem() const
 		ImGui::ColorEdit3(
 
 			GetCharName(),
-			uitm_para.para_data.v3data
+			uitm_para.para_data.v4data
 
 		);
 
