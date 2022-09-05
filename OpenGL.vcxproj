@@ -207,6 +207,7 @@
     <ClCompile Include="res\HEADS\UI\ITEM\TextureView.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl" />
@@ -706,6 +707,7 @@
     <ClInclude Include="res\HEADS\UI\ITEM\TextureView.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h" />
+    <ClInclude Include="res\HEADS\RENDER\ShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\avatar1.png" />

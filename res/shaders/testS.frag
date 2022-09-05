@@ -25,7 +25,7 @@ uniform float L_spot[40]; //count + 3 spots
 uniform float Scene_data[8];//   | pos3f | rot3f | ratio1f | angle1f | + 
 							//   |           CAMREA_DATA             | + |       POST_PROCESS        |
 
-
+float a = float(0);
 
 struct pointLight {
 	float is_shadow;

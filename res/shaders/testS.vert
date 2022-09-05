@@ -26,4 +26,5 @@ void main() {
 	normal_color = vec4(normalize(mat3(U_obj_trans) * normal), 1.0f);
 	pix_pos = vec3(U_obj_trans * vec4(position, 1.0f));
 	//gl_Position = U_ProjectM * position;
+	return;
 };

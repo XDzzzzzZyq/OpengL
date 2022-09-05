@@ -8,7 +8,7 @@ ShaderPair ParseShader(const std::string& name, const std::string& name2) {
 			shaders[0] << VertLine << "\n";
 	}
 
-	std::ifstream FragStream(Shaders::folder_root + name2 == "" ? name : name2 + ".frag");
+	std::ifstream FragStream(Shaders::folder_root + (name2 == "" ? name : name2) + ".frag");
 	std::string FragLine;
 	while (getline(FragStream, FragLine)) {
 		shaders[1] << FragLine << "\n";
@@ -110,12 +110,12 @@ GLuint Shaders::getVarID(const char* name) const
 {
 	this->UseShader();
 	//std::cout << program_id << "\n";
-	if (m_ValLocCache.find(name)!=m_ValLocCache.end())
-		return m_ValLocCache[name];
+	if (m_uniform_cache.find(name)!=m_uniform_cache.end())
+		return m_uniform_cache[name];
 
 	int id = glGetUniformLocation(program_id, name);
 	if (id == -1)std::cout << name << " do not exist!" << std::endl;
-	m_ValLocCache[name] = id;
+	m_uniform_cache[name] = id;
 	return glGetUniformLocation(program_id, name);
 }
 
@@ -221,5 +221,11 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const int* va0, A
 	default:
 		break;
 	}
+}
+
+void Shaders::LocalDebug() const
+{
+	for(const auto i : m_uniform_cache)
+		DEBUG(i.first + " : " + std::to_string(i.second))
 }
 

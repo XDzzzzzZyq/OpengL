@@ -129,9 +129,7 @@ void render(GLFWwindow* window) {
 		points.PushDebugPoint(newpoint2);
 		line.PushDebugLine(newpoint2);
 		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
-		std::cout << UI.FindImguiLayer("Viewport")->uly_size;
-
-
+		go1.o_shader.ShaderLibDebug();
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);

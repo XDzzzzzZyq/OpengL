@@ -1,11 +1,5 @@
 #pragma once
-#include <GL/glew.h>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <unordered_map>
-#include "structs.h"
+#include "ShaderLib.h"
 
 enum ArrayType
 {
@@ -13,13 +7,13 @@ enum ArrayType
 };
 
 
-class Shaders
+class Shaders : public ShaderLib
 {
 private:
 	std::string vert_name, frag_name;
 	ShaderPair m_shaders;
 	GLuint program_id;
-	mutable std::unordered_map<std::string,GLuint> m_ValLocCache;
+	mutable std::unordered_map<std::string,GLuint> m_uniform_cache;
 public:
 	Shaders(const std::string& name, const std::string& name2 = "");
 	Shaders();
@@ -46,5 +40,7 @@ public:
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
 	void SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
+
+	void LocalDebug() const;
 };
 
