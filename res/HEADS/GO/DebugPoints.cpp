@@ -98,8 +98,8 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 	dp_type = type;
 	is_proj = proj;
 
-	dp_shader[0] = Shaders("res/shaders/PointsShader.shader");
-	dp_shader[1] = Shaders("res/shaders/PointsShader_proj.shader");
+	dp_shader[0] = Shaders("PointsShader");
+	dp_shader[1] = Shaders("PointsShader_proj");
 	
 	dp_shader[0].UseShader();
 	dp_shader[0].SetValue("ID_color", id_color);

@@ -133,7 +133,7 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 
 void DebugLine::SetDLineShader()
 {
-	dLine_shader = Shaders("res/shaders/LineShader.shader");
+	dLine_shader = Shaders("LineShader");
 
 	dLine_shader.UseShader();
 	//dLine_shader.SetValue("blen", 0.5f);

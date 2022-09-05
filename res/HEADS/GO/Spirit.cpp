@@ -68,7 +68,7 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data,Camera* cam)
 
 void Spirit::SetSpiritShader()
 {
-	r_shader = Shaders("res/shaders/SpiritShader.shader");
+	r_shader = Shaders("SpiritShader");
 	r_shader.UseShader();
 	r_shader.SetValue("ID_color", id_color);
 	r_shader.SetValue("RAND_color", id_color_rand);

@@ -4,7 +4,7 @@ Environment::Environment(const std::string& texpath)
 {
 
 	o_type = GO_ENVIR;
-	envir_shader = Shaders("res/shaders/IBRShader.shader");	
+	envir_shader = Shaders("IBRShader");	
 
 	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_REPEAT);
 	envir_hdr.Bind(); 

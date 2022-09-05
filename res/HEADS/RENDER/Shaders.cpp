@@ -1,37 +1,19 @@
 ﻿#include "Shaders.h"
-ShaderPair ParseShader(const std::string& path) {
-	std::ifstream stream(path);
-
-	std::string line;
-
-	int row = 0;
-
-	enum class LineType
-	{
-		N = -1, V, F
-	};
-	LineType mode = LineType::N;
-
+ShaderPair ParseShader(const std::string& name, const std::string& name2) {
 	std::stringstream shaders[2];
 
-	while (getline(stream, line)) {
-		if (line.find("shader") != std::string::npos) {
-			if (line.find("vertex") != std::string::npos) {
-				mode = LineType::V;
-				//std::cout << "vertex" << std::endl;
-			}
-			else if (line.find("fragment") != std::string::npos) {
-				mode = LineType::F;
-				//std::cout << "frag" << std::endl;
-			}
-
-		}
-		else {
-			shaders[(int)mode] << line << "\n";
-			//std::cout << row << std::endl;
-		}
-		//row++;
+	std::ifstream VertStream(Shaders::folder_root + name + ".vert");
+	std::string VertLine;
+	while (getline(VertStream, VertLine)) {
+			shaders[0] << VertLine << "\n";
 	}
+
+	std::ifstream FragStream(Shaders::folder_root + name2 == "" ? name : name2 + ".frag");
+	std::string FragLine;
+	while (getline(FragStream, FragLine)) {
+		shaders[1] << FragLine << "\n";
+	}
+
 	std::cout << "shaders are loaded up successfully!" << std::endl;
 	return { shaders[0].str(),shaders[1].str() };
 }
@@ -50,19 +32,19 @@ GLuint CompileShader(GLuint TYPE, const std::string& source) {
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	
 	//std::cout << status << std::endl;
+	std::string type = TYPE == GL_VERTEX_SHADER ? "Vertex" : "Frag";
 	if (!status) {
 		int length;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 		char* message = new char[length];
 		
 		glGetShaderInfoLog(id, length, &length, message);
-		std::cout << "shader error" << std::endl;
+		std::cout << type + " shader error" << std::endl;
 		std::cout << message << std::endl;
 		//delete message;
 		return 0;
 	}
 	else {
-		std::string type = TYPE == GL_VERTEX_SHADER ? "Vertex" : "Frag";
 		std::cout << type << " is complied successfully!" << std::endl;
 	}
 	//delete src;
@@ -89,10 +71,12 @@ GLuint CreatShader(const std::string& verShader, const std::string& fragShader) 
 	return program;
 }
 ////////////////////////////////////////////////////////
-Shaders::Shaders(const std::string& path)
+Shaders::Shaders(const std::string& name, const std::string& name2)
 {
-	m_shaders = ParseShader(path);
+	vert_name = name;
+	frag_name = name2 == "" ? name : name2;
 
+	m_shaders = ParseShader(name, name2);
 	program_id = CreatShader(m_shaders.verShader, m_shaders.fragShader);
 }
 
@@ -104,6 +88,8 @@ Shaders::Shaders()
 Shaders::~Shaders()
 {
 }
+
+std::string Shaders::folder_root = "res/shaders/";;
 
 void Shaders::UseShader() const
 {

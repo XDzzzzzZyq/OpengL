@@ -42,47 +42,47 @@ void render(GLFWwindow* window) {
 	camera.ApplyTransform();
 	camera.GetInvTransform();
 	renderer.UseCamera(&camera);
-	DEBUG("-------------------------------")
+	DEBUG("---------------MESH----------------")
 
 		Mesh go1("res/obj/monkey2.obj");
-	go1.SetObjShader("res/shaders/testS.shader");
+	go1.SetObjShader("testS");
 	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
 	go1.SetCenter();
 	renderer.UseMesh(&go1);
-	DEBUG("-------------------------------")
+	DEBUG("---------------MESH----------------")
 
 		Mesh go2("res/obj/torus.obj");
-	go2.SetObjShader("res/shaders/testS.shader");
+	go2.SetObjShader("testS");
 	go2.SetTex("res/tex/avatar1.png", PNG_TEXTURE);
 	go2.SetCenter();
 	go2.SetPos(glm::vec3(4, 0, 0));
 	go2.SetScale(glm::vec3(1.5f));
 	go2.ApplyTransform();
 	renderer.UseMesh(&go2);
-	DEBUG("-------------------------------")
+	DEBUG("---------------LIGHT----------------")
 
 		Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1.SetPos(glm::vec3(2.0f, 2.0f, 2.0f));
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
-	DEBUG("-------------------------------")
+	DEBUG("---------------LIGHT----------------")
 
 
 		Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	pointLight2.GenFloatData();
 	renderer.UseLight(&pointLight1);
 	renderer.UseLight(&pointLight2);
-	DEBUG("-------------------------------")
+	DEBUG("---------------LINE----------------")
 
 
 		DebugLine line;
 	line.PushDebugLine(5, 5, 5);
 	renderer.UseDebugLine(&line);
-	DEBUG("-------------------------------")
+	DEBUG("---------------ENVIR----------------")
 
 		Environment environment("res/tex/hdr/room.hdr");
 	renderer.UseEnvironment(&environment);
-	DEBUG("-------------------------------")
+	DEBUG("---------------POINT----------------")
 
 		DebugPoints points;
 	points.PushDebugPoint(5, 5, 5);

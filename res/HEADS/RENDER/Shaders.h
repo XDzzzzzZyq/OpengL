@@ -16,13 +16,16 @@ enum ArrayType
 class Shaders
 {
 private:
+	std::string vert_name, frag_name;
 	ShaderPair m_shaders;
 	GLuint program_id;
 	mutable std::unordered_map<std::string,GLuint> m_ValLocCache;
 public:
-	Shaders(const std::string& path);
+	Shaders(const std::string& name, const std::string& name2 = "");
 	Shaders();
 	~Shaders();
+
+	static std::string folder_root;
 
 	void UseShader() const;
 	void UnuseShader() const;

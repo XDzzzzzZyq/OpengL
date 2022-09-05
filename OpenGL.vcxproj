@@ -349,12 +349,18 @@
     <None Include="dep\glm\gtx\vector_query.inl" />
     <None Include="dep\glm\gtx\wrap.inl" />
     <None Include="README.md" />
-    <None Include="res\shaders\IBRShader.shader" />
-    <None Include="res\shaders\LineShader.shader" />
-    <None Include="res\shaders\PointsShader.shader" />
-    <None Include="res\shaders\PointsShader_proj.shader" />
-    <None Include="res\shaders\SpiritShader.shader" />
-    <None Include="res\shaders\testS.shader" />
+    <None Include="res\shaders\IBRShader.frag" />
+    <None Include="res\shaders\IBRShader.vert" />
+    <None Include="res\shaders\LineShader.frag" />
+    <None Include="res\shaders\LineShader.vert" />
+    <None Include="res\shaders\PointsShader.frag" />
+    <None Include="res\shaders\PointsShader.vert" />
+    <None Include="res\shaders\PointsShader_proj.frag" />
+    <None Include="res\shaders\PointsShader_proj.vert" />
+    <None Include="res\shaders\SpiritShader.frag" />
+    <None Include="res\shaders\SpiritShader.vert" />
+    <None Include="res\shaders\testS.frag" />
+    <None Include="res\shaders\testS.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
