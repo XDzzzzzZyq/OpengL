@@ -13,6 +13,8 @@
 
 #include "support.h"
 
+#include <optional>
+
 #define SPIRIT_SIZE 0.7f
 
 enum SpiritType
@@ -27,7 +29,7 @@ private:
 	VertexArray r_vertArry;
 	VertexBuffer r_vertBuffer;
 	IndexBuffer r_index;
-	Texture r_tex;
+	std::optional<Texture> r_tex;
 
 	std::vector<float> VertData = {
 		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
@@ -39,7 +41,7 @@ public:
 	float spirit_opacity = 0.8f;
 
 	SpiritType spr_type = SpiritType::NONE_SPIRIT;
-	mutable Shaders r_shader;
+	mutable std::optional<Shaders> r_shader;
 
 	Spirit();
 	~Spirit();

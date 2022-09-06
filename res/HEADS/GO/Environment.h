@@ -42,7 +42,7 @@ private:
 public:
 	std::optional<FrameBuffer> envir_frameBuffer;
 	
-	Shaders envir_shader;
+	std::optional<Shaders> envir_shader;
 
 	Texture envir_hdr;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;

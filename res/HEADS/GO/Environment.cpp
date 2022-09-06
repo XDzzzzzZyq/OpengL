@@ -27,16 +27,16 @@ Environment::Environment(const std::string& texpath)
 
 	o_indexBuffer = IndexBuffer(index, indexArray->size() * sizeof(GLuint)); 
 
-	envir_shader.UseShader();
+	envir_shader->UseShader();
 
-	envir_shader.SetValue("hdr_texture",         HDR_TEXTURE);
-	envir_shader.SetValue("screen_texture",      BUFFER_TEXTURE + COMBINE_FB);
-	envir_shader.SetValue("id_texture",          BUFFER_TEXTURE + ID_FB);
-	envir_shader.SetValue("select_texture",		 BUFFER_TEXTURE + ALPHA_FB);
-	envir_shader.SetValue("ID_color",            id_color);
-	envir_shader.SetValue("RAND_color",          id_color_rand);
+	envir_shader->SetValue("hdr_texture",         HDR_TEXTURE);
+	envir_shader->SetValue("screen_texture",      BUFFER_TEXTURE + COMBINE_FB);
+	envir_shader->SetValue("id_texture",          BUFFER_TEXTURE + ID_FB);
+	envir_shader->SetValue("select_texture",		 BUFFER_TEXTURE + ALPHA_FB);
+	envir_shader->SetValue("ID_color",            id_color);
+	envir_shader->SetValue("RAND_color",          id_color_rand);
 
-	envir_shader.UnuseShader();
+	envir_shader->UnuseShader();
 	//frame_buffer.Unbind();
 
 	envir_frameBuffer->UnbindFrameBuffer();	
@@ -50,7 +50,7 @@ Environment::Environment()
 
 Environment::~Environment()
 {
-	envir_shader.DelShad();
+	envir_shader->DelShad();
 	envir_hdr.DelTexture();
 	envir_frameBuffer->Del();
 }
@@ -77,8 +77,8 @@ void Environment::UnBindFrameBuffer() const
 
 void Environment::SwapFrameBuffer(FBType type)
 {
-	envir_shader.UseShader();
-	envir_shader.SetValue("screen_texture", BUFFER_TEXTURE + type);
+	envir_shader->UseShader();
+	envir_shader->SetValue("screen_texture", BUFFER_TEXTURE + type);
 }
 
 void Environment::GenFloatData() const
@@ -89,22 +89,22 @@ void Environment::GenFloatData() const
 void Environment::RenderEnvironment(Camera* cam, int act)
 {
 	o_vertArry.Bind();
-	envir_shader.UseShader();
+	envir_shader->UseShader();
 	o_indexBuffer.Bind();
 	envir_frameBuffer->BindFrameBufferTex(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);
 	envir_hdr.Bind();
 	if(cam->is_invUniform_changed)
-		envir_shader.SetValue("cam_rotM", cam->o_rotMat);
+		envir_shader->SetValue("cam_rotM", cam->o_rotMat);
 
 	if(act != -1)
-		envir_shader.SetValue("activeID", (float)act);
+		envir_shader->SetValue("activeID", (float)act);
 
 	if (cam->is_frustum_changed) {
-		envir_shader.SetValue("cam_fov", glm::radians(cam->cam_pers));
-		envir_shader.SetValue("cam_ratio", cam->cam_w / cam->cam_h);
+		envir_shader->SetValue("cam_fov", glm::radians(cam->cam_pers));
+		envir_shader->SetValue("cam_ratio", cam->cam_w / cam->cam_h);
 	}
 
-	envir_shader.SetValue("U_gamma", envir_gamma);
+	envir_shader->SetValue("U_gamma", envir_gamma);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

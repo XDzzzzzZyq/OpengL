@@ -13,6 +13,7 @@
 #include "Light.h"
 
 #include "Transform.h"
+#include <optional>
 
 
 class Mesh : public GameObject/* ,public Shaders*/, public Transform
@@ -23,12 +24,12 @@ private:
 	VertexArray o_vertArry;
 	VertexBuffer o_vertBuffer;
 	IndexBuffer o_index;
-	Texture o_tex;
+	std::optional<Texture> o_tex;
 
 	glm::vec3 center=glm::vec3(0.0f);
 public:
 
-	mutable Shaders o_shader;
+	mutable std::optional<Shaders> o_shader;
 	Mesh(const char* path);
 	Mesh();
 	~Mesh();
