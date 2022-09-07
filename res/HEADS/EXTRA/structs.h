@@ -19,6 +19,7 @@
 #define LOOP(x) for(int i = 0; i < x; i++)
 
 
+
 struct ShaderPair {
 	std::string verShader;
 	std::string fragShader;
@@ -30,12 +31,9 @@ struct Timer
 	time_t start, end, tick, temp = 0;
 	time_t __duration = 0;
 	int fact = 1;
-	Timer(int fact) :fact(fact) {
-		start = clock();
-	}
-	Timer() {
-		std::cout <<"[ Thread Start ]\n";
-		fact = 1;
+	std::string name;
+	Timer(std::string name="Thread", int fact = 1) :name(name), fact(fact) {
+		std::cout << "[ "+name+" Start ]\n";
 		start = clock();
 	}
 
@@ -50,7 +48,7 @@ struct Timer
 	~Timer() {
 		end = clock();
 		__duration = end - start;
-		std::cout /*<< "\r"*/ << "[ Whole Time = " << __duration * fact << "ms ]\n";
+		std::cout /*<< "\r"*/ << "[ "+name+" Whole Time = " << __duration * fact << "ms ]\n";
 	}
 };
 

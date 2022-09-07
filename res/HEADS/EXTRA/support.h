@@ -72,7 +72,7 @@ inline Face Split(std::string_view in) {
 }
 
 inline Reading ReadObj(const std::string& path, bool is_smooth) {
-	Timer timer;
+	Timer timer("Load OBJ");
 	Reading result;
 
 	std::vector<std::vector<int>> vertIndex;
