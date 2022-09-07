@@ -49,7 +49,7 @@ vec4 GetSelect(vec4 col, float act) {
 	return col;
 }
 
-vec2 tex_offset = 1.0 / textureSize(select_texture, 0);
+const vec2 tex_offset = 1.0 / textureSize(select_texture, 0);
 
 vec4 Conv3_3(sampler2D tex, vec2 uv, int rad) {
 	vec4 result = vec4(0.0f);

@@ -183,6 +183,9 @@
     <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">

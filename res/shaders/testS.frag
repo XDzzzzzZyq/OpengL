@@ -25,8 +25,6 @@ uniform float L_spot[40]; //count + 3 spots
 uniform float Scene_data[8];//   | pos3f | rot3f | ratio1f | angle1f | + 
 							//   |           CAMREA_DATA             | + |       POST_PROCESS        |
 
-float a = float(0);
-
 struct pointLight {
 	float is_shadow;
 	vec3 pos;
@@ -51,11 +49,6 @@ struct spotLight {
 	float radius;
 };
 
-
-pointLight pL_list[5];
-sunLight sL_list[2];
-spotLight spL_list[3];
-
 struct LightMapStruct {
 	vec3 Diffuse_map;
 	vec3 Specular_map;
@@ -65,6 +58,10 @@ struct LightMapStruct {
 struct Camera {
 	vec3 cam_pos;
 };
+
+pointLight pL_list[5];
+sunLight sL_list[2];
+spotLight spL_list[3];
 
 float ACESFilm(float x)
 {
@@ -94,7 +91,7 @@ vec2 genHdrUV(vec3 dir) {
 	uv *= invAtan;
 	uv += 0.5;
 	return -uv + vec2(0.5, 1);
-}
+} 
 
 LightMapStruct LightMap;
 float Dis_fac, DiffuseStrength, SpecularStrength;

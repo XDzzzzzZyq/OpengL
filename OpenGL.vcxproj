@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiTheme.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\ParamControl.cpp" />

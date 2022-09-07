@@ -20,6 +20,8 @@ public:
 	~Shaders();
 
 	static std::string folder_root;
+	static std::vector<std::string> file_type;
+	void ParseShader(const std::string& name, const std::string& name2);
 
 	void UseShader() const;
 	void UnuseShader() const;
