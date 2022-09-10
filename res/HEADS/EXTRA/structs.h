@@ -14,7 +14,7 @@
 #include <ctime>
 #include <vector>
 
-#define SCREEN_W 1540
+#define SCREEN_W 1740
 #define SCREEN_H 810
 #define LOOP(x) for(int i = 0; i < x; i++)
 
