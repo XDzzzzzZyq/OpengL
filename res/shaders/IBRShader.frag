@@ -51,15 +51,15 @@ vec4 GetSelect(vec4 col, float act) {
 
 const vec2 tex_offset = 1.0 / textureSize(select_texture, 0);
 
-vec4 Conv3_3(sampler2D tex, vec2 uv, int rad) {
-	vec4 result = vec4(0.0f);
+float Conv3_3(sampler2D tex, vec2 uv, int rad) {
+	float result = 0.0f;
 	vec2 offest = 1.5 * vec2(1) * tex_offset;
 	for (int i = -rad; i <= rad; i++) {
 		for (int j = -rad; j <= rad; j++) {
-			result += texture(tex, uv + offest * vec2(i, j)) / pow(2 * rad + 1, 2);
+			result += texture(tex, uv + offest * vec2(i, j)).a / pow(2 * rad + 1, 2);
 		}
 	}
-	return vec4(result[3]);
+	return result;
 }
 
 float ACESFilm(float x)
@@ -99,7 +99,7 @@ void main() {
 	color = hdr_color * (1 - screen_color[3]) + vec4(vec3(screen_color), 1.0f) * screen_color[3];
 
 	if (activeID != 0) {
-		IDcolor = texture(select_texture, screen_uv);
+		IDcolor = vec4(texture(select_texture, screen_uv).a);
 		outline = IDcolor * Conv3_3(select_texture, screen_uv, 2);
 		outline = vec4(vec3(max(pow(IDcolor[3] * (1 - outline[3]), 0.1), 0)), 1);
 		color += outline;

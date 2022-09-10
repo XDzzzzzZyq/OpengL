@@ -5,11 +5,9 @@ Environment::Environment(const std::string& texpath)
 
 	o_type = GO_ENVIR;
 	envir_shader = Shaders("IBRShader");	
-
 	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_REPEAT);
 	envir_hdr.Bind(); 
 	//envir_hdr.Tex_slot = envir_hdr.Tex_type;
-
 	envir_frameBuffer = FrameBuffer(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);	
 
 	o_name = "Environment." + std::to_string(GetObjectID());
@@ -32,7 +30,7 @@ Environment::Environment(const std::string& texpath)
 	envir_shader->SetValue("hdr_texture",         HDR_TEXTURE);
 	envir_shader->SetValue("screen_texture",      BUFFER_TEXTURE + COMBINE_FB);
 	envir_shader->SetValue("id_texture",          BUFFER_TEXTURE + ID_FB);
-	envir_shader->SetValue("select_texture",		 BUFFER_TEXTURE + ALPHA_FB);
+	envir_shader->SetValue("select_texture",	  BUFFER_TEXTURE + ALPHA_FB);
 	envir_shader->SetValue("ID_color",            id_color);
 	envir_shader->SetValue("RAND_color",          id_color_rand);
 

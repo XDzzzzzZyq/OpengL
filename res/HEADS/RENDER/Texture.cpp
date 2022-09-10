@@ -45,7 +45,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f);
 
-#if 1
+#if 0
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
@@ -86,7 +86,16 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		glBindTexture(GL_TEXTURE_2D, 0);
 		break;
 
+	case FLOAT_BUFFER_TEXTURE:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, SCREEN_W, SCREEN_H, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		break;
 	}
+
 	
 }
 
@@ -128,8 +137,10 @@ void Texture::Resize(const ImVec2& size)
 
 	if(Tex_type == PNG_TEXTURE || Tex_type == BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else
+	else if(Tex_type == HDR_BUFFER_TEXTURE || Tex_type == HDR_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
+	else 
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -143,8 +154,10 @@ void Texture::Resize(float x, float y)
 	
 	if(Tex_type == PNG_TEXTURE || Tex_type == BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else
+	else if (Tex_type == HDR_BUFFER_TEXTURE || Tex_type == HDR_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
+	else 
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

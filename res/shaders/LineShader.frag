@@ -16,5 +16,5 @@ void main() {
 	color = vec4(U_color, dlineOpacity);
 	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
-	SELECcolor = vec4(is_selected);
+	SELECcolor.a = float(is_selected);
 };

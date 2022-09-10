@@ -19,7 +19,6 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type, GL_TEXTURE_2D, BufferTexture.GetTexID(), 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type + 1, GL_TEXTURE_2D,IDTexture.GetTexID(), 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 	
 	//glDrawBuffer(fb_type);GLDEBUG
@@ -50,12 +49,21 @@ FrameBuffer::FrameBuffer(int count, ...)
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
 	LOOP(count) {
-		int type = va_arg(arg_ptr, int);
-		fb_type_list[(FBType)type] = i;
-		fb_tex_list.push_back(Texture("", (FBType)type == COMBINE_FB ? HDR_BUFFER_TEXTURE : BUFFER_TEXTURE, GL_NEAREST));
-		fb_tex_list[i].SlotAdd(type);
+		int type_inp = va_arg(arg_ptr, int);
+		TextureType textype;
+		if (0 == type_inp)
+			textype = HDR_BUFFER_TEXTURE;
+		else if (0< type_inp && type_inp < 4)
+			textype = BUFFER_TEXTURE;
+		else if (4 <= type_inp&& type_inp < 7)
+			textype = FLOAT_BUFFER_TEXTURE;
+		else if (type_inp == -32){}
 
-		attachments[i] = GL_COLOR_ATTACHMENT0 + type;
+		fb_type_list[(FBType)type_inp] = i;
+		fb_tex_list.push_back(Texture("", textype, GL_NEAREST));
+		fb_tex_list[i].SlotAdd(type_inp);
+
+		attachments[i] = GL_COLOR_ATTACHMENT0 + type_inp;
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[i], GL_TEXTURE_2D, fb_tex_list[i].GetTexID(), 0);
 
 	}
@@ -102,7 +110,6 @@ void FrameBuffer::Resize(const ImVec2& size, bool all)
 			tex.Resize(size);
 	}
 	else {
-		IDTexture.Resize(size);
 		BufferTexture.Resize(size);
 	}
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
@@ -118,7 +125,6 @@ void FrameBuffer::Resize(float w, float h, bool all)
 			tex.Resize(w, h);
 	}
 	else {
-		IDTexture.Resize(w, h);
 		BufferTexture.Resize(w, h);
 	}
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
@@ -168,7 +174,6 @@ void FrameBuffer::Del() const
 {
 	renderBuffer->Del();
 	BufferTexture.DelTexture();
-	IDTexture.DelTexture();
 
 	for (auto& tex : fb_tex_list)
 		tex.DelTexture();

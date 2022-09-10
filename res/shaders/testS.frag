@@ -133,7 +133,7 @@ void main() {
 
 	vec4 uvcolor = texture(U_Texture, uv);
 	vec3 reflectcolor = vec3(texture(Envir_Texture, genHdrUV(-ReflectRay)));
-	SELECcolor = vec4(is_selected);
+	SELECcolor.a = float(is_selected);
 	
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 

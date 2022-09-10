@@ -6,7 +6,8 @@
 
 enum FBType
 {
-	NONE_FB=-1, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB, NORMAL_FB, DIFF_FB, SPEC_FB, SHADOW_FB, DEPTH_FB = GL_COLOR_ATTACHMENT0 - GL_DEPTH_ATTACHMENT
+	NONE_FB=-1, COMBINE_FB, ID_FB, RAND_FB, NORMAL_FB, ALPHA_FB, DIFF_FB, SPEC_FB, SHADOW_FB, DEPTH_FB = GL_COLOR_ATTACHMENT0 - GL_DEPTH_ATTACHMENT
+//     NON     |    HDR    |           RGB            |                 FLOAT                |              DEPTH             |
 };
 
 struct FBPixel
@@ -22,7 +23,6 @@ private:
 	float fb_w = SCREEN_W, fb_h = SCREEN_H;
 public:
 	Texture BufferTexture;
-	Texture IDTexture;
 	std::optional<RenderBuffer> renderBuffer;
 
 	FBType fb_type = NONE_FB;
