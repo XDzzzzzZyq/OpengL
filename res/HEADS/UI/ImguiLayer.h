@@ -24,7 +24,7 @@ enum ImLayerType
 
 class ImguiLayer : public EventListener
 {
-private:
+public:
 	mutable ImVec2 content_pos;
 	mutable ImVec2 content_size;
 	

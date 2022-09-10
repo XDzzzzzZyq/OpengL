@@ -131,12 +131,14 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 void ImguiManager::RenderUI(bool rend)
 {
 	if (rend) {
+
 		if (ParaUpdate)
 			ParaUpdate();
 
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 		ImGui::BeginMainMenuBar();
+		EventListener::window_pos = ImGui::GetWindowPos();
 		/*			ImGui::BeginMenuBar();*/
 		for (const auto& menu : menu_list) {
 			menu.RenderMenu();
@@ -152,7 +154,6 @@ void ImguiManager::RenderUI(bool rend)
 		}
 		layer_list[active_layer_id]->RenderLayer();
 	}
-
 	ImGui::Render();
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

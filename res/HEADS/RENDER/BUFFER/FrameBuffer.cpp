@@ -138,7 +138,7 @@ FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 	glReadBuffer(GL_COLOR_ATTACHMENT0 + type);
 
 	FBPixel Pixel;
-	glReadPixels(x, fb_h - y + 40, 1, 1, GL_RGBA, GL_FLOAT, &Pixel);
+	glReadPixels(x, fb_h - y + 20, 1, 1, GL_RGBA, GL_FLOAT, &Pixel);
 
 	glReadBuffer(GL_NONE);
 

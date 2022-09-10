@@ -22,6 +22,9 @@ std::vector<int> EventListener::selec_list;
 std::vector<int> EventListener::parent_index_list;
 OutlineData EventListener::outline_list;
 
+ImVec2 EventListener::window_pos = ImVec2(0,0);
+ImVec2 EventListener::viewport_offset = ImVec2(0, 0);
+
 EventListener::EventListener()
 {
 }

@@ -49,7 +49,8 @@ std::string Renderer::GetObjectName(int ID)
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
 {
-	return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x, y, ID_FB).GetID();
+
+	return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x-viewport_offset.x, y-viewport_offset.y, ID_FB).GetID();
 }
 
 void Renderer::AddFrameBuffer()
@@ -187,7 +188,7 @@ void Renderer::Render(bool rend, bool buff) {
 		cam_list[0]->GetInvTransform();
 		cam_list[0]->GenFloatData();
 
-
+		//DEBUG(viewport_offset)
 		if (is_light_changed)
 		{
 			envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);

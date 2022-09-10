@@ -147,7 +147,7 @@ void render(GLFWwindow* window) {
 	UI.ParaUpdate = [&] {
 		FrameCount++;
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
-		UI.FindImguiItem("__Parameters__", "Application average %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
+		UI.FindImguiItem("__Parameters__", "Frame Rate %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
 
 		scale = UI.GetParaValue("__Parameters__", "SCALE")->para_data.fdata;
 		blend = UI.GetParaValue("__Parameters__", "POWER")->para_data.fdata;

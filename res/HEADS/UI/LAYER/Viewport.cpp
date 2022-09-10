@@ -29,8 +29,8 @@ Viewport::~Viewport()
 }
 
 void Viewport::UpdateLayer()
-{
 
+{
 }
 
 void Viewport::RenderLayer() const
@@ -44,7 +44,7 @@ void Viewport::RenderLayer() const
 
 		GetLayerSize();
 
-
+			EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
 		if (IsChangeEnd())
 			if (resize_event)
 				resize_event();
