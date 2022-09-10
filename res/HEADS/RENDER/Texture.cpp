@@ -152,9 +152,9 @@ void Texture::Resize(float x, float y)
 	im_w = x;
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 	
-	if(Tex_type == PNG_TEXTURE || Tex_type == BUFFER_TEXTURE)
+	if(Tex_type == BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else if (Tex_type == HDR_BUFFER_TEXTURE || Tex_type == HDR_TEXTURE)
+	else if (Tex_type == HDR_BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
 	else 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);

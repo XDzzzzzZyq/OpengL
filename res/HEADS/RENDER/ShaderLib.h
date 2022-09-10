@@ -40,6 +40,7 @@ struct ShaderStruct {
 private:
 	static std::vector<std::string> type_table;
 public:
+	bool is_struct_changed = true;
 	int version = 330;
 	ShaderType type = NONE_SHADER;
 
@@ -67,17 +68,17 @@ public:
 	static bool IsAvailType(const std::string& type);
 	static void ADD_TYPE(const std::string& name);
 	static void Debug() {for(auto& i : type_table)DEBUG("|"+i+"|") }
-	void SetAB(int loc, ParaType type, const std::string& name) { AB_list.emplace_back(loc, name, type); }
-	void SetPass(int loc, ParaType type, const std::string& name) { pass_list.emplace_back(loc, name, type); }
-	void SetSB(int loc, const std::string& name, const Args& args) { SB_list.emplace_back(loc, name, args); }
-	void SetUni(ParaType type, int count, const std::string& name) { uniform_list.emplace_back(name, type, count); }
-	void SetInp(ParaType type, int count, const std::string& name) { input_list.emplace_back(name, type, count); }
-	void SetOut(ParaType type, int count, const std::string& name) { output_list.emplace_back(name, type, count); }
-	void SetGlob(ParaType type, float defult, const std::string& name) { glob_list.emplace_back(name, type, defult); }
-	void DefStruct(const std::string& name, const Args& args) { struct_def_list.emplace_back(0, name, args); }
-	void DefFunc(ParaType type, const std::string& name, const std::string& content, const Args& args) { func_list.emplace_back(type, name, content, args); }
-	void SetConst(ParaType type, const std::string& name, const std::string& content) { const_list.emplace_back(type, name, content, NULL); }
-	void SetVar(const std::string& type, const std::string& name, int count) { vari_list.emplace_back(type, name, count); }
+	void SetAB			(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; AB_list.emplace_back(loc, name, type); }
+	void SetPass		(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; pass_list.emplace_back(loc, name, type); }
+	void SetSB			(int loc, const std::string& name, const Args& args)			{ is_struct_changed = true; SB_list.emplace_back(loc, name, args); }
+	void SetUni			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; uniform_list.emplace_back(name, type, count); }
+	void SetInp			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; input_list.emplace_back(name, type, count); }
+	void SetOut			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; output_list.emplace_back(name, type, count); }
+	void SetGlob		(ParaType type, float defult, const std::string& name)			{ is_struct_changed = true; glob_list.emplace_back(name, type, defult); }
+	void DefStruct		(const std::string& name, const Args& args)						{ is_struct_changed = true; struct_def_list.emplace_back(0, name, args); }
+	void DefFunc		(ParaType type, const std::string& name, const std::string& content, const Args& args) { is_struct_changed = true; func_list.emplace_back(type, name, content, args); }
+	void SetConst		(ParaType type, const std::string& name, const std::string& content) { is_struct_changed = true; const_list.emplace_back(type, name, content, NULL); }
+	void SetVar			(const std::string& type, const std::string& name, int count)	{ is_struct_changed = true; vari_list.emplace_back(type, name, count); }
 };
 
 class ShaderLib
@@ -95,8 +96,9 @@ public:
 	std::string shader_list[2];
 	std::string GenerateShader(ShaderType tar = NONE_SHADER);
 	void ShaderLibDebug() { DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER]) };
-
 public:
 	// Function Lib
 	static S_func gamma;
+public:
+	static S_const PI;
 };
