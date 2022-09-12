@@ -85,3 +85,11 @@ inline ImVec2 operator-(const ImVec2& a, const ImVec2& b) {
 inline bool operator==(const ImVec2& a, const ImVec2& b) {
 	return a.x==b.x&&a.y==b.y;
 }
+
+inline bool operator<(const ImVec2& a, const ImVec2& b) {
+	return a.x < b.x && a.y < b.y;
+}
+
+inline bool operator>(const ImVec2& a, const ImVec2& b) {
+	return a.x > b.x&& a.y > b.y;
+}
