@@ -3,7 +3,7 @@
 #define NORM_KEY_LEN 36
 
 #include "support.h"
-//#include "Shaders.h"
+#include "ShaderLib.h"
 
 #include<unordered_map>
 #include<functional>
@@ -69,6 +69,8 @@ public:
 	static OutlineData outline_list;
 	OutlineData* GetOutlineData() { return &outline_list; }
 	std::vector<int> GetParentRelatData() { return parent_index_list; }
+
+	static ShaderLib* active_shader;
 public:
 	static ImVec2 window_pos;
 	static ImVec2 viewport_offset;

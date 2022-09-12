@@ -39,6 +39,8 @@ public:
 	void SetObjShader(std::string path);
 	void SetTex(std::string path, TextureType slot);
 	void SetCenter();
+
+	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&o_shader.value()); }
 	
 	void DeleteObj();
 };

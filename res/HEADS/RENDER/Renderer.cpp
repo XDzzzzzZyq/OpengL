@@ -49,8 +49,10 @@ std::string Renderer::GetObjectName(int ID)
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
 {
-
-	return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x-viewport_offset.x, y-viewport_offset.y, ID_FB).GetID();
+	if (viewport_offset < ImVec2(x, y) && ImVec2(x, y) < viewport_offset+GetActiveEnvironment()->envir_frameBuffer->GetFrameBufferSize())
+		return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
+	else
+		return active_GO_ID;
 }
 
 void Renderer::AddFrameBuffer()
@@ -100,11 +102,15 @@ void Renderer::LMB_CLICK()
 			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
 				obj_list[pre_act_go_ID]->is_selected = false;
 
-			if (obj_list.find(active_GO_ID) != obj_list.end())
+			if (obj_list.find(active_GO_ID) != obj_list.end()) {
 				obj_list[active_GO_ID]->is_selected = true;
+				active_shader = obj_list[active_GO_ID]->GetShaderStruct();
+			}
+
 		}
 		else {
 			active_GO_ID = 0;
+			active_shader = nullptr;
 			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
 				obj_list[pre_act_go_ID]->is_selected = false;
 		}
@@ -149,8 +155,10 @@ void Renderer::UpdateFrame()
 		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
 			obj_list[pre_act_go_ID]->is_selected = false;
 
-		if (obj_list.find(active_GO_ID) != obj_list.end())
+		if (obj_list.find(active_GO_ID) != obj_list.end()) {
 			obj_list[active_GO_ID]->is_selected = true;
+			active_shader = obj_list[active_GO_ID]->GetShaderStruct();
+		}
 
 		is_outliner_selected = false;
 	}
