@@ -49,6 +49,7 @@ public:
 	void Del() const;
 
 	GLuint GetFrameBufferID() const { return fb_ID; }
+	const ImVec2&& GetFrameBufferSize() const { return ImVec2(fb_w, fb_h); }
 	GLuint GetFBTextureID(FBType type) const { return fb_tex_list[fb_type_list[type]].GetTexID(); }
 };
 

@@ -10,7 +10,7 @@ void Shaders::ParseShader(const std::string& name, const std::string& name2) {
 
 		active_shader = type;
 		shader_struct_list[active_shader].is_struct_changed = false;
-		std::ifstream Stream(Shaders::folder_root + name + Shaders::file_type[type]);
+		std::ifstream Stream(ShaderLib::folder_root + name + ShaderLib::file_type[type]);
 		std::string Line;
 		std::string cache = "";
 		Args args_cache;
@@ -40,7 +40,7 @@ void Shaders::ParseShader(const std::string& name, const std::string& name2) {
 					str >> word;
 					ParaType paratype = ShaderStruct::ParseType(word);
 					str >> word;
-					shader_struct_list[active_shader].SetAB(layout, paratype, word);
+					shader_struct_list[active_shader].SetAB(layout, paratype, word.erase(word.size() - 1, 1));
 				}
 				else if (Line.find("out ") != std::string::npos) {
 					std::istringstream str(Line);
@@ -52,7 +52,7 @@ void Shaders::ParseShader(const std::string& name, const std::string& name2) {
 					str >> word;
 					ParaType paratype = ShaderStruct::ParseType(word);
 					str >> word;
-					shader_struct_list[active_shader].SetPass(layout, paratype, word);
+					shader_struct_list[active_shader].SetPass(layout, paratype, word.erase(word.size() - 1, 1));
 				}
 				else if (Line.find("buffer ") != std::string::npos) {
 					layout = std::atoi(Line.substr(25, 1).c_str());
@@ -230,7 +230,7 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 	LOOP(count) {
 		type = (ShaderType)((int)type + offset + i);
 		shader_struct_list[type].is_struct_changed = false;
-
+		shader_list[type] = "";
 		shader_list[type] += "#version " + std::to_string(shader_struct_list[type].version) + " core\n\n";
 
 		if (shader_struct_list[type].AB_list.size()) {

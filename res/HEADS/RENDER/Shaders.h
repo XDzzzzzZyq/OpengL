@@ -10,7 +10,6 @@ enum ArrayType
 class Shaders : public ShaderLib
 {
 private:
-	std::string vert_name, frag_name;
 	ShaderPair m_shaders;
 	GLuint program_id;
 	mutable std::unordered_map<std::string,GLuint> m_uniform_cache;
@@ -19,16 +18,15 @@ public:
 	Shaders();
 	~Shaders();
 
-	static std::string folder_root;
-	static std::vector<std::string> file_type;
 	void ParseShader(const std::string& name, const std::string& name2);
+	void CompileShader(ShaderType tar);
 
 	void UseShader() const;
 	void UnuseShader() const;
 
 	void DelShad() const;
 
-	inline GLuint getID() const {	return program_id; }
+	inline GLuint getID() const { return program_id; }
 	inline GLuint getVarID(const char* name) const;
 
 	void SetValue(const std::string& name, const glm::mat4& projection);

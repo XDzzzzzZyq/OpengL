@@ -56,7 +56,7 @@ public:
 	std::vector<S_glob> glob_list;
 	std::vector<S_var> vari_list;
 
-	std::vector<S_func> func_list;
+	std::vector<S_func> func_list, buildin_func_list;
 
 	std::string Main;
 
@@ -77,6 +77,8 @@ public:
 	void SetGlob		(ParaType type, float defult, const std::string& name)			{ is_struct_changed = true; glob_list.emplace_back(name, type, defult); }
 	void DefStruct		(const std::string& name, const Args& args)						{ is_struct_changed = true; struct_def_list.emplace_back(0, name, args); }
 	void DefFunc		(ParaType type, const std::string& name, const std::string& content, const Args& args) { is_struct_changed = true; func_list.emplace_back(type, name, content, args); }
+	void SetBuildinF    (const S_func& buildin)											{ is_struct_changed = true; buildin_func_list.emplace_back(buildin); }
+	void SetBuildinC	(const S_const& buildin)										{ is_struct_changed = true; const_list.emplace_back(buildin); }
 	void SetConst		(ParaType type, const std::string& name, const std::string& content) { is_struct_changed = true; const_list.emplace_back(type, name, content, NULL); }
 	void SetVar			(const std::string& type, const std::string& name, int count)	{ is_struct_changed = true; vari_list.emplace_back(type, name, count); }
 };
@@ -91,14 +93,26 @@ public:
 
 	void InitLib();
 public:
+	std::string vert_name, frag_name;
 	ShaderType active_shader;
 	ShaderStruct shader_struct_list[2];
 	std::string shader_list[2];
 	std::string GenerateShader(ShaderType tar = NONE_SHADER);
 	void ShaderLibDebug() { DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER]) };
+	virtual GLuint getID() const = 0;
+	virtual void CompileShader(ShaderType tar) = 0;
+public:
+	static std::string folder_root;
+	static std::vector<std::string> file_type;
 public:
 	// Function Lib
 	static S_func gamma;
+	static S_func FilmicF;
+	static S_func FilmicV4;
 public:
+	// Struct Lib
+public:
+	// Const Lib
 	static S_const PI;
+	static S_const Pix_UV_ratio;
 };

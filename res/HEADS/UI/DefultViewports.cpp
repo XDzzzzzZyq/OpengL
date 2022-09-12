@@ -15,7 +15,7 @@ void ImguiManager::DefultViewports() {
 
 	ImguiLayer* layer2=new ParamControl("__Parameters__");
 	layer2->uly_type = PARAS_UILAYER;
-	layer2->PushItem(new UI::Text("Application average %.3f ms/frame (%.1f FPS)"));
+	layer2->PushItem(new UI::Text("Frame Rate %.3f ms/frame (%.1f FPS)"));
 	layer2->PushItem(new UI::Text("MOUSE_POS : [%.1f : %.1f]"));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "SCALE", 0.0f, 1.0f, 0.3f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "POWER", 0.0f, 1.0f, 0.5f));
@@ -30,6 +30,9 @@ void ImguiManager::DefultViewports() {
 
 	ImguiLayer* viewport = new Viewport("Viewport");
 	PushImguiLayer(viewport);
+
+	ImguiLayer* shaderedit = new ShaderEditor();
+	PushImguiLayer(shaderedit);
 
 	ImguiLayer* outline = new Outliner("Outliner");
 	PushImguiLayer(outline);

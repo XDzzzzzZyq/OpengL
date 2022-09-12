@@ -64,16 +64,40 @@ Shaders::Shaders(const std::string& name, const std::string& name2)
 
 Shaders::Shaders()
 {
-	DEBUG("def sh")
-
 }
 
 Shaders::~Shaders()
 {
 }
 
-std::string Shaders::folder_root = "res/shaders/";;
-std::vector<std::string> Shaders::file_type = { ".vert",".frag" };
+void Shaders::CompileShader(ShaderType tar)
+{
+	const char* src = shader_list[tar].c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
+
+	glShaderSource(program_id + tar + 1, 1, &src, nullptr);
+
+	//std::cout << id << std::endl;
+	glCompileShader(program_id + tar + 1);
+
+	//delete src;
+	int status = 0;
+	glGetShaderiv(program_id + tar + 1, GL_COMPILE_STATUS, &status);
+
+	//std::cout << status << std::endl;
+	std::string type = tar == VERTEX_SHADER ? "Vertex" : "Frag";
+	if (!status) {
+		int length;
+		glGetShaderiv(program_id + tar + 1, GL_INFO_LOG_LENGTH, &length);
+		char* message = new char[length];
+
+		glGetShaderInfoLog(program_id + tar + 1, length, &length, message);
+		std::cout << type + " shader error" << std::endl;
+		std::cout << message << std::endl;
+	}
+	else {
+		std::cout << type << " is complied successfully!" << std::endl;
+	}
+}
 
 void Shaders::UseShader() const
 {

@@ -1,6 +1,8 @@
 #include "ShaderLib.h"
 
 std::vector<std::string> ShaderStruct::type_table = { "none", "float", "int", "bool", "vec2", "vec3", "vec4", "mat3", "mat4", "sampler2D"};
+std::string ShaderLib::folder_root = "res/shaders/";;
+std::vector<std::string> ShaderLib::file_type = { ".vert",".frag" };
 
 ShaderLib::ShaderLib()
 {
