@@ -1,8 +1,9 @@
 #include "ShaderEditor.h"
 
 std::string ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
-
 std::string ShaderEditor::shader_type[2] = { "Vertex Shader", "Fragment Shader" };
+
+TextEditor ShaderEditor::Editor = TextEditor();
 
 ShaderEditor::ShaderEditor()
 {
@@ -119,12 +120,14 @@ void ShaderEditor::RenderShaderStruct() const
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
+			//ImGui::PushFont(ImguiTheme::th_data.font_data[0]);
 			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
 			{
 				active_shader->shader_struct_list[current_shad_type].SetUni(FLOAT_PARA, 1, "TEST_UNIFORM");
 			}ImGui::TreePop();
+			//ImGui::PopFont();
 		}ImGui::PopID();type_id++;vari_id = 0;
-
+		
 		//DEBUG(active_shader->shader_struct_list[current_shad_type].is_struct_changed)
 	}
 	
@@ -203,7 +206,19 @@ void ShaderEditor::RenderShaderStruct() const
 }
 
 void ShaderEditor::UpdateShaderEditor() {
+	if(active_shader)
+		Editor.SetText(active_shader->shader_list[current_shad_type]);
+}
 
+void ShaderEditor::CompileShader() const {
+	switch (current_edit) {
+	case 0:
+		active_shader->GenerateShader((ShaderType)current_shad_type);break;
+	case 1:
+		active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();
+		//static_cast<Shaders*>(active_shader)->ParseShader();
+	}
+	active_shader->CompileShader((ShaderType)current_shad_type);
 }
 
 void ShaderEditor::RenderLayer() const
@@ -224,19 +239,23 @@ void ShaderEditor::RenderLayer() const
 			ImGui::EndCombo();
 		}
 		if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x/2, 25))) {
-			active_shader->GenerateShader((ShaderType)current_shad_type);
-			active_shader->CompileShader((ShaderType)current_shad_type);
+			CompileShader();
 		}ImGui::SameLine();
 		if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
 			//active_shader->GenerateShader((ShaderType)current_shad_type);
 			//DEBUG(active_shader->getID())
 		}
-
+		//editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
+		
 		switch (current_edit)
 		{
 		case 0:
-			if (active_shader)
-				ImGui::Text(active_shader->shader_list[current_shad_type].c_str());
+
+			if (active_shader) {
+				Editor.Render("##Editor", ImGui::GetContentRegionAvail());
+			}
+
+				//ImGui::Text(active_shader->shader_list[current_shad_type].c_str());
 			break;
 		case 1:
 			if (active_shader)

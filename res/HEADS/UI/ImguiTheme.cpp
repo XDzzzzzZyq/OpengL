@@ -1,5 +1,7 @@
 #include "ImguiTheme.h"
 
+std::unordered_map<std::string, int> ImguiTheme::name_loc_buffer = {};
+
 ImguiTheme::ImguiTheme()
 {
 	th_name = "Default Theme";
@@ -71,4 +73,9 @@ void ImguiTheme::PushColorData(const std::string& name, const ImU32& data /*= IM
 {
 	th_data.color_data.push_back(data);
 	name_loc_buffer[name] = th_data.color_data.size() - 1;
+}
+
+void ImguiTheme::PushFontData(ImFont* font)
+{
+	th_data.font_data.push_back(font);
 }

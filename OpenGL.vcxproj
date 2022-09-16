@@ -153,9 +153,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\HEADS\RENDER\BuildinShader.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiTheme.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\TextEditor.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\ParamControl.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\Outliner.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp" />
@@ -209,6 +211,7 @@
     <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp" />
+    <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl" />
@@ -367,6 +370,7 @@
   <ItemGroup>
     <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
     <ClInclude Include="res\HEADS\UI\ImguiTheme.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\TextEditor.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\ParamControl.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\Outliner.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Button.h" />
@@ -709,6 +713,7 @@
     <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h" />
     <ClInclude Include="res\HEADS\RENDER\ShaderLib.h" />
+    <ClInclude Include="res\HEADS\UI\LAYER\ShaderEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\avatar1.png" />

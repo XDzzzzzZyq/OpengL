@@ -36,6 +36,11 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = ImVec4(1, 1, 1, 0.2);
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
 
+	ImFontConfig config;
+	//config.MergeMode = true;
+	//config.GlyphMinAdvanceX = 13.0f;// Use if you want to make the icon monospaced
+	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
+	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
 }
 
 void ImguiManager::NewFrame() const
