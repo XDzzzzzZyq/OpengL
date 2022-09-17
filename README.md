@@ -19,7 +19,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 - [ ] transform handle
 - [x] unique ID generator
 - [x] object name generator
-- [ ] select operation
+- [x] select operation
 
 - [x] Mesh
   - [x] smooth normal
@@ -30,7 +30,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [x] frustum matrix
   - [ ] Debug outline
   - [x] Camera transform
-  - [ ] dynamic parameters
+  - [x] dynamic parameters
 - [x] Debug Line
 - [ ] Debug Mesh
 - [x] Debug Points
@@ -100,6 +100,10 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [x] Menu Layer
     - [ ] Tools Layer
     - [x] OutLiner Layer
+    - [x] Shader Editor Layer
+        - [ ] Structure Editor
+        - [x] Code Editor
+        - [ ] Node Editor
     - [ ] Transform(Property) Layer
 - [x] Imgui parameters flow
 
