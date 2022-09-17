@@ -12,6 +12,7 @@ private:
 	static TextEditor Editor;
 
 	mutable int current_edit = 0, current_shad_type = 0;
+	mutable bool is_edit_changed = true, is_shad_type_changed = true;
 	mutable bool sel;
 public:
 	ShaderEditor();
@@ -20,6 +21,7 @@ public:
 public:
 	bool AddParam();
 	bool AddStruct();
+	bool AddLink();
 	void CompileShader() const;
 public:
 	void UpdateShaderEditor();
@@ -28,3 +30,13 @@ public:
 	void RenderLayer() const override;
 };
 
+class MiniPropPanel
+{
+private:
+	bool is_open;
+public:
+	MiniPropPanel();
+	~MiniPropPanel();
+
+	void RenderPanel(const ImVec2& pos) const;
+};

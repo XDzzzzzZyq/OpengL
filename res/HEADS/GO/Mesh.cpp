@@ -50,30 +50,34 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 {
 	
 	o_vertArry.Bind();
-
 	o_index.Bind();
-
 	o_shader->UseShader();
-
 	o_tex->Bind(o_tex->Tex_slot);
 
+	if (o_shader->is_shader_changed) {
+		o_shader->SetValue("ID_color", id_color);
+		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
+		o_shader->SetValue("U_Texture", PNG_TEXTURE);
+		o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
+		o_shader->SetValue("RAND_color", id_color_rand);
+	}
 
-	//std::cout << o_Transform;
-	if(is_Uniform_changed)
+	 
+	if(is_Uniform_changed || o_shader->is_shader_changed)
 		o_shader->SetValue("U_obj_trans", o_Transform);
 
-	if (cam->is_invUniform_changed)
+	if (cam->is_invUniform_changed || o_shader->is_shader_changed)
 		o_shader->SetValue("U_cam_trans", cam->o_InvTransform);
 
-	if(cam->is_frustum_changed)
+	if(cam->is_frustum_changed || o_shader->is_shader_changed)
 		o_shader->SetValue("U_ProjectM", cam->cam_frustum);
 
-	if(cam->is_Uniform_changed || cam->is_frustum_changed)
+	if(cam->is_Uniform_changed || cam->is_frustum_changed || o_shader->is_shader_changed)
 		o_shader->SetValue("Scene_data",8 , cam->cam_floatData.data(),VEC1_ARRAY);
 
 	o_shader->SetValue("is_selected", (int)is_selected);
 
-	if (!light_list.empty())
+	if (!light_list.empty() || o_shader->is_shader_changed)
 	{
 		LightFloatArray lightdata(light_list);
 		o_shader->SetValue("L_point", lightdata.point_count * (5 + 3) + 1, lightdata.point.data(),VEC1_ARRAY);

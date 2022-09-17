@@ -229,101 +229,105 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 	ShaderType type = VERTEX_SHADER;
 	LOOP(count) {
 		type = (ShaderType)((int)type + offset + i);
-		shader_struct_list[type].is_struct_changed = false;
-		shader_list[type] = "";
-		shader_list[type] += "#version " + std::to_string(shader_struct_list[type].version) + " core\n\n";
+		if (shader_struct_list[type].is_struct_changed) {
+			shader_struct_list[type].is_struct_changed = false;
+			shader_list[type] = ""; // RESET
+			shader_list[type] += "#version " + std::to_string(shader_struct_list[type].version) + " core\n\n";
 
-		if (shader_struct_list[type].AB_list.size()) {
-			shader_list[type] += "// [ARRAY_BUFFER]\n";
-			for (const auto& i : shader_struct_list[type].AB_list)
-				shader_list[type] += "layout(location = " + std::to_string(std::get<0>(i)) + ") in " + ShaderStruct::ParseType(std::get<2>(i))/* + " In_"*/+ " " + std::get<1>(i) + ";\n";
-			shader_list[type] += "\n";
-		}
 
-		if (shader_struct_list[type].SB_list.size()) {
-			shader_list[type] += "// [STORAGE_BUFFER]\n";
-			for (const auto& i : shader_struct_list[type].SB_list) {
-				shader_list[type] += "layout(std430, binding = " + std::to_string(std::get<0>(i)) + ") buffer " + std::get<1>(i) + " {\n";
-				for (const auto& j : std::get<2>(i)) {
-					shader_list[type] += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+
+			if (shader_struct_list[type].AB_list.size()) {
+				shader_list[type] += "// [ARRAY_BUFFER]\n";
+				for (const auto& i : shader_struct_list[type].AB_list)
+					shader_list[type] += "layout(location = " + std::to_string(std::get<0>(i)) + ") in " + ShaderStruct::ParseType(std::get<2>(i))/* + " In_"*/ + " " + std::get<1>(i) + ";\n";
+				shader_list[type] += "\n";
+			}
+
+			if (shader_struct_list[type].SB_list.size()) {
+				shader_list[type] += "// [STORAGE_BUFFER]\n";
+				for (const auto& i : shader_struct_list[type].SB_list) {
+					shader_list[type] += "layout(std430, binding = " + std::to_string(std::get<0>(i)) + ") buffer " + std::get<1>(i) + " {\n";
+					for (const auto& j : std::get<2>(i)) {
+						shader_list[type] += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+					}
+					shader_list[type] += "};\n";
 				}
-				shader_list[type] += "};\n";
+				shader_list[type] += "\n";
 			}
-			shader_list[type] += "\n";
-		}
 
-		if (shader_struct_list[type].pass_list.size()) {
-			shader_list[type] += "// [RENDER_BUFFER]\n";
-			for (const auto& i : shader_struct_list[type].pass_list)
-				shader_list[type] += "layout(location = " + std::to_string(std::get<0>(i)) + ") out " + ShaderStruct::ParseType(std::get<2>(i))/* + " Ch_"*/+ " " + std::get<1>(i) + ";\n";
-			shader_list[type] += "\n";
-		}
+			if (shader_struct_list[type].pass_list.size()) {
+				shader_list[type] += "// [RENDER_BUFFER]\n";
+				for (const auto& i : shader_struct_list[type].pass_list)
+					shader_list[type] += "layout(location = " + std::to_string(std::get<0>(i)) + ") out " + ShaderStruct::ParseType(std::get<2>(i))/* + " Ch_"*/ + " " + std::get<1>(i) + ";\n";
+				shader_list[type] += "\n";
+			}
 
-		if (shader_struct_list[type].uniform_list.size()) {
-			shader_list[type] += "// [UNIFORM]\n";
-			for (const auto& i : shader_struct_list[type].uniform_list)
-				shader_list[type] += "uniform " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " U_" */+" "+ std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-			shader_list[type] += "\n";
-		}
+			if (shader_struct_list[type].uniform_list.size()) {
+				shader_list[type] += "// [UNIFORM]\n";
+				for (const auto& i : shader_struct_list[type].uniform_list)
+					shader_list[type] += "uniform " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " U_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				shader_list[type] += "\n";
+			}
 
-		if (shader_struct_list[type].input_list.size()) {
-			shader_list[type] += "// [IN]\n";
-			for (const auto& i : shader_struct_list[type].input_list)
-				shader_list[type] += "in " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-			shader_list[type] += "\n";
-		}
+			if (shader_struct_list[type].input_list.size()) {
+				shader_list[type] += "// [IN]\n";
+				for (const auto& i : shader_struct_list[type].input_list)
+					shader_list[type] += "in " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				shader_list[type] += "\n";
+			}
 
-		if (shader_struct_list[type].output_list.size()) {
-			shader_list[type] += "// [OUT]\n";
-			for (const auto& i : shader_struct_list[type].output_list)
-				shader_list[type] += "out " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */+ " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-			shader_list[type] += "\n";
-		}
+			if (shader_struct_list[type].output_list.size()) {
+				shader_list[type] += "// [OUT]\n";
+				for (const auto& i : shader_struct_list[type].output_list)
+					shader_list[type] += "out " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				shader_list[type] += "\n";
+			}
 
-		if (shader_struct_list[type].struct_def_list.size()) {
-			shader_list[type] += "// [STRUCTURE_DEFINE]\n";
-			for (const auto& i : shader_struct_list[type].struct_def_list) {
-				shader_list[type] += "struct " + std::get<1>(i) + "{\n";
-				for (const auto& j : std::get<2>(i)) {
-					shader_list[type] += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+			if (shader_struct_list[type].struct_def_list.size()) {
+				shader_list[type] += "// [STRUCTURE_DEFINE]\n";
+				for (const auto& i : shader_struct_list[type].struct_def_list) {
+					shader_list[type] += "struct " + std::get<1>(i) + "{\n";
+					for (const auto& j : std::get<2>(i)) {
+						shader_list[type] += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+					}
+					shader_list[type] += "};\n\n";
 				}
-				shader_list[type] += "};\n\n";
 			}
-		}
 
-		if (shader_struct_list[type].glob_list.size()) {
-			shader_list[type] += "// [GLOBES]\n";
-			for (const auto& i : shader_struct_list[type].glob_list)
-				shader_list[type] += ShaderStruct::ParseType(std::get<1>(i)) /* + " Glob_"*/ + std::get<0>(i) + " = " + ShaderStruct::ParseType(std::get<1>(i)) + "(" + std::to_string(std::get<2>(i)) + ");\n";
-			shader_list[type] += "\n";
-		}
-
-		if (shader_struct_list[type].const_list.size()) {
-			shader_list[type] += "// [CONSTS]\n";
-			for (const auto& i : shader_struct_list[type].const_list)
-				shader_list[type] += "const " + ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + " = " + std::get<2>(i) + ";\n";
-			shader_list[type] += "\n";
-		}
-
-		if (shader_struct_list[type].vari_list.size()) {
-			shader_list[type] += "// [VARS]\n";
-			for (const auto& i : shader_struct_list[type].vari_list)
-				shader_list[type] += std::get<0>(i) + " " + std::get<1>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-			shader_list[type] += "\n";
-		}
-
-		if (shader_struct_list[type].func_list.size()) {
-			shader_list[type] += "// [FUNCTION_DEFINE]\n";
-			for (const auto& i : shader_struct_list[type].func_list) {
-				shader_list[type] += ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + ShaderStruct::ParseArgs(std::get<3>(i)) + "{\n";
-				shader_list[type] += std::get<2>(i);
-				shader_list[type] += "\n}\n\n";
+			if (shader_struct_list[type].glob_list.size()) {
+				shader_list[type] += "// [GLOBES]\n";
+				for (const auto& i : shader_struct_list[type].glob_list)
+					shader_list[type] += ShaderStruct::ParseType(std::get<1>(i)) /* + " Glob_"*/ + std::get<0>(i) + " = " + ShaderStruct::ParseType(std::get<1>(i)) + "(" + std::to_string(std::get<2>(i)) + ");\n";
+				shader_list[type] += "\n";
 			}
-		}
 
-		shader_list[type] += "\nvoid main(){\n";
-		shader_list[type] += shader_struct_list[type].Main;
-		shader_list[type] += "};\n";
+			if (shader_struct_list[type].const_list.size()) {
+				shader_list[type] += "// [CONSTS]\n";
+				for (const auto& i : shader_struct_list[type].const_list)
+					shader_list[type] += "const " + ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + " = " + std::get<2>(i) + ";\n";
+				shader_list[type] += "\n";
+			}
+
+			if (shader_struct_list[type].vari_list.size()) {
+				shader_list[type] += "// [VARS]\n";
+				for (const auto& i : shader_struct_list[type].vari_list)
+					shader_list[type] += std::get<0>(i) + " " + std::get<1>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				shader_list[type] += "\n";
+			}
+
+			if (shader_struct_list[type].func_list.size()) {
+				shader_list[type] += "// [FUNCTION_DEFINE]\n";
+				for (const auto& i : shader_struct_list[type].func_list) {
+					shader_list[type] += ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + ShaderStruct::ParseArgs(std::get<3>(i)) + "{\n";
+					shader_list[type] += std::get<2>(i);
+					shader_list[type] += "\n}\n\n";
+				}
+			}
+
+			shader_list[type] += "\nvoid main(){\n";
+			shader_list[type] += shader_struct_list[type].Main;
+			shader_list[type] += "};\n";
+		}
 	}
 
 

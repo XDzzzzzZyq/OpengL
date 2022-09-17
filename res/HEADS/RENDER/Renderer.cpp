@@ -197,8 +197,7 @@ void Renderer::Render(bool rend, bool buff) {
 		cam_list[0]->GenFloatData();
 
 		//DEBUG(viewport_offset)
-		if (is_light_changed)
-		{
+
 			envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
 			for (const auto& obj : mesh_list)
 			{
@@ -206,26 +205,18 @@ void Renderer::Render(bool rend, bool buff) {
 				if (!obj.second->is_viewport)continue;
 
 				obj.second->ApplyTransform();
-				obj.second->RenderObj(cam_list[0], light_list);
+				if (is_light_changed || obj.second->o_shader->is_shader_changed)
+				{
+					obj.second->RenderObj(cam_list[0], light_list);
+				}
+				else {
+					obj.second->RenderObj(cam_list[0], emptyLight);
+				}
 				obj.second->is_Uniform_changed = false;
+				obj.second->o_shader->is_shader_changed = false;
 			}
 			is_light_changed = false;
 			envir_list[0]->envir_hdr.Unbind();
-		}
-		else
-		{
-			envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
-			for (const auto& obj : mesh_list)
-			{
-
-				if (!obj.second->is_viewport)continue;
-
-				obj.second->ApplyTransform();
-				obj.second->RenderObj(cam_list[0], emptyLight);
-				obj.second->is_Uniform_changed = false;
-			}
-			envir_list[0]->envir_hdr.Unbind();
-		}
 
 		//glDisable(GL_STENCIL_TEST);
 		//////////// DEBUG MESHES ////////////

@@ -6,13 +6,15 @@ std::string ShaderEditor::shader_type[2] = { "Vertex Shader", "Fragment Shader" 
 TextEditor ShaderEditor::Editor = TextEditor();
 
 ShaderEditor::ShaderEditor()
+	:ShaderEditor("Shader Editor")
 {
-	uly_name = "Shader Editor";
+
 }
 
 ShaderEditor::ShaderEditor(const std::string& name)
 {
 	uly_name = name;
+	//Editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
 }
 
 ShaderEditor::~ShaderEditor()
@@ -22,8 +24,9 @@ ShaderEditor::~ShaderEditor()
 
 void ShaderEditor::UpdateLayer()
 {
-	if (is_selected_changed) {
+	if (is_selected_changed || is_shad_type_changed) {
 		UpdateShaderEditor();
+		is_shad_type_changed = false;
 	}
 
 }
@@ -37,6 +40,7 @@ void ShaderEditor::RenderShaderStruct() const
 	if (ImGui::TreeNode("Base Information")) {
 		ImGui::Text("GLSL version : %i", active_shader->shader_struct_list[current_shad_type].version);
 		ImGui::Text("Shader Type : " + current_shad_type == 0 ? "Vertex Shader" : "Fragment Shader");
+		ImGui::Text(("Shader ID : "+std::to_string(active_shader->getShaderID((ShaderType)current_shad_type))).c_str());
 		ImGui::Text("Status : Compiled");
 		ImGui::TreePop();
 	}
@@ -211,21 +215,49 @@ void ShaderEditor::UpdateShaderEditor() {
 }
 
 void ShaderEditor::CompileShader() const {
+	Timer timer;
 	switch (current_edit) {
 	case 0:
-		active_shader->GenerateShader((ShaderType)current_shad_type);break;
+		active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();break;
 	case 1:
-		active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();
-		//static_cast<Shaders*>(active_shader)->ParseShader();
+		active_shader->GenerateShader((ShaderType)current_shad_type);break;
 	}
-	active_shader->CompileShader((ShaderType)current_shad_type);
+
+	glDeleteProgram(active_shader->getID());
+	glDeleteShader(dynamic_cast<Shaders*>(active_shader)->getShaderID((ShaderType)current_shad_type));
+
+	GLuint program_id = glCreateProgram();
+
+	GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
+	glAttachShader(program_id, shader_id);
+	glAttachShader(program_id, dynamic_cast<Shaders*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
+
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+
+	glDeleteShader(shader_id);
+
+	int link_state = -1;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
+
+	if (link_state != GL_TRUE)
+		DEBUG("Shader Link Error")
+
+	dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
+	dynamic_cast<Shaders*>(active_shader)->ResetCache();
+
+	active_shader->is_shader_changed = true;
 }
 
 void ShaderEditor::RenderLayer() const
 {
+
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
-
-
+		//if (ImGui::Begin("TEST", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+		//
+		//	ImGui::Text("test");
+		//	ImGui::End();
+		//}
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
 			LOOP(3)
 				if (ImGui::Selectable(edit_mode[i].c_str(), &sel))
@@ -234,8 +266,11 @@ void ShaderEditor::RenderLayer() const
 		}
 		if (ImGui::BeginCombo("Shader Type", shader_type[current_shad_type].c_str())) {
 			LOOP(2)
-				if (ImGui::Selectable(shader_type[i].c_str(), &sel))
+				if (ImGui::Selectable(shader_type[i].c_str(), &sel)) {
 					current_shad_type = i;
+					is_shad_type_changed = true;
+				}
+
 			ImGui::EndCombo();
 		}
 		if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x/2, 25))) {
@@ -267,6 +302,29 @@ void ShaderEditor::RenderLayer() const
 
 		//if(active_shader)
 			//DEBUG(1212)
+		ImGui::End();
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+MiniPropPanel::MiniPropPanel()
+{
+
+}
+
+MiniPropPanel::~MiniPropPanel()
+{
+
+}
+
+void MiniPropPanel::RenderPanel(const ImVec2& pos) const
+{
+	if (ImGui::Begin("TEST", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoMove)) {
+		ImGui::Text("test");
 		ImGui::End();
 	}
 }

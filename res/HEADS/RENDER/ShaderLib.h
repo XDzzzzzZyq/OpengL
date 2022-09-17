@@ -94,13 +94,15 @@ public:
 	void InitLib();
 public:
 	std::string vert_name, frag_name;
+	bool is_shader_changed = true;
 	ShaderType active_shader;
 	ShaderStruct shader_struct_list[2];
 	std::string shader_list[2];
 	std::string GenerateShader(ShaderType tar = NONE_SHADER);
 	void ShaderLibDebug() { DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER]) };
 	virtual GLuint getID() const = 0;
-	virtual void CompileShader(ShaderType tar) = 0;
+	virtual GLuint getShaderID(ShaderType type) const = 0;
+	virtual GLuint CompileShader(ShaderType tar) = 0;
 public:
 	static std::string folder_root;
 	static std::vector<std::string> file_type;

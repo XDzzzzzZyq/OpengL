@@ -1,5 +1,5 @@
 ﻿#include "Shaders.h"
-GLuint CompileShader(GLuint TYPE, const std::string& source) {
+GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
 	GLuint id = glCreateShader(TYPE);
 	const char* src = source.c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
 
@@ -32,24 +32,22 @@ GLuint CompileShader(GLuint TYPE, const std::string& source) {
 	return id;
 }
 
-GLuint CreatShader(const std::string& verShader, const std::string& fragShader) {
-	GLuint program = glCreateProgram();
+void Shaders::CreatShader(const std::string& verShader, const std::string& fragShader) {
+	program_id = glCreateProgram();
 
-	GLuint vs = CompileShader(GL_VERTEX_SHADER, verShader);
+	vs_id = CompileShaderFile(GL_VERTEX_SHADER, verShader);
 	//std::cout << "_______\n";
-	GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragShader);
+	fs_id = CompileShaderFile(GL_FRAGMENT_SHADER, fragShader);
 
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
+	glAttachShader(program_id, vs_id);
+	glAttachShader(program_id, fs_id);
 
-	glLinkProgram(program);
-	glValidateProgram(program);
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
 
-	glDeleteShader(vs);
-	glDeleteShader(fs);
-	//std::cout << program << " " << vs << " " << fs << " \n";
-
-	return program;
+	//glDeleteShader(vs_id);
+	//glDeleteShader(fs_id);
+	//glDeleteProgram(program_id);
 }
 ////////////////////////////////////////////////////////
 Shaders::Shaders(const std::string& name, const std::string& name2)
@@ -59,7 +57,7 @@ Shaders::Shaders(const std::string& name, const std::string& name2)
 
 	ParseShader(vert_name, frag_name);
 	GenerateShader();
-	program_id = CreatShader(shader_list[VERTEX_SHADER], shader_list[FRAGMENT_SHADER]);
+	CreatShader(shader_list[VERTEX_SHADER], shader_list[FRAGMENT_SHADER]);
 }
 
 Shaders::Shaders()
@@ -70,33 +68,57 @@ Shaders::~Shaders()
 {
 }
 
-void Shaders::CompileShader(ShaderType tar)
+void Shaders::ResetID(ShaderType type, GLuint id)
+{
+	switch (type)
+	{
+	case NONE_SHADER:
+		program_id = id;
+		break;
+	case VERTEX_SHADER:
+		vs_id = id;
+		break;
+	case FRAGMENT_SHADER:
+		fs_id = id;
+		break;
+	case COMPUTE_SHADER:
+		cs_id = id;
+		break;
+	default:
+		break;
+	}
+}
+
+GLuint Shaders::CompileShader(ShaderType tar)
 {
 	const char* src = shader_list[tar].c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
+	GLuint shader_id = glCreateShader(tar == 0 ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
 
-	glShaderSource(program_id + tar + 1, 1, &src, nullptr);
+	glShaderSource(shader_id, 1, &src, nullptr);
 
 	//std::cout << id << std::endl;
-	glCompileShader(program_id + tar + 1);
+	glCompileShader(shader_id);
 
 	//delete src;
 	int status = 0;
-	glGetShaderiv(program_id + tar + 1, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &status);
 
 	//std::cout << status << std::endl;
 	std::string type = tar == VERTEX_SHADER ? "Vertex" : "Frag";
 	if (!status) {
 		int length;
-		glGetShaderiv(program_id + tar + 1, GL_INFO_LOG_LENGTH, &length);
+		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
 		char* message = new char[length];
 
-		glGetShaderInfoLog(program_id + tar + 1, length, &length, message);
+		glGetShaderInfoLog(shader_id, length, &length, message);
 		std::cout << type + " shader error" << std::endl;
 		std::cout << message << std::endl;
 	}
 	else {
 		std::cout << type << " is complied successfully!" << std::endl;
 	}
+	tar == 0 ? vs_id = shader_id : fs_id = shader_id;
+	return shader_id;
 }
 
 void Shaders::UseShader() const
@@ -112,6 +134,28 @@ void Shaders::UnuseShader() const
 void Shaders::DelShad() const
 {
 	glDeleteProgram(program_id);
+}
+
+GLuint Shaders::getShaderID(ShaderType type) const
+{
+	switch (type)
+	{
+	case NONE_SHADER:
+		return 0;
+		break;
+	case VERTEX_SHADER:
+		return vs_id;
+		break;
+	case FRAGMENT_SHADER:
+		return fs_id;
+		break;
+	case COMPUTE_SHADER:
+		return cs_id;
+		break;
+	default:
+		return 0;
+		break;
+	}
 }
 
 GLuint Shaders::getVarID(const char* name) const
