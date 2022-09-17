@@ -125,7 +125,6 @@ public:
 		std::string mDeclaration;
 	};
 
-	typedef std::string String;
 	typedef std::unordered_map<std::string, Identifier> Identifiers;
 	typedef std::unordered_set<std::string> Keywords;
 	typedef std::map<int, std::string> ErrorMarkers;
@@ -194,7 +193,7 @@ public:
 	void SetErrorMarkers(const ErrorMarkers& aMarkers) { mErrorMarkers = aMarkers; }
 	void SetBreakpoints(const Breakpoints& aMarkers) { mBreakpoints = aMarkers; }
 
-	void Render(const char* aTitle, const ImVec2& aSize = ImVec2(), bool aBorder = false);
+	void Render(const char* aTitle, const ImVec2& aSize = ImGui::GetContentRegionAvail(), bool aBorder = false);
 	void SetText(const std::string& aText);
 	std::string GetText() const;
 
