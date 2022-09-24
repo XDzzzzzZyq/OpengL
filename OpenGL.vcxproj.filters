@@ -84,6 +84,9 @@
     <ClCompile Include="res\HEADS\GO\ImagePlane.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="main\MAIN.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="res\HEADS\COMPO\EventListener.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -190,9 +193,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\UI\ITEM\TextEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main\MAIN.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

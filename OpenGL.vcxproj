@@ -120,7 +120,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;vcamp110.dll;vcamp110d.dll;nvapi.dll;nvapi64.dll;opencl.dll;nvcuda.dll;cudart.dll</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\Blender\proj\OpenGL\dep\GLFW\lib-vc2019;D:\Blender\proj\OpenGL\dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -153,7 +153,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main\MAIN.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BuildinShader.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp" />
@@ -183,6 +182,7 @@
     <ClCompile Include="res\HEADS\GO\DebugLine.cpp" />
     <ClCompile Include="res\HEADS\GO\DebugPoints.cpp" />
     <ClCompile Include="res\HEADS\COMPO\EventListener.cpp" />
+    <ClCompile Include="main\MAIN.cpp" />
     <ClCompile Include="res\HEADS\GO\ImagePlane.cpp" />
     <ClCompile Include="res\HEADS\GO\Camera.cpp" />
     <ClCompile Include="dep\glm\detail\glm.cpp" />
