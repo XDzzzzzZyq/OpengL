@@ -1,5 +1,6 @@
 #pragma once
 #include "ShaderLib.h"
+#include <functional>
 
 enum ArrayType
 {
@@ -33,6 +34,8 @@ public:
 	inline GLuint getID() const { return program_id; }
 	inline GLuint getShaderID(ShaderType type) const;
 	inline GLuint getVarID(const char* name) const;
+
+	std::function<void(void)> InitShader{};
 
 	void SetValue(const std::string& name, const glm::mat4& projection);
 	void SetValue(const std::string& name, const int& v0, const int& v1, const int& v2, const float& v3);

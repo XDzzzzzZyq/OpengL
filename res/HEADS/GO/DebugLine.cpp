@@ -85,14 +85,16 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	if (dLine_pos_list.size() < 2)return;
 
 	dLine_shader->UseShader();
+	if (dLine_shader->is_shader_changed)
+		dLine_shader->InitShader();
 
-	if(camera->is_invUniform_changed)
+	if(camera->is_invUniform_changed || dLine_shader->is_shader_changed)
 		dLine_shader->SetValue("U_cam_trans",camera->o_InvTransform);
 
-	if(camera->is_frustum_changed)
+	if(camera->is_frustum_changed || dLine_shader->is_shader_changed)
 		dLine_shader->SetValue("U_ProjectM", camera->cam_frustum);
 
-	if(is_Uniform_changed)
+	if(is_Uniform_changed || dLine_shader->is_shader_changed)
 		dLine_shader->SetValue("U_Trans", o_Transform);
 
 	dLine_shader->SetValue("is_selected", (int)is_selected);
@@ -134,13 +136,14 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 void DebugLine::SetDLineShader()
 {
 	dLine_shader = Shaders("LineShader");
-
-	dLine_shader->UseShader();
-	//dLine_shader->SetValue("blen", 0.5f);
-	dLine_shader->SetValue("U_color", 1.0f, 1.0f, 1.0f);
-	dLine_shader->SetValue("ID_color", id_color);
-	dLine_shader->SetValue("RAND_color", id_color_rand);
-	dLine_shader->UnuseShader();
+	dLine_shader->InitShader = [&] {
+		dLine_shader->UseShader();
+		dLine_shader->SetValue("blen", 0.5f);
+		dLine_shader->SetValue("U_color", 1.0f, 1.0f, 1.0f);
+		dLine_shader->SetValue("ID_color", id_color);
+		dLine_shader->SetValue("RAND_color", id_color_rand);
+		dLine_shader->UnuseShader();
+	};
 }
 
 void DebugLine::DeleteDLine()

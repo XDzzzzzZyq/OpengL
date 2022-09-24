@@ -55,32 +55,31 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	dp_index.Bind();
 	dp_pos_buffer.BindBuffer();
 	dp_shader[(int)is_proj]->UseShader();
-	//transform settings
+	
+	if (dp_shader[(int)is_proj]->is_shader_changed)
+		dp_shader[(int)is_proj]->InitShader();
 
-	//std::cout << o_Transform;
-	if (is_list_changed)
+	if (is_list_changed || dp_shader[(int)is_proj]->is_shader_changed)
 		dp_shader[(int)is_proj]->SetValue("pos_count", dp_pos_list.size()/3);	
 
 	dp_shader[(int)is_proj]->SetValue("point_color", dp_color);
 
 	dp_shader[(int)is_proj]->SetValue("is_selected", (int)is_selected);
 
-	if (is_list_changed) {
+	if (is_list_changed || dp_shader[(int)is_proj]->is_shader_changed) {
 		dp_pos_buffer.GenStorageBuffer(dp_pos_list);
 		dp_shader[(int)is_proj]->SetValue("testList", dp_pos_list.size(), dp_pos_list.data(), VEC3_ARRAY);
 	}
 		
 
-	if(camera->is_invUniform_changed)
+	if(camera->is_invUniform_changed || dp_shader[(int)is_proj]->is_shader_changed)
 		dp_shader[(int)is_proj]->SetValue("U_cam_trans", camera->o_InvTransform);	
 
-	if(camera->is_frustum_changed)
+	if(camera->is_frustum_changed || dp_shader[(int)is_proj]->is_shader_changed)
 		dp_shader[(int)is_proj]->SetValue("U_ProjectM", camera->cam_frustum);	
 
 	dp_shader[(int)is_proj]->SetValue("U_Opacity", dp_opacity);	
 	dp_shader[(int)is_proj]->SetValue("U_Scale", dp_scale);	
-	//light settings
-
 
 	glDrawElementsInstanced(GL_TRIANGLES, dp_index.count(), GL_UNSIGNED_INT, nullptr, dp_pos_list.size()/3);
 
@@ -101,12 +100,17 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 	dp_shader[0] = Shaders("PointsShader");
 	dp_shader[1] = Shaders("PointsShader_proj");
 	
-	dp_shader[0]->UseShader();
-	dp_shader[0]->SetValue("ID_color", id_color);
-	dp_shader[0]->SetValue("RAND_color", id_color_rand);
-	dp_shader[1]->UseShader();
-	dp_shader[1]->SetValue("ID_color", id_color);
-	dp_shader[1]->SetValue("RAND_color", id_color_rand);
+	dp_shader[0]->InitShader = [&] {
+		dp_shader[0]->UseShader();
+		dp_shader[0]->SetValue("ID_color", id_color);
+		dp_shader[0]->SetValue("RAND_color", id_color_rand);
+	};
+
+	dp_shader[1]->InitShader = [&] {
+		dp_shader[1]->UseShader();
+		dp_shader[1]->SetValue("ID_color", id_color);
+		dp_shader[1]->SetValue("RAND_color", id_color_rand);
+	};
 }
 
 void DebugPoints::PushDebugPoint(const glm::vec3& point)

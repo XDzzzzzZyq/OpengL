@@ -54,14 +54,8 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 	o_shader->UseShader();
 	o_tex->Bind(o_tex->Tex_slot);
 
-	if (o_shader->is_shader_changed) {
-		o_shader->SetValue("ID_color", id_color);
-		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-		o_shader->SetValue("U_Texture", PNG_TEXTURE);
-		o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
-		o_shader->SetValue("RAND_color", id_color_rand);
-	}
-
+	if (o_shader->is_shader_changed)
+		o_shader->InitShader();
 	 
 	if(is_Uniform_changed || o_shader->is_shader_changed)
 		o_shader->SetValue("U_obj_trans", o_Transform);
@@ -119,14 +113,18 @@ void Mesh::SetTex(std::string path, TextureType slot)
 	o_tex->Bind(slot);
 	o_tex->Tex_slot = slot;
 
-	o_shader->UseShader();
-	//o_shader->SetValue("blen", 0.5f);
-	o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-	o_shader->SetValue("U_Texture", slot);
-	o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
-	o_shader->SetValue("RAND_color", id_color_rand);
+	o_shader->InitShader = [&] {
+		o_shader->UseShader();
+		o_shader->SetValue("blen", 0.5f);
+		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
+		o_shader->SetValue("U_Texture", slot);
+		o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
+		o_shader->SetValue("RAND_color", id_color_rand);
+		o_shader->SetValue("U_ProjectM", o_Transform);
+		o_shader->SetValue("ID_color", id_color);
+		o_shader->UnuseShader();
+	};
 
-	o_shader->UnuseShader();
 	o_tex->Unbind();
 }
 
