@@ -24,13 +24,12 @@ Renderer::Renderer()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendEquation(GL_FUNC_ADD);
 
-	glEnable(GL_STENCIL_TEST);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilFunc(GL_ALWAYS, 1, 0xff);
-	glStencilMask(0xff);
+	//glEnable(GL_STENCIL_TEST);
+	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	//glStencilFunc(GL_ALWAYS, 1, 0xff);
+	//glStencilMask(0xff);
 
-	glEnable(GL_CONVOLUTION_2D);
-
+	//glEnable(GL_CONVOLUTION_2D);
 
 	framebuffer = FrameBuffer(COMBINE_FB);
 
@@ -49,7 +48,7 @@ std::string Renderer::GetObjectName(int ID)
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
 {
-	if (viewport_offset < ImVec2(x, y) && ImVec2(x, y) < viewport_offset+GetActiveEnvironment()->envir_frameBuffer->GetFrameBufferSize())
+	if (viewport_offset-ImVec2(5,5) < ImVec2(x, y) && ImVec2(x, y) < viewport_offset+GetActiveEnvironment()->envir_frameBuffer->GetFrameBufferSize())
 		return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 	else
 		return active_GO_ID;

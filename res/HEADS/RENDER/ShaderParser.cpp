@@ -328,6 +328,7 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 			shader_list[type] += shader_struct_list[type].Main;
 			shader_list[type] += "};\n";
 		}
+		shader_struct_list[type].is_struct_changed = true;
 	}
 
 
