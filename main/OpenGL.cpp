@@ -19,7 +19,6 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Renderer renderer;
 
 void render(GLFWwindow* window) {
 	glfwMakeContextCurrent(window);
@@ -53,7 +52,7 @@ void render(GLFWwindow* window) {
 	//				  0.6f,  0.5f, 1.0f, 1.0f,         //2
 	//				 -0.6f,  0.5f, 0.0f, 1.0f          //3
 	//};
-	Reading read = ReadObj("res/obj/sphere.obj");
+	Reading read = ReadObj("res/obj/sphere.obj", false);
 	float* data = read.vertex.data();
 	
 	VertexBuffer vb(data, read.vertex.size()*sizeof(float));
@@ -96,12 +95,12 @@ void render(GLFWwindow* window) {
 
 	Shaders shaders("res/shaders/test.shader");
 	shaders.UseShader();
-	shaders.SetVal1f("is", 0.5f);
+	shaders.SetValue("is", 0.5f);
 
 	glm::mat4 matrix = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, -50.0f, 50.0f);
-	shaders.SetValMat4f("U_ProjectM", matrix);
-	Texture tex1("res/tex/testImg.png", GL_REPEAT);
-	shaders.SetVal1i("U_Texture", 0);
+	shaders.SetValue("U_ProjectM", matrix);
+	Texture tex1("testImg", PNG_TEXTURE, GL_REPEAT);
+	shaders.SetValue("U_Texture", 0);
 	tex1.Bind(0);
 
 	ImGui::CreateContext();
@@ -126,12 +125,12 @@ void render(GLFWwindow* window) {
 		
 		glm::vec3 axis = { clear_color.x,clear_color.y,clear_color.z };
 
-		shaders.SetVal4f("U_color", getrand(), getrand(), getrand(), 1.0f);
+		shaders.SetValue("U_color", getrand(), getrand(), getrand(), 1.0f);
 
 
 		matrix = glm::rotate(matrix, 10 * f, axis);
 
-		shaders.SetValMat4f("U_ProjectM", matrix);
+		shaders.SetValue("U_ProjectM", matrix);
 		//shaders.UnuseShader();
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 /*		va.Bind();*/

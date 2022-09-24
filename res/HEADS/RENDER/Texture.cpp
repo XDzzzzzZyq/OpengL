@@ -21,7 +21,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);GLDEBUG
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 
