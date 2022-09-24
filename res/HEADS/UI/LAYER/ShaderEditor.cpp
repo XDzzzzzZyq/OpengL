@@ -22,33 +22,6 @@ ShaderEditor::~ShaderEditor()
 
 }
 
-bool ShaderEditor::AddParam(const std::string& c_name) const
-{
-	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)) || add_button)
-	{
-		add_button = true;
-		if (Panel.RenderPanel(ImGui::GetWindowPos()+ImVec2(mouse_x, mouse_y), &add_button, &add_prop, c_name)) {
-			return true;
-		}
-
-	}
-	return false;
-}
-
-bool ShaderEditor::AddStruct(bool def_type) const
-{
-	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)) || add_button)
-	{
-		add_button = true;
-
-		if (Panel.RenderDefPanel(def_type, ImGui::GetWindowPos() + ImVec2(mouse_x, mouse_y), &add_button, &add_args)) {
-			return true;
-		}
-
-	}
-	return false;
-}
-
 void ShaderEditor::UpdateLayer()
 {
 	if (is_selected_changed || is_shad_type_changed) {
@@ -65,12 +38,10 @@ void ShaderEditor::RenderShaderStruct() const
 	ImGui::PushID(type_id);
 
 	if (ImGui::TreeNode("Base Information")) {
-		ImGui::Text("========================");
 		ImGui::Text("GLSL version : %i", active_shader->shader_struct_list[current_shad_type].version);
 		ImGui::Text("Shader Type : " + current_shad_type == 0 ? "Vertex Shader" : "Fragment Shader");
 		ImGui::Text(("Shader ID : "+std::to_string(active_shader->getShaderID((ShaderType)current_shad_type))).c_str());
 		ImGui::Text("Status : Compiled");
-		ImGui::Text("========================");
 		ImGui::TreePop();
 	}
 	ImGui::PopID();type_id++;
@@ -85,9 +56,9 @@ void ShaderEditor::RenderShaderStruct() const
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (AddParam("layout")) {
-				if (active_shader)
-					active_shader->shader_struct_list[current_shad_type].SetAB(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
+			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x-15, 20)))
+			{
+				
 			}ImGui::TreePop();
 		}ImGui::PopID();type_id++;vari_id = 0;  
 	}
@@ -102,9 +73,9 @@ void ShaderEditor::RenderShaderStruct() const
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (AddParam("layout")) {
-				if (active_shader)
-					active_shader->shader_struct_list[current_shad_type].SetPass(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
+			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
+			{
+
 			}ImGui::TreePop();
 		}ImGui::PopID();type_id++;vari_id = 0;
 	}
@@ -119,9 +90,9 @@ void ShaderEditor::RenderShaderStruct() const
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (AddParam()) {
-				if (active_shader)
-					active_shader->shader_struct_list[current_shad_type].SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
+			{
+
 			}ImGui::TreePop();
 		}ImGui::PopID();type_id++;vari_id = 0;
 	}
@@ -136,9 +107,9 @@ void ShaderEditor::RenderShaderStruct() const
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (AddParam()) {
-				if (active_shader)
-					active_shader->shader_struct_list[current_shad_type].SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
+			{
+
 			}ImGui::TreePop();
 		}ImGui::PopID();type_id++;vari_id = 0;
 	}
@@ -154,12 +125,14 @@ void ShaderEditor::RenderShaderStruct() const
 				}ImGui::PopID();
 			}
 			//ImGui::PushFont(ImguiTheme::th_data.font_data[0]);
-			if (AddParam()) {
-				if (active_shader)
-					active_shader->shader_struct_list[current_shad_type].SetUni(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
+			{
+				active_shader->shader_struct_list[current_shad_type].SetUni(FLOAT_PARA, 1, "TEST_UNIFORM");
 			}ImGui::TreePop();
 			//ImGui::PopFont();
 		}ImGui::PopID();type_id++;vari_id = 0;
+		
+		//DEBUG(active_shader->shader_struct_list[current_shad_type].is_struct_changed)
 	}
 	
 	//[STRUCT]
@@ -169,17 +142,12 @@ void ShaderEditor::RenderShaderStruct() const
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].struct_def_list) {
 				ImGui::PushID(vari_id);
 				if (ImGui::TreeNode(std::get<1>(i).c_str())) {
-					char name[CHAR_MAX];
-					std::get<1>(i).copy(name, CHAR_MAX);
-					*(name + std::get<1>(i).size()) = '\0';
-					ImGui::InputText("name", name, CHAR_MAX);
-					RenderArgs(std::get<2>(i), 0);
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (AddStruct()) {
-				if (active_shader)
-					active_shader->shader_struct_list[current_shad_type].DefStruct(std::get<1>(add_args), std::get<3>(add_args));
+			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
+			{
+
 			}ImGui::TreePop();
 		}ImGui::PopID();type_id++;vari_id = 0;
 	}
@@ -241,81 +209,59 @@ void ShaderEditor::RenderShaderStruct() const
 	}
 }
 
-void ShaderEditor::RenderArgs(Args& args, int type) const
-{
-	int index = 0;
-	for (auto& arg : args) {
-		char name[CHAR_MAX];
-		std::string b_name = arg.second;
-		b_name.copy(name, b_name.size());
-		*(name + b_name.size()) = '\0';
-		ImGui::SetNextItemWidth(100);
-		if (ImGui::BeginCombo(std::to_string(index).c_str(), ShaderStruct::ParseType(arg.first).c_str(), ImGuiComboFlags_NoName)) {
-			LOOP(ShaderStruct::type_table.size())
-				if (ImGui::Selectable(ShaderStruct::type_table[i].c_str(), &sel))
-					arg.first = (ParaType)i;
-			ImGui::EndCombo();
-		}
-		ImGui::SameLine();
-		ImGui::InputTextMultiline(("m"+std::to_string(index++)).c_str(), name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20), ImGuiInputTextFlags_NoName);
-
-		arg.second = std::string(name);
-	}
-}
-
 void ShaderEditor::UpdateShaderEditor() {
 	if(active_shader)
 		Editor.SetText(active_shader->shader_list[current_shad_type]);
 }
 
 void ShaderEditor::CompileShader() const {
-	if (active_shader) {
-		Timer timer;
-		switch (current_edit) {
-		case 0:
-			active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();break;
-		case 1:
-			is_shad_type_changed = true;
-			active_shader->GenerateShader((ShaderType)current_shad_type);break;
-		}
-
-		glDeleteProgram(active_shader->getID());
-		glDeleteShader(dynamic_cast<Shaders*>(active_shader)->getShaderID((ShaderType)current_shad_type));
-
-		GLuint program_id = glCreateProgram();
-
-		GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
-		glAttachShader(program_id, shader_id);
-		glAttachShader(program_id, dynamic_cast<Shaders*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
-
-		glLinkProgram(program_id);
-		glValidateProgram(program_id);
-
-		int link_state = -1;
-		glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
-
-		if (link_state != GL_TRUE)
-			DEBUG("Shader Link Error")
-
-			dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
-		dynamic_cast<Shaders*>(active_shader)->ResetCache();
-
-		active_shader->is_shader_changed = true;
+	Timer timer;
+	switch (current_edit) {
+	case 0:
+		active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();break;
+	case 1:
+		active_shader->GenerateShader((ShaderType)current_shad_type);break;
 	}
 
+	glDeleteProgram(active_shader->getID());
+	glDeleteShader(dynamic_cast<Shaders*>(active_shader)->getShaderID((ShaderType)current_shad_type));
+
+	GLuint program_id = glCreateProgram();
+
+	GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
+	glAttachShader(program_id, shader_id);
+	glAttachShader(program_id, dynamic_cast<Shaders*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
+
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+
+	glDeleteShader(shader_id);
+
+	int link_state = -1;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
+
+	if (link_state != GL_TRUE)
+		DEBUG("Shader Link Error")
+
+	dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
+	dynamic_cast<Shaders*>(active_shader)->ResetCache();
+
+	active_shader->is_shader_changed = true;
 }
 
 void ShaderEditor::RenderLayer() const
 {
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
+		//if (ImGui::Begin("TEST", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+		//
+		//	ImGui::Text("test");
+		//	ImGui::End();
+		//}
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
 			LOOP(3)
-				if (ImGui::Selectable(edit_mode[i].c_str(), &sel)) {
+				if (ImGui::Selectable(edit_mode[i].c_str(), &sel))
 					current_edit = i;
-					if(active_shader)active_shader->shader_struct_list[current_shad_type].is_struct_changed = true;
-				}
-
 			ImGui::EndCombo();
 		}
 		if (ImGui::BeginCombo("Shader Type", shader_type[current_shad_type].c_str())) {
@@ -360,116 +306,25 @@ void ShaderEditor::RenderLayer() const
 	}
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const std::string& c_name)
+
+
+MiniPropPanel::MiniPropPanel()
 {
-	if (*state) {
-		if(!is_open)
-			panel_pos = pos;
-		is_open = true;
-		ImGui::SetNextWindowPos(panel_pos-ImVec2(100,0));
-		ImGui::SetNextWindowSize(ImVec2(300, 85));
-		bool a;
 
-		if (ImGui::Begin("Add", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoNav)) {
-
-			ImGui::SetNextItemWidth(100);
-			if (ImGui::BeginCombo(" ", ShaderStruct::type_table[datatype].c_str())) {
-				LOOP(ShaderStruct::type_table.size())
-					if (ImGui::Selectable(ShaderStruct::type_table[i].c_str(), &a))
-						datatype = i;
-				ImGui::EndCombo();
-			}ImGui::SameLine();
-
-			ImGui::InputTextMultiline("name", &prop_name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
-
-			ImGui::InputInt(c_name == "" ? "count" : c_name.c_str(), &prop_count);
-
-			if (ImGui::Button("OK", ImGui::GetContentRegionAvail())) {
-				is_open = false;
-				*state = false;
-				ImGui::End();
-				if (datatype == 0 || prop_name == NULL)
-					return false;
-
-				*out = { std::string(&prop_name), ParaType(datatype), prop_count };
-
-				return true;
-			}
-			ImGui::End();
-		}
-	}
-	return false;
 }
 
-bool MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct)
+MiniPropPanel::~MiniPropPanel()
 {
-	if (*state) {
-		if (!is_open)
-			panel_pos = pos;
-		is_open = true;
-		ImGui::SetNextWindowPos(panel_pos-ImVec2(100,0));
-		ImGui::SetNextWindowSize(ImVec2(400, 300));
-		bool a;
 
-		if (ImGui::Begin("Add", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoNav)) {
-
-			if (type) {
-				ImGui::SetNextItemWidth(100);
-				if (ImGui::BeginCombo(" ", ShaderStruct::type_table[datatype].c_str())) {
-					LOOP(ShaderStruct::type_table.size())
-						if (ImGui::Selectable(ShaderStruct::type_table[i].c_str(), &a))
-							datatype = i;
-					ImGui::EndCombo();
-				}ImGui::SameLine();
-			}
-
-			ImGui::InputTextMultiline("name", &prop_name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
-
-			RenderArguPanel();
-
-			if (type) {
-				ImGui::InputTextMultiline("content", &prop_content, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 40));
-			}
-
-			if (ImGui::Button("OK", ImVec2(ImGui::GetContentRegionAvail().x, 50))) {
-				is_open = false;
-				*state = false;
-				ImGui::End();
-				if (datatype == 0 || prop_name == NULL)
-					return false;
-
-				return true;
-			}
-			ImGui::End();
-		}
-	}
-	return false;
 }
 
-void MiniPropPanel::RenderArguPanel() 
+void MiniPropPanel::RenderPanel(const ImVec2& pos) const
 {
-	int index = 0;
-	for (auto& arg : prop_args) {
-		char name[CHAR_MAX];
-		std::string b_name = std::get<1>(arg);
-		b_name.copy(name, b_name.size());
-		*(name + b_name.size()) = '\0';
-		int type = std::get<0>(arg);
-		bool a;
-		ImGui::SetNextItemWidth(100);
-		if (ImGui::BeginCombo(("member"+std::to_string(index)).c_str(), ShaderStruct::type_table[type].c_str())) {
-			LOOP(ShaderStruct::type_table.size())
-				if (ImGui::Selectable(ShaderStruct::type_table[i].c_str(), &a))
-					type = i;
-			ImGui::EndCombo();
-		}ImGui::SameLine();
-		ImGui::InputTextMultiline(("m_name" + std::to_string(index)).c_str(), name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
-
-		arg = { (ParaType)type, std::string(name)};
-		index++;
+	if (ImGui::Begin("TEST", nullptr, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoMove)) {
+		ImGui::Text("test");
+		ImGui::End();
 	}
-	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x, 40)))
-		prop_args.emplace_back(NONE_PARA, "Empty");
 }
