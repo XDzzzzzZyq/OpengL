@@ -871,7 +871,8 @@ enum ImGuiSeparatorFlags_
 enum ImGuiTextFlags_
 {
     ImGuiTextFlags_None = 0,
-    ImGuiTextFlags_NoWidthForLargeClippedText = 1 << 0
+    ImGuiTextFlags_NoWidthForLargeClippedText = 1 << 0,
+    ImGuiTextFlags_NoName = 1<<1
 };
 
 enum ImGuiTooltipFlags_
