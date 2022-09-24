@@ -32,7 +32,7 @@ void render(GLFWwindow* window) {
 	glfwMakeContextCurrent(window);
 	ImGui::CreateContext();
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
-
+	GLDEBUG
 	Renderer renderer;
 	ImguiManager UI(window);
 	EventListener Event;
@@ -193,7 +193,7 @@ void render(GLFWwindow* window) {
 		line.dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
 
 		renderer.Render();
-		UI.RenderUI();
+		UI.RenderUI(true);
 		Event.Reset();
 		//GLDEBUG
 		/* Swap front and back buffers */
@@ -202,9 +202,10 @@ void render(GLFWwindow* window) {
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
+	DEBUG(std::to_string(1000 / AvTime.result) + "ms")
 	cout << endl << "[ Finished ]" << endl;
 	cout << GameObject::count << " object(s)" << endl;
-	DEBUG(std::to_string(1000/AvTime.result)+"ms")
+
 }
 
 int main(void)
