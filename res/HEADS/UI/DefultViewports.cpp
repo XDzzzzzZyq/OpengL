@@ -23,7 +23,7 @@ void ImguiManager::DefultViewports() {
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "Y", -90.0f, 90.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "Z", -90.0f, 90.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "GAMMA", 0.0f, 30.0f, 3.3f));
-	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Color"));
+	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Color", glm::vec4(0.5, 0.5, 0.5, 1.0)));
 	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Position"));
 	layer2->PushItem(new UI::Button("Debug"));
 	PushImguiLayer(layer2);
