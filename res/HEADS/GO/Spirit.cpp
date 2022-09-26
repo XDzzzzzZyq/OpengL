@@ -1,5 +1,7 @@
 #include "Spirit.h"
 
+std::string Spirit::fileroot = "res/tex/spirit/";
+
 Spirit::Spirit()
 {
 	o_type = GO_SPIRIT;
@@ -35,12 +37,12 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data,Camera* cam)
 	r_vertArry.Bind();
 	r_index.Bind();
 	r_shader->UseShader();
-	r_tex->Bind(r_tex->Tex_slot);
+	r_tex->Bind(SPIRIT_TEXURE);
 
 	//transform settings
 
 	//std::cout << o_Transform;
-	r_shader->SetValue("Light_data",6 ,light_data.data(),VEC1_ARRAY);
+	r_shader->SetValue("Light_data",6 ,light_data.data(), VEC1_ARRAY);
 
 	if(cam->is_invUniform_changed)
 		r_shader->SetValue("U_cam_trans", cam->o_InvTransform);
@@ -77,14 +79,12 @@ void Spirit::SetSpiritShader()
 
 void Spirit::SetTex()
 {
-	r_tex = Texture(ParsePath(), PNG_TEXTURE, GL_REPEAT);
-	r_tex->Tex_slot = PNG_TEXTURE;
-	//r_tex->Bind(spr_type);
+	r_tex = Texture(ParsePath(), SPIRIT_TEXURE, GL_REPEAT);
 
 	r_shader->UseShader();
 	//o_shader.SetValue("blen", 0.5f);
 	r_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-	r_shader->SetValue("U_Texture", spr_type);
+	r_shader->SetValue("U_Texture", SPIRIT_TEXURE);
 	r_shader->UnuseShader();
 }
 
@@ -110,15 +110,13 @@ std::string Spirit::ParsePath() const
 	switch (spr_type)
 	{
 	case NONE_SPIRIT:
-		//DEBUG(111111)
-		return "res/tex/spirit/BAKED.png";
+		return Spirit::fileroot + "BAKED.png";break;
 	case LIGHT_SPIRIT:
-		//DEBUG(222222)
-		return "res/tex/spirit/light.png";
+		return Spirit::fileroot + "light.png";break;
 	case CAM_SPIRIT:
-		return "res/tex/spirit/BAKED.png";
+		return Spirit::fileroot + "BAKED.png";break;
 	case ENVIRN_SPIRIT:
-		return "res/tex/spirit/BAKED.png";
+		return Spirit::fileroot + "cloud.png";break;
 
 	}
 	return "???";

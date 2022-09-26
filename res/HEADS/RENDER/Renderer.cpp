@@ -243,6 +243,10 @@ void Renderer::Render(bool rend, bool buff) {
 			if (!light.second->light_spirit.is_viewport)continue;
 			light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]);
 		}
+		for (const auto& envir : envir_list) {
+			if(!envir.second->envir_spirit.is_viewport)continue;
+			envir.second->envir_spirit.RenderSpirit(vec3_stdVec6(envir.second->o_position, envir.second->envir_color), cam_list[0]);
+		}
 	}
 
 	if (buff) {
@@ -345,9 +349,11 @@ void Renderer::UseLight(Light* light)
 		is_GOlist_changed = true;
 		is_light_changed = true;
 		light_list[light->GetObjectID()] = light;
-		spirit_list[light->light_spirit.GetObjectID()] = &light->light_spirit;
+		
 		outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
 		parent_index_list.push_back(-1);
+
+		spirit_list[light->light_spirit.GetObjectID()] = &light->light_spirit;
 		name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
 		spirit_id_buff.push_back(light->light_spirit.GetObjectID());
 	}
@@ -361,9 +367,15 @@ void Renderer::UseEnvironment(Environment* envir)
 		is_GOlist_changed = true;
 		envir_list[envir->GetObjectID()] = envir;
 		envir_list[0] = envir;
-		name_buff[envir->GetObjectID()] = envir->o_name;
-		outline_list.push_back(OutlineElement(envir->o_type, envir->GetObjectID(), envir->o_name, 0));
+		name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name;
+		obj_list[envir->envir_spirit.GetObjectID()] = envir;
+
+		outline_list.push_back(OutlineElement(envir->o_type, envir->envir_spirit.GetObjectID(), envir->o_name, 0));
 		parent_index_list.push_back(-1);
+
+		spirit_list[envir->envir_spirit.GetObjectID()] = &envir->envir_spirit;
+		name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name; //using spirit ID
+		spirit_id_buff.push_back(envir->envir_spirit.GetObjectID());
 	}
 	else {
 		envir_list[0] = envir;

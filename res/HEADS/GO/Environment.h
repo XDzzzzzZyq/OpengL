@@ -41,12 +41,13 @@ private:
 
 public:
 	std::optional<FrameBuffer> envir_frameBuffer;
-	
 	std::optional<Shaders> envir_shader;
 
 	Texture envir_hdr;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
 	bool use_envir = false;
+
+	Spirit envir_spirit;
 
 	float envir_gamma = 2.2f;
 	glm::vec3 envir_color = glm::vec3(0.1f);
@@ -64,6 +65,7 @@ public:
 
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;
+	ShaderLib* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }
 
 	void RenderEnvironment(Camera* cam, int act = -1);
 

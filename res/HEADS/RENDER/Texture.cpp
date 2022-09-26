@@ -27,11 +27,41 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//std::cout << im_bpp << std::endl;
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
+			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+		}
+		else {
+			std::cout << "Image texture FAILED" << std::endl;
+		}
+		break;
+
+	case SPIRIT_TEXURE:
+		stbi_set_flip_vertically_on_load(0);
+		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+
+		// std::cout << Tex_ID << std::endl;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+
+		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);GLDEBUG
+
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//std::cout << im_bpp << std::endl;
+		if (m_buffer) {
+			stbi_image_free(m_buffer);
+			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+		}
+		else {
+			std::cout << "Image texture FAILED" << std::endl;
 		}
 		break;
 
@@ -59,13 +89,14 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);	
 #endif
 
-
-		std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
 		glBindTexture(GL_TEXTURE_2D, 0);
 		//std::cout << im_bpp << std::endl;
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
-		}
+
+			std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+		}else
+			std::cout << "HDR texture FAILED"<< std::endl;
 		break;
 
 	case BUFFER_TEXTURE:

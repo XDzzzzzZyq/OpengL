@@ -26,6 +26,8 @@ class Spirit : public GameObject
 {
 
 private:
+	static std::string fileroot;
+public:
 	VertexArray r_vertArry;
 	VertexBuffer r_vertBuffer;
 	IndexBuffer r_index;
@@ -38,7 +40,7 @@ private:
 		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
 	};
 public:
-	float spirit_opacity = 0.8f;
+	float spirit_opacity = 0.9f;
 
 	SpiritType spr_type = SpiritType::NONE_SPIRIT;
 	mutable std::optional<Shaders> r_shader;
