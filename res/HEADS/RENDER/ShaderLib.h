@@ -38,12 +38,15 @@ enum ShaderType
 
 enum ShaderPropType
 {
-	NONE_PROP = -1, LAYOUT_IN_PROP, LAYOUT_BUFFER_PROP, LAYOUT_OUT_PROP, IN_PROP, OUT_PROP, UNIFRON_PROP, STURCT_DEF_PROP, STURCT_PROP, UNIFORM_STRUCT_PROP, CONST_PROP, GLOB_PROP, FUNC_DEF_PROP
+	NONE_PROP = -1, LAYOUT_IN_PROP, LAYOUT_BUFFER_PROP, LAYOUT_OUT_PROP, IN_PROP, OUT_PROP, UNIFRON_PROP, STURCT_DEF_PROP, STURCT_PROP, UNIFORM_STRUCT_PROP, CONST_PROP, GLOB_PROP, FUNC_DEF_PROP, END_PROP
 };
 
 struct ShaderStruct {
 private:
-	int max_AB_loc = 0, max_RP_loc = 0, max_SB_loc = 0;
+	int _max_loc[3]{0,0,0};
+	std::vector<int> _LAY_LOC[3];
+	bool _is_registered(int _loc, ShaderPropType _type) { for (int i : _LAY_LOC[(int)_type]) if (i == _loc)return true; return false; }
+	int _get_avail_loc(int _loc, ShaderPropType _type) { while (_is_registered(_loc, _type))_loc++; _LAY_LOC[(int)_type].push_back(_loc); return _loc; }
 public:
 	static std::vector<std::string> type_table;
 public:
@@ -75,9 +78,9 @@ public:
 	static bool IsAvailType(const std::string& type);
 	static void ADD_TYPE(const std::string& name);
 	static void Debug() {for(auto& i : type_table)DEBUG("|"+i+"|") }
-	void SetAB			(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; max_AB_loc = loc > max_AB_loc ? loc : max_AB_loc; loc==-1? AB_list.emplace_back(max_AB_loc+1, name, type) : AB_list.emplace_back(loc, name, type); }
-	void SetPass		(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; max_RP_loc = loc > max_RP_loc ? loc : max_RP_loc; loc==-1? pass_list.emplace_back(max_RP_loc+1, name, type) :pass_list.emplace_back(loc, name, type); }
-	void SetSB			(int loc, const std::string& name, const Args& args)			{ is_struct_changed = true; max_SB_loc = loc > max_SB_loc ? loc : max_SB_loc; loc==-1? SB_list.emplace_back(max_SB_loc+1, name, args) :SB_list.emplace_back(loc, name, args); }
+	void SetAB			(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; AB_list.emplace_back  (	_get_avail_loc(loc, LAYOUT_IN_PROP)		, name, type);}
+	void SetPass		(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; pass_list.emplace_back(	_get_avail_loc(loc, LAYOUT_BUFFER_PROP)	, name, type);}
+	void SetSB			(int loc, const std::string& name, const Args& args)			{ is_struct_changed = true; SB_list.emplace_back  (	_get_avail_loc(loc, LAYOUT_OUT_PROP)	, name, args);}
 	void SetUni			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; uniform_list.emplace_back(name, type, count); }
 	void SetInp			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; input_list.emplace_back(name, type, count); }
 	void SetOut			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; output_list.emplace_back(name, type, count); }

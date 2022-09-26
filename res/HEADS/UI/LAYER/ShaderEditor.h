@@ -14,22 +14,22 @@ private:
 	int prop_count{ 1 };
 	ImVec2 panel_pos{ ImVec2(0,0) };
 	Args prop_args;
-	char prop_name;
+	static char prop_name;
 	char prop_content;
 public:
-	bool RenderPanel(const ImVec2& pos, bool* state, S_U* out, const std::string& c_name = "");
+	bool RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name = "", const char* c_sld_name = "");
 
 	//true for function | false for structure
 	bool RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct);
 
-	void RenderArguPanel();
+	void RenderArguPanel(bool* b);
 };
 
 class ShaderEditor : public ImguiLayer, public EventListener
 {
 private:
-	static std::string edit_mode[3];
-	static std::string shader_type[2];
+	static const std::string edit_mode[3];
+	static const std::string shader_type[2];
 	static TextEditor Editor;
 
 
@@ -45,7 +45,8 @@ public:
 	mutable MiniPropPanel Panel;
 	mutable S_U add_prop;
 	mutable S_func add_args;
-	bool AddParam(const std::string& c_name = "") const;
+	mutable char add_name[CHAR_MAX];
+	bool AddParam(const char* c_name = "", const char* c_sld_name = "") const;
 	bool AddStruct(bool def_type = false) const;
 	bool AddLink();
 	void CompileShader() const;
@@ -53,6 +54,10 @@ public:
 	void UpdateShaderEditor();
 	void UpdateLayer() override;
 	void RenderShaderStruct() const;
-	void RenderArgs(Args& args, int type) const;
+	void RenderLayout(int* _loc, std::string* _name, ParaType* _type) const;
+	void RenderSSBO(int* _loc, std::string* _name, ParaType* _type, Args* _args) const;
+	void RenderArg(Arg& _arg, int _index, bool _is_editable = true) const;
+	void RenderArg(ParaType& _type, std::string& _name, int _index, bool _is_editable = true) const;
+	void RenderArgs(Args& args, int _type) const;
 	void RenderLayer() const override;
 };

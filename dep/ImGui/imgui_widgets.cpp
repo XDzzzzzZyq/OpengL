@@ -3431,20 +3431,20 @@ bool ImGui::InputScalar(const char* label, ImGuiDataType data_type, void* p_data
             EndDisabled();
 
         const char* label_end = FindRenderedTextEnd(label);
-        if (label != label_end)
+        if ((label != label_end)&&!(flags&ImGuiInputTextFlags_NoName))
         {
             SameLine(0, style.ItemInnerSpacing.x);
             TextEx(label, label_end);
         }
         style.FramePadding = backup_frame_padding;
-
         PopID();
         EndGroup();
     }
     else
     {
-        if (InputText(label, buf, IM_ARRAYSIZE(buf), flags))
-            value_changed = DataTypeApplyFromText(buf, data_type, p_data, format);
+        //if (flags != ImGuiInputTextFlags_NoName)
+            if (InputText(label, buf, IM_ARRAYSIZE(buf), flags))
+                value_changed = DataTypeApplyFromText(buf, data_type, p_data, format);
     }
     if (value_changed)
         MarkItemEdited(g.LastItemData.ID);
@@ -4776,7 +4776,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         LogRenderedText(&draw_pos, buf_display, buf_display_end);
     }
 
-    if (label_size.x > 0)
+    if (label_size.x > 0 && !(flags&ImGuiInputTextFlags_NoName))
         RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
 
     if (value_changed && !(flags & ImGuiInputTextFlags_NoMarkEdited))
