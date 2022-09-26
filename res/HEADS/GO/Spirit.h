@@ -51,6 +51,7 @@ public:
 
 
 	void RenderSpirit(const std::vector<float>& light_pos, Camera* cam);
+	void RenderSpirit(Camera* cam);
 
 	void SetSpiritShader();
 	std::string ParsePath() const;

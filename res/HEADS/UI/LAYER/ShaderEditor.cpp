@@ -332,6 +332,8 @@ void ShaderEditor::CompileShader() const {
 		GLuint program_id = glCreateProgram();
 
 		GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
+		DEBUG(shader_id)
+			DEBUG(program_id)
 		glAttachShader(program_id, shader_id);
 		glAttachShader(program_id, dynamic_cast<Shaders*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
 
@@ -344,7 +346,8 @@ void ShaderEditor::CompileShader() const {
 		if (link_state != GL_TRUE)
 			DEBUG("Shader Link Error")
 
-			dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
+		dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
+		dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)NONE_SHADER, program_id);
 		dynamic_cast<Shaders*>(active_shader)->ResetCache();
 
 		active_shader->is_shader_changed = true;
