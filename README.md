@@ -17,6 +17,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 - [x] baisc transform
 - [ ] transform handle
+- [ ] parenting
 - [x] unique ID generator
 - [x] object name generator
 - [x] select operation
@@ -78,14 +79,18 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [ ] pbr diffuse
     - [ ] pbr specular
 - Ray tracing ?
+- DL style transfer ?
 
 - **Shader**
-  - [ ] dynamic compiling
+  - [x] GLSL interpreter(sturcture analysis)
+    - [ ] Build-in Lib
+    - [ ] Advanced analysis
+  - [x] dynamic compiling
   - [ ] dynamic uniform
     - [ ] node system
   - [x] shader storage buffer
 - **Advance**
-- mode switch
+- render mode switch
 - visible switch
 - dynamic exposure  
 
@@ -101,7 +106,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [ ] Tools Layer
     - [x] OutLiner Layer
     - [x] Shader Editor Layer
-        - [ ] Structure Editor
+        - [x] Structure Editor
         - [x] Code Editor
         - [ ] Node Editor
     - [ ] Transform(Property) Layer
