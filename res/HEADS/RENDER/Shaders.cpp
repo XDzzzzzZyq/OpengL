@@ -55,7 +55,8 @@ Shaders::Shaders(const std::string& name, const std::string& name2)
 	vert_name = name;
 	frag_name = name2 == "" ? name : name2;
 
-	ParseShader(vert_name, frag_name);
+	ParseShaderFile(vert_name, VERTEX_SHADER);
+	ParseShaderFile(frag_name, FRAGMENT_SHADER);
 	GenerateShader();
 	CreatShader(shader_list[VERTEX_SHADER], shader_list[FRAGMENT_SHADER]);
 }
@@ -89,6 +90,19 @@ void Shaders::ResetID(ShaderType type, GLuint id)
 	}
 }
 
+void Shaders::ParseShaderCode(const std::string& _code, ShaderType _type)
+{
+	shader_struct_list[_type].Reset();
+	if (_code == "") {
+		std::stringstream Stream(shader_list[_type]);
+		ParseShaderStream(Stream, _type);
+	}
+	else {
+		std::stringstream Stream(_code);
+		ParseShaderStream(Stream, _type);
+	}
+}
+
 GLuint Shaders::CompileShader(ShaderType tar)
 {
 	const char* src = shader_list[tar].c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
@@ -116,6 +130,7 @@ GLuint Shaders::CompileShader(ShaderType tar)
 	}
 	else {
 		std::cout << type << " is complied successfully!" << std::endl;
+		shader_struct_list[tar].is_struct_changed = false;
 	}
 	tar == 0 ? vs_id = shader_id : fs_id = shader_id;
 	return shader_id;

@@ -66,6 +66,7 @@ public:
 	std::vector<S_glob> glob_list;
 	std::vector<S_var> vari_list;
 
+	std::vector<int> func_list_state;
 	std::vector<S_func> func_list, buildin_func_list;
 
 	std::string Main;
@@ -78,19 +79,21 @@ public:
 	static bool IsAvailType(const std::string& type);
 	static void ADD_TYPE(const std::string& name);
 	static void Debug() {for(auto& i : type_table)DEBUG("|"+i+"|") }
-	void SetAB			(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; AB_list.emplace_back  (	_get_avail_loc(loc, LAYOUT_IN_PROP)		, name, type);}
-	void SetPass		(int loc, ParaType type, const std::string& name)				{ is_struct_changed = true; pass_list.emplace_back(	_get_avail_loc(loc, LAYOUT_BUFFER_PROP)	, name, type);}
-	void SetSB			(int loc, const std::string& name, const Args& args)			{ is_struct_changed = true; SB_list.emplace_back  (	_get_avail_loc(loc, LAYOUT_OUT_PROP)	, name, args);}
-	void SetUni			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; uniform_list.emplace_back(name, type, count); }
-	void SetInp			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; input_list.emplace_back(name, type, count); }
-	void SetOut			(ParaType type, int count, const std::string& name)				{ is_struct_changed = true; output_list.emplace_back(name, type, count); }
-	void SetGlob		(ParaType type, float defult, const std::string& name)			{ is_struct_changed = true; glob_list.emplace_back(name, type, defult); }
-	void DefStruct		(const std::string& name, const Args& args)						{ is_struct_changed = true; struct_def_list.emplace_back(0, name, args); }
-	void DefFunc		(ParaType type, const std::string& name, const std::string& content, const Args& args) { is_struct_changed = true; func_list.emplace_back(type, name, content, args); }
-	void SetBuildinF    (const S_func& buildin)											{ is_struct_changed = true; buildin_func_list.emplace_back(buildin); }
-	void SetBuildinC	(const S_const& buildin)										{ is_struct_changed = true; const_list.emplace_back(buildin); }
-	void SetConst		(ParaType type, const std::string& name, const std::string& content) { is_struct_changed = true; const_list.emplace_back(type, name, content, NULL); }
-	void SetVar			(const std::string& type, const std::string& name, int count)	{ is_struct_changed = true; vari_list.emplace_back(type, name, count); }
+	void SetAB			(int _loc, ParaType type, const std::string& _name)				{ is_struct_changed = true; AB_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_IN_PROP)	 , _name, type);}
+	void SetPass		(int _loc, ParaType type, const std::string& _name)				{ is_struct_changed = true; pass_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_BUFFER_PROP), _name, type);}
+	void SetSB			(int _loc, const std::string& _name, const Args& args)			{ is_struct_changed = true; SB_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_OUT_PROP)	 , _name, args);}
+	void SetUni			(ParaType _type, int count, const std::string& _name)			{ is_struct_changed = true; uniform_list.emplace_back(_name, _type, count); }								
+	void SetInp			(ParaType _type, int count, const std::string& _name)			{ is_struct_changed = true; input_list.emplace_back(_name, _type, count); }									
+	void SetOut			(ParaType _type, int count, const std::string& _name)			{ is_struct_changed = true; output_list.emplace_back(_name, _type, count); }								
+	void SetGlob		(ParaType _type, float defult, const std::string& _name)		{ is_struct_changed = true; glob_list.emplace_back(_name, _type, defult); }									
+	void DefStruct		(const std::string& _name, const Args& args)					{ is_struct_changed = true; struct_def_list.emplace_back(0, _name, args); }									
+	void DefFunc		(ParaType _type, const std::string& _name, const std::string& content, const Args& args) { is_struct_changed = true; func_list.emplace_back(_type, _name, content, args); }	
+	void SetBuildinF    (const S_func& buildin)											{ is_struct_changed = true; buildin_func_list.emplace_back(buildin); }										
+	void SetBuildinC	(const S_const& buildin)										{ is_struct_changed = true; const_list.emplace_back(buildin); }												
+	void SetConst		(ParaType _type, const std::string& _name, const std::string& content) { is_struct_changed = true; const_list.emplace_back(_type, _name, content, NULL); }					
+	void SetVar			(const std::string& _type, const std::string& _name, int count)	{ is_struct_changed = true; vari_list.emplace_back(_type, _name, count); }	
+
+	void Reset();
 };
 
 class ShaderLib

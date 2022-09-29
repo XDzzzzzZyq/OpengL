@@ -5731,6 +5731,18 @@ bool ImGui::TreeNode(const char* label)
     return TreeNodeBehavior(window->GetID(label), 0, label, NULL);
 }
 
+bool ImGui::TreeNodeB(const char* label, int* is_open, bool* open_ev, bool* shut_ev, ImGuiTreeNodeFlags flags, bool is_close)
+{
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+    bool temp = *is_open;
+    *is_open = TreeNodeBehavior(window->GetID(label), flags, label, NULL, is_close);
+    *open_ev = (*is_open == true) && (temp == false);
+    *shut_ev = (*is_open == false) && (temp == true);
+	return *is_open;
+}
+
 bool ImGui::TreeNodeV(const char* str_id, const char* fmt, va_list args)
 {
     return TreeNodeExV(str_id, 0, fmt, args);
@@ -5836,7 +5848,7 @@ bool ImGui::TreeNodeBehaviorIsOpen(ImGuiID id, ImGuiTreeNodeFlags flags)
     return is_open;
 }
 
-bool ImGui::TreeNodeBehavior(ImGuiID id, ImGuiTreeNodeFlags flags, const char* label, const char* label_end)
+bool ImGui::TreeNodeBehavior(ImGuiID id, ImGuiTreeNodeFlags flags, const char* label, const char* label_end, bool is_close)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -5932,7 +5944,7 @@ bool ImGui::TreeNodeBehavior(ImGuiID id, ImGuiTreeNodeFlags flags, const char* l
     const bool was_selected = selected;
 
     bool hovered, held;
-    bool pressed = ButtonBehavior(interact_bb, id, &hovered, &held, button_flags);
+    bool pressed = ButtonBehavior(interact_bb, id, &hovered, &held, button_flags) || (is_open && is_close);
     bool toggled = false;
     if (!is_leaf)
     {

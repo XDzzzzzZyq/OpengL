@@ -58,26 +58,47 @@ void ShaderEditor::UpdateLayer()
 
 }
 
+void ShaderEditor::RenderName(const std::string& _label, std::string & _name, bool read_only) const
+{
+	char name[CHAR_MAX];
+	_name.copy(name, CHAR_MAX, 0);
+	*(name + _name.size()) = '\n';
+	ImGui::InputText(_label.c_str(), name, CHAR_MAX, read_only?ImGuiInputTextFlags_ReadOnly:0);
+
+	if (!read_only)
+		_name = std::string(name);
+}
+
+void ShaderEditor::RenderName(const char* _label, std::string& _name, bool read_only /*= true*/) const
+{
+	char name[CHAR_MAX];
+	_name.copy(name, CHAR_MAX, 0);
+	*(name + _name.size()) = '\n';
+	ImGui::InputText(_label, name, CHAR_MAX, read_only ? ImGuiInputTextFlags_ReadOnly : 0);
+
+	if (!read_only)
+		_name = std::string(name);
+}
+
 void ShaderEditor::RenderShaderStruct() const
 {
 	int type_id = 0, vari_id = 0;
 	// [BASE INFO]
-	ImGui::PushID(type_id);
+	ImGui::PushID(type_id++);
 
 	if (ImGui::TreeNode("Base Information")) {
 		ImGui::Text("========================");
 		ImGui::Text("GLSL version : %i", active_shader->shader_struct_list[current_shad_type].version);
 		ImGui::Text("Shader Type : " + current_shad_type == 0 ? "Vertex Shader" : "Fragment Shader");
 		ImGui::Text(("Shader ID : " + std::to_string(active_shader->getShaderID((ShaderType)current_shad_type))).c_str());
-		ImGui::Text("Status : Compiled");
+		ImGui::Text(active_shader->shader_struct_list[current_shad_type].is_struct_changed ? "Status : Changed" : "Status : Compiled");
 		ImGui::Text("========================");
 		ImGui::TreePop();
 	}
-	ImGui::PopID();type_id++;
-
+	ImGui::PopID();
 	// [AB]
 	if (active_shader->shader_struct_list[current_shad_type].AB_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Array Buffer")) {
 			for (auto& l_in : active_shader->shader_struct_list[current_shad_type].AB_list) {
 				ImGui::PushID(vari_id);
@@ -90,12 +111,12 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetAB(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	// [PASS]
 	if (active_shader->shader_struct_list[current_shad_type].pass_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Rendering Pass")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].pass_list) {
 				ImGui::PushID(vari_id);
@@ -107,12 +128,12 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetPass(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[IN]
 	if (active_shader->shader_struct_list[current_shad_type].input_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Input")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].input_list) {
 				ImGui::PushID(vari_id);
@@ -124,12 +145,12 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[OUT]
 	if (active_shader->shader_struct_list[current_shad_type].output_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Output")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].output_list) {
 				ImGui::PushID(vari_id);
@@ -141,12 +162,12 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[UNIFORM]
 	if (active_shader->shader_struct_list[current_shad_type].uniform_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Uniform")) {
 			int index = 0;
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].uniform_list) {
@@ -162,20 +183,17 @@ void ShaderEditor::RenderShaderStruct() const
 					active_shader->shader_struct_list[current_shad_type].SetUni(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
 			//ImGui::PopFont();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[STRUCT]
 	if (active_shader->shader_struct_list[current_shad_type].struct_def_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Struct")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].struct_def_list) {
 				ImGui::PushID(vari_id);
 				if (ImGui::TreeNode(std::get<1>(i).c_str())) {
-					char name[CHAR_MAX];
-					std::get<1>(i).copy(name, CHAR_MAX);
-					*(name + std::get<1>(i).size()) = '\0';
-					ImGui::InputText("name", name, CHAR_MAX);
+					RenderName("struct name", std::get<1>(i));
 					RenderArgs(std::get<2>(i), 0);
 					ImGui::TreePop();
 				}ImGui::PopID();
@@ -184,12 +202,12 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].DefStruct(std::get<1>(add_args), std::get<3>(add_args));
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[Globs]
 	if (active_shader->shader_struct_list[current_shad_type].glob_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Globs")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].glob_list) {
 				ImGui::PushID(vari_id);
@@ -201,12 +219,12 @@ void ShaderEditor::RenderShaderStruct() const
 			{
 
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[Const]
 	if (active_shader->shader_struct_list[current_shad_type].const_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Consts")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].const_list) {
 				ImGui::PushID(vari_id);
@@ -218,24 +236,51 @@ void ShaderEditor::RenderShaderStruct() const
 			{
 
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	//[Funcs]
 	if (active_shader->shader_struct_list[current_shad_type].func_list.size()) {
-		ImGui::PushID(type_id);
+		ImGui::PushID(type_id++);
 		if (ImGui::TreeNode("Functions")) {
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].func_list) {
-				ImGui::PushID(vari_id);
-				if (ImGui::TreeNode(std::get<1>(i).c_str())) {
-					ImGui::TreePop();
+				bool op_ev = false, st_ev = false;
+				ImGui::PushID(vari_id++);
+				bool is_op = ImGui::TreeNodeB(
+					std::get<1>(i).c_str(),
+					&active_shader->shader_struct_list[current_shad_type].func_list_state[vari_id - 1],
+					&op_ev,
+					&st_ev,
+					0,
+					(active_func!=vari_id)
+				);
+				if (op_ev) {
+					Editor.SetText(std::get<2>(i));
+					active_func = vari_id;
+				}
+				if (active_func==vari_id && is_op) {
+					RenderName("func name", std::get<1>(i));
+
+					if (ImGui::TreeNode("arguments list")) {
+						RenderArgs(std::get<3>(i), 1);
+						ImGui::TreePop();
+					}
+					if (ImGui::Button("Apply", ImVec2(ImGui::GetContentRegionAvail().x, 20))) {
+						std::get<2>(i) = Editor.GetText();
+					}
+					Editor.Render(std::get<1>(i).c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
 				}ImGui::PopID();
+				if(is_op)ImGui::TreePop();
+				if (st_ev) {
+					std::get<2>(i) = Editor.GetText();
+					active_shader->shader_struct_list[current_shad_type].is_struct_changed = true;
+				}
 			}
 			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
 			{
 
 			}ImGui::TreePop();
-		}ImGui::PopID();type_id++;vari_id = 0;
+		}ImGui::PopID();vari_id = 0;
 	}
 
 	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 5, 20)))
@@ -310,18 +355,24 @@ void ShaderEditor::RenderArgs(Args& args, int _type) const
 		RenderArg(arg, index++);
 }
 
-void ShaderEditor::UpdateShaderEditor() {
+void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 	if (active_shader)
-		Editor.SetText(active_shader->shader_list[current_shad_type]);
+		if(current_edit == CODE_EDITOR)
+			Editor.SetText(active_shader->shader_list[current_shad_type]);
+		else if(current_edit == STRUCT_EDITOR)
+			Editor.SetText(_code);
 }
 
 void ShaderEditor::CompileShader() const {
 	if (active_shader) {
+		
 		Timer timer;
 		switch (current_edit) {
-		case 0:
-			active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();break;
-		case 1:
+		case CODE_EDITOR:
+			active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();
+			dynamic_cast<Shaders*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
+			break;
+		case STRUCT_EDITOR:
 			is_shad_type_changed = true;
 			active_shader->GenerateShader((ShaderType)current_shad_type);break;
 		}
@@ -332,8 +383,6 @@ void ShaderEditor::CompileShader() const {
 		GLuint program_id = glCreateProgram();
 
 		GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
-		DEBUG(shader_id)
-			DEBUG(program_id)
 		glAttachShader(program_id, shader_id);
 		glAttachShader(program_id, dynamic_cast<Shaders*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
 
@@ -388,24 +437,20 @@ void ShaderEditor::RenderLayer() const
 
 		switch (current_edit)
 		{
-		case 0:
+		case CODE_EDITOR:
 
 			if (active_shader) {
 				Editor.Render("##Editor", ImGui::GetContentRegionAvail());
 			}
 
-			//ImGui::Text(active_shader->shader_list[current_shad_type].c_str());
 			break;
-		case 1:
+		case STRUCT_EDITOR:
 			if (active_shader)
 				RenderShaderStruct();
 			break;
 		case 2:
 			break;
 		}
-
-		//if(active_shader)
-			//DEBUG(1212)
 		ImGui::End();
 	}
 }

@@ -112,3 +112,30 @@ void ShaderStruct::ADD_TYPE(const std::string& name)
 	if(std::find(type_table.begin() + TEXTURE_PARA, type_table.end(), name)==type_table.end())
 		type_table.emplace_back(name);
 }
+
+void ShaderStruct::Reset()
+{
+	AB_list = {};
+	pass_list = {};
+	SB_list = {};
+	struct_def_list = {};
+	uniform_list = {};
+	uniform_struct_list = {};
+	input_list = {};
+	output_list = {};
+	const_list = {};
+	glob_list = {};
+	vari_list = {};
+
+	func_list_state = {};
+	func_list = {};
+	buildin_func_list = {};
+
+	Main = "";
+
+	LOOP(3) {
+		_max_loc[i] = 0;
+		_LAY_LOC[i] = {};
+	}
+
+}

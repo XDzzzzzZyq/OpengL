@@ -6,6 +6,10 @@
 
 #include <string>
 
+enum ShEditMode {
+	CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
+};
+
 class MiniPropPanel final
 {
 private:
@@ -31,7 +35,7 @@ private:
 	static const std::string edit_mode[3];
 	static const std::string shader_type[2];
 	static TextEditor Editor;
-
+	mutable int active_func{0};
 
 	mutable int current_edit = 0, current_shad_type = 0;
 	mutable bool is_edit_changed = true, is_shad_type_changed = true;
@@ -51,8 +55,12 @@ public:
 	bool AddLink();
 	void CompileShader() const;
 public:
-	void UpdateShaderEditor();
+	void UpdateShaderEditor(const std::string& _code = "") const;
 	void UpdateLayer() override;
+
+public:
+	void RenderName(const std::string& _label, std::string& _name, bool read_only = true) const;
+	void RenderName(const char* _label, std::string& _name, bool read_only = true) const;
 	void RenderShaderStruct() const;
 	void RenderLayout(int* _loc, std::string* _name, ParaType* _type) const;
 	void RenderSSBO(int* _loc, std::string* _name, ParaType* _type, Args* _args) const;
