@@ -54,8 +54,7 @@ struct Timer
 
 struct Reading
 {
-	std::vector<float> result[4];
-	std::vector<float> vertex;
+	std::vector<float> data_array;
 	std::vector<float> center = { 0,0,0 };
 	int count[4] = { 0,0,0,0 };
 

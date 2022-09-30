@@ -75,11 +75,13 @@ inline Face Split(std::string_view in) {
 	return res;
 }
 
-inline Reading ReadObj(const std::string& path, bool is_smooth) {
+inline Reading ReadObj(const std::string& path, bool is_smooth = true) {
 	Timer timer("Load OBJ");
 	Reading result;
 
 	std::vector<std::vector<int>> vertIndex;
+
+	std::vector<float> tempdata[4];
 
 	std::fstream obj;
 	obj.open(path);
@@ -105,7 +107,7 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 			{
 				if (last == "v")continue;
 				//cout << last << "\n";
-				result.result[0].emplace_back(atof(last.c_str()));
+				tempdata[0].emplace_back(atof(last.c_str()));
 			}
 			result.count[0]++;
 
@@ -115,7 +117,7 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 			while (str >> last)
 			{
 				if (last == "vt")continue;
-				result.result[1].emplace_back(atof(last.c_str()));
+				tempdata[1].emplace_back(atof(last.c_str()));
 
 			}
 			result.count[1]++;
@@ -125,7 +127,7 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 			while (str >> last)
 			{
 				if (last == "vn")continue;
-				result.result[2].emplace_back(atof(last.c_str()));
+				tempdata[2].emplace_back(atof(last.c_str()));
 
 			}
 			result.count[2]++;
@@ -144,20 +146,20 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 
 				face.copy(Split(last));
 
-				result.vertex.emplace_back(result.result[0][face.pos + 0]);
-				result.vertex.emplace_back(result.result[0][face.pos + 1]);
-				result.vertex.emplace_back(result.result[0][face.pos + 2]);
+				result.data_array.emplace_back(tempdata[0][face.pos + 0]);
+				result.data_array.emplace_back(tempdata[0][face.pos + 1]);
+				result.data_array.emplace_back(tempdata[0][face.pos + 2]);
 
-				result.vertex.emplace_back(result.result[1][face.uv + 0]);
-				result.vertex.emplace_back(result.result[1][face.uv + 1]);
+				result.data_array.emplace_back(tempdata[1][face.uv + 0]);
+				result.data_array.emplace_back(tempdata[1][face.uv + 1]);
 
-				result.vertex.emplace_back(result.result[2][face.norm + 0]);
-				result.vertex.emplace_back(result.result[2][face.norm + 1]);
-				result.vertex.emplace_back(result.result[2][face.norm + 2]);
+				result.data_array.emplace_back(tempdata[2][face.norm + 0]);
+				result.data_array.emplace_back(tempdata[2][face.norm + 1]);
+				result.data_array.emplace_back(tempdata[2][face.norm + 2]);
 
-				result.vertex.emplace_back(0.0f);
-				result.vertex.emplace_back(0.0f);
-				result.vertex.emplace_back(0.0f);
+				result.data_array.emplace_back(0.0f);
+				result.data_array.emplace_back(0.0f);
+				result.data_array.emplace_back(0.0f);
 
 				vertIndex[(face.pos) / 3].push_back(result.count[3] * 3 + vert_count);
 
@@ -193,28 +195,46 @@ inline Reading ReadObj(const std::string& path, bool is_smooth) {
 			//std::cout << vertIndex[i];
 			for (int j = 0;j < vertIndex[i].size(); j++)
 			{
-				SMX += result.vertex[vertIndex[i][j] * 11 + 5] / vertIndex[i].size();
-				SMY += result.vertex[vertIndex[i][j] * 11 + 6] / vertIndex[i].size();
-				SMZ += result.vertex[vertIndex[i][j] * 11 + 7] / vertIndex[i].size();
+				SMX += result.data_array[vertIndex[i][j] * 11 + 5] / vertIndex[i].size();
+				SMY += result.data_array[vertIndex[i][j] * 11 + 6] / vertIndex[i].size();
+				SMZ += result.data_array[vertIndex[i][j] * 11 + 7] / vertIndex[i].size();
 
 				//DEBUG(result.vertex[vertIndex[i][j] * 11 + 5])
 			}
 			for (int j = 0;j < vertIndex[i].size();j++)
 			{
-				result.vertex[vertIndex[i][j] * 11 + 8] = SMX;
-				result.vertex[vertIndex[i][j] * 11 + 9] = SMY;
-				result.vertex[vertIndex[i][j] * 11 + 10] = SMZ;
+				result.data_array[vertIndex[i][j] * 11 + 8] = SMX;
+				result.data_array[vertIndex[i][j] * 11 + 9] = SMY;
+				result.data_array[vertIndex[i][j] * 11 + 10] = SMZ;
 
 			}
 		}
 
 	}
+	else {
+		LOOP(vertIndex.size()) {
+
+			if (vertIndex[i] == std::vector<int>{})
+				//goto mark;
+				break;
+			//std::cout << vertIndex[i];
+			for (int j = 0;j < vertIndex[i].size(); j++)
+			{
+				result.data_array[vertIndex[i][j] * 11 + 8 ] = result.data_array[vertIndex[i][j] * 11 + 5];
+				result.data_array[vertIndex[i][j] * 11 + 9 ] = result.data_array[vertIndex[i][j] * 11 + 6];
+				result.data_array[vertIndex[i][j] * 11 + 10] = result.data_array[vertIndex[i][j] * 11 + 7];
+				//DEBUG(result.vertex[vertIndex[i][j] * 11 + 5])
+			}
+
+
+		}
+	}
 	//timer.Tick();
 	for (int i = 0;i < result.count[0];i++)
 	{
-		result.center[0] += result.result[0][3 * i + 0] / (result.count[0] + 1);
-		result.center[1] += result.result[0][3 * i + 1] / (result.count[0] + 1);
-		result.center[2] += result.result[0][3 * i + 2] / (result.count[0] + 1);
+		result.center[0] += tempdata[0][3 * i + 0] / (result.count[0] + 1);
+		result.center[1] += tempdata[0][3 * i + 1] / (result.count[0] + 1);
+		result.center[2] += tempdata[0][3 * i + 2] / (result.count[0] + 1);
 		//std::cout << "[" << result.center[0] << "," << result.center[1] << "," << result.center[2] << "]\n";
 	}
 

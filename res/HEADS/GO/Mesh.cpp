@@ -6,15 +6,15 @@
 Mesh::Mesh(const char* path)
 {
 	o_type = GO_MESH;
-	read = ReadObj(path,true);
+	read = ReadObj(path);
 
 	o_name = read.name;
 
 	std::cout << "\n";
-	VertData = read.vertex.data();
+	VertData = read.data_array.data();
 	center = stdVec3_vec3(read.center);
 	//std::cout << VertData[100] << std::endl;
-	o_vertBuffer = VertexBuffer(VertData, read.vertex.size() * sizeof(float));
+	o_vertBuffer = VertexBuffer(VertData, read.data_array.size() * sizeof(float));
 
 	BufferLayout layout;
 	layout.Push<float>(3); //3D position
