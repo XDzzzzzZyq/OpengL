@@ -121,7 +121,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;vcamp110.dll;vcamp110d.dll;nvapi.dll;nvapi64.dll;opencl.dll;nvcuda.dll;cudart.dll</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Blender\proj\OpenGL\dep\GLFW\lib-vc2019;D:\Blender\proj\OpenGL\dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -214,6 +214,24 @@
     <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="dep\GLEW\bin\Release\Win32\glew32.dll" />
+    <None Include="dep\GLEW\bin\Release\Win32\glewinfo.exe" />
+    <None Include="dep\GLEW\bin\Release\Win32\visualinfo.exe" />
+    <None Include="dep\GLEW\bin\Release\x64\glew32.dll" />
+    <None Include="dep\GLEW\bin\Release\x64\glewinfo.exe" />
+    <None Include="dep\GLEW\bin\Release\x64\visualinfo.exe" />
+    <None Include="dep\GLEW\doc\advanced.html" />
+    <None Include="dep\GLEW\doc\basic.html" />
+    <None Include="dep\GLEW\doc\build.html" />
+    <None Include="dep\GLEW\doc\credits.html" />
+    <None Include="dep\GLEW\doc\glew.css" />
+    <None Include="dep\GLEW\doc\glew.html" />
+    <None Include="dep\GLEW\doc\glxew.html" />
+    <None Include="dep\GLEW\doc\index.html" />
+    <None Include="dep\GLEW\doc\install.html" />
+    <None Include="dep\GLEW\doc\log.html" />
+    <None Include="dep\GLEW\doc\wglew.html" />
+    <None Include="dep\GLFW\lib-vc2019\glfw3.dll" />
     <None Include="dep\glm\detail\func_common.inl" />
     <None Include="dep\glm\detail\func_common_simd.inl" />
     <None Include="dep\glm\detail\func_exponential.inl" />
@@ -368,6 +386,12 @@
     <None Include="res\shaders\testS.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dep\GLEW\include\GL\eglew.h" />
+    <ClInclude Include="dep\GLEW\include\GL\glew.h" />
+    <ClInclude Include="dep\GLEW\include\GL\glxew.h" />
+    <ClInclude Include="dep\GLEW\include\GL\wglew.h" />
+    <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
+    <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
     <ClInclude Include="res\HEADS\UI\ImguiTheme.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\TextEditor.h" />
@@ -716,11 +740,32 @@
     <ClInclude Include="res\HEADS\UI\LAYER\ShaderEditor.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="dep\GLEW\doc\github.png" />
+    <Image Include="dep\GLEW\doc\glew.png" />
+    <Image Include="dep\GLEW\doc\new.png" />
+    <Image Include="dep\GLEW\doc\ogl_sm.jpg" />
+    <Image Include="dep\GLEW\doc\travis.png" />
     <Image Include="res\tex\avatar1.png" />
     <Image Include="res\tex\avatar2.png" />
     <Image Include="res\tex\BAKED.png" />
     <Image Include="res\tex\testImg.jpg" />
     <Image Include="res\tex\testImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dep\GLEW\doc\glew.txt" />
+    <Text Include="dep\GLEW\doc\gpl.txt" />
+    <Text Include="dep\GLEW\doc\khronos.txt" />
+    <Text Include="dep\GLEW\doc\mesa.txt" />
+    <Text Include="dep\GLEW\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="dep\GLEW\lib\Release\Win32\glew32.lib" />
+    <Library Include="dep\GLEW\lib\Release\Win32\glew32s.lib" />
+    <Library Include="dep\GLEW\lib\Release\x64\glew32.lib" />
+    <Library Include="dep\GLEW\lib\Release\x64\glew32s.lib" />
+    <Library Include="dep\GLFW\lib-vc2019\glfw3.lib" />
+    <Library Include="dep\GLFW\lib-vc2019\glfw3dll.lib" />
+    <Library Include="dep\GLFW\lib-vc2019\glfw3_mt.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

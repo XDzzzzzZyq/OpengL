@@ -627,6 +627,24 @@
     <None Include="res\shaders\SpiritShader.vert" />
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
+    <None Include="dep\GLEW\bin\Release\Win32\glew32.dll" />
+    <None Include="dep\GLEW\bin\Release\Win32\glewinfo.exe" />
+    <None Include="dep\GLEW\bin\Release\Win32\visualinfo.exe" />
+    <None Include="dep\GLEW\bin\Release\x64\glew32.dll" />
+    <None Include="dep\GLEW\bin\Release\x64\glewinfo.exe" />
+    <None Include="dep\GLEW\bin\Release\x64\visualinfo.exe" />
+    <None Include="dep\GLEW\doc\advanced.html" />
+    <None Include="dep\GLEW\doc\basic.html" />
+    <None Include="dep\GLEW\doc\build.html" />
+    <None Include="dep\GLEW\doc\credits.html" />
+    <None Include="dep\GLEW\doc\glew.html" />
+    <None Include="dep\GLEW\doc\glxew.html" />
+    <None Include="dep\GLEW\doc\index.html" />
+    <None Include="dep\GLEW\doc\install.html" />
+    <None Include="dep\GLEW\doc\log.html" />
+    <None Include="dep\GLEW\doc\wglew.html" />
+    <None Include="dep\GLEW\doc\glew.css" />
+    <None Include="dep\GLFW\lib-vc2019\glfw3.dll" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1667,6 +1685,24 @@
     <ClInclude Include="res\HEADS\UI\ITEM\TextEditor.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="dep\GLEW\include\GL\eglew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\GLEW\include\GL\glew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\GLEW\include\GL\glxew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\GLEW\include\GL\wglew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">
@@ -1684,5 +1720,36 @@
     <Image Include="res\tex\avatar1.png">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="dep\GLEW\doc\github.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="dep\GLEW\doc\glew.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="dep\GLEW\doc\new.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="dep\GLEW\doc\ogl_sm.jpg">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="dep\GLEW\doc\travis.png">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dep\GLEW\doc\glew.txt" />
+    <Text Include="dep\GLEW\doc\gpl.txt" />
+    <Text Include="dep\GLEW\doc\khronos.txt" />
+    <Text Include="dep\GLEW\doc\mesa.txt" />
+    <Text Include="dep\GLEW\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="dep\GLEW\lib\Release\Win32\glew32.lib" />
+    <Library Include="dep\GLEW\lib\Release\Win32\glew32s.lib" />
+    <Library Include="dep\GLEW\lib\Release\x64\glew32.lib" />
+    <Library Include="dep\GLEW\lib\Release\x64\glew32s.lib" />
+    <Library Include="dep\GLFW\lib-vc2019\glfw3.lib" />
+    <Library Include="dep\GLFW\lib-vc2019\glfw3_mt.lib" />
+    <Library Include="dep\GLFW\lib-vc2019\glfw3dll.lib" />
   </ItemGroup>
 </Project>
