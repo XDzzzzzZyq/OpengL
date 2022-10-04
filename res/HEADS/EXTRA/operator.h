@@ -41,9 +41,9 @@ inline std::ostream& operator<<(std::ostream& stream, const glm::mat4& vec)
 
 inline glm::vec3 operator*(const glm::mat4& mat, const glm::vec3 vec) {
 	return glm::vec3(
-		mat[0][0] * vec[0] + mat[1][0] * vec[1] + mat[2][0] * vec[2],
-		mat[0][1] * vec[0] + mat[1][1] * vec[1] + mat[2][1] * vec[2],
-		mat[0][2] * vec[0] + mat[1][2] * vec[1] + mat[2][2] * vec[2]
+		mat[0][0] * vec[0] + mat[1][0] * vec[1] + mat[2][0] * vec[2] + mat[3][0],
+		mat[0][1] * vec[0] + mat[1][1] * vec[1] + mat[2][1] * vec[2] + mat[3][0],
+		mat[0][2] * vec[0] + mat[1][2] * vec[1] + mat[2][2] * vec[2] + mat[3][0]
 	);
 }
 

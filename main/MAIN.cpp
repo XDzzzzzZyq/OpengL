@@ -36,7 +36,7 @@ void render(GLFWwindow* window) {
 	Renderer renderer;
 	ImguiManager UI(window);
 	EventListener Event;
-
+	
 	Camera camera(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
 	camera.ApplyTransform();
@@ -48,6 +48,8 @@ void render(GLFWwindow* window) {
 	go1.SetObjShader("testS");
 	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
 	go1.SetCenter();
+	//go1.SetPos({ 10,0,0 });
+	go1.ApplyTransform();
 	renderer.UseMesh(&go1);
 	DEBUG("---------------MESH----------------")
 
@@ -55,9 +57,10 @@ void render(GLFWwindow* window) {
 	go2.SetObjShader("testS");
 	go2.SetTex("res/tex/avatar1.png", PNG_TEXTURE);
 	go2.SetCenter();
-	go2.SetPos(glm::vec3(4, 0, 0));
+	go2.SetPos(glm::vec3(8, 0, 0));
 	go2.SetScale(glm::vec3(1.5f));
 	go2.ApplyTransform();
+	go1.SetParent(go2.GetTransformPtr());
 	renderer.UseMesh(&go2);
 	DEBUG("---------------LIGHT----------------")
 
@@ -81,6 +84,7 @@ void render(GLFWwindow* window) {
 	DEBUG("---------------ENVIR----------------")
 
 		Environment environment("res/tex/hdr/room.hdr");
+	environment.SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	renderer.UseEnvironment(&environment);
 	DEBUG("---------------POINT----------------")
 
@@ -90,7 +94,7 @@ void render(GLFWwindow* window) {
 	DEBUG("-------------------------------")
 		/////////////////////////////////
 
-		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
@@ -102,7 +106,7 @@ void render(GLFWwindow* window) {
 	// 	}
 
 	UI.ManagerInit(window);
-
+	
 	static float scale = 0.3f;
 	static float blend = 0.5f;
 	static float rotateX = 0.0f;
@@ -111,6 +115,7 @@ void render(GLFWwindow* window) {
 	double mouse_x = 0.0f, mouse_y = 0.0f;
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
+	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
 	AverageTime<500> AvTime;
 	float FrameCount = 0;
 	int tex_type = 0;
@@ -122,7 +127,7 @@ void render(GLFWwindow* window) {
 		line.PushDebugLine(newpoint1);
 		tex_type++;
 		if (tex_type > 1)tex_type = 0;
-		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type*2));
+		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type*2));		DEBUG(go1.o_position)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
@@ -156,6 +161,7 @@ void render(GLFWwindow* window) {
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
 		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v4data;
 		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v4data;
+		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v4data;
 		renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 	};
 	UI.GetCurrentWindow();
@@ -172,8 +178,13 @@ void render(GLFWwindow* window) {
 
 		/* Render here */
 
-		go1.SetScale(glm::vec3(scale));
+		go1.SetScale(0.7f*glm::vec3(scale));
 		go1.SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
+		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
+
+		go2.SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
+		go2.SetScale(glm::vec3(blend * 3));
+		go2.SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
@@ -193,7 +204,7 @@ void render(GLFWwindow* window) {
 		line.dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
 
 		renderer.Render();
-		UI.RenderUI(true);
+		UI.RenderUI();
 		Event.Reset();
 		//GLDEBUG
 		/* Swap front and back buffers */
@@ -208,17 +219,18 @@ void render(GLFWwindow* window) {
 
 }
 
-int main(void)
+int main()
 {
 	std::iostream::sync_with_stdio(false);
+	std::cout << std::boolalpha;
 	GLFWwindow* window;
 
 	/* Initialize the library */
 	if (!glfwInit())
 		return -1;
 
-
-	window = glfwCreateWindow(SCREEN_W, SCREEN_H, "TEST_WINDOW", NULL, NULL);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	window = glfwCreateWindow(SCREEN_W+100, SCREEN_H, "TEST_WINDOW", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -226,8 +238,6 @@ int main(void)
 		ImGui::DestroyContext();
 		return -1;
 	}
-
-
 
 	/* Create a windowed mode window and its OpenGL context */
 

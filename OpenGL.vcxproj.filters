@@ -192,6 +192,9 @@
     <ClCompile Include="res\HEADS\UI\ITEM\TextEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="main\MAIN.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -645,6 +648,12 @@
     <None Include="dep\GLEW\doc\wglew.html" />
     <None Include="dep\GLEW\doc\glew.css" />
     <None Include="dep\GLFW\lib-vc2019\glfw3.dll" />
+    <None Include="dep\cubicSpline\CubicSplineHelpers.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="dep\cubicSpline\CubicSplineSimd.inl">
+      <Filter>头文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1701,6 +1710,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\cubicSpline\CubicSpline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

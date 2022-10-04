@@ -251,9 +251,9 @@ inline glm::vec3 vecDiv(const glm::vec3& a, const glm::vec3& b) {
 	return glm::vec3(a[0] / b[0], a[1] / b[1], a[2] / b[2]);
 }
 
-inline glm::vec3 ImVec4_vec3(const ImVec4& color) {
+inline glm::vec3 ImVec4_vec3(const ImVec4& color, float fac = 1.0f) {
 
-	return glm::vec3(color.x, color.y, color.z);
+	return fac * glm::vec3(color.x, color.y, color.z);
 }
 
 inline glm::vec3 ImVec4_vec3_Uni(const ImVec4& color, const float& fac) {

@@ -159,6 +159,9 @@ void ImguiManager::RenderUI(bool rend)
 		}
 		layer_list[active_layer_id]->RenderLayer();
 	}
+	else {
+		io.ConfigFlags != ImGuiConfigFlags_DockingEnable;
+	}
 	ImGui::Render();
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

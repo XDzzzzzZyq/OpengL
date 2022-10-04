@@ -47,6 +47,14 @@ void Transform::SetRot(const glm::vec3& rot)
 	}
 }
 
+void Transform::Trans(const glm::mat4& _trans)
+{
+	is_invTransF_changed = true;
+	is_invUniform_changed = true;
+
+	o_Transform = _trans * o_Transform;
+}
+
 void Transform::Move(const glm::vec3& d_pos)
 {
 	is_TransF_changed = true;
@@ -66,7 +74,7 @@ void Transform::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& 
 
 	o_position -= anch;
 	o_position = anch + o_rotMat * o_position;
-
+		
 	o_Transform = glm::translate(o_Transform, o_position);
 
 	o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
@@ -90,16 +98,24 @@ void Transform::LookAt(const glm::vec3& tar)
 	o_Transform = glm::translate(o_Transform, o_position);
 }
 
-void Transform::ApplyTransform()
+void Transform::SetParent(Transform* _p_trans, bool _keep_offset /*= true*/)
+{
+	o_parent_trans = _p_trans;
+	_p_trans->o_child_trans = this;
+
+	SetScale(o_scale / _p_trans->o_scale);
+	SetPos((o_position - _p_trans->o_position)*o_scale);
+	ApplyTransform();
+}
+
+bool Transform::ApplyTransform()
 {
 
 	if (is_TransF_changed)
 	{
-		//DEBUG("apply");
-		//rotMat = glm::mat4_cast(glm::qua<float>(glm::radians(o_rot)));
 		o_rotMat = glm::mat4_cast(rotQua);
-		o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
-		o_Transform = glm::translate(o_rotMat * o_Transform, o_position);
+		o_Transform = o_rotMat * glm::scale(glm::mat4(1), o_scale);
+		o_Transform = OffestTransform(o_Transform, o_position);
 
 		if (is_rot_changed)
 		{
@@ -111,8 +127,40 @@ void Transform::ApplyTransform()
 		is_invTransF_changed = true;
 		is_TransF_changed = false;
 		is_Uniform_changed = true;
-	}
 
+		return true;
+	}
+	return false;
+}
+
+void Transform::ApplyAllTransform()
+{
+	if (o_parent_trans) {
+		Transform* tar_ptr = this;
+		int i = 0;
+		do{
+			tar_ptr->ApplyTransform();
+			i++;
+			if (tar_ptr->GetParentTransPtr() == nullptr)
+				break;
+			else
+				tar_ptr = tar_ptr->GetParentTransPtr();
+			
+		} while (true);
+		glm::mat4 tar_trans(1.0f);
+		do{
+			if (tar_ptr == nullptr)
+				break;
+			tar_trans = tar_ptr->o_Transform = tar_trans * tar_ptr->o_Transform;
+			if (tar_ptr->GetChildTransPtr() == nullptr)
+				break;
+			else
+				tar_ptr = tar_ptr->GetChildTransPtr();
+		}while(true);
+	}
+	else {
+		ApplyTransform();
+	}
 }
 
 /*std::unordered_map<int, int, float> */
