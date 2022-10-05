@@ -28,27 +28,41 @@ struct ShaderPair {
 
 struct Timer
 {
-	time_t start, end, tick, temp = 0;
+	time_t start = 0, end = 0, tick = 0, temp = 0;
 	time_t __duration = 0;
 	int fact = 1;
 	std::string name;
-	Timer(std::string name="Thread", int fact = 1) :name(name), fact(fact) {
-		std::cout << "[ "+name+" Start ]\n";
-		start = clock();
+	bool is_print;
+	Timer(std::string name="Thread", int fact = 1, bool print = true) 
+		:name(name), fact(fact), is_print(print)
+	{
+		if (is_print)
+			std::cout << "[ " + name + " Start ]\n";
+		start = tick = temp = clock();
 	}
 
-	void Tick() {
+	time_t Tick() {
 		/*std::cout << 000000 << "\n";*/
 		tick = clock();
 		__duration = tick - temp;
 		temp = tick;
-		std::cout /*<< "\r"*/ << "\_[ duration = " << __duration * fact << "ms ]\n";
+		if (is_print)
+			std::cout /*<< "\r"*/ << "\_[ duration = " << __duration * fact << "ms ]\n";
+		return __duration;
+	}
+
+	time_t GetDuration() {
+		end = clock();
+		if (is_print)
+			std::cout /*<< "\r"*/ << "[ " + name + " Whole Time = " << (end - start) * fact << "ms ]\n";
+		return (end - start);
 	}
 
 	~Timer() {
 		end = clock();
 		__duration = end - start;
-		std::cout /*<< "\r"*/ << "[ "+name+" Whole Time = " << __duration * fact << "ms ]\n";
+		if (is_print)
+			std::cout /*<< "\r"*/ << "[ "+name+" Whole Time = " << __duration * fact << "ms ]\n";
 	}
 };
 
