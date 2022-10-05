@@ -27,7 +27,7 @@ UI::ParaInput::ParaInput(ImItemType type, const std::string& name, const glm::ve
 {
 	//SetDefulValue(_def);
 	LOOP(3)
-		uitm_para.para_data.v4data[i] = _def[i];
+		uitm_para.para_data.v3data[i] = _def[i];
 }
 
 UI::ParaInput::ParaInput(const Parameters& para)
@@ -97,7 +97,7 @@ void UI::ParaInput::RenderItem() const
 		ImGui::ColorEdit3(
 
 			GetCharName(),
-			uitm_para.para_data.v4data
+			uitm_para.para_data.v3data
 
 		);
 
@@ -110,6 +110,30 @@ void UI::ParaInput::RenderItem() const
 
 		);
 
+		break;
+	case VEC2_INP:
+		ImGui::InputFloat2(
+
+			GetCharName(),
+			uitm_para.para_data.v2data
+
+		);
+		break;
+	case VEC3_INP:
+		ImGui::InputFloat3(
+
+			GetCharName(),
+			uitm_para.para_data.v3data
+
+		);
+		break;
+	case VEC4_INP:
+		ImGui::InputFloat4(
+
+			GetCharName(),
+			uitm_para.para_data.v4data
+
+		);
 		break;
 	case BOOL_INP:
 		uitm_para.para_data.bdata = ImGui::RadioButton(

@@ -159,9 +159,9 @@ void render(GLFWwindow* window) {
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
-		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v4data;
-		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v4data;
-		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v4data;
+		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
+		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
+		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
 		renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 	};
 	UI.GetCurrentWindow();
