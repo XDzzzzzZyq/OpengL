@@ -30,11 +30,15 @@ private:
 
 	GLFWwindow* window=nullptr;
 public:
+	static bool is_prefW_open;
 
+public:
 
 	ImguiManager();
 	ImguiManager(GLFWwindow* window);
 	~ImguiManager();
+
+public:
 
 	void ManagerInit(GLFWwindow* window);
 	void SetConfigFlag(ImGuiConfigFlags_ flag) const { io.ConfigFlags |= flag; };
@@ -44,14 +48,20 @@ public:
 
 	void DefultViewports();
 
+public:
 	void NewFrame() const;
-	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
+	void RenderUI(bool rend = true);
 
+
+public:
 	void PushImguiLayer(ImguiLayer* layer);
 	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
 	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID
+	void PushImguiMenu(const ImguiMenu& Menu);
+	ImguiMenu* FindImguiMenu(const std::string& name)const;
 
+public:
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;
 	ImguiLayer* FindImguiLayer(const std::string& name)const;
@@ -60,15 +70,14 @@ public:
 	ImguiItem* FindImguiItem(int id, const std::string& name) const;
 	ImguiItem* FindImguiItem(int id, int item_id) const;
 
-
-	void PushImguiMenu(const ImguiMenu& Menu);
-	ImguiMenu* FindImguiMenu(const std::string& name)const;
+public:
 
 	void SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func);
 	Parameters* GetParaValue(const std::string& ly_name, const std::string& it_name);
+	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
 
+public:
 	mutable std::function<void(void)> ParaUpdate = [] {};
 
-	void RenderUI(bool rend = true);
 };
 

@@ -35,9 +35,6 @@ void Viewport::UpdateLayer()
 
 void Viewport::RenderLayer() const
 {
-	if (!uly_is_rendered)
-		return;
-
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
 		item_list[0]->RenderItem();
@@ -54,7 +51,6 @@ void Viewport::RenderLayer() const
 		ImGui::End();
 	}
 	else {
-		uly_is_rendered = false;
 		ImGui::End();
 	}
 }

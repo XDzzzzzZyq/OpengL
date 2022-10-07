@@ -75,9 +75,6 @@ void Outliner::UpdateLayer()
 
 void Outliner::RenderLayer() const
 {
-	if (!uly_is_rendered)
-		return;
-
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
 		ImVec2 p = ImGui::GetCursorScreenPos() - ImVec2(0, 2);

@@ -1,5 +1,7 @@
 #include "ImguiManager.h"
 
+bool ImguiManager::is_prefW_open = false;
+
 ImguiManager::ImguiManager()
 {
 	active_layer_id = 0;
@@ -30,11 +32,29 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui::StyleColorsDark();
+	
+	ImGui::GetStyle().Colors[ImGuiCol_Header]			= ImVec4(1, 1, 1, 0);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]		= ImVec4(1, 1, 1, 0.4);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered]	= ImVec4(1, 1, 1, 0.2);
+	ImGui::GetStyle().Colors[ImGuiCol_Text]				= ImVec4(1, 1, 1, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_WindowBg]			= ImVec4(0.06, 0.06, 0.07, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_FrameBg]			= ImVec4(0, 0.21, 0.51, 0.51);
+	ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]		= ImVec4(0.71, 0.84, 0.96, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_DockingEmptyBg]	= ImVec4(0.1, 0.1, 0.1, 1);
 
-	ImGui::GetStyle().Colors[ImGuiCol_Header] = ImVec4(1, 1, 1, 0);
-	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = ImVec4(1, 1, 1, 0.4);
-	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = ImVec4(1, 1, 1, 0.2);
-	ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
+	ImGui::GetStyle().WindowRounding	= 0.0f;// <- Set this on init or use ImGui::PushStyleVar()
+	ImGui::GetStyle().ChildRounding		= 5.0f;
+	ImGui::GetStyle().FrameRounding		= 3.0f;
+	ImGui::GetStyle().GrabRounding		= 100.0f;
+	ImGui::GetStyle().PopupRounding     = 10.0f;
+	ImGui::GetStyle().ScrollbarRounding = 5.0f;
+	ImGui::GetStyle().TabRounding		= 7;
+
+	ImGui::GetStyle().FrameBorderSize	= 1;
+	ImGui::GetStyle().FramePadding		= ImVec2(10, 4);
+	ImGui::GetStyle().ItemSpacing		= ImVec2(5, 4);
+	ImGui::GetStyle().ScrollbarSize		= 11;
+	ImGui::GetStyle().GrabMinSize		= 7;
 
 	ImFontConfig config;
 	//config.MergeMode = true;
@@ -151,17 +171,29 @@ void ImguiManager::RenderUI(bool rend)
 		/*			ImGui::EndMenuBar();*/
 		ImGui::EndMainMenuBar();
 
+		//ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 100.0f);
 		for (const auto& layer : layer_list) {
 			if (layer->uly_ID != active_layer_id) {
+				if (!layer->uly_is_rendered)
+					continue;
 				layer->UpdateLayer();
 				layer->RenderLayer();
 			}
 		}
-		layer_list[active_layer_id]->RenderLayer();
+		if (layer_list[active_layer_id]->uly_is_rendered) {
+			layer_list[active_layer_id]->UpdateLayer();
+			layer_list[active_layer_id]->RenderLayer();
+		}
+		//ImGui::PopStyleVar();
+		//ImGui::ShowStyleEditor();
 	}
 	else {
 		io.ConfigFlags != ImGuiConfigFlags_DockingEnable;
 	}
+
+	if (is_prefW_open)
+		ImGui::ShowStyleEditor();
+
 	ImGui::Render();
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

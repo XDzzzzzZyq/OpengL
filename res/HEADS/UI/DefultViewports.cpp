@@ -2,6 +2,21 @@
 
 void ImguiManager::DefultViewports() {
 
+
+	ImguiMenu menu1("FILE");
+	menu1.PushSubMenu(ImguiMenuItem("test", "ctrl + A"));
+	menu1.PushSubMenu(ImguiMenuItem("test2", "ctrl + S"));
+	PushImguiMenu(menu1);
+
+	ImguiMenu menu2("EDIT");
+	menu2.PushSubMenu(ImguiMenuItem("undo", "ctrl + Z"));
+	menu2.PushSubMenu(ImguiMenuItem("redo", "ctrl + Y"));
+	menu2.PushSubMenu(ImguiMenuItem("preference", "ctrl + P"));
+	PushImguiMenu(menu2);
+
+	ImguiMenu menu3("WINDOW");
+	PushImguiMenu(menu3);
+
 	ImguiLayer* layer1 = new ParamControl("test layer");
 	layer1->uly_type = PARAS_UILAYER;
 	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "test"));
@@ -37,12 +52,6 @@ void ImguiManager::DefultViewports() {
 
 	ImguiLayer* outline = new Outliner("Outliner");
 	PushImguiLayer(outline);
-
-	ImguiMenu menu1("FILE");
-	menu1.PushSubMenu(ImguiMenuItem("test", "ctrl + A"));
-	menu1.PushSubMenu(ImguiMenuItem("test2", "ctrl + S"));
-
-	PushImguiMenu(menu1);
 
 	SetActiveImguiLayer("__Parameters__");
 }
