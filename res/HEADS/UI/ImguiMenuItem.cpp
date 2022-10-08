@@ -2,31 +2,31 @@
 
 void ImguiMenuItem::ListenEvent()
 {
-	if (subm_press) {
-		subm_func();
-		subm_press = false;
+	if (mitem_press) {
+		mitem_func();
+		mitem_press = false;
+		DEBUG(mitem_name)
 	}
 }
 
 ImguiMenuItem::ImguiMenuItem()
-{
-	subm_name = "";
-	subm_shortcut = "";
-}
+	:ImguiMenuItem(""){}
 
 ImguiMenuItem::ImguiMenuItem(const std::string& name)
-{
-	subm_name = name;
-	subm_shortcut = "";
-}
+	: ImguiMenuItem(name,""){}
 
 ImguiMenuItem::ImguiMenuItem(const std::string& name, const std::string& shortcut)
-{
-	subm_name = name;
-	subm_shortcut = shortcut;
-}
+	: ImguiMenuItem(name, shortcut, BUTTON_MITEM) {}
 
-ImguiMenuItem::~ImguiMenuItem()
-{
+ImguiMenuItem::ImguiMenuItem(const std::string& name, MenuItemType _type)
+	: ImguiMenuItem(name, "", _type) {}
 
+ImguiMenuItem::ImguiMenuItem(const std::string& name, const std::string& shortcut, MenuItemType _type)
+	: mitem_name(name), mitem_shortcut(shortcut), mitem_type(_type)
+{
+	if (_type == BOOL_MITEM)
+		mitem_func = [&] {
+		if (tar_state)
+			*tar_state = !*tar_state;
+	};
 }

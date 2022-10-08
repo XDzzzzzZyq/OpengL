@@ -5,26 +5,40 @@
 #include <functional>
 
 #include "support.h"
+#include "EventListener.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-class ImguiMenuItem {
+enum MenuItemType
+{
+	NONE_MITEM, BUTTON_MITEM, BOOL_MITEM
+};
+
+class ImguiMenuItem 
+{
 public:
-	std::string subm_name = "";
-	std::string subm_shortcut = "";
+	std::string mitem_name = "";
+	std::string mitem_shortcut = "";
+	MenuItemType mitem_type = BUTTON_MITEM;
 
-	bool subm_press;
-	bool subm_enable = false;
-	mutable std::function<void(void)> subm_func;
+public:
+	mutable bool mitem_press;
+	bool mitem_enable = true;
 
-	void EnableMenuItem(bool en) { subm_enable = en; }
+	std::shared_ptr<bool> tar_state;
+	mutable std::function<void(void)> mitem_func;
+
+public:
+	void EnableMenuItem(bool en) { mitem_enable = en; }
 	void ListenEvent();
 
+public:
 	ImguiMenuItem();
 	ImguiMenuItem(const std::string& name);
 	ImguiMenuItem(const std::string& name, const std::string& shortcut);
-	~ImguiMenuItem();
+	ImguiMenuItem(const std::string& name, MenuItemType _type);
+	ImguiMenuItem(const std::string& name, const std::string& shortcut, MenuItemType _type);
 };
 

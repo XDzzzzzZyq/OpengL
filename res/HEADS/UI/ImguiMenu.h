@@ -1,31 +1,25 @@
 #pragma once
 #include <iostream>
-#include <map>
-#include <vector>
-#include <functional>
-
-#include "support.h"
-
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_glfw.h"
-#include "ImGui/imgui_impl_opengl3.h"
 
 #include "ImguiMenuItem.h"
 
 class ImguiMenu
 {
+private:
+	mutable std::unordered_map<std::string, int> name_order;
 public:
 	ImguiMenu();
 	ImguiMenu(const std::string& name);
 	~ImguiMenu();
-	
+
+public:
 	mutable std::string menu_name = "";
 	mutable int menu_id;
 
-	std::map<std::string, ImguiMenuItem> subm_list;
-	void PushSubMenu(const ImguiMenuItem& subm);
+public:
+	mutable std::vector<ImguiMenuItem*> subm_list;
+	void PushSubMenu(ImguiMenuItem* subm);
 
 	void RenderMenu() const;
-	
 };
 

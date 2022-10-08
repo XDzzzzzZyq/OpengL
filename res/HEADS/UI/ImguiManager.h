@@ -24,7 +24,7 @@ class ImguiManager
 {
 private:
 	mutable std::vector<ImguiLayer*> layer_list;
-	mutable std::vector<ImguiMenu> menu_list;
+	mutable std::vector<ImguiMenu*> menu_list;
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuiStyle& m_style=ImGui::GetStyle();
 
@@ -58,7 +58,7 @@ public:
 	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
 	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID
-	void PushImguiMenu(const ImguiMenu& Menu);
+	void PushImguiMenu(ImguiMenu* Menu);
 	ImguiMenu* FindImguiMenu(const std::string& name)const;
 
 public:

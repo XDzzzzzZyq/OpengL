@@ -14,7 +14,8 @@ ImguiLayer::ImguiLayer(const std::string& name)
 
 ImguiLayer::~ImguiLayer()
 {
-
+	for (auto& item : item_list)
+		delete item;
 }
 
 ImVec2 ImguiLayer::GetLayerSize() const

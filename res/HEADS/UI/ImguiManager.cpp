@@ -24,7 +24,10 @@ ImguiManager::ImguiManager(GLFWwindow* window)
 
 ImguiManager::~ImguiManager()
 {
-
+	for (auto& i : layer_list)
+		delete i;
+	for (auto& i : menu_list)
+		delete i;
 }
 
 void ImguiManager::ManagerInit(GLFWwindow* window)
@@ -76,6 +79,10 @@ void ImguiManager::PushImguiLayer(ImguiLayer* layer)
 	layer_list.push_back(layer);
 	active_layer_id = layer->uly_ID;
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
+
+	ImguiMenuItem* window = new ImguiMenuItem(layer->uly_name, "", BOOL_MITEM);
+	window->tar_state = std::shared_ptr<bool>(&layer->uly_is_rendered);
+	FindImguiMenu("WINDOW")->PushSubMenu(window);
 }
 
 void ImguiManager::SetActiveImguiLayer(const std::string& name) const
@@ -121,17 +128,17 @@ ImguiItem* ImguiManager::FindImguiItem(int id, int item_id) const
 	return FindImguiLayer(id)->FindImguiItem(item_id);
 }
 
-void ImguiManager::PushImguiMenu(const ImguiMenu& Menu)
+void ImguiManager::PushImguiMenu(ImguiMenu* Menu)
 {
-	Menu.menu_id = menu_list.size();
+	Menu->menu_id = menu_list.size();
 	menu_list.push_back(Menu);
-	menu_name_buffer[Menu.menu_name] = Menu.menu_id;
+	menu_name_buffer[Menu->menu_name] = Menu->menu_id;
 }
 
 ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
 {
 	if (menu_name_buffer.find(name) != menu_name_buffer.end())
-		return &menu_list[menu_name_buffer[name]];
+		return menu_list[menu_name_buffer[name]];
 	DEBUG("[ no menu named " + name + " ]")
 		return nullptr;
 }
@@ -166,7 +173,7 @@ void ImguiManager::RenderUI(bool rend)
 		EventListener::window_pos = ImGui::GetWindowPos();
 		/*			ImGui::BeginMenuBar();*/
 		for (const auto& menu : menu_list) {
-			menu.RenderMenu();
+			menu->RenderMenu();
 		}
 		/*			ImGui::EndMenuBar();*/
 		ImGui::EndMainMenuBar();

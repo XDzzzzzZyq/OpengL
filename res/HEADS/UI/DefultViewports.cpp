@@ -3,18 +3,18 @@
 void ImguiManager::DefultViewports() {
 
 
-	ImguiMenu menu1("FILE");
-	menu1.PushSubMenu(ImguiMenuItem("test", "ctrl + A"));
-	menu1.PushSubMenu(ImguiMenuItem("test2", "ctrl + S"));
+	ImguiMenu* menu1 = new ImguiMenu("FILE");
+	menu1->PushSubMenu(new ImguiMenuItem("test", "ctrl + A"));
+	menu1->PushSubMenu(new ImguiMenuItem("test2", "ctrl + S"));
 	PushImguiMenu(menu1);
 
-	ImguiMenu menu2("EDIT");
-	menu2.PushSubMenu(ImguiMenuItem("undo", "ctrl + Z"));
-	menu2.PushSubMenu(ImguiMenuItem("redo", "ctrl + Y"));
-	menu2.PushSubMenu(ImguiMenuItem("preference", "ctrl + P"));
+	ImguiMenu* menu2 = new ImguiMenu("EDIT");
+	menu2->PushSubMenu(new ImguiMenuItem("undo", "ctrl + Z"));
+	menu2->PushSubMenu(new ImguiMenuItem("redo", "ctrl + Y"));
+	menu2->PushSubMenu(new ImguiMenuItem("preference", "ctrl + P"));
 	PushImguiMenu(menu2);
 
-	ImguiMenu menu3("WINDOW");
+	ImguiMenu* menu3 = new ImguiMenu("WINDOW");
 	PushImguiMenu(menu3);
 
 	ImguiLayer* layer1 = new ParamControl("test layer");
