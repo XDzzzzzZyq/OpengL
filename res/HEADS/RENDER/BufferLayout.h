@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <GL/glew.h>
-struct BufferElemrnt
+struct BufferElement
 {
 	GLuint type;
 	GLuint count;
@@ -21,7 +21,7 @@ struct BufferElemrnt
 class BufferLayout
 {
 private:
-	std::vector<BufferElemrnt> m_ele_list;
+	std::vector<BufferElement> m_ele_list;
 	GLuint m_stride;
 public:
 	BufferLayout()
@@ -50,7 +50,7 @@ public:
 		m_ele_list.push_back({ GL_UNSIGNED_BYTE,count,GL_FALSE });
 		m_stride += sizeof(GLbyte) * count;
 	}
-	inline const std::vector<BufferElemrnt>GetEles() const { return m_ele_list; };
+	inline const std::vector<BufferElement>GetEles() const { return m_ele_list; };
 	inline GLuint GetStride() const { return m_stride; };
 };
 

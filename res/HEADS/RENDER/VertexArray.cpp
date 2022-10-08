@@ -24,7 +24,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const BufferLayout& bl)
 		glEnableVertexAttribArray(i);
 		                //attrib id//ele cont//ele type//is_norm//size per vertex//offset per attrib
 		glVertexAttribPointer(i, ele.count, ele.type, ele.is_norm, bl.GetStride(), (const void*)offset);
-		offset += ele.count * BufferElemrnt::getTypeSize(ele.type);
+		offset += ele.count * BufferElement::getTypeSize(ele.type);
 	}
 	vb.Unbind();
 	Unbind();
