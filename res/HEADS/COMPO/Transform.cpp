@@ -1,16 +1,16 @@
 #include "Transform.h"
 
-Transform::Transform()
+Transform3D::Transform3D()
 {
 
 }
 
-Transform::~Transform()
+Transform3D::~Transform3D()
 {
 
 }
 
-void Transform::SetPos(const glm::vec3& pos)
+void Transform3D::SetPos(const glm::vec3& pos)
 {
 	if (o_position != pos)
 	{
@@ -23,7 +23,7 @@ void Transform::SetPos(const glm::vec3& pos)
 
 }
 
-void Transform::SetScale(const glm::vec3& scale)
+void Transform3D::SetScale(const glm::vec3& scale)
 {
 	if (o_scale != scale)
 	{
@@ -33,7 +33,7 @@ void Transform::SetScale(const glm::vec3& scale)
 	}
 }
 
-void Transform::SetRot(const glm::vec3& rot)
+void Transform3D::SetRot(const glm::vec3& rot)
 {
 	is_rot_changed = false;
 	if (o_rot != rot)
@@ -47,7 +47,7 @@ void Transform::SetRot(const glm::vec3& rot)
 	}
 }
 
-void Transform::Trans(const glm::mat4& _trans)
+void Transform3D::Trans(const glm::mat4& _trans)
 {
 	is_invTransF_changed = true;
 	is_invUniform_changed = true;
@@ -55,7 +55,7 @@ void Transform::Trans(const glm::mat4& _trans)
 	o_Transform = _trans * o_Transform;
 }
 
-void Transform::Move(const glm::vec3& d_pos)
+void Transform3D::Move(const glm::vec3& d_pos)
 {
 	is_TransF_changed = true;
 	o_Transform = glm::translate(o_Transform, -o_position);
@@ -64,7 +64,7 @@ void Transform::Move(const glm::vec3& d_pos)
 	o_Transform = glm::translate(o_Transform, o_position);
 }
 
-void Transform::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle)
+void Transform3D::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle)
 {
 	is_invTransF_changed = true;
 	rotQua = glm::qua<float>(glm::radians(o_rot));
@@ -81,7 +81,7 @@ void Transform::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& 
 	o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
 }
 
-void Transform::LookAt(const glm::vec3& tar)
+void Transform3D::LookAt(const glm::vec3& tar)
 {
 	is_invTransF_changed = true;
 	is_TransF_changed = false;
@@ -98,7 +98,7 @@ void Transform::LookAt(const glm::vec3& tar)
 	o_Transform = glm::translate(o_Transform, o_position);
 }
 
-void Transform::SetParent(Transform* _p_trans, bool _keep_offset /*= true*/)
+void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 {
 	o_parent_trans = _p_trans;
 	_p_trans->o_child_trans = this;
@@ -108,7 +108,12 @@ void Transform::SetParent(Transform* _p_trans, bool _keep_offset /*= true*/)
 	ApplyTransform();
 }
 
-bool Transform::ApplyTransform()
+void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
+{
+
+}
+
+bool Transform3D::ApplyTransform()
 {
 
 	if (is_TransF_changed)
@@ -133,10 +138,10 @@ bool Transform::ApplyTransform()
 	return false;
 }
 
-void Transform::ApplyAllTransform()
+void Transform3D::ApplyAllTransform()
 {
 	if (o_parent_trans) {
-		Transform* tar_ptr = this;
+		Transform3D* tar_ptr = this;
 		int i = 0;
 		do{
 			tar_ptr->ApplyTransform();
@@ -165,7 +170,7 @@ void Transform::ApplyAllTransform()
 
 /*std::unordered_map<int, int, float> */
 
-glm::mat4 Transform::GetInvTransform() const
+glm::mat4 Transform3D::GetInvTransform() const
 {
 	if (is_invTransF_changed)
 	{
@@ -181,5 +186,81 @@ glm::mat4 Transform::GetInvTransform() const
 		is_invUniform_changed = true;
 		return o_InvTransform;
 	}
+	return o_InvTransform;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Transform2D::Transform2D()
+{
+
+}
+
+Transform2D::~Transform2D()
+{
+
+}
+
+void Transform2D::SetPos(const glm::vec2& pos)
+{
+
+}
+
+void Transform2D::SetScale(const glm::vec2& scale)
+{
+
+}
+
+void Transform2D::SetRot(const glm::vec2& rot)
+{
+
+}
+
+void Transform2D::Trans(const glm::mat3& _trans)
+{
+
+}
+
+void Transform2D::Move(const glm::vec2& d_pos)
+{
+
+}
+
+void Transform2D::Spin(const glm::vec2& anch, const glm::vec3& axis, const float& angle)
+{
+
+}
+
+void Transform2D::LookAt(const glm::vec2& tar)
+{
+
+}
+
+void Transform2D::SetParent(Transform2D* _p_trans, bool _keep_offset /*= true*/)
+{
+
+}
+
+void Transform2D::UnsetParent(bool _keep_offset /*= true*/)
+{
+
+}
+
+bool Transform2D::ApplyTransform()
+{
+	return true;
+}
+
+void Transform2D::ApplyAllTransform()
+{
+
+}
+
+glm::mat3 Transform2D::GetInvTransform() const
+{
 	return o_InvTransform;
 }

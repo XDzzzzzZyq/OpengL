@@ -16,7 +16,7 @@ enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT
 };
 
-class DebugPoints : public GameObject, public Transform
+class DebugPoints : public GameObject, public Transform3D
 {
 private:
 	VertexArray dp_vertArry;

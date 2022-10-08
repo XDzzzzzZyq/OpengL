@@ -13,7 +13,7 @@
 #include "Parameters.h"
 #include <optional>
 
-class DebugLine : public GameObject, public Transform
+class DebugLine : public GameObject, public Transform3D
 {
 private:
 	VertexBuffer dLine_vertBuffer;

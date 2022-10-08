@@ -23,7 +23,7 @@ enum EnvironmentType
 	NONE_ENVIR, TEXTURE_ENVIR, COLOR_ENVIRN, NOISE_ENVIRN
 };
 
-class Environment : public GameObject, public Transform
+class Environment : public GameObject, public Transform3D
 {
 private:
 	std::vector<float> screenQuad = {

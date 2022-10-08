@@ -60,7 +60,7 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 		dp_shader[(int)is_proj]->InitShader();
 
 	if (is_list_changed || dp_shader[(int)is_proj]->is_shader_changed)
-		dp_shader[(int)is_proj]->SetValue("pos_count", dp_pos_list.size()/3);	
+		dp_shader[(int)is_proj]->SetValue("pos_count",(int)(dp_pos_list.size()/3));	
 
 	dp_shader[(int)is_proj]->SetValue("point_color", dp_color);
 

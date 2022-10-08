@@ -7,7 +7,7 @@ enum EmptyType
 	BLANK_EMPTY, POST_PROC_EMPTY, FIELD_EMPTY
 };
 
-class Empty : public GameObject, public Transform
+class Empty : public GameObject, public Transform3D
 {
 private:
 	EmptyType empty_type;

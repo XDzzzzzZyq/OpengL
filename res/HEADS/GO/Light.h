@@ -13,7 +13,7 @@ enum LightType
 	NONELIGHT, POINTLIGHT, SUNLIGHT, SPOTLIGHT
 };
 
-class Light : public GameObject, public Transform
+class Light : public GameObject, public Transform3D
 {
 public:
 
