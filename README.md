@@ -17,7 +17,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 
 - [x] baisc transform
 - [ ] transform handle
-- [ ] parenting
+- [x] parenting
 - [x] unique ID generator
 - [x] object name generator
 - [x] select operation
