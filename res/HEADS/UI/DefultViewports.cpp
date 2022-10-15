@@ -47,11 +47,11 @@ void ImguiManager::DefultViewports() {
 	ImguiLayer* viewport = new Viewport("Viewport");
 	PushImguiLayer(viewport);
 
-	ImguiLayer* shaderedit = new ShaderEditor();
-	PushImguiLayer(shaderedit);
-
 	ImguiLayer* outline = new Outliner("Outliner");
 	PushImguiLayer(outline);
+
+	ImguiLayer* shaderedit = new ShaderEditor();     //ShaderEditor must after Outliner since the order of "EventListener::is_selected_changed"
+	PushImguiLayer(shaderedit);
 
 	SetActiveImguiLayer("__Parameters__");
 }
