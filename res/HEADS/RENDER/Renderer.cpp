@@ -24,6 +24,7 @@ Renderer::Renderer()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBlendEquation(GL_FUNC_ADD);
 
+	glEnable(GL_MULTISAMPLE);
 	//glEnable(GL_STENCIL_TEST);
 	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	//glStencilFunc(GL_ALWAYS, 1, 0xff);
@@ -86,8 +87,10 @@ GLuint Renderer::GetFrameBufferTexture(int slot)
 
 void Renderer::EventInit()
 {
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&Renderer::LMB_CLICK, this);
-	EventList[GenIntEvent(1, 0, 0, 0, 0)] = std::bind(&Renderer::SHIFT, this);
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&Renderer::LMB_CLICK	, this);
+	EventList[GenIntEvent(1, 0, 0, 0, 0)] = std::bind(&Renderer::SHIFT		, this);
+
+	EventListener::GetActiveShader = [&](int id) { return obj_list[id]->GetShaderStruct(); };
 }
 
 void Renderer::LMB_CLICK()
@@ -156,7 +159,7 @@ void Renderer::UpdateFrame()
 
 		if (obj_list.find(active_GO_ID) != obj_list.end()) {
 			obj_list[active_GO_ID]->is_selected = true;
-			active_shader = obj_list[active_GO_ID]->GetShaderStruct();
+			//active_shader = obj_list[active_GO_ID]->GetShaderStruct();
 		}
 
 		is_outliner_selected = false;
@@ -203,7 +206,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 				if (!obj.second->is_viewport)continue;
 
-				obj.second->ApplyTransform();
+				obj.second->ApplyAllTransform();
 				if (is_light_changed || obj.second->o_shader->is_shader_changed)
 				{
 					obj.second->RenderObj(cam_list[0], light_list);
@@ -223,7 +226,7 @@ void Renderer::Render(bool rend, bool buff) {
 		for (const auto& dLine : dLine_list)
 		{
 			if (!dLine.second->is_viewport)continue;
-			dLine.second->ApplyTransform();
+			dLine.second->ApplyAllTransform();
 			dLine.second->RenderDdbugLine(cam_list[0]);
 			dLine.second->is_Uniform_changed = false;
 		}
@@ -258,6 +261,7 @@ void Renderer::Render(bool rend, bool buff) {
 		glDisable(GL_BLEND);
 
 		framebuffer->BindFrameBuffer();
+		if(rend)
 		envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 		framebuffer->UnbindFrameBuffer();
 	}

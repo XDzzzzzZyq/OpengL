@@ -6,8 +6,8 @@ class Outliner : public ImguiLayer, public ImguiTheme
 {
 private:
 	mutable OutlineData ol_data;
-	std::unordered_map<int, int> id2index;
-	std::unordered_map<int, int> index2id;
+	mutable std::unordered_map<int, int> id2index;
+	mutable std::unordered_map<int, int> index2id;
 	mutable int ol_width = 30;
 	mutable int actID;
 	mutable int actIndex;

@@ -45,32 +45,6 @@ void Outliner::UpdateLayer()
 	if (is_GOlist_changed) {
 		SetObjectList(&outline_list);
 	}
-
-	LOOP(item_list.size()) {
-		if (item_list[i]->is_activated) {
-			if (i != actIndex) {
-				is_selected_changed = true;
-				pre_act_go_ID = active_GO_ID;
-				active_GO_ID = index2id[i];
-
-				is_outliner_selected = true;
-			}
-		}
-
-	}
-
-	if (is_selected_changed) {
-		if (pre_act_go_ID != 0)
-			FindImguiItem(id2index[pre_act_go_ID])->is_activated = false;
-		if (active_GO_ID != 0) {
-			actIndex = id2index[active_GO_ID];
-			FindImguiItem(actIndex)->is_activated = true;
-		}
-
-	}
-
-
-
 }
 
 void Outliner::RenderLayer() const
@@ -92,6 +66,31 @@ void Outliner::RenderLayer() const
 		}
 		ImGui::PopFont();
 		ImGui::PopStyleVar();
+
+
+		LOOP(item_list.size()) {
+			if (item_list[i]->is_activated) {
+				if (i != actIndex) {
+					is_selected_changed = true;
+					pre_act_go_ID = active_GO_ID;
+					active_GO_ID = index2id[i];
+
+					is_outliner_selected = true;
+				}
+			}
+
+		}
+
+		if (is_selected_changed) {
+			if (pre_act_go_ID != 0)
+				FindImguiItem(id2index[pre_act_go_ID])->is_activated = false;
+			if (active_GO_ID != 0) {
+				actIndex = id2index[active_GO_ID];
+				active_shader = static_cast<ShaderLib*>(EventListener::GetActiveShader(active_GO_ID));
+				FindImguiItem(actIndex)->is_activated = true;
+			}
+
+		}
 
 		if (is_size_changed)
 			is_size_changed_b = is_size_changed;

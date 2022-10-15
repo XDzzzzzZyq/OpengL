@@ -15,6 +15,8 @@ bool EventListener::is_GOlist_changed = true;
 bool EventListener::is_selected_changed = true;
 bool EventListener::is_outliner_selected = false;
 
+std::function<void* (int)> EventListener::GetActiveShader = [&](int) { return (void*)nullptr;};
+
 int EventListener::active_GO_ID;
 int EventListener::pre_act_go_ID;
 
@@ -59,6 +61,9 @@ int EventListener::ListenMouseEvent(GLFWwindow* window) const
 
 
 //https://www.glfw.org/docs/3.3/group__keys.html
+//shift->340
+//ctrl
+//alt
 int EventListener::ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const
 {
 	LOOP(3)
@@ -113,6 +118,7 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 	}
 
 	evt_KM.mouse = ListenMouseEvent(window);
+
 }
 
 KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
@@ -138,9 +144,33 @@ void EventListener::EventActivate()
 
 void EventListener::Reset()
 {
-	is_selected_changed = false;
 	is_GOlist_changed = false;
 	is_scr_changed = false;
+	is_selected_changed = false;
+}
+
+std::vector<std::string> EventListener::EVT_AVAIL_KEYS = {"ctrl", "shift", "alt"};
+
+KeyMouseEvent EventListener::ParseStrEvent(const std::string& _shortcut)
+{
+	KeyMouseEvent result;
+	std::istringstream str(_shortcut);
+	std::string word;
+	
+	str >> word;
+	LOOP(EVT_AVAIL_KEYS.size()) {
+		if (word == EVT_AVAIL_KEYS[i]) {
+			result.FirstKey = i;
+			str >> word;
+			LOOP(EVT_AVAIL_KEYS.size()) {
+				if (word == EVT_AVAIL_KEYS[i]) {
+					result.SecondKey = i;
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 int KeyMouseEvent::GenStateData() const
