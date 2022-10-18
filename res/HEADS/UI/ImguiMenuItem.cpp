@@ -10,10 +10,10 @@ void ImguiMenuItem::ListenEvent()
 }
 
 ImguiMenuItem::ImguiMenuItem()
-	:ImguiMenuItem(""){}
+	:ImguiMenuItem("") {}
 
 ImguiMenuItem::ImguiMenuItem(const std::string& name)
-	: ImguiMenuItem(name,""){}
+	: ImguiMenuItem(name, "") {}
 
 ImguiMenuItem::ImguiMenuItem(const std::string& name, const std::string& shortcut)
 	: ImguiMenuItem(name, shortcut, BUTTON_MITEM) {}
@@ -28,5 +28,11 @@ ImguiMenuItem::ImguiMenuItem(const std::string& name, const std::string& shortcu
 		mitem_func = [&] {
 		if (tar_state)
 			*tar_state = !*tar_state;
+		return true;
+	};
+	else
+		mitem_func = [&] {
+		DEBUG(mitem_shortcut)
+			return true;
 	};
 }

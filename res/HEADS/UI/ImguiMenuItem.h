@@ -24,11 +24,13 @@ public:
 	MenuItemType mitem_type = BUTTON_MITEM;
 
 public:
-	mutable bool mitem_press;
+	mutable bool mitem_press{false};
+	mutable bool mitem_onclick_b{false};
+	mutable bool mitem_onclick{ false };
 	bool mitem_enable = true;
 
 	std::shared_ptr<bool> tar_state;
-	mutable std::function<void(void)> mitem_func;
+	mutable std::function<bool(void)> mitem_func; //return onopen state;
 
 public:
 	void EnableMenuItem(bool en) { mitem_enable = en; }

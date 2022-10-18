@@ -20,6 +20,11 @@ void ImguiMenu::PushSubMenu(ImguiMenuItem* subm)
 {
 	name_order[subm->mitem_name] = subm_list.size();
 	subm_list.push_back(subm);
+	if (subm->mitem_shortcut.size())
+		mitm_func_list[EventListener::ParseStrEvent(subm->mitem_shortcut)] = [subm] {
+		subm->mitem_onclick = true;
+	};
+
 }
 
 void ImguiMenu::RenderMenu() const
@@ -32,6 +37,7 @@ void ImguiMenu::RenderMenu() const
 			{
 			case NONE_MITEM:break;
 			case BUTTON_MITEM:
+
 				if (item->mitem_press = ImGui::MenuItem(
 					item->mitem_name.c_str(),
 					item->mitem_shortcut.c_str(),
@@ -59,4 +65,13 @@ void ImguiMenu::RenderMenu() const
 
 		ImGui::EndMenu();
 	}
+	for (auto& item : subm_list) {
+
+		if ((item->mitem_onclick_b == false) && (item->mitem_onclick == true))
+			item->mitem_func();
+
+		item->mitem_onclick_b = item->mitem_onclick;
+		item->mitem_onclick = false;
+	}
+
 }

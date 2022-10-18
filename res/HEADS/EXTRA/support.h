@@ -68,10 +68,6 @@ inline Face Split(std::string_view in) {
 	res.pos = 3 * std::stoi(out[0]) - 3;
 	res.uv = 2 * std::stoi(out[1]) - 2;
 	res.norm = 3 * std::stoi(out[2]) - 3;
-	//res.pos = 3;
-	//res.uv = 2;
-	//res.norm = 3;
-	//std::cout << out[2] << "\n";
 	return res;
 }
 
@@ -106,7 +102,6 @@ inline Reading ReadObj(const std::string& path, bool is_smooth = true) {
 			while (str >> last)
 			{
 				if (last == "v")continue;
-				//cout << last << "\n";
 				tempdata[0].emplace_back(atof(last.c_str()));
 			}
 			result.count[0]++;
@@ -166,8 +161,6 @@ inline Reading ReadObj(const std::string& path, bool is_smooth = true) {
 				vert_count++;
 				if (vert_count >= 3)
 					vert_count = 0;
-				//DEBUG((face.pos) / 3)
-				//DEBUG(result.count[3])
 			}
 			result.count[3]++;
 		}
@@ -188,18 +181,14 @@ inline Reading ReadObj(const std::string& path, bool is_smooth = true) {
 		LOOP(vertIndex.size()) {
 
 			if (vertIndex[i] == std::vector<int>{})
-				//goto mark;
 				break;
 
 			float SMX = 0.0f, SMY = 0.0f, SMZ = 0.0f;
-			//std::cout << vertIndex[i];
 			for (int j = 0;j < vertIndex[i].size(); j++)
 			{
 				SMX += result.data_array[vertIndex[i][j] * 11 + 5] / vertIndex[i].size();
 				SMY += result.data_array[vertIndex[i][j] * 11 + 6] / vertIndex[i].size();
 				SMZ += result.data_array[vertIndex[i][j] * 11 + 7] / vertIndex[i].size();
-
-				//DEBUG(result.vertex[vertIndex[i][j] * 11 + 5])
 			}
 			for (int j = 0;j < vertIndex[i].size();j++)
 			{
@@ -215,15 +204,12 @@ inline Reading ReadObj(const std::string& path, bool is_smooth = true) {
 		LOOP(vertIndex.size()) {
 
 			if (vertIndex[i] == std::vector<int>{})
-				//goto mark;
 				break;
-			//std::cout << vertIndex[i];
 			for (int j = 0;j < vertIndex[i].size(); j++)
 			{
 				result.data_array[vertIndex[i][j] * 11 + 8 ] = result.data_array[vertIndex[i][j] * 11 + 5];
 				result.data_array[vertIndex[i][j] * 11 + 9 ] = result.data_array[vertIndex[i][j] * 11 + 6];
 				result.data_array[vertIndex[i][j] * 11 + 10] = result.data_array[vertIndex[i][j] * 11 + 7];
-				//DEBUG(result.vertex[vertIndex[i][j] * 11 + 5])
 			}
 
 
@@ -235,7 +221,6 @@ inline Reading ReadObj(const std::string& path, bool is_smooth = true) {
 		result.center[0] += tempdata[0][3 * i + 0] / (result.count[0] + 1);
 		result.center[1] += tempdata[0][3 * i + 1] / (result.count[0] + 1);
 		result.center[2] += tempdata[0][3 * i + 2] / (result.count[0] + 1);
-		//std::cout << "[" << result.center[0] << "," << result.center[1] << "," << result.center[2] << "]\n";
 	}
 
 	return result;

@@ -18,6 +18,7 @@ public:
 
 public:
 	mutable std::vector<ImguiMenuItem*> subm_list;
+	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> mitm_func_list;
 	void PushSubMenu(ImguiMenuItem* subm);
 
 	void RenderMenu() const;

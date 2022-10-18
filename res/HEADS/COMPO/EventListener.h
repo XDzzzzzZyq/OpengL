@@ -15,34 +15,42 @@
 struct KeyMouseEvent
 {
 
-	int FirstKey;
-	int SecondKey;
-	int Norm_key = GLFW_KEY_UNKNOWN;
-	int mouse;
-	int scr;
+	int FirstKey{0};
+	int SecondKey{0};
+	int NormKey{0};
+	int Mouse{0};
+	int Scr{0};
 	bool is_update = false;
 	bool is_pressed = false;
 
 	bool operator==(const KeyMouseEvent& p) const {
-		return FirstKey == p.FirstKey && SecondKey == p.SecondKey && Norm_key == p.Norm_key && mouse == p.mouse && scr == p.scr;
+		return FirstKey == p.FirstKey && SecondKey == p.SecondKey && NormKey == p.NormKey && Mouse == p.Mouse && Scr == p.Scr;
 	}
 
 	int GenStateData() const;
+	void Debug() const {
+		std::cout << FirstKey << " "
+			<< SecondKey << " "
+			<< NormKey << " "
+			<< Mouse << " "
+			<< Scr << "\n";
+	}
+
+	struct hash_fn
+	{
+		std::size_t operator() (const KeyMouseEvent& inp) const
+		{
+			return inp.GenStateData();
+		}
+	};
 };
 
-struct hash_fn
-{
-	
-	std::size_t operator() (const KeyMouseEvent& inp) const
-	{
-		return inp.GenStateData();
-	}
-};
+
 
 class EventListener
 {
 public:
-	static KeyMouseEvent evt_KM;
+	static KeyMouseEvent EVT_STATUS;
 	GLFWwindow* window;
 public:
 	static bool is_key_pressed;
@@ -55,13 +63,16 @@ public:
 public:
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	double scr_up, scr_down;
-
-	std::vector<int> evt_IDlist;
+public:
+	static std::vector<int> EVT_NK_LIST;
+	static void PushNormKey(int _ID);
+	static void PushNormKey(char _name);
 public:
 	static bool is_spirit_selected;
 	static bool is_GOlist_changed;
 	static bool is_selected_changed;
 	static bool is_outliner_selected;
+	static std::function<void* (int)> GetActiveShader;
 	static int active_GO_ID;
 	static int pre_act_go_ID;
 	static std::vector<int> selec_list;
@@ -80,7 +91,7 @@ public:
 	~EventListener();
 
 public:
-	std::unordered_map<KeyMouseEvent, std::function<void()>, hash_fn> EventList;
+	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> EventList;
 	int ListenMouseEvent(GLFWwindow* window) const;
 	int ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const;
 	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
@@ -94,8 +105,11 @@ public:
 
 	void UpdateEvent(GLFWwindow* window) const;
 
-	KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
+	const KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
 
 	void EventActivate();
 	void Reset();
+public:
+	static std::vector<std::string> EVT_AVAIL_KEYS;
+	static const KeyMouseEvent ParseStrEvent(const std::string& _shortcut);
 };

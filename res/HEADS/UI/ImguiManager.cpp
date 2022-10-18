@@ -64,6 +64,8 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	//config.GlyphMinAdvanceX = 13.0f;// Use if you want to make the icon monospaced
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
+
+	EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(EventListener::EVT_NK_LIST)};
 }
 
 void ImguiManager::NewFrame() const
@@ -133,6 +135,13 @@ void ImguiManager::PushImguiMenu(ImguiMenu* Menu)
 	Menu->menu_id = menu_list.size();
 	menu_list.push_back(Menu);
 	menu_name_buffer[Menu->menu_name] = Menu->menu_id;
+
+	for (auto& i : Menu->mitm_func_list) {
+		EventList[i.first] = std::move(i.second);
+		i.first.Debug();
+	}
+
+	Menu->mitm_func_list.clear();
 }
 
 ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
@@ -163,6 +172,7 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 void ImguiManager::RenderUI(bool rend)
 {
 	if (rend) {
+		EventActivate();
 
 		if (ParaUpdate)
 			ParaUpdate();
