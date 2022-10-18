@@ -8,7 +8,10 @@
 #include <unordered_map>
 #include <map>
 #include <regex>
+#include <thread>
 #include "ImGui/imgui.h"
+
+#include "structs.h"
 
 class TextEditor
 {
@@ -385,4 +388,6 @@ private:
 	uint64_t mStartTime;
 
 	float mLastClick;
+
+	std::thread SetText_thread;
 };

@@ -262,7 +262,7 @@ void ShaderEditor::RenderShaderStruct() const
 					RenderName("func name", std::get<1>(i));
 
 					if (ImGui::TreeNode("arguments list")) {
-						RenderArgs(std::get<3>(i), 1);
+						RenderArgs(std::get<3>(i), -1);
 						ImGui::TreePop();
 					}
 					if (ImGui::Button("Apply", ImVec2(ImGui::GetContentRegionAvail().x, 20))) {
@@ -272,7 +272,8 @@ void ShaderEditor::RenderShaderStruct() const
 				}ImGui::PopID();
 				if(is_op)ImGui::TreePop();
 				if (st_ev) {
-					std::get<2>(i) = Editor.GetText();
+					if(Editor.IsTextChanged())
+						std::get<2>(i) = Editor.GetText();
 					active_shader->shader_struct_list[current_shad_type].is_struct_changed = true;
 				}
 			}
@@ -352,7 +353,7 @@ void ShaderEditor::RenderArgs(Args& args, int _type) const
 {
 	int index = 0;
 	for (auto& arg : args)
-		RenderArg(arg, index++);
+		RenderArg(arg, index++, _type!=-1);
 }
 
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
@@ -369,6 +370,7 @@ void ShaderEditor::CompileShader() const {
 		Timer timer;
 		switch (current_edit) {
 		case CODE_EDITOR:
+			if (!Editor.IsTextChanged())return;
 			active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();
 			dynamic_cast<Shaders*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
 			break;
@@ -406,7 +408,6 @@ void ShaderEditor::CompileShader() const {
 
 void ShaderEditor::RenderLayer() const
 {
-
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
 			LOOP(3)
@@ -451,6 +452,9 @@ void ShaderEditor::RenderLayer() const
 		case 2:
 			break;
 		}
+		ImGui::End();
+	}
+	else {
 		ImGui::End();
 	}
 }

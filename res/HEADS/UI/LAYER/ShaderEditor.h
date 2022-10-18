@@ -67,5 +67,6 @@ public:
 	void RenderArg(Arg& _arg, int _index, bool _is_editable = true) const;
 	void RenderArg(ParaType& _type, std::string& _name, int _index, bool _is_editable = true) const;
 	void RenderArgs(Args& args, int _type) const;
+
 	void RenderLayer() const override;
 };
