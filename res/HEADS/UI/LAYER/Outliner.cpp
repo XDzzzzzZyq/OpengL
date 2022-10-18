@@ -86,7 +86,8 @@ void Outliner::RenderLayer() const
 				FindImguiItem(id2index[pre_act_go_ID])->is_activated = false;
 			if (active_GO_ID != 0) {
 				actIndex = id2index[active_GO_ID];
-				active_shader = static_cast<ShaderLib*>(EventListener::GetActiveShader(active_GO_ID));
+				if(EventListener::GetActiveShader(active_GO_ID))
+					active_shader = static_cast<ShaderLib*>(EventListener::GetActiveShader(active_GO_ID));
 				FindImguiItem(actIndex)->is_activated = true;
 			}
 

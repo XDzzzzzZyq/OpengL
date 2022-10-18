@@ -48,14 +48,13 @@ public:
 	Spirit();
 	~Spirit();
 
-
-
 	void RenderSpirit(const std::vector<float>& light_pos, Camera* cam);
 	void RenderSpirit(Camera* cam);
 
 	void SetSpiritShader();
 	std::string ParsePath() const;
 	void SetTex();
+	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&r_shader.value()); };
 
 	void DeleteSpirit();
 };

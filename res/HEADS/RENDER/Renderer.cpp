@@ -353,6 +353,7 @@ void Renderer::UseLight(Light* light)
 		is_GOlist_changed = true;
 		is_light_changed = true;
 		light_list[light->GetObjectID()] = light;
+		obj_list[light->light_spirit.GetObjectID()] = light;
 		
 		outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
 		parent_index_list.push_back(-1);

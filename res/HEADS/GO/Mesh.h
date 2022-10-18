@@ -16,7 +16,7 @@
 #include <optional>
 
 
-class Mesh : public GameObject/* ,public Shaders*/, public Transform3D
+class Mesh : public GameObject, public Transform3D
 {
 private:
 	Reading read;
