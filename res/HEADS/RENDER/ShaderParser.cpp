@@ -95,11 +95,18 @@ void Shaders::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("in ") != std::string::npos) {
 			// [in]
-			shader_struct_list[_type].SetInp(ShaderStruct::ParseType(Line.substr(3, 4)), 1, Line.substr(8, Line.size() - 9));
+			// shader_struct_list[_type].SetInp(ShaderStruct::ParseType(Line.substr(3, 4)), 1, Line.substr(8, Line.size() - 9));
+			// it is unnecessary to parese the input
 		}
 		else if (Line.find("out ") != std::string::npos) {
 			// [out]
-			shader_struct_list[_type].SetOut(ShaderStruct::ParseType(Line.substr(4, 4)), 1, Line.substr(9, Line.size() - 10));
+			std::string name = Line.substr(9, Line.size() - 10);
+			assert(!_is_link_repeat(name));
+			ParaType type = ShaderStruct::ParseType(Line.substr(4, 4));
+			shader_struct_list[_type].SetOut(type, 1, name);
+			shader_struct_list[1 - _type].SetInp(type, 1, name);
+
+			_LINK_LOC[name] = _LINK_LOC.size();
 		}
 		else if (Line.find("uniform") != std::string::npos) {
 			// [Uniform]

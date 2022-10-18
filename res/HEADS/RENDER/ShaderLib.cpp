@@ -26,7 +26,7 @@ void ShaderLib::InitLib()
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC3_PARA, 1, "pix_pos");
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "normal_color");
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "Snormal_color");
-					    1,
+					 
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "cam_trans");
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "obj_trans");
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "ProjectM");
@@ -104,6 +104,17 @@ bool ShaderStruct::IsAvailType(const std::string& type)
 	for (const auto& i : type_table)
 		if (type == i)
 			return true;
+	return false;
+}
+
+bool ShaderStruct::IsIOLinked(std::string_view _name, bool _type /*= 0*/)
+{
+	for (auto& i : _type ? output_list : input_list)
+	{
+		if (_name == std::get<0>(i))
+			return true;
+	}
+
 	return false;
 }
 
