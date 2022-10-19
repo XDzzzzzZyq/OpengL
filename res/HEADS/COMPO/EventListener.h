@@ -51,7 +51,7 @@ class EventListener
 {
 public:
 	static KeyMouseEvent EVT_STATUS;
-	GLFWwindow* window;
+	static GLFWwindow* evt_window;
 public:
 	static bool is_key_pressed;
 	static bool is_mouse_pressed;
@@ -62,7 +62,9 @@ public:
 	}
 public:
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
-	double scr_up, scr_down;
+	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }
+	static const double GetDeltaMouseY() { return mouse_y - mouse_b_y; }
+	static const ImVec2 GetDeltaMouse() { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
 public:
 	static std::vector<int> EVT_NK_LIST;
 	static void PushNormKey(int _ID);

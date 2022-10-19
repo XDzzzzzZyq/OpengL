@@ -20,7 +20,10 @@ public:
 	virtual void UnsetParent(bool _keep_offset = true) = 0;
 public:
 	virtual bool ApplyTransform() = 0;
-	virtual void ApplyAllTransform() = 0;
+	virtual bool ApplyAllTransform() = 0;
+	virtual bool GetInvTransform() const = 0;
+public:
+	virtual int Debug() const = 0;
 };
 
 // For 3D object Transform
@@ -66,16 +69,15 @@ public:
 	void SetParent(Transform3D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
 public:
-	bool ApplyTransform() override;
-	void ApplyAllTransform() override;
-	glm::mat4 GetInvTransform() const;
+	[[nodiscard("You can receive the state")]] bool ApplyTransform() override;
+	[[nodiscard("You can receive the state")]] bool ApplyAllTransform() override;
+	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
 
-	void PrintTransState() {
-		//std::cout << is_TransF_changed << " " << is_invTransF_changed << " " << is_rot_changed << "\n";
+	[[nodiscard("You can receive the state")]] int Debug() const override {
 		std::cout << o_rot;
 		std::cout << o_dir_up;
 		std::cout << o_dir_right;
-		DEBUG("________________")
+		DEBUG("________________") return 0;
 	}
 
 };
@@ -98,8 +100,6 @@ private:
 	Transform2D* o_parent_trans{ nullptr };
 	Transform2D* o_child_trans{ nullptr };
 public:
-	glm::mat3 o_rotMat;
-public:
 	Transform2D();
 	~Transform2D();
 
@@ -115,33 +115,29 @@ public:
 	mutable glm::vec2 o_scale = glm::vec2(1.0f);
 
 	mutable float o_rot = 0;
-	mutable glm::vec2 o_dir_up = glm::vec2(0.0f, 1.0f);
-	mutable glm::vec2 o_dir_right = glm::vec2(1.0f, 0.0f);
 
 public:
 	void SetPos(const glm::vec2& pos);
 	void SetScale(const glm::vec2& scale);
-	void SetRot(const glm::vec2& rot);
+	void SetRot(float rot);
 
 	void Trans(const glm::mat3& _trans);
 	void Move(const glm::vec2& d_pos);
-	void Spin(const glm::vec2& anch, const glm::vec3& axis, const float& angle);
-	void LookAt(const glm::vec2& tar);
-
+	void Spin(float angle);
+	void Zoom(const glm::vec2& scale);
+	void Zoom(float scale);
+	void LookAt(const glm::vec2& tar);\
 
 	void SetParent(Transform2D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
 public:
-	bool ApplyTransform() override;
-	void ApplyAllTransform() override;
-	glm::mat3 GetInvTransform() const;
+	[[nodiscard("You can receive the state")]] bool ApplyTransform() override;
+	[[nodiscard("You can receive the state")]] bool ApplyAllTransform() override;
+	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
 
-	void PrintTransState() {
-		//std::cout << is_TransF_changed << " " << is_invTransF_changed << " " << is_rot_changed << "\n";
+	[[nodiscard("You can receive the state")]] int Debug() const override {
 		std::cout << o_rot;
-		//std::cout << o_dir_up;
-		//std::cout << o_dir_right;
-		DEBUG("________________")
+		DEBUG("________________") return 0;
 	}
 
 };

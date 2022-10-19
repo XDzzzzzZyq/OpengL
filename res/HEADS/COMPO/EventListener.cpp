@@ -1,6 +1,7 @@
 #include "EventListener.h"
 
 KeyMouseEvent EventListener::EVT_STATUS;
+GLFWwindow* EventListener::evt_window = (GLFWwindow*)nullptr;
 
 bool EventListener::is_key_pressed;
 bool EventListener::is_mouse_pressed;
@@ -55,8 +56,8 @@ EventListener::EventListener()
 }
 
 EventListener::EventListener(GLFWwindow* window)
-	:window(window)
 {
+	evt_window = window;
 }
 
 EventListener::~EventListener()

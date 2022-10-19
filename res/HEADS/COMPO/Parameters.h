@@ -1,8 +1,10 @@
 #pragma once
 #include "support.h"
+
 #include "glm/glm.hpp"
+
 #include <unordered_map>
-#include "glm/glm.hpp"
+#include <variant>
 
 enum ParaType
 {
