@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BuildinShader.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp" />
@@ -406,6 +407,7 @@
     <ClInclude Include="dep\GLEW\include\GL\wglew.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
     <ClInclude Include="res\HEADS\UI\ImguiTheme.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\TextEditor.h" />
