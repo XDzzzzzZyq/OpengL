@@ -1,7 +1,9 @@
 #pragma once
-#include "Parameters.h"
 #include "ImGui/imgui.h"
 #include "support.h"
+
+#include "Parameters.h"
+#include "EventListener.h"
 
 #include <iostream>
 #include <optional>
@@ -70,3 +72,12 @@ public:
 
 
 };
+
+
+namespace ITEM {
+
+	inline const bool is_inside(const ImVec2& size) {
+		return ImGui::GetCursorScreenPos() - EventListener::window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)
+			 && ImVec2(EventListener::mouse_x, EventListener::mouse_y) < ImGui::GetCursorScreenPos() - EventListener::window_pos + size;
+	}
+}

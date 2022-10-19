@@ -13,8 +13,8 @@ ImguiManager::ImguiManager()
 }
 
 ImguiManager::ImguiManager(GLFWwindow* window)
-	:window(window)
 {
+	EventListener::evt_window = window;
 
 	active_layer_id = 0;
 
@@ -65,7 +65,7 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
 
-	EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(EventListener::EVT_NK_LIST)};
+	//EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(EventListener::EVT_NK_LIST)};
 }
 
 void ImguiManager::NewFrame() const
@@ -215,10 +215,10 @@ void ImguiManager::RenderUI(bool rend)
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		if (window) {
+		if (evt_window) {
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(window);
+			glfwMakeContextCurrent(evt_window);
 		}
 		else
 		{

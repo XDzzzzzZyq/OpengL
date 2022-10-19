@@ -27,7 +27,6 @@ private:
 	mutable std::vector<ImguiMenu*> menu_list;
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuiStyle& m_style=ImGui::GetStyle();
-	GLFWwindow* window=nullptr;
 
 	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
@@ -71,7 +70,7 @@ public:
 public:
 	void SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func);
 	Parameters* GetParaValue(const std::string& ly_name, const std::string& it_name);
-	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
+	void GetCurrentWindow() { evt_window = glfwGetCurrentContext(); }
 
 public:
 	mutable std::function<void(void)> ParaUpdate = [] {};

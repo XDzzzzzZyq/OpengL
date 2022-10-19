@@ -2,7 +2,9 @@
 #include "ImguiLayer.h"
 #include "EventListener.h"
 #include "Shaders.h"
+
 #include "ITEM/TextEditor.h"
+#include "ITEM/NodeEditor.h"
 
 #include <string>
 
@@ -32,12 +34,15 @@ public:
 class ShaderEditor : public ImguiLayer, public EventListener
 {
 private:
+	static TextEditor SE_CodeEditor;
+	static NodeEditor SE_NodeEditor;
+
+private:
 	static const std::string edit_mode[3];
 	static const std::string shader_type[2];
-	static TextEditor Editor;
 	mutable int active_func{0};
 
-	mutable int current_edit = 0, current_shad_type = 0;
+	mutable int current_edit = 2, current_shad_type = 0;
 	mutable bool is_edit_changed = true, is_shad_type_changed = true;
 	mutable bool add_button = false;
 	mutable bool sel;
