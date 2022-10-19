@@ -25,6 +25,12 @@ inline std::ostream& operator<<(std::ostream& stream, const ImVec2& vec)
 	return stream;
 }
 
+inline std::ostream& operator<<(std::ostream& stream, const glm::vec2& vec)
+{
+	stream << "[ " << vec[0] << " , " << vec[1] << " ]\n";
+	return stream;
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const glm::mat4& vec)
 {
 	stream.setf(std::ios_base::fixed, std::ios_base::floatfield);
@@ -39,12 +45,32 @@ inline std::ostream& operator<<(std::ostream& stream, const glm::mat4& vec)
 	return stream;
 }
 
+inline std::ostream& operator<<(std::ostream& stream, const glm::mat3& vec)
+{
+	stream.setf(std::ios_base::fixed, std::ios_base::floatfield);
+	stream.setf(std::ios_base::showpoint);
+	stream.precision(2);
+
+
+	stream << "\n[ " << vec[0][0] << " , " << vec[1][0] << " , " << vec[2][0] << " ]\n";
+	stream << "	 | " << vec[0][1] << " , " << vec[1][1] << " , " << vec[2][1] << " |\n";
+	stream << "	 [ " << vec[0][2] << " , " << vec[1][2] << " , " << vec[2][2] << " ]\n";
+	return stream;
+}
+
 inline glm::vec3 operator*(const glm::mat4& mat, const glm::vec3 vec) {
-	return glm::vec3(
+	return {
 		mat[0][0] * vec[0] + mat[1][0] * vec[1] + mat[2][0] * vec[2] + mat[3][0],
-		mat[0][1] * vec[0] + mat[1][1] * vec[1] + mat[2][1] * vec[2] + mat[3][0],
-		mat[0][2] * vec[0] + mat[1][2] * vec[1] + mat[2][2] * vec[2] + mat[3][0]
-	);
+		mat[0][1] * vec[0] + mat[1][1] * vec[1] + mat[2][1] * vec[2] + mat[3][1],
+		mat[0][2] * vec[0] + mat[1][2] * vec[1] + mat[2][2] * vec[2] + mat[3][2]
+	};
+}
+
+inline glm::vec2 operator*(const glm::mat3& mat, const glm::vec2 vec) {
+	return {
+		mat[0][0] * vec[0] + mat[1][0] * vec[1] + mat[2][0],
+		mat[0][1] * vec[0] + mat[1][1] * vec[1] + mat[2][1]
+	};
 }
 
 inline glm::vec3 operator*=(const glm::vec3 vec, const glm::mat4& mat) {
@@ -73,27 +99,63 @@ inline std::string operator+=(const std::string& bas, const std::string& add) {
 }
 
 inline ImVec2 operator+(const ImVec2& a, const ImVec2& b) {
-	ImVec2 c(a.x + b.x, a.y + b.y);
-	return c;
+	return { a[0] + b[0], a[1] + b[1] };
 }
 
 inline ImVec2 operator-(const ImVec2& a, const ImVec2& b) {
-	ImVec2 c(a.x - b.x, a.y - b.y);
-	return c;
+	
+	return { a[0] - b[0], a[1] - b[1] };
+}
+
+inline ImVec2 operator*(const ImVec2& a, const ImVec2& b) {
+	return 	{ a[0] * b[0], a[1] * b[1] };
+}
+
+inline ImVec2 operator/(const ImVec2& a, const ImVec2& b) {
+	return { a[0] / b[0], a[1] / b[1] };
 }
 
 inline bool operator==(const ImVec2& a, const ImVec2& b) {
-	return a.x==b.x&&a.y==b.y;
+	return a[0]==b[0]&&a[1]==b[1];
 }
 
 inline bool operator!=(const ImVec2& a, const ImVec2& b) {
-	return a.x != b.x || a.y != b.y;
+	return a[0] != b[0] || a[1] != b[1];
 }
 
 inline bool operator<(const ImVec2& a, const ImVec2& b) {
-	return a.x < b.x && a.y < b.y;
+	return a[0] < b[0] && a[1] < b[1];
 }
 
 inline bool operator>(const ImVec2& a, const ImVec2& b) {
-	return a.x > b.x&& a.y > b.y;
+	return a[0] > b[0]&& a[1] > b[1];
+}
+
+inline ImVec2 operator/(const ImVec2& a, float fac) {
+	return { a[0] / fac, a[1] / fac };
+}
+
+inline ImVec2 operator+(const ImVec2& a, const glm::vec2& b) {
+	return { a[0] + b[0], a[1] + b[1] };
+}
+
+inline ImVec2 operator-(const ImVec2& a, const glm::vec2& b) {
+	return { a[0] - b[0], a[1] - b[1] };
+}
+
+
+inline ImVec2 operator*(const ImVec2& a, const glm::vec2& b) {
+	return { a[0] * b[0], a[1] * b[1] };
+}
+
+inline glm::vec2 operator+(const glm::vec2& a, const ImVec2& b) {
+	return { a[0] + b[0], a[1] + b[1] };
+}
+
+inline glm::vec2 operator-(const glm::vec2& a, const ImVec2& b) {
+	return { a[0] - b[0], a[1] - b[1] };
+}
+
+inline glm::vec2 operator*(const glm::vec2& a, const ImVec2& b) {
+	return { a[0] * b[0], a[1] * b[1] };
 }
