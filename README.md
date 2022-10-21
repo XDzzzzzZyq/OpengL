@@ -2,14 +2,14 @@
 
 ##### Node Editor development from XDzZyq
 
-# Functions
+### Functions
 - [ ] Dynamic compile
 - [x] Node pool
 - [ ] Node functions register
 - [x] Shader struct generater
 - [ ] history cache (for undo/redu)
 
-# UI
+### UI
 - [ ] Basic renderring
   - [ ] Node
   - [ ] Parameters
@@ -19,7 +19,7 @@
 - [ ] mini panel
   - [ ] ADD node
 
-# Operations
+### Operations
 - [ ] select
 - [x] viewport transform
 - [ ] short cut
@@ -28,8 +28,7 @@
   - [ ] move
   - [ ] undo / redo
   
-  # Advanced
+### Advanced
   - [ ] Quad-tree optimization
   - [ ] Node-tree optimization
   - [ ] beautiful UI
-  - [ ]
