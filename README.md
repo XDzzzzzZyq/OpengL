@@ -16,8 +16,10 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 #### **Objects**
 
 - [x] baisc transform
+  - [x] transform3D
+  - [ ] transform2D (50%)
 - [ ] transform handle
-- [x] parenting
+- [ ] parenting system (50%)
 - [x] unique ID generator
 - [x] object name generator
 - [x] select operation
