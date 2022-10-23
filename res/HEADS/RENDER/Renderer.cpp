@@ -25,6 +25,7 @@ Renderer::Renderer()
 	glBlendEquation(GL_FUNC_ADD);
 
 	glEnable(GL_MULTISAMPLE);
+
 	//glEnable(GL_STENCIL_TEST);
 	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	//glStencilFunc(GL_ALWAYS, 1, 0xff);
@@ -49,7 +50,7 @@ std::string Renderer::GetObjectName(int ID)
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
 {
-	if (viewport_offset-ImVec2(5,5) < ImVec2(x, y) && ImVec2(x, y) < viewport_offset+GetActiveEnvironment()->envir_frameBuffer->GetFrameBufferSize())
+	if (viewport_offset - ImVec2(5, 5) < ImVec2(x, y) && ImVec2(x, y) < viewport_offset + GetActiveEnvironment()->envir_frameBuffer->GetFrameBufferSize() * ImVec2(1, 2))
 		return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 	else
 		return active_GO_ID;
@@ -193,6 +194,7 @@ void Renderer::Render(bool rend, bool buff) {
 	if (rend) {
 		//glEnable(GL_STENCIL_TEST);
 		glEnable(GL_DEPTH_TEST);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		////////////    MESHES    ////////////
 		cam_list[0]->ApplyTransform();
 		cam_list[0]->GetInvTransform();
@@ -259,6 +261,7 @@ void Renderer::Render(bool rend, bool buff) {
 		
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		framebuffer->BindFrameBuffer();
 		if(rend)
