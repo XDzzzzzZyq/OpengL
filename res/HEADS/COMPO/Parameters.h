@@ -30,7 +30,7 @@ class Parameters
 {
 public:
 	Parameters();
-	Parameters(const ParaType& type);
+	Parameters(ParaType _type, const std::string& _name = "unknown param");
 	Parameters(const Parameters& para); //copy
 	~Parameters();
 
