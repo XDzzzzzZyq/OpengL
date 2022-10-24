@@ -50,6 +50,7 @@ ShaderLib* EventListener::active_shader = (ShaderLib*)nullptr;
 
 ImVec2 EventListener::window_pos = ImVec2(0, 0);
 ImVec2 EventListener::viewport_offset = ImVec2(0, 0);
+bool EventListener::is_in_viewport = false;
 
 EventListener::EventListener()
 {

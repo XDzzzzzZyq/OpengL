@@ -87,6 +87,7 @@ public:
 public:
 	static ImVec2 window_pos;
 	static ImVec2 viewport_offset;
+	static bool is_in_viewport;
 public:
 	EventListener();
 	EventListener(GLFWwindow* window);
