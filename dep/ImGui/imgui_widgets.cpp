@@ -1186,6 +1186,67 @@ bool ImGui::CheckboxFlags(const char* label, ImU64* flags, ImU64 flags_value)
     return CheckboxFlagsT(label, flags, flags_value);
 }
 
+bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right)
+{
+    ImGui::SetCursorScreenPos(_center);
+    
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+    const ImVec2 label_size = CalcTextSize(label, NULL, true) * _size[0];
+
+	const float square_sz = GetFrameHeight() * _size[0];
+	const ImVec2 pos = window->DC.CursorPos;
+	const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
+	const ImRect total_bb(pos - _size*ImVec2(10,12), pos - _size * ImVec2(30,5) + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+	ItemSize(total_bb, style.FramePadding.y);
+	if (!ItemAdd(total_bb, id))
+		return false;
+
+	ImVec2 center = _center;
+	center.x = IM_ROUND(center.x);
+	center.y = IM_ROUND(center.y);
+	const float radius = (square_sz - 1.0f) * 0.5f;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(total_bb, id, &hovered, &held);
+	if (pressed)
+		MarkItemEdited(id);
+
+	RenderNavHighlight(total_bb, id);
+	window->DrawList->AddCircleFilled(center, radius, GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), 16);
+	if (active)
+	{
+		const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
+		window->DrawList->AddCircleFilled(center, radius - pad, GetColorU32(ImGuiCol_CheckMark), 16);
+	}
+
+	if (style.FrameBorderSize > 0.0f)
+	{
+		window->DrawList->AddCircle(center + ImVec2(1, 1), radius, GetColorU32(ImGuiCol_BorderShadow), 16, style.FrameBorderSize);
+		window->DrawList->AddCircle(center, radius, GetColorU32(ImGuiCol_Border), 16, style.FrameBorderSize);
+	}
+
+	ImGui::SetWindowFontScale(_size[0]*2);
+	ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
+	if (g.LogEnabled)
+		LogRenderedText(&label_pos, active ? "(x)" : "( )");
+    if (label_size.x > 0.0f)
+        if (_is_right)
+            RenderText(label_pos - label_size * ImVec2(2, 1) - _size * ImVec2(50, 0) - ImVec2(0,3), label);
+        else
+            RenderText(label_pos - label_size * ImVec2(0, 1) - _size * ImVec2(10, 0) - ImVec2(0,3), label);
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+
+	ImGui::SetWindowFontScale(1);
+	return held;
+}
+
 bool ImGui::RadioButton(const char* label, bool active)
 {
     ImGuiWindow* window = GetCurrentWindow();
