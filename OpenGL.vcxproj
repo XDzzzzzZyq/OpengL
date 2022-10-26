@@ -223,6 +223,7 @@
     <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp" />
+    <ClCompile Include="res\HEADS\UI\NodesColor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\cubicSpline\CubicSplineHelpers.inl" />

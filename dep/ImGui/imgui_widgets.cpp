@@ -1186,7 +1186,7 @@ bool ImGui::CheckboxFlags(const char* label, ImU64* flags, ImU64 flags_value)
     return CheckboxFlagsT(label, flags, flags_value);
 }
 
-bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right)
+bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col)
 {
     ImGui::SetCursorScreenPos(_center);
     
@@ -1222,7 +1222,7 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 	if (active)
 	{
 		const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
-		window->DrawList->AddCircleFilled(center, radius - pad, GetColorU32(ImGuiCol_CheckMark), 16);
+		window->DrawList->AddCircleFilled(center, radius - pad, _col, _size[0]+32);    //core
 	}
 
 	if (style.FrameBorderSize > 0.0f)

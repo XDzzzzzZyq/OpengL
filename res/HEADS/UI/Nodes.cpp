@@ -2,9 +2,6 @@
 
 unsigned int Nodes::id_buff = 1;
 
-std::vector<ImU32> Nodes::n_color_list = { IM_COL32(0,246,83,255), IM_COL32(246,215,0,255) };
-std::vector<ImU32> Nodes::pin_color_list = {};
-
 std::unordered_map<Parameters*, Nodes::ParaLink> Nodes::n_in_link = {};
 std::unordered_map<Parameters*, Nodes::ParaLink> Nodes::n_out_link = {};
 

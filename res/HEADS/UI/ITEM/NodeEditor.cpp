@@ -33,27 +33,45 @@ NodeEditor::NodeEditor(NodeEditorType type)
 	EventList[GenIntEvent(1, 0, 0, 0, 1)] = std::bind(&NodeEditor::SCRLL, this);
 	EventList[GenIntEvent(1, 0, 0, 0, -1)] = std::bind(&NodeEditor::SCRLL, this);
 
+	Zoom(3.0f);
+
 	Nodes* add = new Nodes{ "Add", SCL_MATH_NODE };
 	add->PushIn({ INT_PARA, "int1" });
 	add->PushIn({ INT_PARA, "int2" });
-	add->PushIn({ FLOAT_PARA, "float_test" });
+	add->PushIn({ VEC2_PARA, "vec2_test" });
+	add->PushIn({ VEC3_PARA, "vec3_test" });
 	add->PushOut({ INT_PARA, "int3" });
-	add->PushOut({ FLOAT_PARA, "float2" });
+	add->PushOut({ VEC4_PARA, "vec4" });
 	PushNode(add);
 
 	Nodes* sub = new Nodes{ "Subtract", VEC_MATH_NODE };
 	sub->SetPos({ 100,50 });
 	sub->PushOut({ FLOAT_PARA, "outp" });
-	sub->PushOut({ FLOAT_PARA, "outp2" });
+	sub->PushOut({ VEC2_PARA, "outp2" });
 	add->LinkIn(0, sub, 0);
 	add->LinkIn(2, sub, 1);
 	PushNode(sub);
+
+	Nodes* sub2 = new Nodes{ "Subtract2", VEC_MATH_NODE };
+	sub2->SetPos({ 100,-50 });
+	sub2->PushOut({ VEC3_PARA, "outp" });
+	sub2->PushOut({ VEC4_PARA, "outp2" });
+	add->LinkIn(3, sub2, 0);
+	PushNode(sub2);
+
+	Nodes* mix = new Nodes{ "Mixture", VEC_MATH_NODE };
+	mix->SetPos({ -100, 0 });
+	mix->PushIn({ VEC4_PARA, "inp" });
+	mix->PushIn({ VEC4_PARA, "inp2" });
+	mix->LinkIn(0, sub2, 1);
+	mix->LinkIn(1, add,  2);
+	PushNode(mix);
 }
 
 void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 {
 	ImGui::Separator();
-	if (ImGui::BeginChild(_lable, ImGui::GetContentRegionAvail(), false, ImGuiWindowFlags_NoScrollbar)) {
+	if (ImGui::BeginChild(_lable, ImGui::GetContentRegionAvail(), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground)) {
 		EventActivate();
 		ApplyTransform();
 
@@ -67,7 +85,6 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 		ImGui::SliderFloat("B_curvity", &th_curvity, 0, 15);
 		ImGui::SliderFloat("N_rounding", &th_rounding, 0, 15);
 		ImGui::SliderFloat("P_offset", &th_offset, 2, 10);
-
 
 		ImFont* font = ImGui::GetIO().Fonts->Fonts[1];
 		ImGui::PushFont(font);
@@ -140,11 +157,11 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 				ImVec2 inp_curs = node.min + head_size;
 				const float margin = (node.header.y - node.min.y) / 2;
-				for (auto& i : node->n_in) {
-					editing_link |= ImGui::PinButton(i.para_name.c_str(), true, inp_curs, pin_size, false);
+				for (auto& i_p : node->n_in) {
+					editing_link |= ImGui::PinButton(i_p.para_name.c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type]);
 
-					if (Nodes::n_in_link.find(&i) != Nodes::n_in_link.end()) {
-						Nodes::ParaLink& tar_link = Nodes::n_in_link[&i];
+					if (Nodes::n_in_link.find(&i_p) != Nodes::n_in_link.end()) {
+						Nodes::ParaLink& tar_link = Nodes::n_in_link[&i_p];
 
 						ImVec2 start_p;
 
@@ -158,7 +175,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 							start_p + ImVec2(th_curvity * 10, 0) * o_scale,
 							inp_curs - ImVec2(th_curvity * 10, 0) * o_scale,
 							inp_curs,
-							IM_COL32(255, 255, 255, 255),
+							Nodes::pin_color_list[i_p.para_type],
 							0.5 * o_scale[0]
 						);
 
@@ -168,8 +185,8 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				}
 
 				ImVec2 outp_curs = ImVec2(node.max.x, node.min.y) + head_size;
-				for (auto& i : node->n_out) {
-					editing_link |= ImGui::PinButton(i.para_name.c_str(), true, outp_curs, pin_size, true);
+				for (auto& o_p : node->n_out) {
+					editing_link |= ImGui::PinButton(o_p.para_name.c_str(), true, outp_curs, pin_size, true, Nodes::pin_color_list[o_p.para_type]);
 					outp_curs.y += pin_offset;
 				}
 			}
@@ -247,7 +264,7 @@ void NodeEditor::LMB()
 void NodeEditor::SHIFT_MMB()
 {
 	if (ITEM::is_inside(NE_size))
-		Move({ GetDeltaMouseX(), GetDeltaMouseY() });
+		Move({ GetDeltaMouseX() / o_scale[0], GetDeltaMouseY() / o_scale[0] });
 }
 
 void NodeEditor::CTRL_MMB()
