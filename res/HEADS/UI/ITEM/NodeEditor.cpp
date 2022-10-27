@@ -63,8 +63,9 @@ NodeEditor::NodeEditor(NodeEditorType type)
 	mix->SetPos({ -100, 0 });
 	mix->PushIn({ VEC4_PARA, "inp" });
 	mix->PushIn({ VEC4_PARA, "inp2" });
+	mix->PushIn({ VEC2_PARA, "inp3" });
 	mix->LinkIn(0, sub2, 1);
-	mix->LinkIn(1, add,  2);
+	mix->LinkIn(1, add,  1);
 	PushNode(mix);
 }
 
@@ -158,9 +159,11 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				ImVec2 inp_curs = node.min + head_size;
 				const float margin = (node.header.y - node.min.y) / 2;
 				for (auto& i_p : node->n_in) {
-					editing_link |= ImGui::PinButton(i_p.para_name.c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type]);
+					const bool is_connected = Nodes::n_in_link.find(&i_p) != Nodes::n_in_link.end();
 
-					if (Nodes::n_in_link.find(&i_p) != Nodes::n_in_link.end()) {
+					editing_link |= ImGui::PinButton(i_p.para_name.c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type], is_connected);
+
+					if (is_connected) {
 						Nodes::ParaLink& tar_link = Nodes::n_in_link[&i_p];
 
 						ImVec2 start_p;
@@ -186,7 +189,9 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 				ImVec2 outp_curs = ImVec2(node.max.x, node.min.y) + head_size;
 				for (auto& o_p : node->n_out) {
-					editing_link |= ImGui::PinButton(o_p.para_name.c_str(), true, outp_curs, pin_size, true, Nodes::pin_color_list[o_p.para_type]);
+					const bool is_connected = Nodes::n_out_link.find(&o_p) != Nodes::n_out_link.end();
+
+					editing_link |= ImGui::PinButton(o_p.para_name.c_str(), true, outp_curs, pin_size, true, Nodes::pin_color_list[o_p.para_type], is_connected);
 					outp_curs.y += pin_offset;
 				}
 			}

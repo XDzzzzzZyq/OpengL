@@ -42,6 +42,7 @@ Index of this file:
 
 // System includes
 #include <ctype.h>      // toupper
+#include <iostream>
 #if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
 #include <stddef.h>     // intptr_t
 #else
@@ -1186,7 +1187,7 @@ bool ImGui::CheckboxFlags(const char* label, ImU64* flags, ImU64 flags_value)
     return CheckboxFlagsT(label, flags, flags_value);
 }
 
-bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col)
+bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col, bool _is_connected)
 {
     ImGui::SetCursorScreenPos(_center);
     
@@ -1214,6 +1215,8 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 
 	bool hovered, held;
 	bool pressed = ButtonBehavior(total_bb, id, &hovered, &held);
+    hovered |= _is_connected;
+    //std::cout << hovered << std::endl;
 	if (pressed)
 		MarkItemEdited(id);
 
