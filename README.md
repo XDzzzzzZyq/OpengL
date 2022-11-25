@@ -12,8 +12,9 @@
 ### UI
 - [ ] Basic renderring
   - [ ] Node
+	- [ ] Pin highlight
   - [ ] Parameters
-  - [ ] Spline
+  - [x] Spline
 - [ ] node system properties panel
 - [ ] node properties panel
 - [ ] mini panel
@@ -25,7 +26,7 @@
 - [ ] short cut
   - [ ] mini panel short cut
   - [ ] compile
-  - [ ] move
+  - [x] move
   - [ ] undo / redo
   
 ### Advanced
