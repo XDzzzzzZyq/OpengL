@@ -12,27 +12,28 @@ enum ShEditMode {
 	CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
 };
 
-class MiniPropPanel final
-{
-private:
-	bool is_open{ false };
-	int datatype{ 0 };
-	int prop_count{ 1 };
-	ImVec2 panel_pos{ ImVec2(0,0) };
-	Args prop_args;
-	static char prop_name;
-	char prop_content;
-public:
-	bool RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name = "", const char* c_sld_name = "");
-
-	//true for function | false for structure
-	bool RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct);
-
-	void RenderArguPanel(bool* b);
-};
-
 class ShaderEditor : public ImguiLayer, public EventListener
 {
+private:
+	class MiniPropPanel final
+	{
+	private:
+		bool is_open{ false };
+		int datatype{ 0 };
+		int prop_count{ 1 };
+		ImVec2 panel_pos{ ImVec2(0,0) };
+		Args prop_args;
+		static char prop_name;
+		char prop_content;
+	public:
+		bool RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name = "", const char* c_sld_name = "");
+
+		//true for function | false for structure
+		bool RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct);
+
+		void RenderArguPanel(bool* b);
+	};
+
 private:
 	static TextEditor SE_CodeEditor;
 	static NodeEditor SE_NodeEditor;
@@ -42,7 +43,7 @@ private:
 	static const std::string shader_type[2];
 	mutable int active_func{0};
 
-	mutable int current_edit = 2, current_shad_type = 0;
+	mutable int current_edit = 0, current_shad_type = 0;
 	mutable bool is_edit_changed = true, is_shad_type_changed = true;
 	mutable bool add_button = false;
 	mutable bool sel;

@@ -371,13 +371,14 @@ void ShaderEditor::CompileShader() const {
 		Timer timer;
 		switch (current_edit) {
 		case CODE_EDITOR:
-			if (!SE_CodeEditor.IsTextChanged())return;
+			if (SE_CodeEditor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
 			active_shader->shader_list[(ShaderType)current_shad_type] = SE_CodeEditor.GetText();
 			dynamic_cast<Shaders*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
 			break;
 		case STRUCT_EDITOR:
 			is_shad_type_changed = true;
-			active_shader->GenerateShader((ShaderType)current_shad_type);break;
+			active_shader->GenerateShader((ShaderType)current_shad_type);
+			break;
 		}
 
 		glDeleteProgram(active_shader->getID());
@@ -442,6 +443,7 @@ void ShaderEditor::RenderLayer() const
 		case CODE_EDITOR:
 
 			if (active_shader) {
+				//DEBUG(SE_CodeEditor.IsTextChanged())
 				SE_CodeEditor.Render("##Editor", ImGui::GetContentRegionAvail());
 			}
 
@@ -463,7 +465,7 @@ void ShaderEditor::RenderLayer() const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name, const char* c_sld_name)
+bool ShaderEditor::MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name, const char* c_sld_name)
 {
 	if (!is_open)
 		panel_pos = pos;
@@ -510,7 +512,7 @@ bool MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const 
 	return false;
 }
 
-bool MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct)
+bool ShaderEditor::MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct)
 {
 	if (*state) {
 		if (!is_open)
@@ -559,7 +561,7 @@ bool MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_
 	return false;
 }
 
-void MiniPropPanel::RenderArguPanel(bool* b)
+void ShaderEditor::MiniPropPanel::RenderArguPanel(bool* b)
 {
 	int index = 0;
 	for (auto& arg : prop_args) {
@@ -586,4 +588,4 @@ void MiniPropPanel::RenderArguPanel(bool* b)
 		prop_args.emplace_back(NONE_PARA, "Empty");
 }
 
-char MiniPropPanel::prop_name = NULL;
+char ShaderEditor::MiniPropPanel::prop_name = NULL;
