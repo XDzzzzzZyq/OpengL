@@ -93,7 +93,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [x] shader storage buffer
 - **Advance**
 - render mode switch
-- visible switch
+- visibility switch
 - dynamic exposure  
 
 #### **UI**
@@ -113,9 +113,21 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
         - [ ] Node Editor
     - [ ] Transform(Property) Layer
 - [x] Imgui parameters flow
-
-- [ ] files management
+- [ ] File manager
 - [ ] node system
+
+#### **Structure**
+
+- [ ] Components System
+  - [ ] the "Components" class
+  - [ ] Components Reflection
+  - [ ] Dynamic Rigister
+
+- [ ] Data Management
+  - [ ] Serializer & Anti-Serializer
+  - [ ] Scene importer / exporter
+  - [ ] Cache loader / writer
+  - [ ] Log system
 
 #### **Other**
 
