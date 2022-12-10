@@ -65,6 +65,7 @@ public:
 	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }
 	static const double GetDeltaMouseY() { return mouse_y - mouse_b_y; }
 	static const ImVec2 GetDeltaMouse() { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
+	static const ImVec2 GetMousePos() { return { (float)mouse_x, (float)mouse_y }; }
 public:
 	static std::vector<int> EVT_NK_LIST;
 	static void PushNormKey(int _ID);

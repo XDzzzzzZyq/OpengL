@@ -69,7 +69,7 @@ EventListener::~EventListener()
 int EventListener::ListenMouseEvent(GLFWwindow* window) const
 {
 	is_mouse_pressed_b = is_mouse_pressed;
-
+	is_mouse_pressed = false;
 	//update
 	LOOP(3)
 		if (glfwGetMouseButton(window, i) == GLFW_PRESS) {
@@ -77,8 +77,6 @@ int EventListener::ListenMouseEvent(GLFWwindow* window) const
 			return i + 1;
 		}
 
-
-	is_mouse_pressed = false;
 	return 0;
 }
 
