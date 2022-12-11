@@ -5,6 +5,19 @@ unsigned int Nodes::id_buff = 1;
 std::unordered_map<Parameters*, Nodes::ParaLink> Nodes::n_in_link = {};
 std::unordered_map<Parameters*, Nodes::ParaLink> Nodes::n_out_link = {};
 
+int Nodes::GetParamLoc(Nodes* _tar, Parameters* _param, bool _type)
+{
+	if (_tar == nullptr)
+		return -1;
+
+	auto& list = _type ? _tar->n_in : _tar->n_out;
+
+	if (list.size() <= 0)
+		return -1;
+
+	return ((unsigned int)_param - (unsigned int)list.data()) / sizeof(Parameters);
+}
+
 void Nodes::PushIn(const Parameters& _in)
 {
 	n_in.push_back(_in);

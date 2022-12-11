@@ -43,7 +43,7 @@ private:
 	static const std::string shader_type[2];
 	mutable int active_func{0};
 
-	mutable int current_edit = 0, current_shad_type = 0;
+	mutable int current_edit = 2, current_shad_type = 0;
 	mutable bool is_edit_changed = true, is_shad_type_changed = true;
 	mutable bool add_button = false;
 	mutable bool sel;

@@ -39,8 +39,9 @@ public:
 
 	static std::unordered_map<Parameters*, ParaLink> n_in_link;     // ->[in   out]			  //Store globle Data
 	static std::unordered_map<Parameters*, ParaLink> n_out_link;    //   [in   out]->		  //Store globle Data
-	static Parameters* GetParamPtr(Nodes* _tar,int _idx, bool _type) { return _type ? &_tar->n_in[_idx] : &_tar->n_out[_idx]; }
-	static Parameters* GetParamPtr(const ParaLink& _link, bool _type) { return GetParamPtr(_link.first, _link.second, _type); }
+	[[nodiscard]] static Parameters* GetParamPtr(Nodes* _tar,int _idx, bool _type) { return _type ? &_tar->n_in[_idx] : &_tar->n_out[_idx]; }  // true: n_in  | false: n_out
+	[[nodiscard]] static Parameters* GetParamPtr(const ParaLink& _link, bool _type) { return GetParamPtr(_link.first, _link.second, _type); }  // true: n_in  | false: n_out
+	[[nodiscard]] static int GetParamLoc(Nodes* _tar, Parameters* _param, bool _type);
 
 	void PushIn (const Parameters& _in);
 	void PushOut(const Parameters& _out);
