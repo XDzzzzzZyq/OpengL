@@ -3632,8 +3632,8 @@ bool ImGui::ItemHoverable(const ImRect& bb, ImGuiID id)
     ImGuiWindow* window = g.CurrentWindow;
     if (g.HoveredWindow != window)
         return false;
-    if (g.ActiveId != 0 && g.ActiveId != id && !g.ActiveIdAllowOverlap)
-        return false;
+    //if (g.ActiveId != 0 && g.ActiveId != id && !g.ActiveIdAllowOverlap)
+    //    return false;
     if (!IsMouseHoveringRect(bb.Min, bb.Max))
         return false;
     if (g.NavDisableMouseHover)

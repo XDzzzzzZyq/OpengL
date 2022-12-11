@@ -1187,13 +1187,13 @@ bool ImGui::CheckboxFlags(const char* label, ImU64* flags, ImU64 flags_value)
     return CheckboxFlagsT(label, flags, flags_value);
 }
 
-bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col, bool _is_connected)
+bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col, bool* is_hovered, bool _is_connected)
 {
     ImGui::SetCursorScreenPos(_center);
     
 	ImGuiWindow* window = GetCurrentWindow();
 	if (window->SkipItems)
-		return false;
+        return false;
 
 	ImGuiContext& g = *GImGui;
 	const ImGuiStyle& style = g.Style;
@@ -1206,7 +1206,7 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 	const ImRect total_bb(pos - _size*ImVec2(10,12), pos - _size * ImVec2(30,5) + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
 	ItemSize(total_bb, style.FramePadding.y);
 	if (!ItemAdd(total_bb, id))
-		return false;
+        return false;
 
 	ImVec2 center = _center;
 	center.x = IM_ROUND(center.x);
@@ -1215,13 +1215,13 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 
 	bool hovered, held;
 	bool pressed = ButtonBehavior(total_bb, id, &hovered, &held);
-    hovered |= _is_connected;
+    
     //std::cout << hovered << std::endl;
 	if (pressed)
 		MarkItemEdited(id);
 
 	RenderNavHighlight(total_bb, id);
-	window->DrawList->AddCircleFilled(center, radius, GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), 16);
+	window->DrawList->AddCircleFilled(center, radius, GetColorU32((held && (hovered || _is_connected)) ? ImGuiCol_FrameBgActive : (hovered || _is_connected) ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), 16);
 	if (active)
 	{
 		const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
@@ -1247,7 +1247,9 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
 
 	ImGui::SetWindowFontScale(1);
-	return held;
+    if(is_hovered)
+        *is_hovered = hovered;
+    return held;
 }
 
 bool ImGui::RadioButton(const char* label, bool active)
