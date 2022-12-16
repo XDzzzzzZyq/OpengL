@@ -1203,7 +1203,7 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 	const float square_sz = GetFrameHeight() * _size[0];
 	const ImVec2 pos = window->DC.CursorPos;
 	const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
-	const ImRect total_bb(pos - _size*ImVec2(10,12), pos - _size * ImVec2(30,5) + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+	const ImRect total_bb(pos - ImVec2(square_sz/1.5, square_sz/1.5), pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x * _size[0] + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f * _size[0]));
 	ItemSize(total_bb, style.FramePadding.y);
 	if (!ItemAdd(total_bb, id))
         return false;
@@ -1213,8 +1213,10 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 	center.y = IM_ROUND(center.y);
 	const float radius = (square_sz - 1.0f) * 0.5f;
 
+    *is_hovered = false;
 	bool hovered, held;
 	bool pressed = ButtonBehavior(total_bb, id, &hovered, &held);
+    //ImGui::GetForegroundDrawList()->AddRectFilled(total_bb.Min, total_bb.Max, IM_COL32(255, 255, 255, 100));
     
     //std::cout << hovered << std::endl;
 	if (pressed)
