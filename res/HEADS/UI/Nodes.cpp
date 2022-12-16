@@ -40,6 +40,25 @@ void Nodes::LinkOut(int _self_idx, Nodes* _tar, int _idx)
 	n_in_link[&_tar->n_in[_idx]] = std::make_pair(this, _self_idx);
 }
 
+void Nodes::BreakLink(Parameters* _param, bool _type)
+{
+	auto& map = _type ? n_in_link : n_out_link;
+
+	bool is_linked = map.find(_param) != map.end();
+
+	if (!is_linked) {
+		DEBUG("No link")
+		return;
+	}
+
+	Parameters* _tar = GetParamPtr(map[_param], !_type);
+	auto& inv_map = !_type ? n_in_link : n_out_link;
+
+	inv_map.erase(_tar);
+	map.erase(_param);
+
+}
+
 Nodes::Nodes()
 	:Nodes(NONE_NODE)
 {

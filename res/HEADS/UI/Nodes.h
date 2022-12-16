@@ -47,6 +47,10 @@ public:
 	void PushOut(const Parameters& _out);
 	void LinkIn (int _self_idx, Nodes* _tar, int _idx);
 	void LinkOut(int _self_idx, Nodes* _tar, int _idx);
+	static void BreakLink(Parameters* _param, bool _type);
+	static bool IsLinked(Parameters* _param, bool _type) {
+		return _type ? n_in_link.find(_param) != n_in_link.end() : n_out_link.find(_param) != n_out_link.end();
+	}
 public:
 	Nodes();
 	Nodes(NodeType _type);
