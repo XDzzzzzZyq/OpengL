@@ -57,7 +57,7 @@ public:
 	~Environment();
 
 	void ChangeEnvirTexture(const std::string& texpath) const;
-	void ChangeEnvirType(const EnvironmentType& type) const;
+	void ChangeEnvirType(EnvironmentType type) const;
 
 	void BindFrameBuffer() const;
 	void UnBindFrameBuffer() const;

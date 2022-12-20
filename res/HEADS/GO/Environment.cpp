@@ -5,7 +5,10 @@ Environment::Environment(const std::string& texpath)
 
 	o_type = GO_ENVIR;
 	envir_shader = Shaders("IBRShader");	
-	envir_hdr = Texture(texpath, HDR_TEXTURE, GL_REPEAT);
+
+	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
+
+	envir_hdr = Texture(texpath, is_using_HDR ? HDR_TEXTURE:PNG_TEXTURE, GL_REPEAT);
 	envir_hdr.Bind(); 
 
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
@@ -61,7 +64,7 @@ void Environment::ChangeEnvirTexture(const std::string& texpath) const
 
 }
 
-void Environment::ChangeEnvirType(const EnvironmentType& type) const
+void Environment::ChangeEnvirType(EnvironmentType type) const
 {
 
 }
