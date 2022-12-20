@@ -12,7 +12,7 @@
 ### UI
 - [ ] Basic renderring
   - [ ] Node
-	- [ ] Pin highlight
+	- [x] Pin highlight
   - [ ] Parameters
   - [x] Spline
 - [ ] node system properties panel
@@ -21,8 +21,9 @@
   - [ ] ADD node
 
 ### Operations
-- [ ] select
+- [x] select
 - [x] viewport transform
+- [x] connect & break
 - [ ] short cut
   - [ ] mini panel short cut
   - [ ] compile
@@ -30,6 +31,6 @@
   - [ ] undo / redo
   
 ### Advanced
-  - [ ] Quad-tree optimization
+  - [ ] Quad-tree optimization (rendering)
   - [ ] Node-tree optimization
   - [ ] beautiful UI
