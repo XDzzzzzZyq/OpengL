@@ -1,10 +1,12 @@
-#include "Texture.h"
+﻿#include "Texture.h"
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
 	:m_path(texpath), m_buffer(nullptr),Tex_type(tex_type), Tex_slot(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
+
+	GLfloat maxAnti;
 	//std::cout << Tex_ID << std::endl;
 	stbi_set_flip_vertically_on_load(1);
 	glGenTextures(1, &Tex_ID);
@@ -16,19 +18,28 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		// std::cout << Tex_ID << std::endl;
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
-
-		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);GLDEBUG
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, im_w, im_h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
 
+#if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
+		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
+#else
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+#endif
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		//std::cout << im_bpp << std::endl;
+
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
 			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
@@ -42,20 +53,19 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		stbi_set_flip_vertically_on_load(0);
 		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		// std::cout << Tex_ID << std::endl;
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
 
-		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, im_w, im_h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);GLDEBUG
-
-			glGenerateMipmap(GL_TEXTURE_2D);
+		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		//std::cout << im_bpp << std::endl;
+
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
 			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
@@ -69,19 +79,19 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		// std::cout << Tex_ID << std::endl;
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR/*_MIPMAP_LINEAR*/);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR/*_MIPMAP_LINEAR*/);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f);
-
-#if 0
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
+		glTexStorage2D(GL_TEXTURE_2D, 4, GL_RGBA8, im_w, im_h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_FLOAT, m_buffer_f);
+		
+#if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-		GLfloat maxAnti;
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
 		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
@@ -90,7 +100,6 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 #endif
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		//std::cout << im_bpp << std::endl;
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
 
