@@ -21,7 +21,7 @@ void ImguiMenu::PushSubMenu(ImguiMenuItem* subm)
 	name_order[subm->mitem_name] = subm_list.size();
 	subm_list.push_back(subm);
 	if (subm->mitem_shortcut.size())
-		mitm_func_list[EventListener::ParseStrEvent(subm->mitem_shortcut)] = [subm] {
+		mitm_func_list[EventListener::ParseShortCut(subm->mitem_shortcut)] = [subm] {
 		subm->mitem_onclick = true;
 	};
 

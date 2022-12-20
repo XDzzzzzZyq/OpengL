@@ -6,6 +6,7 @@
 #include "ShaderLib.h"
 
 #include<unordered_map>
+#include<unordered_set>
 #include<functional>
 
 
@@ -45,7 +46,7 @@ struct KeyMouseEvent
 	};
 };
 
-
+#define REGIST_EVENT(cls_event) std::bind(&cls_event , this); EventListener::REFLRigisterEvent(#cls_event)
 
 class EventListener
 {
@@ -113,5 +114,10 @@ public:
 	void Reset();
 public:
 	static std::vector<std::string> EVT_AVAIL_KEYS;
-	static const KeyMouseEvent ParseStrEvent(const std::string& _shortcut);
+	static const KeyMouseEvent ParseShortCut(const std::string& _shortcut);
+
+	static std::unordered_map<std::string, std::unordered_set<std::string>> evt_RigisterEvents;
+	static void REFLRigisterEvent(const std::string& _class_event);
+	static void ShowEvents();
+
 };

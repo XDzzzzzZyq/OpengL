@@ -79,7 +79,7 @@ ImguiItem* ImguiLayer::FindImguiItem(int id) const
 
 void ImguiLayer::EventInit()
 {
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&ImguiLayer::LMB, this);
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(ImguiLayer::LMB);
 }
 
 void ImguiLayer::LMB()

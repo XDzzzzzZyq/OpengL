@@ -166,6 +166,8 @@ void render(GLFWwindow* window) {
 	};
 	UI.GetCurrentWindow();
 
+	EventListener::ShowEvents();
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{

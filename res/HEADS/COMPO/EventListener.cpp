@@ -173,7 +173,7 @@ void EventListener::Reset()
 
 std::vector<std::string> EventListener::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
 
-const KeyMouseEvent EventListener::ParseStrEvent(const std::string& _shortcut)
+const KeyMouseEvent EventListener::ParseShortCut(const std::string& _shortcut)
 {
 	KeyMouseEvent result;
 	std::istringstream str(_shortcut);
@@ -203,6 +203,26 @@ parse_norm:
 	PushNormKey(result.NormKey);
 
 	return result;
+}
+
+std::unordered_map<std::string, std::unordered_set<std::string>> EventListener::evt_RigisterEvents = {};
+
+void EventListener::REFLRigisterEvent(const std::string& _class_event)
+{
+	const std::string class_name = _class_event.substr(0, _class_event.find(":"));
+	const std::string event_name = _class_event.substr(_class_event.find_last_of(":") + 1, _class_event.size() - 1);
+
+	evt_RigisterEvents[class_name].insert(event_name);
+}
+
+void EventListener::ShowEvents()
+{
+	for (auto& cls : evt_RigisterEvents) {
+		DEBUG("[ "+cls.first+" ]")
+		for (auto& evt : cls.second) {
+			std::cout << "\t" << cls.first << " : " << evt << "\n";
+		}
+	}
 }
 
 int KeyMouseEvent::GenStateData() const

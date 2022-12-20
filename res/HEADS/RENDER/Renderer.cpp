@@ -88,8 +88,8 @@ GLuint Renderer::GetFrameBufferTexture(int slot)
 
 void Renderer::EventInit()
 {
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&Renderer::LMB_CLICK	, this);
-	EventList[GenIntEvent(1, 0, 0, 0, 0)] = std::bind(&Renderer::SHIFT		, this);
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Renderer::LMB_CLICK); 
+	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
 
 	EventListener::GetActiveShader = [&](int id) { return obj_list[id]->GetShaderStruct(); };
 }
