@@ -30,11 +30,15 @@ struct KeyMouseEvent
 
 	int GenStateData() const;
 	void Debug() const {
+#ifdef _DEBUG
+
 		std::cout << FirstKey << " "
 			<< SecondKey << " "
 			<< NormKey << " "
 			<< Mouse << " "
 			<< Scr << "\n";
+
+#endif // DEBUG
 	}
 
 	struct hash_fn

@@ -120,7 +120,11 @@ public:
 public:
 	std::string GenerateShader(ShaderType tar = NONE_SHADER);
 	virtual GLuint CompileShader(ShaderType tar) = 0;
-	void ShaderLibDebug() { DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER]) };
+	void ShaderLibDebug() {
+#ifdef _DEBUG
+		DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER]) 
+#endif 
+	};
 public:
 	virtual GLuint getID() const = 0;
 	virtual GLuint getShaderID(ShaderType type) const = 0;

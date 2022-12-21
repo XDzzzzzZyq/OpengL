@@ -25,9 +25,9 @@ GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
 		//delete message;
 		return 0;
 	}
-	else {
-		std::cout << type << " is complied successfully!" << std::endl;
-	}
+#ifdef _DEBUG
+	std::cout << type << " is complied successfully!" << std::endl;
+#endif
 	//delete src;
 	return id;
 }
@@ -94,7 +94,7 @@ void Shaders::ParseShaderCode(const std::string& _code, ShaderType _type)
 {
 	shader_struct_list[_type].Reset();
 	_LINK_LOC = {};
-	if (_code == "") {
+	if (_code.empty()) {
 		std::stringstream Stream(shader_list[_type]);
 		ParseShaderStream(Stream, _type);
 	}
@@ -293,7 +293,9 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const int* va0, A
 
 void Shaders::LocalDebug() const
 {
+#ifdef _DEBUG
 	for (const auto i : m_uniform_cache)
 		DEBUG(i.first + " : " + std::to_string(i.second))
+#endif
 }
 

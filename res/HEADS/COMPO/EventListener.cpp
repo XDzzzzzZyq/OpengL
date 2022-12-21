@@ -217,12 +217,16 @@ void EventListener::REFLRigisterEvent(const std::string& _class_event)
 
 void EventListener::ShowEvents()
 {
+#ifdef _DEBUG
+
 	for (auto& cls : evt_RigisterEvents) {
-		DEBUG("[ "+cls.first+" ]")
-		for (auto& evt : cls.second) {
-			std::cout << "\t" << cls.first << " : " << evt << "\n";
-		}
+		DEBUG("[ " + cls.first + " ]")
+			for (auto& evt : cls.second) {
+				std::cout << "\t" << cls.first << " : " << evt << "\n";
+			}
 	}
+
+#endif // _DEBUG
 }
 
 int KeyMouseEvent::GenStateData() const

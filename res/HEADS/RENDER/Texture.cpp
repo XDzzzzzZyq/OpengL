@@ -42,7 +42,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
+#ifdef _DEBUG
 			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+#endif
 		}
 		else {
 			std::cout << "Image texture FAILED" << std::endl;
@@ -68,7 +70,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
+#ifdef _DEBUG
 			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+#endif
 		}
 		else {
 			std::cout << "Image texture FAILED" << std::endl;
@@ -103,7 +107,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		if (m_buffer) {
 			stbi_image_free(m_buffer);
 
+#ifdef _DEBUG
 			std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
+#endif
 		}else
 			std::cout << "HDR texture FAILED"<< std::endl;
 		break;

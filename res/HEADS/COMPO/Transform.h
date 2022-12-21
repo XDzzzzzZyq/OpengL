@@ -74,10 +74,12 @@ public:
 	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
 
 	[[nodiscard("You can receive the state")]] int Debug() const override {
+#ifdef _DEBUG
 		std::cout << o_rot;
 		std::cout << o_dir_up;
 		std::cout << o_dir_right;
 		DEBUG("________________") return 0;
+#endif // _DEBUG
 	}
 
 };
@@ -136,8 +138,10 @@ public:
 	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
 
 	[[nodiscard("You can receive the state")]] int Debug() const override {
+#ifdef _DEBUG
 		std::cout << o_rot;
 		DEBUG("________________") return 0;
+#endif // _DEBUG
 	}
 
 };
