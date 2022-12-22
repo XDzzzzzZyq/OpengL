@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <array>
@@ -9,6 +10,8 @@
 #include <map>
 #include <regex>
 #include <thread>
+#include <execution>
+
 #include "ImGui/imgui.h"
 
 #include "structs.h"
@@ -311,7 +314,7 @@ private:
 		EditorState mAfter;
 	};
 
-	typedef std::vector<UndoRecord> UndoBuffer;
+	using UndoBuffer = std::vector<UndoRecord>;
 
 	void ProcessInputs();
 	void Colorize(int aFromLine = 0, int aCount = -1);
@@ -389,5 +392,6 @@ private:
 
 	float mLastClick;
 
-	std::thread SetText_thread;
+	mutable bool is_colorize_finished = true;
+	std::thread Colorizing_thread;
 };

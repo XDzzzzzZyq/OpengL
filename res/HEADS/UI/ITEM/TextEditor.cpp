@@ -56,6 +56,8 @@ TextEditor::TextEditor()
 
 TextEditor::~TextEditor()
 {
+	if (Colorizing_thread.joinable())
+		Colorizing_thread.join();
 }
 
 void TextEditor::SetLanguageDefinition(const LanguageDefinition& aLanguageDef)
@@ -1138,8 +1140,15 @@ void TextEditor::Render(const char* aTitle, const ImVec2& aSize, bool aBorder)
 	if (mHandleMouseInputs)
 		HandleMouseInputs();
 
+	if (is_colorize_finished) {
 
-	ColorizeInternal();
+		if (Colorizing_thread.joinable())
+			Colorizing_thread.join();
+
+		is_colorize_finished = false;
+		Colorizing_thread = std::thread([&] {	ColorizeInternal(); is_colorize_finished = true; });
+	}
+
 	Render();
 
 	if (mHandleKeyboardInputs)
@@ -2218,7 +2227,7 @@ void TextEditor::ColorizeRange(int aFromLine, int aToLine)
 				{
 					id.assign(token_begin, token_end);
 
-					// todo : allmost all language definitions use lower case to specify keywords, so shouldn't this use ::tolower ?
+					// todo : almost all language definitions use lower case to specify keywords, so shouldn't this use ::tolower ?
 					if (!mLanguageDefinition.mCaseSensitive)
 						std::transform(id.begin(), id.end(), id.begin(), ::toupper);
 
