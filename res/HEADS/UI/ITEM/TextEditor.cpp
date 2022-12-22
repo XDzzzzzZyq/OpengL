@@ -1122,6 +1122,11 @@ void TextEditor::Render()
 
 void TextEditor::Render(const char* aTitle, const ImVec2& aSize, bool aBorder)
 {
+	if (mTextChanged) {
+		is_colorize_finished = false;
+	}
+
+
 	mWithinRender = true;
 	mTextChanged = false;
 	mCursorPositionChanged = false;
@@ -1140,13 +1145,15 @@ void TextEditor::Render(const char* aTitle, const ImVec2& aSize, bool aBorder)
 	if (mHandleMouseInputs)
 		HandleMouseInputs();
 
-	if (is_colorize_finished) {
+	if (is_colorize_thread_finished) {
 
 		if (Colorizing_thread.joinable())
 			Colorizing_thread.join();
 
-		is_colorize_finished = false;
-		Colorizing_thread = std::thread([&] {	ColorizeInternal(); is_colorize_finished = true; });
+		if (!is_colorize_finished) {
+			is_colorize_thread_finished = false;
+			Colorizing_thread = std::thread([&] {	ColorizeInternal(); is_colorize_thread_finished = true; });
+		}
 	}
 
 	Render();
@@ -2386,7 +2393,7 @@ void TextEditor::ColorizeInternal()
 		mCheckComments = false;
 	}
 
-	if (mColorRangeMin < mColorRangeMax)
+	while (mColorRangeMin < mColorRangeMax)
 	{
 		const int increment = (mLanguageDefinition.mTokenize == nullptr) ? 10 : 10000;
 		const int to = std::min(mColorRangeMin + increment, mColorRangeMax);
@@ -2398,8 +2405,9 @@ void TextEditor::ColorizeInternal()
 			mColorRangeMin = std::numeric_limits<int>::max();
 			mColorRangeMax = 0;
 		}
-		return;
+		
 	}
+	is_colorize_finished = true;
 }
 
 float TextEditor::TextDistanceToLineStart(const Coordinates& aFrom) const

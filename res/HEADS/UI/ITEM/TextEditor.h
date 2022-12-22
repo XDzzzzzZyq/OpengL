@@ -392,6 +392,7 @@ private:
 
 	float mLastClick;
 
+	mutable bool is_colorize_thread_finished = true;
 	mutable bool is_colorize_finished = true;
 	std::thread Colorizing_thread;
 };
