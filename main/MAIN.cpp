@@ -38,7 +38,7 @@ void render(GLFWwindow* window) {
 	EventListener Event;
 	
 	Camera camera(10.0f, 10.0f, 70, 0.1f, 300.0f);
-	camera.SetPos(glm::vec3(0.0f, 0.0f, 20.0f));
+	camera.SetPos({ 0.0f, 0.0f, 20.0f });
 	camera.ApplyTransform();
 	camera.GetInvTransform();
 	renderer.UseCamera(&camera);
@@ -48,7 +48,6 @@ void render(GLFWwindow* window) {
 	go1.SetObjShader("testS");
 	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
 	go1.SetCenter();
-	//go1.SetPos({ 10,0,0 });
 	go1.ApplyTransform();
 	renderer.UseMesh(&go1);
 	DEBUG("---------------MESH----------------")
@@ -57,15 +56,24 @@ void render(GLFWwindow* window) {
 	go2.SetObjShader("testS");
 	go2.SetTex("res/tex/avatar1.png", PNG_TEXTURE);
 	go2.SetCenter();
-	go2.SetPos(glm::vec3(8, 0, 0));
+	go2.SetPos({ 8, 0, 0 });
 	go2.SetScale(glm::vec3(1.5f));
 	go2.ApplyTransform();
 	go1.SetParent(go2.GetTransformPtr());
 	renderer.UseMesh(&go2);
+
+	DEBUG("---------------MESH----------------")
+
+		Mesh go3("res/obj/UVsphere.obj");
+	go3.SetObjShader("testS");
+	go3.SetPos({ -8,0,0 });
+	go3.SetScale({ 3,3,3 });
+	renderer.UseMesh(&go3);
+
 	DEBUG("---------------LIGHT----------------")
 
 		Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight1.SetPos(glm::vec3(2.0f, 2.0f, 2.0f));
+	pointLight1.SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
 	DEBUG("---------------LIGHT----------------")

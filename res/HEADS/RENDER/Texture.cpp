@@ -89,13 +89,13 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
-		glTexStorage2D(GL_TEXTURE_2D, 4, GL_RGBA8, im_w, im_h);
+		glTexStorage2D(GL_TEXTURE_2D, 8, GL_RGBA8, im_w, im_h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_FLOAT, m_buffer_f);
 		
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 8);
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
 		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else

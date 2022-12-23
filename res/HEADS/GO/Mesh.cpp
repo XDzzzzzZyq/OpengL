@@ -34,6 +34,8 @@ Mesh::Mesh(const char* path)
 
 	o_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
 
+
+
 }
 
 Mesh::Mesh()
@@ -52,7 +54,9 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 	o_vertArry.Bind();
 	o_index.Bind();
 	o_shader->UseShader();
-	o_tex->Bind(o_tex->Tex_slot);
+
+	if(o_tex)
+		o_tex->Bind(o_tex->Tex_slot);
 
 	if (o_shader->is_shader_changed)
 		o_shader->InitShader();
@@ -89,7 +93,9 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 	o_index.Unbind();
 	o_shader->UnuseShader();
 	o_vertArry.Unbind();
-	o_tex->Unbind();
+
+	if(o_tex)
+		o_tex->Unbind();
 #endif
 
 
@@ -103,8 +109,22 @@ void Mesh::SetObjShader(std::string path)
 	//matrix = glm::translate(matrix, o_position);
 	o_shader->SetValue("U_ProjectM", o_Transform);
 	o_shader->SetValue("ID_color", id_color);
-	//o_shader->SetVal1f("is", 0.5f);
-	//std::cout<<"aaa\n";
+	
+	o_shader->InitShader = [&] {
+		o_shader->UseShader();
+
+		o_shader->SetValue("blen", 0.5f);
+		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
+		o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
+		o_shader->SetValue("RAND_color", id_color_rand);
+		o_shader->SetValue("U_ProjectM", o_Transform);
+		o_shader->SetValue("ID_color", id_color);
+
+		if (o_tex)
+			o_shader->SetValue("U_Texture", o_tex->Tex_slot);
+
+		o_shader->UnuseShader();
+	};
 }
 
 void Mesh::SetTex(std::string path, TextureType slot)
@@ -112,18 +132,6 @@ void Mesh::SetTex(std::string path, TextureType slot)
 	o_tex = Texture(path, slot ,GL_REPEAT);
 	o_tex->Bind(slot);
 	o_tex->Tex_slot = slot;
-
-	o_shader->InitShader = [&] {
-		o_shader->UseShader();
-		o_shader->SetValue("blen", 0.5f);
-		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-		o_shader->SetValue("U_Texture", slot);
-		o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
-		o_shader->SetValue("RAND_color", id_color_rand);
-		o_shader->SetValue("U_ProjectM", o_Transform);
-		o_shader->SetValue("ID_color", id_color);
-		o_shader->UnuseShader();
-	};
 
 	o_tex->Unbind();
 }
@@ -135,14 +143,14 @@ void Mesh::SetCenter()
 
 void Mesh::DeleteObj()
 {
-	o_tex->Unbind();
-	o_shader->UnuseShader();
+	if(o_tex)o_tex->Unbind();
+	if(o_shader)o_shader->UnuseShader();
 	o_index.Unbind();
 	o_vertArry.Unbind();
 	o_vertBuffer.Unbind();
 
-	o_tex->DelTexture();
-	o_shader->DelShad();
+	if(o_tex)o_tex->DelTexture();
+	if(o_shader)o_shader->DelShad();
 	o_index.DelIndBuff();
 	o_vertBuffer.DelVertBuff();
 	o_vertArry.DelVertArr();
