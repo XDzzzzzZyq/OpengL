@@ -103,7 +103,7 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 
 void Mesh::SetObjShader(std::string path)
 {
-	o_shader = Shaders(path);
+	o_shader = RenderShader(path);
 	//std::cout << "Shader:" << (glGetError()) << "\n";
 	o_shader->UseShader();
 	//matrix = glm::translate(matrix, o_position);

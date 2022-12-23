@@ -90,7 +90,7 @@ void ShaderEditor::RenderShaderStruct() const
 		ImGui::Text("========================");
 		ImGui::Text("GLSL version : %i", active_shader->shader_struct_list[current_shad_type].version);
 		ImGui::Text("Shader Type : " + current_shad_type == 0 ? "Vertex Shader" : "Fragment Shader");
-		ImGui::Text(("Shader ID : " + std::to_string(active_shader->getShaderID((ShaderType)current_shad_type))).c_str());
+		ImGui::Text(("Shader ID : " + std::to_string(dynamic_cast<RenderShader*>(active_shader)->getShaderID((ShaderType)current_shad_type))).c_str());
 		ImGui::Text(active_shader->shader_struct_list[current_shad_type].is_struct_changed ? "Status : Changed" : "Status : Compiled");
 		ImGui::Text("========================");
 		ImGui::TreePop();
@@ -372,21 +372,21 @@ void ShaderEditor::CompileShader() const {
 		case CODE_EDITOR:
 			if (Editor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
 			active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();
-			dynamic_cast<Shaders*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
+			dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
 			break;
 		case STRUCT_EDITOR:
 			is_shad_type_changed = true;
 			active_shader->GenerateShader((ShaderType)current_shad_type);break;
 		}
 
-		glDeleteProgram(active_shader->getID());
-		glDeleteShader(dynamic_cast<Shaders*>(active_shader)->getShaderID((ShaderType)current_shad_type));
+		glDeleteProgram(dynamic_cast<RenderShader*>(active_shader)->getProgramID());
+		glDeleteShader(dynamic_cast<RenderShader*>(active_shader)->getShaderID((ShaderType)current_shad_type));
 
 		GLuint program_id = glCreateProgram();
 
 		GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
 		glAttachShader(program_id, shader_id);
-		glAttachShader(program_id, dynamic_cast<Shaders*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
+		glAttachShader(program_id, dynamic_cast<RenderShader*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
 
 		glLinkProgram(program_id);
 		glValidateProgram(program_id);
@@ -397,9 +397,9 @@ void ShaderEditor::CompileShader() const {
 		if (link_state != GL_TRUE)
 			DEBUG("Shader Link Error")
 
-		dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
-		dynamic_cast<Shaders*>(active_shader)->ResetID((ShaderType)NONE_SHADER, program_id);
-		dynamic_cast<Shaders*>(active_shader)->ResetCache();
+		dynamic_cast<RenderShader*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
+		dynamic_cast<RenderShader*>(active_shader)->ResetID((ShaderType)NONE_SHADER, program_id);
+		dynamic_cast<RenderShader*>(active_shader)->ResetCache();
 
 		active_shader->is_shader_changed = true;
 	}

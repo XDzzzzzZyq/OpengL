@@ -1,7 +1,7 @@
 #include "Shaders.h"
 #include "ShaderLib.h"
 
-void Shaders::ParseShaderFile(const std::string& _name, ShaderType _type) {
+void RenderShader::ParseShaderFile(const std::string& _name, ShaderType _type) {
 	Timer timer("ParseShader");
 
 	active_shader = _type;
@@ -18,7 +18,7 @@ void Shaders::ParseShaderFile(const std::string& _name, ShaderType _type) {
 }
 
 
-void Shaders::ParseShaderStream(std::istream& _stream, ShaderType _type)
+void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 {
 	std::string Line;
 	std::string cache = "";

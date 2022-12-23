@@ -29,7 +29,7 @@ private:
 	glm::vec3 center=glm::vec3(0.0f);
 public:
 
-	mutable std::optional<Shaders> o_shader;
+	mutable std::optional<RenderShader> o_shader;
 	Mesh(const char* path);
 	Mesh();
 	~Mesh();

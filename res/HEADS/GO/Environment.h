@@ -41,7 +41,7 @@ private:
 
 public:
 	std::optional<FrameBuffer> envir_frameBuffer;
-	std::optional<Shaders> envir_shader;
+	std::optional<RenderShader> envir_shader;
 
 	Texture envir_IBL_spec, envir_IBL_diff;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;

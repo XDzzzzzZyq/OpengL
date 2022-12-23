@@ -97,8 +97,8 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 	dp_type = type;
 	is_proj = proj;
 
-	dp_shader[0] = Shaders("PointsShader");
-	dp_shader[1] = Shaders("PointsShader_proj");
+	dp_shader[0] = RenderShader("PointsShader");
+	dp_shader[1] = RenderShader("PointsShader_proj");
 	
 	dp_shader[0]->InitShader = [&] {
 		dp_shader[0]->UseShader();

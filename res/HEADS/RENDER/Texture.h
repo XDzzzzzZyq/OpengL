@@ -40,5 +40,9 @@ public:
 	inline int GetH()const { return im_h; }
 	inline int GetDPP()const { return im_bpp; }
 	GLuint GetTexID() const { return Tex_ID; }
+
+public: // for texture processing
+	void GenIrradiaceConvFrom(GLuint _Tar_ID);
+	void GenIrradiaceConvFrom(const Texture& _Tar_Tex);
 };
 

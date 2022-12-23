@@ -36,7 +36,7 @@ public:
 	bool is_proj = true;
 	bool is_list_changed = true;
 	bool is_scaled;
-	mutable std::optional<Shaders> dp_shader[2]; //no proj | using proj
+	mutable std::optional<RenderShader> dp_shader[2]; //no proj | using proj
 
 	mutable float dp_scale = 1.0f;
 	float dp_opacity = 1.0f;

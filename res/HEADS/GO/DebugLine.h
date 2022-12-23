@@ -29,7 +29,7 @@ public:
 	bool using_stipple = false, using_smooth = true, multiLine = false;
 	glm::vec3 dLine_color = glm::vec3{ 1.0f,1.0f,1.0f };
 
-	mutable std::optional<Shaders> dLine_shader;
+	mutable std::optional<RenderShader> dLine_shader;
 
 	glm::vec3 dLine_start, dLine_end;
 

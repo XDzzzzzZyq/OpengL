@@ -32,110 +32,9 @@ GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
 	return id;
 }
 
-void Shaders::CreatShader(const std::string& verShader, const std::string& fragShader) {
-	program_id = glCreateProgram();
-
-	vs_id = CompileShaderFile(GL_VERTEX_SHADER, verShader);
-	//std::cout << "_______\n";
-	fs_id = CompileShaderFile(GL_FRAGMENT_SHADER, fragShader);
-
-	glAttachShader(program_id, vs_id);
-	glAttachShader(program_id, fs_id);
-
-	glLinkProgram(program_id);
-	glValidateProgram(program_id);
-
-	//glDeleteShader(vs_id);
-	//glDeleteShader(fs_id);
-	//glDeleteProgram(program_id);
-}
-////////////////////////////////////////////////////////
-Shaders::Shaders(const std::string& name, const std::string& name2)
-{
-	vert_name = name;
-	frag_name = name2 == "" ? name : name2;
-
-	ParseShaderFile(vert_name, VERTEX_SHADER);
-	ParseShaderFile(frag_name, FRAGMENT_SHADER);
-	GenerateShader();
-	CreatShader(shader_list[VERTEX_SHADER], shader_list[FRAGMENT_SHADER]);
-}
-
-Shaders::Shaders()
-{
-}
-
-Shaders::~Shaders()
-{
-}
-
-void Shaders::ResetID(ShaderType type, GLuint id)
-{
-	switch (type)
-	{
-	case NONE_SHADER:
-		program_id = id;
-		break;
-	case VERTEX_SHADER:
-		vs_id = id;
-		break;
-	case FRAGMENT_SHADER:
-		fs_id = id;
-		break;
-	case COMPUTE_SHADER:
-		cs_id = id;
-		break;
-	default:
-		break;
-	}
-}
-
-void Shaders::ParseShaderCode(const std::string& _code, ShaderType _type)
-{
-	shader_struct_list[_type].Reset();
-	_LINK_LOC = {};
-	if (_code.empty()) {
-		std::stringstream Stream(shader_list[_type]);
-		ParseShaderStream(Stream, _type);
-	}
-	else {
-		std::stringstream Stream(_code);
-		ParseShaderStream(Stream, _type);
-	}
-}
-
-GLuint Shaders::CompileShader(ShaderType tar)
-{
-	const char* src = shader_list[tar].c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
-	GLuint shader_id = glCreateShader(tar == 0 ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
-
-	glShaderSource(shader_id, 1, &src, nullptr);
-
-	//std::cout << id << std::endl;
-	glCompileShader(shader_id);
-
-	//delete src;
-	int status = 0;
-	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &status);
-
-	//std::cout << status << std::endl;
-	std::string type = tar == VERTEX_SHADER ? "Vertex" : "Frag";
-	if (!status) {
-		int length;
-		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
-		char* message = new char[length];
-
-		glGetShaderInfoLog(shader_id, length, &length, message);
-		std::cout << type + " shader error" << std::endl;
-		std::cout << message << std::endl;
-	}
-	else {
-		std::cout << type << " is complied successfully!" << std::endl;
-		shader_struct_list[tar].is_struct_changed = false;
-	}
-	tar == 0 ? vs_id = shader_id : fs_id = shader_id;
-	return shader_id;
-}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Shaders::UseShader() const
 {
@@ -152,38 +51,20 @@ void Shaders::DelShad() const
 	glDeleteProgram(program_id);
 }
 
-GLuint Shaders::getShaderID(ShaderType type) const
-{
-	switch (type)
-	{
-	case NONE_SHADER:
-		return 0;
-		break;
-	case VERTEX_SHADER:
-		return vs_id;
-		break;
-	case FRAGMENT_SHADER:
-		return fs_id;
-		break;
-	case COMPUTE_SHADER:
-		return cs_id;
-		break;
-	default:
-		return 0;
-		break;
-	}
-}
-
 GLuint Shaders::getVarID(const char* name) const
 {
 	this->UseShader();
 	//std::cout << program_id << "\n";
-	if (m_uniform_cache.find(name) != m_uniform_cache.end())
-		return m_uniform_cache[name];
+	if (_uniforms_cache.find(name) != _uniforms_cache.end())
+		return _uniforms_cache[name];
 
 	int id = glGetUniformLocation(program_id, name);
+	
+#ifdef _DEBUG
 	if (id == -1)std::cout << name << " do not exist!" << std::endl;
-	m_uniform_cache[name] = id;
+#endif
+
+	_uniforms_cache[name] = id;
 	return glGetUniformLocation(program_id, name);
 }
 
@@ -291,11 +172,189 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const int* va0, A
 	}
 }
 
-void Shaders::LocalDebug() const
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void RenderShader::CreatShader(const std::string& verShader, const std::string& fragShader) {
+	program_id = glCreateProgram();
+
+	vs_id = CompileShaderFile(GL_VERTEX_SHADER, verShader);
+	//std::cout << "_______\n";
+	fs_id = CompileShaderFile(GL_FRAGMENT_SHADER, fragShader);
+
+	glAttachShader(program_id, vs_id);
+	glAttachShader(program_id, fs_id);
+
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+
+	//glDeleteShader(vs_id);
+	//glDeleteShader(fs_id);
+	//glDeleteProgram(program_id);
+}
+////////////////////////////////////////////////////////
+RenderShader::RenderShader(const std::string& name, const std::string& name2)
+{
+	vert_name = name;
+	frag_name = name2 == "" ? name : name2;
+
+	ParseShaderFile(vert_name, VERTEX_SHADER);
+	ParseShaderFile(frag_name, FRAGMENT_SHADER);
+	GenerateShader();
+	CreatShader(shader_list[VERTEX_SHADER], shader_list[FRAGMENT_SHADER]);
+}
+
+RenderShader::RenderShader()
+{
+}
+
+RenderShader::~RenderShader()
+{
+}
+
+void RenderShader::ResetID(ShaderType type, GLuint id)
+{
+	switch (type)
+	{
+	case NONE_SHADER:
+		program_id = id;
+		break;
+	case VERTEX_SHADER:
+		vs_id = id;
+		break;
+	case FRAGMENT_SHADER:
+		fs_id = id;
+		break;
+	default:
+		break;
+	}
+}
+
+void RenderShader::ParseShaderCode(const std::string& _code, ShaderType _type)
+{
+	shader_struct_list[_type].Reset();
+	_LINK_LOC = {};
+	if (_code.empty()) {
+		std::stringstream Stream(shader_list[_type]);
+		ParseShaderStream(Stream, _type);
+	}
+	else {
+		std::stringstream Stream(_code);
+		ParseShaderStream(Stream, _type);
+	}
+}
+
+GLuint RenderShader::CompileShader(ShaderType tar)
+{
+	const char* src = shader_list[tar].c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
+	GLuint shader_id = glCreateShader(tar == 0 ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
+
+	glShaderSource(shader_id, 1, &src, nullptr);
+
+	//std::cout << id << std::endl;
+	glCompileShader(shader_id);
+
+	//delete src;
+	int status = 0;
+	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &status);
+
+	//std::cout << status << std::endl;
+	std::string type = tar == VERTEX_SHADER ? "Vertex" : "Frag";
+	if (!status) {
+		int length;
+		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
+		char* message = new char[length];
+
+		glGetShaderInfoLog(shader_id, length, &length, message);
+		std::cout << type + " shader error" << std::endl;
+		std::cout << message << std::endl;
+	}
+	else {
+		std::cout << type << " is complied successfully!" << std::endl;
+		shader_struct_list[tar].is_struct_changed = false;
+	}
+	tar == 0 ? vs_id = shader_id : fs_id = shader_id;
+	return shader_id;
+}
+
+GLuint RenderShader::getShaderID(ShaderType type) const
+{
+	switch (type)
+	{
+	case NONE_SHADER:
+		return 0;
+		break;
+	case VERTEX_SHADER:
+		return vs_id;
+		break;
+	case FRAGMENT_SHADER:
+		return fs_id;
+		break;
+	default:
+		return 0;
+		break;
+	}
+}
+
+void RenderShader::LocalDebug() const
 {
 #ifdef _DEBUG
-	for (const auto i : m_uniform_cache)
+	for (const auto i : _uniforms_cache)
 		DEBUG(i.first + " : " + std::to_string(i.second))
 #endif
 }
 
+ComputeShader::ComputeShader(const std::string& name)
+	:comp_name(name)
+{
+	std::ifstream Stream(ShaderLib::folder_root + name + ShaderLib::file_type[COMPUTE_SHADER]);
+	std::string Cache, Line;
+	while (getline(Stream, Line))
+		Cache += Line;
+
+	CreateShader(Cache);
+}
+
+ComputeShader::ComputeShader()
+{
+
+}
+
+ComputeShader::~ComputeShader()
+{
+
+}
+
+void ComputeShader::CreateShader(const std::string& compShader)
+{
+	program_id = glCreateProgram();
+
+	comp_id = CompileShaderFile(GL_COMPUTE_SHADER, compShader);
+
+	glAttachShader(program_id, comp_id);
+
+	glLinkProgram(program_id);
+}
+
+GLuint ComputeShader::CompileShader()
+{
+	return comp_id;
+}
+
+GLuint ComputeShader::getShaderID(ShaderType type) const
+{
+	return comp_id;
+}
+
+void ComputeShader::LocalDebug() const
+{
+#ifdef _DEBUG
+	//DEBUG(comp_shader)
+#endif // _DEBUG
+}

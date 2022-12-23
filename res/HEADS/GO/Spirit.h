@@ -43,7 +43,7 @@ public:
 	float spirit_opacity = 0.9f;
 
 	SpiritType spr_type = SpiritType::NONE_SPIRIT;
-	mutable std::optional<Shaders> r_shader;
+	mutable std::optional<RenderShader> r_shader;
 
 	Spirit();
 	~Spirit();

@@ -4,7 +4,7 @@ Environment::Environment(const std::string& texpath)
 {
 
 	o_type = GO_ENVIR;
-	envir_shader = Shaders("IBRShader");	
+	envir_shader = RenderShader("IBRShader");	
 
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 
