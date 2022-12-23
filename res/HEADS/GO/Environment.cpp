@@ -8,8 +8,9 @@ Environment::Environment(const std::string& texpath)
 
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 
-	envir_hdr = Texture(texpath, is_using_HDR ? HDR_TEXTURE:PNG_TEXTURE, GL_REPEAT);
-	envir_hdr.Bind(); 
+	envir_IBL_spec = Texture(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_REPEAT);
+	envir_IBL_spec.Bind(); 
+	//envir_IBL_diff.GenIrradiaceConvFrom(envir_IBL_spec.GetTexID());
 
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
 	envir_spirit.SetTex();
@@ -26,25 +27,24 @@ Environment::Environment(const std::string& texpath)
 
 	o_vertArry.AddBuffer(o_vertBuffer, layout);
 
-	std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
+	auto* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
 	GLuint* index = indexArray->data();
 
 	o_indexBuffer = IndexBuffer(index, indexArray->size() * sizeof(GLuint)); 
 
 	envir_shader->InitShader = [&] {
 		envir_shader->UseShader();
-		envir_shader->SetValue("hdr_texture",		HDR_TEXTURE);
+		envir_shader->SetValue("hdr_texture",		IBL_TEXTURE);
 		envir_shader->SetValue("screen_texture",	BUFFER_TEXTURE + COMBINE_FB);
 		envir_shader->SetValue("id_texture",		BUFFER_TEXTURE + ID_FB);
 		envir_shader->SetValue("select_texture",	BUFFER_TEXTURE + ALPHA_FB);
 		envir_shader->SetValue("ID_color", id_color);
 		envir_shader->SetValue("RAND_color", id_color_rand);
-		//envir_shader->UnuseShader();
+		envir_shader->UnuseShader();
 	};
-	//frame_buffer.Unbind();
 
 	envir_frameBuffer->UnbindFrameBuffer();	
-	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	delete indexArray;
 }
 
 Environment::Environment()
@@ -55,7 +55,7 @@ Environment::Environment()
 Environment::~Environment()
 {
 	envir_shader->DelShad();
-	envir_hdr.DelTexture();
+	envir_IBL_spec.DelTexture();
 	envir_frameBuffer->Del();
 }
 
@@ -96,7 +96,7 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 	envir_shader->UseShader();
 	o_indexBuffer.Bind();
 	envir_frameBuffer->BindFrameBufferTex(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);
-	envir_hdr.Bind();
+	envir_IBL_spec.Bind();
 
 	if (envir_shader->is_shader_changed)
 		envir_shader->InitShader();

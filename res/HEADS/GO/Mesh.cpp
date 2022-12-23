@@ -115,7 +115,7 @@ void Mesh::SetObjShader(std::string path)
 
 		o_shader->SetValue("blen", 0.5f);
 		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-		o_shader->SetValue("Envir_Texture", HDR_TEXTURE);
+		o_shader->SetValue("Envir_Texture", IBL_TEXTURE);
 		o_shader->SetValue("RAND_color", id_color_rand);
 		o_shader->SetValue("U_ProjectM", o_Transform);
 		o_shader->SetValue("ID_color", id_color);

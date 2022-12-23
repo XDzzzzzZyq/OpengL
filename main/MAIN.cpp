@@ -37,24 +37,25 @@ void render(GLFWwindow* window) {
 	ImguiManager UI(window);
 	EventListener Event;
 	
+	DEBUG("\n---------------CAMERA----------------")
 	Camera camera(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera.SetPos({ 0.0f, 0.0f, 20.0f });
 	camera.ApplyTransform();
 	camera.GetInvTransform();
 	renderer.UseCamera(&camera);
-	DEBUG("---------------MESH----------------")
 
+	DEBUG("\n---------------MESH----------------")
 		Mesh go1("res/obj/monkey2.obj");
 	go1.SetObjShader("testS");
-	go1.SetTex("res/tex/avatar2.png", PNG_TEXTURE);
+	go1.SetTex("res/tex/avatar2.png", RGBA_TEXTURE);
 	go1.SetCenter();
 	go1.ApplyTransform();
 	renderer.UseMesh(&go1);
-	DEBUG("---------------MESH----------------")
 
+	DEBUG("\n---------------MESH----------------")
 		Mesh go2("res/obj/torus.obj");
 	go2.SetObjShader("testS");
-	go2.SetTex("res/tex/avatar1.png", PNG_TEXTURE);
+	go2.SetTex("res/tex/avatar1.png", RGBA_TEXTURE);
 	go2.SetCenter();
 	go2.SetPos({ 8, 0, 0 });
 	go2.SetScale(glm::vec3(1.5f));
@@ -62,40 +63,36 @@ void render(GLFWwindow* window) {
 	go1.SetParent(go2.GetTransformPtr());
 	renderer.UseMesh(&go2);
 
-	DEBUG("---------------MESH----------------")
-
+	DEBUG("\n---------------MESH----------------")
 		Mesh go3("res/obj/UVsphere.obj");
 	go3.SetObjShader("testS");
 	go3.SetPos({ -8,0,0 });
 	go3.SetScale({ 3,3,3 });
 	renderer.UseMesh(&go3);
 
-	DEBUG("---------------LIGHT----------------")
-
+	DEBUG("\n---------------LIGHT----------------")
 		Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1.SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1.ApplyTransform();
 	pointLight1.GenFloatData();
-	DEBUG("---------------LIGHT----------------")
 
-
+	DEBUG("\n---------------LIGHT----------------")
 		Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	pointLight2.GenFloatData();
 	renderer.UseLight(&pointLight1);
 	renderer.UseLight(&pointLight2);
-	DEBUG("---------------LINE----------------")
 
-
+	DEBUG("\n---------------LINE----------------")
 		DebugLine line;
 	line.PushDebugLine(5, 5, 5);
 	renderer.UseDebugLine(&line);
-	DEBUG("---------------ENVIR----------------")
 
+	DEBUG("\n---------------ENVIR----------------")
 		Environment environment("res/tex/hdr/room.hdr");
 	environment.SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	renderer.UseEnvironment(&environment);
-	DEBUG("---------------POINT----------------")
 
+	DEBUG("\n---------------POINT----------------")
 		DebugPoints points;
 	points.PushDebugPoint(5, 5, 5);
 	renderer.UseDebugPoints(&points);

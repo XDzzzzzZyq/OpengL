@@ -2,7 +2,7 @@
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
-	:m_path(texpath), m_buffer(nullptr),Tex_type(tex_type), Tex_slot(tex_type),
+	:m_path(texpath), m_buffer(nullptr), Tex_type(tex_type), Tex_slot(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
 
@@ -13,7 +13,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 	switch (tex_type)
 	{
-	case PNG_TEXTURE:
+	case RGBA_TEXTURE:
 
 		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
@@ -79,8 +79,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		}
 		break;
 
-	case HDR_TEXTURE:
-
+	case IBL_TEXTURE:
 		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -104,14 +103,15 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 #endif
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		if (m_buffer) {
-			stbi_image_free(m_buffer);
+		if (m_buffer_f) {
+			stbi_image_free(m_buffer_f);
 
 #ifdef _DEBUG
 			std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
 #endif
-		}else
-			std::cout << "HDR texture FAILED"<< std::endl;
+		}
+		else
+			std::cout << "HDR texture FAILED" << std::endl;
 		break;
 
 	case BUFFER_TEXTURE:
@@ -183,9 +183,9 @@ void Texture::Resize(const ImVec2& size)
 	im_w = size.x;
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 
-	if(Tex_type == PNG_TEXTURE || Tex_type == BUFFER_TEXTURE)
+	if (Tex_type == RGBA_TEXTURE || Tex_type == BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else if(Tex_type == HDR_BUFFER_TEXTURE || Tex_type == HDR_TEXTURE)
+	else if (Tex_type == HDR_BUFFER_TEXTURE || Tex_type == IBL_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
 	else 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
@@ -200,7 +200,7 @@ void Texture::Resize(float x, float y)
 	im_w = x;
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 	
-	if(Tex_type == BUFFER_TEXTURE)
+	if (Tex_type == BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	else if (Tex_type == HDR_BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);

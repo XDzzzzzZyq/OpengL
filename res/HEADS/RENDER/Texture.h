@@ -7,24 +7,24 @@
 
 enum TextureType
 {
-	NONE_TEXTURE, PNG_TEXTURE, JPG_TEXTURE, SPIRIT_TEXURE, HDR_TEXTURE, BUFFER_TEXTURE, HDR_BUFFER_TEXTURE, FLOAT_BUFFER_TEXTURE
+	NONE_TEXTURE, RGBA_TEXTURE, RGB_TEXTURE, SPIRIT_TEXURE, IBL_TEXTURE, BUFFER_TEXTURE = 6, HDR_BUFFER_TEXTURE, FLOAT_BUFFER_TEXTURE
 };
 
 class Texture
 {
 private:
-	int im_w, im_h, im_bpp = 0;
+	int im_w = 0, im_h = 0, im_bpp = 0;
 	std::string m_path;
 	GLubyte* m_buffer;
 	GLfloat* m_buffer_f;
-	GLuint Tex_ID;
+	GLuint Tex_ID = 0;
 	
 public:
 	TextureType Tex_type = TextureType::NONE_TEXTURE;
 	mutable GLuint Tex_slot;
 
-	Texture(const std::string& texpath, TextureType tex_type,GLuint Tile_type);
-	Texture(GLuint Tile_type, int x, int y);    //for fbo
+	Texture(const std::string& texpath, TextureType tex_type,GLuint Tile_type); //using tex_type as its slot, but you can change it if you want
+	Texture(GLuint Tile_type, int x, int y);    //for FBO
 	Texture();
 	~Texture();
 

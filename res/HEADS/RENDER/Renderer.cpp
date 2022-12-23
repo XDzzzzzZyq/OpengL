@@ -202,7 +202,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//DEBUG(viewport_offset)
 
-			envir_list[0]->envir_hdr.Bind(HDR_TEXTURE);
+			envir_list[0]->envir_IBL_spec.Bind(IBL_TEXTURE);
 			for (const auto& obj : mesh_list)
 			{
 
@@ -220,7 +220,7 @@ void Renderer::Render(bool rend, bool buff) {
 				obj.second->o_shader->is_shader_changed = false;
 			}
 			is_light_changed = false;
-			envir_list[0]->envir_hdr.Unbind();
+			envir_list[0]->envir_IBL_spec.Unbind();
 
 		//glDisable(GL_STENCIL_TEST);
 		//////////// DEBUG MESHES ////////////
