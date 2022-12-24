@@ -40,8 +40,9 @@ void Viewport::RenderLayer() const
 		item_list[0]->RenderItem();
 
 		GetLayerSize();
-
+		if(uly_name == "Viewport")
 			EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
+
 		if (IsChangeEnd())
 			if (resize_event)
 				resize_event();

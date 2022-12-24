@@ -1,3 +1,4 @@
+
 #include "ImguiManager.h"
 
 void ImguiManager::DefultViewports() {
@@ -46,6 +47,9 @@ void ImguiManager::DefultViewports() {
 
 	ImguiLayer* viewport = new Viewport("Viewport");
 	PushImguiLayer(viewport);
+
+	ImguiLayer* compshader_result = new Viewport("CompShader");
+	PushImguiLayer(compshader_result);
 
 	ImguiLayer* outline = new Outliner("Outliner");
 	PushImguiLayer(outline);
