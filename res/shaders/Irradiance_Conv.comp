@@ -1,0 +1,15 @@
+#version 460 core
+
+layout(local_size_x = 1, local_size_y =1, local_size_z = 1) in;
+layout(rgba16f, binding = 4) uniform image2D source;
+layout(rgba16f, binding = 5) uniform image2D result;
+
+void main(){
+
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+	vec2 uvf = vec2(uv)/vec2(imageSize(result));
+	vec4 color = imageLoad(source, uv*ivec2(64));
+
+	imageStore(result, uv, color);
+
+}

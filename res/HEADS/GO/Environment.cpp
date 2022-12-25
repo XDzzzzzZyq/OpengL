@@ -10,7 +10,8 @@ Environment::Environment(const std::string& texpath)
 
 	envir_IBL_spec = Texture(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_REPEAT);
 	envir_IBL_spec.Bind(); 
-	//envir_IBL_diff.GenIrradiaceConvFrom(envir_IBL_spec.GetTexID());
+	//envir_IBL_diff = Texture("res/tex/hdr/sky.png", RGBA_TEXTURE, GL_REPEAT);
+	envir_IBL_diff.GenIrradiaceConvFrom(envir_IBL_spec);
 
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
 	envir_spirit.SetTex();

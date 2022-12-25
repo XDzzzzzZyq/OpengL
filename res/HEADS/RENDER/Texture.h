@@ -5,6 +5,8 @@
 
 #include "support.h"
 
+#include "Shaders.h"
+
 enum TextureType
 {
 	NONE_TEXTURE, RGBA_TEXTURE, RGB_TEXTURE, SPIRIT_TEXURE, IBL_TEXTURE, BUFFER_TEXTURE = 6, HDR_BUFFER_TEXTURE, FLOAT_BUFFER_TEXTURE
@@ -44,5 +46,7 @@ public:
 public: // for texture processing
 	void GenIrradiaceConvFrom(GLuint _Tar_ID);
 	void GenIrradiaceConvFrom(const Texture& _Tar_Tex);
+private:
+	void GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE);
 };
 

@@ -41,7 +41,8 @@ public:
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
 public:
 	virtual void LocalDebug() const = 0;
-
+public:
+	static const char* GetShaderTypeName(GLuint _Type, bool _using_filename = false);
 };
 
 
@@ -84,6 +85,8 @@ public:
 	void ResetID(GLuint _id) { comp_id = _id; }
 	void CreateShader(const std::string& compShader);
 	GLuint CompileShader();
+public:
+	void RunComputeShader(GLuint workgroup_count_x = 1, GLuint workgroup_count_y = 1, GLuint workgroup_count_z = 1) const;
 
 public:
 	inline GLuint getShaderID(ShaderType type) const override;

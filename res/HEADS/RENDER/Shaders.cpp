@@ -13,14 +13,14 @@ GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
 	//std::cout << status << std::endl;
-	std::string type = TYPE == GL_VERTEX_SHADER ? "Vertex" : "Frag";
+	const std::string type = Shaders::GetShaderTypeName(TYPE);
 	if (!status) {
 		int length;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 		char* message = new char[length];
 
 		glGetShaderInfoLog(id, length, &length, message);
-		std::cout << type + " shader error" << std::endl;
+		std::cout << type + " error" << std::endl;
 		std::cout << message << std::endl;
 		//delete message;
 		return 0;
@@ -172,8 +172,20 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const int* va0, A
 	}
 }
 
-
-
+const char* Shaders::GetShaderTypeName(GLuint _Type, bool _using_filename)
+{
+	switch (_Type)
+	{
+	case GL_VERTEX_SHADER:
+		return _using_filename ? ".vert" : "Vertex Shader"; break;
+	case GL_FRAGMENT_SHADER:
+		return _using_filename ? ".frag" : "Fragment Shader"; break;
+	case GL_COMPUTE_SHADER:
+		return _using_filename ? ".comp" : "Compute Shader"; break;
+	default:
+		break;
+	}
+}
 
 
 
@@ -316,7 +328,7 @@ ComputeShader::ComputeShader(const std::string& name)
 	std::ifstream Stream(ShaderLib::folder_root + name + ShaderLib::file_type[COMPUTE_SHADER]);
 	std::string Cache, Line;
 	while (getline(Stream, Line))
-		Cache += Line;
+		Cache += Line+"\n";
 
 	CreateShader(Cache);
 }
@@ -345,6 +357,13 @@ void ComputeShader::CreateShader(const std::string& compShader)
 GLuint ComputeShader::CompileShader()
 {
 	return comp_id;
+}
+
+void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint workgroup_count_y /*= 1*/, GLuint workgroup_count_z /*= 1*/) const
+{
+	UseShader();
+	glDispatchCompute(workgroup_count_x, workgroup_count_y, workgroup_count_z);
+	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }
 
 GLuint ComputeShader::getShaderID(ShaderType type) const
