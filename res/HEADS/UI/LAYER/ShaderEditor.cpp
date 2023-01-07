@@ -58,26 +58,22 @@ void ShaderEditor::UpdateLayer()
 
 }
 
-void ShaderEditor::RenderName(const std::string& _label, std::string & _name, bool read_only) const
+void ShaderEditor::RenderName(const std::string& _label, std::string* _name, float _width, bool read_only) const
 {
-	char name[CHAR_MAX];
-	_name.copy(name, CHAR_MAX, 0);
-	*(name + _name.size()) = '\n';
-	ImGui::InputText(_label.c_str(), name, CHAR_MAX, read_only?ImGuiInputTextFlags_ReadOnly:0);
-
-	if (!read_only)
-		_name = std::string(name);
+	RenderName((_label+*_name).c_str(), _name, _width, read_only);
 }
 
-void ShaderEditor::RenderName(const char* _label, std::string& _name, bool read_only /*= true*/) const
+void ShaderEditor::RenderName(const char* _label, std::string* _name, float _width, bool read_only /*= true*/) const
 {
 	char name[CHAR_MAX];
-	_name.copy(name, CHAR_MAX, 0);
-	*(name + _name.size()) = '\n';
-	ImGui::InputText(_label, name, CHAR_MAX, read_only ? ImGuiInputTextFlags_ReadOnly : 0);
+	std::string temp = *_name;
+	//DEBUG(_name->size())
+	temp.copy(name, temp.size());
+	*(name + temp.size()) = '\0';
+	ImGui::InputTextMultiline(_label, name, CHAR_MAX, ImVec2(_width==0.0f?ImGui::GetContentRegionAvail().x:_width, 20), ImGuiInputTextFlags_NoName | (read_only ? ImGuiInputTextFlags_ReadOnly : 0));
 
 	if (!read_only)
-		_name = std::string(name);
+		*_name = std::string(name);
 }
 
 void ShaderEditor::RenderShaderStruct() const
@@ -193,7 +189,7 @@ void ShaderEditor::RenderShaderStruct() const
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].struct_def_list) {
 				ImGui::PushID(vari_id);
 				if (ImGui::TreeNode(std::get<1>(i).c_str())) {
-					RenderName("struct name", std::get<1>(i));
+					RenderName("struct name", &std::get<1>(i));
 					RenderArgs(std::get<2>(i), 0);
 					ImGui::TreePop();
 				}ImGui::PopID();
@@ -229,6 +225,10 @@ void ShaderEditor::RenderShaderStruct() const
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].const_list) {
 				ImGui::PushID(vari_id);
 				if (ImGui::TreeNode(std::get<1>(i).c_str())) {
+					RenderName(("name_"+std::get<1>(i)).c_str(), &std::get<1>(i), 100);
+					ImGui::SameLine();
+					RenderName(("content" + std::get<1>(i)).c_str(), &std::get<2>(i), 200, false);
+
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
@@ -259,7 +259,7 @@ void ShaderEditor::RenderShaderStruct() const
 					active_func = vari_id;
 				}
 				if (active_func==vari_id && is_op) {
-					RenderName("func name", std::get<1>(i));
+					RenderName("func name", &std::get<1>(i));
 
 					if (ImGui::TreeNode("arguments list")) {
 						RenderArgs(std::get<3>(i), -1);

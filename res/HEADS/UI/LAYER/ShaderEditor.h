@@ -59,8 +59,8 @@ public:
 	void UpdateLayer() override;
 
 public:
-	void RenderName(const std::string& _label, std::string& _name, bool read_only = true) const;
-	void RenderName(const char* _label, std::string& _name, bool read_only = true) const;
+	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
+	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderShaderStruct() const;
 	void RenderLayout(int* _loc, std::string* _name, ParaType* _type) const;
 	void RenderSSBO(int* _loc, std::string* _name, ParaType* _type, Args* _args) const;
