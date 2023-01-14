@@ -140,8 +140,8 @@ void render(GLFWwindow* window) {
 		line.PushDebugLine(newpoint2);
 		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
 		//go1.o_shader->ShaderLibDebug();
-		environment.envir_shader->ShaderLibDebug();
-		//ShaderStruct::Debug();
+		//environment.envir_shader->ShaderLibDebug();
+		environment.envir_IBL_diff.GenIrradiaceConvFrom(environment.envir_IBL_spec);
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);

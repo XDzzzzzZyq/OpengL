@@ -1,15 +1,89 @@
 #version 460 core
 
-layout(local_size_x = 1, local_size_y =1, local_size_z = 1) in;
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 layout(rgba16f, binding = 4) uniform image2D source;
 layout(rgba16f, binding = 5) uniform image2D result;
+
+const float pi = 3.1415926;
+const float s = 1;
+const int max_step = 32;
+const vec2 invAtan = vec2(0.1591, 0.3183);
+
+vec2 genHdrUV(vec3 dir) {
+	vec2 uv;
+
+	vec2 xy_dir = normalize(vec2(dir));
+	uv.x = atan(xy_dir.y, xy_dir.x)/(2*pi) + 0.5; 
+	uv.y = atan(dir.z, length(vec2(dir)))/pi + 0.5;
+	return uv;
+}
+
+vec3 genDirFromRUV(vec2 uvf_r){
+	return vec3(cos(uvf_r.y*pi/2)*cos(uvf_r.x*pi), cos(uvf_r.y*pi/2)*sin(uvf_r.x*pi),sin(uvf_r.y*pi/2));
+}
+
+vec3 genDirFromAngle(vec2 angle){
+	return vec3(cos(angle.y)*cos(angle.x), cos(angle.y)*sin(angle.x),sin(angle.y));
+}
+
+vec2 AngleToRUV(vec2 angle){
+	return 0.5*angle/vec2(pi, pi/2) +vec2(0.5);
+}
 
 void main(){
 
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec2 uvf = vec2(uv)/vec2(imageSize(result));
-	vec4 color = imageLoad(source, uv*ivec2(64));
+	vec4 color1 = imageLoad(source, uv*ivec2(64));
 
-	imageStore(result, uv, color);
+	vec2 uvf_r = uvf*2-vec2(1);
+	vec4 color2 = vec4(0);// = imageLoad(source, ivec2(genHdrUV(dir)*imageSize(source)))
 
+	vec2 angle = vec2(uvf_r.x*pi, uvf_r.y*pi/2);
+	float factor = 0;
+
+	vec3 dir_f = genDirFromAngle(angle);
+	vec3 dir_u = genDirFromAngle(angle+vec2(0, pi/2));
+	vec3 dir_l = cross(dir_f, dir_u);
+
+	for(int i = -max_step; i<=max_step; i++){
+		int j_m = max_step-abs(i);
+		for(int j = -j_m; j<=j_m; j++){
+			float a = s*float(i)/max_step;
+			float b = s*float(j)/max_step;
+			float c = 1 - abs(a) - abs(b);
+
+			vec3 dir = normalize(a*dir_u + b*dir_l + c*dir_f);
+			float coef = c/length(vec3(a,b,c));
+
+			color2 += imageLoad(source, ivec2(fract(genHdrUV(dir))*imageSize(source))) * coef;
+			factor += coef;
+		}
+	
+	}
+
+	//color2 = imageLoad(source, ivec2(AngleToUV(angle)*imageSize(source)));
+	//for(int i = -max_step/2; i<max_step/2; i++){ // rad
+	//	float dX = i*s*2*pi/max_step;
+	//	for(int j = 0; j<max_step/4; j++){
+	//		float dY = j*s*2*pi/max_step;
+	//		
+	//		float frac = cos(dY)*( sin(dY) * sin(dY) );
+	//		//float frac = pow(cos(dY),1);
+	//
+	//		vec2 tar_angle = angle+vec2(dX, dY);
+	//		if(tar_angle.x<-pi){ tar_angle.x + 2*pi; }
+	//		if(tar_angle.x> pi){ tar_angle.x - 2*pi; }
+	//		if(tar_angle.y<-pi/2){ tar_angle.y = -pi-tar_angle.y; }
+	//		if(tar_angle.y> pi/2){ tar_angle.y =  pi-tar_angle.y; }
+	//
+	//		vec2 uvt = AngleToRUV(tar_angle);
+	//
+	//		color2 += imageLoad(source, ivec2(fract(uvt)*imageSize(source))) * frac;
+	//		factor += frac;
+	//	}
+	//}
+	color2/=factor;
+	imageStore(result, uv, color2*vec4(vec3(3),1));
+	//imageStore(result, uv, vec4(fract(5*uvf),1,1));
 }

@@ -13,6 +13,8 @@ in vec4 Snormal_color;
 
 uniform sampler2D U_Texture;
 uniform sampler2D Envir_Texture;
+uniform sampler2D Envir_Texture_diff;
+
 uniform float blen[3];
 uniform vec3 ID_color;
 uniform vec3 RAND_color;
@@ -62,6 +64,8 @@ struct Camera {
 pointLight pL_list[5];
 sunLight sL_list[2];
 spotLight spL_list[3];
+
+const float test_para = 1.0;
 
 float ACESFilm(float x)
 {

@@ -246,7 +246,9 @@ void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)
 
 void Texture::GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
-		im_w = _tar_w/64; im_h = _tar_h/64; Tex_type = _tar_type;
+	Timer timer("Start Irradiance Convolution");
+	
+	im_w = _tar_w/64; im_h = _tar_h/64; Tex_type = _tar_type;
 	if (Tex_ID != 0)DelTexture();   //reset
 
 	glGenTextures(1, &Tex_ID);//for storage
@@ -278,7 +280,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureT
 		break;
 	}
 
-	static ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
+	ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
 
 	//glActiveTexture(GL_TEXTURE0 + _tar_type + 1);
 	glBindImageTexture(_tar_type, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);

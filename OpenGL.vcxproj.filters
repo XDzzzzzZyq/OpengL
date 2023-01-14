@@ -195,10 +195,10 @@
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main\MAIN.cpp">
+    <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp">
+    <ClCompile Include="main\MAIN.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
