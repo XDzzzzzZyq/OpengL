@@ -361,7 +361,6 @@ GLuint ComputeShader::CompileShader()
 
 void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint workgroup_count_y /*= 1*/, GLuint workgroup_count_z /*= 1*/) const
 {
-	UseShader();
 	glDispatchCompute(workgroup_count_x, workgroup_count_y, workgroup_count_z);
 	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }

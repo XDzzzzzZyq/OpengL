@@ -248,44 +248,57 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureT
 {
 	Timer timer("Start Irradiance Convolution");
 	
-	im_w = _tar_w/64; im_h = _tar_h/64; Tex_type = _tar_type;
 	if (Tex_ID != 0)DelTexture();   //reset
 
 	glGenTextures(1, &Tex_ID);//for storage
 	glBindTexture(GL_TEXTURE_2D, Tex_ID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 5);
+
+
+	im_w = _tar_w/2; im_h = _tar_h/2; Tex_type = _tar_type;
+
 
 	switch (_tar_type)
 	{
 	case RGBA_TEXTURE:
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGBA8, im_w, im_h);
+		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		break;
 	case RGB_TEXTURE:
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGB8, im_w, im_h);
+		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 		break;
 	case IBL_TEXTURE:
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_FLOAT, nullptr);
+		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGBA16F, im_w, im_h);
+		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, lod_w, lod_h, GL_RGBA, GL_FLOAT, nullptr);
 		break;
 	default:
 		break;
 	}
 
-	ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
+	GLDEBUG
+	LOOP(6) { //0 1 2 3 4 5
+		int lod_w = im_w / pow(2, i);
+		int lod_h = im_h / pow(2, i);
 
-	//glActiveTexture(GL_TEXTURE0 + _tar_type + 1);
-	glBindImageTexture(_tar_type, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);
-	glBindImageTexture(this->Tex_type+1, this->Tex_ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA16F); // IBL_TEXTURE -> IBL_TEXTURE + 1
-	//irradiance_conv.SetValue("res", _tar_type + 1);
+		ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
 
-	irradiance_conv.RunComputeShader(im_w, im_h);
+		//glActiveTexture(GL_TEXTURE0 + _tar_type + 1);
+		glBindImageTexture(_tar_type, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);
+		glBindImageTexture(this->Tex_type + 1, this->Tex_ID, i, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA16F); // IBL_TEXTURE -> IBL_TEXTURE + 1
+
+		irradiance_conv.UseShader();;
+		irradiance_conv.SetValue("s", (float)(i+1)/6);
+		irradiance_conv.SetValue("max_step", 32 / (int)pow(2, 5-i));
+		irradiance_conv.RunComputeShader(lod_w, lod_h);
+
+	}
+	
 }

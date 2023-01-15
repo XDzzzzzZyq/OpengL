@@ -5,8 +5,8 @@ layout(rgba16f, binding = 4) uniform image2D source;
 layout(rgba16f, binding = 5) uniform image2D result;
 
 const float pi = 3.1415926;
-const float s = 1;
-const int max_step = 32;
+uniform float s;
+uniform int max_step;
 const vec2 invAtan = vec2(0.1591, 0.3183);
 
 vec2 genHdrUV(vec3 dir) {
@@ -34,7 +34,6 @@ void main(){
 
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec2 uvf = vec2(uv)/vec2(imageSize(result));
-	vec4 color1 = imageLoad(source, uv*ivec2(64));
 
 	vec2 uvf_r = uvf*2-vec2(1);
 	vec4 color2 = vec4(0);// = imageLoad(source, ivec2(genHdrUV(dir)*imageSize(source)))
@@ -57,32 +56,11 @@ void main(){
 			float coef = c/length(vec3(a,b,c));
 
 			color2 += imageLoad(source, ivec2(fract(genHdrUV(dir))*imageSize(source))) * coef;
-			factor += coef;
+			factor += 1;
 		}
 	
 	}
 
-	//color2 = imageLoad(source, ivec2(AngleToUV(angle)*imageSize(source)));
-	//for(int i = -max_step/2; i<max_step/2; i++){ // rad
-	//	float dX = i*s*2*pi/max_step;
-	//	for(int j = 0; j<max_step/4; j++){
-	//		float dY = j*s*2*pi/max_step;
-	//		
-	//		float frac = cos(dY)*( sin(dY) * sin(dY) );
-	//		//float frac = pow(cos(dY),1);
-	//
-	//		vec2 tar_angle = angle+vec2(dX, dY);
-	//		if(tar_angle.x<-pi){ tar_angle.x + 2*pi; }
-	//		if(tar_angle.x> pi){ tar_angle.x - 2*pi; }
-	//		if(tar_angle.y<-pi/2){ tar_angle.y = -pi-tar_angle.y; }
-	//		if(tar_angle.y> pi/2){ tar_angle.y =  pi-tar_angle.y; }
-	//
-	//		vec2 uvt = AngleToRUV(tar_angle);
-	//
-	//		color2 += imageLoad(source, ivec2(fract(uvt)*imageSize(source))) * frac;
-	//		factor += frac;
-	//	}
-	//}
 	color2/=factor;
 	imageStore(result, uv, color2*vec4(vec3(3),1));
 	//imageStore(result, uv, vec4(fract(5*uvf),1,1));
