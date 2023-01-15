@@ -20,14 +20,14 @@ void ImguiManager::DefultViewports() {
 
 	ImguiLayer* layer1 = new ParamControl("test layer");
 	layer1->uly_type = PARAS_UILAYER;
-	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "test"));
+	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "testf", 0.0, 5.0));
 	layer1->PushItem(new UI::ParaInput(INT_INP, "test"));
 	layer1->PushItem(new UI::ParaInput(BOOL_INP, "test"));
 	layer1->PushItem(new UI::ParaInput(RGB_INP, "test"));
 	layer1->PushItem(new UI::Button("testB"));
 	layer1->PushItem(new UI::Text("test[%.1f]"));
 	PushImguiLayer(layer1);
-	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "test")->para_data.fdata);
+	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "testf")->para_data.fdata);
 
 	ImguiLayer* layer2=new ParamControl("__Parameters__");
 	layer2->uly_type = PARAS_UILAYER;

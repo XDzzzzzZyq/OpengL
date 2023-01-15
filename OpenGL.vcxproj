@@ -398,6 +398,7 @@
     <None Include="res\shaders\SpiritShader.vert" />
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
+    <None Include="res\shaders\testS_diff.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dep\cubicSpline\CubicSpline.h" />

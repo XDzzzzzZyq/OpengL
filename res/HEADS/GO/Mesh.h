@@ -36,12 +36,24 @@ public:
 
 	void RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_list);
 
-	void SetObjShader(std::string path);
+	void SetObjShader(std::string vert, std::string frag = "");
 	void SetTex(std::string path, TextureType slot);
 	void SetCenter();
+	template<typename T>
+	void SetShaderValue(std::string _name, T _v);
 
 	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&o_shader.value()); }
 	
 	void DeleteObj();
 };
+
+template<typename T>
+void Mesh::SetShaderValue(std::string _name, T _v)
+{
+	o_shader->UseShader();
+	o_shader->SetValue(_name, _v);
+	o_shader->UnuseShader();
+
+	DEBUG(_v)
+}
 

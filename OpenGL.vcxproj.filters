@@ -658,6 +658,7 @@
       <Filter>头文件</Filter>
     </None>
     <None Include="res\shaders\Irradiance_Conv.comp" />
+    <None Include="res\shaders\testS_diff.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

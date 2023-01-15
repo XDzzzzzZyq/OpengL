@@ -65,7 +65,7 @@ void render(GLFWwindow* window) {
 
 	DEBUG("\n---------------MESH----------------")
 		Mesh go3("res/obj/UVsphere.obj");
-	go3.SetObjShader("testS");
+	go3.SetObjShader("testS", "testS_diff");
 	go3.SetPos({ -8,0,0 });
 	go3.SetScale({ 3,3,3 });
 	renderer.UseMesh(&go3);
@@ -124,7 +124,8 @@ void render(GLFWwindow* window) {
 	AverageTime<500> AvTime;
 	float FrameCount = 0;
 	int tex_type = 0;
-	float testfloat[3] = { 0.0f,0.5f,1.0f };
+	static float testfloat = 0.0f;
+
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
 		glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
@@ -171,6 +172,7 @@ void render(GLFWwindow* window) {
 		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
 		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
 		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
+		testfloat = UI.GetParaValue("test layer", "testf")->para_data.fdata;
 		renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 	};
 	UI.GetCurrentWindow();
@@ -196,6 +198,8 @@ void render(GLFWwindow* window) {
 		go2.SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
 		go2.SetScale(glm::vec3(blend * 3));
 		go2.SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
+
+		go3.SetShaderValue("blen", testfloat);
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
