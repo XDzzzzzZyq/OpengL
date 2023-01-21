@@ -93,6 +93,7 @@ void Shaders::ResetID(ShaderType type, GLuint id)
 void Shaders::ParseShaderCode(const std::string& _code, ShaderType _type)
 {
 	shader_struct_list[_type].Reset();
+	_LINK_LOC = {};
 	if (_code == "") {
 		std::stringstream Stream(shader_list[_type]);
 		ParseShaderStream(Stream, _type);

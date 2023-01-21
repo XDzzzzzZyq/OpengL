@@ -30,12 +30,16 @@ void Nodes::PushOut(const Parameters& _out)
 
 void Nodes::LinkIn(int _self_idx, Nodes* _tar, int _idx)
 {
+	if (_tar == this) return;
+
 	n_in_link[&n_in[_self_idx]] = std::make_pair(_tar, _idx);
 	n_out_link[&_tar->n_out[_idx]] = std::make_pair(this, _self_idx);
 }
 
 void Nodes::LinkOut(int _self_idx, Nodes* _tar, int _idx)
 {
+	if (_tar == this) return;
+
 	n_out_link[&n_out[_self_idx]] = std::make_pair(_tar, _idx);
 	n_in_link[&_tar->n_in[_idx]] = std::make_pair(this, _self_idx);
 }

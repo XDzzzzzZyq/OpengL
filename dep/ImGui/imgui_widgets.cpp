@@ -1187,7 +1187,7 @@ bool ImGui::CheckboxFlags(const char* label, ImU64* flags, ImU64 flags_value)
     return CheckboxFlagsT(label, flags, flags_value);
 }
 
-bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col, bool* is_hovered, bool _is_connected)
+bool ImGui::PinButton(const char* label, const char* _ID, bool active, const ImVec2& _center, const ImVec2& _size, bool _is_right, ImU32 _col, bool* is_hovered, bool _is_connected)
 {
     ImGui::SetCursorScreenPos(_center);
     
@@ -1197,7 +1197,7 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
 
 	ImGuiContext& g = *GImGui;
 	const ImGuiStyle& style = g.Style;
-	const ImGuiID id = window->GetID(label);
+	const ImGuiID id = window->GetID(_ID);
     const ImVec2 label_size = CalcTextSize(label, NULL, true) * _size[0];
 
 	const float square_sz = GetFrameHeight() * _size[0];
@@ -1246,7 +1246,7 @@ bool ImGui::PinButton(const char* label, bool active, const ImVec2& _center, con
         else
             RenderText(label_pos - label_size * ImVec2(0, 1) - _size * ImVec2(10, 0) - ImVec2(0,3), label);
 
-	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, _ID, g.LastItemData.StatusFlags);
 
 	ImGui::SetWindowFontScale(1);
     if(is_hovered)

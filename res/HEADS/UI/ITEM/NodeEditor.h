@@ -13,6 +13,7 @@ enum NodeEditorType
 };
 
 struct ImguiNodes {
+
 public:
 	ImguiNodes(Nodes* _node) :m_node(_node) {}
 
@@ -36,6 +37,8 @@ public:
 class NodeEditor : public EventListener, public Transform2D
 {
 private:
+	enum ConnectType { O_I, O_M, M_I };
+private:
 	std::vector<ImguiNodes> _node_pool;
 	std::unordered_map<Nodes*, int> _node_index_cache;
 	void PushNode(Nodes* _node) { _node_pool.emplace_back(_node); _node_index_cache[_node] = _node_pool.size() - 1; }
@@ -46,19 +49,29 @@ private:
 		}
 	}
 
+	ConnectType editing_cn_type = O_I;
+	ConnectType editing_cn_type_b = O_I;
+	ParaType editing_para_type{};
 	unsigned int active_node_id;
 	Parameters* editing_in_pin;
 	Parameters* editing_out_pin;
 	Parameters* hovered_pin;
 	Parameters* pressed_pin;
 	ImguiNodes* editing_node;
+	ImguiNodes* hovered_node;
 
 	ImVec2 tar_pin_pos{};
 private:
 	bool no_node_clicked = true;
 	bool is_editing_pin_in;
 	bool is_editing_pin_out;
+	bool is_hover_on_in;
+	bool is_press_on_in;
+	bool is_hover_on_out;
+	bool is_press_on_out;
 	bool LMB_press = false;
+
+	void ResetState();
 private:
 	float th_curvity = 1.6f;
 	float th_offset = 5;
