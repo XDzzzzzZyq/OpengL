@@ -95,7 +95,7 @@ void Renderer::EventInit()
 
 void Renderer::LMB_CLICK()
 {
-	if (IsClick()) {
+	if (IsMouseClick()) {
 		pre_act_go_ID = active_GO_ID;
 
 		active_GO_ID = GetSelectID(mouse_x, mouse_y);

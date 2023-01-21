@@ -57,8 +57,8 @@ public:
 	static bool is_mouse_pressed;
 	static bool is_key_pressed_b;
 	static bool is_mouse_pressed_b;
-	bool IsLeft() const { return is_mouse_pressed_b == true && is_mouse_pressed == false; }
-	bool IsClick() const {	return is_mouse_pressed_b == false && is_mouse_pressed == true; }
+	bool IsMouseLeft() const { return is_mouse_pressed_b == true && is_mouse_pressed == false; }    // true if mouse button on Left
+	bool IsMouseClick() const {	return is_mouse_pressed_b == false && is_mouse_pressed == true; }  // true if mouse button on Click
 public:
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }

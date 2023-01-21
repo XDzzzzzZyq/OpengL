@@ -160,7 +160,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
 			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2);
 
-			if (IsClick())
+			if (IsMouseClick())
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
 					if (ImGui::GetMousePos() < ImVec2(node.header.x + (node.max.x - node.header.x) * 0.125, node.min.y))
 						node->is_open = !node->is_open;
@@ -363,7 +363,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 			break;
 		case NodeEditor::O_M:
-			if (EventListener::IsLeft()) {
+			if (EventListener::IsMouseLeft()) {
 				if (hovered_pin_b == nullptr) {							// connect to nothing
 					Nodes::BreakLink(pressed_pin_b, Nodes::IN);
 					goto skip_O_M;
@@ -401,7 +401,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 			break;
 		case NodeEditor::M_I:
-			if (EventListener::IsLeft()) {
+			if (EventListener::IsMouseLeft()) {
 				if (hovered_pin_b == nullptr) {							//connect to nothing
 					Nodes::BreakLink(editing_in_pin_b, Nodes::IN);
 					goto skip_M_I;
@@ -465,7 +465,7 @@ void NodeEditor::Resize()
 
 void NodeEditor::Reset()
 {
-	if (IsClick()) {
+	if (IsMouseClick()) {
 		if (no_node_clicked)
 			active_node_id = 0;
 
