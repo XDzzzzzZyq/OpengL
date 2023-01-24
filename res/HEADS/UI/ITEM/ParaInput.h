@@ -13,7 +13,8 @@ namespace UI {
 		//ParaInput(ImItemType type, const std::string& name, const T& _def);
 		ParaInput(const Parameters& para);
 		ParaInput(ImItemType type, const std::string& name, float min, float max, float def=0.0f);
-
+	public:
+		mutable bool is_value_changed;
 		Parameters uitm_para;
 	public:
 		void SetType(ImItemType _type);
@@ -26,6 +27,9 @@ namespace UI {
 		}
 
 		void RenderItem() const override;
+		static bool RenderParam(const Parameters* para_param, const char* _ID, ImItemType _type = FLOAT_INP, float _size = 1.0f);							// UI panel
+		static bool RenderParam(const Parameters* para_param, const char* _ID, ImItemType _type, float _size, float _length);	// Node panel
+		static bool RenderParam(const Parameters* para_param, const char* _name, const char* _ID, ImItemType _type = FLOAT_INP, bool _is_movable = false, float _size = 1.0f, float _length = 10.0f);   //
 		Parameters* GetPara() override;
 	};
 }

@@ -4,6 +4,7 @@
 #include "Nodes.h"
 
 #include "ImguiItem.h"
+#include "ParaInput.h"
 #include "ImGui/imgui_internal.h"
 #include "EventListener.h"
 
@@ -70,6 +71,8 @@ private:
 	bool is_hover_on_out;
 	bool is_press_on_out;
 	bool LMB_press = false;
+
+	bool is_node_movable;
 
 	void ResetState();
 private:

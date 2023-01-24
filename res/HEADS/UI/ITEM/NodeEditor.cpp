@@ -39,7 +39,7 @@ NodeEditor::NodeEditor(NodeEditorType type)
 	add->PushIn({ VEC2_PARA, "vec2_test" });
 	add->PushIn({ VEC3_PARA, "vec3_test" });
 	add->PushOut({ INT_PARA, "int3" });
-	add->PushOut({ VEC4_PARA, "vec4" });
+	add->PushOut({ VEC4_PARA, "?adwasdw" });
 	PushNode(add);
 
 	Nodes* sub = new Nodes{ "Subtract", VEC_MATH_NODE };
@@ -84,6 +84,9 @@ void NodeEditor::ResetState()
 	editing_cn_type_b = editing_cn_type;
 	editing_cn_type = O_I;
 	tar_pin_pos = { 0,0 };
+
+	if(!LMB_press)
+		is_node_movable = true;
 }
 
 void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
@@ -128,7 +131,6 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 		///////////////////////// RENDER ///////////////////////////
 		const float rounding = th_rounding * o_scale[0];
-
 		const float pin_offset = th_offset * o_scale[0];
 		const ImVec2 pin_size = ImVec2(0.1, 0.1) * o_scale;
 		const ImVec2 head_size = ImVec2(0, 15) * o_scale;
@@ -201,10 +203,10 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					Parameters* tar_o = is_connected ? Nodes::GetParamPtr(Nodes::n_in_link[&i_p], false) : nullptr; // get the link target ptr
 
 					bool hovered = false;
-					const bool click = ImGui::PinButton(i_p.para_name.c_str(), std::to_string((int)&i_p).c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type], &hovered, is_connected);
+					const bool click = ImGui::PinButton(i_p.para_name.c_str(), (std::to_string((int)&i_p)+"p").c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type], &hovered, is_connected);
 
 #ifdef _DEBUG
-					if (hovered) {
+					if (hovered) { 
 						// for debug
 						ImGui::Text("this_i: 0x%x", &i_p);
 						ImGui::Text(is_connected ? "C" : "NC");
@@ -266,6 +268,13 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 						tar_pin_pos = inp_curs;
 						editing_node = &node;
 						editing_para_type = i_p.para_type;
+					}
+
+					// [ Slider ]
+					if (!is_connected) {
+						inp_curs.y += pin_offset;
+						ImGui::SetCursorScreenPos(inp_curs + ImVec2(o_scale[0] * 2, 0));
+						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, (std::to_string((int)&i_p) + "s").c_str(), FLOAT_INP, o_scale[0]/3, 1.7);
 					}
 
 					inp_curs.y += pin_offset;
@@ -350,7 +359,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 
 			//[  Move  ]
-			if (node->n_id == active_node_id && LMB_press)
+			if (node->n_id == active_node_id && is_node_movable && LMB_press)
 				if (!is_editing_pin_in && !is_editing_pin_out)
 					node->Move((glm::vec2(-1, 1) / o_scale) * EventListener::GetDeltaMouse());
 
