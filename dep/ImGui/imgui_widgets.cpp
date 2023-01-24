@@ -3029,7 +3029,7 @@ bool ImGui::SliderBehavior(const ImRect& bb, ImGuiID id, ImGuiDataType data_type
 
 // Note: p_data, p_min and p_max are _pointers_ to a memory address holding the data. For a slider, they are all required.
 // Read code of e.g. SliderFloat(), SliderInt() etc. or examples in 'Demo->Widgets->Data Types' to understand how to use this function directly.
-bool ImGui::SliderScalar(const char* label, ImGuiDataType data_type, void* p_data, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags)
+bool ImGui::SliderScalar(const char* label, ImGuiDataType data_type, void* p_data, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags, const char* _ID)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -3109,6 +3109,89 @@ bool ImGui::SliderScalar(const char* label, ImGuiDataType data_type, void* p_dat
     return value_changed;
 }
 
+bool ImGui::SliderScalarM(const char* label, ImGuiDataType data_type, void* p_data, const void* p_min, const void* p_max, const char* format /*= NULL*/, ImGuiSliderFlags flags /*= 0*/, const char* _ID /*= nullptr*/, float _size /*= 1.0f*/, float _length /*= 10.0f*/)
+{
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(_ID);
+	const float w = CalcItemWidth();
+
+	const ImVec2 label_size = CalcTextSize(label, NULL, true);
+	const ImRect frame_bb(window->DC.CursorPos - ImVec2(0, (label_size.y + style.FramePadding.y * 2) * _size / 5), window->DC.CursorPos + ImVec2(w * _size * _length / 10, (label_size.y + style.FramePadding.y * 2) * _size / 5));
+	const ImRect total_bb(frame_bb.Min, frame_bb.Max + ImVec2(label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f, 0.0f));
+
+	const bool temp_input_allowed = (flags & ImGuiSliderFlags_NoInput) == 0;
+	ItemSize(total_bb, style.FramePadding.y);
+	if (!ItemAdd(total_bb, id, &frame_bb, temp_input_allowed ? ImGuiItemFlags_Inputable : 0))
+		return false;
+
+	// Default format string when passing NULL
+	if (format == NULL)
+		format = DataTypeGetInfo(data_type)->PrintFmt;
+	else if (data_type == ImGuiDataType_S32 && strcmp(format, "%d") != 0) // (FIXME-LEGACY: Patch old "%.0f" format string to use "%d", read function more details.)
+		format = PatchFormatStringFloatToInt(format);
+
+	// Tabbing or CTRL-clicking on Slider turns it into an input box
+	const bool hovered = ItemHoverable(frame_bb, id);
+	bool temp_input_is_active = temp_input_allowed && TempInputIsActive(id);
+	if (!temp_input_is_active)
+	{
+		const bool input_requested_by_tabbing = temp_input_allowed && (g.LastItemData.StatusFlags & ImGuiItemStatusFlags_FocusedByTabbing) != 0;
+		const bool clicked = (hovered && g.IO.MouseClicked[0]);
+		if (input_requested_by_tabbing || clicked || g.NavActivateId == id || g.NavActivateInputId == id)
+		{
+			SetActiveID(id, window);
+			SetFocusID(id, window);
+			FocusWindow(window);
+			g.ActiveIdUsingNavDirMask |= (1 << ImGuiDir_Left) | (1 << ImGuiDir_Right);
+			if (temp_input_allowed && (input_requested_by_tabbing || (clicked && g.IO.KeyCtrl) || g.NavActivateInputId == id))
+				temp_input_is_active = true;
+		}
+	}
+
+	if (temp_input_is_active)
+	{
+		// Only clamp CTRL+Click input when ImGuiSliderFlags_AlwaysClamp is set
+		const bool is_clamp_input = (flags & ImGuiSliderFlags_AlwaysClamp) != 0;
+		return TempInputScalar(frame_bb, id, label, data_type, p_data, format, is_clamp_input ? p_min : NULL, is_clamp_input ? p_max : NULL);
+	}
+
+	// Draw frame
+	const ImU32 frame_col = GetColorU32(g.ActiveId == id ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg);
+	RenderNavHighlight(frame_bb, id);
+	RenderFrame(frame_bb.Min, frame_bb.Max, frame_col, true, g.Style.FrameRounding);
+
+	// Slider behavior
+	ImRect grab_bb;
+	const bool value_changed = SliderBehavior(frame_bb, id, data_type, p_data, p_min, p_max, format, flags, &grab_bb);
+	if (value_changed)
+		MarkItemEdited(id);
+
+	// Render grab
+	if (grab_bb.Max.x > grab_bb.Min.x)
+		window->DrawList->AddRectFilled(grab_bb.Min, grab_bb.Max, GetColorU32(g.ActiveId == id ? ImGuiCol_SliderGrabActive : ImGuiCol_SliderGrab), style.GrabRounding);
+
+	// Display value using user-provided display format so user can add prefix/suffix/decorations to the value.
+	char value_buf[64];
+	const char* value_buf_end = value_buf + DataTypeFormatString(value_buf, IM_ARRAYSIZE(value_buf), data_type, p_data, format);
+	if (g.LogEnabled)
+		LogSetNextTextDecoration("{", "}");
+
+    ImGui::SetWindowFontScale(_size/2);
+	RenderTextClipped(frame_bb.Min, frame_bb.Max, value_buf, value_buf_end, NULL, ImVec2(0.5f, 0.5f), NULL);
+    ImGui::SetWindowFontScale(1);
+
+	//if (label_size.x > 0.0f)
+		//RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, _ID, g.LastItemData.StatusFlags);
+	return value_changed;
+}
+
 // Add multiple sliders on 1 line for compact edition of multiple components
 bool ImGui::SliderScalarN(const char* label, ImGuiDataType data_type, void* v, int components, const void* v_min, const void* v_max, const char* format, ImGuiSliderFlags flags)
 {
@@ -3145,9 +3228,9 @@ bool ImGui::SliderScalarN(const char* label, ImGuiDataType data_type, void* v, i
     return value_changed;
 }
 
-bool ImGui::SliderFloat(const char* label, float* v, float v_min, float v_max, const char* format, ImGuiSliderFlags flags)
+bool ImGui::SliderFloat(const char* label, float* v, float v_min, float v_max, const char* format, ImGuiSliderFlags flags, const char* _ID, bool is_movable, float _size, float _length /*= 10.0f*/)
 {
-    return SliderScalar(label, ImGuiDataType_Float, v, &v_min, &v_max, format, flags);
+    return is_movable? SliderScalarM(label, ImGuiDataType_Float, v, &v_min, &v_max, format, flags, _ID, _size, _length) : SliderScalar(label, ImGuiDataType_Float, v, &v_min, &v_max, format, flags, _ID);
 }
 
 bool ImGui::SliderFloat2(const char* label, float v[2], float v_min, float v_max, const char* format, ImGuiSliderFlags flags)
