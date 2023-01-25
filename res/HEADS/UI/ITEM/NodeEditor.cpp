@@ -38,7 +38,6 @@ void ImguiNodes::UpdateStates()
 		const bool is_connected = Nodes::n_out_link.find(&o_p) != Nodes::n_out_link.end();
 		Parameters* tar_i = is_connected ? Nodes::GetParamPtr(Nodes::n_out_link[&o_p], true) : nullptr; // get the link target ptr
 		const Nodes::ParaLink tar_link = is_connected ? Nodes::n_out_link[&o_p] : Nodes::ParaLink{};
-		if (!is_connected) o_off++;
 
 		m_states[&o_p] = { tar_i, is_connected, i, tar_link, std::to_string((int)&o_p) + "p"};
 
@@ -212,7 +211,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
 			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2);
 
-			if (IsMouseClick())
+			if (LMB_press)
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
 					if (ImGui::GetMousePos() < ImVec2(node.header.x + (node.max.x - node.header.x) * 0.125, node.min.y))
 						node->is_open = !node->is_open;
@@ -450,6 +449,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				is_editing_pin_in = is_editing_pin_out = false;
 			}
 			else {
+				RenderMark(ADD_MARK, false);
 				ImGui::GetWindowDrawList()->AddBezierCurve(
 					tar_pin_pos,
 					tar_pin_pos + handle_offset,
@@ -491,6 +491,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				is_editing_pin_in = is_editing_pin_out = false;
 			}
 			else {
+				RenderMark(ADD_MARK);
 				ImGui::GetWindowDrawList()->AddBezierCurve(
 					EventListener::GetMousePos() + EventListener::window_pos,
 					EventListener::GetMousePos() + EventListener::window_pos + handle_offset,
@@ -518,6 +519,41 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 void NodeEditor::RenderNode(Nodes& _node)
 {
 
+}
+
+void NodeEditor::RenderMark(MarkType _type, bool _is_left /*= true*/)
+{
+	const float offset = 7;
+	if (_is_left)
+		RenderMark(_type, EventListener::GetMousePos() + EventListener::window_pos + ImVec2(-offset, -offset));
+	else
+		RenderMark(_type, EventListener::GetMousePos() + EventListener::window_pos + ImVec2( offset, -offset));
+}
+
+void NodeEditor::RenderMark(MarkType _type, ImVec2 _pos)
+{
+	const float offset_x = 5;
+	const float offset_y = 1;
+	switch (_type)
+	{
+	case NodeEditor::NONE_MARK:
+		break;
+	case NodeEditor::ADD_MARK:
+		ImGui::GetWindowDrawList()->AddRectFilled(_pos - ImVec2(offset_x, offset_y), _pos + ImVec2(offset_x, offset_y), IM_COL32(255, 255, 255, 255));
+		ImGui::GetWindowDrawList()->AddRectFilled(_pos - ImVec2(offset_y, offset_x), _pos + ImVec2(offset_y, offset_x), IM_COL32(255, 255, 255, 255));
+		break;
+	case NodeEditor::MINUS_MARK:
+		ImGui::GetWindowDrawList()->AddRectFilled(_pos - ImVec2(offset_x, offset_y), _pos + ImVec2(offset_x, offset_y), IM_COL32(255, 255, 255, 255));
+		break;
+	case NodeEditor::SELECT_MARK:
+		break;
+	case NodeEditor::MOVE_MARK:
+		break;
+	case NodeEditor::CUT_MARK:
+		break;
+	default:
+		break;
+	}
 }
 
 void NodeEditor::Resize()

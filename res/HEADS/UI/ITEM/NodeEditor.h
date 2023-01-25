@@ -56,6 +56,7 @@ class NodeEditor : public EventListener, public Transform2D
 {
 private:
 	enum ConnectType { O_I, O_M, M_I };
+	enum MarkType { NONE_MARK, ADD_MARK, MINUS_MARK, SELECT_MARK, MOVE_MARK, CUT_MARK };
 private:
 	std::vector<ImguiNodes> _node_pool;
 	std::unordered_map<Nodes*, int> _node_index_cache;
@@ -105,6 +106,8 @@ public:
 	void Render(const char* _lable, const ImVec2& _size = {0,0});
 
 	static void RenderNode(Nodes& _node);
+	static void RenderMark(MarkType _type, bool _is_left = true);
+	static void RenderMark(MarkType _type, ImVec2 _pos);
 public:
 	ImVec2 NE_size, NE_center;
 	void Resize();
