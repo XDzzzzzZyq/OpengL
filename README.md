@@ -13,8 +13,9 @@
 - [ ] Basic renderring
   - [ ] Node
 	- [x] Pin highlight
-  - [ ] Parameters
+  - [x] Parameters
   - [x] Spline
+  	- [x] connecting & disconnecting & reconnecting
 - [ ] node system properties panel
 - [ ] node properties panel
 - [ ] mini panel
