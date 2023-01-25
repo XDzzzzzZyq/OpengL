@@ -372,7 +372,7 @@ void ShaderEditor::CompileShader() const {
 		switch (current_edit) {
 		case CODE_EDITOR:
 			if (SE_CodeEditor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
-			active_shader->shader_list[(ShaderType)current_shad_type] = SE_CodeEditor.GetText(
+			active_shader->shader_list[(ShaderType)current_shad_type] = SE_CodeEditor.GetText();
 			dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
 			break;
 		case STRUCT_EDITOR:

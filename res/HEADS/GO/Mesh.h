@@ -53,7 +53,5 @@ void Mesh::SetShaderValue(std::string _name, T _v)
 	o_shader->UseShader();
 	o_shader->SetValue(_name, _v);
 	o_shader->UnuseShader();
-
-	DEBUG(_v)
 }
 
