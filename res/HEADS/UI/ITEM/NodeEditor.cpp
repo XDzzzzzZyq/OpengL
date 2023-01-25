@@ -7,6 +7,48 @@ const ImVec2 ImguiNodes::GetInPinPos(const ImVec2& _header_size, float _offset, 
 	return inp_curs;
 }
 
+ImguiNodes::~ImguiNodes()
+{
+}
+
+void ImguiNodes::UpdateStates()
+{
+	int i_off = 0;
+	for (int i = 0; auto & i_p : m_node->n_in) {
+
+		if (m_states.find(&i_p) == m_states.end())
+			m_states[&i_p] = {};
+
+		const bool is_connected = Nodes::n_in_link.find(&i_p) != Nodes::n_in_link.end();                // is this pin connected
+		Parameters* tar_o = is_connected ? Nodes::GetParamPtr(Nodes::n_in_link[&i_p], false) : nullptr; // get the link target ptr
+		const Nodes::ParaLink tar_link = is_connected ? Nodes::n_in_link[&i_p] : Nodes::ParaLink{};
+		if (!is_connected) i_off++;
+
+		m_states[&i_p] = { tar_o, is_connected, i, tar_link, std::to_string((int)&i_p) + "p", std::to_string((int)&i_p) + "s" };
+
+		i++;
+		i_off++;
+	}
+
+	int o_off = 0;
+	for (int i = 0; auto & o_p : m_node->n_out) {
+		if (m_states.find(&o_p) == m_states.end())
+			m_states[&o_p] = {};
+
+		const bool is_connected = Nodes::n_out_link.find(&o_p) != Nodes::n_out_link.end();
+		Parameters* tar_i = is_connected ? Nodes::GetParamPtr(Nodes::n_out_link[&o_p], true) : nullptr; // get the link target ptr
+		const Nodes::ParaLink tar_link = is_connected ? Nodes::n_out_link[&o_p] : Nodes::ParaLink{};
+		if (!is_connected) o_off++;
+
+		m_states[&o_p] = { tar_i, is_connected, i, tar_link, std::to_string((int)&o_p) + "p"};
+
+		i++;
+		o_off++;
+	}
+
+	max_pin_offset = std::max(i_off, o_off);
+}
+
 const ImVec2 ImguiNodes::GetOutPinPos(const ImVec2& _header_size, float _offset, int _idx)
 {
 	ImVec2 outp_curs = ImVec2(max.x, min.y) + _header_size;
@@ -65,6 +107,8 @@ NodeEditor::NodeEditor(NodeEditorType type)
 	mix->LinkIn(0, sub2, 1);
 	mix->LinkIn(1, add, 1);
 	PushNode(mix);
+
+	for (auto& n : _node_pool) n.UpdateStates();
 }
 
 void NodeEditor::ResetState()
@@ -85,9 +129,13 @@ void NodeEditor::ResetState()
 	editing_cn_type = O_I;
 	tar_pin_pos = { 0,0 };
 
-	if(!LMB_press)
+	if (!LMB_press)
 		is_node_movable = true;
 }
+
+float NodeEditor::th_curvity = 1.6f;
+float NodeEditor::th_offset = 5;
+float NodeEditor::th_rounding = 2;
 
 void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 {
@@ -143,9 +191,11 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 		for (auto& node : _node_pool) {
 			//RenderNode(node);
 
-			node.min = NE_center + o_Transform * (node->o_position * glm::vec2(-1, 1) - (ImVec2(50, 40) * node->o_scale / 2.0f));
+			const float pin_list_size = node.max_pin_offset * th_offset;
+
+			node.min = NE_center + o_Transform * (node->o_position * glm::vec2(-1, 1) - (ImVec2(50, 15 + pin_list_size) * node->o_scale / 2.0f));
 			node.header = node.min - ImVec2(0, 5) * o_scale;
-			node.max = NE_center + o_Transform * (node->o_position * glm::vec2(-1, 1) + (ImVec2(50, 40) * node->o_scale / 2.0f));
+			node.max = NE_center + o_Transform * (node->o_position * glm::vec2(-1, 1) + (ImVec2(50, 15 + pin_list_size) * node->o_scale / 2.0f));
 
 			const ImDrawFlags flags = node->is_open ? ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight : ImDrawFlags_None;
 			// [  HEAD  ]
@@ -199,14 +249,14 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				//////////////////////////////// INPUT pins' event & rendering ////////////////////////////////
 				for (auto& i_p : node->n_in) {
 
-					const bool is_connected = Nodes::n_in_link.find(&i_p) != Nodes::n_in_link.end();                // is this pin connected
-					Parameters* tar_o = is_connected ? Nodes::GetParamPtr(Nodes::n_in_link[&i_p], false) : nullptr; // get the link target ptr
+					const bool is_connected = node.m_states[&i_p].p_connected;					// is this pin connected
+					Parameters* tar_o = node.m_states[&i_p].p_tar;								// get the link target ptr
 
 					bool hovered = false;
-					const bool click = ImGui::PinButton(i_p.para_name.c_str(), (std::to_string((int)&i_p)+"p").c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type], &hovered, is_connected);
+					const bool click = ImGui::PinButton(i_p.para_name.c_str(), node.m_states[&i_p].p_ID.c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type], &hovered, is_connected);
 
 #ifdef _DEBUG
-					if (hovered) { 
+					if (hovered) {
 						// for debug
 						ImGui::Text("this_i: 0x%x", &i_p);
 						ImGui::Text(is_connected ? "C" : "NC");
@@ -222,7 +272,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 							is_editing_pin_out |= true;
 							editing_out_pin = tar_o;
 							editing_cn_type = O_M;
-							Nodes::ParaLink& tar_link = Nodes::n_in_link[&i_p];
+							Nodes::ParaLink& tar_link = node.m_states[&i_p].p_link;
 							tar_pin_pos = _node_pool[_node_index_cache[tar_link.first]].GetOutPinPos(head_size, pin_offset, tar_link.second);
 							editing_para_type = tar_o->para_type;
 						}
@@ -242,7 +292,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 					if (is_connected) {
 
-						Nodes::ParaLink& tar_link = Nodes::n_in_link[&i_p];
+						const Nodes::ParaLink tar_link = node.m_states[&i_p].p_link;
 
 						ImVec2 start_p;
 
@@ -274,7 +324,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					if (!is_connected) {
 						inp_curs.y += pin_offset;
 						ImGui::SetCursorScreenPos(inp_curs + ImVec2(o_scale[0] * 2, 0));
-						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, (std::to_string((int)&i_p) + "s").c_str(), FLOAT_INP, o_scale[0]/3, 1.7);
+						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, node.m_states[&i_p].p_s_ID.c_str(), FLOAT_INP, o_scale[0] / 3, 1.7);
 					}
 
 					inp_curs.y += pin_offset;
@@ -284,12 +334,12 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				//////////////////////////////// OUTPUT pins' event & rendering ////////////////////////////////
 				ImVec2 outp_curs = ImVec2(node.max.x, node.min.y) + head_size;
 				for (auto& o_p : node->n_out) {
-					const bool is_connected = Nodes::n_out_link.find(&o_p) != Nodes::n_out_link.end();
-					Parameters* tar_i = is_connected ? Nodes::GetParamPtr(Nodes::n_out_link[&o_p], true) : nullptr; // get the link target ptr
+					const bool is_connected = node.m_states[&o_p].p_connected;
+					Parameters* tar_i = node.m_states[&o_p].p_tar; // get the link target ptr
 					Nodes* tar_n = is_connected ? Nodes::n_out_link[&o_p].first : nullptr;
 
 					bool hovered = false;
-					const bool click = ImGui::PinButton(o_p.para_name.c_str(), std::to_string((int)&o_p).c_str(), true, outp_curs, pin_size, true, Nodes::pin_color_list[o_p.para_type], &hovered, is_connected);
+					const bool click = ImGui::PinButton(o_p.para_name.c_str(), node.m_states[&o_p].p_ID.c_str(), true, outp_curs, pin_size, true, Nodes::pin_color_list[o_p.para_type], &hovered, is_connected);
 
 #ifdef _DEBUG
 					if (hovered) {
@@ -324,7 +374,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 						tar_pin_pos = outp_curs;
 						editing_node = &node;
 						editing_para_type = o_p.para_type;
-						
+
 					}
 
 					outp_curs.y += pin_offset;
@@ -393,6 +443,8 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				}
 
 			skip_O_M:
+				if (editing_node)editing_node->UpdateStates();
+				if (hovered_node)hovered_node->UpdateStates();
 				editing_node = nullptr;
 				editing_out_pin = editing_in_pin = nullptr;
 				is_editing_pin_in = is_editing_pin_out = false;
@@ -432,6 +484,8 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				}
 
 			skip_M_I:
+				if (editing_node)editing_node->UpdateStates();
+				if (hovered_node)hovered_node->UpdateStates();
 				editing_node = nullptr;
 				editing_out_pin = editing_in_pin = nullptr;
 				is_editing_pin_in = is_editing_pin_out = false;

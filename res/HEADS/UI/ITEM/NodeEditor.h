@@ -13,16 +13,33 @@ enum NodeEditorType
 	NONE_NODE_EDITOR = -1, SHADER_NODE_EDITOR
 };
 
+struct PinStates
+{
+	Parameters* p_tar = nullptr;
+	bool p_connected = false;
+	int p_offset = 0;
+	Nodes::ParaLink p_link = {};
+	std::string p_ID = "";
+	std::string p_s_ID = "";
+};
+
 struct ImguiNodes {
 
 public:
-	ImguiNodes(Nodes* _node) :m_node(_node) {}
-
+	ImguiNodes(Nodes* _node) :m_node(_node) {  }
+	~ImguiNodes();
 	Nodes* m_node;
+
+public:
+	std::unordered_map<Parameters*, PinStates> m_states;
+	void UpdateStates();
+
 public:
 	ImVec2 min{ 0,0 };
 	ImVec2 max{ 0,0 };
 	ImVec2 header{ 0,0 };
+	int max_pin_offset = 0;
+
 public:
 	const ImVec2 GetOutPinPos(const ImVec2& _header_size, float _offset, int _idx);
 	const ImVec2 GetInPinPos(const ImVec2& _header_size, float _offset, int _idx);
@@ -76,9 +93,9 @@ private:
 
 	void ResetState();
 private:
-	float th_curvity = 1.6f;
-	float th_offset = 5;
-	float th_rounding = 2;
+	static float th_curvity;
+	static float th_offset;
+	static float th_rounding;
 public:
 	NodeEditorType _type{NONE_NODE_EDITOR};
 	NodeEditor(NodeEditorType type);

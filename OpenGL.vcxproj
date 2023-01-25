@@ -92,7 +92,7 @@
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
