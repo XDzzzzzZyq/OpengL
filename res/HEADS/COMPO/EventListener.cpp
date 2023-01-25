@@ -50,6 +50,7 @@ ShaderLib* EventListener::active_shader = (ShaderLib*)nullptr;
 
 ImVec2 EventListener::window_pos = ImVec2(0, 0);
 ImVec2 EventListener::viewport_offset = ImVec2(0, 0);
+bool EventListener::is_in_viewport = false;
 
 EventListener::EventListener()
 {
@@ -68,7 +69,7 @@ EventListener::~EventListener()
 int EventListener::ListenMouseEvent(GLFWwindow* window) const
 {
 	is_mouse_pressed_b = is_mouse_pressed;
-
+	is_mouse_pressed = false;
 	//update
 	LOOP(3)
 		if (glfwGetMouseButton(window, i) == GLFW_PRESS) {
@@ -76,8 +77,6 @@ int EventListener::ListenMouseEvent(GLFWwindow* window) const
 			return i + 1;
 		}
 
-
-	is_mouse_pressed = false;
 	return 0;
 }
 

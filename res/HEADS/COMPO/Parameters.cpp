@@ -5,10 +5,10 @@ Parameters::Parameters()
 
 }
 
-Parameters::Parameters(const ParaType& type)
+Parameters::Parameters(ParaType _type, const std::string& _name)
+	:para_type(_type), para_name(_name)
 {
-	para_type = type;
-	switch (type)
+	switch (_type)
 	{
 	default:
 		break;

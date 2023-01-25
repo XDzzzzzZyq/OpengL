@@ -43,6 +43,9 @@ void Viewport::RenderLayer() const
 		if(uly_name == "Viewport")
 			EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
 
+		EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
+		EventListener::is_in_viewport = ITEM::is_inside(uly_size);
+
 		if (IsChangeEnd())
 			if (resize_event)
 				resize_event();
@@ -52,6 +55,7 @@ void Viewport::RenderLayer() const
 		ImGui::End();
 	}
 	else {
+		EventListener::is_in_viewport = false;
 		ImGui::End();
 	}
 }

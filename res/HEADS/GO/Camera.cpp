@@ -90,58 +90,60 @@ void Camera::ChangeCamPersp(float persp)
 
 void Camera::SHIFT_MMB()
 {
-	//DEBUG("S_MMB")
-	o_position += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
-	cam_tar += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
-	is_TransF_changed = true;
+	if (EventListener::is_in_viewport) {
+		o_position += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
+		cam_tar += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
+		is_TransF_changed = true;
+	}
 }
 
 void Camera::CTRL_MMB()
 {
-	//DEBUG("C_MMB")
-	o_position += glm::cross(o_dir_up, o_dir_right) * dir_float_dist((float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y)) * 0.05f;
-	is_TransF_changed = true;
+	if (EventListener::is_in_viewport) {
+		o_position += glm::cross(o_dir_up, o_dir_right) * dir_float_dist((float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y)) * 0.05f;
+		is_TransF_changed = true;
+	}
 }
 
 void Camera::ALT_MMB()
 {
-	//DEBUG("A_MMB")
-	glm::vec3 Delt_angle = glm::vec3((float)(mouse_y - mouse_b_y) * 0.05f, (float)(mouse_x - mouse_b_x) * 0.05f, 0.0f);
-	is_rot_changed = true;
-	is_TransF_changed = true;
-	SetRot(o_rot + Delt_angle);
+	if (EventListener::is_in_viewport) {
+		glm::vec3 Delt_angle = glm::vec3((float)(mouse_y - mouse_b_y) * 0.05f, (float)(mouse_x - mouse_b_x) * 0.05f, 0.0f);
+		is_rot_changed = true;
+		is_TransF_changed = true;
+		SetRot(o_rot + Delt_angle);
 
-	cam_tar -= o_position;
-	cam_tar = glm::mat4_cast(glm::qua<float>(glm::radians(Delt_angle))) * cam_tar + o_position;
+		cam_tar -= o_position;
+		cam_tar = glm::mat4_cast(glm::qua<float>(glm::radians(Delt_angle))) * cam_tar + o_position;
+	}
 }
 
 void Camera::MMB()
 {
-	//DEBUG("MMB")
-	o_position -= cam_tar;
+	if (EventListener::is_in_viewport) {
+		o_position -= cam_tar;
 
-	o_position = glm::rotateY(o_position, -(float)(mouse_x - mouse_b_x) * 0.01f);
-	SetRot(o_rot + glm::vec3(0.0f, glm::degrees(-(float)(mouse_x - mouse_b_x) * 0.01f), 0.0f));
+		o_position = glm::rotateY(o_position, -(float)(mouse_x - mouse_b_x) * 0.01f);
+		SetRot(o_rot + glm::vec3(0.0f, glm::degrees(-(float)(mouse_x - mouse_b_x) * 0.01f), 0.0f));
 
-	o_position = glm::rotate(o_position, -(float)(mouse_y - mouse_b_y) * 0.01f, o_dir_right);
-	SetRot(o_rot + glm::vec3(glm::degrees(-(float)(mouse_y - mouse_b_y) * 0.01f), 0.0f, 0.0f));
+		o_position = glm::rotate(o_position, -(float)(mouse_y - mouse_b_y) * 0.01f, o_dir_right);
+		SetRot(o_rot + glm::vec3(glm::degrees(-(float)(mouse_y - mouse_b_y) * 0.01f), 0.0f, 0.0f));
 
-	o_position += cam_tar;
+		o_position += cam_tar;
 
 
-	is_TransF_changed = true;
-	is_rot_changed = true;
+		is_TransF_changed = true;
+		is_rot_changed = true;
+	}
 }
 
 void Camera::SCROLL()
 {
-	//DEBUG("SCR")
-	o_position -= cam_tar;
+	if (EventListener::is_in_viewport) {
+		o_position -= cam_tar;
+		o_position = cam_tar + o_position * glm::pow(0.8f, scroll_dir);
 
-	o_position = cam_tar + o_position * glm::pow(0.8f, scroll_dir);
-
-
-
-	is_TransF_changed = true;
+		is_TransF_changed = true;
+	}
 }
 

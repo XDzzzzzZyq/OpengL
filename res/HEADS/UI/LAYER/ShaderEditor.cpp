@@ -3,7 +3,8 @@
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
 std::string const ShaderEditor::shader_type[2] = { "Vertex Shader", "Fragment Shader" };
 
-TextEditor ShaderEditor::Editor = TextEditor();
+TextEditor ShaderEditor::SE_CodeEditor = TextEditor();
+NodeEditor ShaderEditor::SE_NodeEditor = NodeEditor(SHADER_NODE_EDITOR);
 
 ShaderEditor::ShaderEditor()
 	:ShaderEditor("Shader Editor")
@@ -255,7 +256,7 @@ void ShaderEditor::RenderShaderStruct() const
 					(active_func!=vari_id)
 				);
 				if (op_ev) {
-					Editor.SetText(std::get<2>(i));
+					SE_CodeEditor.SetText(std::get<2>(i));
 					active_func = vari_id;
 				}
 				if (active_func==vari_id && is_op) {
@@ -266,14 +267,14 @@ void ShaderEditor::RenderShaderStruct() const
 						ImGui::TreePop();
 					}
 					if (ImGui::Button("Apply", ImVec2(ImGui::GetContentRegionAvail().x, 20))) {
-						std::get<2>(i) = Editor.GetText();
+						std::get<2>(i) = SE_CodeEditor.GetText();
 					}
-					Editor.Render(std::get<1>(i).c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
+					SE_CodeEditor.Render(std::get<1>(i).c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
 				}ImGui::PopID();
 				if(is_op)ImGui::TreePop();
 				if (st_ev) {
-					if(Editor.IsTextChanged())
-						std::get<2>(i) = Editor.GetText();
+					if(SE_CodeEditor.IsTextChanged())
+						std::get<2>(i) = SE_CodeEditor.GetText();
 					active_shader->shader_struct_list[current_shad_type].is_struct_changed = true;
 				}
 			}
@@ -359,9 +360,9 @@ void ShaderEditor::RenderArgs(Args& args, int _type) const
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 	if (active_shader)
 		if(current_edit == CODE_EDITOR)
-			Editor.SetText(active_shader->shader_list[current_shad_type]);
+			SE_CodeEditor.SetText(active_shader->shader_list[current_shad_type]);
 		else if(current_edit == STRUCT_EDITOR)
-			Editor.SetText(_code);
+			SE_CodeEditor.SetText(_code);
 }
 
 void ShaderEditor::CompileShader() const {
@@ -370,13 +371,14 @@ void ShaderEditor::CompileShader() const {
 		Timer timer;
 		switch (current_edit) {
 		case CODE_EDITOR:
-			if (Editor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
-			active_shader->shader_list[(ShaderType)current_shad_type] = Editor.GetText();
+			if (SE_CodeEditor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
+			active_shader->shader_list[(ShaderType)current_shad_type] = SE_CodeEditor.GetText(
 			dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
 			break;
 		case STRUCT_EDITOR:
 			is_shad_type_changed = true;
-			active_shader->GenerateShader((ShaderType)current_shad_type);break;
+			active_shader->GenerateShader((ShaderType)current_shad_type);
+			break;
 		}
 
 		glDeleteProgram(dynamic_cast<RenderShader*>(active_shader)->getProgramID());
@@ -441,7 +443,8 @@ void ShaderEditor::RenderLayer() const
 		case CODE_EDITOR:
 
 			if (active_shader) {
-				Editor.Render("##Editor", ImGui::GetContentRegionAvail());
+				//DEBUG(SE_CodeEditor.IsTextChanged())
+				SE_CodeEditor.Render("##Editor", ImGui::GetContentRegionAvail());
 			}
 
 			break;
@@ -449,7 +452,8 @@ void ShaderEditor::RenderLayer() const
 			if (active_shader)
 				RenderShaderStruct();
 			break;
-		case 2:
+		case NODE_EDITOR:
+			SE_NodeEditor.Render("##Node");
 			break;
 		}
 		ImGui::End();
@@ -461,7 +465,7 @@ void ShaderEditor::RenderLayer() const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name, const char* c_sld_name)
+bool ShaderEditor::MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const char* c_name, const char* c_sld_name)
 {
 	if (!is_open)
 		panel_pos = pos;
@@ -508,7 +512,7 @@ bool MiniPropPanel::RenderPanel(const ImVec2& pos, bool* state, S_U* out, const 
 	return false;
 }
 
-bool MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct)
+bool ShaderEditor::MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_func* _struct)
 {
 	if (*state) {
 		if (!is_open)
@@ -557,7 +561,7 @@ bool MiniPropPanel::RenderDefPanel(bool type, const ImVec2& pos, bool* state, S_
 	return false;
 }
 
-void MiniPropPanel::RenderArguPanel(bool* b)
+void ShaderEditor::MiniPropPanel::RenderArguPanel(bool* b)
 {
 	int index = 0;
 	for (auto& arg : prop_args) {
@@ -584,4 +588,4 @@ void MiniPropPanel::RenderArguPanel(bool* b)
 		prop_args.emplace_back(NONE_PARA, "Empty");
 }
 
-char MiniPropPanel::prop_name = NULL;
+char ShaderEditor::MiniPropPanel::prop_name = NULL;

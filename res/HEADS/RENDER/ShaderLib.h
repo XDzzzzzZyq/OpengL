@@ -109,11 +109,13 @@ public:
 
 	void InitLib();
 public:
+	std::string vert_name, frag_name;
+	bool using_nodes = false;
 	bool is_shader_changed = true;
 	ShaderType active_shader;
 	ShaderStruct shader_struct_list[2];
 	std::string shader_list[2];
-
+public:
 	std::unordered_map<std::string, int> _LINK_LOC;
 	bool _is_link_repeat(const std::string _name) { for (auto& i : _LINK_LOC) if (_name == i.first)return true; return false; }
 public:

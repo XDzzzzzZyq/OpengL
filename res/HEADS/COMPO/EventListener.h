@@ -62,14 +62,14 @@ public:
 	static bool is_mouse_pressed;
 	static bool is_key_pressed_b;
 	static bool is_mouse_pressed_b;
-	bool IsClick() const {
-		return is_mouse_pressed_b == false && is_mouse_pressed == true;
-	}
+	bool IsMouseLeft() const { return is_mouse_pressed_b == true && is_mouse_pressed == false; }    // true if mouse button on Left
+	bool IsMouseClick() const {	return is_mouse_pressed_b == false && is_mouse_pressed == true; }  // true if mouse button on Click
 public:
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }
 	static const double GetDeltaMouseY() { return mouse_y - mouse_b_y; }
 	static const ImVec2 GetDeltaMouse() { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
+	static const ImVec2 GetMousePos() { return { (float)mouse_x, (float)mouse_y }; }
 public:
 	static std::vector<int> EVT_NK_LIST;
 	static void PushNormKey(int _ID);
@@ -92,6 +92,7 @@ public:
 public:
 	static ImVec2 window_pos;
 	static ImVec2 viewport_offset;
+	static bool is_in_viewport;
 public:
 	EventListener();
 	EventListener(GLFWwindow* window);

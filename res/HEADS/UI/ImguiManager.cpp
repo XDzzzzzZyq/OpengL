@@ -13,8 +13,8 @@ ImguiManager::ImguiManager()
 }
 
 ImguiManager::ImguiManager(GLFWwindow* window)
-	:window(window)
 {
+	EventListener::evt_window = window;
 
 	active_layer_id = 0;
 
@@ -215,10 +215,10 @@ void ImguiManager::RenderUI(bool rend)
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		if (window) {
+		if (evt_window) {
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(window);
+			glfwMakeContextCurrent(evt_window);
 		}
 		else
 		{

@@ -8,7 +8,7 @@
 
 enum ParaType
 {
-	NONE_PARA, FLOAT_PARA, INT_PARA, BOOL_PARA, STRING_PARA, VEC2_PARA, VEC3_PARA, VEC4_PARA, MAT3_PARA, MAT4_PARA, TEXTURE_PARA
+	NONE_PARA=-1, FLOAT_PARA, INT_PARA, BOOL_PARA, STRING_PARA, VEC2_PARA, VEC3_PARA, VEC4_PARA, MAT3_PARA, MAT4_PARA, TEXTURE_PARA
 };
 
 struct ParaData
@@ -30,7 +30,7 @@ class Parameters
 {
 public:
 	Parameters();
-	Parameters(const ParaType& type);
+	Parameters(ParaType _type, const std::string& _name = "unknown param");
 	Parameters(const Parameters& para); //copy
 	~Parameters();
 
