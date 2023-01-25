@@ -2,9 +2,14 @@
 
 Renderer::Renderer()
 {
-	if (glewInit() != GLEW_OK) 
+
+}
+
+void Renderer::Init()
+{
+	if (glewInit() != GLEW_OK)
 		std::cout << "glew error" << std::endl;
-	else 
+	else
 		std::cout << "glew has no error" << std::endl;
 
 	if (glGetError() != GL_NO_ERROR)
@@ -14,7 +19,7 @@ Renderer::Renderer()
 
 
 	DEBUG("Renderer Open")
-	glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 

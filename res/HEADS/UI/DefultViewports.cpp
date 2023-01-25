@@ -49,6 +49,7 @@ void ImguiManager::DefultViewports() {
 	PushImguiLayer(viewport);
 
 	ImguiLayer* compshader_result = new Viewport("CompShader");
+	compshader_result->uly_is_rendered = false;
 	PushImguiLayer(compshader_result);
 
 	ImguiLayer* outline = new Outliner("Outliner");

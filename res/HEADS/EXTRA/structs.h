@@ -36,8 +36,10 @@ struct Timer
 	Timer(std::string name="Thread", int fact = 1, bool print = true) 
 		:name(name), fact(fact), is_print(print)
 	{
+#ifdef _DEBUG
 		if (is_print)
 			std::cout << "[ " + name + " Start ]\n";
+#endif // _DEBUG
 		start = tick = temp = clock();
 	}
 
@@ -46,23 +48,29 @@ struct Timer
 		tick = clock();
 		__duration = tick - temp;
 		temp = tick;
+#ifdef _DEBUG
 		if (is_print)
 			std::cout /*<< "\r"*/ << "\_[ duration = " << __duration * fact << "ms ]\n";
+#endif // _DEBUG
 		return __duration;
 	}
 
 	time_t GetDuration() {
 		end = clock();
+#ifdef _DEBUG
 		if (is_print)
 			std::cout /*<< "\r"*/ << "[ " + name + " Whole Time = " << (end - start) * fact << "ms ]\n";
+#endif // _DEBUG
 		return (end - start);
 	}
 
 	~Timer() {
 		end = clock();
 		__duration = end - start;
+#ifdef _DEBUG
 		if (is_print)
 			std::cout /*<< "\r"*/ << "[ "+name+" Whole Time = " << __duration * fact << "ms ]\n";
+#endif // _DEBUG
 	}
 };
 

@@ -96,6 +96,8 @@ public:
 public:
 	EventListener();
 	EventListener(GLFWwindow* window);
+	static void SetWindow(GLFWwindow* window);
+
 	~EventListener();
 
 public:

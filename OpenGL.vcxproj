@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp" />
+    <ClCompile Include="main\Application.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BuildinShader.cpp" />
@@ -411,6 +412,7 @@
     <ClInclude Include="dep\GLEW\include\GL\wglew.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="main\Application.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
     <ClInclude Include="res\HEADS\UI\ImguiTheme.h" />

@@ -3,22 +3,19 @@
 bool ImguiManager::is_prefW_open = false;
 
 ImguiManager::ImguiManager()
-{
-	active_layer_id = 0;
-
-	io = ImGui::GetIO(); (void)io;
-	m_style = ImGui::GetStyle();
-
-	DefultViewports();
-}
+{}
 
 ImguiManager::ImguiManager(GLFWwindow* window)
-{
-	EventListener::evt_window = window;
+	:window(window)
+{}
 
+void ImguiManager::Init()
+{
 	active_layer_id = 0;
 
-	io = ImGui::GetIO(); (void)io;
+	io = &ImGui::GetIO(); (void)io;
+	m_style = &ImGui::GetStyle();
+
 	DefultViewports();
 }
 
@@ -205,7 +202,7 @@ void ImguiManager::RenderUI(bool rend)
 		//ImGui::ShowStyleEditor();
 	}
 	else {
-		io.ConfigFlags != ImGuiConfigFlags_DockingEnable;
+		io->ConfigFlags != ImGuiConfigFlags_DockingEnable;
 	}
 
 	if (is_prefW_open)
@@ -213,12 +210,12 @@ void ImguiManager::RenderUI(bool rend)
 
 	ImGui::Render();
 
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		if (evt_window) {
+		if (window) {
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(evt_window);
+			glfwMakeContextCurrent(window);
 		}
 		else
 		{

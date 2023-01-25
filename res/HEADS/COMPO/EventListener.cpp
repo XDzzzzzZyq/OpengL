@@ -61,6 +61,11 @@ EventListener::EventListener(GLFWwindow* window)
 	evt_window = window;
 }
 
+void EventListener::SetWindow(GLFWwindow* window)
+{
+	evt_window = window;
+}
+
 EventListener::~EventListener()
 {
 

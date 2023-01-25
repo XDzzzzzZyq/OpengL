@@ -204,6 +204,9 @@
     <ClCompile Include="res\HEADS\UI\NodesColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="main\Application.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">
@@ -1727,6 +1730,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="main\Application.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

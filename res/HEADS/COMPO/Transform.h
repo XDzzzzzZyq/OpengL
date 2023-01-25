@@ -78,8 +78,9 @@ public:
 		std::cout << o_rot;
 		std::cout << o_dir_up;
 		std::cout << o_dir_right;
-		DEBUG("________________") return 0;
+		DEBUG("________________") 
 #endif // _DEBUG
+		return 0;
 	}
 
 };
@@ -140,8 +141,9 @@ public:
 	[[nodiscard("You can receive the state")]] int Debug() const override {
 #ifdef _DEBUG
 		std::cout << o_rot;
-		DEBUG("________________") return 0;
+		DEBUG("________________") 
 #endif // _DEBUG
+		return 0;
 	}
 
 };

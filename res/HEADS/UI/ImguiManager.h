@@ -25,8 +25,9 @@ class ImguiManager : public EventListener
 private:
 	mutable std::vector<ImguiLayer*> layer_list;
 	mutable std::vector<ImguiMenu*> menu_list;
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuiStyle& m_style=ImGui::GetStyle();
+	ImGuiIO* io = nullptr;
+	ImGuiStyle* m_style= nullptr;
+	GLFWwindow* window=nullptr;
 
 	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
@@ -38,14 +39,15 @@ public:
 
 	ImguiManager();
 	ImguiManager(GLFWwindow* window);
+	void Init();
 	~ImguiManager();
 
 public:
 	void ManagerInit(GLFWwindow* window);
-	void SetConfigFlag(ImGuiConfigFlags_ flag) const { io.ConfigFlags |= flag; };
-	void SetBackendFlag(ImGuiBackendFlags_ flag) const { io.BackendFlags |= flag; };
-	ImGuiIO& GetIO()const { return io; }
-	ImGuiStyle& GetStyle()const { return m_style; }
+	void SetConfigFlag(ImGuiConfigFlags_ flag) const { io->ConfigFlags |= flag; };
+	void SetBackendFlag(ImGuiBackendFlags_ flag) const { io->BackendFlags |= flag; };
+	ImGuiIO* GetIO()const { return io; }
+	ImGuiStyle* GetStyle()const { return m_style; }
 
 	void DefultViewports();
 
@@ -70,7 +72,7 @@ public:
 public:
 	void SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func);
 	Parameters* GetParaValue(const std::string& ly_name, const std::string& it_name);
-	void GetCurrentWindow() { evt_window = glfwGetCurrentContext(); }
+	void GetCurrentWindow() { window = glfwGetCurrentContext(); }
 
 public:
 	mutable std::function<void(void)> ParaUpdate = [] {};

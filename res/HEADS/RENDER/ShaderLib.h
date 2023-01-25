@@ -80,7 +80,7 @@ public:
 	static bool IsAvailType(const std::string& type);
 	bool IsIOLinked(std::string_view _name, bool _type = 0);
 	static void ADD_TYPE(const std::string& name);
-	static void Debug() {for(auto& i : type_table)DEBUG("|"+i+"|") }
+	static void Debug() { for (auto& i : type_table) DEBUG("|" + i + "|"); }
 public:
 	void SetAB			(int _loc, ParaType type, const std::string& _name)				{ is_struct_changed = true; AB_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_IN_PROP)	 , _name, type);}
 	void SetPass		(int _loc, ParaType type, const std::string& _name)				{ is_struct_changed = true; pass_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_BUFFER_PROP), _name, type);}

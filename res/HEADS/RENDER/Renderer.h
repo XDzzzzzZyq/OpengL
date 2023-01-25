@@ -31,9 +31,9 @@ private:
 	std::vector<int> spirit_id_buff;
 public:
 	Renderer();
-	~Renderer();
+	void Init();
 
-	//state
+	~Renderer();
 public:
 	bool is_light_changed = false;
 
