@@ -211,7 +211,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
 			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2);
 
-			if (LMB_press)
+			if (LMB_press && EventListener::IsMouseClick())
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
 					if (ImGui::GetMousePos() < ImVec2(node.header.x + (node.max.x - node.header.x) * 0.125, node.min.y))
 						node->is_open = !node->is_open;
@@ -323,7 +323,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					if (!is_connected) {
 						inp_curs.y += pin_offset;
 						ImGui::SetCursorScreenPos(inp_curs + ImVec2(o_scale[0] * 2, 0));
-						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, node.m_states[&i_p].p_s_ID.c_str(), FLOAT_INP, o_scale[0] / 3, 1.7);
+						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, node.m_states[&i_p].p_s_ID.c_str(), o_scale[0] / 3, 1.7);
 					}
 
 					inp_curs.y += pin_offset;

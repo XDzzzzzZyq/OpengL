@@ -76,9 +76,9 @@ bool UI::ParaInput::RenderParam(const Parameters* _param, const char* _ID, ImIte
 	return RenderParam(_param, _param->para_name.c_str(), _ID, _type);
 }
 
-bool UI::ParaInput::RenderParam(const Parameters* _param, const char* _ID, ImItemType _type /*= FLOAT_INP*/, float _size /*= 1.0f*/, float _length /*= 10.0f*/)
+bool UI::ParaInput::RenderParam(const Parameters* _param, const char* _ID, float _size /*= 1.0f*/, float _length /*= 10.0f*/)
 {
-	return RenderParam(_param, _param->para_name.c_str(), _ID, _type, true, _size, _length);
+	return RenderParam(_param, _param->para_name.c_str(), _ID, ParaInput::ParseParamType(_param->para_type), true, _size, _length);
 }
 
 bool UI::ParaInput::RenderParam(
@@ -114,8 +114,13 @@ bool UI::ParaInput::RenderParam(
 			_name,
 			&_param->para_data.idata,
 			_param->para_data.data_range[0],
-			_param->para_data.data_range[1]
-
+			_param->para_data.data_range[1],
+			NULL,
+			0,
+			_ID,
+			_is_movable,
+			_size,
+			_length
 		);
 	case RGB_INP:
 		return ImGui::ColorEdit3(
@@ -132,24 +137,48 @@ bool UI::ParaInput::RenderParam(
 
 		);
 	case VEC2_INP:
-		return ImGui::InputFloat2(
+		return ImGui::SliderFloat2(
 
 			_name,
-			_param->para_data.v2data
+			_param->para_data.v2data,
+			_param->para_data.data_range[0],
+			_param->para_data.data_range[1],
+			NULL,
+			0,
+			_ID,
+			_is_movable,
+			_size,
+			_length
 
 		);
 	case VEC3_INP:
-		return ImGui::InputFloat3(
+		return ImGui::SliderFloat3(
 
 			_name,
-			_param->para_data.v3data
+			_param->para_data.v3data,
+			_param->para_data.data_range[0],
+			_param->para_data.data_range[1],
+			NULL,
+			0,
+			_ID,
+			_is_movable,
+			_size,
+			_length
 
 		);
 	case VEC4_INP:
-		return ImGui::InputFloat4(
+		return ImGui::SliderFloat4(
 
 			_name,
-			_param->para_data.v4data
+			_param->para_data.v4data,
+			_param->para_data.data_range[0],
+			_param->para_data.data_range[1],
+			NULL,
+			0,
+			_ID,
+			_is_movable,
+			_size,
+			_length
 
 		);
 	case BOOL_INP:
@@ -199,34 +228,40 @@ void UI::ParaInput::SetType(ImItemType _type)
 }
 void UI::ParaInput::SetType(ParaType _type)
 {
-	switch (_type)
-	{
-	default:
-		break;
-	case NONE_PARA:
-		uitm_type = NONE_INP;
-		break;
-	case FLOAT_PARA:
-		uitm_type = FLOAT_INP;
-		break;
-	case INT_PARA:
-		uitm_type = FLOAT_INP;
-		break;
-	case STRING_PARA:
-		uitm_type = TEXT_INP;
-		break;
-		// 	case VEC2_PARA:
-		// 		break;
-	case VEC3_PARA:
-		uitm_type = RGB_INP;
-		break;
-	case VEC4_PARA:
-		uitm_type = RGBA_INP;
-		// 		break;
-	}
+	uitm_type = ParseParamType(_type);
 }
 
 Parameters* UI::ParaInput::GetPara()
 {
 	return &uitm_para;
+}
+
+ImItemType UI::ParaInput::ParseParamType(ParaType _type)
+{
+	switch (_type)
+	{
+	default:
+		break;
+	case NONE_PARA:
+		return NONE_INP;
+		break;
+	case FLOAT_PARA:
+		return FLOAT_INP;
+		break;
+	case INT_PARA:
+		return FLOAT_INP;
+		break;
+	case STRING_PARA:
+		return TEXT_INP;
+		break;
+	case VEC2_PARA:
+		return VEC2_INP;
+		break;
+	case VEC3_PARA:
+		return VEC3_INP;
+		break;
+	case VEC4_PARA:
+		return VEC4_INP;
+		// 		break;
+	}
 }
