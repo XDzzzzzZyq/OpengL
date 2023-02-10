@@ -6,8 +6,12 @@
 
 enum FBType
 {
-	NONE_FB=-1, COMBINE_FB, ID_FB, RAND_FB, NORMAL_FB, ALPHA_FB, DIFF_FB, SPEC_FB, SHADOW_FB, DEPTH_FB = GL_COLOR_ATTACHMENT0 - GL_DEPTH_ATTACHMENT
-//     NON     |    HDR    |           RGB            |                 FLOAT                |              DEPTH             |
+	/* nothing */	NONE_FB = -1,
+	/*     HDR */	COMBINE_FB, POS_FB, MRS_FB,
+	/*     RGB */	ID_FB, RAND_FB, NORMAL_FB, ALBEDO_FB, EMIS_COL_FB,
+	/*   Float */	ALPHA_FB, MASK_FB, EMIS_STH_FB, SHADOW_FB,
+					MAX_FB,
+	/*   Depth */	DEPTH_FB = GL_DEPTH_ATTACHMENT - GL_COLOR_ATTACHMENT0
 };
 
 struct FBPixel
@@ -51,5 +55,7 @@ public:
 	GLuint GetFrameBufferID() const { return fb_ID; }
 	const ImVec2&& GetFrameBufferSize() const { return ImVec2(fb_w, fb_h); }
 	GLuint GetFBTextureID(FBType type) const { return fb_tex_list[fb_type_list[type]].GetTexID(); }
+	size_t GetFBCount() const { return fb_tex_list.size(); }
+	GLuint GetAttachmentLoc(FBType type) const { return fb_type_list[(FBType)type]; }
 };
 

@@ -1,9 +1,11 @@
 #version 330 core
 
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 IDcolor;
-layout(location = 2) out vec4 RANDcolor;
-layout(location = 3) out vec4 SELECcolor;
+layout(location = 1) out vec4 POScolor;
+layout(location = 2) out vec4 IDcolor;
+layout(location = 3) out vec4 RANDcolor;
+layout(location = 4) out vec4 SELECcolor;
+layout(location = 5) out vec4 NORMALcolor;
 
 in vec3 L_color;
 

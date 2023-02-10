@@ -38,7 +38,7 @@ void Renderer::Init()
 
 	//glEnable(GL_CONVOLUTION_2D);
 
-	framebuffer = FrameBuffer(COMBINE_FB);
+	r_render_result = FrameBuffer(COMBINE_FB);
 
 	EventInit();
 }
@@ -81,13 +81,13 @@ void Renderer::EndFrameBuffer(int slot)
 void Renderer::FrameBufferResize(int slot, const ImVec2& size)
 {
 	GetActiveEnvironment()->envir_frameBuffer->Resize(size);
-	framebuffer->Resize(size);
+	r_render_result->Resize(size);
 }
 
 GLuint Renderer::GetFrameBufferTexture(int slot)
 {
 	//return framebuffer_list[slot].BufferTexture.GetTexID();
-	return framebuffer->BufferTexture.GetTexID();
+	return r_render_result->BufferTexture.GetTexID();
 }
 
 
@@ -155,7 +155,7 @@ void Renderer::UpdateFrame()
 {
 	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	//glClearDepth(-10.0f);
 
 
@@ -172,6 +172,7 @@ void Renderer::UpdateFrame()
 	}
 
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //++++++++                                                                                ++++++++++//
@@ -183,32 +184,35 @@ void Renderer::UpdateFrame()
 //++++++++                                                                                ++++++++++//
 //++++++++                                                                                ++++++++++//
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// START RENDERING ///////////////////////////////////////////////
+/////////////////////////////////////// START RENDERING //////////////////////////////////////////////
+
 void Renderer::Render(bool rend, bool buff) {
 
-	if (cam_list.find(0) == cam_list.end())_ASSERT("NONE ACTIVE CAMERA");
-	if (envir_list.find(0) == envir_list.end())_ASSERT("NONE ACTIVE ENVIRONMENT");
+	if (cam_list.find(0) == cam_list.end()) _ASSERT("NONE ACTIVE CAMERA");
+	if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	//GLDEBUG
 	glEnable(GL_BLEND);
 
 	if (buff)
-		envir_list[0]->BindFrameBuffer();
+		GetActiveEnvironment()->BindFrameBuffer();
 
 	UpdateFrame();
 	if (rend) {
 		//glEnable(GL_STENCIL_TEST);
-		glEnable(GL_DEPTH_TEST);
+;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		////////////    MESHES    ////////////
-		cam_list[0]->ApplyTransform();
-		cam_list[0]->GetInvTransform();
-		cam_list[0]->GenFloatData();
+		GetActiveCamera()->ApplyTransform();
+		GetActiveCamera()->GetInvTransform();
+		GetActiveCamera()->GenFloatData();
 
 		//DEBUG(viewport_offset)
+		GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
+		glEnable(GL_DEPTH_TEST);
 
-			envir_list[0]->envir_IBL_spec.Bind(IBL_TEXTURE);
-			envir_list[0]->envir_IBL_diff.Bind(IBL_TEXTURE+1);
+			GetActiveEnvironment()->envir_IBL_spec.Bind(IBL_TEXTURE);
+			GetActiveEnvironment()->envir_IBL_diff.Bind(IBL_TEXTURE+1);
 			for (const auto& obj : mesh_list)
 			{
 
@@ -217,17 +221,17 @@ void Renderer::Render(bool rend, bool buff) {
 				obj.second->ApplyAllTransform();
 				if (is_light_changed || obj.second->o_shader->is_shader_changed)
 				{
-					obj.second->RenderObj(cam_list[0], light_list);
+					obj.second->RenderObj(GetActiveCamera(), light_list);
 				}
 				else {
-					obj.second->RenderObj(cam_list[0], emptyLight);
+					obj.second->RenderObj(GetActiveCamera(), emptyLight);
 				}
 				obj.second->is_Uniform_changed = false;
 				obj.second->o_shader->is_shader_changed = false;
 			}
 			is_light_changed = false;
-			envir_list[0]->envir_IBL_spec.Unbind();
-			envir_list[0]->envir_IBL_diff.Unbind();
+			GetActiveEnvironment()->envir_IBL_spec.Unbind();
+			GetActiveEnvironment()->envir_IBL_diff.Unbind();
 
 		//glDisable(GL_STENCIL_TEST);
 		//////////// DEBUG MESHES ////////////
@@ -236,7 +240,7 @@ void Renderer::Render(bool rend, bool buff) {
 		{
 			if (!dLine.second->is_viewport)continue;
 			dLine.second->ApplyAllTransform();
-			dLine.second->RenderDdbugLine(cam_list[0]);
+			dLine.second->RenderDdbugLine(GetActiveCamera());
 			dLine.second->is_Uniform_changed = false;
 		}
 
@@ -244,7 +248,7 @@ void Renderer::Render(bool rend, bool buff) {
 		{
 			if (!dPoints.second->is_viewport)continue;
 			dPoints.second->ApplyTransform();
-			dPoints.second->RenderDebugPoint(cam_list[0]);
+			dPoints.second->RenderDebugPoint(GetActiveCamera());
 			dPoints.second->is_Uniform_changed = false;
 		}
 
@@ -253,16 +257,16 @@ void Renderer::Render(bool rend, bool buff) {
 		for (const auto& light : light_list)
 		{
 			if (!light.second->light_spirit.is_viewport)continue;
-			light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), cam_list[0]);
+			light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), GetActiveCamera());
 		}
 		for (const auto& envir : envir_list) {
 			if(!envir.second->envir_spirit.is_viewport)continue;
-			envir.second->envir_spirit.RenderSpirit(vec3_stdVec6(envir.second->o_position, envir.second->envir_color), cam_list[0]);
+			envir.second->envir_spirit.RenderSpirit(vec3_stdVec6(envir.second->o_position, envir.second->envir_color), GetActiveCamera());
 		}
 	}
 
 	if (buff) {
-		envir_list[0]->UnBindFrameBuffer();
+		GetActiveEnvironment()->UnbindFrameBuffer();
 		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
 		//glStencilMask(0x00);
 		
@@ -270,16 +274,20 @@ void Renderer::Render(bool rend, bool buff) {
 		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		framebuffer->BindFrameBuffer();
-		if(rend)
-		envir_list[0]->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
-		framebuffer->UnbindFrameBuffer();
+		r_render_result->BindFrameBuffer();
+
+		if (rend) { 
+			GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(1, COMBINE_FB); 
+			pps_list[0]->RenderPPS(); 
+		}//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
+		
+		r_render_result->UnbindFrameBuffer();
 	}
 	//DEBUG(is_spirit_selected)
 	Reset();
 }
 
-////////////////////////////////////// END RENDERING /////////////////////////////////////////////////
+///////////////////////////////////////// END RENDERING //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //++++++++                                                                                ++++++++++//
 //++++++++                                                                                ++++++++++//
@@ -301,8 +309,8 @@ void Renderer::Reset()
 		if (selec_list.size())
 			selec_list.clear();
 	}
-	cam_list[0]->is_invUniform_changed = false;
-	cam_list[0]->is_frustum_changed = false;
+	GetActiveCamera()->is_invUniform_changed = false;
+	GetActiveCamera()->is_frustum_changed = false;
 }
 
 
@@ -435,4 +443,9 @@ void Renderer::UseDebugPoints(DebugPoints* dpoints)
 		name_buff[dpoints->GetObjectID()] = dpoints->o_name;
 		parent_index_list.push_back(-1);
 	}
+}
+
+void Renderer::UsePostProcessing(PostProcessing* pps)
+{
+	pps_list.push_back(pps);
 }

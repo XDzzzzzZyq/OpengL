@@ -1,9 +1,11 @@
 #version 430 core
 
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 IDcolor;
-layout(location = 2) out vec4 RANDcolor;
-layout(location = 3) out vec4 SELECcolor;
+layout(location = 1) out vec4 POScolor;
+layout(location = 2) out vec4 IDcolor;
+layout(location = 3) out vec4 RANDcolor;
+layout(location = 4) out vec4 SELECcolor;
+layout(location = 5) out vec4 NORMALcolor;
 
 in vec2 uv;
 in vec4 testcolor;
@@ -142,4 +144,7 @@ void main() {
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 
 	color = vec4(reflectcolor, 1.0f);
+	POScolor = vec4(pix_pos, 1);
+	NORMALcolor = vec4(vec3(Snormal_color), 1);
+
 };

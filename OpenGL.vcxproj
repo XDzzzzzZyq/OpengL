@@ -388,8 +388,11 @@
     <None Include="dep\glm\gtx\vector_query.inl" />
     <None Include="dep\glm\gtx\wrap.inl" />
     <None Include="README.md" />
+    <None Include="res\shaders\EnvirBG.frag" />
     <None Include="res\shaders\IBRShader.frag" />
-    <None Include="res\shaders\IBRShader.vert" />
+    <None Include="res\shaders\PBR.frag" />
+    <None Include="res\shaders\ShowTexture.frag" />
+    <None Include="res\shaders\Screen.vert" />
     <None Include="res\shaders\Irradiance_Conv.comp" />
     <None Include="res\shaders\LineShader.frag" />
     <None Include="res\shaders\LineShader.vert" />

@@ -38,7 +38,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("layout") != std::string::npos) {
 			// [layout]
-			int layout = std::atoi(Line.substr(18, 1).c_str());
+			int layout = std::atoi(Line.substr(18, Line.find(")")-18).c_str());
 			if (Line.find("in ") != std::string::npos) {
 				std::istringstream str(Line);
 				std::string word;
@@ -61,7 +61,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				str >> word;
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
-				shader_struct_list[_type].SetPass(layout, paratype, word.erase(word.size() - 1, 1));
+				const std::string name = word.erase(word.size() - 1, 1);
+				shader_struct_list[_type].SetPass(layout, paratype, name);
 			}
 			else if (Line.find("buffer ") != std::string::npos) {
 				layout = std::atoi(Line.substr(25, 1).c_str());

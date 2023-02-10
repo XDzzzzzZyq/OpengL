@@ -26,7 +26,7 @@ class Renderer : public EventListener
 {
 private:
 	std::unordered_map<int, Light*> emptyLight;
-	std::optional<FrameBuffer> framebuffer;
+	std::optional<FrameBuffer> r_render_result;
 	std::unordered_map<int, std::string> name_buff;
 	std::vector<int> spirit_id_buff;
 public:
@@ -45,6 +45,7 @@ public:
 	std::unordered_map<int, Spirit*>	        spirit_list;
 	std::unordered_map<int, DebugLine*>	         dLine_list;
 	std::unordered_map<int, DebugPoints*>	   dPoints_list;
+	std::vector		  <PostProcessing*>            pps_list;
 
 public:
 	std::string GetObjectName(int ID);
@@ -86,5 +87,7 @@ public:
 
 	void UseDebugLine(DebugLine* dline);
 	void UseDebugPoints(DebugPoints* dpoints);
+
+	void UsePostProcessing(PostProcessing* pps);
 };
 

@@ -60,7 +60,7 @@ public:
 	void ChangeEnvirType(EnvironmentType type) const;
 
 	void BindFrameBuffer() const;
-	void UnBindFrameBuffer() const;
+	void UnbindFrameBuffer() const;
 	void SwapFrameBuffer(FBType type);
 
 	mutable std::vector<float> envir_floatData;

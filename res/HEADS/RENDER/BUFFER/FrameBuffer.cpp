@@ -43,32 +43,31 @@ FrameBuffer::FrameBuffer(int count, ...)
 
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-
+	GLDEBUG
 	GLenum* attachments = new GLenum[count];
-
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
 	LOOP(count) {
 		int type_inp = va_arg(arg_ptr, int);
 		TextureType textype;
-		if (0 == type_inp)
+		if (COMBINE_FB <= type_inp <= POS_FB)
 			textype = HDR_BUFFER_TEXTURE;
-		else if (0< type_inp && type_inp < 4)
+		else if (ID_FB<= type_inp && type_inp <= EMIS_COL_FB)
 			textype = BUFFER_TEXTURE;
-		else if (4 <= type_inp&& type_inp < 7)
+		else if (ALPHA_FB <= type_inp && type_inp <= SHADOW_FB)
 			textype = FLOAT_BUFFER_TEXTURE;
 		else if (type_inp == -32){}
 
 		fb_type_list[(FBType)type_inp] = i;
 		fb_tex_list.push_back(Texture("", textype, GL_NEAREST));
 		fb_tex_list[i].SlotAdd(type_inp);
-
-		attachments[i] = GL_COLOR_ATTACHMENT0 + type_inp;
+		
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[i], GL_TEXTURE_2D, fb_tex_list[i].GetTexID(), 0);
 
 	}
 	va_end(arg_ptr);
-
+	GLDEBUG
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

@@ -25,7 +25,7 @@ public:
 	TextureType Tex_type = TextureType::NONE_TEXTURE;
 	mutable GLuint Tex_slot;
 
-	Texture(const std::string& texpath, TextureType tex_type,GLuint Tile_type); //using tex_type as its slot, but you can change it if you want
+	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type); //using tex_type as its slot, but you can change it if you want
 	Texture(GLuint Tile_type, int x, int y);    //for FBO
 	Texture();
 	~Texture();

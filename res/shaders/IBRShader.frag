@@ -9,7 +9,7 @@ vec4 screen_color;
 vec4 hdr_color;
 vec4 outline;
 
-uniform sampler2D screen_texture;
+uniform sampler2D buffer_texture;
 uniform sampler2D id_texture;
 uniform sampler2D hdr_texture;
 uniform sampler2D select_texture;
@@ -92,7 +92,7 @@ void main() {
 	reUV =  reMapUV(screen_uv);
 	ray_dir = cam_rotM * vec4(vec3(-1, -1, 1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 1);
 
-	screen_color = Vec4Film(texture(screen_texture, screen_uv), 1.0f, U_gamma);
+	screen_color = Vec4Film(texture(buffer_texture, screen_uv), 1.0f, U_gamma);
 	hdr_color = vec4(Vec3Film(texture(hdr_texture, genHdrUV(normalize(vec3(ray_dir)))).rgb, 1.0f, U_gamma), 1.0f);
 	//hdr_color = vec4(texture((hdr_texture,SampleSphericalMap(normalize(vec3(ray_dir)))1.0f);
 
@@ -107,4 +107,5 @@ void main() {
 
 	IDcolor = vec4(ID_color, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
+	//color = vec4(texture(buffer_texture, screen_uv).rgb, 1.0f);
 };

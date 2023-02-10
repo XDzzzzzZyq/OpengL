@@ -115,10 +115,18 @@ int Application::Run()
 		DebugPoints points;
 	points.PushDebugPoint(5, 5, 5);
 	renderer.UseDebugPoints(&points);
+
+	DEBUG("\n---------------POSTPRCS----------------")
+		PostProcessing pps1("PBR");
+	pps1.SetShaderValue("U_color",		BUFFER_TEXTURE + COMBINE_FB);
+	pps1.SetShaderValue("U_pos",		BUFFER_TEXTURE + POS_FB);
+	pps1.SetShaderValue("U_normal",		BUFFER_TEXTURE + NORMAL_FB);
+	renderer.UsePostProcessing(&pps1);
+
 	DEBUG("-------------------------------")
 		/////////////////////////////////
 
-		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
@@ -147,12 +155,9 @@ int Application::Run()
 
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
-		glm::vec3 newpoint1 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
-		points.PushDebugPoint(newpoint1);
-		line.PushDebugLine(newpoint1);
 		tex_type++;
-		if (tex_type > 1)tex_type = 0;
-		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type * 2));		DEBUG(go1.o_position)
+		if (tex_type >= MAX_FB)tex_type = 0;
+		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));

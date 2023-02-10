@@ -4,7 +4,7 @@ Environment::Environment(const std::string& texpath)
 {
 
 	o_type = GO_ENVIR;
-	envir_shader = RenderShader("IBRShader");	
+	envir_shader = RenderShader("Screen", "EnvirBG");	
 
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 
@@ -16,7 +16,7 @@ Environment::Environment(const std::string& texpath)
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
 	envir_spirit.SetTex();
 
-	envir_frameBuffer = FrameBuffer(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);	
+	envir_frameBuffer = FrameBuffer(5, COMBINE_FB, POS_FB, ID_FB, RAND_FB, MASK_FB);	
 
 	o_name = "Environment." + std::to_string(GetObjectID());
 
@@ -36,11 +36,11 @@ Environment::Environment(const std::string& texpath)
 	envir_shader->InitShader = [&] {
 		envir_shader->UseShader();
 		envir_shader->SetValue("hdr_texture",		IBL_TEXTURE);
-		envir_shader->SetValue("screen_texture",	BUFFER_TEXTURE + COMBINE_FB);
+		envir_shader->SetValue("buffer_texture",	BUFFER_TEXTURE + COMBINE_FB);
 		envir_shader->SetValue("id_texture",		BUFFER_TEXTURE + ID_FB);
-		envir_shader->SetValue("select_texture",	BUFFER_TEXTURE + ALPHA_FB);
-		envir_shader->SetValue("ID_color", id_color);
-		envir_shader->SetValue("RAND_color", id_color_rand);
+		envir_shader->SetValue("select_texture",	BUFFER_TEXTURE + MASK_FB);
+		envir_shader->SetValue("ID_color",			id_color);
+		envir_shader->SetValue("RAND_color",		id_color_rand);
 		envir_shader->UnuseShader();
 	};
 
@@ -75,7 +75,7 @@ void Environment::BindFrameBuffer() const
 	envir_frameBuffer->BindFrameBuffer();
 }
 
-void Environment::UnBindFrameBuffer() const
+void Environment::UnbindFrameBuffer() const
 {
 	envir_frameBuffer->UnbindFrameBuffer();
 }
@@ -83,7 +83,7 @@ void Environment::UnBindFrameBuffer() const
 void Environment::SwapFrameBuffer(FBType type)
 {
 	envir_shader->UseShader();
-	envir_shader->SetValue("screen_texture", BUFFER_TEXTURE + type);
+	envir_shader->SetValue("buffer_texture", BUFFER_TEXTURE + type);
 }
 
 void Environment::GenFloatData() const
@@ -96,13 +96,12 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 	o_vertArry.Bind();
 	envir_shader->UseShader();
 	o_indexBuffer.Bind();
-	envir_frameBuffer->BindFrameBufferTex(4, COMBINE_FB, ID_FB, RAND_FB, ALPHA_FB);
+	envir_frameBuffer->BindFrameBufferTex(5, COMBINE_FB, POS_FB, ID_FB, RAND_FB, MASK_FB);
 	envir_IBL_spec.Bind();
+	//DEBUG(envir_frameBuffer->GetFBCount())
 
 	if (envir_shader->is_shader_changed)
 		envir_shader->InitShader();
-
-	//DEBUG(envir_shader->is_shader_changed)
 
 	if(cam->is_invUniform_changed || envir_shader->is_shader_changed)
 		envir_shader->SetValue("cam_rotM", cam->o_rotMat);
