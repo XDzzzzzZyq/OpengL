@@ -1,11 +1,12 @@
 #version 430 core
 
-layout(location = 0) out vec4 color;
+layout(location = 0) out vec4 COMBcolor;
 layout(location = 1) out vec4 POScolor;
-layout(location = 2) out vec4 IDcolor;
-layout(location = 3) out vec4 RANDcolor;
-layout(location = 4) out vec4 SELECcolor;
-layout(location = 5) out vec4 NORMALcolor;
+layout(location = 2) out vec4 RANDcolor;
+layout(location = 3) out vec4 IDcolor;
+layout(location = 4) out vec4 ALPHAcolor;
+layout(location = 5) out vec4 SELECcolor;
+layout(location = 6) out vec4 NORMALcolor;
 
 in vec2 uv;
 in vec4 testcolor;
@@ -114,6 +115,9 @@ void main() {
 	RANDcolor = vec4(RAND_color, 1.0f);
 	CamRay = pix_pos - vec3(Scene_data[0], Scene_data[1], Scene_data[2]);
 	ReflectRay = reflect(normalize(CamRay), vec3(Snormal_color));
+	NORMALcolor = normal_color;
+	POScolor = vec4(pix_pos, 1);
+	ALPHAcolor = vec4(1);
 
 	//Generate PL_LIST & pL_list Shading
 	for (int i = 0;i < L_point[0];i++) {
@@ -140,9 +144,9 @@ void main() {
 	vec4 uvcolor = texture(U_Texture, uv);
 	vec3 reflect_spec = vec3(textureLod(Envir_Texture_diff, genHdrUV(-ReflectRay), blen));
 	vec3 reflect_diff = vec3(textureLod(Envir_Texture_diff, genHdrUV(-vec3(Snormal_color)), 5));
-	SELECcolor.a = float(is_selected);
+	SELECcolor = vec4(is_selected);
 	
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 	float coef = blen/5;
-	color = vec4(reflect_diff*coef + reflect_spec*(1-coef), 1.0f);
+	COMBcolor = vec4(reflect_diff*coef + reflect_spec*(1-coef), 1.0f);
 };

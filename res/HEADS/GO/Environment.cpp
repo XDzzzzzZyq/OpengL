@@ -25,7 +25,7 @@ Environment::Environment(const std::string& texpath)
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
 	envir_spirit.SetTex();
 
-	envir_frameBuffer = FrameBuffer(5, COMBINE_FB, POS_FB, ID_FB, RAND_FB, MASK_FB);
+	envir_frameBuffer = FrameBuffer(AVAIL_PASSES);
 
 	o_name = "Environment." + std::to_string(GetObjectID());
 
@@ -103,7 +103,7 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 	o_vertArry.Bind();
 	envir_shader->UseShader();
 	o_indexBuffer.Bind();
-	envir_frameBuffer->BindFrameBufferTex(5, COMBINE_FB, POS_FB, ID_FB, RAND_FB, MASK_FB);
+	envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 	envir_IBL_spec.Bind();
 	//DEBUG(envir_frameBuffer->GetFBCount())
 
