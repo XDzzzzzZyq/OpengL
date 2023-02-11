@@ -41,6 +41,16 @@ void Renderer::Init()
 	r_render_result = FrameBuffer(COMBINE_FB);
 
 	EventInit();
+
+	/*
+	GLint maxAttach = 0;
+	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttach);
+
+	GLint maxDrawBuf = 0;
+	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDrawBuf);
+
+	DEBUG(maxAttach)
+		DEBUG(maxDrawBuf)*/
 }
 
 Renderer::~Renderer()

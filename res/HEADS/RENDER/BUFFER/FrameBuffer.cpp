@@ -32,7 +32,6 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	}
 	GLenum attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 	glDrawBuffers(2, attachments);
-	
 	//UnbindFrameBuffer();
 }
 
@@ -50,11 +49,11 @@ FrameBuffer::FrameBuffer(int count, ...)
 	LOOP(count) {
 		int type_inp = va_arg(arg_ptr, int);
 		TextureType textype;
-		if (COMBINE_FB <= type_inp && type_inp <= POS_FB)
+		if (COMBINE_FB <= type_inp && type_inp <= MRSE_FB)
 			textype = HDR_BUFFER_TEXTURE;
 		else if (NORMAL_FB<= type_inp && type_inp <= ID_FB)
 			textype = BUFFER_TEXTURE;
-		else if (ALPHA_FB <= type_inp && type_inp <= SHADOW_FB)
+		else if (SINGLE_FB <= type_inp && type_inp <= SHADOW_FB)
 			textype = FLOAT_BUFFER_TEXTURE;
 		else if (type_inp == -32){}
 

@@ -1,12 +1,9 @@
 #version 330 core
 
 layout(location = 0) out vec4 COMBcolor;
-layout(location = 1) out vec4 POScolor;
-layout(location = 2) out vec4 RANDcolor;
-layout(location = 3) out vec4 IDcolor;
-layout(location = 4) out vec4 ALPHAcolor;
-layout(location = 5) out vec4 SELECcolor;
-layout(location = 6) out vec4 NORMALcolor;
+layout(location = 5) out vec4 RANDcolor;
+layout(location = 6) out vec4 IDcolor;
+layout(location = 7) out vec4 MASKcolor;
 
 in vec3 L_color;
 
@@ -21,6 +18,5 @@ void main() {
 	COMBcolor = vec4(L_color, U_Opacity);
 	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
-	SELECcolor = vec4(is_selected);
-	ALPHAcolor = vec4(1);
+	MASKcolor = vec4(1, is_selected, 0, 1);
 };

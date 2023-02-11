@@ -1,12 +1,9 @@
 #version 430 core
 
 layout(location = 0) out vec4 COMBcolor;
-layout(location = 1) out vec4 POScolor;
-layout(location = 2) out vec4 RANDcolor;
-layout(location = 3) out vec4 IDcolor;
-layout(location = 4) out vec4 ALPHAcolor;
-layout(location = 5) out vec4 SELECcolor;
-layout(location = 6) out vec4 NORMALcolor;
+layout(location = 5) out vec4 RANDcolor;
+layout(location = 6) out vec4 IDcolor;
+layout(location = 7) out vec4 MASKcolor;
 
 in vec2 screen_uv;
 uniform sampler2D hdr_texture;
@@ -47,7 +44,7 @@ void main() {
 	
 	IDcolor = vec4(ID_color, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
-	ALPHAcolor = vec4(0);
+	MASKcolor = vec4(0);
 
 	reUV =  reMapUV(screen_uv);
 	ray_dir = cam_rotM * vec4(vec3(-1, -1, 1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 1);
