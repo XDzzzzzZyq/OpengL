@@ -26,15 +26,6 @@ enum EnvironmentType
 class Environment : public GameObject, public Transform3D
 {
 private:
-	std::vector<float> screenQuad = {
-		// positions		// texCoords
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		 1.0f, 1.0f,	1.0f, 1.0f,
-		-1.0f,-1.0f,	0.0f, 0.0f,
-		 1.0f,-1.0f,	1.0f, 0.0f
-
-	};
-
 	VertexArray o_vertArry;
 	VertexBuffer o_vertBuffer;
 	IndexBuffer o_indexBuffer;

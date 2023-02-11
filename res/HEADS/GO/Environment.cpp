@@ -3,6 +3,15 @@
 Environment::Environment(const std::string& texpath)
 {
 
+	static std::vector<float> screenQuad = {
+		// positions		// texCoords
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		 1.0f, 1.0f,	1.0f, 1.0f,
+		-1.0f,-1.0f,	0.0f, 0.0f,
+		 1.0f,-1.0f,	1.0f, 0.0f
+	};
+	static auto indexArray = std::vector<GLuint>{ 0,2,1,1,2,3 };
+
 	o_type = GO_ENVIR;
 	envir_shader = RenderShader("Screen", "EnvirBG");	
 
@@ -16,7 +25,7 @@ Environment::Environment(const std::string& texpath)
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
 	envir_spirit.SetTex();
 
-	envir_frameBuffer = FrameBuffer(5, COMBINE_FB, POS_FB, ID_FB, RAND_FB, MASK_FB);	
+	envir_frameBuffer = FrameBuffer(5, COMBINE_FB, POS_FB, ID_FB, RAND_FB, MASK_FB);
 
 	o_name = "Environment." + std::to_string(GetObjectID());
 
@@ -28,10 +37,9 @@ Environment::Environment(const std::string& texpath)
 
 	o_vertArry.AddBuffer(o_vertBuffer, layout);
 
-	auto* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
-	GLuint* index = indexArray->data();
+	GLuint* index = indexArray.data();
 
-	o_indexBuffer = IndexBuffer(index, indexArray->size() * sizeof(GLuint)); 
+	o_indexBuffer = IndexBuffer(index, indexArray.size() * sizeof(GLuint)); 
 
 	envir_shader->InitShader = [&] {
 		envir_shader->UseShader();
@@ -45,7 +53,6 @@ Environment::Environment(const std::string& texpath)
 	};
 
 	envir_frameBuffer->UnbindFrameBuffer();	
-	delete indexArray;
 }
 
 Environment::Environment()

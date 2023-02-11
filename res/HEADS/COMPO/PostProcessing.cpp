@@ -2,6 +2,18 @@
 
 PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type)
 {
+
+	static std::vector<float> screenQuad = {
+		// positions		// texCoords
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		 1.0f, 1.0f,	1.0f, 1.0f,
+		-1.0f,-1.0f,	0.0f, 0.0f,
+		 1.0f,-1.0f,	1.0f, 0.0f
+
+	};
+
+	static auto indexArray = std::vector<GLuint>{ 0,2,1,1,2,3 };
+
 	switch (_type)
 	{
 	case FRAGMENT_SHADER:
@@ -22,12 +34,9 @@ PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type
 
 	o_vertArry.AddBuffer(o_vertBuffer, layout);
 
-	auto* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
-	GLuint* index = indexArray->data();
+	GLuint* index = indexArray.data();
 
-	o_indexBuffer = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
-
-	delete indexArray;
+	o_indexBuffer = IndexBuffer(index, indexArray.size() * sizeof(GLuint));
 }
 
 void PostProcessing::RenderPPS()

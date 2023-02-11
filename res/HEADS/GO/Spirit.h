@@ -33,12 +33,6 @@ public:
 	IndexBuffer r_index;
 	std::optional<Texture> r_tex;
 
-	std::vector<float> VertData = {
-		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
-		 1.0f, 1.0f, 0.0f,		1.0f, 0.0f,
-		-1.0f,-1.0f, 0.0f,		0.0f, 1.0f,
-		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
-	};
 public:
 	float spirit_opacity = 0.9f;
 

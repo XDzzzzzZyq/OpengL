@@ -4,6 +4,15 @@ std::string Spirit::fileroot = "res/tex/spirit/";
 
 Spirit::Spirit()
 {
+	static std::vector<float>VertData = {
+		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
+		 1.0f, 1.0f, 0.0f,		1.0f, 0.0f,
+		-1.0f,-1.0f, 0.0f,		0.0f, 1.0f,
+		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
+	};
+
+	static std::vector<GLuint> indexArray = std::vector<GLuint>{ 0,2,1,1,2,3 };
+
 	o_type = GO_SPIRIT;
 	//std::cout << VertData[100] << std::endl;
 	r_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
@@ -15,12 +24,9 @@ Spirit::Spirit()
 	r_vertArry.AddBuffer(r_vertBuffer, layout);
 	/*o_verts.Unbind();*/
 
+	GLuint* index = indexArray.data();
 
-
-	std::vector<GLuint>* indexArray = new std::vector<GLuint>{ 0,2,1,1,2,3 };
-	GLuint* index = indexArray->data();
-
-	r_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
+	r_index = IndexBuffer(index, indexArray.size() * sizeof(GLuint));
 	SetSpiritShader();
 
 	o_name = "Spirit." + std::to_string(GetObjectID());

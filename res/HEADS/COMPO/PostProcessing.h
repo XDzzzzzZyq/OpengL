@@ -22,18 +22,10 @@ public:
 	PostProcessing(const std::string& _shader, ShaderType _type = FRAGMENT_SHADER);
 
 private:
-	std::vector<float> screenQuad = {
-		// positions		// texCoords
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		 1.0f, 1.0f,	1.0f, 1.0f,
-		-1.0f,-1.0f,	0.0f, 0.0f,
-		 1.0f,-1.0f,	1.0f, 0.0f
-
-	};
-
 	VertexArray o_vertArry;
 	VertexBuffer o_vertBuffer;
 	IndexBuffer o_indexBuffer;
+
 public:
 	std::variant<RenderShader, ComputeShader> pps_shader;
 	FrameBuffer pps_fb;
