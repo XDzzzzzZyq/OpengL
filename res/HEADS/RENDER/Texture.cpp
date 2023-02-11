@@ -135,7 +135,8 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		break;
 
 	case FLOAT_BUFFER_TEXTURE:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, SCREEN_W, SCREEN_H, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -179,19 +180,7 @@ void Texture::DelTexture() const
 
 void Texture::Resize(const ImVec2& size)
 {
-	im_h = size.y;
-	im_w = size.x;
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
-
-	if (Tex_type == RGBA_TEXTURE || Tex_type == BUFFER_TEXTURE)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else if (Tex_type == HDR_BUFFER_TEXTURE || Tex_type == IBL_TEXTURE)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
-	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	Resize(size.x, size.y);
 }
 
 void Texture::Resize(float x, float y)
@@ -205,7 +194,7 @@ void Texture::Resize(float x, float y)
 	else if (Tex_type == HDR_BUFFER_TEXTURE)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
