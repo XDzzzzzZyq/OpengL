@@ -39,5 +39,5 @@ vec4 Vec4Film(vec4 x, float fac, float gamma)
 }
 
 void main(){
-	color = texture(U_color, screen_uv);
+	color = vec4(texture(U_color, screen_uv).rgb, 1);
 }

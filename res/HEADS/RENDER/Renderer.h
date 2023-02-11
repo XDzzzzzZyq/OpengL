@@ -25,7 +25,14 @@
 class Renderer : public EventListener
 {
 private:
+	enum _BuildinPPS
+	{
+		_PBR_COMP_PPS, _EDIT_VISUAL_PPS
+	};
+
+private:
 	std::unordered_map<int, Light*> emptyLight;
+	std::optional<FrameBuffer> r_render_pass;
 	std::optional<FrameBuffer> r_render_result;
 	std::unordered_map<int, std::string> name_buff;
 	std::vector<int> spirit_id_buff;
@@ -89,5 +96,9 @@ public:
 	void UseDebugPoints(DebugPoints* dpoints);
 
 	void UsePostProcessing(PostProcessing* pps);
+
+public:
+	PostProcessing* GetPPS(int _tar) { return pps_list[_tar]; }
+
 };
 

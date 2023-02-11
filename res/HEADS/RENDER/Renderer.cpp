@@ -93,7 +93,7 @@ GLuint Renderer::GetFrameBufferTexture(int slot)
 
 void Renderer::EventInit()
 {
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Renderer::LMB_CLICK); 
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Renderer::LMB_CLICK);
 	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
 
 	EventListener::GetActiveShader = [&](int id) { return obj_list[id]->GetShaderStruct(); };
@@ -101,47 +101,47 @@ void Renderer::EventInit()
 
 void Renderer::LMB_CLICK()
 {
-	if (IsMouseClick()) {
-		pre_act_go_ID = active_GO_ID;
+	if (!IsMouseClick()) return;
+	pre_act_go_ID = active_GO_ID;
 
-		active_GO_ID = GetSelectID(mouse_x, mouse_y);
+	active_GO_ID = GetSelectID(mouse_x, mouse_y);
 
-		if (name_buff.find(active_GO_ID) != name_buff.end()) {
-			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
-				obj_list[pre_act_go_ID]->is_selected = false;
+	if (name_buff.find(active_GO_ID) != name_buff.end()) {
+		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
+			obj_list[pre_act_go_ID]->is_selected = false;
 
-			if (obj_list.find(active_GO_ID) != obj_list.end()) {
-				obj_list[active_GO_ID]->is_selected = true;
-				active_shader = obj_list[active_GO_ID]->GetShaderStruct();
-			}
-
-		}
-		else {
-			active_GO_ID = 0;
-			active_shader = nullptr;
-			if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
-				obj_list[pre_act_go_ID]->is_selected = false;
-		}
-
-		if (multi_select) {
-			is_selected_changed = pre_act_go_ID != active_GO_ID;
-		}
-		else {
-			is_selected_changed = pre_act_go_ID != active_GO_ID;
-		}
-
-		for (auto i : spirit_id_buff) {
-			if (i == active_GO_ID) {
-				is_spirit_selected = true;
-				return;
-			}
-			else {
-				is_spirit_selected = false;
-			}
-
+		if (obj_list.find(active_GO_ID) != obj_list.end()) {
+			obj_list[active_GO_ID]->is_selected = true;
+			active_shader = obj_list[active_GO_ID]->GetShaderStruct();
 		}
 
 	}
+	else {
+		active_GO_ID = 0;
+		active_shader = nullptr;
+		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
+			obj_list[pre_act_go_ID]->is_selected = false;
+	}
+
+	if (multi_select) {
+		is_selected_changed = pre_act_go_ID != active_GO_ID;
+	}
+	else {
+		is_selected_changed = pre_act_go_ID != active_GO_ID;
+	}
+
+	for (auto i : spirit_id_buff) {
+		if (i == active_GO_ID) {
+			is_spirit_selected = true;
+			return;
+		}
+		else {
+			is_spirit_selected = false;
+		}
+
+	}
+
+
 }
 
 void Renderer::SHIFT()
@@ -200,7 +200,7 @@ void Renderer::Render(bool rend, bool buff) {
 	UpdateFrame();
 	if (rend) {
 		//glEnable(GL_STENCIL_TEST);
-;
+		;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		////////////    MESHES    ////////////
 		GetActiveCamera()->ApplyTransform();
@@ -211,29 +211,28 @@ void Renderer::Render(bool rend, bool buff) {
 		GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 		glEnable(GL_DEPTH_TEST);
 
-			GetActiveEnvironment()->envir_IBL_spec.Bind(IBL_TEXTURE);
-			GetActiveEnvironment()->envir_IBL_diff.Bind(IBL_TEXTURE+1);
-			for (const auto& obj : mesh_list)
+		GetActiveEnvironment()->envir_IBL_spec.Bind(IBL_TEXTURE);
+		GetActiveEnvironment()->envir_IBL_diff.Bind(IBL_TEXTURE + 1);
+		for (const auto& obj : mesh_list)
+		{
+
+			if (!obj.second->is_viewport)continue;
+
+			obj.second->ApplyAllTransform();
+			if (is_light_changed || obj.second->o_shader->is_shader_changed)
 			{
-
-				if (!obj.second->is_viewport)continue;
-
-				obj.second->ApplyAllTransform();
-				if (is_light_changed || obj.second->o_shader->is_shader_changed)
-				{
-					obj.second->RenderObj(GetActiveCamera(), light_list);
-				}
-				else {
-					obj.second->RenderObj(GetActiveCamera(), emptyLight);
-				}
-				obj.second->is_Uniform_changed = false;
-				obj.second->o_shader->is_shader_changed = false;
+				obj.second->RenderObj(GetActiveCamera(), light_list);
 			}
-			is_light_changed = false;
-			GetActiveEnvironment()->envir_IBL_spec.Unbind();
-			GetActiveEnvironment()->envir_IBL_diff.Unbind();
+			else {
+				obj.second->RenderObj(GetActiveCamera(), emptyLight);
+			}
+			obj.second->is_Uniform_changed = false;
+			obj.second->o_shader->is_shader_changed = false;
+		}
+		is_light_changed = false;
+		GetActiveEnvironment()->envir_IBL_spec.Unbind();
+		GetActiveEnvironment()->envir_IBL_diff.Unbind();
 
-		//glDisable(GL_STENCIL_TEST);
 		//////////// DEBUG MESHES ////////////
 
 		for (const auto& dLine : dLine_list)
@@ -260,34 +259,32 @@ void Renderer::Render(bool rend, bool buff) {
 			light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), GetActiveCamera());
 		}
 		for (const auto& envir : envir_list) {
-			if(!envir.second->envir_spirit.is_viewport)continue;
+			if (!envir.second->envir_spirit.is_viewport)continue;
 			envir.second->envir_spirit.RenderSpirit(vec3_stdVec6(envir.second->o_position, envir.second->envir_color), GetActiveCamera());
 		}
 	}
 
 	if (buff) {
 		GetActiveEnvironment()->UnbindFrameBuffer();
-		//glStencilFunc(GL_NOTEQUAL, 1, 0xff);
-		//glStencilMask(0x00);
-		
+
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		r_render_result->BindFrameBuffer();
 
-		if (rend) { 
-			GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(1, COMBINE_FB); 
-			pps_list[0]->RenderPPS(); 
+		if (rend) {
+			GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(1, COMBINE_FB);
+			pps_list[0]->RenderPPS();
 		}//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
-		
+
 		r_render_result->UnbindFrameBuffer();
 	}
 	//DEBUG(is_spirit_selected)
 	Reset();
 }
 
-///////////////////////////////////////// END RENDERING //////////////////////////////////////////////
+/////////////////////////////////////// FINISH RENDERING /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //++++++++                                                                                ++++++++++//
 //++++++++                                                                                ++++++++++//
@@ -372,7 +369,7 @@ void Renderer::UseLight(Light* light)
 		is_light_changed = true;
 		light_list[light->GetObjectID()] = light;
 		obj_list[light->light_spirit.GetObjectID()] = light;
-		
+
 		outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
 		parent_index_list.push_back(-1);
 

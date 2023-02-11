@@ -135,7 +135,7 @@ void ImguiManager::PushImguiMenu(ImguiMenu* Menu)
 
 	for (auto& i : Menu->mitm_func_list) {
 		EventList[i.first] = std::move(i.second);
-		i.first.Debug();
+		//i.first.Debug();
 	}
 
 	Menu->mitm_func_list.clear();
