@@ -20,13 +20,14 @@ GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
 		char* message = new char[length];
 
 		glGetShaderInfoLog(id, length, &length, message);
-		std::cout << type + " error" << std::endl;
-		std::cout << message << std::endl;
+		std::cout << type + " error\n";
+		std::cout << message << "\n";
+		DEBUG(source)
 		//delete message;
 		return 0;
 	}
 #ifdef _DEBUG
-	std::cout << type << " is complied successfully!" << std::endl;
+	std::cout << type << " is complied successfully!\n";
 #endif
 	//delete src;
 	return id;
@@ -284,8 +285,9 @@ GLuint RenderShader::CompileShader(ShaderType tar)
 		char* message = new char[length];
 
 		glGetShaderInfoLog(shader_id, length, &length, message);
-		std::cout << type + " shader error" << std::endl;
-		std::cout << message << std::endl;
+		std::cout << type + " shader error\n";
+		std::cout << message << "\n";
+
 	}
 	else {
 		std::cout << type << " is complied successfully!" << std::endl;
