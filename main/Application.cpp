@@ -118,9 +118,13 @@ int Application::Run()
 
 	DEBUG("\n---------------POSTPRCS----------------")
 		PostProcessing pps1("PBR");
-	pps1.SetShaderValue("U_color",		BUFFER_TEXTURE + COMBINE_FB);
-	pps1.SetShaderValue("U_pos",		BUFFER_TEXTURE + POS_FB);
-	pps1.SetShaderValue("U_normal",		BUFFER_TEXTURE + NORMAL_FB);
+	pps1.SetShaderValue("U_color",				BUFFER_TEXTURE + COMBINE_FB);
+	pps1.SetShaderValue("U_pos",				BUFFER_TEXTURE + POS_FB);
+	pps1.SetShaderValue("U_normal",				BUFFER_TEXTURE + NORMAL_FB);
+	pps1.SetShaderValue("U_albedo",				BUFFER_TEXTURE + ALBEDO_FB);
+	pps1.SetShaderValue("U_mres",				BUFFER_TEXTURE + MRSE_FB);
+	pps1.SetShaderValue("Envir_Texture",		IBL_TEXTURE);
+	pps1.SetShaderValue("Envir_Texture_diff",	IBL_TEXTURE + 1);
 	renderer.UsePostProcessing(&pps1);
 
 	DEBUG("-------------------------------")
@@ -148,7 +152,7 @@ int Application::Run()
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
-	AverageTime<500> AvTime;
+	AverageTime<5> AvTime;
 	float FrameCount = 0;
 	int tex_type = 0;
 	static float testfloat = 0.0f;
@@ -211,7 +215,7 @@ int Application::Run()
 		FrameCount++;
 		UI.NewFrame();
 		Event.UpdateEvent(window);
-		AvTime.Add(UI.GetIO()->Framerate);
+		AvTime.Update(UI.GetIO()->Framerate);
 		renderer.EventActivate();
 
 		/* Render here */
