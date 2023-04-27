@@ -25,7 +25,7 @@ Environment::Environment(const std::string& texpath)
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
 	envir_spirit.SetTex();
 
-	envir_frameBuffer = FrameBuffer(AVAIL_PASSES);
+	//envir_frameBuffer = FrameBuffer(AVAIL_PASSES);
 
 	o_name = "Environment." + std::to_string(GetObjectID());
 
@@ -52,7 +52,7 @@ Environment::Environment(const std::string& texpath)
 		envir_shader->UnuseShader();
 	};
 
-	envir_frameBuffer->UnbindFrameBuffer();	
+	//envir_frameBuffer->UnbindFrameBuffer();	
 }
 
 Environment::Environment()
@@ -64,7 +64,7 @@ Environment::~Environment()
 {
 	envir_shader->DelShad();
 	envir_IBL_spec.DelTexture();
-	envir_frameBuffer->Del();
+	//envir_frameBuffer->Del();
 }
 
 void Environment::ChangeEnvirTexture(const std::string& texpath) const
@@ -79,12 +79,12 @@ void Environment::ChangeEnvirType(EnvironmentType type) const
 
 void Environment::BindFrameBuffer() const
 {
-	envir_frameBuffer->BindFrameBuffer();
+	//envir_frameBuffer->BindFrameBuffer();
 }
 
 void Environment::UnbindFrameBuffer() const
 {
-	envir_frameBuffer->UnbindFrameBuffer();
+	//envir_frameBuffer->UnbindFrameBuffer();
 }
 
 void Environment::SwapFrameBuffer(FBType type)
@@ -103,7 +103,7 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 	o_vertArry.Bind();
 	envir_shader->UseShader();
 	o_indexBuffer.Bind();
-	envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
+	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 	envir_IBL_spec.Bind();
 	//DEBUG(envir_frameBuffer->GetFBCount())
 

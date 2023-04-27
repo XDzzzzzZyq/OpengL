@@ -120,7 +120,7 @@ void main() {
 	POScolor = vec4(pix_pos, 1);
 	MASKcolor = vec4(1, is_selected, 0, 1);
 	ALBEDOcolor = texture2D(U_Texture, uv);
-	MRSEcolor = vec4(vec3(blen), 1);
+	MRSEcolor = vec4(1, blen/5, 0, 1);
 	
 	//Generate PL_LIST & pL_list Shading
 	for (int i = 0;i < L_point[0];i++) {

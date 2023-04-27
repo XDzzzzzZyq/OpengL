@@ -21,13 +21,17 @@
 #include <unordered_map>
 #include <optional>
 
-
 class Renderer : public EventListener
 {
 private:
 	enum _BuildinPPS
 	{
 		_PBR_COMP_PPS, _EDIT_VISUAL_PPS
+	};
+
+	enum _BuildinBuffLoc
+	{
+		_RASTER
 	};
 
 private:
@@ -60,8 +64,8 @@ public:
 	int GetSelectID(GLuint x, GLuint y);
 
 public:
-	std::vector<FrameBuffer> framebuffer_list;
-	int framebuffer_count = -1;
+	std::vector<FrameBuffer> r_buffer_list;
+	int framebuffer_count = 0;
 	void AddFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);

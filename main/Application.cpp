@@ -73,7 +73,7 @@ int Application::Run()
 
 	DEBUG("\n---------------MESH----------------")
 		Mesh go2("res/obj/torus.obj");
-	go2.SetObjShader("testS");
+	go2.SetObjShader("testS", "testS_diff");
 	go2.SetTex("res/tex/avatar1.png", RGBA_TEXTURE);
 	go2.SetCenter();
 	go2.SetPos({ 8, 0, 0 });

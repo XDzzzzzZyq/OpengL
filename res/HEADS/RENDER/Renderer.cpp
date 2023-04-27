@@ -39,6 +39,8 @@ void Renderer::Init()
 	//glEnable(GL_CONVOLUTION_2D);
 
 	r_render_result = FrameBuffer(COMBINE_FB);
+	AddFrameBuffer();
+
 
 	EventInit();
 
@@ -55,7 +57,8 @@ void Renderer::Init()
 
 Renderer::~Renderer()
 {
-
+	for (auto& buffer : r_buffer_list)
+		buffer.Del();
 }
 
 std::string Renderer::GetObjectName(int ID)
@@ -65,32 +68,33 @@ std::string Renderer::GetObjectName(int ID)
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
 {
-	if (viewport_offset - ImVec2(5, 5) < ImVec2(x, y) && ImVec2(x, y) < viewport_offset + GetActiveEnvironment()->envir_frameBuffer->GetFrameBufferSize() * ImVec2(1, 2))
-		return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
+	if (viewport_offset - ImVec2(5, 5) < ImVec2(x, y) && ImVec2(x, y) < viewport_offset + r_buffer_list[_RASTER].GetFrameBufferSize() * ImVec2(1, 2))
+		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
+		return r_buffer_list[_RASTER].ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 	else
 		return active_GO_ID;
 }
 
 void Renderer::AddFrameBuffer()
 {
-	framebuffer_list.push_back(FrameBuffer(COMBINE_FB));
-
+	r_buffer_list.emplace_back(AVAIL_PASSES);
 	framebuffer_count++;
 }
 
 void Renderer::BindFrameBuffer(int slot)
 {
-	framebuffer_list[slot].BindFrameBuffer();
+	r_buffer_list[slot].BindFrameBuffer();
 }
 
 void Renderer::EndFrameBuffer(int slot)
 {
-	framebuffer_list[slot].UnbindFrameBuffer();
+	r_buffer_list[slot].UnbindFrameBuffer();
 }
 
 void Renderer::FrameBufferResize(int slot, const ImVec2& size)
 {
-	GetActiveEnvironment()->envir_frameBuffer->Resize(size);
+	//GetActiveEnvironment()->envir_frameBuffer->Resize(size);
+	r_buffer_list[_RASTER].Resize(size);
 	r_render_result->Resize(size);
 }
 
@@ -204,8 +208,10 @@ void Renderer::Render(bool rend, bool buff) {
 	//GLDEBUG
 	glEnable(GL_BLEND);
 
-	if (buff)
-		GetActiveEnvironment()->BindFrameBuffer();
+	if (buff) {
+		//GetActiveEnvironment()->BindFrameBuffer();
+		r_buffer_list[_RASTER].BindFrameBuffer();
+	}
 
 	UpdateFrame();
 	if (rend) {
@@ -275,7 +281,8 @@ void Renderer::Render(bool rend, bool buff) {
 	}
 
 	if (buff) {
-		GetActiveEnvironment()->UnbindFrameBuffer();
+		//GetActiveEnvironment()->UnbindFrameBuffer();
+		r_buffer_list[_RASTER].UnbindFrameBuffer();
 
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
@@ -284,8 +291,9 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBuffer();
 
 		if (rend) {
-			GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(1, COMBINE_FB);
-			pps_list[0]->RenderPPS();
+			//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
+			r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
+			pps_list[_PBR_COMP_PPS]->RenderPPS();
 		}//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 
 		r_render_result->UnbindFrameBuffer();

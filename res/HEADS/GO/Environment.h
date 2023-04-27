@@ -31,7 +31,7 @@ private:
 	IndexBuffer o_indexBuffer;
 
 public:
-	std::optional<FrameBuffer> envir_frameBuffer;
+	// std::optional<FrameBuffer> envir_frameBuffer;
 	std::optional<RenderShader> envir_shader;
 
 	Texture envir_IBL_spec, envir_IBL_diff;
