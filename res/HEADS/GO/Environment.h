@@ -54,6 +54,9 @@ public:
 	void UnbindFrameBuffer() const;
 	void SwapFrameBuffer(FBType type);
 
+	void BindEnvironTexture() const;
+	void UnbindEnvironTexture() const;
+
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;
 	ShaderLib* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }

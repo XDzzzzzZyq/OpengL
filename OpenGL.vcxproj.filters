@@ -668,6 +668,7 @@
     <None Include="res\shaders\EnvirBG.frag" />
     <None Include="res\shaders\ShowTexture.frag" />
     <None Include="res\shaders\PBR.frag" />
+    <None Include="res\shaders\Rasterization.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

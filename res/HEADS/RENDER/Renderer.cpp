@@ -224,11 +224,10 @@ void Renderer::Render(bool rend, bool buff) {
 		GetActiveCamera()->GenFloatData();
 
 		//DEBUG(viewport_offset)
-		GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
+		//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 		glEnable(GL_DEPTH_TEST);
 
-		GetActiveEnvironment()->envir_IBL_spec.Bind(IBL_TEXTURE);
-		GetActiveEnvironment()->envir_IBL_diff.Bind(IBL_TEXTURE + 1);
+		GetActiveEnvironment()->BindEnvironTexture();
 		for (const auto& obj : mesh_list)
 		{
 
@@ -246,8 +245,7 @@ void Renderer::Render(bool rend, bool buff) {
 			obj.second->o_shader->is_shader_changed = false;
 		}
 		is_light_changed = false;
-		GetActiveEnvironment()->envir_IBL_spec.Unbind();
-		GetActiveEnvironment()->envir_IBL_diff.Unbind();
+		GetActiveEnvironment()->BindEnvironTexture();
 
 		//////////// DEBUG MESHES ////////////
 
@@ -293,7 +291,10 @@ void Renderer::Render(bool rend, bool buff) {
 		if (rend) {
 			//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 			r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
+			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 			pps_list[_PBR_COMP_PPS]->RenderPPS();
+
+
 		}//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 
 		r_render_result->UnbindFrameBuffer();

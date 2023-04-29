@@ -93,6 +93,18 @@ void Environment::SwapFrameBuffer(FBType type)
 	envir_shader->SetValue("buffer_texture", BUFFER_TEXTURE + type);
 }
 
+void Environment::BindEnvironTexture() const
+{
+	envir_IBL_spec.Bind(IBL_TEXTURE);
+	envir_IBL_diff.Bind(IBL_TEXTURE + 1);
+}
+
+void Environment::UnbindEnvironTexture() const
+{
+	envir_IBL_spec.Unbind();
+	envir_IBL_diff.Unbind();
+}
+
 void Environment::GenFloatData() const
 {
 

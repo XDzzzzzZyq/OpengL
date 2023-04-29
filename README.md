@@ -8,7 +8,8 @@
  - [x] multi-passes buffering
 	- [ ] texture -> renderbuffer?
  - [ ] PBR muti-passes composition
- - [ ] editing visual effects
+ - [ ] editing elements
+	- [ ] outline
 
  - [x] Post Processing
 

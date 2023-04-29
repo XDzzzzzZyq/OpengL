@@ -1,15 +1,20 @@
-layout(location = 0) out vec4 color;
+#version 430 core
 
+layout(location = 0) out vec4 Output;
+
+// passes
 uniform sampler2D U_combine;
 uniform sampler2D U_pos;
 uniform sampler2D U_normal;
 uniform sampler2D U_albedo;
-uniform sampler2D U_emit;
-uniform sampler2D U_metal;
-uniform sampler2D U_rough;
-uniform sampler2D U_spec;
-uniform sampler2D U_emit_str;
+uniform sampler2D U_mrse;
 uniform sampler2D U_color;
+uniform sampler2D U_alpha;
+
+// input
+uniform vec3 Cam_pos;
+uniform sampler2D Envir_Texture;
+uniform sampler2D Envir_Texture_diff;
 
 in vec2 screen_uv;
 
@@ -38,6 +43,49 @@ vec4 Vec4Film(vec4 x, float fac, float gamma)
 	return x;
 }
 
+vec3 Vec3Bisector(vec3 a, vec3 b) {
+	return normalize(normalize(a) * 0.5 + normalize(b) * 0.5);
+}
+
+const vec2 invAtan = vec2(0.1591, 0.3183);
+vec2 genHdrUV(vec3 dir) {
+	vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
+	uv *= invAtan;
+	uv += 0.5;
+	return -uv + vec2(0.5, 1);
+} 
+
+vec3 Pos, Normal;
+vec3 CamRay, ReflectRay;
+
 void main(){
-	color = vec4(texture(U_color, screen_uv).rgb, 1);
+
+	Pos = texture2D(U_pos, screen_uv).rgb;
+	Normal = texture2D(U_normal, screen_uv).rgb;
+
+	CamRay = Pos - Cam_pos;
+	ReflectRay = reflect(normalize(CamRay), Normal);
+
+	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
+	float Roughness = MRSE.g;
+	float Alpha = texture2D(U_alpha, screen_uv).r;
+
+	//float roughness = 
+
+	//vec4 uvcolor = texture(U_Texture, uv);
+	vec3 reflect_spec = textureLod(Envir_Texture_diff, genHdrUV(-ReflectRay), Roughness * 5).rgb;
+	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 5).rgb;
+	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
+	//float coef = blen/5;
+	if(Alpha < 0.01){
+		Output = vec4(0);
+	}else{
+		Output = vec4(reflect_diff * Roughness + reflect_spec*(1 - Roughness), 1.0f);
+	}
+
+	//Output = vec4(normalize(CamRay), 1);
+	//Output = vec4(Normal.r, 0, 0, 1);
+	//Output = MRSE;
+
+	//Output = vec4(texture(U_color, screen_uv).rgb, 1);
 }

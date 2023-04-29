@@ -65,7 +65,7 @@ int Application::Run()
 
 	DEBUG("\n---------------MESH----------------")
 		Mesh go1("res/obj/monkey2.obj");
-	go1.SetObjShader("testS");
+	go1.SetObjShader("testS", "Rasterization");
 	go1.SetTex("res/tex/avatar2.png", RGBA_TEXTURE);
 	go1.SetCenter();
 	go1.ApplyTransform();
@@ -73,7 +73,7 @@ int Application::Run()
 
 	DEBUG("\n---------------MESH----------------")
 		Mesh go2("res/obj/torus.obj");
-	go2.SetObjShader("testS", "testS_diff");
+	go2.SetObjShader("testS", "Rasterization");
 	go2.SetTex("res/tex/avatar1.png", RGBA_TEXTURE);
 	go2.SetCenter();
 	go2.SetPos({ 8, 0, 0 });
@@ -84,7 +84,7 @@ int Application::Run()
 
 	DEBUG("\n---------------MESH----------------")
 		Mesh go3("res/obj/UVsphere.obj");
-	go3.SetObjShader("testS", "testS_diff");
+	go3.SetObjShader("testS", "Rasterization");
 	go3.SetPos({ -8,0,0 });
 	go3.SetScale({ 3,3,3 });
 	renderer.UseMesh(&go3);
@@ -122,7 +122,8 @@ int Application::Run()
 	pps1.SetShaderValue("U_pos",				BUFFER_TEXTURE + POS_FB);
 	pps1.SetShaderValue("U_normal",				BUFFER_TEXTURE + NORMAL_FB);
 	pps1.SetShaderValue("U_albedo",				BUFFER_TEXTURE + ALBEDO_FB);
-	pps1.SetShaderValue("U_mres",				BUFFER_TEXTURE + MRSE_FB);
+	pps1.SetShaderValue("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
+	pps1.SetShaderValue("U_alpha",				BUFFER_TEXTURE + MASK_FB);
 	pps1.SetShaderValue("Envir_Texture",		IBL_TEXTURE);
 	pps1.SetShaderValue("Envir_Texture_diff",	IBL_TEXTURE + 1);
 	renderer.UsePostProcessing(&pps1);
