@@ -399,7 +399,6 @@
     <None Include="res\shaders\LineShader.vert" />
     <None Include="res\shaders\PointsShader.frag" />
     <None Include="res\shaders\PointsShader.vert" />
-    <None Include="res\shaders\PointsShader_proj.frag" />
     <None Include="res\shaders\PointsShader_proj.vert" />
     <None Include="res\shaders\SpiritShader.frag" />
     <None Include="res\shaders\SpiritShader.vert" />

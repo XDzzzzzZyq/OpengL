@@ -205,8 +205,7 @@ void Renderer::Render(bool rend, bool buff) {
 	if (cam_list.find(0) == cam_list.end()) _ASSERT("NONE ACTIVE CAMERA");
 	if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
 
-	//GLDEBUG
-	glEnable(GL_BLEND);
+	glDisable(GL_BLEND);
 
 	if (buff) {
 		//GetActiveEnvironment()->BindFrameBuffer();
@@ -283,7 +282,6 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].UnbindFrameBuffer();
 
 		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		r_render_result->BindFrameBuffer();

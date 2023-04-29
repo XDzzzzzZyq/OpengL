@@ -55,19 +55,20 @@ vec2 genHdrUV(vec3 dir) {
 	return -uv + vec2(0.5, 1);
 } 
 
-vec3 Pos, Normal;
 vec3 CamRay, ReflectRay;
 
 void main(){
 
-	Pos = texture2D(U_pos, screen_uv).rgb;
-	Normal = texture2D(U_normal, screen_uv).rgb;
+	vec3 Pos = texture2D(U_pos, screen_uv).rgb;
+	vec3 Normal = texture2D(U_normal, screen_uv).rgb;
+	vec3 Albedo = texture2D(U_albedo, screen_uv).rgb;
 
 	CamRay = Pos - Cam_pos;
 	ReflectRay = reflect(normalize(CamRay), Normal);
 
 	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
 	float Roughness = MRSE.g;
+	float Emission = MRSE.a;
 	float Alpha = texture2D(U_alpha, screen_uv).r;
 
 	//float roughness = 
@@ -77,10 +78,14 @@ void main(){
 	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 5).rgb;
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 	//float coef = blen/5;
+	Output = vec4(0);
+
+	/* [Block : PBR] */ 
 	if(Alpha < 0.01){
-		Output = vec4(0);
+		
 	}else{
-		Output = vec4(reflect_diff * Roughness + reflect_spec*(1 - Roughness), 1.0f);
+		Output += vec4(reflect_diff * Roughness + reflect_spec*(1 - Roughness), 1.0f);
+		Output += vec4(Emission * Albedo, 1);
 	}
 
 	//Output = vec4(normalize(CamRay), 1);
