@@ -7,8 +7,8 @@
 enum FBType
 {
 	/* nothing */	NONE_FB = -1,
-	/*     HDR */	COMBINE_FB, POS_FB, MRSE_FB, // metalness roughness specular emission
-	/*     RGB */	NORMAL_FB, ALBEDO_FB, EMIS_COL_FB, MASK_FB, RAND_FB, ID_FB,
+	/*     HDR */	COMBINE_FB, POS_FB, MRSE_FB, NORMAL_FB, // MRSE: metalness roughness specular emission 
+	/*     RGB */	ALBEDO_FB, EMIS_COL_FB, MASK_FB, RAND_FB, ID_FB,
 	/*   Float */	SINGLE_FB, SHADOW_FB,
 					MAX_FB,
 	/*   Depth */	DEPTH_FB = GL_DEPTH_ATTACHMENT - GL_COLOR_ATTACHMENT0

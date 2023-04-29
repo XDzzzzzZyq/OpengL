@@ -49,9 +49,9 @@ FrameBuffer::FrameBuffer(int count, ...)
 	LOOP(count) {
 		int type_inp = va_arg(arg_ptr, int);
 		TextureType textype;
-		if (COMBINE_FB <= type_inp && type_inp <= MRSE_FB)
+		if (COMBINE_FB <= type_inp && type_inp <= NORMAL_FB)
 			textype = HDR_BUFFER_TEXTURE;
-		else if (NORMAL_FB<= type_inp && type_inp <= ID_FB)
+		else if (ALBEDO_FB<= type_inp && type_inp <= ID_FB)
 			textype = BUFFER_TEXTURE;
 		else if (SINGLE_FB <= type_inp && type_inp <= SHADOW_FB)
 			textype = FLOAT_BUFFER_TEXTURE;
