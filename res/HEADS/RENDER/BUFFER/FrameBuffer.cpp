@@ -6,19 +6,29 @@ FrameBuffer::FrameBuffer()
 
 
 FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
-	:fb_type(type), using_list(false)
+	:fb_type(type)
 {
 	
 	renderBuffer = RenderBuffer();
+	fb_type_list[(FBType)type] = 0;
+	TextureType textype = NONE_TEXTURE;
+	if (COMBINE_FB <= type && type <= NORMAL_FB)
+		textype = HDR_BUFFER_TEXTURE;
+	else if (ALBEDO_FB <= type && type <= ID_FB)
+		textype = BUFFER_TEXTURE;
+	else if (SINGLE_FB <= type && type <= SHADOW_FB)
+		textype = FLOAT_BUFFER_TEXTURE;
+	else if (type == -32) {}
+	fb_tex_list.emplace_back("", textype, GL_NEAREST);
+	fb_tex_list[0].SlotAdd(type);
 
-	BufferTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
 	//IDTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
 	//IDTexture.SlotAdd(1);
 	//BufferTexture.Bind(BufferTexture.Tex_type);
 
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type, GL_TEXTURE_2D, BufferTexture.GetTexID(), 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type, GL_TEXTURE_2D, fb_tex_list[0].GetTexID(), 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 	
 	//glDrawBuffer(fb_type);GLDEBUG
@@ -36,19 +46,18 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 }
 
 FrameBuffer::FrameBuffer(int count, ...)
-	:using_list(true)
 {
 	renderBuffer = RenderBuffer();
 
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 	GLDEBUG
-	GLenum* attachments = new GLenum[count];
+	std::vector<GLenum> attachments(count);
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
 	LOOP(count) {
 		int type_inp = va_arg(arg_ptr, int);
-		TextureType textype;
+		TextureType textype = NONE_TEXTURE;
 		if (COMBINE_FB <= type_inp && type_inp <= NORMAL_FB)
 			textype = HDR_BUFFER_TEXTURE;
 		else if (ALBEDO_FB<= type_inp && type_inp <= ID_FB)
@@ -58,7 +67,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 		else if (type_inp == -32){}
 
 		fb_type_list[(FBType)type_inp] = i;
-		fb_tex_list.push_back(Texture("", textype, GL_NEAREST));
+		fb_tex_list.emplace_back("", textype, GL_NEAREST);
 		fb_tex_list[i].SlotAdd(type_inp);
 		
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
@@ -77,9 +86,52 @@ FrameBuffer::FrameBuffer(int count, ...)
 	{
 		std::cout << "framebuffer is complete\n";
 	}
-	glDrawBuffers(count, attachments);
+	glDrawBuffers(count, attachments.data());
 	UnbindFrameBuffer();
-	delete[] attachments;
+}
+
+FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
+{
+	renderBuffer = RenderBuffer();
+
+	glGenFramebuffers(1, &fb_ID);//GLDEBUG
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	GLDEBUG
+	std::vector<GLenum> attachments(_tars.size());
+
+	int i = 0;
+	for (auto type_inp : _tars) {
+		TextureType textype = NONE_TEXTURE;
+		if (COMBINE_FB <= type_inp && type_inp <= NORMAL_FB)
+			textype = HDR_BUFFER_TEXTURE;
+		else if (ALBEDO_FB <= type_inp && type_inp <= ID_FB)
+			textype = BUFFER_TEXTURE;
+		else if (SINGLE_FB <= type_inp && type_inp <= SHADOW_FB)
+			textype = FLOAT_BUFFER_TEXTURE;
+		else if (type_inp == -32) {}
+
+		fb_type_list[(FBType)type_inp] = i;
+		fb_tex_list.emplace_back("", textype, GL_NEAREST);
+		fb_tex_list[i].SlotAdd(type_inp);
+
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[i], GL_TEXTURE_2D, fb_tex_list[i].GetTexID(), 0);
+
+		i++;
+	}
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		DEBUG("framebuffer error")
+	}
+	else
+	{
+		std::cout << "framebuffer is complete\n";
+	}
+	glDrawBuffers(attachments.size(), attachments.data());
+	UnbindFrameBuffer();
+
 }
 
 FrameBuffer::~FrameBuffer()
@@ -99,18 +151,7 @@ void FrameBuffer::UnbindFrameBuffer() const
 
 void FrameBuffer::Resize(const ImVec2& size, bool all)
 {
-	fb_w = size[0];
-	fb_h = size[1];
-	renderBuffer->Resize(size);
-
-	if (using_list) {
-		for (auto& tex : fb_tex_list) 
-			tex.Resize(size);
-	}
-	else {
-		BufferTexture.Resize(size);
-	}
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	Resize(size[0], size[1], all);
 }
 
 void FrameBuffer::Resize(float w, float h, bool all)
@@ -118,13 +159,9 @@ void FrameBuffer::Resize(float w, float h, bool all)
 	fb_w = w;
 	fb_h = h;
 	renderBuffer->Resize(w, h);
-	if (using_list) {
-		for (auto& tex : fb_tex_list)
-			tex.Resize(w, h);
-	}
-	else {
-		BufferTexture.Resize(w, h);
-	}
+	for (auto& tex : fb_tex_list)
+		tex.Resize(w, h);
+
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 }
 
@@ -148,9 +185,8 @@ FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 void FrameBuffer::BindFrameBufferTex(int count, ...) const
 {
 	if (count == 0) {
-		for (auto& fb : fb_tex_list)
-			fb.Bind();
-
+		for(auto& pair : fb_type_list)
+			fb_tex_list[pair.second].Bind(BUFFER_TEXTURE + pair.first);
 		return;
 	}
 
@@ -163,6 +199,13 @@ void FrameBuffer::BindFrameBufferTex(int count, ...) const
 	va_end(arg_ptr);
 }
 
+void FrameBuffer::BindFrameBufferTex(const std::vector<FBType>& _tars) const
+{
+	for (FBType tar : _tars) {
+		fb_tex_list[fb_type_list[tar]].Bind(BUFFER_TEXTURE + tar);
+	}
+}
+
 void FrameBuffer::UnbindFrameBufferTex() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -171,8 +214,6 @@ void FrameBuffer::UnbindFrameBufferTex() const
 void FrameBuffer::Del() const
 {
 	renderBuffer->Del();
-	BufferTexture.DelTexture();
-
 	for (auto& tex : fb_tex_list)
 		tex.DelTexture();
 }

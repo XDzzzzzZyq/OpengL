@@ -38,7 +38,7 @@ void Renderer::Init()
 
 	//glEnable(GL_CONVOLUTION_2D);
 
-	r_render_result = FrameBuffer(COMBINE_FB);
+	r_render_result = FrameBuffer({ COMBINE_FB });
 	AddFrameBuffer();
 
 
@@ -77,7 +77,7 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 
 void Renderer::AddFrameBuffer()
 {
-	r_buffer_list.emplace_back(AVAIL_PASSES);
+	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
 	framebuffer_count++;
 }
 
@@ -101,7 +101,7 @@ void Renderer::FrameBufferResize(int slot, const ImVec2& size)
 GLuint Renderer::GetFrameBufferTexture(int slot)
 {
 	//return framebuffer_list[slot].BufferTexture.GetTexID();
-	return r_render_result->BufferTexture.GetTexID();
+	return r_render_result->fb_tex_list[0].GetTexID();
 }
 
 
@@ -227,21 +227,14 @@ void Renderer::Render(bool rend, bool buff) {
 		glEnable(GL_DEPTH_TEST);
 
 		GetActiveEnvironment()->BindEnvironTexture();
-		for (const auto& obj : mesh_list)
+		for (const auto& mesh : mesh_list)
 		{
+			if (!mesh.second->is_viewport)continue;
 
-			if (!obj.second->is_viewport)continue;
-
-			obj.second->ApplyAllTransform();
-			if (is_light_changed || obj.second->o_shader->is_shader_changed)
-			{
-				obj.second->RenderObj(GetActiveCamera(), light_list);
-			}
-			else {
-				obj.second->RenderObj(GetActiveCamera(), emptyLight);
-			}
-			obj.second->is_Uniform_changed = false;
-			obj.second->o_shader->is_shader_changed = false;
+			mesh.second->ApplyAllTransform();
+			mesh.second->RenderObj(GetActiveCamera(), {});
+			mesh.second->is_Uniform_changed = false;
+			mesh.second->o_shader->is_shader_changed = false;
 		}
 		is_light_changed = false;
 		GetActiveEnvironment()->BindEnvironTexture();
@@ -276,7 +269,6 @@ void Renderer::Render(bool rend, bool buff) {
 			envir.second->envir_spirit.RenderSpirit(vec3_stdVec6(envir.second->o_position, envir.second->envir_color), GetActiveCamera());
 		}
 	}
-
 	if (buff) {
 		//GetActiveEnvironment()->UnbindFrameBuffer();
 		r_buffer_list[_RASTER].UnbindFrameBuffer();
@@ -285,16 +277,17 @@ void Renderer::Render(bool rend, bool buff) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		r_render_result->BindFrameBuffer();
-
 		if (rend) {
 			//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 			r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+			if (is_light_changed) {
+				pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+			}
 			pps_list[_PBR_COMP_PPS]->RenderPPS();
-
+			//pps_list[1]->RenderPPS();
 
 		}//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
-
 		r_render_result->UnbindFrameBuffer();
 	}
 	//DEBUG(is_spirit_selected)

@@ -35,7 +35,6 @@ private:
 	};
 
 private:
-	std::unordered_map<int, Light*> emptyLight;
 	std::optional<FrameBuffer> r_render_pass;
 	std::optional<FrameBuffer> r_render_result;
 	std::unordered_map<int, std::string> name_buff;
@@ -45,6 +44,8 @@ public:
 	void Init();
 
 	~Renderer();
+public:
+	bool r_deferred_rendering = true;
 public:
 	bool is_light_changed = false;
 
