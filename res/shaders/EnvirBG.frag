@@ -1,6 +1,9 @@
 #version 430 core
 
-layout(location = 0) out vec4 COMBcolor;
+layout(location = 0) out vec4 EMIScolor;
+layout(location = 1) out vec4 POScolor;
+layout(location = 2) out vec4 NORMALcolor;
+layout(location = 4) out vec4 MRSEcolor;
 layout(location = 5) out vec4 RANDcolor;
 layout(location = 6) out vec4 IDcolor;
 layout(location = 7) out vec4 MASKcolor;
@@ -44,10 +47,13 @@ void main() {
 	
 	IDcolor = vec4(ID_color, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
-	MASKcolor = vec4(0);
+	MASKcolor = vec4(0, 0, 0, 1);
 
 	reUV =  reMapUV(screen_uv);
 	ray_dir = cam_rotM * vec4(vec3(-1, -1, 1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 1);
 
-	COMBcolor = vec4(texture(hdr_texture, genHdrUV(normalize(vec3(ray_dir)))).rgb, 1.0f);
+	NORMALcolor = ray_dir;
+	
+	EMIScolor = vec4(texture(hdr_texture, genHdrUV(normalize(vec3(ray_dir)))).rgb, 1.0f);
+	MRSEcolor = vec4(0, 0, 0, 1);
 };

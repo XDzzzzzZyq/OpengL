@@ -1,8 +1,13 @@
 #version 330 core
 
-layout(location = 0) out vec4 COMBcolor;
+layout(location = 0) out vec4 EMIScolor;
+layout(location = 1) out vec4 POScolor;
+layout(location = 2) out vec4 NORMALcolor;
+layout(location = 3) out vec4 ALBEDOcolor;
+layout(location = 4) out vec4 MRSEcolor;
 layout(location = 5) out vec4 RANDcolor;
 layout(location = 6) out vec4 IDcolor;
+layout(location = 7) out vec4 MASKcolor;
 
 in vec2 uv;
 in vec3 L_color;
@@ -14,9 +19,11 @@ uniform vec3 RAND_color;
 
 void main() {
 
-	vec4 uvcolor = texture(U_Texture, uv);
+	vec4 spirit_color = texture(U_Texture, uv);
 	//color = vec4(uv,0.0f,1.0f);
-	COMBcolor = vec4(L_color, vec3(uvcolor)[0] * SpiritOpacity);
-	IDcolor = vec4(ID_color / 256, 1.0f);
-	RANDcolor = vec4(RAND_color, 1.0f);
+	EMIScolor = vec4(L_color, spirit_color.r);
+	IDcolor = vec4(ID_color / 256, spirit_color.r);
+	RANDcolor = vec4(RAND_color, spirit_color.r);
+	MRSEcolor = vec4(0, 0, 0, spirit_color.r);
+	MASKcolor = vec4(spirit_color.r * SpiritOpacity, 0, 0, spirit_color.r);
 };

@@ -35,7 +35,6 @@ private:
 	};
 
 private:
-	std::optional<FrameBuffer> r_render_pass;
 	std::optional<FrameBuffer> r_render_result;
 	std::unordered_map<int, std::string> name_buff;
 	std::vector<int> spirit_id_buff;
@@ -66,7 +65,6 @@ public:
 
 public:
 	std::vector<FrameBuffer> r_buffer_list;
-	int framebuffer_count = 0;
 	void AddFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);

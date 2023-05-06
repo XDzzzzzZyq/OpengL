@@ -78,7 +78,6 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 void Renderer::AddFrameBuffer()
 {
 	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
-	framebuffer_count++;
 }
 
 void Renderer::BindFrameBuffer(int slot)
@@ -206,6 +205,7 @@ void Renderer::Render(bool rend, bool buff) {
 	if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
+	//glEnable(GL_BLEND);
 
 	if (buff) {
 		//GetActiveEnvironment()->BindFrameBuffer();
@@ -223,7 +223,7 @@ void Renderer::Render(bool rend, bool buff) {
 		GetActiveCamera()->GenFloatData();
 
 		//DEBUG(viewport_offset)
-		//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
+		GetActiveEnvironment()->RenderEnvironment(GetActiveCamera());
 		glEnable(GL_DEPTH_TEST);
 
 		GetActiveEnvironment()->BindEnvironTexture();
@@ -258,6 +258,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////    ICONS    ////////////
 
+		glEnable(GL_BLEND);
 		for (const auto& light : light_list)
 		{
 			if (!light.second->light_spirit.is_viewport)continue;
@@ -273,6 +274,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].UnbindFrameBuffer();
 
 		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		r_render_result->BindFrameBuffer();
@@ -292,9 +294,7 @@ void Renderer::Render(bool rend, bool buff) {
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		}
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
-		//pps_list[1]->RenderPPS();
 
-	//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 		r_render_result->UnbindFrameBuffer();
 	}
 	//DEBUG(is_spirit_selected)

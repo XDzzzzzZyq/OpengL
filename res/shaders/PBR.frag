@@ -3,7 +3,7 @@
 layout(location = 0) out vec4 Output;
 
 // passes
-uniform sampler2D U_combine;
+uniform sampler2D U_emission;
 uniform sampler2D U_pos;
 uniform sampler2D U_normal;
 uniform sampler2D U_albedo;
@@ -77,6 +77,8 @@ void main(){
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
+	vec3 Emission_Color = texture2D(U_emission, screen_uv).rgb;
+
 	float Alpha = texture2D(U_alpha, screen_uv).r;
 	float Select = texture2D(U_alpha, screen_uv).g;
 
@@ -92,19 +94,19 @@ void main(){
 	Output = vec4(0);
 
 	/* [Block : PBR] */ 
-	if(Alpha < 0.01){
-		
+	if(Alpha < 0.05){
+		Output += vec4(Emission * Emission_Color, 1);
 	}else{
 		Output += vec4(mix(reflect_diff, reflect_spec, Fresnel), 1.0f);
-		Output += vec4(Emission * Albedo, 1);
+		Output += vec4(Emission * Emission_Color, 1);
 	}
 	Select = map(Select, 0.5, 0.55, 1, 0)* map(Select, 0.2, 0.25, 0, 1);
 	Output += vec4(vec3(Select), 1);
-
+	Output.a = 1;
 	//Output = vec4(normalize(CamRay), 1);
 	//Output = vec4(Normal.r, 0, 0, 1);
 	//Output = MRSE;
-	//Output = vec4(vec3(Fresnel), 1);
+	//Output = vec4(vec3(Alpha), 1);
 
 	//Output = vec4(texture(U_color, screen_uv).rgb, 1);
 }

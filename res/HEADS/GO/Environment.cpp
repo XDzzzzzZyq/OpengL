@@ -110,7 +110,7 @@ void Environment::GenFloatData() const
 
 }
 
-void Environment::RenderEnvironment(Camera* cam, int act)
+void Environment::RenderEnvironment(Camera* cam)
 {
 	o_vertArry.Bind();
 	envir_shader->UseShader();
@@ -125,16 +125,11 @@ void Environment::RenderEnvironment(Camera* cam, int act)
 	if(cam->is_invUniform_changed || envir_shader->is_shader_changed)
 		envir_shader->SetValue("cam_rotM", cam->o_rotMat);
 
-	if(act != 0)
-		envir_shader->SetValue("activeID", (float)act);
-
 	if (cam->is_frustum_changed || envir_shader->is_shader_changed) {
 		envir_shader->SetValue("cam_fov", glm::radians(cam->cam_pers));
 		envir_shader->SetValue("cam_ratio", cam->cam_w / cam->cam_h);
 	}
 
-	envir_shader->SetValue("U_gamma", envir_gamma);
 	envir_shader->is_shader_changed = false;
-
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

@@ -123,6 +123,7 @@ int Application::Run()
 	pps1.SetShaderValue("U_normal",				BUFFER_TEXTURE + NORMAL_FB);
 	pps1.SetShaderValue("U_albedo",				BUFFER_TEXTURE + ALBEDO_FB);
 	pps1.SetShaderValue("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
+	pps1.SetShaderValue("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
 	pps1.SetShaderValue("U_alpha",				BUFFER_TEXTURE + MASK_FB);
 	pps1.SetShaderValue("Envir_Texture",		IBL_TEXTURE);
 	pps1.SetShaderValue("Envir_Texture_diff",	IBL_TEXTURE + 1);

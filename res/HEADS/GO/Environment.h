@@ -61,7 +61,7 @@ public:
 	void GenFloatData() const;
 	ShaderLib* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }
 
-	void RenderEnvironment(Camera* cam, int act = -1);
+	void RenderEnvironment(Camera* cam);
 
 
 };
