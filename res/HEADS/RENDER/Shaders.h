@@ -86,6 +86,7 @@ public:
 	void CreateShader(const std::string& compShader);
 	GLuint CompileShader();
 public:
+	void RunComputeShader(const ImVec2& _size);
 	void RunComputeShader(GLuint workgroup_count_x = 1, GLuint workgroup_count_y = 1, GLuint workgroup_count_z = 1) const;
 
 public:

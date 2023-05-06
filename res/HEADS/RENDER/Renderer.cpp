@@ -237,7 +237,6 @@ void Renderer::Render(bool rend, bool buff) {
 			mesh.second->o_shader->is_shader_changed = false;
 		}
 		is_light_changed = false;
-		GetActiveEnvironment()->BindEnvironTexture();
 
 		//////////// DEBUG MESHES ////////////
 
@@ -277,17 +276,25 @@ void Renderer::Render(bool rend, bool buff) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		r_render_result->BindFrameBuffer();
-		if (rend) {
-			//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
-			r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-			if (is_light_changed) {
-				pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-			}
-			pps_list[_PBR_COMP_PPS]->RenderPPS();
-			//pps_list[1]->RenderPPS();
+		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
+		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 
-		}//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
+ 		static ComputeShader outline("selection_outline");
+
+		if (active_GO_ID != 0) {
+			outline.UseShader();
+			outline.RunComputeShader(r_render_result->GetSize() / 4);
+		}
+
+		pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+		if (is_light_changed) {
+			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+		}
+		pps_list[_PBR_COMP_PPS]->RenderPPS();
+		//pps_list[1]->RenderPPS();
+
+	//GetActiveEnvironment()->RenderEnvironment(cam_list[0], active_GO_ID * (int)(!is_spirit_selected));
 		r_render_result->UnbindFrameBuffer();
 	}
 	//DEBUG(is_spirit_selected)

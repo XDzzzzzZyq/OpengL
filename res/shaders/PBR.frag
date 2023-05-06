@@ -55,7 +55,11 @@ vec2 genHdrUV(vec3 dir) {
 	return -uv + vec2(0.5, 1);
 } 
 
-vec3 CamRay, ReflectRay;
+float map(float x, float ai, float bi, float ao, float bo){
+	x = (x - ai)/(bi-ai);
+	x = clamp(x, 0, 1);
+	return ao+(bo-ao)*x;
+}
 
 void main(){
 
@@ -63,15 +67,22 @@ void main(){
 	vec3 Normal = texture2D(U_normal, screen_uv).rgb;
 	vec3 Albedo = texture2D(U_albedo, screen_uv).rgb;
 
-	CamRay = Pos - Cam_pos;
-	ReflectRay = reflect(normalize(CamRay), Normal);
+	vec3 CamRay = Pos - Cam_pos;
+	vec3 ReflectRay = reflect(normalize(CamRay), Normal);
+	float Cos = -dot(Normal, normalize(CamRay));
 
 	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
+	float Metalness = MRSE.r;
 	float Roughness = MRSE.g;
+	float Specular = MRSE.b;
 	float Emission = MRSE.a;
-	float Alpha = texture2D(U_alpha, screen_uv).r;
 
-	//float roughness = 
+	float Alpha = texture2D(U_alpha, screen_uv).r;
+	float Select = texture2D(U_alpha, screen_uv).g;
+
+	float F0 = mix(0.1, 1.0, Metalness);
+	float Fresnel = mix(exp2((-5.55437*Cos-6.98314)*Cos), 1.0, F0);
+	float ks = Fresnel;
 
 	//vec4 uvcolor = texture(U_Texture, uv);
 	vec3 reflect_spec = textureLod(Envir_Texture_diff, genHdrUV(-ReflectRay), Roughness * 5).rgb;
@@ -84,13 +95,16 @@ void main(){
 	if(Alpha < 0.01){
 		
 	}else{
-		Output += vec4(reflect_diff * Roughness + reflect_spec*(1 - Roughness), 1.0f);
+		Output += vec4(mix(reflect_diff, reflect_spec, Fresnel), 1.0f);
 		Output += vec4(Emission * Albedo, 1);
 	}
+	Select = map(Select, 0.5, 0.55, 1, 0)* map(Select, 0.2, 0.25, 0, 1);
+	Output += vec4(vec3(Select), 1);
 
 	//Output = vec4(normalize(CamRay), 1);
 	//Output = vec4(Normal.r, 0, 0, 1);
 	//Output = MRSE;
+	//Output = vec4(vec3(Fresnel), 1);
 
 	//Output = vec4(texture(U_color, screen_uv).rgb, 1);
 }

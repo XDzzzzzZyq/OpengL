@@ -26,24 +26,33 @@ PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type
 		break;
 	}
 
-	o_vertBuffer = VertexBuffer(screenQuad.data(), screenQuad.size() * sizeof(float));
+	pps_vertBuffer = VertexBuffer(screenQuad.data(), screenQuad.size() * sizeof(float));
 
 	BufferLayout layout;
 	layout.Push<float>(2); //2D position
 	layout.Push<float>(2); //UV
 
-	o_vertArry.AddBuffer(o_vertBuffer, layout);
+	pps_vertArry.AddBuffer(pps_vertBuffer, layout);
 
 	GLuint* index = indexArray.data();
 
-	o_indexBuffer = IndexBuffer(index, indexArray.size() * sizeof(GLuint));
+	pps_indexBuffer = IndexBuffer(index, indexArray.size() * sizeof(GLuint));
+
+	o_name = _shader_name;
+}
+
+void PostProcessing::SetShaderValue(const std::string& _name, GLsizei _count, const float* va0, ArrayType _TYPE)
+{
+	std::get<RenderShader>(pps_shader).UseShader();
+	std::get<RenderShader>(pps_shader).SetValue(_name, _count, va0, _TYPE);
+	std::get<RenderShader>(pps_shader).UnuseShader();
 }
 
 void PostProcessing::RenderPPS()
 {
-	o_vertArry.Bind();
+	pps_vertArry.Bind();
 	std::get<RenderShader>(pps_shader).UseShader();
-	o_indexBuffer.Bind();
+	pps_indexBuffer.Bind();
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

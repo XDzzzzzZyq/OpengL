@@ -367,6 +367,11 @@ void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint wo
 	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }
 
+void ComputeShader::RunComputeShader(const ImVec2& _size)
+{
+	RunComputeShader(_size[0], _size[1], 1);
+}
+
 GLuint ComputeShader::getShaderID(ShaderType type) const
 {
 	return comp_id;
