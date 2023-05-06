@@ -1,17 +1,20 @@
 # Multiple Passes Rendering branch
 
-##### Node Editor development from XDzZyq
+##### Deferred rendering development from XDzZyq
 
 
 
 ### Features
  - [x] multi-passes buffering
 	- [ ] texture -> renderbuffer?
- - [ ] PBR muti-passes composition
+ - [x] Multi-passes composition
+	- [ ] PBR deferred rendering
  - [ ] editing elements
-	- [ ] outline
+	- [x] outline
 
  - [x] Post Processing
+	- [ ] Processing Chain
+	- [ ] Fragment Shader <-> Compute Shader
 
 ### UI
  - [ ] Post Processing Flow editor
@@ -21,4 +24,4 @@
 ### Advanced
 
  - [ ] Dynamic passes binding
- - [ ] Dynamic shader value<->texture shifting
+ - [ ] Dynamic shader value<->texture altering
