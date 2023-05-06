@@ -27,11 +27,11 @@ class FrameBuffer
 private:
 	GLuint fb_ID = 0, fb_attach = 0;
 	float fb_w = SCREEN_W, fb_h = SCREEN_H;
+	mutable std::unordered_map<FBType, int> fb_type_list;      //  tex_type -> tex_index
 public:
 	std::optional<RenderBuffer> renderBuffer;
 
 	FBType fb_type = NONE_FB;
-	mutable std::unordered_map<FBType, int> fb_type_list;      //  tex_type -> tex_index
 	mutable std::vector<Texture> fb_tex_list;
 
 	FrameBuffer();
@@ -45,11 +45,13 @@ public:
 
 	void Resize(const ImVec2& size, bool all = false);
 	void Resize(float w, float h, bool all = false);
+	ImVec2 GetSize() const { return { fb_w, fb_h }; }
 
 	FBPixel ReadPix(GLuint x, GLuint y, FBType type);
 
 	void BindFrameBufferTex(int count = 0, ...) const;
 	void BindFrameBufferTex(const std::vector<FBType>& _tars) const;
+	void BindFrameBufferTexR(FBType tar, GLuint slot) const;
 	void UnbindFrameBufferTex() const;
 
 	void Del() const;
@@ -57,6 +59,7 @@ public:
 	GLuint GetFrameBufferID() const { return fb_ID; }
 	const ImVec2&& GetFrameBufferSize() const { return ImVec2(fb_w, fb_h); }
 	GLuint GetFBTextureID(FBType type) const { return fb_tex_list[fb_type_list[type]].GetTexID(); }
+	Texture* GetFBTexturePtr(FBType type) const { return &fb_tex_list[fb_type_list[type]]; }
 	size_t GetFBCount() const { return fb_tex_list.size(); }
 	GLuint GetAttachmentLoc(FBType type) const { return fb_type_list[(FBType)type]; }
 };

@@ -56,7 +56,7 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 	o_shader->UseShader();
 
 	if(o_tex)
-		o_tex->Bind(o_tex->Tex_slot);
+		o_tex->Bind();
 
 	if (o_shader->is_shader_changed)
 		o_shader->InitShader();
@@ -122,19 +122,15 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 		o_shader->SetValue("ID_color", id_color);
 
 		if (o_tex)
-			o_shader->SetValue("U_Texture", o_tex->Tex_slot);
+			o_shader->SetValue("U_Texture", o_tex->tex_type + o_tex->tex_slot_offset);
 
 		o_shader->UnuseShader();
 	};
 }
 
-void Mesh::SetTex(std::string path, TextureType slot)
+void Mesh::SetTex(std::string _path, TextureType _type)
 {
-	o_tex = Texture(path, slot ,GL_REPEAT);
-	o_tex->Bind(slot);
-	o_tex->Tex_slot = slot;
-
-	o_tex->Unbind();
+	o_tex = Texture(_path, _type ,GL_REPEAT);
 }
 
 void Mesh::SetCenter()

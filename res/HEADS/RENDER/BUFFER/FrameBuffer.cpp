@@ -20,7 +20,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 		textype = FLOAT_BUFFER_TEXTURE;
 	else if (type == -32) {}
 	fb_tex_list.emplace_back("", textype, GL_NEAREST);
-	fb_tex_list[0].SlotAdd(type);
+	fb_tex_list[0].OffsetSlot(type);
 
 	//IDTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
 	//IDTexture.SlotAdd(1);
@@ -68,7 +68,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 
 		fb_type_list[(FBType)type_inp] = i;
 		fb_tex_list.emplace_back("", textype, GL_NEAREST);
-		fb_tex_list[i].SlotAdd(type_inp);
+		fb_tex_list[i].OffsetSlot(type_inp);
 		
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[i], GL_TEXTURE_2D, fb_tex_list[i].GetTexID(), 0);
@@ -112,7 +112,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 		fb_type_list[(FBType)type_inp] = i;
 		fb_tex_list.emplace_back("", textype, GL_NEAREST);
-		fb_tex_list[i].SlotAdd(type_inp);
+		fb_tex_list[i].OffsetSlot(type_inp);
 
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[i], GL_TEXTURE_2D, fb_tex_list[i].GetTexID(), 0);
@@ -204,6 +204,11 @@ void FrameBuffer::BindFrameBufferTex(const std::vector<FBType>& _tars) const
 	for (FBType tar : _tars) {
 		fb_tex_list[fb_type_list[tar]].Bind(BUFFER_TEXTURE + tar);
 	}
+}
+
+void FrameBuffer::BindFrameBufferTexR(FBType tar, GLuint slot) const
+{
+	fb_tex_list[fb_type_list[tar]].BindC(slot, GL_READ_WRITE);
 }
 
 void FrameBuffer::UnbindFrameBufferTex() const
