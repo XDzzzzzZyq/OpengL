@@ -262,11 +262,11 @@ void Renderer::Render(bool rend, bool buff) {
 		for (const auto& light : light_list)
 		{
 			if (!light.second->light_spirit.is_viewport)continue;
-			light.second->light_spirit.RenderSpirit(vec3_stdVec6(light.second->o_position, light.second->light_color), GetActiveCamera());
+			light.second->RenderLightSpr(GetActiveCamera());
 		}
 		for (const auto& envir : envir_list) {
 			if (!envir.second->envir_spirit.is_viewport)continue;
-			envir.second->envir_spirit.RenderSpirit(vec3_stdVec6(envir.second->o_position, envir.second->envir_color), GetActiveCamera());
+			envir.second->RenderEnvirSpr(GetActiveCamera());
 		}
 	}
 	if (buff) {

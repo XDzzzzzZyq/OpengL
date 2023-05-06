@@ -133,3 +133,8 @@ void Environment::RenderEnvironment(Camera* cam)
 	envir_shader->is_shader_changed = false;
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
+
+void Environment::RenderEnvirSpr(Camera* cam)
+{
+	envir_spirit.RenderSpirit(vec3_stdVec6(o_position, envir_color), cam);
+}

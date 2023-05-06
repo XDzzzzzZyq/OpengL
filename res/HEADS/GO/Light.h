@@ -29,16 +29,12 @@ public:
 	float spot_angle;
 	float spot_radius;
 
-	Light(LightType type, float power, glm::vec3 color);
-	void SetColor(const ImVec4& inp) {
-		light_color = ImVec4_vec3(inp);
-	}
-
-	void EnableShadow(const bool& state) {
-		is_shadow = state;
-	}
+	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{1, 1, 1});
+	void SetColor(ImVec4 inp) { light_color = ImVec4_vec3(inp); }
+	void EnableShadow(bool state) { is_shadow = state; }
 
 	std::string ParseLightName() const;
+	void RenderLightSpr(Camera* cam);
 
 	mutable std::vector<float> light_floatData;
 	void GenFloatData() const; // 5f + 6f(trans) +2f(spot)

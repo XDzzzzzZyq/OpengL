@@ -41,7 +41,7 @@ public:
 	Spirit envir_spirit;
 
 	float envir_gamma = 2.2f;
-	glm::vec3 envir_color = glm::vec3(0.1f);
+	glm::vec3 envir_color = glm::vec3(1.0f);
 
 	Environment(const std::string& texpath);
 	Environment();
@@ -62,7 +62,7 @@ public:
 	ShaderLib* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }
 
 	void RenderEnvironment(Camera* cam);
-
+	void RenderEnvirSpr(Camera* cam);
 
 };
 

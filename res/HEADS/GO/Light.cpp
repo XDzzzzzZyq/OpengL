@@ -32,6 +32,11 @@ std::string Light::ParseLightName() const
 	}
 }
 
+void Light::RenderLightSpr(Camera* cam)
+{
+	light_spirit.RenderSpirit(vec3_stdVec6(o_position, light_color), cam);
+}
+
 void Light::GenFloatData() const
 {
 	light_floatData = {
