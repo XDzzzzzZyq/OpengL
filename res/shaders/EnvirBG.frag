@@ -54,6 +54,6 @@ void main() {
 
 	NORMALcolor = ray_dir;
 	
-	EMIScolor = vec4(texture(hdr_texture, genHdrUV(normalize(vec3(ray_dir)))).rgb, 1.0f);
+	EMIScolor = vec4(textureLod(hdr_texture, genHdrUV(normalize(vec3(ray_dir))), 0).rgb, 1.0f);
 	MRSEcolor = vec4(0, 0, 0, 1);
 };
