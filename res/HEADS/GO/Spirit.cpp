@@ -24,9 +24,7 @@ Spirit::Spirit()
 	r_vertArry.AddBuffer(r_vertBuffer, layout);
 	/*o_verts.Unbind();*/
 
-	GLuint* index = indexArray.data();
-
-	r_index = IndexBuffer(index, indexArray.size() * sizeof(GLuint));
+	r_index = IndexBuffer(indexArray.data(), indexArray.size() * sizeof(GLuint));
 	SetSpiritShader();
 
 	o_name = "Spirit." + std::to_string(GetObjectID());

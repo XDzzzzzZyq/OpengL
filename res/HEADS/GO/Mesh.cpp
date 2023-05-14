@@ -3,7 +3,7 @@
 #include <numeric>
 
 
-Mesh::Mesh(const char* path)
+Mesh::Mesh(const std::string& path)
 {
 	o_type = GO_MESH;
 	read = ReadObj(path);
@@ -11,10 +11,9 @@ Mesh::Mesh(const char* path)
 	o_name = read.name;
 
 	std::cout << "\n";
-	VertData = read.data_array.data();
 	center = stdVec3_vec3(read.center);
 	//std::cout << VertData[100] << std::endl;
-	o_vertBuffer = VertexBuffer(VertData, read.data_array.size() * sizeof(float));
+	o_vertBuffer = VertexBuffer(read.data_array.data(), read.data_array.size() * sizeof(float));
 
 	BufferLayout layout;
 	layout.Push<float>(3); //3D position
@@ -27,12 +26,10 @@ Mesh::Mesh(const char* path)
 
 	const int size = read.count[3] * 3;
 
-	std::vector<GLuint>* indexArray = new std::vector<GLuint>(size);
-	std::iota(indexArray->begin(), indexArray->end(), 0);
+	std::vector<GLuint> indexArray = std::vector<GLuint>(size);
+	std::iota(indexArray.begin(), indexArray.end(), 0);
 
-	GLuint* index = indexArray->data();
-
-	o_index = IndexBuffer(index, indexArray->size() * sizeof(GLuint));
+	o_index = IndexBuffer(indexArray.data(), indexArray.size() * sizeof(GLuint));
 
 
 
@@ -71,14 +68,14 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 		o_shader->SetValue("U_ProjectM", cam->cam_frustum);
 
 	if(cam->is_Uniform_changed || cam->is_frustum_changed || o_shader->is_shader_changed)
-		o_shader->SetValue("Scene_data",8 , cam->cam_floatData.data(),VEC1_ARRAY);
+		o_shader->SetValue("Scene_data",8 , cam->cam_floatData.data(), VEC1_ARRAY);
 
 	o_shader->SetValue("is_selected", (int)is_selected);
 
 	if (!light_list.empty() || o_shader->is_shader_changed)
 	{
 		LightFloatArray lightdata(light_list);
-		o_shader->SetValue("L_point", lightdata.point_count * (5 + 3) + 1, lightdata.point.data(),VEC1_ARRAY);
+		o_shader->SetValue("L_point", lightdata.point_count * (5 + 3) + 1, lightdata.point.data(), VEC1_ARRAY);
 		//o_shader->SetValue("L_sun", lightdata.sun_count * (5 + 6) + 1, lightdata.sun.data());
 		//o_shader->SetValue("L_spot", lightdata.spot_count * (5 + 6 + 2) + 1, lightdata.spot.data());
 	}

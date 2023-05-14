@@ -20,7 +20,6 @@ class Mesh : public GameObject, public Transform3D
 {
 private:
 	Reading read;
-	float* VertData;
 	VertexArray o_vertArry;
 	VertexBuffer o_vertBuffer;
 	IndexBuffer o_index;
@@ -30,7 +29,7 @@ private:
 public:
 
 	mutable std::optional<RenderShader> o_shader;
-	Mesh(const char* path);
+	Mesh(const std::string& path);
 	Mesh();
 	~Mesh();
 
