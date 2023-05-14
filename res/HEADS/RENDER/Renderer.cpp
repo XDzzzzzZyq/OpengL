@@ -100,7 +100,8 @@ void Renderer::FrameBufferResize(int slot, const ImVec2& size)
 GLuint Renderer::GetFrameBufferTexture(int slot)
 {
 	//return framebuffer_list[slot].BufferTexture.GetTexID();
-	return r_render_result->fb_tex_list[0].GetTexID();
+	//return r_buffer_list[_RASTER].GetFBTextureID(RAND_FB);
+	return r_render_result->GetFBTextureID(COMBINE_FB);
 }
 
 
@@ -280,14 +281,10 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBuffer();
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-
+		
  		static ComputeShader outline("selection_outline");
-
-		if (active_GO_ID != 0) {
-			outline.UseShader();
-			outline.RunComputeShader(r_render_result->GetSize() / 4);
-		}
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
+		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
 
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		if (is_light_changed) {
@@ -296,6 +293,11 @@ void Renderer::Render(bool rend, bool buff) {
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 
 		r_render_result->UnbindFrameBuffer();
+
+		static ComputeShader editing("Editing");
+		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
+		editing.RunComputeShader(r_render_result->GetSize() / 4);
 	}
 	//DEBUG(is_spirit_selected)
 	Reset();

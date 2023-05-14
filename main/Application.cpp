@@ -130,7 +130,7 @@ int Application::Run()
 	renderer.UsePostProcessing(&pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		PostProcessing pps2("Editing");
+		PostProcessing pps2("Post_Visual");
 	pps2.SetShaderValue("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
 	pps2.SetShaderValue("U_select",				BUFFER_TEXTURE + MASK_FB);
 	renderer.UsePostProcessing(&pps2);

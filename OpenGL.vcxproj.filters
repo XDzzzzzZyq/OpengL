@@ -668,8 +668,9 @@
     <None Include="res\shaders\ShowTexture.frag" />
     <None Include="res\shaders\PBR.frag" />
     <None Include="res\shaders\Rasterization.frag" />
-    <None Include="res\shaders\Editing.frag" />
     <None Include="res\shaders\selection_outline.comp" />
+    <None Include="res\shaders\Editing.comp" />
+    <None Include="res\shaders\Post_Visual.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

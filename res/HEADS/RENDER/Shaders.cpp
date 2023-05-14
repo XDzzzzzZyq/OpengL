@@ -369,6 +369,7 @@ void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint wo
 
 void ComputeShader::RunComputeShader(const ImVec2& _size)
 {
+	UseShader();
 	RunComputeShader(_size[0], _size[1], 1);
 }
 

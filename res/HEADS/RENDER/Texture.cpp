@@ -222,7 +222,7 @@ void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE
 
 	if		(tex_type == RGB_TEXTURE) layout = GL_RGB8;
 	else if (tex_type == RGBA_TEXTURE || tex_type == BUFFER_TEXTURE) layout = GL_RGBA8;
-	else if (tex_type == IBL_TEXTURE || tex_type == HDR_BUFFER_TEXTURE) layout == GL_RGBA16F;
+	else if (tex_type == IBL_TEXTURE || tex_type == HDR_BUFFER_TEXTURE) layout = GL_RGBA16F;
 
 	glBindImageTexture(slot, tex_ID, 0, GL_FALSE, 0, read_or_write, layout);
 }

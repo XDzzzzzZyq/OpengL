@@ -100,8 +100,8 @@ void main(){
 		Output += vec4(mix(reflect_diff, reflect_spec, Fresnel), 1.0f);
 		Output += vec4(Emission * Emission_Color, 1);
 	}
-	Select = map(Select, 0.5, 0.55, 1, 0)* map(Select, 0.2, 0.25, 0, 1);
-	Output += vec4(vec3(Select), 1);
+	// Select = map(Select, 0.5, 0.55, 1, 0)* map(Select, 0.2, 0.25, 0, 1);
+	// Output += vec4(vec3(Select), 1);
 	Output.a = 1;
 	//Output = vec4(normalize(CamRay), 1);
 	//Output = vec4(Normal.r, 0, 0, 1);
