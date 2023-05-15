@@ -212,7 +212,8 @@ int Application::Run()
 		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
 		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
 		testfloat = UI.GetParaValue("test layer", "testf")->para_data.fdata;
-		renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
+		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
+		renderer.r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 	};
 	UI.GetCurrentWindow();
 

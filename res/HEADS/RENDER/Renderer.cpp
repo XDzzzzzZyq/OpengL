@@ -286,6 +286,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
 
+		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		if (is_light_changed) {
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);

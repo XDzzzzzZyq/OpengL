@@ -16,6 +16,8 @@ uniform vec3 Cam_pos;
 uniform sampler2D Envir_Texture;
 uniform sampler2D Envir_Texture_diff;
 
+uniform float gamma;
+
 in vec2 screen_uv;
 
 float ACESFilm(float x)
@@ -100,13 +102,9 @@ void main(){
 		Output += vec4(mix(reflect_diff, reflect_spec, Fresnel), 1.0f);
 		Output += vec4(Emission * Emission_Color, 1);
 	}
-	// Select = map(Select, 0.5, 0.55, 1, 0)* map(Select, 0.2, 0.25, 0, 1);
-	// Output += vec4(vec3(Select), 1);
-	Output.a = 1;
-	//Output = vec4(normalize(CamRay), 1);
-	//Output = vec4(Normal.r, 0, 0, 1);
-	//Output = MRSE;
-	//Output = vec4(vec3(Alpha), 1);
 
-	//Output = vec4(texture(U_color, screen_uv).rgb, 1);
+	Output.a = 1;
+	Output = Vec4Film(Output, 1, gamma);
+
+
 }
