@@ -171,6 +171,8 @@ int Application::Run()
 		if (tex_type >= MAX_FB)tex_type = 0;
 		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
 		renderer.GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
+		renderer.r_using_fxaa = !renderer.r_using_fxaa;
+		//DEBUG(renderer.r_using_fxaa)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));

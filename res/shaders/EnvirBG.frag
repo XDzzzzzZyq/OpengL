@@ -53,6 +53,7 @@ void main() {
 	ray_dir = cam_rotM * vec4(vec3(-1, -1, 1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 1);
 
 	NORMALcolor = ray_dir;
+	POScolor = vec4(vec3(-1000), 1);
 	
 	EMIScolor = vec4(textureLod(hdr_texture, genHdrUV(normalize(vec3(ray_dir))), 0).rgb, 1.0f);
 	MRSEcolor = vec4(0, 0, 0, 1);

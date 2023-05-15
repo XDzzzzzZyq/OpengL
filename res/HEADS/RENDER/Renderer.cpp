@@ -294,6 +294,13 @@ void Renderer::Render(bool rend, bool buff) {
 
 		r_render_result->UnbindFrameBuffer();
 
+
+		static ComputeShader fxaa("FXAA");
+		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
+		if(r_using_fxaa) fxaa.RunComputeShader(r_render_result->GetSize() / 4);
+
 		static ComputeShader editing("Editing");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);

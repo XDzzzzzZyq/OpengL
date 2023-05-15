@@ -45,6 +45,7 @@ public:
 	~Renderer();
 public:
 	bool r_deferred_rendering = true;
+	bool r_using_fxaa = true;
 public:
 	bool is_light_changed = false;
 

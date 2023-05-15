@@ -671,6 +671,7 @@
     <None Include="res\shaders\selection_outline.comp" />
     <None Include="res\shaders\Editing.comp" />
     <None Include="res\shaders\Post_Visual.frag" />
+    <None Include="res\shaders\FXAA.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

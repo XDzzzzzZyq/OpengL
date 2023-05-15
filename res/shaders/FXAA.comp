@@ -1,0 +1,58 @@
+#version 460 core
+
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+layout(rgba16f, binding = 0) uniform image2D U_combine;
+layout(rgba16f, binding = 1) uniform image2D U_position;
+layout(rgba8, binding = 2) uniform image2D U_alpha;
+
+vec4 sample_near(ivec2 uv, vec2 dir){
+	ivec2 re_dir = ivec2(ceil(dir*2)); //[-1, -1] / [1, 1]
+
+	//return vec4(imageLoad(U_alpha, uv).r) * vec4(dir+0.5, 0, 1);
+	//return vec4(dir-0.5, 0, 1);
+
+	vec4 c = imageLoad(U_combine, uv);
+	vec4 x = mix(c, imageLoad(U_combine, uv+ivec2(re_dir.x,0)), abs(dir.x));
+	vec4 y = mix(c, imageLoad(U_combine, uv+ivec2(0,re_dir.y)), abs(dir.y));
+
+	return mix(x, y, 0.5);
+}
+
+void main(){
+
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+	int rad = 1;
+
+	float FXAA_SPAN_MAX =8.0;
+	float FXAA_REDUCE_MIN = 1.0/128.0;
+	float FXAA_REDUCE_MUL = 1.0/8.0;
+	vec3 luma = vec3(0.333,0.333,0.333);
+	float lumaU = dot(luma, imageLoad(U_position, uv + ivec2( 0.0,-1.0)*rad).rgb);
+	float lumaD = dot(luma, imageLoad(U_position, uv + ivec2( 0.0, 1.0)*rad).rgb);
+	float lumaL = dot(luma, imageLoad(U_position, uv + ivec2(-1.0, 0.0)*rad).rgb);
+	float lumaR = dot(luma, imageLoad(U_position, uv + ivec2( 1.0, 0.0)*rad).rgb);
+	float lumaM = dot(luma, imageLoad(U_position, uv).rgb);
+
+	vec2 dir; // [-0.5, -0.5] ~ [0.5, 0.5]
+	dir.x = (lumaU - lumaD);
+	dir.y = (lumaR - lumaL);
+	//dir *= clamp(dot(vec4(0.25), vec4(lumaU, lumaD, lumaL, lumaR)) - lumaM, 0, 1);
+	dir = clamp(dir, -1, 1) * imageLoad(U_alpha, uv).r;
+	/*
+	float dirReduce = min((lumaTL + lumaTR + lumaBL + lumaBR)*(FXAA_REDUCE_MUL * 0.25), FXAA_REDUCE_MIN);
+	float inverseDirAdjustment = 1.0/(min(abs(dir.x), abs(dir.x) + dirReduce));
+	dir = clamp(dir * inverseDirAdjustment, vec2(-FXAA_SPAN_MAX), vec2(FXAA_SPAN_MAX)) * uv;
+	*/
+	if(length(dir) <= 0.05) {
+		vec4 inp = imageLoad(U_combine, uv);
+		imageStore(U_combine, uv, inp);
+		return;
+	}
+
+	vec4 inp = sample_near(uv, dir);
+
+	imageStore(U_combine, uv, inp);
+
+	//imageStore(result, uv, color2*vec4(vec3(3),1));
+	//imageStore(result, uv, vec4(fract(5*uvf),1,1));
+}
