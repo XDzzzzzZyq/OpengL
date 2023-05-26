@@ -11,11 +11,11 @@
 // Transform Templates Lib 
 class Transform {
 public:
-	mutable bool is_TransF_changed = true;						 //pos / scale / rot changed
+	mutable bool is_TransF_changed = true;						 // pos / scale / rot changed
 	mutable bool is_invTransF_changed = true;					 //
 	mutable bool is_rot_changed = true;							 //
-	mutable bool is_Uniform_changed = false;					 //
-	mutable bool is_invUniform_changed = false;					 //
+	mutable bool is_Uniform_changed = true;						 //
+	mutable bool is_invUniform_changed = true;					 //
 public:
 	virtual void UnsetParent(bool _keep_offset = true) = 0;
 public:
@@ -32,9 +32,7 @@ class Transform3D : public Transform
 private:
 	Transform3D* o_parent_trans{ nullptr };
 	Transform3D* o_child_trans{ nullptr };
-public:
-	glm::mat4 o_rotMat;
-	glm::qua<float> rotQua;
+
 public:
 	Transform3D();
 	~Transform3D();
@@ -42,17 +40,22 @@ public:
 	Transform3D* GetTransformPtr() { return this; }
 	Transform3D* GetParentTransPtr() { return o_parent_trans; }
 	Transform3D* GetChildTransPtr() { return o_child_trans; }
+
 public:
-	mutable glm::mat4 o_Transform = glm::mat4(1.0f);
-	mutable glm::mat4 o_InvTransform = glm::mat4(1.0f);
+	mutable glm::mat4 o_Transform{ 1.0f };
+	mutable glm::mat4 o_InvTransform{ 1.0f };
 
-	mutable glm::vec3 o_position = glm::vec3(0.0f);
+	mutable glm::vec3 o_position{ 0.0f };
 
-	mutable glm::vec3 o_scale = glm::vec3(1.0f);
+	mutable glm::vec3 o_scale{ 1.0f };
 
-	mutable glm::vec3 o_rot = glm::vec3(0.0f);
-	mutable glm::vec3 o_dir_up = glm::vec3(0.0f, 1.0f, 0.0f);
-	mutable glm::vec3 o_dir_right = glm::vec3(1.0f, 0.0f, 0.0f);
+	mutable glm::vec3 o_rot{ 0.0f };
+	mutable glm::vec3 o_dir_up{ 0.0f, 1.0f, 0.0f };
+	mutable glm::vec3 o_dir_right{ 1.0f, 0.0f, 0.0f };
+
+public:
+	glm::qua<float> rotQua{ glm::qua(glm::radians(o_rot)) };
+	glm::mat4 o_rotMat{ glm::mat4_cast(rotQua) };
 
 public:
 	void SetPos(const glm::vec3& pos);
@@ -110,14 +113,14 @@ public:
 	Transform2D* GetParentTransPtr() { return o_parent_trans; }
 	Transform2D* GetChildTransPtr() { return o_child_trans; }
 public:
-	mutable glm::mat3 o_Transform = glm::mat3(1.0f);
-	mutable glm::mat3 o_InvTransform = glm::mat3(1.0f);
+	mutable glm::mat3 o_Transform{ 1.0f };
+	mutable glm::mat3 o_InvTransform{ 1.0f };
 
-	mutable glm::vec2 o_position = glm::vec2(0.0f);
+	mutable glm::vec2 o_position{ 0.0f };
 
-	mutable glm::vec2 o_scale = glm::vec2(1.0f);
+	mutable glm::vec2 o_scale{ 1.0f };
 
-	mutable float o_rot = 0;
+	mutable float o_rot{ 0.0f };
 
 public:
 	void SetPos(const glm::vec2& pos);
