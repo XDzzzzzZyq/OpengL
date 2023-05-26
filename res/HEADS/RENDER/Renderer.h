@@ -51,15 +51,15 @@ public:
 public:
 	bool is_light_changed = false;
 
-	std::unordered_map<int, GameObject*>		   obj_list; //for selectables
-	std::unordered_map<int, Camera*>			   cam_list;
-	std::unordered_map<int, Mesh* >			      mesh_list;
-	std::unordered_map<int, Light*>				 light_list; //num | pointer
-	std::unordered_map<int, Environment*>		 envir_list;
-	std::unordered_map<int, Spirit*>	        spirit_list;
-	std::unordered_map<int, DebugLine*>	         dLine_list;
-	std::unordered_map<int, DebugPoints*>	   dPoints_list;
-	std::vector		  <PostProcessing*>            pps_list;
+	std::unordered_map<int, std::shared_ptr<GameObject>>		obj_list; //for selectables
+	std::unordered_map<int, std::shared_ptr<Camera>>			cam_list;
+	std::unordered_map<int, std::shared_ptr<Mesh>>		       mesh_list;
+	std::unordered_map<int, std::shared_ptr<Light>>			  light_list; //num | pointer
+	std::unordered_map<int, std::shared_ptr<Environment>>	  envir_list;
+	std::unordered_map<int, std::shared_ptr<Spirit>>	     spirit_list;
+	std::unordered_map<int, std::shared_ptr<DebugLine>>		  dLine_list;
+	std::unordered_map<int, std::shared_ptr<DebugPoints>>	dPoints_list;
+	std::vector		  <std::shared_ptr<PostProcessing>>			pps_list;
 
 public:
 	std::string GetObjectName(int ID);
@@ -86,25 +86,25 @@ public:
 	void Reset();
 
 public:
-	void UseCamera(Camera* camera);
+	void UseCamera(std::shared_ptr<Camera> camera);
 	void UseCamera(const int& cam_id);
-	Camera* GetActiveCamera();
+	std::shared_ptr<Camera> GetActiveCamera();
 
-	void UseMesh(Mesh* mesh);
+	void UseMesh(std::shared_ptr<Mesh> mesh);
 
-	void UseLight(Light* light);
+	void UseLight(std::shared_ptr<Light>light);
 
-	void UseEnvironment(Environment* envir);
+	void UseEnvironment(std::shared_ptr<Environment> envir);
 	void UseEnvironment(const int& envir_id);
-	Environment* GetActiveEnvironment();
+	std::shared_ptr<Environment> GetActiveEnvironment();
 
-	void UseDebugLine(DebugLine* dline);
-	void UseDebugPoints(DebugPoints* dpoints);
+	void UseDebugLine(std::shared_ptr<DebugLine> dline);
+	void UseDebugPoints(std::shared_ptr<DebugPoints> dpoints);
 
-	void UsePostProcessing(PostProcessing* pps);
+	void UsePostProcessing(std::shared_ptr<PostProcessing> pps);
 
 public:
-	PostProcessing* GetPPS(int _tar) { return pps_list[_tar]; }
+	std::shared_ptr<PostProcessing> GetPPS(int _tar) { return pps_list[_tar]; }
 
 };
 

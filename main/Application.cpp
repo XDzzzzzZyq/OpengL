@@ -57,83 +57,83 @@ int Application::Init()
 int Application::Run()
 {	
 	DEBUG("\n---------------CAMERA----------------")
-		Camera camera(10.0f, 10.0f, 70, 0.1f, 300.0f);
-	camera.SetPos({ 0.0f, 0.0f, 20.0f });
-	camera.ApplyTransform();
-	camera.GetInvTransform();
-	renderer.UseCamera(&camera);
+		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	camera->SetPos({ 0.0f, 0.0f, 20.0f });
+	camera->ApplyTransform();
+	camera->GetInvTransform();
+	renderer.UseCamera(camera);
 
 	DEBUG("\n---------------MESH----------------")
-		Mesh go1("res/obj/monkey2.obj");
-	go1.SetObjShader("testS", "Rasterization");
-	go1.SetTex("res/tex/avatar2.png", RGBA_TEXTURE);
-	go1.SetCenter();
-	go1.ApplyTransform();
-	renderer.UseMesh(&go1);
+		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("res/obj/monkey2.obj");
+	go1->SetObjShader("testS", "Rasterization");
+	go1->SetTex("res/tex/avatar2.png", RGBA_TEXTURE);
+	go1->SetCenter();
+	go1->ApplyTransform();
+	renderer.UseMesh(go1);
 
 	DEBUG("\n---------------MESH----------------")
-		Mesh go2("res/obj/torus.obj");
-	go2.SetObjShader("testS", "Rasterization");
-	go2.SetTex("res/tex/avatar1.png", RGBA_TEXTURE);
-	go2.SetCenter();
-	go2.SetPos({ 8, 0, 0 });
-	go2.SetScale(glm::vec3(1.5f));
-	go2.ApplyTransform();
-	go1.SetParent(go2.GetTransformPtr());
-	renderer.UseMesh(&go2);
+		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("res/obj/torus.obj");
+	go2->SetObjShader("testS", "Rasterization");
+	go2->SetTex("res/tex/avatar1.png", RGBA_TEXTURE);
+	go2->SetCenter();
+	go2->SetPos({ 8, 0, 0 });
+	go2->SetScale(glm::vec3(1.5f));
+	go2->ApplyTransform();
+	go1->SetParent(go2->GetTransformPtr());
+	renderer.UseMesh(go2);
 
 	DEBUG("\n---------------MESH----------------")
-		Mesh go3("res/obj/UVsphere.obj");
-	go3.SetObjShader("testS", "Rasterization");
-	go3.SetPos({ -8,0,0 });
-	go3.SetScale({ 3,3,3 });
-	renderer.UseMesh(&go3);
+		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("res/obj/UVsphere.obj");
+	go3->SetObjShader("testS", "Rasterization");
+	go3->SetPos({ -8,0,0 });
+	go3->SetScale({ 3,3,3 });
+	renderer.UseMesh(go3);
 
 	DEBUG("\n---------------LIGHT----------------")
-		Light pointLight1(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight1.SetPos({ 2.0f, 2.0f, 2.0f });
-	pointLight1.ApplyTransform();
-	pointLight1.GenFloatData();
+		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
+	pointLight1->ApplyTransform();
+	pointLight1->GenFloatData();
+	renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
-		Light pointLight2(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-	pointLight2.GenFloatData();
-	renderer.UseLight(&pointLight1);
-	renderer.UseLight(&pointLight2);
+		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	pointLight2->GenFloatData();
+	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LINE----------------")
-		DebugLine line;
-	line.PushDebugLine(5, 5, 5);
-	renderer.UseDebugLine(&line);
+		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
+	line->PushDebugLine(5, 5, 5);
+	renderer.UseDebugLine(line);
 
 	DEBUG("\n---------------ENVIR----------------")
-		Environment environment("res/tex/hdr/room.hdr");
-	environment.SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
-	renderer.UseEnvironment(&environment);
+		std::shared_ptr<Environment> environment = std::make_shared<Environment>("res/tex/hdr/room.hdr");
+	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
+	renderer.UseEnvironment(environment);
 
 	DEBUG("\n---------------POINT----------------")
-		DebugPoints points;
-	points.PushDebugPoint(5, 5, 5);
-	renderer.UseDebugPoints(&points);
+		std::shared_ptr<DebugPoints> points = std::make_shared<DebugPoints>();
+	points->PushDebugPoint(5, 5, 5);
+	renderer.UseDebugPoints(points);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		PostProcessing pps1("PBR");
-	pps1.SetShaderValue("U_color",				BUFFER_TEXTURE + COMBINE_FB);
-	pps1.SetShaderValue("U_pos",				BUFFER_TEXTURE + POS_FB);
-	pps1.SetShaderValue("U_normal",				BUFFER_TEXTURE + NORMAL_FB);
-	pps1.SetShaderValue("U_albedo",				BUFFER_TEXTURE + ALBEDO_FB);
-	pps1.SetShaderValue("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
-	pps1.SetShaderValue("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1.SetShaderValue("U_alpha",				BUFFER_TEXTURE + MASK_FB);
-	pps1.SetShaderValue("Envir_Texture",		IBL_TEXTURE);
-	pps1.SetShaderValue("Envir_Texture_diff",	IBL_TEXTURE + 1);
-	renderer.UsePostProcessing(&pps1);
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
+	pps1->SetShaderValue("U_color",				BUFFER_TEXTURE + COMBINE_FB);
+	pps1->SetShaderValue("U_pos",				BUFFER_TEXTURE + POS_FB);
+	pps1->SetShaderValue("U_normal",				BUFFER_TEXTURE + NORMAL_FB);
+	pps1->SetShaderValue("U_albedo",				BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->SetShaderValue("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
+	pps1->SetShaderValue("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->SetShaderValue("U_alpha",				BUFFER_TEXTURE + MASK_FB);
+	pps1->SetShaderValue("Envir_Texture",		IBL_TEXTURE);
+	pps1->SetShaderValue("Envir_Texture_diff",	IBL_TEXTURE + 1);
+	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		PostProcessing pps2("Post_Visual");
-	pps2.SetShaderValue("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
-	pps2.SetShaderValue("U_select",				BUFFER_TEXTURE + MASK_FB);
-	renderer.UsePostProcessing(&pps2);
+		std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
+	pps2->SetShaderValue("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
+	pps2->SetShaderValue("U_select",				BUFFER_TEXTURE + MASK_FB);
+	renderer.UsePostProcessing(pps2);
 
 	DEBUG("-------------------------------")
 		/////////////////////////////////
@@ -176,19 +176,19 @@ int Application::Run()
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
-		points.PushDebugPoint(newpoint2);
-		line.PushDebugLine(newpoint2);
+		points->PushDebugPoint(newpoint2);
+		line->PushDebugLine(newpoint2);
 		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
 		//go1.o_shader->ShaderLibDebug();
-		//environment.envir_shader->ShaderLibDebug();
-		environment.envir_IBL_diff.GenIrradiaceConvFrom(environment.envir_IBL_spec);
+		//environment->envir_shader->ShaderLibDebug();
+		environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
 		if ((int)view_size.x % 2)
 			view_size.x++;
 		glViewport(0, 0, view_size.x, view_size.y);
-		camera.ChangeCamRatio(view_size);
+		camera->ChangeCamRatio(view_size);
 		renderer.FrameBufferResize(0, view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetSize(view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
@@ -231,32 +231,32 @@ int Application::Run()
 
 		/* Render here */
 
-		go1.SetScale(0.7f * glm::vec3(scale));
-		go1.SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
+		go1->SetScale(0.7f * glm::vec3(scale));
+		go1->SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
 		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
 
-		go2.SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
-		go2.SetScale(glm::vec3(blend * 3));
-		go2.SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
+		//go2->SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
+		go2->SetScale(glm::vec3(blend * 3));
+		go2->SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
 
-		go3.SetShaderValue("blen", testfloat);
+		go3->SetShaderValue("blen", testfloat);
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 
-		pointLight1.SetColor(LightColor);
-		pointLight1.SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		pointLight1.light_power = blend * 50;
-		pointLight1.GenFloatData();
+		pointLight1->SetColor(LightColor);
+		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
+		pointLight1->light_power = blend * 50;
+		pointLight1->GenFloatData();
 
-		pointLight2.SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
-		pointLight2.light_power = blend * 20;
-		pointLight2.GenFloatData();
+		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
+		pointLight2->light_power = blend * 20;
+		pointLight2->GenFloatData();
 
 		renderer.is_light_changed = true;
 
-		line.SetPos(glm::vec3(rotateX, 0, 0));
-		line.dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
+		line->SetPos(glm::vec3(rotateX, 0, 0));
+		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
 
 		renderer.Render();
 		UI.RenderUI();
