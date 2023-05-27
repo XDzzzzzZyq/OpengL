@@ -38,7 +38,7 @@ public:
 	Renderer renderer{};
 	ImguiManager UI{};
 	EventListener Event{};
-	GLFWwindow* window = nullptr;
+	GLFWwindow* window{ nullptr };
 
 public:
 	int Init();

@@ -9,18 +9,15 @@ Application* Application::m_app;
 
 Application* Application::Get()
 {
-	if (m_app) {
-		return m_app;
-	}
-	else {
+	if (!m_app) {
 		m_app = new Application();
-		return m_app;
 	}
+	return m_app;
 }
 
 Application::~Application()
 {
-
+	if (m_app) delete m_app;
 }
 
 
@@ -120,8 +117,8 @@ int Application::Run()
 		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
 	pps1->SetShaderValue("U_color",				BUFFER_TEXTURE + COMBINE_FB);
 	pps1->SetShaderValue("U_pos",				BUFFER_TEXTURE + POS_FB);
-	pps1->SetShaderValue("U_normal",				BUFFER_TEXTURE + NORMAL_FB);
-	pps1->SetShaderValue("U_albedo",				BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->SetShaderValue("U_normal",			BUFFER_TEXTURE + NORMAL_FB);
+	pps1->SetShaderValue("U_albedo",			BUFFER_TEXTURE + ALBEDO_FB);
 	pps1->SetShaderValue("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
 	pps1->SetShaderValue("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
 	pps1->SetShaderValue("U_alpha",				BUFFER_TEXTURE + MASK_FB);
@@ -132,7 +129,7 @@ int Application::Run()
 	DEBUG("\n---------------POSTPRCS----------------")
 		std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
 	pps2->SetShaderValue("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
-	pps2->SetShaderValue("U_select",				BUFFER_TEXTURE + MASK_FB);
+	pps2->SetShaderValue("U_select",			BUFFER_TEXTURE + MASK_FB);
 	renderer.UsePostProcessing(pps2);
 
 	DEBUG("-------------------------------")
