@@ -38,7 +38,7 @@ void Renderer::Init()
 
 	//glEnable(GL_CONVOLUTION_2D);
 
-	r_render_result = FrameBuffer({ COMBINE_FB });
+	r_render_result = FrameBuffer({ COMBINE_FB, LIGHT_AO_FB });
 	AddFrameBuffer();
 
 
@@ -202,11 +202,17 @@ void Renderer::UpdateFrame()
 
 void Renderer::Render(bool rend, bool buff) {
 
+
+	/* Check at least one camera and environment */
+
 	if (cam_list.find(0) == cam_list.end()) _ASSERT("NONE ACTIVE CAMERA");
 	if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
 	//glEnable(GL_BLEND);
+
+
+	///////////   Begin buffering    ///////////
 
 	if (buff) {
 		//GetActiveEnvironment()->BindFrameBuffer();
@@ -218,7 +224,10 @@ void Renderer::Render(bool rend, bool buff) {
 		//glEnable(GL_STENCIL_TEST);
 		;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		////////////    MESHES    ////////////
+
+
+		/////////    CAM TRANSFORM    /////////
+
 		GetActiveCamera()->ApplyTransform();
 		GetActiveCamera()->GetInvTransform();
 		GetActiveCamera()->GenFloatData();
@@ -226,6 +235,9 @@ void Renderer::Render(bool rend, bool buff) {
 		//DEBUG(viewport_offset)
 		GetActiveEnvironment()->RenderEnvironment(GetActiveCamera().get());
 		glEnable(GL_DEPTH_TEST);
+
+
+		////////////    MESHES    ////////////
 
 		GetActiveEnvironment()->BindEnvironTexture();
 		for (const auto& mesh : mesh_list)
@@ -239,7 +251,8 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		is_light_changed = false;
 
-		//////////// DEBUG MESHES ////////////
+
+		/////////    DEBUG MESHES    /////////
 
 		for (const auto& dLine : dLine_list)
 		{
@@ -256,6 +269,7 @@ void Renderer::Render(bool rend, bool buff) {
 			dPoints.second->RenderDebugPoint(GetActiveCamera().get());
 			dPoints.second->is_Uniform_changed = false;
 		}
+
 
 		////////////    ICONS    ////////////
 
@@ -274,6 +288,9 @@ void Renderer::Render(bool rend, bool buff) {
 		//GetActiveEnvironment()->UnbindFrameBuffer();
 		r_buffer_list[_RASTER].UnbindFrameBuffer();
 
+
+		///////     BEGIN PROCESSING    ///////
+
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -281,10 +298,16 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBuffer();
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
+
 		
- 		static ComputeShader outline("selection_outline");
+		////////////    OUTLINE    ////////////
+
+ 		static ComputeShader outline("selection_outline", Uni("U_test", 1));
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
+
+
+		////////////  PBR COMPOSE  ////////////
 
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
@@ -296,11 +319,16 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->UnbindFrameBuffer();
 
 
+		////////////     FXAA     ////////////
+
 		static ComputeShader fxaa("FXAA");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
 		if(r_using_fxaa) fxaa.RunComputeShader(r_render_result->GetSize() / 4);
+
+
+		//////////   EDITING ELEM   //////////
 
 		static ComputeShader editing("Editing");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);

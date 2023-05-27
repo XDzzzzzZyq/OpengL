@@ -54,11 +54,11 @@ void Shaders::DelShad() const
 
 GLuint Shaders::getVarID(const char* name) const
 {
-	this->UseShader();
 	//std::cout << program_id << "\n";
 	if (_uniforms_cache.find(name) != _uniforms_cache.end())
 		return _uniforms_cache[name];
 
+	this->UseShader();
 	int id = glGetUniformLocation(program_id, name);
 	
 #ifdef _DEBUG
@@ -69,13 +69,13 @@ GLuint Shaders::getVarID(const char* name) const
 	return glGetUniformLocation(program_id, name);
 }
 
-void Shaders::SetValue(const std::string& name, const int& v0, const int& v1, const int& v2, const float& v3)
+void Shaders::SetValue(const std::string& name, int v0, int v1, int v2, float v3)
 {
 	int id = getVarID(name.c_str());
 	glUniform4f(id, v0, v1, v2, v3);
 }
 
-void Shaders::SetValue(const std::string& name, const int& v0, const int& v1, const int& v2)
+void Shaders::SetValue(const std::string& name, int v0, int v1, int v2)
 {
 	int id = getVarID(name.c_str());
 	glUniform3f(id, v0, v1, v2);
@@ -87,13 +87,13 @@ void Shaders::SetValue(const std::string& name, const glm::mat4& projection)
 	glUniformMatrix4fv(id, 1, GL_FALSE, &projection[0][0]);
 }
 
-void Shaders::SetValue(const std::string& name, const float& v0)
+void Shaders::SetValue(const std::string& name, float v0)
 {
 	int id = getVarID(name.c_str());
 	glUniform1f(id, v0);
 }
 
-void Shaders::SetValue(const std::string& name, const int& v0)
+void Shaders::SetValue(const std::string& name, int v0)
 {
 	int id = getVarID(name.c_str());
 	glUniform1i(id, v0);
