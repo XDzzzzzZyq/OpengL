@@ -1,19 +1,45 @@
 #pragma once
 #include "glm/glm.hpp"
 
-inline float sin01(const float& in) {
-	return (glm::sin(in) + 1) / 2;
+namespace xdzm {
+	inline float sin01(float in) {
+		return (glm::sin(in) + 1) / 2;
+	}
 
-}
+	inline float map01_11(float inp) {
+		return inp * 2 - 1;
+	}
 
-inline float map01_11(float inp) {
-	return inp * 2 - 1;
-}
+	inline float map(float inp, float i_min, float i_max, float o_min, float o_max) {
+		float re = (inp - i_min) / (i_max - i_min);
+		return re * (o_max - o_min) + o_min;
+	}
 
-inline float rand01() {
-	return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-}
+	template<float i_min, float i_max, float o_min, float o_max>
+	inline float map(float inp) {
+		float re = (inp - i_min) / (i_max - i_min);
+		return re * (o_max - o_min) + o_min;
+	}
 
-inline float rand11() {
-	return map01_11(static_cast<float>(rand()) / static_cast<float>(RAND_MAX));
+	inline float rand01() {
+		return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	}
+
+	inline float rand11() {
+		return map01_11(rand01());
+	}
+
+	inline glm::vec3 rand3() {
+		return { rand11(), rand11(), rand11() };
+	}
+
+	inline glm::vec3 rand3n(float r = 1.0f) {
+		return r * glm::normalize(rand3());
+	}
+
+	inline glm::vec3 rand3nh(float r = 1.0f) {
+		glm::vec3 _rand = rand3();
+		_rand.z = _rand.z / 2.0f + 0.5f;
+		return r * glm::normalize(_rand);
+	}
 }

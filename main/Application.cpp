@@ -172,10 +172,10 @@ int Application::Run()
 		//DEBUG(renderer.r_using_fxaa)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
-		glm::vec3 newpoint2 = 8.65f * glm::normalize(glm::vec3(rand11(), rand11(), rand11()));
+		glm::vec3 newpoint2 = xdzm::rand3n(8.65f);
 		points->PushDebugPoint(newpoint2);
 		line->PushDebugLine(newpoint2);
-		UI.GetParaValue("test layer", "test")->para_data.fdata = rand11();
+		UI.GetParaValue("test layer", "test")->para_data.fdata = xdzm::rand11();
 		//go1.o_shader->ShaderLibDebug();
 		//environment->envir_shader->ShaderLibDebug();
 		environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
