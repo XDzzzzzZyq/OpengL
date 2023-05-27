@@ -1,24 +1,29 @@
 #include "FrameBuffer.h"
 
+TextureType FrameBuffer::PareseTexType(FBType _type)
+{
+	TextureType textype = NONE_TEXTURE;
+	if (COMBINE_FB <= _type && _type <= NORMAL_FB)
+		textype = HDR_BUFFER_TEXTURE;
+	else if (ALBEDO_FB <= _type && _type <= ID_FB)
+		textype = BUFFER_TEXTURE;
+	else if (SINGLE_FB <= _type && _type <= SHADOW_FB)
+		textype = FLOAT_BUFFER_TEXTURE;
+	else if (_type == -32) {}
+
+	return textype;
+}
+
 FrameBuffer::FrameBuffer()
 {
 }
 
 
 FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
-	:fb_type(type)
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_type(type)
 {
-	
-	renderBuffer = RenderBuffer();
 	fb_type_list[(FBType)type] = 0;
-	TextureType textype = NONE_TEXTURE;
-	if (COMBINE_FB <= type && type <= NORMAL_FB)
-		textype = HDR_BUFFER_TEXTURE;
-	else if (ALBEDO_FB <= type && type <= ID_FB)
-		textype = BUFFER_TEXTURE;
-	else if (SINGLE_FB <= type && type <= SHADOW_FB)
-		textype = FLOAT_BUFFER_TEXTURE;
-	else if (type == -32) {}
+	TextureType textype = FrameBuffer::PareseTexType(type);
 	fb_tex_list.emplace_back("", textype, GL_NEAREST);
 	fb_tex_list[0].OffsetSlot(type);
 
@@ -46,9 +51,8 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 }
 
 FrameBuffer::FrameBuffer(int count, ...)
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8))
 {
-	renderBuffer = RenderBuffer();
-
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 	GLDEBUG
@@ -57,14 +61,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	va_start(arg_ptr, count);
 	LOOP(count) {
 		int type_inp = va_arg(arg_ptr, int);
-		TextureType textype = NONE_TEXTURE;
-		if (COMBINE_FB <= type_inp && type_inp <= NORMAL_FB)
-			textype = HDR_BUFFER_TEXTURE;
-		else if (ALBEDO_FB<= type_inp && type_inp <= ID_FB)
-			textype = BUFFER_TEXTURE;
-		else if (SINGLE_FB <= type_inp && type_inp <= SHADOW_FB)
-			textype = FLOAT_BUFFER_TEXTURE;
-		else if (type_inp == -32){}
+		TextureType textype = FrameBuffer::PareseTexType((FBType)type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
 		fb_tex_list.emplace_back("", textype, GL_NEAREST);
@@ -91,9 +88,8 @@ FrameBuffer::FrameBuffer(int count, ...)
 }
 
 FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8))
 {
-	renderBuffer = RenderBuffer();
-
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 	GLDEBUG
@@ -101,14 +97,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 	int i = 0;
 	for (auto type_inp : _tars) {
-		TextureType textype = NONE_TEXTURE;
-		if (COMBINE_FB <= type_inp && type_inp <= NORMAL_FB)
-			textype = HDR_BUFFER_TEXTURE;
-		else if (ALBEDO_FB <= type_inp && type_inp <= ID_FB)
-			textype = BUFFER_TEXTURE;
-		else if (SINGLE_FB <= type_inp && type_inp <= SHADOW_FB)
-			textype = FLOAT_BUFFER_TEXTURE;
-		else if (type_inp == -32) {}
+		TextureType textype = FrameBuffer::PareseTexType(type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
 		fb_tex_list.emplace_back("", textype, GL_NEAREST);
