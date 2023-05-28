@@ -17,6 +17,7 @@ glm::vec3 genDirFromAngle(glm::vec2 angle) {
 constexpr float pi = 3.1415926;
 constexpr int max_step = 2;
 
+#if 0
 int main() {
 	glm::vec2 angle = { 0,0 };
 
@@ -41,3 +42,4 @@ int main() {
 
 	}
 }
+#endif

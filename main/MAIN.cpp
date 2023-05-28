@@ -1,6 +1,7 @@
 ﻿
 #include "Application.h"
 
+#if 0
 int main()
 {
 	Application* app = Application::Get();
@@ -11,3 +12,4 @@ int main()
 
 	return 0;
 }
+#endif

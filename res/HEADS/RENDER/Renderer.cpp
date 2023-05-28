@@ -38,7 +38,8 @@ void Renderer::Init()
 
 	//glEnable(GL_CONVOLUTION_2D);
 
-	r_render_result = FrameBuffer({ COMBINE_FB, LIGHT_AO_FB });
+	//r_render_result = FrameBuffer({ COMBINE_FB, LIGHT_AO_FB });
+	r_render_result = FrameBuffer(COMBINE_FB);
 	AddFrameBuffer();
 
 
@@ -205,8 +206,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/* Check at least one camera and environment */
 
-	if (cam_list.find(0) == cam_list.end()) _ASSERT("NONE ACTIVE CAMERA");
-	if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
+	//if (cam_list.find(0) == cam_list.end()) _ASSERT("NONE ACTIVE CAMERA");
+	//if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
 	//glEnable(GL_BLEND);
@@ -299,7 +300,7 @@ void Renderer::Render(bool rend, bool buff) {
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 
-		
+
 		////////////    OUTLINE    ////////////
 
  		static ComputeShader outline("selection_outline");
@@ -326,7 +327,7 @@ void Renderer::Render(bool rend, bool buff) {
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		if (is_light_changed) 
+		if (is_light_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 

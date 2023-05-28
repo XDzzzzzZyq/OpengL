@@ -210,8 +210,8 @@ Texture::Texture(int _w, int _h, GLuint _layout, void* _ptr)
 		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_FLOAT, (GLfloat*)_ptr);
 		tex_type = HDR_BUFFER_TEXTURE;
 		break;
-	default:
-		_ASSERT(false && "WRONG LAYOUT");
+	//default:
+	//    _ASSERT(false && "WRONG LAYOUT");
 	}
 
 
@@ -300,7 +300,7 @@ void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)
 void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	Timer timer("Irradiance Convolution");
-	
+
 	if (tex_ID != 0)DelTexture();   //reset
 
 	glGenTextures(1, &tex_ID);//for storage
@@ -332,8 +332,8 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGBA16F, im_w, im_h);
 		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, lod_w, lod_h, GL_RGBA, GL_FLOAT, nullptr);
 		break;
-	default:
-		_ASSERT(false && "WRONG FORMAT");
+	//default:
+		//_ASSERT(false && "WRONG FORMAT");
 	}
 
 	GLDEBUG
@@ -353,7 +353,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 		irradiance_conv.RunComputeShader(lod_w, lod_h);
 
 	}
-	
+
 }
 
 std::unordered_map<std::string, std::shared_ptr<Texture>> TextureLib::t_tex_list{};

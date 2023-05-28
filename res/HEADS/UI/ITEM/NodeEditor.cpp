@@ -1,4 +1,5 @@
 #include "NodeEditor.h"
+#include <cstdint>
 
 const ImVec2 ImguiNodes::GetInPinPos(const ImVec2& _header_size, float _offset, int _idx)
 {
@@ -24,7 +25,8 @@ void ImguiNodes::UpdateStates()
 		const Nodes::ParaLink tar_link = is_connected ? Nodes::n_in_link[&i_p] : Nodes::ParaLink{};
 		if (!is_connected) i_off++;
 
-		m_states[&i_p] = { tar_o, is_connected, i, tar_link, std::to_string((int)&i_p) + "p", std::to_string((int)&i_p) + "s" };
+		//m_states[&i_p] = { tar_o, is_connected, i, tar_link, std::to_string((int)&i_p) + "p", std::to_string((int)&i_p) + "s" };
+		m_states[&i_p] = { tar_o, is_connected, i, tar_link, std::to_string(reinterpret_cast<std::uintptr_t>(&i_p)) + "p", std::to_string(reinterpret_cast<std::uintptr_t>(&i_p)) + "s" };
 
 		i++;
 		i_off++;
@@ -39,7 +41,8 @@ void ImguiNodes::UpdateStates()
 		Parameters* tar_i = is_connected ? Nodes::GetParamPtr(Nodes::n_out_link[&o_p], true) : nullptr; // get the link target ptr
 		const Nodes::ParaLink tar_link = is_connected ? Nodes::n_out_link[&o_p] : Nodes::ParaLink{};
 
-		m_states[&o_p] = { tar_i, is_connected, i, tar_link, std::to_string((int)&o_p) + "p"};
+		//m_states[&o_p] = { tar_i, is_connected, i, tar_link, std::to_string((int)&o_p) + "p"};
+		m_states[&o_p] = { tar_i, is_connected, i, tar_link, std::to_string(reinterpret_cast<std::uintptr_t>(&o_p)) + "p"};
 
 		i++;
 		o_off++;

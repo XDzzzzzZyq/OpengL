@@ -1,4 +1,5 @@
 #include "Nodes.h"
+#include <cstdint>
 
 unsigned int Nodes::id_buff = 1;
 
@@ -15,7 +16,8 @@ int Nodes::GetParamLoc(Nodes* _tar, Parameters* _param, bool _type)
 	if (list.size() <= 0)
 		return -1;
 
-	return ((unsigned int)_param - (unsigned int)list.data()) / sizeof(Parameters);
+	//return ((unsigned int)_param - (unsigned int)list.data()) / sizeof(Parameters);
+	return (reinterpret_cast<std::uintptr_t>(_param) - reinterpret_cast<std::uintptr_t>(list.data())) / sizeof(Parameters);
 }
 
 void Nodes::PushIn(const Parameters& _in)

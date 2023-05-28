@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <memory>
 
 #include <fstream>
 #include <string>
@@ -20,9 +21,9 @@
 
 #else
 
-#define DEBUG(x) 
-#define DEBUGS(x) 
-#define GLDEBUG 
+#define DEBUG(x)
+#define DEBUGS(x)
+#define GLDEBUG
 
 #endif
 

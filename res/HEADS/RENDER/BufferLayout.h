@@ -30,7 +30,7 @@ public:
 
 	template<typename T>
 	void Push(GLuint count) {
-		static_assert(false); //add a layout pattern {type, count of element, is_normalized}
+		//static_assert(false); //add a layout pattern {type, count of element, is_normalized}
 	}
 
 	template<>

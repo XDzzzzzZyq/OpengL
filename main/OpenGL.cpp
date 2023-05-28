@@ -53,9 +53,11 @@ void render(GLFWwindow* window) {
 	//				 -0.6f,  0.5f, 0.0f, 1.0f          //3
 	//};
 	Reading read = ReadObj("res/obj/sphere.obj", false);
-	float* data = read.vertex.data();
-	
-	VertexBuffer vb(data, read.vertex.size()*sizeof(float));
+	//float* data = read.vertex.data();
+	float* data = read.data_array.data();
+
+	//VertexBuffer vb(data, read.vertex.size()*sizeof(float));
+	VertexBuffer vb(data, read.data_array.size()*sizeof(float));
 	VertexArray va;
 
 	BufferLayout layout;
@@ -93,13 +95,15 @@ void render(GLFWwindow* window) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
 	*/
 
-	Shaders shaders("res/shaders/test.shader");
+	//Shaders shaders("res/shaders/test.shader");
+	RenderShader shaders("res/shaders/test.shader");
 	shaders.UseShader();
 	shaders.SetValue("is", 0.5f);
 
 	glm::mat4 matrix = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, -50.0f, 50.0f);
 	shaders.SetValue("U_ProjectM", matrix);
-	Texture tex1("testImg", PNG_TEXTURE, GL_REPEAT);
+	//Texture tex1("testImg", PNG_TEXTURE, GL_REPEAT);
+	Texture tex1("testImg", RGBA_TEXTURE, GL_REPEAT);
 	shaders.SetValue("U_Texture", 0);
 	tex1.Bind(0);
 
@@ -122,7 +126,7 @@ void render(GLFWwindow* window) {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		
+
 		glm::vec3 axis = { clear_color.x,clear_color.y,clear_color.z };
 
 		shaders.SetValue("U_color", getrand(), getrand(), getrand(), 1.0f);
@@ -171,7 +175,7 @@ void render(GLFWwindow* window) {
 		//std::cout << "\r" << timer.duration << "ms";
 
 	}
-	
+
 	cout << endl << "finished" << endl;
 
 }
