@@ -406,6 +406,7 @@
     <None Include="res\shaders\PointsShader_proj.vert" />
     <None Include="res\shaders\SpiritShader.frag" />
     <None Include="res\shaders\SpiritShader.vert" />
+    <None Include="res\shaders\SSAO.comp" />
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
     <None Include="res\shaders\testS_diff.frag" />

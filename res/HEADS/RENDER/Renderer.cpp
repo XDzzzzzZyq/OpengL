@@ -307,13 +307,26 @@ void Renderer::Render(bool rend, bool buff) {
 		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
 
 
+		////////////  SSAO + DEPTH  ////////////
+
+		static ComputeShader ssao("SSAO");
+		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 1);
+		r_render_result->BindFrameBufferTexR(LIGHT_AO_FB, 2);
+		if (GetActiveCamera()->is_Uniform_changed) {
+			ssao.UseShader();
+			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);
+		}
+		ssao.RunComputeShader(r_render_result->GetSize() / 4);
+
+
 		////////////  PBR COMPOSE  ////////////
 
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
-		pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		if (is_light_changed) {
+		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		}
+		if (is_light_changed) 
+			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 
 		r_render_result->UnbindFrameBuffer();

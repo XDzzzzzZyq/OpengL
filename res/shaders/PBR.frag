@@ -106,5 +106,5 @@ void main(){
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
-
+	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

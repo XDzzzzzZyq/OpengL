@@ -672,6 +672,7 @@
     <None Include="res\shaders\Editing.comp" />
     <None Include="res\shaders\Post_Visual.frag" />
     <None Include="res\shaders\FXAA.comp" />
+    <None Include="res\shaders\SSAO.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
