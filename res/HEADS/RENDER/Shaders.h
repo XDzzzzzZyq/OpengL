@@ -38,6 +38,7 @@ public:
 	void SetValue(const std::string& name, const glm::vec4& vec4);
 	void SetValue(const std::string& name, float v0);
 	void SetValue(const std::string& name, int v0);
+	void SetValue(const std::string& name, bool v0);
 	void SetValue(const std::string& name, const GLuint& v0);
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
 	void SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE);

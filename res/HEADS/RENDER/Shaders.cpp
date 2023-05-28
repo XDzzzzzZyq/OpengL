@@ -99,6 +99,14 @@ void Shaders::SetValue(const std::string& name, int v0)
 	glUniform1i(id, v0);
 }
 
+void Shaders::SetValue(const std::string& name, bool v0)
+{
+	int id = getVarID(name.c_str());
+	glUniform1i(id, v0);
+}
+
+
+
 void Shaders::SetValue(const std::string& name, const GLuint& v0)
 {
 	int id = getVarID(name.c_str());
