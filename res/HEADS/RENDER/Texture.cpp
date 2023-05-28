@@ -2,7 +2,7 @@
 #include "stb_image/stb_image.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
-	:m_path(texpath), tex_type(tex_type),
+	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
 
@@ -158,7 +158,7 @@ Texture::Texture()
 }
 
 Texture::Texture(GLuint Tile_type, int x, int y)
-	:m_path(""), tex_type(BUFFER_TEXTURE),
+	:tex_path(""), tex_type(BUFFER_TEXTURE),
 	im_bpp(8), im_h(y), im_w(x)
 {
 	glGenTextures(1, &tex_ID);
@@ -217,6 +217,12 @@ Texture::Texture(int _w, int _h, GLuint _layout, void* _ptr)
 
 }
 
+Texture::Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name)
+	:im_w(_w), im_h(_h), tex_ID(_ID), tex_type(_type), tex_path(_name)
+{
+
+}
+
 Texture::~Texture()
 {
 
@@ -258,7 +264,7 @@ void Texture::Bind(GLuint slot) const
 	//Tex_slot = slot;
 }
 
-void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE*/) const
+void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE*/, GLuint _level /*= 0*/) const
 {
 	if (slot == -1)
 		slot = tex_type + tex_slot_offset;
@@ -270,7 +276,9 @@ void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE
 	else if (tex_type == IBL_TEXTURE || tex_type == HDR_BUFFER_TEXTURE) layout = GL_RGBA16F;
 	else if (tex_type == RG_TEXTURE) layout == GL_RGBA16F;
 
-	glBindImageTexture(slot, tex_ID, 0, GL_FALSE, 0, read_or_write, layout);
+	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
+
+	glBindImageTexture(slot, tex_ID, 0, is_array, 0, read_or_write, layout);
 }
 
 void Texture::Unbind() const
@@ -371,25 +379,51 @@ GLuint TextureLib::GetTextureID(const std::string& _name)
 	return TextureLib::GetTexture(_name)->GetTexID();
 }
 
+std::shared_ptr<Texture> TextureLib::Noise_2D_4x4()
+{
+	const std::string _name = "Uni.2D.4.4";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr)
+		return result;
+
+	GenNoiseTexture(UNI_2D_NOISE, 4, 4);
+
+	return t_tex_list[_name];
+}
+
 std::shared_ptr<Texture> TextureLib::Noise_2D_16x16()
 {
 	const std::string _name = "Uni.2D.16.16";
-	auto result = GetTexture("Uni.2D.16.16");
+	auto result = GetTexture(_name);
 
 	if (result != nullptr)
 		return result;
 
 	GenNoiseTexture(UNI_2D_NOISE, 16, 16);
 
-	return t_tex_list["Uni.2D.16.16"];
+	return t_tex_list[_name];
 }
 
 void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 {
+	GLuint id;
 
-	std::vector<glm::vec4> list(_w * _h);
-	LOOP(_w * _h) list[i] = xdzm::rand4();
-	Texture res(_w, _h, GL_RGBA16F, (float*)list.data());
+	glGenTextures(1, &id);//for storage
+	glBindTexture(GL_TEXTURE_2D_ARRAY, id);
+
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, 6);
+
+	LOOP_N(6, level) {
+		std::vector<glm::vec4> list(_w * _h);
+		LOOP(_w * _h) list[i] = xdzm::rand4();
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, level, _w, _h, 1, GL_RGBA, GL_FLOAT, (float*)list.data());
+	}
 
 	std::string type_name;
 	int dimension = 4;
@@ -415,5 +449,5 @@ void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 
 	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h);
 
-	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(res);
+	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, IBL_TEXTURE, noise_name);
 }

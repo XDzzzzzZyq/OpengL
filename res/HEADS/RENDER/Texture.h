@@ -24,7 +24,7 @@ class Texture
 {
 private:
 	int im_w = 0, im_h = 0, im_bpp = 0;
-	std::string m_path;
+	std::string tex_path;
 	GLuint tex_ID = 0;
 	
 public:
@@ -34,6 +34,7 @@ public:
 	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type); // using tex_type as its slot, but you can change it if you want
 	Texture(GLuint Tile_type, int x, int y);									 // for FBO
 	Texture(int _w, int _h, GLuint _layout, void* _ptr);						 // for generated texture
+	Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name);
 	Texture();
 	~Texture();
 
@@ -43,7 +44,7 @@ public:
 	void OffsetSlot(GLuint _offset) { tex_slot_offset += _offset; };
 
 	void Bind(GLuint slot = -1) const;
-	void BindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE) const;
+	void BindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE, GLuint _level = 0) const;
 	void Unbind() const;
 
 	inline int GetW()const { return im_w; }
@@ -75,6 +76,7 @@ public:
 	static GLuint GetTextureID(const std::string& _name);
 	
 public:
+	static std::shared_ptr<Texture> Noise_2D_4x4();
 	static std::shared_ptr<Texture> Noise_2D_16x16();
 
 private:
