@@ -4,9 +4,11 @@ layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
 layout(rgba16f, binding = 0) uniform image2D U_pos;
 layout(rgba16f, binding = 1) uniform image2D U_normal;
 layout(rgba16f, binding = 2) uniform image2D U_AO;
+layout(rgba16f, binding = 3) uniform image2D Noise;
 
 uniform vec3 Cam_pos;
 uniform mat4 Cam_Trans;
+uniform bool incre_average;
 
 void main(){
 
@@ -14,6 +16,9 @@ void main(){
 	vec3 pos = imageLoad(U_pos, uv).rgb;
 	
 	float depth = distance(pos, Cam_pos)/40.0;
+
+	ivec2 uv_r = uv%4;
+	depth = imageLoad(Noise, uv_r).r;
 	//depth = Cam_pos.z/10;
 	vec4 pos_n = vec4(pos, depth);
 

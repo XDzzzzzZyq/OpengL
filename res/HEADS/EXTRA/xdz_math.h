@@ -29,6 +29,10 @@ namespace xdzm {
 		return map01_11(rand01());
 	}
 
+	inline glm::vec2 rand2() {
+		return { rand11(), rand11() };
+	}
+
 	inline glm::vec3 rand3() {
 		return { rand11(), rand11(), rand11() };
 	}
@@ -41,5 +45,9 @@ namespace xdzm {
 		glm::vec3 _rand = rand3();
 		_rand.z = _rand.z / 2.0f + 0.5f;
 		return r * glm::normalize(_rand);
+	}
+
+	inline glm::vec4 rand4() {
+		return { rand11(), rand11(), rand11(), rand11() };
 	}
 }

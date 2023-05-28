@@ -302,17 +302,18 @@ void Renderer::Render(bool rend, bool buff) {
 		
 		////////////    OUTLINE    ////////////
 
- 		static ComputeShader outline("selection_outline", Uni("U_test", 1));
+ 		static ComputeShader outline("selection_outline");
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
 
 
 		////////////  SSAO + DEPTH  ////////////
 
-		static ComputeShader ssao("SSAO");
+		static ComputeShader ssao("SSAO", Uni("incre_average", true));
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 1);
 		r_render_result->BindFrameBufferTexR(LIGHT_AO_FB, 2);
+		TextureLib::Noise_2D_16x16()->BindC(3);
 		if (GetActiveCamera()->is_Uniform_changed) {
 			ssao.UseShader();
 			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);

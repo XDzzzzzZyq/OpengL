@@ -16,7 +16,8 @@ enum TextureType
 	IBL_TEXTURE, 
 	BUFFER_TEXTURE = 6,		// [0, 1]
 	HDR_BUFFER_TEXTURE,		// [-inf, +inf]
-	FLOAT_BUFFER_TEXTURE
+	FLOAT_BUFFER_TEXTURE,
+	RG_TEXTURE,
 };
 
 class Texture
@@ -30,8 +31,9 @@ public:
 	TextureType tex_type = TextureType::NONE_TEXTURE;
 	GLuint tex_slot_offset = 0;
 
-	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type); //using tex_type as its slot, but you can change it if you want
-	Texture(GLuint Tile_type, int x, int y);    //for FBO
+	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type); // using tex_type as its slot, but you can change it if you want
+	Texture(GLuint Tile_type, int x, int y);									 // for FBO
+	Texture(int _w, int _h, GLuint _layout, void* _ptr);						 // for generated texture
 	Texture();
 	~Texture();
 
@@ -53,6 +55,30 @@ public: // for texture processing
 	void GenIrradiaceConvFrom(GLuint _Tar_ID);
 	void GenIrradiaceConvFrom(const Texture& _Tar_Tex);
 private:
-	void GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE);
+	void GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
+};
+
+
+class TextureLib {
+
+public:
+	enum NoiseType
+	{
+		NONE_NOISE, UNIFORM_NOISE, GAUSSIAN_NOISE, UNI_2D_NOISE
+	};
+
+private:
+	static std::unordered_map<std::string, std::shared_ptr<Texture>> t_tex_list;
+
+public:
+	static std::shared_ptr<Texture> GetTexture(const std::string& _name);
+	static GLuint GetTextureID(const std::string& _name);
+	
+public:
+	static std::shared_ptr<Texture> Noise_2D_16x16();
+
+private:
+	static void GenNoiseTexture(NoiseType _type, size_t _w, size_t _h);
+
 };
 
