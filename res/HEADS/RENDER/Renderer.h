@@ -34,6 +34,9 @@ private:
 		_RASTER
 	};
 
+public:
+	int r_frame_num = 0;
+
 private:
 	std::optional<FrameBuffer> r_render_result;
 	std::unordered_map<int, std::string> name_buff;
@@ -48,6 +51,7 @@ public:
 	bool r_using_fxaa = true;
 
 	float r_gamma = 1.0f;
+	size_t r_ao_ksize = 16;
 public:
 	bool is_light_changed = false;
 

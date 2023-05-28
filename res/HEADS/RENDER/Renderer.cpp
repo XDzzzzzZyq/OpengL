@@ -224,7 +224,7 @@ void Renderer::Render(bool rend, bool buff) {
 		//glEnable(GL_STENCIL_TEST);
 		;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
+		glDisable(GL_BLEND);
 
 		/////////    CAM TRANSFORM    /////////
 
@@ -297,7 +297,6 @@ void Renderer::Render(bool rend, bool buff) {
 
 		r_render_result->BindFrameBuffer();
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
-		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 
 		
 		////////////    OUTLINE    ////////////
@@ -309,20 +308,25 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////  SSAO + DEPTH  ////////////
 
-		static ComputeShader ssao("SSAO", Uni("incre_average", true));
+		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
+		static ComputeShader ssao("SSAO", Uni("incre_average", true), Uni("kernel_length", r_ao_ksize), Uni("kernel", r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f));
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 1);
-		r_render_result->BindFrameBufferTexR(LIGHT_AO_FB, 2);
-		TextureLib::Noise_2D_16x16()->BindC(3);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
+		r_render_result->BindFrameBufferTexR(LIGHT_AO_FB, 3);
+		TextureLib::Noise_2D_16x16()->BindC(4, GL_READ_ONLY, 1);
+		ssao.UseShader();
 		if (GetActiveCamera()->is_Uniform_changed) {
-			ssao.UseShader();
 			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);
+			ssao.SetValue("Proj_Trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 		}
-		ssao.RunComputeShader(r_render_result->GetSize() / 4);
+		ssao.SetValue("noise_level", r_frame_num % 6);
+		ssao.RunComputeShader(r_render_result->GetSize() / 8);
 
 
 		////////////  PBR COMPOSE  ////////////
 
+		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
@@ -330,6 +334,7 @@ void Renderer::Render(bool rend, bool buff) {
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 
+		// store render result
 		r_render_result->UnbindFrameBuffer();
 
 

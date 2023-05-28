@@ -10,6 +10,7 @@ uniform sampler2D U_albedo;
 uniform sampler2D U_mrse;
 uniform sampler2D U_color;
 uniform sampler2D U_alpha;
+uniform sampler2D U_AO;
 
 // input
 uniform vec3 Cam_pos;
@@ -106,5 +107,5 @@ void main(){
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
-	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
+	Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

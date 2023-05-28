@@ -158,7 +158,6 @@ int Application::Run()
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
 	AverageTime<5> AvTime;
-	float FrameCount = 0;
 	int tex_type = 0;
 	static float testfloat = 0.0f;
 
@@ -196,7 +195,6 @@ int Application::Run()
 		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_IBL_diff.GetTexID());
 	};
 	UI.ParaUpdate = [&] {
-		FrameCount++;
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
 		UI.FindImguiItem("__Parameters__", "Frame Rate %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
 
@@ -220,7 +218,7 @@ int Application::Run()
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Update here */
-		FrameCount++;
+		renderer.r_frame_num++;
 		UI.NewFrame();
 		Event.UpdateEvent(window);
 		AvTime.Update(UI.GetIO()->Framerate);
@@ -229,7 +227,7 @@ int Application::Run()
 		/* Render here */
 
 		go1->SetScale(0.7f * glm::vec3(scale));
-		go1->SetRot(glm::vec3(0.0f, FrameCount / 25, 0.0f));
+		go1->SetRot(glm::vec3(0.0f, renderer.r_frame_num / 25, 0.0f));
 		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
 
 		//go2->SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
