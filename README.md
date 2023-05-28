@@ -6,7 +6,10 @@
 
 ### Features
  - [x] multi-passes buffering
-	- [ ] texture -> renderbuffer?
+ - [x] Multi-passes processing
+	- [x] FXAA
+	- [x] SSAO
+	- [x] Simple Convolution
  - [x] Multi-passes composition
 	- [ ] PBR deferred rendering
  - [ ] editing elements
@@ -23,5 +26,5 @@
   
 ### Advanced
 
- - [ ] Dynamic passes binding
+ - [x] Dynamic passes binding
  - [ ] Dynamic shader value<->texture altering
