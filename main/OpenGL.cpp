@@ -180,6 +180,7 @@ void render(GLFWwindow* window) {
 
 }
 
+#if 0
 int main(void)
 {
 
@@ -211,3 +212,4 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
+#endif

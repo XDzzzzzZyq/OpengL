@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
 project(OpenGL)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
-set(OpenGL_GL_PREFERENCE GLVND)
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(dep/glfw)
+
+add_subdirectory(dep/glm)
 
 find_package(GLEW REQUIRED)
-find_package(glfw3 REQUIRED)
+
+set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
-find_package(glm REQUIRED)
 
 include_directories(${GLEW_INCLUDE_DIRS})
 
@@ -14,11 +20,10 @@ file(GLOB_RECURSE SRC_ALL
 	 LIST_DIRECTORIES true
 	 "${CMAKE_SOURCE_DIR}/res/HEADS/*"
 	 "${CMAKE_SOURCE_DIR}/main/*"
-	 "${CMAKE_SOURCE_DIR}/dep/*"
+	 "${CMAKE_SOURCE_DIR}/dep/ImGui/*"
 )
-list(APPEND SRC_INCLUDE ${CMAKE_SOURCE_DIR}/main)
-list(APPEND SRC_INCLUDE ${CMAKE_SOURCE_DIR}/dep)
-list(APPEND SRC_INCLUDE ${CMAKE_SOURCE_DIR}/res/HEADS)
+list(APPEND SRC_ALL ${CMAKE_SOURCE_DIR}/res/HEADS)
+list(APPEND SRC_ALL ${CMAKE_SOURCE_DIR}/main)
 
 foreach(SRC IN LISTS SRC_ALL)
 	if(IS_DIRECTORY ${SRC})
@@ -27,10 +32,10 @@ foreach(SRC IN LISTS SRC_ALL)
 		list(APPEND SRC_FILES ${SRC})
 	endif()
 endforeach()
+list(APPEND SRC_INCLUDE ${CMAKE_SOURCE_DIR}/dep)
 
-# message("SRC_INCLUDE=${SRC_INCLUDE}")
-# message("SRC_FILES=${SRC_FILES}")
-# message("GLEW_INCLUDE_DIRS=${GLEW_INCLUDE_DIRS}")
+message("SRC_INCLUDE=${SRC_INCLUDE}")
+message("SRC_FILES=${SRC_FILES}")
 
 include_directories(${SRC_INCLUDE})
 add_executable(OpenGL ${SRC_FILES})
