@@ -4,17 +4,33 @@
 
 ### Build
 
-```
-git submodule init
-git submodule update
+```bash
+$ git submodule init
+$ git submodule update
 ```
 
 #### Debian-Based GNU/Linux Distros
 
+```bash
+$ sudo apt install libglew-dev libgl-dev
+$ cmake .
+$ make
 ```
-sudo apt install libglew-dev libgl-dev
-cmake .
-make
+##### Unable to locate package xxx-dev
+
+```bash
+$ sudo apt update
+```
+
+##### unrecognized command line option ‘-std=c++20’
+
+```bash
+$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+$ sudo apt update
+$ sudo apt-get install gcc-11 g++-11
+
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 20 --slave /usr/bin/g++ g++ /usr/bin/g++-11
+$ sudo update-alternatives --config gcc
 ```
 
 #### Windows
@@ -30,9 +46,9 @@ Download [GLEW binaries](https://sourceforge.net/projects/glew/files/glew/2.1.0/
 
 Open Developer Command Prompt for VS 2022 and `cd` into the project directory.
 
-```
-cmake .
-msbuild
+```bash
+$ cmake .
+$ msbuild
 ```
 
 ### Features
