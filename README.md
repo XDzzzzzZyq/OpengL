@@ -6,10 +6,27 @@
 
 #### Debian-Based GNU/Linux Distros
 
+```bash
+$ sudo apt install libglew-dev libglfw3-dev libgl-dev libglm-dev
+$ cmake .
+$ make
 ```
-sudo apt install libglew-dev libglfw3-dev libgl-dev libglm-dev
-cmake .
-make
+
+##### Unable to locate package xxx-dev
+
+```bash
+$ sudo apt update
+```
+
+##### unrecognized command line option ‘-std=c++20’
+
+```bash
+$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+$ sudo apt update
+$ sudo apt-get install gcc-11 g++-11
+
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 20 --slave /usr/bin/g++ g++ /usr/bin/g++-11
+$ sudo update-alternatives --config gcc
 ```
 
 ### Features
