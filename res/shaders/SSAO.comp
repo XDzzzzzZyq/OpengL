@@ -3,7 +3,7 @@
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 layout(rgba16f, binding = 0) uniform image2D U_pos;
 layout(rgba16f, binding = 1) uniform image2D U_normal;
-layout(rgba8, binding = 2) uniform image2D U_alpha;
+layout(rgba8  , binding = 2) uniform image2D U_alpha;
 layout(rgba16f, binding = 3) uniform image2D U_AO;
 layout(rgba16f, binding = 4) uniform image2DArray Noise;
 
@@ -19,6 +19,18 @@ uniform int noise_level;
 
 uniform float update_rate;
 
+const float radius = 1.0f;
+
+float re(float inp){
+	inp = inp>0 ? inp :  -inp;
+	inp = inp<1 ? inp : 2-inp;
+	return clamp(inp, 0, 1);
+}
+
+vec2 apply(vec2 inp){
+	return vec2(re(inp.x), re(inp.y));
+}
+
 void main(){
 
 	float AO = 0;
@@ -27,9 +39,9 @@ void main(){
 	vec3 pos = imageLoad(U_pos, uv).rgb;
 	vec3 normal = imageLoad(U_normal, uv).rgb;
 	ivec3 uv_n = ivec3(uv % noise_size, noise_level);
-	vec3 rand = vec3(imageLoad(Noise, uv_n).rg, 1);
+	vec3 rand = vec3(imageLoad(Noise, uv_n).rg + vec2(noise_level*0.5-1.5), 1);
 
-	float depth = distance(pos, Cam_pos)/40.0;
+	float depth = distance(pos, Cam_pos);
 	vec4 pos_n = vec4(pos, depth);
 	imageStore(U_pos, uv, pos_n);
 
@@ -56,14 +68,19 @@ void main(){
 	{
 		// get sample position
 		//TBN = transpose(TBN);
-		vec3 sample_pos = pos + TBN * kernel[i] * 2; // from tangent to view-space
+		vec3 offset = TBN * kernel[i] * radius;
+		vec3 sample_pos = pos + offset; // from tangent to view-space
 		vec4 screen_pos = Proj_Trans * vec4(sample_pos, 1);
 		vec2 frag_pos = screen_pos.xy / screen_pos.w / 2 + 0.5;
-		ivec2 uv_f = ivec2(frag_pos * imageSize(U_pos) );
+		ivec2 uv_f = ivec2(apply(frag_pos) * imageSize(U_pos));
+		uv_f = uv_f, ivec2(0), imageSize(U_pos);
 
 		float depth_f = distance(imageLoad(U_pos, uv_f).xyz, Cam_pos);
 
-		AO += depth_f <= distance(sample_pos, Cam_pos) ? 0 : 1;
+		float ao = depth_f <= distance(sample_pos, Cam_pos) ? 0 : 1;
+		ao *= smoothstep(0, 1, radius/length(offset));
+
+		AO += ao;
 	}  
 
 	AO /= kernel_length;
