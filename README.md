@@ -2,7 +2,15 @@
 
 ##### Deferred rendering development from XDzZyq
 
+### Build
 
+#### Debian-Based GNU/Linux Distros
+
+```
+sudo apt install libglew-dev libglfw3-dev libgl-dev libglm-dev
+cmake .
+make
+```
 
 ### Features
  - [x] multi-passes buffering
