@@ -4,6 +4,7 @@
 
 ### Build
 
+Execute the following to update the git submodules:
 ```bash
 $ git submodule init
 $ git submodule update
@@ -11,6 +12,7 @@ $ git submodule update
 
 #### Debian-Based GNU/Linux Distros
 
+Install the external dependencies:
 ```bash
 $ sudo apt install libglew-dev libgl-dev
 $ cmake .
@@ -37,19 +39,28 @@ $ sudo update-alternatives --config gcc
 
 Install Visual Studio 2022.
 
-Download [GLEW binaries](https://sourceforge.net/projects/glew/files/glew/2.1.0/glew-2.1.0-win32.zip/download). Add the following to your `PATH`:
-
+Download [GLEW binaries](https://sourceforge.net/projects/glew/files/glew/2.1.0/glew-2.1.0-win32.zip/download) and add the following to your `PATH`:
 ```
-[path-to-glew]\glew-2.1.0\bin
+[path-to-glew]\glew-2.1.0\include
+```
+
+Then add the following to `PATH` if building for 32-bit:
+```
 [path-to-glew]\glew-2.1.0\bin\Release\Win32
 ```
 
-Open Developer Command Prompt for VS 2022 and `cd` into the project directory.
+Or the following if building for 64-bit
+```
+[path-to-glew]\glew-2.1.0\bin\Release\x64
+```
 
+Open Developer Command Prompt for VS 2022, `cd` into the project directory, and execute the following command:
 ```bash
 $ cmake .
 $ msbuild
 ```
+
+Or, you can also open `CMakeLists.txt` as a CMake project in Visual Studio 2022 with CMake integration installed.
 
 ### Features
 
