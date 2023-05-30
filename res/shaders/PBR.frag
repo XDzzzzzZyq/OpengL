@@ -50,12 +50,19 @@ vec3 Vec3Bisector(vec3 a, vec3 b) {
 	return normalize(normalize(a) * 0.5 + normalize(b) * 0.5);
 }
 
-const vec2 invAtan = vec2(0.1591, 0.3183);
+vec2 FoldUV(vec2 uv){
+	uv.y = uv.y < 1 ? uv.y : 2 - uv.y;
+	uv.y = uv.y > 0 ? uv.y :   - uv.y;
+	return uv;
+}
+
+const vec2 invAtan = vec2(0.15915494, 0.31830988);
 vec2 genHdrUV(vec3 dir) {
 	vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
 	uv *= invAtan;
 	uv += 0.5;
-	return -uv + vec2(0.5, 1);
+	uv = -uv + vec2(0.5, 1);
+	return FoldUV(uv);
 } 
 
 float map(float x, float ai, float bi, float ao, float bo){
@@ -90,8 +97,9 @@ void main(){
 	float ks = Fresnel;
 
 	//vec4 uvcolor = texture(U_Texture, uv);
-	vec3 reflect_spec = textureLod(Envir_Texture_diff, genHdrUV(-ReflectRay), Roughness * 5).rgb;
-	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 5).rgb;
+	ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
+	vec3 reflect_spec = textureLod(Envir_Texture_diff, genHdrUV(-ReflectRay), Roughness * 7).rgb;
+	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 7).rgb;
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 	//float coef = blen/5;
 	Output = vec4(0);
@@ -107,5 +115,5 @@ void main(){
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
-	Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
+	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

@@ -43,14 +43,19 @@ public:
 	void Resize(float x, float y);
 	void OffsetSlot(GLuint _offset) { tex_slot_offset += _offset; };
 
+public:
 	void Bind(GLuint slot = -1) const;
 	void BindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE, GLuint _level = 0) const;
 	void Unbind() const;
 
+public:
 	inline int GetW()const { return im_w; }
 	inline int GetH()const { return im_h; }
 	inline int GetDPP()const { return im_bpp; }
 	GLuint GetTexID() const { return tex_ID; }
+
+public:
+	inline static std::tuple<GLuint, GLuint, GLuint> ParseFormat(TextureType _type);
 
 public: // for texture processing
 	void GenIrradiaceConvFrom(GLuint _Tar_ID);
