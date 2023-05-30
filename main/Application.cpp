@@ -157,7 +157,7 @@ int Application::Run()
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
-	AverageTime<5> AvTime;
+	AverageTime<10> AvTime;
 	int tex_type = 0;
 	static float testfloat = 0.0f;
 
@@ -177,7 +177,7 @@ int Application::Run()
 		UI.GetParaValue("test layer", "test")->para_data.fdata = xdzm::rand11();
 		//go1.o_shader->ShaderLibDebug();
 		//environment->envir_shader->ShaderLibDebug();
-		environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
+		//environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
@@ -227,7 +227,7 @@ int Application::Run()
 		/* Render here */
 
 		go1->SetScale(0.7f * glm::vec3(scale));
-		go1->SetRot(glm::vec3(0.0f, renderer.r_frame_num / 25, 0.0f));
+		go1->SetRot(glm::vec3(0.0f, renderer.r_frame_num / 25.0, 0.0f));
 		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
 
 		//go2->SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));

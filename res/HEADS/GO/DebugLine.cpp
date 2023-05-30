@@ -55,9 +55,7 @@ void DebugLine::SetDebugLineParas(bool stipple, bool smooth, float width, float 
 
 void DebugLine::PushDebugLine(const glm::vec3& point)
 {
-	dLine_pos_list.push_back(point[0]);
-	dLine_pos_list.push_back(point[1]);
-	dLine_pos_list.push_back(point[2]);
+	PushDebugLine(point.x, point.y, point.z);
 }
 
 void DebugLine::PushDebugLine(float x, float y, float z)
@@ -82,7 +80,8 @@ void DebugLine::PushDebugLines(const std::vector<glm::vec3>& points)
 
 void DebugLine::RenderDdbugLine(Camera* camera)
 {
-	if (dLine_pos_list.size() < 2)return;
+
+	if (dLine_pos_list.size() < 6)return;
 
 	dLine_shader->UseShader();
 	if (dLine_shader->is_shader_changed)
@@ -121,7 +120,6 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	glDrawArrays(GL_LINE_STRIP, 0, dLine_pos_list.size()/3);
 	//glMultiDrawArrays(GL_LINES,)
 
-
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopAttrib();
 	if (using_smooth)
@@ -130,7 +128,7 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 		glDisable(GL_LINE_STIPPLE);
 
 	dLine_shader->UnuseShader();
-	
+	dLine_shader->is_shader_changed = false;
 }
 
 void DebugLine::SetDLineShader()
