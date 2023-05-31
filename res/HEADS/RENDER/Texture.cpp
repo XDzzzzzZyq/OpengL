@@ -345,7 +345,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 
 		//glTexImage2D(GL_TEXTURE_2D, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
 
-		/*static */ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
+		static ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
 
 		//glActiveTexture(GL_TEXTURE0 + _tar_type + 1);
 		glBindImageTexture(_tar_type, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
