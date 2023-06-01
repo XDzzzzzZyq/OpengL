@@ -31,7 +31,7 @@ private:
 
 	enum _BuildinBuffLoc
 	{
-		_RASTER
+		_RASTER, _AO_ELS
 	};
 
 public:

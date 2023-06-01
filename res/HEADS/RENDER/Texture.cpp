@@ -262,6 +262,19 @@ void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE
 	glBindImageTexture(slot, tex_ID, 0, is_array, 0, read_or_write, layout);
 }
 
+void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE*/, GLuint _level /*= 0*/) const
+{
+	if (slot == -1)
+		slot = tex_type + tex_slot_offset;
+
+	auto [layout, _1, _2] = Texture::ParseFormat(tex_type);
+
+	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
+
+	glBindImageTexture(slot, tex_ID, 0, is_array, 0, GL_READ_ONLY, layout);
+	glBindImageTexture(slot, 0, 0, is_array, 0, GL_READ_ONLY, layout);
+}
+
 void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);

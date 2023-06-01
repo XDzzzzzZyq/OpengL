@@ -52,6 +52,7 @@ public:
 public:
 	void Bind(GLuint slot = -1) const;
 	void BindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE, GLuint _level = 0) const;
+	void UnbindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE, GLuint _level = 0) const;
 	void Unbind() const;
 
 public:

@@ -195,14 +195,27 @@ void FrameBuffer::BindFrameBufferTex(const std::vector<FBType>& _tars) const
 	}
 }
 
+void FrameBuffer::BindFrameBufferTex(FBType tar, GLuint slot) const
+{
+	fb_tex_list[fb_type_list[tar]].Bind(slot);
+}
+
 void FrameBuffer::BindFrameBufferTexR(FBType tar, GLuint slot) const
 {
 	fb_tex_list[fb_type_list[tar]].BindC(slot, GL_READ_WRITE);
 }
 
+void FrameBuffer::UnbindFrameBufferTexR(FBType tar, GLuint slot) const
+{
+	fb_tex_list[fb_type_list[tar]].UnbindC(slot);
+	fb_tex_list[fb_type_list[tar]].Unbind();
+}
+
 void FrameBuffer::UnbindFrameBufferTex() const
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
+	for (auto& tar : fb_tex_list) {
+		tar.Unbind();
+	}
 }
 
 void FrameBuffer::Del() const

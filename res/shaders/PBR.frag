@@ -111,9 +111,13 @@ void main(){
 
 	/* [Block : DATA] */ 
 
-	vec3 Pos = texture2D(U_pos, screen_uv).rgb;
-	vec3 Normal = texture2D(U_normal, screen_uv).rgb;
+	vec4 Pos_Dep = texture2D(U_pos, screen_uv).rgba;
+	vec3 Pos = Pos_Dep.xyz;
+	vec4 Normal_AO = texture2D(U_normal, screen_uv).rgba;
+	vec3 Normal = Normal_AO.xyz;
 	vec3 Albedo = texture2D(U_albedo, screen_uv).rgb;
+
+	float AO = texture2D(U_AO, screen_uv).r;
 
 	vec3 CamRay = Pos - Cam_pos;
 	vec3 ReflectRay = reflect(normalize(CamRay), Normal);
@@ -175,11 +179,12 @@ void main(){
 
 	Output += vec4(Light_res, 0);
 	Output += vec4(IBL_res, 0);
+	Output *= Normal_AO.a;
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
 	//Output = texture2D(LUT, screen_uv);
-	//Output = vec4(vec3(Fresnel), 1);
+	Output = vec4(vec3(Normal_AO.a), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

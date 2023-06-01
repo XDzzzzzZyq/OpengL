@@ -38,7 +38,7 @@ void Renderer::Init()
 
 	//glEnable(GL_CONVOLUTION_2D);
 
-	r_render_result = FrameBuffer({ COMBINE_FB, LIGHT_AO_FB });
+	r_render_result = FrameBuffer({ COMBINE_FB });
 	AddFrameBuffer();
 
 
@@ -78,6 +78,7 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 void Renderer::AddFrameBuffer()
 {
 	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
+	r_buffer_list.emplace_back(std::vector<FBType>{ LIGHT_AO_FB });
 }
 
 void Renderer::BindFrameBuffer(int slot)
@@ -299,7 +300,6 @@ void Renderer::Render(bool rend, bool buff) {
 		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		r_render_result->BindFrameBuffer();
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 
 
@@ -307,18 +307,18 @@ void Renderer::Render(bool rend, bool buff) {
 
 		static ComputeShader outline("selection_outline");
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
+		if (active_GO_ID != 0) outline.RunComputeShader(r_buffer_list[_RASTER].GetSize() / 4);
 
 
 		////////////  SSAO + DEPTH  ////////////
 
 		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
 		static ComputeShader ssao("SSAO", Uni("incre_average", true), Uni("kernel_length", r_ao_ksize), Uni("kernel", r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f));
-		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 1);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
-		r_render_result->BindFrameBufferTexR(LIGHT_AO_FB, 3);
-		TextureLib::Noise_2D_16x16()->BindC(4, GL_READ_ONLY, 1);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 4);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+		r_buffer_list[_AO_ELS].BindFrameBufferTexR(LIGHT_AO_FB, 6);
+		TextureLib::Noise_2D_16x16()->BindC(7, GL_READ_ONLY, 1);
 		ssao.UseShader();
 		if (GetActiveCamera()->is_Uniform_changed) {
 			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);
@@ -326,7 +326,6 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		ssao.SetValue("noise_level", r_frame_num % 6);
 		ssao.RunComputeShader(r_render_result->GetSize() / 8);
-
 
 		////////////  PBR COMPOSE  ////////////
 
@@ -337,6 +336,7 @@ void Renderer::Render(bool rend, bool buff) {
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		if (is_light_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+		r_render_result->BindFrameBuffer();
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 
 		// store render result
