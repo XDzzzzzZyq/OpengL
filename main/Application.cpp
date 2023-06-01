@@ -63,7 +63,7 @@ int Application::Run()
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("res/obj/monkey2.obj");
 	go1->SetObjShader("testS", "Rasterization");
-	go1->SetTex("res/tex/avatar2.png", RGBA_TEXTURE);
+	go1->SetTex("avatar2.png", RGBA_TEXTURE);
 	go1->SetCenter();
 	go1->ApplyTransform();
 	renderer.UseMesh(go1);
@@ -71,7 +71,7 @@ int Application::Run()
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("res/obj/torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
-	go2->SetTex("res/tex/avatar1.png", RGBA_TEXTURE);
+	go2->SetTex("avatar1.png", RGBA_TEXTURE);
 	go2->SetCenter();
 	go2->SetPos({ 8, 0, 0 });
 	go2->SetScale(glm::vec3(1.5f));
@@ -104,7 +104,7 @@ int Application::Run()
 	renderer.UseDebugLine(line);
 
 	DEBUG("\n---------------ENVIR----------------")
-		std::shared_ptr<Environment> environment = std::make_shared<Environment>("res/tex/hdr/room.hdr");
+		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	renderer.UseEnvironment(environment);
 
@@ -115,21 +115,22 @@ int Application::Run()
 
 	DEBUG("\n---------------POSTPRCS----------------")
 		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
-	pps1->SetShaderValue("U_color",				BUFFER_TEXTURE + COMBINE_FB);
-	pps1->SetShaderValue("U_pos",				BUFFER_TEXTURE + POS_FB);
-	pps1->SetShaderValue("U_normal",			BUFFER_TEXTURE + NORMAL_FB);
-	pps1->SetShaderValue("U_albedo",			BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->SetShaderValue("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
-	pps1->SetShaderValue("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->SetShaderValue("U_alpha",				BUFFER_TEXTURE + MASK_FB);
-	pps1->SetShaderValue("Envir_Texture",		IBL_TEXTURE);
-	pps1->SetShaderValue("Envir_Texture_diff",	IBL_TEXTURE + 1);
+	pps1->AddBinding("U_color",				BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos",				BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal",			BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo",			BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha",				BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture",		IBL_TEXTURE);
+	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE + 1);
+	pps1->AddBinding("LUT",					PNG_TEXTURE);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
 		std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
-	pps2->SetShaderValue("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
-	pps2->SetShaderValue("U_select",			BUFFER_TEXTURE + MASK_FB);
+	pps2->AddBinding("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
+	pps2->AddBinding("U_select",			BUFFER_TEXTURE + MASK_FB);
 	renderer.UsePostProcessing(pps2);
 
 	DEBUG("-------------------------------")

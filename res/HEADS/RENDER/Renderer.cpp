@@ -283,6 +283,10 @@ void Renderer::Render(bool rend, bool buff) {
 			if (!envir.second->envir_spirit.is_viewport)continue;
 			envir.second->RenderEnvirSpr(GetActiveCamera().get());
 		}
+		for (const auto& pps : pps_list) {
+			if (!pps->pps_spirit.is_viewport)continue;
+			pps->RenderPPSSpr(GetActiveCamera().get());
+		}
 	}
 	if (buff) {
 		//GetActiveEnvironment()->UnbindFrameBuffer();
@@ -298,10 +302,10 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBuffer();
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 
-		
+
 		////////////    OUTLINE    ////////////
 
- 		static ComputeShader outline("selection_outline");
+		static ComputeShader outline("selection_outline");
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 		if (active_GO_ID != 0) outline.RunComputeShader(r_render_result->GetSize() / 4);
 
@@ -328,9 +332,10 @@ void Renderer::Render(bool rend, bool buff) {
 
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
+		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
 		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		if (is_light_changed) 
+		if (is_light_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 
@@ -344,7 +349,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
-		if(r_using_fxaa) fxaa.RunComputeShader(r_render_result->GetSize() / 4);
+		if (r_using_fxaa) fxaa.RunComputeShader(r_render_result->GetSize() / 4);
 
 
 		//////////   EDITING ELEM   //////////
@@ -391,27 +396,26 @@ void Renderer::UseCamera(std::shared_ptr<Camera> camera)
 {
 	if (cam_list.find(camera->GetObjectID()) == cam_list.end())
 	{
-		is_GOlist_changed = true;
-		cam_list[camera->GetObjectID()] = camera;
-		obj_list[camera->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(camera);
 		cam_list[0] = camera;
-		outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
-		parent_index_list.push_back(-1);
-		name_buff[camera->GetObjectID()] = camera->o_name;
+		return;
 	}
-	else {
-		cam_list[0] = camera;
-	}
+
+	is_GOlist_changed = true;
+	cam_list[camera->GetObjectID()] = camera;
+	obj_list[camera->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(camera);
+	cam_list[0] = camera;
+	outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
+	parent_index_list.push_back(-1);
+	name_buff[camera->GetObjectID()] = camera->o_name;
 }
 
 void Renderer::UseCamera(const int& cam_id)
 {
-	if (cam_list.find(cam_id) != cam_list.end())
-	{
-		is_GOlist_changed = true;
-		cam_list[0] = cam_list[cam_id];
-	}
+	if (cam_list.find(cam_id) == cam_list.end())
+		return;
 
+	is_GOlist_changed = true;
+	cam_list[0] = cam_list[cam_id];
 }
 
 std::shared_ptr<Camera> Renderer::GetActiveCamera()
@@ -422,67 +426,68 @@ std::shared_ptr<Camera> Renderer::GetActiveCamera()
 //////////////////////////////////////////////
 void Renderer::UseMesh(std::shared_ptr<Mesh> mesh)
 {
-	if (mesh_list.find(mesh->GetObjectID()) == mesh_list.end())
-	{
-		is_GOlist_changed = true;
-		mesh_list[mesh->GetObjectID()] = mesh;
-		obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(mesh);
-		outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
-		parent_index_list.push_back(-1);
-		name_buff[mesh->GetObjectID()] = mesh->o_name;
-	}
+	if (mesh_list.find(mesh->GetObjectID()) != mesh_list.end())
+		return;
+
+	is_GOlist_changed = true;
+	mesh_list[mesh->GetObjectID()] = mesh;
+	obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(mesh);
+	outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
+	parent_index_list.push_back(-1);
+	name_buff[mesh->GetObjectID()] = mesh->o_name;
 
 }
 
 //////////////////////////////////////////////
 void Renderer::UseLight(std::shared_ptr<Light> light)
 {
-	if (light_list.find(light->GetObjectID()) == light_list.end())
-	{
-		is_GOlist_changed = true;
-		is_light_changed = true;
-		light_list[light->GetObjectID()] = light;
-		obj_list[light->light_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
+	if (light_list.find(light->GetObjectID()) != light_list.end())
+		return;
 
-		outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
-		parent_index_list.push_back(-1);
+	is_GOlist_changed = true;
+	is_light_changed = true;
+	light_list[light->GetObjectID()] = light;
+	obj_list[light->light_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
 
-		spirit_list[light->light_spirit.GetObjectID()] = std::shared_ptr<Spirit>(light, &light->light_spirit);
-		name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
-		spirit_id_buff.push_back(light->light_spirit.GetObjectID());
-	}
+	outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
+	parent_index_list.push_back(-1);
+
+	spirit_list[light->light_spirit.GetObjectID()] = std::shared_ptr<Spirit>(light, &light->light_spirit);
+	name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
+	spirit_id_buff.push_back(light->light_spirit.GetObjectID());
 
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)
 {
-	if (envir_list.find(envir->GetObjectID()) == envir_list.end())
+	if (envir_list.find(envir->GetObjectID()) != envir_list.end())
 	{
-		is_GOlist_changed = true;
-		envir_list[envir->GetObjectID()] = envir;
 		envir_list[0] = envir;
-		name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name;
-		obj_list[envir->envir_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
-
-		outline_list.push_back(OutlineElement(envir->o_type, envir->envir_spirit.GetObjectID(), envir->o_name, 0));
-		parent_index_list.push_back(-1);
-
-		spirit_list[envir->envir_spirit.GetObjectID()] = std::shared_ptr<Spirit>(envir, &envir->envir_spirit);
-		name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name; //using spirit ID
-		spirit_id_buff.push_back(envir->envir_spirit.GetObjectID());
+		return;
 	}
-	else {
-		envir_list[0] = envir;
-	}
+
+	is_GOlist_changed = true;
+	envir_list[envir->GetObjectID()] = envir;
+	envir_list[0] = envir;
+	name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name;
+	obj_list[envir->envir_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
+
+	outline_list.push_back(OutlineElement(envir->o_type, envir->envir_spirit.GetObjectID(), envir->o_name, 0));
+	parent_index_list.push_back(-1);
+
+	spirit_list[envir->envir_spirit.GetObjectID()] = std::shared_ptr<Spirit>(envir, &envir->envir_spirit);
+	name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name; //using spirit ID
+	spirit_id_buff.push_back(envir->envir_spirit.GetObjectID());
 }
 
 void Renderer::UseEnvironment(const int& envir_id)
 {
-	if (envir_list.find(envir_id) != envir_list.end())
-	{
-		is_GOlist_changed = true;
-		envir_list[0] = envir_list[envir_id];
-	}
+	if (envir_list.find(envir_id) == envir_list.end())
+		return;
+
+	is_GOlist_changed = true;
+	envir_list[0] = envir_list[envir_id];
+
 }
 
 std::shared_ptr<Environment> Renderer::GetActiveEnvironment()
@@ -492,31 +497,41 @@ std::shared_ptr<Environment> Renderer::GetActiveEnvironment()
 
 void Renderer::UseDebugLine(std::shared_ptr<DebugLine> dline)
 {
-	if (dLine_list.find(dline->GetObjectID()) == dLine_list.end())
-	{
-		is_GOlist_changed = true;
-		dLine_list[dline->GetObjectID()] = dline;
-		obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dline);
-		outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
-		name_buff[dline->GetObjectID()] = dline->o_name;
-		parent_index_list.push_back(-1);
-	}
+	if (dLine_list.find(dline->GetObjectID()) != dLine_list.end())
+		return;
+
+	is_GOlist_changed = true;
+	dLine_list[dline->GetObjectID()] = dline;
+	obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dline);
+	outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
+	name_buff[dline->GetObjectID()] = dline->o_name;
+	parent_index_list.push_back(-1);
+
 }
 
 void Renderer::UseDebugPoints(std::shared_ptr<DebugPoints> dpoints)
 {
-	if (dPoints_list.find(dpoints->GetObjectID()) == dPoints_list.end())
-	{
-		is_GOlist_changed = true;
-		dPoints_list[dpoints->GetObjectID()] = dpoints;
-		obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dpoints);
-		outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
-		name_buff[dpoints->GetObjectID()] = dpoints->o_name;
-		parent_index_list.push_back(-1);
-	}
+	if (dPoints_list.find(dpoints->GetObjectID()) != dPoints_list.end())
+		return;
+
+	is_GOlist_changed = true;
+	dPoints_list[dpoints->GetObjectID()] = dpoints;
+	obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dpoints);
+	outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
+	name_buff[dpoints->GetObjectID()] = dpoints->o_name;
+	parent_index_list.push_back(-1);
 }
 
 void Renderer::UsePostProcessing(std::shared_ptr<PostProcessing> pps)
 {
-	pps_list.push_back(pps);
+	pps_list.emplace_back(pps);
+	name_buff[pps->pps_spirit.GetObjectID()] = pps->o_name;
+	obj_list[pps->pps_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(pps);
+
+	outline_list.push_back(OutlineElement(pps->o_type, pps->pps_spirit.GetObjectID(), pps->o_name, 0));
+	parent_index_list.push_back(-1);
+
+	spirit_list[pps->pps_spirit.GetObjectID()] = std::shared_ptr<Spirit>(pps, &pps->pps_spirit);
+	name_buff[pps->pps_spirit.GetObjectID()] = pps->o_name; //using spirit ID
+	spirit_id_buff.push_back(pps->pps_spirit.GetObjectID());
 }
