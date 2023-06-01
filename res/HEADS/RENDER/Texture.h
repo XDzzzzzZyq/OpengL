@@ -11,9 +11,12 @@ enum TextureType
 {
 	NONE_TEXTURE, 
 	RGBA_TEXTURE, 
+	PNG_TEXTURE = 1,
 	RGB_TEXTURE, 
+	JPG_TEXTURE = 2,
 	SPIRIT_TEXURE, 
-	IBL_TEXTURE, 
+	IBL_TEXTURE,
+	HDR_TEXTURE = 4,
 	BUFFER_TEXTURE = 6,		// [0, 1]
 	HDR_BUFFER_TEXTURE,		// [-inf, +inf]
 	FLOAT_BUFFER_TEXTURE,
@@ -22,6 +25,9 @@ enum TextureType
 
 class Texture
 {
+private:
+	static std::string root_dir;
+
 private:
 	int im_w = 0, im_h = 0, im_bpp = 0;
 	std::string tex_path;
@@ -67,6 +73,8 @@ private:
 
 class TextureLib {
 
+	using TextureRes = std::shared_ptr<Texture>;
+
 public:
 	enum NoiseType
 	{
@@ -74,15 +82,17 @@ public:
 	};
 
 private:
-	static std::unordered_map<std::string, std::shared_ptr<Texture>> t_tex_list;
+	static std::unordered_map<std::string, TextureRes> t_tex_list;
 
 public:
-	static std::shared_ptr<Texture> GetTexture(const std::string& _name);
+	static TextureRes GetTexture(const std::string& _name);
 	static GLuint GetTextureID(const std::string& _name);
 	
 public:
-	static std::shared_ptr<Texture> Noise_2D_4x4();
-	static std::shared_ptr<Texture> Noise_2D_16x16();
+	static TextureRes Noise_2D_4x4();
+	static TextureRes Noise_2D_16x16();
+
+	static TextureRes IBL_LUT();
 
 private:
 	static void GenNoiseTexture(NoiseType _type, size_t _w, size_t _h);

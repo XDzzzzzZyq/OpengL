@@ -1,6 +1,8 @@
 ﻿#include "Texture.h"
 #include "stb_image/stb_image.h"
 
+std::string Texture::root_dir = "res/tex/";
+
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
@@ -15,13 +17,16 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	GLubyte* m_buffer = nullptr;
 	GLfloat* m_buffer_f = nullptr;
 
+	if (tex_path.find(Texture::root_dir) == std::string::npos)
+		tex_path = Texture::root_dir + tex_path;
+
 	auto [interlayout, layout, type] = Texture::ParseFormat(tex_type);
 
 	switch (tex_type)
 	{
 	case RGBA_TEXTURE:
 
-		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		// std::cout << Tex_ID << std::endl;
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -59,7 +64,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 	case SPIRIT_TEXURE:
 		stbi_set_flip_vertically_on_load(0);
-		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -86,7 +91,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		break;
 
 	case IBL_TEXTURE:
-		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+		m_buffer_f = stbi_loadf(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -142,7 +147,7 @@ Texture::Texture()
 }
 
 Texture::Texture(GLuint Tile_type, int x, int y)
-	:tex_path(""), tex_type(BUFFER_TEXTURE),
+	:tex_path(NULL), tex_type(BUFFER_TEXTURE),
 	im_bpp(8), im_h(y), im_w(x)
 {
 	glGenTextures(1, &tex_ID);
@@ -397,6 +402,19 @@ std::shared_ptr<Texture> TextureLib::Noise_2D_16x16()
 		return result;
 
 	GenNoiseTexture(UNI_2D_NOISE, 16, 16);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::IBL_LUT()
+{
+	const std::string _name = "IBL_LUT";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr)
+		return result;
+
+	t_tex_list[_name] = std::make_shared<Texture>("ibl_brdf_lut.png", RGBA_TEXTURE, GL_MIRRORED_REPEAT);
 
 	return t_tex_list[_name];
 }
