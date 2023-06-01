@@ -392,6 +392,7 @@
     <None Include="res\shaders\EnvirBG.frag" />
     <None Include="res\shaders\FXAA.comp" />
     <None Include="res\shaders\IBRShader.frag" />
+    <None Include="res\shaders\Importance_Samp.comp" />
     <None Include="res\shaders\PBR.frag" />
     <None Include="res\shaders\Post_Visual.frag" />
     <None Include="res\shaders\Rasterization.frag" />

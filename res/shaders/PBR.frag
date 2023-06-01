@@ -11,15 +11,18 @@ uniform sampler2D U_mrse;
 uniform sampler2D U_color;
 uniform sampler2D U_alpha;
 uniform sampler2D U_AO;
+uniform sampler2D LUT;
 
 // input
 uniform vec3 Cam_pos;
-uniform sampler2D Envir_Texture;
 uniform sampler2D Envir_Texture_diff;
+uniform sampler2D Envir_Texture_spec;
 
 uniform float gamma;
 
 in vec2 screen_uv;
+
+const float PI = 3.1415926;
 
 float ACESFilm(float x)
 {
@@ -47,13 +50,7 @@ vec4 Vec4Film(vec4 x, float fac, float gamma)
 }
 
 vec3 Vec3Bisector(vec3 a, vec3 b) {
-	return normalize(normalize(a) * 0.5 + normalize(b) * 0.5);
-}
-
-vec2 FoldUV(vec2 uv){
-	uv.y = uv.y < 1 ? uv.y : 2 - uv.y;
-	uv.y = uv.y > 0 ? uv.y :   - uv.y;
-	return uv;
+	return normalize(normalize(a) + normalize(b));
 }
 
 const vec2 invAtan = vec2(0.15915494, 0.31830988);
@@ -62,7 +59,7 @@ vec2 genHdrUV(vec3 dir) {
 	uv *= invAtan;
 	uv += 0.5;
 	uv = -uv + vec2(0.5, 1);
-	return FoldUV(uv);
+	return uv;
 } 
 
 float map(float x, float ai, float bi, float ao, float bo){
@@ -71,7 +68,48 @@ float map(float x, float ai, float bi, float ao, float bo){
 	return ao+(bo-ao)*x;
 }
 
+float k_light(float r){
+	return (r+1)*(r+1)/8;
+}
+
+float k_IBL(float r){
+	return r*r/2;
+}
+
+float DistributionGGX(vec3 N, vec3 H, float a)
+{
+    float a2     = a*a;
+    float NdotH  = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+	
+    float nom    = a2;
+    float denom  = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom        = PI * denom * denom;
+	
+    return nom / denom;
+}
+
+float GeometrySchlickGGX(float NdotV, float k)
+{
+    float nom   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+	
+    return nom / denom;
+}
+  
+float GeometrySmith(vec3 N, vec3 V, vec3 L, float k)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx1 = GeometrySchlickGGX(NdotV, k);
+    float ggx2 = GeometrySchlickGGX(NdotL, k);
+	
+    return ggx1 * ggx2;
+}
+
 void main(){
+
+	/* [Block : DATA] */ 
 
 	vec3 Pos = texture2D(U_pos, screen_uv).rgb;
 	vec3 Normal = texture2D(U_normal, screen_uv).rgb;
@@ -92,28 +130,56 @@ void main(){
 	float Alpha = texture2D(U_alpha, screen_uv).r;
 	float Select = texture2D(U_alpha, screen_uv).g;
 
-	float F0 = mix(0.1, 1.0, Metalness);
-	float Fresnel = mix(exp2((-5.55437*Cos-6.98314)*Cos), 1.0, F0);
+	float F0 = mix(0.1, 0.95, Metalness);
+	float Fresnel = mix(F0, 1.0, exp2((-5.55437*Cos-6.98314)*Cos));
 	float ks = Fresnel;
 
 	//vec4 uvcolor = texture(U_Texture, uv);
-	ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
-	vec3 reflect_spec = textureLod(Envir_Texture_diff, genHdrUV(-ReflectRay), Roughness * 7).rgb;
-	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 7).rgb;
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 	//float coef = blen/5;
 	Output = vec4(0);
 
-	/* [Block : PBR] */ 
+	/* [Block : BG] */ 
+
 	if(Alpha < 0.05){
 		Output += vec4(Emission * Emission_Color, 1);
-	}else{
-		Output += vec4(mix(reflect_diff, reflect_spec, Fresnel), 1.0f);
-		Output += vec4(Emission * Emission_Color, 1);
+		Output = Vec4Film(Output, 1, gamma);
+		//Output = texture2D(LUT, screen_uv);
+		return;
 	}
 
+
+	/* [Block : Lighting] */ 
+
+	vec3 Light_res = vec3(0);
+
+	/* [Block : IBL] */ 
+
+	vec3 IBL_res = vec3(0);
+	vec2 lut = texture2D(LUT, vec2(Cos, Roughness)).xy;
+
+	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
+	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;
+	reflect_spec *= Fresnel*lut.x + lut.y;
+	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 4).rgb * Albedo;
+	
+	IBL_res += reflect_diff + reflect_spec;
+
+	/* [Block : EMIS] */
+
+	IBL_res += Emission * Emission_Color;
+	//Output = vec4(lut, 0, 1);
+
+
+	/* [Block : COMP] */ 
+
+	Output += vec4(Light_res, 0);
+	Output += vec4(IBL_res, 0);
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
+
+	//Output = texture2D(LUT, screen_uv);
+	//Output = vec4(vec3(Fresnel), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

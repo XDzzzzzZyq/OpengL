@@ -122,8 +122,8 @@ int Application::Run()
 	pps1->AddBinding("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
 	pps1->AddBinding("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
 	pps1->AddBinding("U_alpha",				BUFFER_TEXTURE + MASK_FB);
-	pps1->AddBinding("Envir_Texture",		IBL_TEXTURE);
-	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE + 1);
+	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
 	renderer.UsePostProcessing(pps1);
 
@@ -193,7 +193,7 @@ int Application::Run()
 	};
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
 		UI.FindImguiItem("CompShader", "Viewport")->ResetSize(UI.FindImguiLayer("CompShader")->uly_size + ImVec2(10, 10));
-		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_IBL_diff.GetTexID());
+		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_IBL_spec.GetTexID());
 	};
 	UI.ParaUpdate = [&] {
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);

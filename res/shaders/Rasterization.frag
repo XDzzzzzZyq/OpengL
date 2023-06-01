@@ -29,6 +29,6 @@ void main() {
 	POScolor = vec4(pix_pos, 1);
 	MASKcolor = vec4(1, is_selected, 0, 1);
 	ALBEDOcolor = texture2D(U_Texture, uv);
-	MRSEcolor = vec4(1, blen/5, 0, 0);
+	MRSEcolor = vec4(1, blen, 0, 0);
 
 };
