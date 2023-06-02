@@ -24,12 +24,7 @@ private:
 	IndexBuffer dp_index;
 	StorageBuffer dp_pos_buffer;
 
-	std::vector<float> VertData = {
-	-1.0f, 1.0f, 0.0f,
-	 1.0f, 1.0f, 0.0f,
-	-1.0f,-1.0f, 0.0f,
-	 1.0f,-1.0f, 0.0f
-	};
+	static std::vector<float> VertData;
 
 public:
 	PointType dp_type = SQUARE_POINT;
@@ -41,10 +36,10 @@ public:
 	mutable float dp_scale = 1.0f;
 	float dp_opacity = 1.0f;
 	glm::vec3 dp_color = glm::vec3(1.0f, 1.0f, 1.0f);
-	std::vector<float> dp_pos_list;
+	std::vector<glm::vec3> dp_pos_list;
 
 	DebugPoints();
-	DebugPoints(const std::vector<float>& pos_list);
+	DebugPoints(const std::vector<glm::vec3>& pos_list);
 	~DebugPoints();
 
 	void RenderDebugPoint(Camera* camera);
