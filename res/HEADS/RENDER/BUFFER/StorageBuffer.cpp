@@ -1,22 +1,18 @@
 #include "StorageBuffer.h"
 
 StorageBuffer::StorageBuffer()
-	:ssbo_base(3), ssbo_type(NONE_LIST)
 {
-	glGenBuffers(1, &ssbo_id);
-
 }
 
 StorageBuffer::StorageBuffer(SSBType type)
-	:ssbo_base(3), ssbo_type(type)
+	: StorageBuffer(type, 0)
 {
-	glGenBuffers(1, &ssbo_id);
 }
 
-StorageBuffer::StorageBuffer(SSBType type, int base)
+StorageBuffer::StorageBuffer(SSBType type, GLuint base)
 	: ssbo_base(base), ssbo_type(type)
 {
-	glGenBuffers(1, &ssbo_id);
+	//glGenBuffers(1, &ssbo_id);
 }
 
 StorageBuffer::~StorageBuffer()
@@ -24,20 +20,21 @@ StorageBuffer::~StorageBuffer()
 	glDeleteBuffers(1, &ssbo_id);
 }
 
-void StorageBuffer::BindBuffer() const
+void StorageBuffer::BindBuffer(GLuint _base) const
 {
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_id);
+	if (_base == -1)
+		_base = ssbo_base;
+
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, _base, ssbo_id);
 }
 
 void StorageBuffer::UnbindBuffer() const
 {
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0    , ssbo_id);
 }
 
-void StorageBuffer::SetBufferBase(int base)
+void StorageBuffer::SetBufferBase(GLuint base)
 {
-
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, base, ssbo_id);
 	ssbo_base = base;
 }
 
