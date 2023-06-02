@@ -10,7 +10,6 @@ uniform sampler2D U_albedo;
 uniform sampler2D U_mrse;
 uniform sampler2D U_color;
 uniform sampler2D U_alpha;
-uniform sampler2D U_AO;
 uniform sampler2D LUT;
 
 // input
@@ -117,7 +116,9 @@ void main(){
 	vec3 Normal = Normal_AO.xyz;
 	vec3 Albedo = texture2D(U_albedo, screen_uv).rgb;
 
-	float AO = texture2D(U_AO, screen_uv).r;
+	float AO = Normal_AO.a;
+
+	//Albedo *= AO; 
 
 	vec3 CamRay = Pos - Cam_pos;
 	vec3 ReflectRay = reflect(normalize(CamRay), Normal);
@@ -179,12 +180,12 @@ void main(){
 
 	Output += vec4(Light_res, 0);
 	Output += vec4(IBL_res, 0);
-	Output *= Normal_AO.a;
+	Output *= AO;
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
 	//Output = texture2D(LUT, screen_uv);
-	Output = vec4(vec3(Normal_AO.a), 1);
+	//Output = vec4(vec3(Normal_AO.a), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

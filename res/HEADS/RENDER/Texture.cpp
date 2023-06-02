@@ -271,7 +271,6 @@ void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRI
 
 	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
 
-	glBindImageTexture(slot, tex_ID, 0, is_array, 0, GL_READ_ONLY, layout);
 	glBindImageTexture(slot, 0, 0, is_array, 0, GL_READ_ONLY, layout);
 }
 

@@ -39,13 +39,14 @@ void main(){
 	vec3 pos = imageLoad(U_pos, uv).rgb;
 	vec3 normal = imageLoad(U_normal, uv).rgb;
 	ivec3 uv_n = ivec3(uv % noise_size, noise_level);
-	vec3 rand = vec3(imageLoad(Noise, uv_n).rg + vec2(noise_level*0.5-1.5), noise_level);
+
+	vec4 LIGHT_AO = imageLoad(U_AO, uv);
+
+	vec3 rand = vec3(imageLoad(Noise, uv_n).rg + vec2(noise_level*0.5-1.5), LIGHT_AO.r);
 
 	float depth = distance(pos, Cam_pos);
 	vec4 pos_n = vec4(pos, depth);
 	imageStore(U_pos, uv, pos_n);
-
-	vec4 LIGHT_AO = imageLoad(U_AO, uv);
 
 	float alpha = imageLoad(U_alpha, uv).r;
 	if(alpha < 0.5){
@@ -68,17 +69,17 @@ void main(){
 	{
 		// get sample position
 		//TBN = transpose(TBN);
-		vec3 offset = TBN * kernel[i] * radius;
+		vec3 offset = TBN * kernel[i] * radius * length(kernel[i]);
 		vec3 sample_pos = pos + offset; // from tangent to view-space
 		vec4 screen_pos = Proj_Trans * vec4(sample_pos, 1);
 		vec2 frag_pos = screen_pos.xy / screen_pos.w / 2 + 0.5;
 		ivec2 uv_f = ivec2(apply(frag_pos) * imageSize(U_pos));
 		uv_f = uv_f, ivec2(0), imageSize(U_pos);
 
-		float depth_f = distance(imageLoad(U_pos, uv_f).xyz, Cam_pos);
+		float delta_depth = distance(imageLoad(U_pos, uv_f).xyz, Cam_pos) - distance(sample_pos, Cam_pos);
 
-		float ao = depth_f <= distance(sample_pos, Cam_pos) ? 0 : 1;
-		ao *= smoothstep(0, 1, radius/length(offset));
+		float ao = delta_depth <= 0 ? smoothstep(1, 0, abs(radius/delta_depth)) : 1;
+		//ao *= ao;
 
 		AO += ao;
 	}  
