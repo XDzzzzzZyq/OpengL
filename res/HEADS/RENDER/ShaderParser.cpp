@@ -128,17 +128,19 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("struct") != std::string::npos) {
 			// [Sturct]
-			std::string name = Line.substr(7, Line.size() - 9);
+			std::string name = Line.substr(7, Line.size() - 8);
 			ShaderStruct::ADD_TYPE(name);
 			do {
 				getline(_stream, Line);
 				//shaders[type] << Line << "\n";
 				cache += Line + "\n";
 
+				if(Line.find("//") != std::string::npos || Line=="")
+					continue;
+
 				std::istringstream str(Line);
 				std::string word;
 				str >> word;
-
 				if (word != "};") {
 					ParaType paratype = ShaderStruct::ParseType(word);
 					str >> word;
@@ -256,6 +258,28 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 			shader_list[type] += code_block;
 
 			code_block = "";
+			if (shader_struct_list[type].pass_list.size()) {
+				code_block += "// [RENDER_BUFFER]\n";
+				for (const auto& i : shader_struct_list[type].pass_list)
+					code_block += "layout(location = " + std::to_string(std::get<0>(i)) + ") out " + ShaderStruct::ParseType(std::get<2>(i))/* + " Ch_"*/ + " " + std::get<1>(i) + ";\n";
+				code_block += "\n";
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
+			if (shader_struct_list[type].struct_def_list.size()) {
+				code_block += "// [STRUCTURE_DEFINE]\n";
+				for (const auto& i : shader_struct_list[type].struct_def_list) {
+					code_block += "struct " + std::get<1>(i) + "{\n";
+					for (const auto& j : std::get<2>(i)) {
+						code_block += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+					}
+					code_block += "};\n\n";
+				}
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
 			if (shader_struct_list[type].SB_list.size()) {
 				code_block += "// [STORAGE_BUFFER]\n";
 				for (const auto& i : shader_struct_list[type].SB_list) {
@@ -265,15 +289,6 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 					}
 					code_block += "};\n";
 				}
-				code_block += "\n";
-			}
-			shader_list[type] += code_block;
-
-			code_block = "";
-			if (shader_struct_list[type].pass_list.size()) {
-				code_block += "// [RENDER_BUFFER]\n";
-				for (const auto& i : shader_struct_list[type].pass_list)
-					code_block += "layout(location = " + std::to_string(std::get<0>(i)) + ") out " + ShaderStruct::ParseType(std::get<2>(i))/* + " Ch_"*/ + " " + std::get<1>(i) + ";\n";
 				code_block += "\n";
 			}
 			shader_list[type] += code_block;
@@ -302,19 +317,6 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 				for (const auto& i : shader_struct_list[type].output_list)
 					code_block += "out " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
 				code_block += "\n";
-			}
-			shader_list[type] += code_block;
-
-			code_block = "";
-			if (shader_struct_list[type].struct_def_list.size()) {
-				code_block += "// [STRUCTURE_DEFINE]\n";
-				for (const auto& i : shader_struct_list[type].struct_def_list) {
-					code_block += "struct " + std::get<1>(i) + "{\n";
-					for (const auto& j : std::get<2>(i)) {
-						code_block += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
-					}
-					code_block += "};\n\n";
-				}
 			}
 			shader_list[type] += code_block;
 
