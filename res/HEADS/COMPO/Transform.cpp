@@ -10,32 +10,36 @@ Transform3D::~Transform3D()
 
 }
 
-void Transform3D::SetPos(const glm::vec3& pos)
+bool Transform3D::SetPos(const glm::vec3& pos)
 {
-	if (o_position == pos) return;
+	if (o_position == pos) return false;
 
 	is_TransF_changed = true;
 	o_position = pos;
 
+	return true;
 }
 
-void Transform3D::SetScale(const glm::vec3& scale)
+bool Transform3D::SetScale(const glm::vec3& scale)
 {
-	if (o_scale == scale) return;
+	if (o_scale == scale) return false;
 
 	is_TransF_changed = true;
 	o_scale = scale;
-
+	
+	return true;
 }
 
-void Transform3D::SetRot(const glm::vec3& rot)
+bool Transform3D::SetRot(const glm::vec3& rot)
 {
-	if (o_rot == rot) return;
+	if (o_rot == rot) return false;
 
 	is_TransF_changed = true;
 	is_rot_changed = true;
 	o_rot = rot;
 	rotQua = glm::qua(glm::radians(o_rot));
+
+	return true;
 }
 
 void Transform3D::Trans(const glm::mat4& _trans)
@@ -196,28 +200,31 @@ Transform2D::~Transform2D()
 
 }
 
-void Transform2D::SetPos(const glm::vec2& pos)
+bool Transform2D::SetPos(const glm::vec2& pos)
 {
-	if (pos == o_position) return;
+	if (pos == o_position) return false;
 	o_position = pos;
-	is_invTransF_changed = is_TransF_changed = true;
+	is_TransF_changed = true;
 
+	return true;
 }
 
-void Transform2D::SetScale(const glm::vec2& scale)
+bool Transform2D::SetScale(const glm::vec2& scale)
 {
-	if (scale == o_scale) return;
+	if (scale == o_scale) return false;
 	o_scale = scale;
-	is_invTransF_changed = is_TransF_changed = true;
+	is_TransF_changed = true;
 
+	return true;
 }
 
-void Transform2D::SetRot(float rot)
+bool Transform2D::SetRot(float rot)
 {
-	if (rot == o_rot) return;
+	if (rot == o_rot) return false;
 	o_rot = rot;
-	is_invTransF_changed = is_TransF_changed = true;
+	is_TransF_changed = true;
 
+	return true;
 }
 
 void Transform2D::Trans(const glm::mat3& _trans)
@@ -239,16 +246,16 @@ void Transform2D::Spin(float angle)
 
 void Transform2D::Zoom(const glm::vec2& scale)
 {
-	if (scale != glm::vec2(0, 0) && scale != glm::vec2(1, 1)) {
+	if (scale != glm::vec2(0) && scale != glm::vec2(1))
 		SetScale(o_scale * scale);
-	}
+
 }
 
 void Transform2D::Zoom(float scale)
 {
-	if (scale != 1 && scale != 0) {
+	if (scale != 1 && scale != 0)
 		SetScale(o_scale * scale);
-	}
+
 }
 
 void Transform2D::LookAt(const glm::vec2& tar)

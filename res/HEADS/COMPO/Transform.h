@@ -58,9 +58,9 @@ public:
 	glm::mat4 o_rotMat{ glm::mat4_cast(rotQua) };
 
 public:
-	void SetPos(const glm::vec3& pos);
-	void SetScale(const glm::vec3& scale);
-	void SetRot(const glm::vec3& rot);
+	bool SetPos(const glm::vec3& pos);
+	bool SetScale(const glm::vec3& scale);
+	bool SetRot(const glm::vec3& rot);
 
 	void Trans(const glm::mat4& _trans);
 	void Move(const glm::vec3& d_pos);
@@ -72,11 +72,11 @@ public:
 	void SetParent(Transform3D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
 public:
-	[[nodiscard("You can receive the state")]] bool ApplyTransform() override;
-	[[nodiscard("You can receive the state")]] bool ApplyAllTransform() override;
-	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
+	[[nodiscard("You could receive the state")]] bool ApplyTransform() override;
+	[[nodiscard("You could receive the state")]] bool ApplyAllTransform() override;
+	[[nodiscard("You could receive the state")]] bool GetInvTransform() const override;
 
-	[[nodiscard("You can receive the state")]] int Debug() const override {
+	[[nodiscard("You could receive the state")]] int Debug() const override {
 #ifdef _DEBUG
 		std::cout << o_rot;
 		std::cout << o_dir_up;
@@ -123,9 +123,9 @@ public:
 	mutable float o_rot{ 0.0f };
 
 public:
-	void SetPos(const glm::vec2& pos);
-	void SetScale(const glm::vec2& scale);
-	void SetRot(float rot);
+	bool SetPos(const glm::vec2& pos);
+	bool SetScale(const glm::vec2& scale);
+	bool SetRot(float rot);
 
 	void Trans(const glm::mat3& _trans);
 	void Move(const glm::vec2& d_pos);
