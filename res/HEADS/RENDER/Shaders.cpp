@@ -181,6 +181,34 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const int* va0, A
 	}
 }
 
+void Shaders::SetValue(const std::string& name, GLsizei count, const GLuint* va0, ArrayType TYPE)
+{
+	int id = getVarID(name.c_str());
+	switch (TYPE)
+	{
+	case NULL_ARRAY:
+
+		break;
+	case VEC1_ARRAY:
+		glUniform1uiv(id, count, va0);
+		break;
+	case VEC2_ARRAY:
+		glUniform2uiv(id, count * 2, va0);
+		break;
+	case VEC3_ARRAY:
+		glUniform3uiv(id, count * 3, va0);
+		break;
+	case VEC4_ARRAY:
+		glUniform4uiv(id, count * 4, va0);
+		break;
+	case MAT4_ARRAY:
+		glUniform4uiv(id, count * 4, va0);
+		break;
+	default:
+		break;
+	}
+}
+
 const char* Shaders::GetShaderTypeName(GLuint _Type, bool _using_filename)
 {
 	switch (_Type)
