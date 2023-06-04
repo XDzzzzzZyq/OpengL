@@ -2,27 +2,6 @@
 
 layout(location = 0) out vec4 Output;
 
-// passes
-uniform sampler2D U_emission;
-uniform sampler2D U_pos;
-uniform sampler2D U_normal;
-uniform sampler2D U_albedo;
-uniform sampler2D U_mrse;
-uniform sampler2D U_color;
-uniform sampler2D U_alpha;
-uniform sampler2D LUT;
-
-// input
-uniform vec3 Cam_pos;
-uniform sampler2D Envir_Texture_diff;
-uniform sampler2D Envir_Texture_spec;
-
-uniform float gamma;
-
-in vec2 screen_uv;
-
-const float PI = 3.1415926;
-
 struct PointLight{
 	vec3 color;
 	vec3 pos;
@@ -65,6 +44,33 @@ layout(std430, binding = 1) buffer sun_array {
 layout(std430, binding = 2) buffer spot_array {
 	SpotLight  spot_lights[];
 };
+layout(std140) uniform SceneInfo {
+	int point_count;
+	int sun_count;
+	int spot_count;
+} scene_info;
+
+// passes
+uniform sampler2D U_emission;
+uniform sampler2D U_pos;
+uniform sampler2D U_normal;
+uniform sampler2D U_albedo;
+uniform sampler2D U_mrse;
+uniform sampler2D U_color;
+uniform sampler2D U_alpha;
+
+uniform sampler2D Envir_Texture_diff;
+uniform sampler2D Envir_Texture_spec;
+uniform sampler2D LUT;
+
+// input
+uniform vec3 Cam_pos;
+
+uniform float gamma;
+
+in vec2 screen_uv;
+
+const float PI = 3.1415926;
 
 float ACESFilm(float x)
 {

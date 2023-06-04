@@ -5,7 +5,9 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Spirit.h"
+
 #include "StorageBuffer.h"
+#include "UniformBuffer.h"
 
 enum LightType
 {
@@ -29,7 +31,7 @@ public:
 
 public:
 
-	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{1, 1, 1});
+	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
 	std::string ParseLightName() const;
 
 public:
@@ -51,10 +53,9 @@ public:
 	{
 		// in GLSL (shader), the size of vec3 equals to vec4 because of alignment
 		glm::vec3 color{ 1 }; float offset_0;
-		glm::vec3 pos  { 0 }; float offset_1;
-		float strength { 1 };
-		int use_shadow { 1 };      // bool -> int
-		GLuint U_shadow{ 0 };
+		glm::vec3 pos{ 0 }; float offset_1;
+		float strength{ 1 };
+		int use_shadow{ 1 };      // bool -> int
 	};
 
 	struct PointStruct : public BasicStruct
@@ -76,14 +77,22 @@ public:
 	};
 
 	static const GLuint Sizeof_Point = sizeof(PointStruct);
-	static const GLuint Sizeof_Sun	 = sizeof(SunStruct);
+	static const GLuint Sizeof_Sun   = sizeof(SunStruct);
 	static const GLuint Sizeof_Spot  = sizeof(SpotStruct);
+
+	struct SceneInfo {
+		int point_count{ 0 };
+		int sun_count{ 0 };
+		int spot_count{ 0 };
+		GLuint shadow_maps[32];
+	};
 
 public:
 	std::vector<PointStruct> point;
 	std::vector<SunStruct> sun;
 	std::vector<SpotStruct> spot;
 	StorageBuffer point_buffer, sun_buffer, spot_buffer;
+	UniformBuffer<SceneInfo> info;
 
 public:
 	LightFloatArray() {};
@@ -91,4 +100,6 @@ public:
 	void Bind() const;
 
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
+	SceneInfo GetSceneInfo() const;
+	GLsizei GetTotalCount() const;
 };

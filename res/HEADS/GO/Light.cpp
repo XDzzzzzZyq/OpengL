@@ -64,6 +64,7 @@ void LightFloatArray::Init()
 	point_buffer = StorageBuffer(CUSTOM_LIST, 0);
 	sun_buffer   = StorageBuffer(CUSTOM_LIST, 1);
 	spot_buffer  = StorageBuffer(CUSTOM_LIST, 2);
+	info = UniformBuffer<SceneInfo>(3);
 }
 
 void LightFloatArray::Bind() const
@@ -71,6 +72,7 @@ void LightFloatArray::Bind() const
 	point_buffer.BindBufferBase();
 	sun_buffer.BindBufferBase();
 	spot_buffer.BindBufferBase();
+	info.Bind(0);
 }
 
 void LightFloatArray::ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list)
@@ -92,7 +94,6 @@ void LightFloatArray::ParseLightData(const std::unordered_map<int, std::shared_p
 				light.second->o_position, 0,
 				light.second->light_power,
 				(int)light.second->use_shadow,
-				0U,
 
 				light.second->spot_radius
 				});
@@ -103,7 +104,6 @@ void LightFloatArray::ParseLightData(const std::unordered_map<int, std::shared_p
 				light.second->o_position, 0,
 				light.second->light_power,
 				(int)light.second->use_shadow,
-				0U,
 
 				glm::vec4(light.second->o_rot, 0)
 				});
@@ -114,7 +114,6 @@ void LightFloatArray::ParseLightData(const std::unordered_map<int, std::shared_p
 				light.second->o_position, 0,
 				light.second->light_power,
 				(int)light.second->use_shadow,
-				0U,
 
 				light.second->o_rot, 0,
 				light.second->spot_angle,
@@ -130,4 +129,26 @@ void LightFloatArray::ParseLightData(const std::unordered_map<int, std::shared_p
 	point_buffer.GenStorageBuffer(point);
 	sun_buffer.GenStorageBuffer(sun);
 	spot_buffer.GenStorageBuffer(spot);
+
+	info.Update(GetSceneInfo());
+}
+
+LightFloatArray::SceneInfo LightFloatArray::GetSceneInfo() const
+{
+	SceneInfo info{};
+
+	info.point_count = point.size();
+	info.sun_count = sun.size();
+	info.spot_count = spot.size();
+
+	LOOP(point.size() + sun.size() + spot.size()) {
+		info.shadow_maps[i] = 32 - i - 1;          // binding from 31 -> 0
+	}
+
+	return info;
+}
+
+GLsizei LightFloatArray::GetTotalCount() const
+{
+	return point.size() + sun.size() + spot.size();
 }

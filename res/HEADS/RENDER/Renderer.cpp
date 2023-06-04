@@ -352,8 +352,6 @@ void Renderer::Render(bool rend, bool buff) {
 		r_light_data.Bind();
 		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		if (is_light_changed)
-			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		r_render_result->BindFrameBuffer();
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
 
@@ -403,6 +401,7 @@ void Renderer::Reset()
 		if (selec_list.size())
 			selec_list.clear();
 	}
+	GetActiveCamera()->is_Uniform_changed = false;
 	GetActiveCamera()->is_invUniform_changed = false;
 	GetActiveCamera()->is_frustum_changed = false;
 	is_light_changed = false;
