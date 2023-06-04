@@ -37,8 +37,8 @@ private:
 public:
 	std::optional<RenderShader> pps_shader;
 	FrameBuffer pps_fb;
-	template<typename T>
-	void SetShaderValue(const std::string& _name, T _v);
+	template<typename... T>
+	void SetShaderValue(const std::string& _name, T ..._v);
 	void SetShaderValue(const std::string& _name, GLsizei _count, const float* va0, ArrayType _TYPE);
 	void AddBinding(std::string _pass_name, GLuint _slot);
 
@@ -49,11 +49,11 @@ public:
 	void RenderPPSSpr(Camera* cam);
 };
 
-template<typename T>
-void PostProcessing::SetShaderValue(const std::string& _name, T _v)
+template<typename... T>
+void PostProcessing::SetShaderValue(const std::string& _name, T ..._v)
 {
 	pps_shader->UseShader();
-	pps_shader->SetValue(_name, _v);
+	pps_shader->SetValue(_name, _v...);
 	pps_shader->UnuseShader();
 }
 
