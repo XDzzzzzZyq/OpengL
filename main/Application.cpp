@@ -90,12 +90,10 @@ int Application::Run()
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
-	pointLight1->GenFloatData();
 	renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-	pointLight2->GenFloatData();
 	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LINE----------------")
@@ -242,14 +240,10 @@ int Application::Run()
 
 		pointLight1->SetColor(LightColor);
 		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		pointLight1->light_power = blend * 50;
-		pointLight1->GenFloatData();
+		pointLight1->SetPower(blend * 50);
 
 		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
-		pointLight2->light_power = blend * 20;
-		pointLight2->GenFloatData();
-
-		renderer.is_light_changed = true;
+		pointLight2->SetPower(blend * 20);
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);

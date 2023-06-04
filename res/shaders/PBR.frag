@@ -23,6 +23,49 @@ in vec2 screen_uv;
 
 const float PI = 3.1415926;
 
+struct PointLight{
+	vec3 color;
+	vec3 pos;
+	float strength;
+	int use_shadow;
+	//samplerCube shadow_map;
+
+	float radius;
+};
+
+struct SunLight{
+	vec3 color;
+	vec3 pos;
+	float strength;
+	int use_shadow;
+	//samplerCube shadow_map;
+
+	vec3 dir;
+};
+
+struct SpotLight{
+	vec3 color;
+	vec3 pos;
+	float strength;
+	int use_shadow;
+	//samplerCube shadow_map;
+
+	vec3 dir;
+	float angle;
+	float ratio;
+	float fall_off;
+};
+
+layout(std430, binding = 0) buffer point_array {
+	PointLight point_lights[];
+};
+layout(std430, binding = 1) buffer sun_array {
+	SunLight   sun_lights[];
+};
+layout(std430, binding = 2) buffer spot_array {
+	SpotLight  spot_lights[];
+};
+
 float ACESFilm(float x)
 {
 	float a = 2.51f;
