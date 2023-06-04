@@ -8,7 +8,7 @@
 
 enum SSBType
 {
-	NONE_LIST, FLOAT_LIST, INT_LIST, VEC2_LIST, VEC3_LIST
+	NONE_LIST, FLOAT_LIST, INT_LIST, VEC2_LIST, VEC3_LIST, CUSTOM_LIST
 };
 
 class StorageBuffer  //shader storage buffer object SSBO
@@ -25,19 +25,50 @@ public:
 	~StorageBuffer();
 
 	void BindBuffer(GLuint _base = -1) const;
+	void BindBufferBase(GLuint _base = -1) const;
 	void UnbindBuffer() const;
 	void SetBufferBase(GLuint base);
+	GLuint GetID() const { return ssbo_id; }
+
+public:
 
 	template <typename T>
 	void GenStorageBuffer(const std::vector<T>& src);
-};
 
+	template <typename _Point, typename _Sun, typename _Spot>
+	void GenStorageBuffers(const std::vector<_Point>& _point, const std::vector<_Sun>& _sun, const std::vector<_Spot>& _spot);
+};
 
 template <typename T>
 void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
 {
+	if (list.size() == 0) return;
+
 	BindBuffer();
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, ssbo_id);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_DYNAMIC_COPY);
 	UnbindBuffer();
+}
+
+template <typename _Point, typename _Sun, typename _Spot>
+void StorageBuffer::GenStorageBuffers(const std::vector<_Point>& _point, const std::vector<_Sun>& _sun, const std::vector<_Spot>& _spot)
+{
+	BindBuffer();
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_id);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, _point.size()*sizeof(_Point) + _sun.size()*sizeof(_Sun) + _spot.size()*sizeof(_Spot), nullptr, GL_STATIC_DRAW);
+
+	void* bufferData = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
+	size_t offset = 0;
+	std::memcpy(static_cast<char*>(bufferData) + offset, _point.data(), _point.size() * sizeof(_Point));
+	offset += _point.size() * sizeof(_Point);
+	std::memcpy(static_cast<char*>(bufferData) + offset, _sun.data(), _sun.size() * sizeof(_Sun));
+	offset += _sun.size() * sizeof(_Sun);
+	std::memcpy(static_cast<char*>(bufferData) + offset, _spot.data(), _spot.size() * sizeof(_Spot));
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER); 
+
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo_id);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_id);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo_id);
+
 }
 
