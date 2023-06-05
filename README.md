@@ -65,7 +65,10 @@ Or, you can also open `CMakeLists.txt` as a CMake project in Visual Studio 2022 
 ### Features
 
  - [x] multi-passes buffering
-	- [ ] texture -> renderbuffer?
+ - [x] Multi-passes processing
+	- [x] FXAA
+	- [x] SSAO
+	- [x] Simple Convolution
  - [x] Multi-passes composition
 	- [ ] PBR deferred rendering
  - [ ] editing elements
@@ -82,5 +85,5 @@ Or, you can also open `CMakeLists.txt` as a CMake project in Visual Studio 2022 
 
 ### Advanced
 
- - [ ] Dynamic passes binding
+ - [x] Dynamic passes binding
  - [ ] Dynamic shader value<->texture altering

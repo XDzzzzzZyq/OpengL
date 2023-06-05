@@ -31,8 +31,11 @@ private:
 
 	enum _BuildinBuffLoc
 	{
-		_RASTER
+		_RASTER, _AO_ELS
 	};
+
+public:
+	int r_frame_num = 0;
 
 private:
 	std::optional<FrameBuffer> r_render_result;
@@ -48,6 +51,7 @@ public:
 	bool r_using_fxaa = true;
 
 	float r_gamma = 1.0f;
+	size_t r_ao_ksize = 16;
 public:
 	bool is_light_changed = false;
 

@@ -53,7 +53,9 @@ public:
 
 	void BindFrameBufferTex(int count = 0, ...) const;
 	void BindFrameBufferTex(const std::vector<FBType>& _tars) const;
+	void BindFrameBufferTex(FBType tar, GLuint slot) const;
 	void BindFrameBufferTexR(FBType tar, GLuint slot) const;
+	void UnbindFrameBufferTexR(FBType tar, GLuint slot) const;
 	void UnbindFrameBufferTex() const;
 
 	void Del() const;

@@ -19,14 +19,14 @@ private:
 	VertexBuffer dLine_vertBuffer;
 	IndexBuffer dLine_index;
 	VertexArray dLine_vertArry;
-	std::vector<float> dLine_pos_list;
+	std::vector<glm::vec3> dLine_pos_list;
 
 	int vert_count = 2;
 
 	float dLine_width = 2;
 	float dLine_opacity = 1.0f;
 public:
-	bool using_stipple = false, using_smooth = true, multiLine = false;
+	bool using_stipple = false, using_smooth = true, is_multi_lines = false;
 	glm::vec3 dLine_color = glm::vec3{ 1.0f,1.0f,1.0f };
 
 	mutable std::optional<RenderShader> dLine_shader;

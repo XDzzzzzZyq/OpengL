@@ -379,6 +379,7 @@ void ComputeShader::RunComputeShader(const ImVec2& _size)
 {
 	UseShader();
 	RunComputeShader(_size[0], _size[1], 1);
+	UnuseShader();
 }
 
 GLuint ComputeShader::getShaderID(ShaderType type) const

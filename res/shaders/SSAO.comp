@@ -1,26 +1,104 @@
 #version 460 core
 
-layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
-layout(rgba16f, binding = 0) uniform image2D U_pos;
-layout(rgba16f, binding = 1) uniform image2D U_normal;
-layout(rgba16f, binding = 2) uniform image2D U_AO;
-layout(rgba16f, binding = 3) uniform image2D Noise;
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+layout(rgba16f, binding = 3) uniform image2D U_pos;
+layout(rgba16f, binding = 4) uniform image2D U_normal;
+layout(rgba8  , binding = 5) uniform image2D U_alpha;
+layout(rgba16f, binding = 6) uniform image2D U_AO;
+layout(rgba16f, binding = 7) uniform image2DArray Noise;
 
 uniform vec3 Cam_pos;
-uniform mat4 Cam_Trans;
+uniform mat4 Proj_Trans;
+
 uniform bool incre_average;
+uniform int kernel_length;
+uniform vec3 kernel[32];
+
+uniform int noise_size;
+uniform int noise_level;
+
+uniform float update_rate;
+
+const float radius = 1.0f;
+
+float re(float inp){
+	inp = inp>0 ? inp :  -inp;
+	inp = inp<1 ? inp : 2-inp;
+	return clamp(inp, 0, 1);
+}
+
+vec2 apply(vec2 inp){
+	return vec2(re(inp.x), re(inp.y));
+}
 
 void main(){
 
+	float AO = 0;
+
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec3 pos = imageLoad(U_pos, uv).rgb;
-	
-	float depth = distance(pos, Cam_pos)/40.0;
+	vec3 normal = imageLoad(U_normal, uv).rgb;
+	ivec3 uv_n = ivec3(uv % noise_size, noise_level);
 
-	ivec2 uv_r = uv%4;
-	depth = imageLoad(Noise, uv_r).r;
-	//depth = Cam_pos.z/10;
+	vec4 LIGHT_AO = imageLoad(U_AO, uv);
+
+	vec3 rand = vec3(imageLoad(Noise, uv_n).rg + vec2(noise_level*0.5-1.5), LIGHT_AO.r);
+
+	float depth = distance(pos, Cam_pos);
 	vec4 pos_n = vec4(pos, depth);
-
 	imageStore(U_pos, uv, pos_n);
+
+	float alpha = imageLoad(U_alpha, uv).r;
+	if(alpha < 0.5){
+		AO = 1;
+
+		AO = LIGHT_AO.r + update_rate * (AO - LIGHT_AO.r);
+
+		LIGHT_AO.r = AO;
+		imageStore(U_AO, uv, LIGHT_AO);
+		imageStore(U_normal, uv, vec4(normal, AO));
+
+		return;
+	}
+
+	vec3 tangent = cross(normal, normalize(rand));
+	vec3 bitangent = cross(normal, tangent);
+	mat3 TBN = mat3(tangent, bitangent, normal);  
+
+	for(int i = 0; i < kernel_length; i++)
+	{
+		// get sample position
+		//TBN = transpose(TBN);
+		vec3 offset = TBN * kernel[i] * radius * length(kernel[i]);
+		vec3 sample_pos = pos + offset; // from tangent to view-space
+		vec4 screen_pos = Proj_Trans * vec4(sample_pos, 1);
+		vec2 frag_pos = screen_pos.xy / screen_pos.w / 2 + 0.5;
+		ivec2 uv_f = ivec2(apply(frag_pos) * imageSize(U_pos));
+		uv_f = uv_f, ivec2(0), imageSize(U_pos);
+
+		float delta_depth = distance(imageLoad(U_pos, uv_f).xyz, Cam_pos) - distance(sample_pos, Cam_pos);
+
+		float ao = delta_depth <= 0 ? smoothstep(1, 0, abs(radius/delta_depth)) : 1;
+		//ao *= ao;
+
+		AO += ao;
+	}  
+
+	AO /= kernel_length;
+
+
+	// blur
+
+	AO = mix(AO, imageLoad(U_AO, uv+ivec2(0, 1)).r, 0.2);
+	AO = mix(AO, imageLoad(U_AO, uv+ivec2(1, 0)).r, 0.2);
+	
+	// increament average
+
+	AO = LIGHT_AO.r + update_rate * (AO - LIGHT_AO.r);
+
+	LIGHT_AO.r = AO;
+	imageStore(U_AO, uv, LIGHT_AO);
+	imageStore(U_normal, uv, vec4(normal, AO));
+	//depth = imageLoad(Noise, uv % noise_size).r;
+	//depth = Cam_pos.z/10;
 }
