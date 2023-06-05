@@ -101,12 +101,10 @@ vec3 Vec3Bisector(vec3 a, vec3 b) {
 	return normalize(normalize(a) + normalize(b));
 }
 
-const vec2 invAtan = vec2(0.15915494, 0.31830988);
 vec2 genHdrUV(vec3 dir) {
-	vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
-	uv *= invAtan;
+	vec2 uv = vec2(atan(dir.y, dir.x), asin(dir.z));
+	uv *= -vec2(0.15915494, 0.31830988);
 	uv += 0.5;
-	uv = -uv + vec2(0.5, 1);
 	return uv;
 } 
 
@@ -218,7 +216,7 @@ void main(){
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
 
-		vec3 L = Pos - light.pos;
+		vec3 L = light.pos - Pos;
 		vec3 H = Vec3Bisector(L, -CamRay);
 		float NdotL = max(dot(Normal, L), 0);
 		float HdotV = max(dot(-CamRay, L), 0);
@@ -227,7 +225,7 @@ void main(){
 		float G = GeometrySmith(Normal, -CamRay, L, Roughness);      
 		
 		float dist = length(L);
-		vec3 Radiance = light.color / dist / dist * NdotL;
+		vec3 Radiance = light.strength * light.color / dist / dist * NdotL;
 		
 		vec3 Fd = fresnelSchlick(HdotV, F0);   
 		
