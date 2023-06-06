@@ -1,12 +1,13 @@
 #pragma once
+
+#include "support.h"
+
 #include "GameObject.h"
 #include "Transform.h"
 #include "Spirit.h"
 
-
-#include "glm/glm.hpp"
-#include "ImGui/imgui.h"
-#include "support.h"
+#include "StorageBuffer.h"
+#include "UniformBuffer.h"
 
 enum LightType
 {
@@ -16,82 +17,89 @@ enum LightType
 class Light : public GameObject, public Transform3D
 {
 public:
+	bool use_shadow{ true };
+
+	LightType light_type{ LightType::NONELIGHT };
+	float light_power{ 1 };
+	glm::vec3 light_color{ 1. }; //3f
+
+	//SPOTLIGHT
+	float spot_angle{ 30 };
+	float spot_radius{ 5 };
 
 	Spirit light_spirit;
 
-	bool is_shadow = true;
+public:
 
-	int light_type = LightType::NONELIGHT;
-	float light_power;
-	glm::vec3 light_color = glm::vec3(1.0f); //3f
-
-	//SPOTLIGHT
-	float spot_angle;
-	float spot_radius;
-
-	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{1, 1, 1});
-	void SetColor(ImVec4 inp) { light_color = ImVec4_vec3(inp); }
-	void EnableShadow(bool state) { is_shadow = state; }
-
+	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
 	std::string ParseLightName() const;
-	void RenderLightSpr(Camera* cam);
 
-	mutable std::vector<float> light_floatData;
-	void GenFloatData() const; // 5f + 6f(trans) +2f(spot)
+public:
+	bool is_light_changed{ false };
+	void SetColor(ImVec4 _col);
+	void SetPower(float _power);
+	void SetShadow(bool _state);
+
+public:
+	void RenderLightSpr(Camera* cam);
 };
 
+
 struct LightFloatArray {
+
 public:
-	std::vector<float> point, sun, spot;
-	int point_count=0, sun_count=0, spot_count=0;
-	LightFloatArray() {
-		point_count = 0;
-		sun_count = 0;
-		spot_count = 0;
-	}
 
-	LightFloatArray(const std::unordered_map<int, Light*>& light_list) {
-		ParseLightData(light_list);
-	}
+	struct BasicStruct
+	{
+		// in GLSL (shader), the size of vec3 equals to vec4 because of alignment
+		glm::vec3 color{ 1 }; float offset_0;
+		glm::vec3 pos{ 0 }; float offset_1;
+		float strength{ 1 };
+		int use_shadow{ 1 };      // bool -> int
+	};
 
-	void ParseLightData(const std::unordered_map<int, Light*>& light_list) {
-		for (const std::pair<int, Light*>& ele : light_list)
-		{
-			//ele.second->GenFloatData(); //only happened when paras are changed
-			if (ele.second->light_type == 1)
-			{
-				if (point_count >= 5)
-					continue;
-				point_count++;
-				point.reserve(point.size() + 8);
-				LOOP(8) {
+	struct PointStruct : public BasicStruct
+	{
+		float radius{ 5 };
+	};
 
-					point.push_back(ele.second->light_floatData[i]);
-				}
-			}
-			else if (ele.second->light_type == 2)
-			{
-				if (sun_count >= 2)
-					continue;
-				sun_count++;
-				sun.reserve(sun.size() + 11);
-				LOOP(11) {
-					sun.push_back(ele.second->light_floatData[i]);
-				}
-			}
-			else if (ele.second->light_type == 3)
-			{
-				if (spot_count >= 3)
-					continue;
-				spot_count++;
-				spot.reserve(spot.size() + 13);
-				LOOP(13) {
-					spot.push_back(ele.second->light_floatData[i]);
-				}
-			}
-		}
-		point.insert(point.begin(), point_count);
-		sun.insert(sun.begin(), sun_count);
-		spot.insert(spot.begin(), spot_count);
-	}
+	struct SunStruct : public BasicStruct
+	{
+		glm::vec3 dir{ 1, 0, 0 }; float offset_2;
+	};
+
+	struct SpotStruct : public BasicStruct
+	{
+		glm::vec3 dir{ 1, 0, 0 }; float offset_0;
+		float angle{ 30 };
+		float ratio{ .1 };
+		float fall_off{ .5 };
+	};
+
+	static const GLuint Sizeof_Point = sizeof(PointStruct);
+	static const GLuint Sizeof_Sun   = sizeof(SunStruct);
+	static const GLuint Sizeof_Spot  = sizeof(SpotStruct);
+
+	struct SceneInfo {
+		int point_count{ 0 };
+		int sun_count{ 0 };
+		int spot_count{ 0 };
+		GLuint shadow_maps[32];
+	};
+
+public:
+	std::vector<PointStruct> point;
+	std::vector<SunStruct> sun;
+	std::vector<SpotStruct> spot;
+	StorageBuffer point_buffer, sun_buffer, spot_buffer;
+	UniformBuffer<SceneInfo> info;
+
+public:
+	LightFloatArray() {};
+	void Init();
+	void Bind() const;
+
+	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
+	SceneInfo GetSceneInfo() const;
+	GLsizei GetTotalCount() const;
 };

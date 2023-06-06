@@ -45,7 +45,7 @@ Mesh::~Mesh()
 	DeleteObj();
 }
 
-void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_list)
+void Mesh::RenderObj(Camera* cam)
 {
 	
 	o_vertArry.Bind();
@@ -71,16 +71,6 @@ void Mesh::RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_l
 		o_shader->SetValue("Scene_data",8 , cam->cam_floatData.data(), VEC1_ARRAY);
 
 	o_shader->SetValue("is_selected", (int)is_selected);
-
-	if (!light_list.empty() || o_shader->is_shader_changed)
-	{
-		LightFloatArray lightdata(light_list);
-		o_shader->SetValue("L_point", lightdata.point_count * (5 + 3) + 1, lightdata.point.data(), VEC1_ARRAY);
-		//o_shader->SetValue("L_sun", lightdata.sun_count * (5 + 6) + 1, lightdata.sun.data());
-		//o_shader->SetValue("L_spot", lightdata.spot_count * (5 + 6 + 2) + 1, lightdata.spot.data());
-	}
-
-	//light settings
 
 	glDrawElements(GL_TRIANGLES, o_index.count(), GL_UNSIGNED_INT, nullptr);
 

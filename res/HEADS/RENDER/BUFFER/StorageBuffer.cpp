@@ -22,19 +22,21 @@ StorageBuffer::~StorageBuffer()
 
 void StorageBuffer::BindBuffer(GLuint _base) const
 {
-	if (_base == -1)
-		_base = ssbo_base;
-
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, _base, ssbo_id);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_id);
 }
 
 void StorageBuffer::UnbindBuffer() const
 {
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0    , ssbo_id);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
 void StorageBuffer::SetBufferBase(GLuint base)
 {
 	ssbo_base = base;
+}
+
+void StorageBuffer::BindBufferBase(GLuint _base /*= -1*/) const
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, ssbo_id);
 }
 

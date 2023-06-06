@@ -51,7 +51,7 @@ public:
 	bool r_using_fxaa = true;
 
 	float r_gamma = 1.0f;
-	size_t r_ao_ksize = 16;
+	int r_ao_ksize = 16;
 public:
 	bool is_light_changed = false;
 
@@ -65,6 +65,8 @@ public:
 	std::unordered_map<int, std::shared_ptr<DebugPoints>>	dPoints_list;
 	std::vector		  <std::shared_ptr<PostProcessing>>			pps_list;
 
+	LightFloatArray r_light_data;
+
 public:
 	std::string GetObjectName(int ID);
 
@@ -72,7 +74,7 @@ public:
 
 public:
 	std::vector<FrameBuffer> r_buffer_list;
-	void AddFrameBuffer();
+	void InitFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);
 	void FrameBufferResize(int slot, const ImVec2& size);

@@ -2,6 +2,54 @@
 
 layout(location = 0) out vec4 Output;
 
+struct PointLight{
+	vec3 color;
+	vec3 pos;
+	float strength;
+	int use_shadow;
+	//samplerCube shadow_map;
+
+	float radius;
+};
+
+struct SunLight{
+	vec3 color;
+	vec3 pos;
+	float strength;
+	int use_shadow;
+	//samplerCube shadow_map;
+
+	vec3 dir;
+};
+
+struct SpotLight{
+	vec3 color;
+	vec3 pos;
+	float strength;
+	int use_shadow;
+	//samplerCube shadow_map;
+
+	vec3 dir;
+	float angle;
+	float ratio;
+	float fall_off;
+};
+
+layout(std430, binding = 0) buffer point_array {
+	PointLight point_lights[];
+};
+layout(std430, binding = 1) buffer sun_array {
+	SunLight   sun_lights[];
+};
+layout(std430, binding = 2) buffer spot_array {
+	SpotLight  spot_lights[];
+};
+layout(std140) uniform SceneInfo {
+	int point_count;
+	int sun_count;
+	int spot_count;
+} scene_info;
+
 // passes
 uniform sampler2D U_emission;
 uniform sampler2D U_pos;
@@ -10,12 +58,13 @@ uniform sampler2D U_albedo;
 uniform sampler2D U_mrse;
 uniform sampler2D U_color;
 uniform sampler2D U_alpha;
+
+uniform sampler2D Envir_Texture_diff;
+uniform sampler2D Envir_Texture_spec;
 uniform sampler2D LUT;
 
 // input
 uniform vec3 Cam_pos;
-uniform sampler2D Envir_Texture_diff;
-uniform sampler2D Envir_Texture_spec;
 
 uniform float gamma;
 
@@ -75,6 +124,14 @@ float k_IBL(float r){
 	return r*r/2;
 }
 
+float fresnel(float Cos, float F0){
+	return mix(exp2((-5.55437*Cos-6.98314)*Cos), 1.0, F0);
+}
+
+vec3 fresnelSchlick(float Cos, vec3 F0){
+	return vec3(fresnel(Cos,F0.x), fresnel(Cos,F0.y), fresnel(Cos,F0.z));
+}
+
 float DistributionGGX(vec3 N, vec3 H, float a)
 {
     float a2     = a*a;
@@ -120,13 +177,13 @@ void main(){
 
 	//Albedo *= AO; 
 
-	vec3 CamRay = Pos - Cam_pos;
-	vec3 ReflectRay = reflect(normalize(CamRay), Normal);
-	float Cos = -dot(Normal, normalize(CamRay));
+	vec3 CamRay = normalize(Pos - Cam_pos);
+	vec3 ReflectRay = reflect(CamRay, Normal);
+	float NdotV = max(dot(Normal, -CamRay), 0);
 
 	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
-	float Metalness = MRSE.r;
-	float Roughness = MRSE.g;
+	float Metalness = clamp(MRSE.r, 0.01, 0.99);
+	float Roughness = clamp(MRSE.g, 0.01, 0.99);
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
@@ -135,9 +192,9 @@ void main(){
 	float Alpha = texture2D(U_alpha, screen_uv).r;
 	float Select = texture2D(U_alpha, screen_uv).g;
 
-	float F0 = mix(0.1, 0.95, Metalness);
-	float Fresnel = mix(F0, 1.0, exp2((-5.55437*Cos-6.98314)*Cos));
-	float ks = Fresnel;
+	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
+	vec3 Fresnel = fresnelSchlick(NdotV, F0);
+	vec3 ks = Fresnel;
 
 	//vec4 uvcolor = texture(U_Texture, uv);
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
@@ -158,10 +215,45 @@ void main(){
 
 	vec3 Light_res = vec3(0);
 
+	for(uint i = 0; i<scene_info.point_count; i++){
+		PointLight light = point_lights[i];
+
+		vec3 L = Pos - light.pos;
+		vec3 H = Vec3Bisector(L, -CamRay);
+		float NdotL = max(dot(Normal, L), 0);
+		float HdotV = max(dot(-CamRay, L), 0);
+		
+		float NDF = DistributionGGX(Normal, H, Roughness);        
+		float G = GeometrySmith(Normal, -CamRay, L, Roughness);      
+		
+		float dist = length(L);
+		vec3 Radiance = light.color / dist / dist * NdotL;
+		
+		vec3 Fd = fresnelSchlick(HdotV, F0);   
+		
+		vec3 kSd = Fd;
+		vec3 kDd = vec3(1.0) - kSd;
+		kDd *= 1.0 - Metalness;
+		
+		vec3 numerator    = NDF * G * Fd;
+		float denominator = 4.0 * NdotV * NdotL + 0.0001;
+		vec3 specular     = numerator / denominator;  
+		
+		Light_res += (kDd * Albedo / PI + numerator/denominator) * Radiance;
+	}
+
+	for(uint i = 0; i<scene_info.sun_count; i++){
+		SunLight light = sun_lights[i];
+	}
+
+	for(uint i = 0; i<scene_info.spot_count; i++){
+		SpotLight light = spot_lights[i];
+	}
+
 	/* [Block : IBL] */ 
 
 	vec3 IBL_res = vec3(0);
-	vec2 lut = texture2D(LUT, vec2(Cos, Roughness)).xy;
+	vec2 lut = texture2D(LUT, vec2(NdotV, Roughness)).xy;
 
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
 	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;

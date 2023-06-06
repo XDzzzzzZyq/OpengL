@@ -83,6 +83,7 @@ add_executable(OpenGL
 			   res/HEADS/RENDER/Texture.cpp
 			   res/HEADS/GO/Spirit.cpp
 			   res/HEADS/RENDER/BUFFER/StorageBuffer.cpp
+			   res/HEADS/RENDER/BUFFER/UniformBuffer.cpp
 			   res/HEADS/UI/ITEM/TextureView.cpp
 			   res/HEADS/UI/ITEM/Text.cpp
 			   res/HEADS/UI/LAYER/Viewport.cpp

@@ -38,9 +38,8 @@ void Renderer::Init()
 
 	//glEnable(GL_CONVOLUTION_2D);
 
-	r_render_result = FrameBuffer({ COMBINE_FB });
-	AddFrameBuffer();
-
+	InitFrameBuffer();
+	r_light_data.Init();
 
 	EventInit();
 
@@ -75,8 +74,9 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 		return active_GO_ID;
 }
 
-void Renderer::AddFrameBuffer()
+void Renderer::InitFrameBuffer()
 {
+	r_render_result = FrameBuffer({ COMBINE_FB });
 	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
 	r_buffer_list.emplace_back(std::vector<FBType>{ LIGHT_AO_FB });
 }
@@ -210,7 +210,24 @@ void Renderer::Render(bool rend, bool buff) {
 	//if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
-	//glEnable(GL_BLEND);
+
+	///////////  Lights Data PreCalc  ///////////
+
+	for (auto& light : light_list) {
+
+		/*	    Capture Status		*/
+		light.second->ApplyTransform();
+		is_light_changed |= light.second->is_light_changed;
+		is_light_changed |= light.second->is_Uniform_changed;
+		light.second->is_light_changed = false;
+		light.second->is_Uniform_changed = false;
+
+		/* Depth Test for Shadow Map */
+
+	}
+
+	if (is_light_changed)
+		r_light_data.ParseLightData(light_list);
 
 
 	///////////   Begin buffering    ///////////
@@ -246,7 +263,7 @@ void Renderer::Render(bool rend, bool buff) {
 			if (!mesh.second->is_viewport)continue;
 
 			mesh.second->ApplyAllTransform();
-			mesh.second->RenderObj(GetActiveCamera().get(), {});
+			mesh.second->RenderObj(GetActiveCamera().get());
 			mesh.second->is_Uniform_changed = false;
 			mesh.second->o_shader->is_shader_changed = false;
 		}
@@ -333,9 +350,8 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
+		r_light_data.Bind();
 		if (GetActiveCamera()->is_Uniform_changed)
-			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		if (is_light_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		r_render_result->BindFrameBuffer();
 		pps_list[_PBR_COMP_PPS]->RenderPPS();
@@ -386,8 +402,10 @@ void Renderer::Reset()
 		if (selec_list.size())
 			selec_list.clear();
 	}
+	GetActiveCamera()->is_Uniform_changed = false;
 	GetActiveCamera()->is_invUniform_changed = false;
 	GetActiveCamera()->is_frustum_changed = false;
+	is_light_changed = false;
 }
 
 
@@ -457,6 +475,7 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
 	spirit_id_buff.push_back(light->light_spirit.GetObjectID());
 
+	r_light_data.ParseLightData(light_list);
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)

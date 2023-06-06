@@ -43,6 +43,7 @@ public:
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
 	void SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
+	void SetValue(const std::string& name, GLsizei count, const GLuint* va0, ArrayType TYPE);
 public:
 	virtual void LocalDebug() const = 0;
 public:
