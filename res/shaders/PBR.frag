@@ -245,10 +245,7 @@ void main(){
 		vec3 L = normalize(toLight);
 		float NdotL = max(dot(Normal, L), 0);
 		float Attenuation = 1.0 / (dist * dist);
-
-		// ISSUE: It seems that the color of the lights are not HDR, so that they are not strong enough to implement the attenuation phenomenon
-		Attenuation = 1.0;
-		vec3 Radiance = light.color * Attenuation * NdotL;
+		vec3 Radiance = light.color * light.strength * Attenuation * NdotL;
 
 		Light_res += ReflectanceFactor(Normal, Albedo, Metalness, Roughness, F0, CamRay, L) * Radiance;
 	}
