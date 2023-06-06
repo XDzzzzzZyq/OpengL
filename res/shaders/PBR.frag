@@ -108,7 +108,7 @@ vec2 genHdrUV(vec3 dir) {
 	uv += 0.5;
 	uv = -uv + vec2(0.5, 1);
 	return uv;
-} 
+}
 
 float map(float x, float ai, float bi, float ao, float bo){
 	x = (x - ai)/(bi-ai);
@@ -137,11 +137,11 @@ float DistributionGGX(vec3 N, vec3 H, float a)
     float a2     = a*a;
     float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH*NdotH;
-	
+
     float nom    = a2;
     float denom  = (NdotH2 * (a2 - 1.0) + 1.0);
     denom        = PI * denom * denom;
-	
+
     return nom / denom;
 }
 
@@ -149,23 +149,45 @@ float GeometrySchlickGGX(float NdotV, float k)
 {
     float nom   = NdotV;
     float denom = NdotV * (1.0 - k) + k;
-	
+
     return nom / denom;
 }
-  
+
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float k)
 {
     float NdotV = max(dot(N, V), 0.0);
     float NdotL = max(dot(N, L), 0.0);
     float ggx1 = GeometrySchlickGGX(NdotV, k);
     float ggx2 = GeometrySchlickGGX(NdotL, k);
-	
+
     return ggx1 * ggx2;
+}
+
+vec3 ReflectanceFactor(vec3 Normal, vec3 Albedo, float Metalness, float Roughness, vec3 F0, vec3 CamRay, vec3 L)
+{
+	vec3 H = Vec3Bisector(L, -CamRay);
+	float NdotL = max(dot(Normal, L), 0);
+	float NdotV = max(dot(Normal, -CamRay), 0);
+	float HdotV = max(dot(-CamRay, L), 0);
+
+	float NDF = DistributionGGX(Normal, H, Roughness);
+	float G = GeometrySmith(Normal, -CamRay, L, Roughness);
+
+	vec3 Fd = fresnelSchlick(HdotV, F0);
+	vec3 kSd = Fd;
+	vec3 kDd = vec3(1.0) - kSd;
+	kDd *= 1.0 - Metalness;
+
+	vec3 numerator    = NDF * G * Fd;
+	float denominator = 4.0 * NdotV * NdotL + 0.0001;
+	vec3 specular     = numerator / denominator;
+
+	return kDd * Albedo / PI + numerator/denominator;
 }
 
 void main(){
 
-	/* [Block : DATA] */ 
+	/* [Block : DATA] */
 
 	vec4 Pos_Dep = texture2D(U_pos, screen_uv).rgba;
 	vec3 Pos = Pos_Dep.xyz;
@@ -175,7 +197,7 @@ void main(){
 
 	float AO = Normal_AO.a;
 
-	//Albedo *= AO; 
+	//Albedo *= AO;
 
 	vec3 CamRay = normalize(Pos - Cam_pos);
 	vec3 ReflectRay = reflect(CamRay, Normal);
@@ -201,7 +223,7 @@ void main(){
 	//float coef = blen/5;
 	Output = vec4(0);
 
-	/* [Block : BG] */ 
+	/* [Block : BG] */
 
 	if(Alpha < 0.05){
 		Output += vec4(Emission * Emission_Color, 1);
@@ -211,35 +233,24 @@ void main(){
 	}
 
 
-	/* [Block : Lighting] */ 
+	/* [Block : Lighting] */
 
 	vec3 Light_res = vec3(0);
 
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
+		vec3 toLight = Pos - light.pos;
 
-		vec3 L = Pos - light.pos;
-		vec3 H = Vec3Bisector(L, -CamRay);
+		float dist = length(toLight);
+		vec3 L = normalize(toLight);
 		float NdotL = max(dot(Normal, L), 0);
-		float HdotV = max(dot(-CamRay, L), 0);
-		
-		float NDF = DistributionGGX(Normal, H, Roughness);        
-		float G = GeometrySmith(Normal, -CamRay, L, Roughness);      
-		
-		float dist = length(L);
-		vec3 Radiance = light.color / dist / dist * NdotL;
-		
-		vec3 Fd = fresnelSchlick(HdotV, F0);   
-		
-		vec3 kSd = Fd;
-		vec3 kDd = vec3(1.0) - kSd;
-		kDd *= 1.0 - Metalness;
-		
-		vec3 numerator    = NDF * G * Fd;
-		float denominator = 4.0 * NdotV * NdotL + 0.0001;
-		vec3 specular     = numerator / denominator;  
-		
-		Light_res += (kDd * Albedo / PI + numerator/denominator) * Radiance;
+		float Attenuation = 1.0 / (dist * dist);
+
+		// ISSUE: It seems that the color of the lights are not HDR, so that they are not strong enough to implement the attenuation phenomenon
+		Attenuation = 1.0;
+		vec3 Radiance = light.color * Attenuation * NdotL;
+
+		Light_res += ReflectanceFactor(Normal, Albedo, Metalness, Roughness, F0, CamRay, L) * Radiance;
 	}
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
@@ -250,7 +261,7 @@ void main(){
 		SpotLight light = spot_lights[i];
 	}
 
-	/* [Block : IBL] */ 
+	/* [Block : IBL] */
 
 	vec3 IBL_res = vec3(0);
 	vec2 lut = texture2D(LUT, vec2(NdotV, Roughness)).xy;
@@ -259,7 +270,7 @@ void main(){
 	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;
 	reflect_spec *= Fresnel*lut.x + lut.y;
 	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 4).rgb * Albedo;
-	
+
 	IBL_res += reflect_diff + reflect_spec;
 
 	/* [Block : EMIS] */
@@ -268,10 +279,10 @@ void main(){
 	//Output = vec4(lut, 0, 1);
 
 
-	/* [Block : COMP] */ 
+	/* [Block : COMP] */
 
 	Output += vec4(Light_res, 0);
-	Output += vec4(IBL_res, 0);
+	//Output += vec4(IBL_res, 0);
 	Output *= AO;
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
