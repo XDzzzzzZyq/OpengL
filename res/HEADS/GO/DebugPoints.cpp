@@ -45,7 +45,7 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	dp_index.Bind();
 	dp_pos_buffer.BindBuffer();
 	dp_shader[trans_type]->UseShader();
-	
+
 	if (dp_shader[trans_type]->is_shader_changed)
 		dp_shader[trans_type]->InitShader();
 
@@ -77,6 +77,7 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	//dp_vertArry.Unbind();
 
 	is_list_changed = false;
+	dp_shader[trans_type]->is_shader_changed = false;
 }
 
 void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
