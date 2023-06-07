@@ -31,28 +31,19 @@
 //}
 
 inline std::string glDebug_xdz() {
-	switch (glGetError())
+	const GLuint err = glGetError();
+	switch (err)
 	{
-	case GL_NO_ERROR:
-		return"GL_NO_ERROR";
-			break;
-	case GL_INVALID_ENUM:
-		return"GL_INVALID_ENUM";
-			break;
-	case GL_INVALID_VALUE:
-		return"GL_INVALID_VALUE";
-			break;
-	case GL_INVALID_OPERATION:
-		return"INVALID_OPERATION";
-			break;
-	case GL_INVALID_FRAMEBUFFER_OPERATION:
-		return"GL_INVALID_FRAMEBUFFER_OPERATION";
-			break;
-	case GL_OUT_OF_MEMORY:
-		return"GL_OUT_OF_MEMORY";
-			break;
+#define GL_ERR(err) case GL_##err: return #err
+		GL_ERR(NO_ERROR);
+		GL_ERR(INVALID_ENUM);
+		GL_ERR(INVALID_VALUE);
+		GL_ERR(INVALID_OPERATION);
+		GL_ERR(INVALID_FRAMEBUFFER_OPERATION);
+		GL_ERR(OUT_OF_MEMORY);
+	default:
+		return "UNKOWN_ERROR" + std::to_string(err);
 	}
-
 }
 
 inline float getrand() {
