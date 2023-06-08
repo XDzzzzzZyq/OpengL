@@ -156,6 +156,34 @@ float GeometrySmith(float NdotV, float NdotL, float k)
     return ggx1 * ggx2;
 }
 
+vec3 CalcIllum(float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, float Specular, vec3 Albedo, vec3 F0, vec3 Color, float Strength){
+
+	float dist = length(L);
+	L = normalize(L);
+	vec3 H = Vec3Bisector(L, V);
+	float NdotL = max(dot(N, L), 0);
+	float HdotV = max(dot(V, L), 0);
+	float NdotH = max(dot(N, H), 0);
+	
+	float NDF = DistributionGGX(NdotH, Roughness);        
+	float G = GeometrySmith(NdotV, NdotL, k_light(Roughness));      
+	
+	vec3 Radiance = Strength * Color / dist / dist * NdotL;
+	
+	vec3 Fd = fresnelSchlick(NdotV, F0);   
+	
+	vec3 kSd = Fd;
+	vec3 kDd = vec3(1.0) - kSd;
+	kDd *= 1.0 - Metalness;
+	
+	vec3 numerator    = NDF * G * Fd;
+	float denominator = 4.0 * NdotV * NdotL + 0.0001;
+	vec3 specular     = numerator / denominator;  
+	
+	return (kDd * Albedo / PI + numerator/denominator) * Radiance;
+
+}
+
 void main(){
 
 	/* [Block : DATA] */ 
@@ -211,30 +239,17 @@ void main(){
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
 
-		vec3 L = light.pos - Pos;
-		float dist = length(L);
-		L = normalize(L);
-		vec3 H = Vec3Bisector(L, -CamRay);
-		float NdotL = max(dot(Normal, L), 0);
-		float HdotV = max(dot(-CamRay, L), 0);
-		float NdotH = max(dot(Normal, H), 0);
-		
-		float NDF = DistributionGGX(NdotH, Roughness);        
-		float G = GeometrySmith(NdotV, NdotL, k_light(Roughness));      
-		
-		vec3 Radiance = light.strength * light.color / dist / dist * NdotL;
-		
-		vec3 Fd = fresnelSchlick(NdotV, F0);   
-		
-		vec3 kSd = Fd;
-		vec3 kDd = vec3(1.0) - kSd;
-		kDd *= 1.0 - Metalness;
-		
-		vec3 numerator    = NDF * G * Fd;
-		float denominator = 4.0 * NdotV * NdotL + 0.0001;
-		vec3 specular     = numerator / denominator;  
-		
-		Light_res += (kDd * Albedo / PI + numerator/denominator) * Radiance;
+		Light_res += CalcIllum(	NdotV, 
+								-CamRay,
+								Normal, 
+								light.pos - Pos,
+								Roughness,
+								Metalness,
+								Specular, 
+								Albedo, 
+								F0, 
+								light.color, 
+								light.strength);
 	}
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
