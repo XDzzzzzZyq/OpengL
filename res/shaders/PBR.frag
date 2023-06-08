@@ -175,8 +175,8 @@ void main(){
 	float NdotV = max(dot(Normal, -CamRay), 0);
 
 	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
-	float Metalness = clamp(MRSE.r, 0.01, 0.99);
-	float Roughness = clamp(MRSE.g, 0.01, 0.99);
+	float Metalness = clamp(MRSE.r, 0.001, 0.999);
+	float Roughness = clamp(MRSE.g, 0.001, 0.999);
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
