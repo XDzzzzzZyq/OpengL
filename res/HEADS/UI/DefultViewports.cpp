@@ -21,6 +21,9 @@ void ImguiManager::DefultViewports() {
 	ImguiLayer* layer1 = new ParamControl("test layer");
 	layer1->uly_type = PARAS_UILAYER;
 	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "testf", 0.0, 1.0));
+	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "Metalness", 0.0, 1.0));
+	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "Roughness", 0.0, 1.0));
+	layer1->PushItem(new UI::ParaInput(FLOAT_INP, "Specular", 0.0, 1.0, 1.0));
 	layer1->PushItem(new UI::ParaInput(INT_INP, "test"));
 	layer1->PushItem(new UI::ParaInput(BOOL_INP, "test"));
 	layer1->PushItem(new UI::ParaInput(RGB_INP, "test"));
@@ -38,6 +41,7 @@ void ImguiManager::DefultViewports() {
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "X", -90.0f, 90.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "Y", -90.0f, 90.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "Z", -90.0f, 90.0f));
+	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "W", 0.0f, 10.0f));
 	layer2->PushItem(new UI::ParaInput(FLOAT_INP, "GAMMA", 0.0f, 30.0f, 2.4f));
 	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Color", { 0.5,0.5,0.5 }));
 	layer2->PushItem(new UI::ParaInput(RGB_INP, "Light Position"));

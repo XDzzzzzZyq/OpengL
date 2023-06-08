@@ -17,6 +17,8 @@ in vec4 Snormal_color;
 uniform sampler2D U_Texture;
 
 uniform float blen;
+uniform float metalness;
+uniform float specular;
 uniform vec3 ID_color;
 uniform vec3 RAND_color;
 uniform int is_selected;
@@ -29,6 +31,6 @@ void main() {
 	POScolor = vec4(pix_pos, 1);
 	MASKcolor = vec4(1, is_selected, 0, 1);
 	ALBEDOcolor = texture2D(U_Texture, uv);
-	MRSEcolor = vec4(1, blen, 0, 0);
+	MRSEcolor = vec4(1, blen, 1, 0);
 
 };
