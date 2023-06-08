@@ -63,6 +63,7 @@ public:
 public:
 	void UpdateShaderEditor(const std::string& _code = "") const;
 	void UpdateLayer() override;
+	void UpdateKeyword() const;
 
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;

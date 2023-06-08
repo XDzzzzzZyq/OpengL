@@ -240,6 +240,8 @@ public:
 
 	void InsertText(const std::string& aValue);
 	void InsertText(const char* aValue);
+	void InsertKeyword(std::string _kw);
+	bool ChechKeyword(std::string _kw) const;
 
 	void MoveUp(int aAmount = 1, bool aSelect = false);
 	void MoveDown(int aAmount = 1, bool aSelect = false);

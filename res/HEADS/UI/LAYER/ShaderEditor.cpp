@@ -59,6 +59,14 @@ void ShaderEditor::UpdateLayer()
 
 }
 
+void ShaderEditor::UpdateKeyword() const
+{
+	auto& table = ShaderStruct::type_table;
+	LOOP(table.size() - CUSTOM_PARA)
+		if (!SE_CodeEditor.ChechKeyword(table[i + CUSTOM_PARA]))
+			SE_CodeEditor.InsertKeyword(table[i + CUSTOM_PARA]);
+}
+
 void ShaderEditor::RenderName(const std::string& _label, std::string* _name, float _width, bool read_only) const
 {
 	RenderName((_label+*_name).c_str(), _name, _width, read_only);
@@ -374,6 +382,7 @@ void ShaderEditor::CompileShader() const {
 			if (SE_CodeEditor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
 			active_shader->shader_list[(ShaderType)current_shad_type] = SE_CodeEditor.GetText();
 			dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
+			UpdateKeyword();
 			break;
 		case STRUCT_EDITOR:
 			is_shad_type_changed = true;
