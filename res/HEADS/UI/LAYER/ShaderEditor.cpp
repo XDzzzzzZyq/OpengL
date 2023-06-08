@@ -59,7 +59,7 @@ void ShaderEditor::UpdateLayer()
 
 }
 
-void ShaderEditor::UpdateKeyword() const
+void ShaderEditor::UpdateKeyword()
 {
 	auto& table = ShaderStruct::type_table;
 	LOOP(table.size() - CUSTOM_PARA)
@@ -450,7 +450,7 @@ void ShaderEditor::RenderLayer() const
 		switch (current_edit)
 		{
 		case CODE_EDITOR:
-
+			UpdateKeyword();
 			if (active_shader) {
 				//DEBUG(SE_CodeEditor.IsTextChanged())
 				SE_CodeEditor.Render("##Editor", ImGui::GetContentRegionAvail());
