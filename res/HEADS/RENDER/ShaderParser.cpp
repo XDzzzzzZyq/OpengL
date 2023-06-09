@@ -121,11 +121,17 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("out ") != std::string::npos) {
 			// [out]
-			std::string name = Line.substr(9, Line.size() - 10);
+			std::istringstream str(Line);
+			std::string name;			
+			std::string type;
+			str >> name;
+			str >> type;
+			str >> name;
 			assert(!_is_link_repeat(name));
-			ParaType type = ShaderStruct::ParseType(Line.substr(4, 4));
-			shader_struct_list[_type].SetOut(type, 1, name);
-			shader_struct_list[1 - _type].SetInp(type, 1, name);
+			ParaType para_type = ShaderStruct::ParseType(type);
+
+			shader_struct_list[_type].SetOut(para_type, 1, name);
+			shader_struct_list[1 - _type].SetInp(para_type, 1, name);
 
 			_LINK_LOC[name] = _LINK_LOC.size();
 		}
