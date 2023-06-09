@@ -254,6 +254,18 @@ void main(){
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
 		SunLight light = sun_lights[i];
+
+		Light_res += CalcIllum(	NdotV, 
+								-CamRay,
+								Normal, 
+								light.dir,
+								Roughness,
+								Metalness,
+								Specular, 
+								Albedo, 
+								F0, 
+								light.color, 
+								light.strength);
 	}
 
 	for(uint i = 0; i<scene_info.spot_count; i++){

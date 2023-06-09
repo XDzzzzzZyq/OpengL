@@ -14,7 +14,7 @@
 	- [ ] PBR deferred rendering
 		- [ ] PBR direct Lighting
 			- [x] Point light
-			- [ ] Sun light
+			- [x] Sun light
 			- [ ] Spot light
 			- [ ] Area light
 		- [x] PBR IBL
