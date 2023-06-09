@@ -71,6 +71,15 @@ Or, you can also open `CMakeLists.txt` as a CMake project in Visual Studio 2022 
 	- [x] Simple Convolution
  - [x] Multi-passes composition
 	- [ ] PBR deferred rendering
+		- [ ] PBR direct Lighting
+			- [x] Point light
+			- [ ] Sun light
+			- [ ] Spot light
+			- [ ] Area light
+		- [x] PBR IBL
+
+- [x] advanced StorageBuffer
+	
  - [ ] editing elements
 	- [x] outline
 

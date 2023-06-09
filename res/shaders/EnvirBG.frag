@@ -22,12 +22,11 @@ vec4 ray_dir;
 vec2 reUV;
 vec2 equirectangularUV;
 
-const vec2 invAtan = vec2(0.1591, 0.3183);
 vec2 genHdrUV(vec3 dir) {
-	vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
-	uv *= invAtan;
+	vec2 uv = vec2(atan(dir.y, dir.x), asin(dir.z));
+	uv *= -vec2(0.15915494, 0.31830988);
 	uv += 0.5;
-	return -uv + vec2(0.5, 1);
+	return uv;
 }
 
 vec2 reMapUV(vec2 uv) {

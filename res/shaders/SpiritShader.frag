@@ -21,9 +21,9 @@ void main() {
 
 	vec4 spirit_color = texture(U_Texture, uv);
 	//color = vec4(uv,0.0f,1.0f);
-	EMIScolor = vec4(L_color, spirit_color.r);
-	IDcolor = vec4(ID_color / 256, 1);
-	RANDcolor = vec4(RAND_color, 1);
-	MRSEcolor = vec4(0, 0, 0, spirit_color.r);
+	//EMIScolor = vec4(L_color, spirit_color.r);
+	//IDcolor = vec4(ID_color / 256, 1);
+	//RANDcolor = vec4(RAND_color, 1);
+	//MRSEcolor = vec4(0, 0, 0, spirit_color.r);
 	MASKcolor = vec4(spirit_color.r * SpiritOpacity, 0, 0, spirit_color.r);
 };

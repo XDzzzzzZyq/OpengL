@@ -302,7 +302,7 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 				for (const auto& i : shader_struct_list[type].SB_list) {
 					code_block += "layout(std430, binding = " + std::to_string(std::get<0>(i)) + ") buffer " + std::get<1>(i) + " {\n";
 					for (const auto& j : std::get<2>(i)) {
-						code_block += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+						code_block += "\treadonly " + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
 					}
 					code_block += "};\n";
 				}
