@@ -52,10 +52,11 @@ int Application::Init()
 }
 
 int Application::Run()
-{	
+{
 	DEBUG("\n---------------CAMERA----------------")
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
-	camera->SetPos({ 0.0f, 0.0f, 20.0f });
+	camera->SetPos({ 0.0f, 20.0f, 0.0f });
+	camera->SetRot({ 90, 0, 180 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
 	renderer.UseCamera(camera);
@@ -93,7 +94,9 @@ int Application::Run()
 	renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+	pointLight2->SetRadius(2);
+	//pointLight2->SetShadow(false);
 	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LINE----------------")
@@ -152,13 +155,16 @@ int Application::Run()
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
 	static float rotateZ = 0.0f;
+	static float Radius;
 	double mouse_x = 0.0f, mouse_y = 0.0f;
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
 	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
 	AverageTime<10> AvTime;
 	int tex_type = 0;
-	static float testfloat = 0.0f;
+	static float Metalness = 0.0f;
+	static float Roughness = 0.0f;
+	static float Specular = 1.0f;
 
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
@@ -167,13 +173,14 @@ int Application::Run()
 		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
 		renderer.GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
 		renderer.r_using_fxaa = !renderer.r_using_fxaa;
+		if(EventListener::active_shader) DEBUG(EventListener::active_shader->shader_struct_list[1].Main);
 		//DEBUG(renderer.r_using_fxaa)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = xdzm::rand3n(8.65f);
 		points->PushDebugPoint(newpoint2);
 		line->PushDebugLine(newpoint2);
-		UI.GetParaValue("test layer", "test")->para_data.fdata = xdzm::rand11();
+		UI.GetParaValue("test layer", "Roughness")->para_data.fdata = xdzm::rand11();
 		//go1.o_shader->ShaderLibDebug();
 		//environment->envir_shader->ShaderLibDebug();
 		//environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
@@ -202,10 +209,13 @@ int Application::Run()
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
+		Radius = UI.GetParaValue("__Parameters__", "W")->para_data.fdata;
 		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
 		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
 		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
-		testfloat = UI.GetParaValue("test layer", "testf")->para_data.fdata;
+		Metalness = UI.GetParaValue("test layer", "Metalness")->para_data.fdata;
+		Roughness = UI.GetParaValue("test layer", "Roughness")->para_data.fdata;
+		Specular = UI.GetParaValue("test layer", "Specular")->para_data.fdata;
 		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 		renderer.r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
 	};
@@ -226,24 +236,27 @@ int Application::Run()
 		/* Render here */
 
 		go1->SetScale(0.7f * glm::vec3(scale));
-		go1->SetRot(glm::vec3(0.0f, renderer.r_frame_num / 25.0, 0.0f));
+		go1->SetRot(glm::vec3(0.0f, 0.0f, renderer.r_frame_num / 25.0f));
 		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
 
 		//go2->SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
 		go2->SetScale(glm::vec3(blend * 3));
 		go2->SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
 
-		go3->SetShaderValue("blen", testfloat);
+		go3->SetShaderValue("blen", Roughness);
+		go3->SetShaderValue("metalness", Metalness);
+		go3->SetShaderValue("specular", Specular);
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 
 		pointLight1->SetColor(LightColor);
 		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		pointLight1->SetPower(blend * 50);
+		pointLight1->SetPower(rotateY + 10);
+		pointLight1->SetRadius(Radius);
 
 		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
-		pointLight2->SetPower(blend * 20);
+		pointLight2->SetPower(rotateZ + 10);
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);

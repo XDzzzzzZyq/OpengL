@@ -17,7 +17,7 @@ Environment::Environment(const std::string& texpath)
 
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 
-	envir_IBL_diff = Texture(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_REPEAT);
+	envir_IBL_diff = Texture(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_MIRRORED_REPEAT);
 	envir_IBL_diff.Bind(); 
 	//envir_IBL_diff = Texture("res/tex/hdr/sky.png", RGBA_TEXTURE, GL_REPEAT);
 	envir_IBL_spec.GenIrradiaceConvFrom(envir_IBL_diff);

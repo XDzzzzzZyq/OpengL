@@ -5,31 +5,29 @@ layout(location = 0) out vec4 Output;
 struct PointLight{
 	vec3 color;
 	vec3 pos;
+
 	float strength;
 	int use_shadow;
-	//samplerCube shadow_map;
-
 	float radius;
 };
 
 struct SunLight{
 	vec3 color;
 	vec3 pos;
+	vec3 dir;
+
 	float strength;
 	int use_shadow;
-	//samplerCube shadow_map;
 
-	vec3 dir;
 };
 
 struct SpotLight{
 	vec3 color;
 	vec3 pos;
+	vec3 dir;
+
 	float strength;
 	int use_shadow;
-	//samplerCube shadow_map;
-
-	vec3 dir;
 	float angle;
 	float ratio;
 	float fall_off;
@@ -101,12 +99,10 @@ vec3 Vec3Bisector(vec3 a, vec3 b) {
 	return normalize(normalize(a) + normalize(b));
 }
 
-const vec2 invAtan = vec2(0.15915494, 0.31830988);
 vec2 genHdrUV(vec3 dir) {
-	vec2 uv = vec2(atan(dir.z, dir.x), asin(dir.y));
-	uv *= invAtan;
+	vec2 uv = vec2(atan(dir.y, dir.x), asin(dir.z));
+	uv *= -vec2(0.15915494, 0.31830988);
 	uv += 0.5;
-	uv = -uv + vec2(0.5, 1);
 	return uv;
 }
 
@@ -132,10 +128,9 @@ vec3 fresnelSchlick(float Cos, vec3 F0){
 	return vec3(fresnel(Cos,F0.x), fresnel(Cos,F0.y), fresnel(Cos,F0.z));
 }
 
-float DistributionGGX(vec3 N, vec3 H, float a)
+float DistributionGGX(float NdotH, float a)
 {
     float a2     = a*a;
-    float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH*NdotH;
 
     float nom    = a2;
@@ -153,27 +148,25 @@ float GeometrySchlickGGX(float NdotV, float k)
     return nom / denom;
 }
 
-float GeometrySmith(vec3 N, vec3 V, vec3 L, float k)
+float GeometrySmith(float NdotV, float NdotL, float k)
 {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
     float ggx1 = GeometrySchlickGGX(NdotV, k);
     float ggx2 = GeometrySchlickGGX(NdotL, k);
 
     return ggx1 * ggx2;
 }
 
-vec3 ReflectanceFactor(vec3 Normal, vec3 Albedo, float Metalness, float Roughness, vec3 F0, vec3 CamRay, vec3 L)
-{
-	vec3 H = Vec3Bisector(L, -CamRay);
-	float NdotL = max(dot(Normal, L), 0);
-	float NdotV = max(dot(Normal, -CamRay), 0);
-	float HdotV = max(dot(-CamRay, L), 0);
+vec3 BRDF(float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, float Specular, vec3 Albedo, vec3 F0){
+	vec3 H = Vec3Bisector(L, V);
+	float NdotL = max(dot(N, L), 0);
+	float HdotV = max(dot(V, L), 0);
+	float NdotH = max(dot(N, H), 0);
 
-	float NDF = DistributionGGX(Normal, H, Roughness);
-	float G = GeometrySmith(Normal, -CamRay, L, Roughness);
+	float NDF = DistributionGGX(NdotH, Roughness);
+	float G = GeometrySmith(NdotV, NdotL, k_light(Roughness));
 
-	vec3 Fd = fresnelSchlick(HdotV, F0);
+	vec3 Fd = fresnelSchlick(NdotV, F0);
+
 	vec3 kSd = Fd;
 	vec3 kDd = vec3(1.0) - kSd;
 	kDd *= 1.0 - Metalness;
@@ -192,7 +185,7 @@ void main(){
 	vec4 Pos_Dep = texture2D(U_pos, screen_uv).rgba;
 	vec3 Pos = Pos_Dep.xyz;
 	vec4 Normal_AO = texture2D(U_normal, screen_uv).rgba;
-	vec3 Normal = Normal_AO.xyz;
+	vec3 Normal = normalize(Normal_AO.xyz);
 	vec3 Albedo = texture2D(U_albedo, screen_uv).rgb;
 
 	float AO = Normal_AO.a;
@@ -204,8 +197,8 @@ void main(){
 	float NdotV = max(dot(Normal, -CamRay), 0);
 
 	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
-	float Metalness = clamp(MRSE.r, 0.01, 0.99);
-	float Roughness = clamp(MRSE.g, 0.01, 0.99);
+	float Metalness = clamp(MRSE.r, 0.001, 0.999);
+	float Roughness = clamp(MRSE.g, 0.001, 0.999);
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
@@ -240,14 +233,12 @@ void main(){
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
 		vec3 toLight = Pos - light.pos;
-
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
-		float NdotL = max(dot(Normal, L), 0);
-		float Attenuation = 1.0 / (dist * dist);
-		vec3 Radiance = light.color * light.strength * Attenuation * NdotL;
 
-		Light_res += ReflectanceFactor(Normal, Albedo, Metalness, Roughness, F0, CamRay, L) * Radiance;
+		float NdotL = max(dot(Normal, L), 0);
+		vec3 Radiance = light.strength * light.color / dist / dist * NdotL;
+		Light_res += BRDF(NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
@@ -261,14 +252,14 @@ void main(){
 	/* [Block : IBL] */
 
 	vec3 IBL_res = vec3(0);
-	vec2 lut = texture2D(LUT, vec2(NdotV, Roughness)).xy;
+	vec2 lut = texture2D(LUT, vec2(clamp(NdotV, 0.0, 0.99), Roughness)).xy;
 
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
 	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;
 	reflect_spec *= Fresnel*lut.x + lut.y;
 	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 4).rgb * Albedo;
 
-	IBL_res += reflect_diff + reflect_spec;
+	IBL_res += reflect_diff * (1-Metalness) + reflect_spec * Specular;
 
 	/* [Block : EMIS] */
 
@@ -285,7 +276,7 @@ void main(){
 	Output = Vec4Film(Output, 1, gamma);
 
 	//Output = texture2D(LUT, screen_uv);
-	//Output = vec4(vec3(Normal_AO.a), 1);
+	//Output = vec4(vec3(point_lights[0].strength), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

@@ -43,7 +43,7 @@ void Light::SetPower(float _power)
 	if (_power == light_power) return;
 
 	is_light_changed = true; 
-	light_power = _power;
+	light_power = std::abs(_power);
 }
 
 void Light::SetShadow(bool _state)
@@ -52,6 +52,14 @@ void Light::SetShadow(bool _state)
 
 	is_light_changed = true; 
 	use_shadow = _state;
+}
+
+void Light::SetRadius(float _rad)
+{
+	if (_rad == light_radius) return;
+
+	is_light_changed = true;
+	light_radius = _rad;
 }
 
 void Light::RenderLightSpr(Camera* cam)
@@ -90,35 +98,35 @@ void LightFloatArray::ParseLightData(const std::unordered_map<int, std::shared_p
 			break;
 		case POINTLIGHT:
 			point.emplace_back(PointStruct{
-				light.second->light_color, 0,
-				light.second->o_position, 0,
+				light.second->light_color,
+				light.second->o_position,
+
 				light.second->light_power,
 				(int)light.second->use_shadow,
-
-				light.second->spot_radius
+				light.second->light_radius,
 				});
 			break;
 		case SUNLIGHT:
 			sun.emplace_back(SunStruct{
-				light.second->light_color, 0,
-				light.second->o_position, 0,
+				light.second->light_color,
+				light.second->o_position,
+				light.second->o_rot,
+
 				light.second->light_power,
 				(int)light.second->use_shadow,
-
-				glm::vec4(light.second->o_rot, 0)
 				});
 			break;
 		case SPOTLIGHT:
 			spot.emplace_back(SpotStruct{
-				light.second->light_color, 0,
-				light.second->o_position, 0,
+				light.second->light_color,
+				light.second->o_position,
+				light.second->o_rot,
+
 				light.second->light_power,
 				(int)light.second->use_shadow,
-
-				light.second->o_rot, 0,
 				light.second->spot_angle,
-				1.0f,
-				light.second->spot_radius
+				.1f,
+				light.second->light_radius
 				});
 			break;
 		default:
