@@ -11,6 +11,7 @@ layout(location = 7) out vec4 MASKcolor;
 
 in vec2 uv;
 in vec3 L_color;
+in float dist;
 
 uniform sampler2D U_Texture;
 uniform float SpiritOpacity;
@@ -18,12 +19,13 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 
 void main() {
-
 	vec4 spirit_color = texture(U_Texture, uv);
+	float range = smoothstep(0, 100, dist)*0.3+0.05;
+	float alpha = smoothstep(0.5-range, 0.5+range, spirit_color.r);
 	//color = vec4(uv,0.0f,1.0f);
-	EMIScolor = vec4(L_color, spirit_color.r);
+	EMIScolor = vec4(L_color, alpha);
 	IDcolor = vec4(ID_color / 256, 1);
 	RANDcolor = vec4(RAND_color, 1);
-	MRSEcolor = vec4(0, 0, 0, spirit_color.r);
-	MASKcolor = vec4(spirit_color.r * SpiritOpacity, 0, 0, spirit_color.r);
+	MRSEcolor = vec4(0, 0, 0, alpha);
+	MASKcolor = vec4(spirit_color.r * SpiritOpacity, 0, 0, alpha);
 };
