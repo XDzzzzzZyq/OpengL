@@ -46,7 +46,7 @@ public:
 };
 
 
-struct LightFloatArray {
+struct LightArrayBuffer {
 
 public:
 
@@ -105,7 +105,8 @@ public:
 	UniformBuffer<SceneInfo> info;
 
 public:
-	LightFloatArray() {};
+	LightArrayBuffer() {};
+	~LightArrayBuffer();
 	void Init();
 	void Bind() const;
 

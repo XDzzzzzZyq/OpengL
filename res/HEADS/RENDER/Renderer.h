@@ -65,7 +65,7 @@ public:
 	std::unordered_map<int, std::shared_ptr<DebugPoints>>	dPoints_list;
 	std::vector		  <std::shared_ptr<PostProcessing>>			pps_list;
 
-	LightFloatArray r_light_data;
+	LightArrayBuffer r_light_data;
 
 public:
 	std::string GetObjectName(int ID);
