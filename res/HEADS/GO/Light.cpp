@@ -7,26 +7,28 @@ Light::Light(LightType type, float power, glm::vec3 color)
 	light_power = power;
 	light_color = color;
 
-	light_spirit.spr_type = LIGHT_SPIRIT;
+	const auto [_type, _name] = ParseLightName(light_type);
+
+	light_spirit.spr_type = _type;
 	light_spirit.SetTex();
 
-	o_name = ParseLightName() + std::to_string(GetObjectID());
+	o_name = _name + std::to_string(GetObjectID());
 }
 
-std::string Light::ParseLightName() const
+inline  std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
 {
-	switch (light_type)
+	switch (_type)
 	{
 	case NONELIGHT:
-		return "None Light";
+		return { POINT_LIGHT_SPIRIT, "None Light"   };
 	case POINTLIGHT:
-		return "Point Light.";
+		return { POINT_LIGHT_SPIRIT, "Point Light." };
 	case SUNLIGHT: 
-		return "Sun.";
+		return { SUN_LIGHT_SPIRIT,   "Sun."			};
 	case SPOTLIGHT:
-		return "Spot Light.";
+		return { SPOT_LIGHT_SPIRIT,  "Spot Light."  };
 	default:
-		return "None Light";
+		return { POINT_LIGHT_SPIRIT, "None Light"   };
 	}
 }
 
@@ -60,6 +62,14 @@ void Light::SetRadius(float _rad)
 
 	is_light_changed = true;
 	light_radius = _rad;
+}
+
+void Light::SetAngle(float _ang)
+{
+	if (_ang == spot_angle) return;
+
+	is_light_changed = true;
+	spot_angle = _ang;
 }
 
 void Light::RenderLightSpr(Camera* cam)
