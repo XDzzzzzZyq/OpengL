@@ -59,18 +59,28 @@ public:
 
 public:
 	bool SetPos(const glm::vec3& pos);
+	template <int _Dim>
+	bool SetPos1D(float _1d);
 	bool SetScale(const glm::vec3& scale);
+	template <int _Dim>
+	bool SetScale1D(float _1d);
 	bool SetRot(const glm::vec3& rot);
+	template <int _Dim>
+	bool SetRot1D(float _1d);
 
 	void Trans(const glm::mat4& _trans);
 	void Move(const glm::vec3& d_pos);
 	void Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle);
 	void LookAt(const glm::vec3& tar);
 
-	void Normalize() { o_rot = glm::normalize(o_rot); }
 
 	void SetParent(Transform3D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
+
+private:
+	template <int _Dim>
+	bool Set1D(glm::vec3& _tar, float _1d);
+
 public:
 	[[nodiscard("You could receive the state")]] bool ApplyTransform() override;
 	[[nodiscard("You could receive the state")]] bool ApplyAllTransform() override;
@@ -94,6 +104,43 @@ inline glm::mat4 OffestTransform(const glm::mat4& in_m, const glm::vec3& in_v) {
 		result[3][i] += in_v[i];
 	return result;
 }
+
+template <int _Dim>
+bool Transform3D::Set1D(glm::vec3& _tar, float _1d)
+{
+	if constexpr (_Dim < 0 || _Dim > 2) return false;
+	if (_tar[_Dim] == _1d) return false;
+
+	_tar[_Dim] = _1d;
+
+	is_TransF_changed = true;
+	return true;
+}
+
+template <int _Dim>
+bool Transform3D::SetPos1D(float _1d)
+{
+	return Set1D<_Dim>(o_position, _1d);
+}
+
+template <int _Dim>
+bool Transform3D::SetScale1D(float _1d)
+{
+	return Set1D<_Dim>(o_scale, _1d);
+}
+
+template <int _Dim>
+bool Transform3D::SetRot1D(float _1d)
+{
+	bool res = Set1D<_Dim>(o_rot, _1d);
+	if (!res) return false;
+
+	is_rot_changed = true;
+	rotQua = glm::qua(glm::radians(o_rot));
+	return true;
+}
+
+
 
 
 
