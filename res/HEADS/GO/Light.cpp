@@ -64,12 +64,22 @@ void Light::SetRadius(float _rad)
 	light_radius = _rad;
 }
 
-void Light::SetAngle(float _ang)
+void Light::SetCutoff(float _theta)
 {
-	if (_ang == spot_angle) return;
+	float _cutoff = glm::cos(glm::radians(_theta));
+	if (_cutoff == spot_cutoff) return;
 
 	is_light_changed = true;
-	spot_angle = _ang;
+	spot_cutoff = _cutoff;
+}
+
+void Light::SetOuterCutoff(float _theta)
+{
+	float _outer_cutoff = glm::cos(glm::radians(_theta));
+	if (_outer_cutoff == spot_outer_cutoff) return;
+
+	is_light_changed = true;
+	spot_outer_cutoff = _outer_cutoff;
 }
 
 void Light::RenderLightSpr(Camera* cam)
@@ -142,9 +152,8 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 
 				light.second->light_power,
 				(int)light.second->use_shadow,
-				light.second->spot_angle,
-				.1f,
-				light.second->light_radius
+				light.second->spot_cutoff,
+				light.second->spot_outer_cutoff
 				});
 			break;
 		default:

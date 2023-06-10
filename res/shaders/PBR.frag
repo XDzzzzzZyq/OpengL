@@ -18,7 +18,6 @@ struct SunLight{
 
 	float power;
 	int use_shadow;
-
 };
 
 struct SpotLight{
@@ -28,9 +27,8 @@ struct SpotLight{
 
 	float power;
 	int use_shadow;
-	float angle;
-	float ratio;
-	float fall_off;
+	float cutoff;
+	float outer_cutoff;
 };
 
 layout(std430, binding = 0) buffer point_array {
@@ -235,8 +233,8 @@ void main(){
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
 
-		float NdotL = max(dot(Normal, L), 0);
 		float Attenuation = 1.0 / (dist * dist);
+		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Attenuation * NdotL;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
@@ -252,6 +250,17 @@ void main(){
 
 	for(uint i = 0; i<scene_info.spot_count; i++){
 		SpotLight light = spot_lights[i];
+		vec3 toLight = Pos - light.pos;
+		float dist = length(toLight);
+		vec3 L = normalize(toLight);
+
+		float theta = dot(-L, normalize(light.dir));
+		float epsilon = light.cutoff - light.outer_cutoff;
+		float Intensity = clamp((theta - light.outer_cutoff) / epsilon, 0.0, 1.0);
+		float Attenuation = 1.0 / (dist * dist);
+		float NdotL = max(dot(Normal, L), 0);
+		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
 	/* [Block : IBL] */
@@ -275,7 +284,7 @@ void main(){
 	/* [Block : COMP] */
 
 	Output += vec4(Light_res, 0);
-	//Output += vec4(IBL_res, 0);
+	Output += vec4(IBL_res, 0);
 	Output *= AO;
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
