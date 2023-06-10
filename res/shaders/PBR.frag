@@ -290,7 +290,7 @@ void main(){
 	Output = Vec4Film(Output, 1, gamma);
 
 	//Output = texture2D(LUT, screen_uv);
-	//Output = vec4(vec3(point_lights[0].power), 1);
+	//Output = vec4(vec3(AO), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }
