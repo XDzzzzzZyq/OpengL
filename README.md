@@ -15,12 +15,16 @@
 	- [ ] PBR deferred rendering
 		- [ ] PBR direct Lighting
 			- [x] Point light
-			- [x] Sun light
-			- [x] Spot light
+			- [x] Sun light [@theta-lin](https://github.com/theta-lin)
+			- [x] Spot light [@theta-lin](https://github.com/theta-lin)
 			- [ ] Area light
+
+			- [ ] Shadow Map
 		- [x] PBR IBL
 
 - [x] advanced StorageBuffer
+- [ ] advanced Texture storage
+	- [ ] Cube map <-> Equirectangular map
 	
  - [ ] editing elements
 	- [x] outline
