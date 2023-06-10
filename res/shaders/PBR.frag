@@ -6,7 +6,7 @@ struct PointLight{
 	vec3 color;
 	vec3 pos;
 
-	float strength;
+	float power;
 	int use_shadow;
 	float radius;
 };
@@ -16,9 +16,8 @@ struct SunLight{
 	vec3 pos;
 	vec3 dir;
 
-	float strength;
+	float power;
 	int use_shadow;
-
 };
 
 struct SpotLight{
@@ -26,11 +25,10 @@ struct SpotLight{
 	vec3 pos;
 	vec3 dir;
 
-	float strength;
+	float power;
 	int use_shadow;
-	float angle;
-	float ratio;
-	float fall_off;
+	float cutoff;
+	float outer_cutoff;
 };
 
 layout(std430, binding = 0) buffer point_array {
@@ -104,7 +102,7 @@ vec2 genHdrUV(vec3 dir) {
 	uv *= -vec2(0.15915494, 0.31830988);
 	uv += 0.5;
 	return uv;
-} 
+}
 
 float map(float x, float ai, float bi, float ao, float bo){
 	x = (x - ai)/(bi-ai);
@@ -132,11 +130,11 @@ float DistributionGGX(float NdotH, float a)
 {
     float a2     = a*a;
     float NdotH2 = NdotH*NdotH;
-	
+
     float nom    = a2;
     float denom  = (NdotH2 * (a2 - 1.0) + 1.0);
     denom        = PI * denom * denom;
-	
+
     return nom / denom;
 }
 
@@ -144,49 +142,42 @@ float GeometrySchlickGGX(float NdotV, float k)
 {
     float nom   = NdotV;
     float denom = NdotV * (1.0 - k) + k;
-	
+
     return nom / denom;
 }
-  
+
 float GeometrySmith(float NdotV, float NdotL, float k)
 {
     float ggx1 = GeometrySchlickGGX(NdotV, k);
     float ggx2 = GeometrySchlickGGX(NdotL, k);
-	
+
     return ggx1 * ggx2;
 }
 
-vec3 CalcIllum(float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, float Specular, vec3 Albedo, vec3 F0, vec3 Color, float Strength){
-
-	float dist = length(L);
-	L = normalize(L);
+vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, float Specular, vec3 Albedo, vec3 F0){
 	vec3 H = Vec3Bisector(L, V);
-	float NdotL = max(dot(N, L), 0);
 	float HdotV = max(dot(V, L), 0);
 	float NdotH = max(dot(N, H), 0);
-	
-	float NDF = DistributionGGX(NdotH, Roughness);        
-	float G = GeometrySmith(NdotV, NdotL, k_light(Roughness));      
-	
-	vec3 Radiance = Strength * Color / dist / dist * NdotL;
-	
-	vec3 Fd = fresnelSchlick(NdotV, F0);   
-	
+
+	float NDF = DistributionGGX(NdotH, Roughness);
+	float G = GeometrySmith(NdotV, NdotL, k_light(Roughness));
+
+	vec3 Fd = fresnelSchlick(NdotV, F0);
+
 	vec3 kSd = Fd;
 	vec3 kDd = vec3(1.0) - kSd;
 	kDd *= 1.0 - Metalness;
-	
+
 	vec3 numerator    = NDF * G * Fd;
 	float denominator = 4.0 * NdotV * NdotL + 0.0001;
-	vec3 specular     = numerator / denominator;  
-	
-	return (kDd * Albedo / PI + numerator/denominator) * Radiance;
+	vec3 specular     = numerator / denominator;
 
+	return kDd * Albedo / PI + numerator/denominator;
 }
 
 void main(){
 
-	/* [Block : DATA] */ 
+	/* [Block : DATA] */
 
 	vec4 Pos_Dep = texture2D(U_pos, screen_uv).rgba;
 	vec3 Pos = Pos_Dep.xyz;
@@ -196,7 +187,7 @@ void main(){
 
 	float AO = Normal_AO.a;
 
-	//Albedo *= AO; 
+	//Albedo *= AO;
 
 	vec3 CamRay = normalize(Pos - Cam_pos);
 	vec3 ReflectRay = reflect(CamRay, Normal);
@@ -222,7 +213,7 @@ void main(){
 	//float coef = blen/5;
 	Output = vec4(0);
 
-	/* [Block : BG] */ 
+	/* [Block : BG] */
 
 	if(Alpha < 0.05){
 		Output += vec4(Emission * Emission_Color, 1);
@@ -232,47 +223,47 @@ void main(){
 	}
 
 
-	/* [Block : Lighting] */ 
+	/* [Block : Lighting] */
 
 	vec3 Light_res = vec3(0);
 
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
+		vec3 toLight = Pos - light.pos;
+		float dist = length(toLight);
+		vec3 L = normalize(toLight);
 
-		Light_res += CalcIllum(	NdotV, 
-								-CamRay,
-								Normal, 
-								light.pos - Pos,
-								Roughness,
-								Metalness,
-								Specular, 
-								Albedo, 
-								F0, 
-								light.color, 
-								light.strength);
+		float Attenuation = 1.0 / (dist * dist);
+		float NdotL = max(dot(Normal, L), 0);
+		vec3 Radiance = light.power * light.color * Attenuation * NdotL;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
 		SunLight light = sun_lights[i];
 
-		Light_res += CalcIllum(	NdotV, 
-								-CamRay,
-								Normal, 
-								light.dir,
-								Roughness,
-								Metalness,
-								Specular, 
-								Albedo, 
-								F0, 
-								light.color, 
-								light.strength);
+		vec3 L = normalize(light.dir);
+		float NdotL = max(dot(Normal, L), 0);
+		vec3 Radiance = light.color * light.power * NdotL;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
 	for(uint i = 0; i<scene_info.spot_count; i++){
 		SpotLight light = spot_lights[i];
+		vec3 toLight = Pos - light.pos;
+		float dist = length(toLight);
+		vec3 L = normalize(toLight);
+
+		float theta = dot(-L, normalize(light.dir));
+		float epsilon = light.cutoff - light.outer_cutoff;
+		float Intensity = clamp((theta - light.outer_cutoff) / epsilon, 0.0, 1.0);
+		float Attenuation = 1.0 / (dist * dist);
+		float NdotL = max(dot(Normal, L), 0);
+		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
-	/* [Block : IBL] */ 
+	/* [Block : IBL] */
 
 	vec3 IBL_res = vec3(0);
 	vec2 lut = texture2D(LUT, vec2(clamp(NdotV, 0.0, 0.99), Roughness)).xy;
@@ -281,7 +272,7 @@ void main(){
 	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;
 	reflect_spec *= Fresnel*lut.x + lut.y;
 	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 4).rgb * Albedo;
-	
+
 	IBL_res += reflect_diff * (1-Metalness) + reflect_spec * Specular;
 
 	/* [Block : EMIS] */
@@ -290,7 +281,7 @@ void main(){
 	//Output = vec4(lut, 0, 1);
 
 
-	/* [Block : COMP] */ 
+	/* [Block : COMP] */
 
 	Output += vec4(Light_res, 0);
 	Output += vec4(IBL_res, 0);
@@ -299,7 +290,7 @@ void main(){
 	Output = Vec4Film(Output, 1, gamma);
 
 	//Output = texture2D(LUT, screen_uv);
-	//Output = vec4(vec3(point_lights[0].strength), 1);
+	//Output = vec4(vec3(point_lights[0].power), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

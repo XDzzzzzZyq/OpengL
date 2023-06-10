@@ -9,12 +9,12 @@
 
 enum TextureType
 {
-	NONE_TEXTURE, 
-	RGBA_TEXTURE, 
+	NONE_TEXTURE,
+	RGBA_TEXTURE,
 	PNG_TEXTURE = 1,
-	RGB_TEXTURE, 
+	RGB_TEXTURE,
 	JPG_TEXTURE = 2,
-	SPIRIT_TEXURE, 
+	SPIRIT_TEXURE,
 	IBL_TEXTURE,
 	HDR_TEXTURE = 4,
 	BUFFER_TEXTURE = 6,		// [0, 1]
@@ -32,7 +32,7 @@ private:
 	int im_w = 0, im_h = 0, im_bpp = 0;
 	std::string tex_path;
 	GLuint tex_ID = 0;
-	
+
 public:
 	TextureType tex_type = TextureType::NONE_TEXTURE;
 	GLuint tex_slot_offset = 0;
@@ -88,7 +88,7 @@ private:
 public:
 	static TextureRes GetTexture(const std::string& _name);
 	static GLuint GetTextureID(const std::string& _name);
-	
+
 public:
 	static TextureRes Noise_2D_4x4();
 	static TextureRes Noise_2D_16x16();

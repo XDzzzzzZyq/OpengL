@@ -52,7 +52,7 @@ int Application::Init()
 }
 
 int Application::Run()
-{	
+{
 	DEBUG("\n---------------CAMERA----------------")
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera->SetPos({ 0.0f, 20.0f, 0.0f });
@@ -99,11 +99,20 @@ int Application::Run()
 	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
+	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
 	sunLight1->SetRot(glm::vec3(45));
 	sunLight1->SetPos(glm::vec3(2));
-	sunLight1->SetPower(30);
+	sunLight1->SetPower(20);
 	renderer.UseLight(sunLight1);
+
+	DEBUG("\n---------------LIGHT----------------")
+	std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
+	spotLight1->SetRot(glm::vec3(45));
+	spotLight1->SetPos(glm::vec3(2.5));
+	spotLight1->SetCutoff(60);
+	spotLight1->SetOuterCutoff(80);
+	spotLight1->SetPower(50);
+	renderer.UseLight(spotLight1);
 
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
@@ -157,7 +166,7 @@ int Application::Run()
 	UI.ManagerInit(window);
 
 	static float scale = 0.3f;
-	static float blend = 0.5f;
+	static float power = 0.5f;
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
 	static float rotateZ = 0.0f;
@@ -211,7 +220,7 @@ int Application::Run()
 		UI.FindImguiItem("__Parameters__", "Frame Rate %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
 
 		scale = UI.GetParaValue("__Parameters__", "SCALE")->para_data.fdata;
-		blend = UI.GetParaValue("__Parameters__", "POWER")->para_data.fdata;
+		power = UI.GetParaValue("__Parameters__", "POWER")->para_data.fdata;
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
@@ -246,7 +255,7 @@ int Application::Run()
 		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
 
 		//go2->SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
-		go2->SetScale(glm::vec3(blend * 3));
+		//go2->SetScale(glm::vec3(power * 3));
 		go2->SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
 
 		go3->SetShaderValue("blen", Roughness);
@@ -258,13 +267,15 @@ int Application::Run()
 
 		pointLight1->SetColor(LightColor);
 		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		pointLight1->SetPower(rotateY + 10);
+		pointLight1->SetPower((rotateY + 50) * power);
 		pointLight1->SetRadius(Radius);
 
 		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
-		pointLight2->SetPower(rotateZ + 10);
+		pointLight2->SetPower((rotateZ + 50) * power);
 
-		sunLight1->SetRot1D<2>(Radius*360);
+		sunLight1->SetRot1D<2>(Radius * 360);
+
+		spotLight1->SetRot1D<1>(Radius * 360);
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);

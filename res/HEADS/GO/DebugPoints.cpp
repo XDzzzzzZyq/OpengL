@@ -41,7 +41,7 @@ DebugPoints::~DebugPoints()
 void DebugPoints::RenderDebugPoint(Camera* camera)
 {
 	const size_t trans_type = (size_t)is_proj;
-	
+
 	dp_vertArry.Bind();
 	dp_index.Bind();
 	dp_pos_buffer.BindBufferBase();
@@ -51,23 +51,23 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 		dp_shader[trans_type]->InitShader();
 
 	if (is_list_changed || dp_shader[trans_type]->is_shader_changed)
-		dp_shader[trans_type]->SetValue("pos_count",dp_pos_list.size());	
+		dp_shader[trans_type]->SetValue("pos_count", (int)dp_pos_list.size());
 
 	dp_shader[trans_type]->SetValue("point_color", dp_color);
 
 	dp_shader[trans_type]->SetValue("is_selected", (int)is_selected);
 
-	if (is_list_changed || dp_shader[trans_type]->is_shader_changed) 
-		dp_pos_buffer.GenStorageBuffer(dp_pos_list);		
+	if (is_list_changed || dp_shader[trans_type]->is_shader_changed)
+		dp_pos_buffer.GenStorageBuffer(dp_pos_list);
 
 	if(camera->is_invUniform_changed || dp_shader[trans_type]->is_shader_changed)
-		dp_shader[trans_type]->SetValue("U_cam_trans", camera->o_InvTransform);	
+		dp_shader[trans_type]->SetValue("U_cam_trans", camera->o_InvTransform);
 
 	if(camera->is_frustum_changed || dp_shader[trans_type]->is_shader_changed)
-		dp_shader[trans_type]->SetValue("U_ProjectM", camera->cam_frustum);	
+		dp_shader[trans_type]->SetValue("U_ProjectM", camera->cam_frustum);
 
-	dp_shader[trans_type]->SetValue("U_Opacity", dp_opacity);	
-	dp_shader[trans_type]->SetValue("U_Scale", dp_scale);	
+	dp_shader[trans_type]->SetValue("U_Opacity", dp_opacity);
+	dp_shader[trans_type]->SetValue("U_Scale", dp_scale);
 
 	glDrawElementsInstanced(GL_TRIANGLES, dp_index.count(), GL_UNSIGNED_INT, nullptr, dp_pos_list.size());
 
@@ -88,7 +88,7 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 
 	dp_shader[0] = RenderShader("PointsShader");
 	dp_shader[1] = RenderShader("PointsShader_proj", "PointsShader");
-	
+
 	dp_shader[0]->InitShader = [&] {
 		dp_shader[0]->UseShader();
 		dp_shader[0]->SetValue("ID_color", id_color);

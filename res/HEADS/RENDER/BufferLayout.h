@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <GL/glew.h>
+#include <type_traits>
+
 struct BufferElement
 {
 	GLuint type;

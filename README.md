@@ -5,6 +5,7 @@
 
 
 ### Features
+
  - [x] multi-passes buffering
  - [x] Multi-passes processing
 	- [x] FXAA
@@ -15,7 +16,7 @@
 		- [ ] PBR direct Lighting
 			- [x] Point light
 			- [x] Sun light
-			- [ ] Spot light
+			- [x] Spot light
 			- [ ] Area light
 		- [x] PBR IBL
 
@@ -32,7 +33,7 @@
  - [ ] Post Processing Flow editor
 	- [ ] Node editing
 	- [ ] Shader editing
-  
+
 ### Advanced
 
  - [x] Dynamic passes binding

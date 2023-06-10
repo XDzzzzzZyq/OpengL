@@ -37,7 +37,7 @@ bool EventListener::is_GOlist_changed = true;
 bool EventListener::is_selected_changed = true;
 bool EventListener::is_outliner_selected = false;
 
-std::function<void* (int)> EventListener::GetActiveShader = [&](int) { return (void*)nullptr;};
+std::function<void* (int)> EventListener::GetActiveShader = [](int) { return (void*)nullptr;};
 
 int EventListener::active_GO_ID;
 int EventListener::pre_act_go_ID;

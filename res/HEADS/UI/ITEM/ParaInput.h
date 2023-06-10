@@ -42,7 +42,7 @@ template<typename T>
 void UI::ParaInput::SetDefulValue(const T& _def)
 {
 
-	if (std::is_same<T, int>)
+	if constexpr (std::is_same<T, int>)
 	{
 		uitm_para.para_data.idata = _def;
 

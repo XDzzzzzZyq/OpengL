@@ -200,7 +200,7 @@ Texture::Texture(int _w, int _h, GLuint _layout, void* _ptr)
 		tex_type = HDR_BUFFER_TEXTURE;
 		break;
 	default:
-		_ASSERT(false && "WRONG LAYOUT");
+	    assert(false && "WRONG LAYOUT");
 	}
 
 
@@ -297,7 +297,7 @@ std::tuple<GLuint, GLuint, GLuint> Texture::ParseFormat(TextureType _type)
 	case FLOAT_BUFFER_TEXTURE:
 		return { GL_RG16F, GL_RG, GL_FLOAT };
 	default:
-		_ASSERT(false && "WRONG FORMAT");
+		assert(false && "WRONG FORMAT");
 		return { GL_NONE, GL_NONE ,GL_NONE };
 	}
 }
@@ -328,7 +328,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 	//			https://learnopengl.com/PBR/IBL/Specular-IBL			//
 
 	const int max_inter = 8;
-	
+
 	if (tex_ID != 0)DelTexture();   //reset
 
 	glGenTextures(1, &tex_ID);		//for storage
@@ -391,10 +391,10 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-	
+
 	static ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
 
-	glBindImageTexture(tex_type + 1, tex_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout); 
+	glBindImageTexture(tex_type + 1, tex_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
 	glBindImageTexture(_tar_type, _tar_ID, 4, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
 
 	int w, h;

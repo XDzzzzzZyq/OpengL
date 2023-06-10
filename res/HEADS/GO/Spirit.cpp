@@ -28,7 +28,7 @@ Spirit::Spirit()
 	SetSpiritShader();
 
 	o_name = "Spirit." + std::to_string(GetObjectID());
-	
+
 }
 
 Spirit::~Spirit()
@@ -138,7 +138,7 @@ std::string Spirit::ParsePath() const
 	case SUN_LIGHT_SPIRIT:
 		return Spirit::fileroot + "sun-bright.png"; break;
 	case SPOT_LIGHT_SPIRIT:
-		return Spirit::fileroot + "light.png"; break;
+		return Spirit::fileroot + "spot-bright.png"; break;
 	case CAM_SPIRIT:
 		return Spirit::fileroot + "BAKED.png";break;
 	case ENVIRN_SPIRIT:

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 #include "support.h"
 
@@ -69,7 +70,7 @@ void StorageBuffer::GenStorageBuffers(const std::vector<_Point>& _point, const s
 	std::memcpy(static_cast<char*>(bufferData) + offset, _sun.data(), _sun.size() * sizeof(_Sun));
 	offset += _sun.size() * sizeof(_Sun);
 	std::memcpy(static_cast<char*>(bufferData) + offset, _spot.data(), _spot.size() * sizeof(_Spot));
-	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER); 
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo_id);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_id);

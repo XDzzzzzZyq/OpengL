@@ -23,9 +23,12 @@ public:
 	float light_power{ 1 };
 	glm::vec3 light_color{ 1. }; //3f
 
-	//SPOTLIGHT
-	float spot_angle{ 30 };
+	// point light
 	float light_radius{ 5 };
+
+	// spot light
+	float spot_cutoff{ 0.9 };
+	float spot_outer_cutoff{ 0.8 };
 
 	Spirit light_spirit;
 
@@ -41,7 +44,8 @@ public:
 	void SetPower(float _power);
 	void SetShadow(bool _state);
 	void SetRadius(float _rad);
-	void SetAngle(float _ang);
+	void SetCutoff(float _ang);
+	void SetOuterCutoff(float _ang);
 
 public:
 	void RenderLightSpr(Camera* cam);
@@ -56,11 +60,11 @@ public:
 	// https://registry.khronos.org/OpenGL/specs/gl/glspec45.core.pdf#page=159
 
 	struct PointStruct
-	{ 
+	{
 		alignas(16) glm::vec3 color{ 1 };
 		alignas(16) glm::vec3 pos{ 0 };
 
-		alignas(4) float strength{ 1 };
+		alignas(4) float power{ 1 };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
 		alignas(4) float radius{ 5 };
 	};
@@ -71,7 +75,7 @@ public:
 		alignas(16) glm::vec3 pos{ 0 };
 		alignas(16) glm::vec3 dir{ 1, 0, 0 };
 
-		alignas(4) float strength{ 1 };
+		alignas(4) float power{ 1 };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
 	};
 
@@ -81,11 +85,10 @@ public:
 		alignas(16) glm::vec3 pos{ 0 };
 		alignas(16) glm::vec3 dir{ 1, 0, 0 };
 
-		alignas(4) float strength{ 1 };
+		alignas(4) float power{ 1 };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
-		alignas(4) float angle{ 30 };
-		alignas(4) float ratio{ .1 };
-		alignas(4) float fall_off{ .5 };
+		alignas(4) float cutoff{ 0.9 };
+		alignas(4) float outer_cutoff{ 0.8 };
 	};
 
 	static const GLuint Sizeof_Point = sizeof(PointStruct);

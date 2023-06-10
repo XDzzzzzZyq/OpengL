@@ -26,7 +26,7 @@ void ShaderLib::InitLib()
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC3_PARA, 1, "pix_pos");
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "normal_color");
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "Snormal_color");
-					 
+
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "cam_trans");
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "obj_trans");
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "ProjectM");
@@ -41,7 +41,7 @@ void ShaderLib::InitLib()
 	shader_struct_list[VERTEX_SHADER].SetGlob(VEC4_PARA, 1.0f, "const_color");
 
 	shader_struct_list[VERTEX_SHADER].DefStruct(
-		"spot_light", 
+		"spot_light",
 		{ {VEC3_PARA, "pos"}, {VEC3_PARA, "color"}, {FLOAT_PARA, "power"} }
 	);
 
