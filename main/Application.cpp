@@ -114,6 +114,10 @@ int Application::Run()
 	spotLight1->SetPower(50);
 	renderer.UseLight(spotLight1);
 
+	DEBUG("\n-------------AREA LIGHT-------------")
+	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>();
+	renderer.UseAreaLight(areaLight1);
+
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
 	line->PushDebugLine(5, 5, 5);

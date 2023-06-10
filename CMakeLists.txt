@@ -70,6 +70,7 @@ add_executable(OpenGL
 			   dep/ImGui/imgui_tables.cpp
 			   dep/ImGui/imgui_widgets.cpp
 			   res/HEADS/GO/Light.cpp
+			   res/HEADS/GO/AreaLight.cpp
 			   res/HEADS/GO/GameObject.cpp
 			   res/HEADS/RENDER/Renderer.cpp
 			   res/HEADS/GO/Mesh.cpp

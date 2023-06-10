@@ -269,6 +269,11 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		is_light_changed = false;
 
+		////////////    AREA LIGHTS POLYGON    ////////////
+		for (const auto& areaLight : area_light_list)
+		{
+			areaLight.second->RenderPolygon(GetActiveCamera().get());
+		}
 
 		/////////    DEBUG MESHES    /////////
 
@@ -476,6 +481,11 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	spirit_id_buff.push_back(light->light_spirit.GetObjectID());
 
 	r_light_data.ParseLightData(light_list);
+}
+
+void Renderer::UseAreaLight(std::shared_ptr<AreaLight> areaLight)
+{
+	area_light_list[0] = areaLight;
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)
