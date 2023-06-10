@@ -1,12 +1,16 @@
 #include "Shaders.h"
 #include "ShaderLib.h"
 
-void RenderShader::ParseShaderFile(const std::string& _name, ShaderType _type) {
+void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 	Timer timer("ParseShader");
 
 	active_shader = _type;
 	shader_struct_list[active_shader].is_struct_changed = false;
-	std::ifstream Stream(ShaderLib::folder_root + _name + ShaderLib::file_type[_type]);
+
+	if (_name.find(ShaderLib::folder_root) == std::string::npos) 
+		_name = ShaderLib::folder_root + _name + ShaderLib::file_type[_type];
+
+	std::ifstream Stream(_name);
 
 	ParseShaderStream(Stream, active_shader);
 
