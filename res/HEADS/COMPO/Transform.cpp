@@ -98,6 +98,8 @@ void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 	o_parent_trans = _p_trans;
 	_p_trans->o_child_trans = this;
 
+	if (!_keep_offset) return;
+
 	SetScale(o_scale / _p_trans->o_scale);
 	SetPos((o_position - _p_trans->o_position) * o_scale);
 	ApplyTransform();
@@ -150,15 +152,21 @@ bool Transform3D::ApplyAllTransform()
 			tar_ptr = tar_ptr->GetParentTransPtr();
 
 	} while (true);
-	glm::mat4 tar_trans(1.0f);
+
+	glm::mat4 post_trans = tar_ptr->o_Transform;
+	
 	do {
 		if (tar_ptr == nullptr)
 			break;
-		tar_trans = tar_ptr->o_Transform = tar_trans * tar_ptr->o_Transform;
+		tar_ptr->o_Transform = post_trans * glm::mat4(1);
+		tar_ptr->is_Uniform_changed = true;
+		tar_ptr->is_TransF_changed = true;
 		if (tar_ptr->GetChildTransPtr() == nullptr)
 			break;
-		else
+		else {
 			tar_ptr = tar_ptr->GetChildTransPtr();
+			post_trans = post_trans * tar_ptr->o_Transform;
+		}
 	} while (true);
 	return true;
 
