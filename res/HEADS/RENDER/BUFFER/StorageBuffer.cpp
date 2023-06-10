@@ -12,15 +12,15 @@ StorageBuffer::StorageBuffer(SSBType type)
 StorageBuffer::StorageBuffer(SSBType type, GLuint base)
 	: ssbo_base(base), ssbo_type(type)
 {
-	//glGenBuffers(1, &ssbo_id);
+	glGenBuffers(1, &ssbo_id);
 }
 
 StorageBuffer::~StorageBuffer()
 {
-	glDeleteBuffers(1, &ssbo_id);
+	
 }
 
-void StorageBuffer::BindBuffer(GLuint _base) const
+void StorageBuffer::BindBuffer() const
 {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_id);
 }
@@ -38,5 +38,10 @@ void StorageBuffer::SetBufferBase(GLuint base)
 void StorageBuffer::BindBufferBase(GLuint _base /*= -1*/) const
 {
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, ssbo_id);
+}
+
+void StorageBuffer::DeleteBuffer()
+{
+	glDeleteBuffers(1, &ssbo_id);
 }
 

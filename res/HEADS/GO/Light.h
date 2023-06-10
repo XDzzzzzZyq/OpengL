@@ -32,21 +32,23 @@ public:
 public:
 
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
-	std::string ParseLightName() const;
+	inline static std::pair<SpiritType, std::string> ParseLightName(LightType _type);
 
 public:
+
 	bool is_light_changed{ false };
 	void SetColor(ImVec4 _col);
 	void SetPower(float _power);
 	void SetShadow(bool _state);
 	void SetRadius(float _rad);
+	void SetAngle(float _ang);
 
 public:
 	void RenderLightSpr(Camera* cam);
 };
 
 
-struct LightFloatArray {
+struct LightArrayBuffer {
 
 public:
 
@@ -105,7 +107,8 @@ public:
 	UniformBuffer<SceneInfo> info;
 
 public:
-	LightFloatArray() {};
+	LightArrayBuffer() {};
+	~LightArrayBuffer();
 	void Init();
 	void Bind() const;
 

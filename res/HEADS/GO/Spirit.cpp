@@ -133,8 +133,12 @@ std::string Spirit::ParsePath() const
 	{
 	case NONE_SPIRIT:
 		return Spirit::fileroot + "BAKED.png";break;
-	case LIGHT_SPIRIT:
+	case POINT_LIGHT_SPIRIT:
 		return Spirit::fileroot + "light.png";break;
+	case SUN_LIGHT_SPIRIT:
+		return Spirit::fileroot + "sun-bright.png"; break;
+	case SPOT_LIGHT_SPIRIT:
+		return Spirit::fileroot + "light.png"; break;
 	case CAM_SPIRIT:
 		return Spirit::fileroot + "BAKED.png";break;
 	case ENVIRN_SPIRIT:

@@ -15,10 +15,18 @@ public:
 	UniformBuffer(GLuint _bind);
 	UniformBuffer(GLuint _bind, _S _tar);
 
+public:
+
 	void Bind(GLuint _bind = -1) const;
 	void Unbind() const;
 
+public:
+
 	void Update(_S _tar);
+
+public:
+
+	void DeleteBuffer() const;
 
 };
 
@@ -61,4 +69,10 @@ UniformBuffer<_S>::UniformBuffer(GLuint _bind)
 template<class _S>
 UniformBuffer<_S>::UniformBuffer()
 {}
+
+template<class _S>
+void UniformBuffer<_S>::DeleteBuffer() const
+{
+	glDeleteBuffers(1, &ubo_id);
+}
 

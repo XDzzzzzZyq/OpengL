@@ -34,6 +34,7 @@ DebugPoints::DebugPoints(const std::vector<glm::vec3>& pos_list)
 
 DebugPoints::~DebugPoints()
 {
+	dp_pos_buffer.DeleteBuffer();
 	DeleteDebugPoints();
 }
 
@@ -43,7 +44,7 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 
 	dp_vertArry.Bind();
 	dp_index.Bind();
-	dp_pos_buffer.BindBuffer();
+	dp_pos_buffer.BindBufferBase();
 	dp_shader[trans_type]->UseShader();
 
 	if (dp_shader[trans_type]->is_shader_changed)

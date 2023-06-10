@@ -25,11 +25,17 @@ public:
 	StorageBuffer(SSBType type, GLuint base);
 	~StorageBuffer();
 
-	void BindBuffer(GLuint _base = -1) const;
+	void BindBuffer() const;
 	void BindBufferBase(GLuint _base = -1) const;
 	void UnbindBuffer() const;
 	void SetBufferBase(GLuint base);
+
+	void DeleteBuffer();
+
+public:
 	GLuint GetID() const { return ssbo_id; }
+	GLuint GetBase() const { return ssbo_base; }
+	SSBType GetType() const { return ssbo_type; }
 
 public:
 
@@ -46,8 +52,7 @@ void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
 	if (list.size() == 0) return;
 
 	BindBuffer();
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, ssbo_id);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_DYNAMIC_COPY);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_STATIC_DRAW);
 	UnbindBuffer();
 }
 

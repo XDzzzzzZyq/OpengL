@@ -96,12 +96,13 @@ int Application::Run()
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight2->SetRadius(2);
-	//pointLight2->SetShadow(false);
 	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LIGHT----------------")
-	    std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
-	sunLight1->SetRot(glm::vec3(1.0f, -1.5f, -1.0f)); // Direction of the sun light
+	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
+	sunLight1->SetRot(glm::vec3(45));
+	sunLight1->SetPos(glm::vec3(2));
+	sunLight1->SetPower(30);
 	renderer.UseLight(sunLight1);
 
 	DEBUG("\n---------------LINE----------------")
@@ -257,15 +258,13 @@ int Application::Run()
 
 		pointLight1->SetColor(LightColor);
 		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		pointLight1->SetPower(rotateY + 10);
+		pointLight1->SetPower((rotateY + 50) * blend);
 		pointLight1->SetRadius(Radius);
 
 		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
-		pointLight2->SetPower(rotateZ + 10);
+		pointLight2->SetPower((rotateZ + 50) * blend);
 
-		sunLight1->SetColor(LightColor);
-		sunLight1->SetPos(ImVec4_vec3_Uni(LightPos, -5.0f));
-		sunLight1->SetPower(rotateY + 10);
+		sunLight1->SetRot1D<2>(Radius*360);
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
