@@ -1785,6 +1785,9 @@
     <Image Include="res\tex\ibl_brdf_lut.png">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\tex\rough.png">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="dep\GLEW\doc\glew.txt" />

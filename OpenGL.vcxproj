@@ -782,6 +782,7 @@
     <Image Include="res\tex\avatar2.png" />
     <Image Include="res\tex\BAKED.png" />
     <Image Include="res\tex\ibl_brdf_lut.png" />
+    <Image Include="res\tex\rough.png" />
     <Image Include="res\tex\testImg.jpg" />
     <Image Include="res\tex\testImg.png" />
   </ItemGroup>
