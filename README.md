@@ -74,7 +74,7 @@ Or, you can also open `CMakeLists.txt` as a CMake project in Visual Studio 2022 
 		- [ ] PBR direct Lighting
 			- [x] Point light
 			- [x] Sun light
-			- [ ] Spot light
+			- [x] Spot light
 			- [ ] Area light
 		- [x] PBR IBL
 
