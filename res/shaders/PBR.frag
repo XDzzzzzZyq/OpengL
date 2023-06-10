@@ -229,7 +229,7 @@ void main(){
 
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
-		vec3 toLight = Pos - light.pos;
+		vec3 toLight = light.pos - Pos;
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
 
@@ -242,7 +242,7 @@ void main(){
 	for(uint i = 0; i<scene_info.sun_count; i++){
 		SunLight light = sun_lights[i];
 
-		vec3 L = normalize(light.dir);
+		vec3 L = light.dir;
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.color * light.power * NdotL;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
@@ -250,11 +250,11 @@ void main(){
 
 	for(uint i = 0; i<scene_info.spot_count; i++){
 		SpotLight light = spot_lights[i];
-		vec3 toLight = Pos - light.pos;
+		vec3 toLight = light.pos - Pos;
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
 
-		float theta = dot(-L, normalize(light.dir));
+		float theta = dot(-L, light.dir);
 		float epsilon = light.cutoff - light.outer_cutoff;
 		float Intensity = clamp((theta - light.outer_cutoff) / epsilon, 0.0, 1.0);
 		float Attenuation = 1.0 / (dist * dist);

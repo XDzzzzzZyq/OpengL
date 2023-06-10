@@ -138,7 +138,7 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 			sun.emplace_back(SunStruct{
 				light.second->light_color,
 				light.second->o_position,
-				glm::cross(light.second->o_dir_up, light.second->o_dir_right),
+				-glm::cross(light.second->o_dir_up, light.second->o_dir_right),
 
 				light.second->light_power,
 				(int)light.second->use_shadow,
@@ -148,7 +148,7 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 			spot.emplace_back(SpotStruct{
 				light.second->light_color,
 				light.second->o_position,
-				glm::cross(light.second->o_dir_up, light.second->o_dir_right),
+				-glm::cross(light.second->o_dir_up, light.second->o_dir_right),
 
 				light.second->light_power,
 				(int)light.second->use_shadow,
