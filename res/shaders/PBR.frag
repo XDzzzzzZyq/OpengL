@@ -6,7 +6,7 @@ struct PointLight{
 	vec3 color;
 	vec3 pos;
 
-	float strength;
+	float power;
 	int use_shadow;
 	float radius;
 };
@@ -16,7 +16,7 @@ struct SunLight{
 	vec3 pos;
 	vec3 dir;
 
-	float strength;
+	float power;
 	int use_shadow;
 
 };
@@ -26,7 +26,7 @@ struct SpotLight{
 	vec3 pos;
 	vec3 dir;
 
-	float strength;
+	float power;
 	int use_shadow;
 	float angle;
 	float ratio;
@@ -237,7 +237,7 @@ void main(){
 
 		float NdotL = max(dot(Normal, L), 0);
 		float Attenuation = 1.0 / (dist * dist);
-		vec3 Radiance = light.strength * light.color * Attenuation * NdotL;
+		vec3 Radiance = light.power * light.color * Attenuation * NdotL;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
@@ -246,7 +246,7 @@ void main(){
 
 		vec3 L = normalize(light.dir);
 		float NdotL = max(dot(Normal, L), 0);
-		vec3 Radiance = light.color * light.strength * NdotL;
+		vec3 Radiance = light.color * light.power * NdotL;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
@@ -281,7 +281,7 @@ void main(){
 	Output = Vec4Film(Output, 1, gamma);
 
 	//Output = texture2D(LUT, screen_uv);
-	//Output = vec4(vec3(point_lights[0].strength), 1);
+	//Output = vec4(vec3(point_lights[0].power), 1);
 
 	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }
