@@ -17,36 +17,19 @@
 class AreaLight : public GameObject, public Transform3D
 {
 private:
-	//Reading read;
 	VertexArray o_vertArray;
 	VertexBuffer o_vertBuffer;
 	IndexBuffer o_index;
-	//std::optional<Texture> o_tex;
 
-    //glm::vec3 center=glm::vec3(0.0f);
+	glm::vec3 light_color;
+
 public:
 
 	mutable std::optional<RenderShader> o_shader;
-	AreaLight();
+	AreaLight(std::vector<float> &VertData, const glm::vec3 &light_color);
 	~AreaLight();
 
 	void RenderPolygon(Camera* cam);
 	void SetPolygonShader();
-
-	//void SetTex(std::string path, TextureType slot);
-	//void SetCenter();
-	//template<typename T>
-	//void SetShaderValue(std::string _name, T _v);
-
-	//ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&o_shader.value()); }
-
-	//void DeleteObj();
+	void DeletePolygon();
 };
-
-//template<typename T>
-//void Mesh::SetShaderValue(std::string _name, T _v)
-//{
-//    o_shader->UseShader();
-//    o_shader->SetValue(_name, _v);
-//    o_shader->UnuseShader();
-//}

@@ -115,7 +115,15 @@ int Application::Run()
 	renderer.UseLight(spotLight1);
 
 	DEBUG("\n-------------AREA LIGHT-------------")
-	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>();
+	std::vector<float> alVertData = {
+		0.0f, 0.0f,
+		3.0f, 0.0f,
+		5.0f, 5.0f,
+		0.0f, 5.0f
+	};
+	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f));
+	areaLight1->SetPos({ 2.0f, -3.0f, -6.0f });
+	areaLight1->SetRot(glm::vec3(-60, 20, 20));
 	renderer.UseAreaLight(areaLight1);
 
 	DEBUG("\n---------------LINE----------------")

@@ -269,10 +269,14 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		is_light_changed = false;
 
-		////////////    AREA LIGHTS POLYGON    ////////////
+		/////////    AREA LIGHTS POLYGON    /////////
+
 		for (const auto& areaLight : area_light_list)
 		{
+			areaLight.second->ApplyAllTransform();
 			areaLight.second->RenderPolygon(GetActiveCamera().get());
+			areaLight.second->is_Uniform_changed = false;
+			areaLight.second->o_shader->is_shader_changed = false;
 		}
 
 		/////////    DEBUG MESHES    /////////
@@ -483,9 +487,13 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	r_light_data.ParseLightData(light_list);
 }
 
-void Renderer::UseAreaLight(std::shared_ptr<AreaLight> areaLight)
+void Renderer::UseAreaLight(std::shared_ptr<AreaLight> al)
 {
-	area_light_list[0] = areaLight;
+	if (area_light_list.find(al->GetObjectID()) != area_light_list.end())
+		return;
+
+	is_GOlist_changed = true;
+	area_light_list[al->GetObjectID()] = al;
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)

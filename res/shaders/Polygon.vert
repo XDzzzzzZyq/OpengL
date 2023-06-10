@@ -10,11 +10,7 @@ uniform mat4 U_obj_trans;
 uniform mat4 U_ProjectM;
 
 void main() {
-	//gl_Position = U_ProjectM * U_cam_trans * U_obj_trans * vec4(position, 1.0f);
-	gl_Position = vec4(position, 0.0f, 1.0f);
-
-	//normal_color = vec4(normalize(mat3(U_obj_trans) * normal), 1.0f);
-	//pix_pos = vec3(U_obj_trans * vec4(position, 1.0f));
-	normal_color = vec4(0.0f, 0.0f, 1.0f, 1.0f);
-	pix_pos = vec3(position, 10.0f);
+	gl_Position = U_ProjectM * U_cam_trans * U_obj_trans * vec4(position, 0.0f, 1.0f);
+	pix_pos = vec3(gl_Position);
+	normal_color = U_ProjectM * U_cam_trans * U_obj_trans * vec4(0, 0, 1.0f, 0.0f);
 };

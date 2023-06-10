@@ -12,6 +12,7 @@ layout(location = 7) out vec4 MASKcolor;
 in vec3 pix_pos;
 in vec4 normal_color;
 
+uniform vec3 light_color;
 uniform float blen;
 uniform vec3 ID_color;
 uniform vec3 RAND_color;
@@ -23,6 +24,6 @@ void main() {
 	NORMALcolor = normal_color;
 	POScolor = vec4(pix_pos, 1);
 	MASKcolor = vec4(1, is_selected, 0, 1);
-	ALBEDOcolor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	ALBEDOcolor = vec4(light_color, 1.0f);
 	MRSEcolor = vec4(1, blen, 1, 0);
 };

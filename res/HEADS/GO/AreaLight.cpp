@@ -2,17 +2,10 @@
 #include "support.h"
 #include <numeric>
 
-AreaLight::AreaLight()
+AreaLight::AreaLight(std::vector<float> &VertData, const glm::vec3 &light_color) : light_color{light_color}
 {
-	//o_type = GO_MESH;
-	//o_name = read.name;
-
-	std::vector<float> VertData = {
-		0.0f, 0.0f,
-		0.5f, 0.0f,
-		0.5f, 0.5f,
-		0.0f, 0.5f
-	};
+	o_type = GO_AREA_LIGHT;
+	o_name = "Area Light";
 
 	std::vector<GLuint> indexArray = std::vector<GLuint>{0, 1, 2, 0, 2, 3};
 
@@ -30,7 +23,7 @@ AreaLight::AreaLight()
 
 AreaLight::~AreaLight()
 {
-	//DeleteObj();
+	DeletePolygon();
 }
 
 void AreaLight::RenderPolygon(Camera* cam)
@@ -71,6 +64,7 @@ void AreaLight::SetPolygonShader()
 	o_shader->InitShader = [&] {
 		o_shader->UseShader();
 
+		o_shader->SetValue("light_color", light_color);
 		o_shader->SetValue("blen", 0.5f);
 		o_shader->SetValue("RAND_color", id_color_rand);
 		o_shader->SetValue("ID_color", id_color);
@@ -79,28 +73,16 @@ void AreaLight::SetPolygonShader()
 	};
 }
 
-//void Mesh::SetTex(std::string _path, TextureType _type)
-//{
-//    o_tex = Texture(_path, _type ,GL_REPEAT);
-//}
+void AreaLight::DeletePolygon()
+{
+	if(o_shader)o_shader->UnuseShader();
+	o_index.Unbind();
+	o_vertArray.Unbind();
+	o_vertBuffer.Unbind();
 
-//void Mesh::SetCenter()
-//{
-//    SetPos(-center);
-//}
+	if(o_shader)o_shader->DelShad();
+	o_index.DelIndBuff();
+	o_vertBuffer.DelVertBuff();
+	o_vertArray.DelVertArr();
 
-//void Mesh::DeleteObj()
-//{
-//    if(o_tex)o_tex->Unbind();
-//    if(o_shader)o_shader->UnuseShader();
-//    o_index.Unbind();
-//    o_vertArry.Unbind();
-//    o_vertBuffer.Unbind();
-
-//    if(o_tex)o_tex->DelTexture();
-//    if(o_shader)o_shader->DelShad();
-//    o_index.DelIndBuff();
-//    o_vertBuffer.DelVertBuff();
-//    o_vertArry.DelVertArr();
-
-//}
+}
