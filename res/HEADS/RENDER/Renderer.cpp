@@ -273,7 +273,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		for (const auto& areaLight : area_light_list)
 		{
-			areaLight.second->ApplyAllTransform();
+			areaLight.second->ApplyTransform();
 			areaLight.second->RenderPolygon(GetActiveCamera().get());
 			areaLight.second->is_Uniform_changed = false;
 			areaLight.second->o_shader->is_shader_changed = false;
@@ -494,6 +494,8 @@ void Renderer::UseAreaLight(std::shared_ptr<AreaLight> al)
 
 	is_GOlist_changed = true;
 	area_light_list[al->GetObjectID()] = al;
+
+	r_light_data.ParseAreaLightData(area_light_list);
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "GL/glew.h"
 
 #include "VertexArray.h"
@@ -10,7 +12,6 @@
 
 #include "GameObject.h"
 #include "Camera.h"
-#include "Light.h"
 
 #include "Transform.h"
 
@@ -21,12 +22,14 @@ private:
 	VertexBuffer o_vertBuffer;
 	IndexBuffer o_index;
 
-	glm::vec3 light_color;
-
 public:
+	std::vector<float> verts;
+	glm::vec3 light_color;
+	float light_power;
+	bool use_shadow;
 
 	mutable std::optional<RenderShader> o_shader;
-	AreaLight(std::vector<float> &VertData, const glm::vec3 &light_color);
+	AreaLight(const std::vector<float> &verts, const glm::vec3 &light_color = {1.0f, 1.0f, 1.0f}, float light_power = 1.0f, bool useShadow = true);
 	~AreaLight();
 
 	void RenderPolygon(Camera* cam);

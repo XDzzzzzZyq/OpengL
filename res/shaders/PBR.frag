@@ -31,6 +31,14 @@ struct SpotLight{
 	float outer_cutoff;
 };
 
+struct AreaLight{
+	vec3 color;
+
+	float power;
+	int use_shadow;
+	int n;
+};
+
 layout(std430, binding = 0) buffer point_array {
 	PointLight point_lights[];
 };
@@ -40,10 +48,17 @@ layout(std430, binding = 1) buffer sun_array {
 layout(std430, binding = 2) buffer spot_array {
 	SpotLight  spot_lights[];
 };
+layout(std430, binding = 3) buffer area_array {
+    AreaLight  area_lights[];
+};
+layout(std430, binding = 4) buffer area_verts_array {
+    vec3       area_verts[];
+};
 layout(std140) uniform SceneInfo {
 	int point_count;
 	int sun_count;
 	int spot_count;
+	int area_count;
 } scene_info;
 
 // passes
@@ -261,6 +276,11 @@ void main(){
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
+	}
+
+	for (uint i=0; i<scene_info.area_count; i++){
+	    AreaLight light = area_lights[i];
+	    Light_res = light.color;
 	}
 
 	/* [Block : IBL] */

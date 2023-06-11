@@ -2,14 +2,15 @@
 #include "support.h"
 #include <numeric>
 
-AreaLight::AreaLight(std::vector<float> &VertData, const glm::vec3 &light_color) : light_color{light_color}
+AreaLight::AreaLight(const std::vector<float> &verts, const glm::vec3 &light_color, float light_power, bool use_shadow)
+	: verts(verts), light_color{light_color}, light_power{light_power}, use_shadow{use_shadow}
 {
 	o_type = GO_AREA_LIGHT;
 	o_name = "Area Light";
 
 	std::vector<GLuint> indexArray = std::vector<GLuint>{0, 1, 2, 0, 2, 3};
 
-	o_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
+	o_vertBuffer = VertexBuffer(this->verts.data(), this->verts.size() * sizeof(float));
 
 	BufferLayout layout;
 	layout.Push<float>(2); // 2D position

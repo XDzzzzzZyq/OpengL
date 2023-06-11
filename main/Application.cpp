@@ -121,7 +121,7 @@ int Application::Run()
 		5.0f, 5.0f,
 		0.0f, 5.0f
 	};
-	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f));
+	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
 	areaLight1->SetPos({ 2.0f, -3.0f, -6.0f });
 	areaLight1->SetRot(glm::vec3(-60, 20, 20));
 	renderer.UseAreaLight(areaLight1);
