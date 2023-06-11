@@ -222,12 +222,10 @@ int Application::Run()
 		glViewport(0, 0, view_size.x, view_size.y);
 		camera->ChangeCamRatio(view_size);
 		renderer.FrameBufferResize(0, view_size);
-		UI.FindImguiItem("Viewport", "Viewport")->ResetSize(view_size);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
-		UI.FindImguiItem("CompShader", "Viewport")->ResetSize(UI.FindImguiLayer("CompShader")->uly_size + ImVec2(10, 10));
 		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_IBL_spec.GetTexID());
 	};
 	UI.ParaUpdate = [&] {
