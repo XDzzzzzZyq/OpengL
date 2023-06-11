@@ -26,14 +26,17 @@ enum TextureType
 class Texture
 {
 private:
+
 	static std::string root_dir;
 
 private:
+
 	int im_w = 0, im_h = 0, im_bpp = 0;
 	std::string tex_path;
 	GLuint tex_ID = 0;
 
 public:
+
 	TextureType tex_type = TextureType::NONE_TEXTURE;
 	GLuint tex_slot_offset = 0;
 
@@ -52,6 +55,7 @@ public:
 public:
 	void Bind(GLuint slot = -1) const;
 	void BindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE, GLuint _level = 0) const;
+	void BindU(GLuint slot = -1) const;
 	void UnbindC(GLuint slot = -1, GLuint read_or_write = GL_READ_WRITE, GLuint _level = 0) const;
 	void Unbind() const;
 
@@ -63,6 +67,8 @@ public:
 
 public:
 	inline static std::tuple<GLuint, GLuint, GLuint> ParseFormat(TextureType _type);
+	template<GLuint Type>
+	inline static void SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s = 0, GLuint _warp_t = 0, GLuint _lev_min = 0, GLuint _lev_max = 0);
 
 public: // for texture processing
 	void GenIrradiaceConvFrom(GLuint _Tar_ID);

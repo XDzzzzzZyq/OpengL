@@ -28,11 +28,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		// std::cout << Tex_ID << std::endl;
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR, Tile_type, Tile_type, 0, 4);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
 		glTexStorage2D(GL_TEXTURE_2D, 1, interlayout, im_w, im_h);
@@ -40,8 +36,6 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
 		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
@@ -66,10 +60,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		stbi_set_flip_vertically_on_load(0);
 		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 1);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
 		glTexStorage2D(GL_TEXTURE_2D, 1, interlayout, im_w, im_h);
@@ -93,10 +84,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	case IBL_TEXTURE:
 		m_buffer_f = stbi_loadf(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 8);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
 		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
@@ -104,8 +92,6 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 8);
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
 		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
@@ -155,8 +141,7 @@ Texture::Texture(GLuint Tile_type, int x, int y)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST, GL_REPEAT, GL_REPEAT);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -168,10 +153,7 @@ Texture::Texture(int _w, int _h, GLuint _layout, void* _ptr)
 	glGenTextures(1, &tex_ID);
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, 1);
 
 	switch (_layout)
 	{
@@ -237,8 +219,7 @@ void Texture::Resize(float x, float y)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST);
 }
 
 void Texture::Bind(GLuint slot) const
@@ -260,6 +241,13 @@ void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE
 	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
 
 	glBindImageTexture(slot, tex_ID, 0, is_array, 0, read_or_write, layout);
+}
+
+void Texture::BindU(GLuint slot /*= -1*/) const
+{
+	if (slot == -1) slot = tex_type;
+
+	glBindTextureUnit(slot, tex_ID);
 }
 
 void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE*/, GLuint _level /*= 0*/) const
@@ -302,6 +290,25 @@ std::tuple<GLuint, GLuint, GLuint> Texture::ParseFormat(TextureType _type)
 	}
 }
 
+template<GLuint Type>
+void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s, GLuint _warp_t, GLuint _lev_min, GLuint _lev_max)
+{
+	glBindTexture(Type, _id);
+
+	glTexParameteri(Type, GL_TEXTURE_MIN_FILTER, _fil_min);
+	glTexParameteri(Type, GL_TEXTURE_MAG_FILTER, _fil_max);
+
+	if (_warp_s * _warp_t != 0) {
+		glTexParameteri(Type, GL_TEXTURE_WRAP_S, _warp_s);
+		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_t);
+	}
+
+	if (_lev_min + _lev_max != 0) {
+		glTexParameteri(Type, GL_TEXTURE_BASE_LEVEL, _lev_min);
+		glTexParameteri(Type, GL_TEXTURE_MAX_LEVEL, _lev_max);
+	}
+}
+
 void Texture::GenIrradiaceConvFrom(GLuint _Tar_ID)
 {
 	int w, h;
@@ -334,14 +341,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 	glGenTextures(1, &tex_ID);		//for storage
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, max_inter - 1);
-
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
 
 	im_w = _tar_w; im_h = _tar_h; tex_type = _tar_type;
 	auto [interlayout, layout, type] = Texture::ParseFormat(_tar_type);
@@ -384,13 +384,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 
 	glBindTexture(GL_TEXTURE_2D, _tar_ID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRROR_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRROR_CLAMP_TO_EDGE);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
+	Texture::SetTexParam<GL_TEXTURE_2D>(_tar_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_MIRROR_CLAMP_TO_EDGE, GL_MIRROR_CLAMP_TO_EDGE, 0, 4);
 
 	static ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
 
@@ -467,10 +461,7 @@ void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 	glGenTextures(1, &id);//for storage
 	glBindTexture(GL_TEXTURE_2D_ARRAY, id);
 
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	Texture::SetTexParam<GL_TEXTURE_2D>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, 6);
 
 	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, 6);
 
