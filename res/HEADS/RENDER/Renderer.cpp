@@ -206,8 +206,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/* Check at least one camera and environment */
 
-	//if (cam_list.find(0) == cam_list.end()) _ASSERT("NONE ACTIVE CAMERA");
-	//if (envir_list.find(0) == envir_list.end()) _ASSERT("NONE ACTIVE ENVIRONMENT");
+	if (cam_list.find(0) == cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
+	if (envir_list.find(0) == envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
 

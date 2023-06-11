@@ -62,7 +62,7 @@ int Application::Run()
 	renderer.UseCamera(camera);
 
 	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("res/obj/monkey2.obj");
+		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("monkey2.obj");
 	go1->SetObjShader("testS", "Rasterization");
 	go1->SetTex("avatar2.png", RGBA_TEXTURE);
 	go1->SetCenter();
@@ -70,7 +70,7 @@ int Application::Run()
 	renderer.UseMesh(go1);
 
 	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("res/obj/torus.obj");
+		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
 	go2->SetTex("avatar1.png", RGBA_TEXTURE);
 	go2->SetCenter();
@@ -81,11 +81,20 @@ int Application::Run()
 	renderer.UseMesh(go2);
 
 	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("res/obj/UVsphere.obj");
+		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("UVsphere.obj");
 	go3->SetObjShader("testS", "Rasterization");
 	go3->SetPos({ -8,0,0 });
 	go3->SetScale({ 3,3,3 });
 	renderer.UseMesh(go3);
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	go4->SetObjShader("testS", "Rasterization");
+	go4->SetTex("rough.png", RGBA_TEXTURE);
+	go4->SetPos({ 0,-7,0 });
+	go4->SetScale({ 2,2,2 });
+	go4->SetRot({ 0,90,90 });
+	renderer.UseMesh(go4);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -106,9 +115,9 @@ int Application::Run()
 	renderer.UseLight(sunLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
-	std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
+		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
 	spotLight1->SetRot(glm::vec3(45));
-	spotLight1->SetPos(glm::vec3(2.5));
+	spotLight1->SetPos({ 6,-6,0 });
 	spotLight1->SetCutoff(60);
 	spotLight1->SetOuterCutoff(80);
 	spotLight1->SetPower(50);
@@ -118,6 +127,12 @@ int Application::Run()
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
 	line->PushDebugLine(5, 5, 5);
 	renderer.UseDebugLine(line);
+
+	DEBUG("\n---------------LINE----------------")
+		std::shared_ptr<DebugLine> line2 = std::make_shared<DebugLine>();
+	line2->PushDebugLines({ {0,0,0} , {0,0,1} });
+	line2->SetParent(spotLight1->GetTransformPtr(), false);
+	renderer.UseDebugLine(line2);
 
 	DEBUG("\n---------------ENVIR----------------")
 		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
@@ -152,7 +167,7 @@ int Application::Run()
 	DEBUG("-------------------------------")
 		/////////////////////////////////
 
-	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
@@ -188,8 +203,8 @@ int Application::Run()
 		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
 		renderer.GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
 		renderer.r_using_fxaa = !renderer.r_using_fxaa;
-		if(EventListener::active_shader) DEBUG(EventListener::active_shader->shader_struct_list[1].Main);
-		//DEBUG(renderer.r_using_fxaa)
+		if (EventListener::active_shader) { DEBUG(EventListener::active_shader->shader_struct_list[1].Main) }
+			//DEBUG(renderer.r_using_fxaa)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = xdzm::rand3n(8.65f);
@@ -273,9 +288,13 @@ int Application::Run()
 		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
 		pointLight2->SetPower((rotateZ + 50) * power);
 
-		sunLight1->SetRot1D<2>(Radius * 360);
+		sunLight1->SetRot1D<2>(Radius * 36);
 
-		spotLight1->SetRot1D<1>(Radius * 360);
+		spotLight1->SetRot1D<2>(Radius * 36);
+		spotLight1->SetCutoff(rotateY);
+		spotLight1->SetOuterCutoff(rotateZ);
+		spotLight1->SetPower(power * 40 + 5);
+		spotLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
@@ -291,7 +310,7 @@ int Application::Run()
 		glfwPollEvents();
 	}
 	DEBUG(std::to_string(1000 / AvTime.result) + "ms")
-	std::cout << std::endl << "[ Finished ]" << std::endl;
+		std::cout << std::endl << "[ Finished ]" << std::endl;
 	std::cout << GameObject::count << " object(s)" << std::endl;
 
 	return 0;

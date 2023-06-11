@@ -363,7 +363,10 @@ void RenderShader::LocalDebug() const
 ComputeShader::ComputeShader(const std::string& name)
 	:comp_name(name)
 {
-	std::ifstream Stream(ShaderLib::folder_root + name + ShaderLib::file_type[COMPUTE_SHADER]);
+
+	std::string file_name = name.find(ShaderLib::folder_root) == std::string::npos ? ShaderLib::folder_root + name + ShaderLib::file_type[COMPUTE_SHADER] : name;
+
+	std::ifstream Stream(file_name);
 	std::string Cache, Line;
 	while (getline(Stream, Line))
 		Cache += Line+"\n";

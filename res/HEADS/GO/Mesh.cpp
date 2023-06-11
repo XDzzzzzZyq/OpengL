@@ -2,11 +2,14 @@
 #include "support.h"
 #include <numeric>
 
+std::string Mesh::obj_file_root = "res/obj/";
 
 Mesh::Mesh(const std::string& path)
 {
 	o_type = GO_MESH;
-	read = ReadObj(path);
+
+	std::string path_ = path.find(Mesh::obj_file_root) == std::string::npos ? Mesh::obj_file_root + path : path;
+	read = ReadObj(path_);
 
 	o_name = read.name;
 

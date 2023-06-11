@@ -25,7 +25,6 @@ void ImguiNodes::UpdateStates()
 		const Nodes::ParaLink tar_link = is_connected ? Nodes::n_in_link[&i_p] : Nodes::ParaLink{};
 		if (!is_connected) i_off++;
 
-		//m_states[&i_p] = { tar_o, is_connected, i, tar_link, std::to_string((int)&i_p) + "p", std::to_string((int)&i_p) + "s" };
 		m_states[&i_p] = { tar_o, is_connected, i, tar_link, std::to_string(reinterpret_cast<std::uintptr_t>(&i_p)) + "p", std::to_string(reinterpret_cast<std::uintptr_t>(&i_p)) + "s" };
 
 		i++;
