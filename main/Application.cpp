@@ -122,8 +122,8 @@ int Application::Run()
 		0.0f, 2.0f
 	};
 	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
-	areaLight1->SetPos({ -1.0f, 0.0f, -4.5f });
-	areaLight1->SetRot(glm::vec3(-30, 0.0f, 0.0f));
+	areaLight1->SetPos({ 0.0f, -3.0f, -4.0f });
+	areaLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
 	renderer.UseAreaLight(areaLight1);
 
 	DEBUG("\n---------------LINE----------------")
@@ -153,6 +153,13 @@ int Application::Run()
 	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
+
+	// Pass LTC matrices for area lights
+	// TODO: Move this part to a more appropriate place
+	Texture m1{64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1)};
+	Texture m2{64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2)};
+	pps1->AddBinding("LTC1",                m1.GetTexID());
+	pps1->AddBinding("LTC2",                m2.GetTexID());
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")

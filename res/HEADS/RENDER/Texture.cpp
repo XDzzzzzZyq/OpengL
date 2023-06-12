@@ -161,7 +161,7 @@ Texture::Texture(GLuint Tile_type, int x, int y)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Texture::Texture(int _w, int _h, GLuint _layout, void* _ptr)
+Texture::Texture(int _w, int _h, GLuint _layout, const void* _ptr)
 	:im_w(_w), im_h(_h)
 {
 
@@ -176,19 +176,19 @@ Texture::Texture(int _w, int _h, GLuint _layout, void* _ptr)
 	switch (_layout)
 	{
 	case GL_RG8:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_UNSIGNED_BYTE, (GLubyte*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_UNSIGNED_BYTE, (const GLubyte*)_ptr);
 		tex_type = RG_TEXTURE;
 		break;
 	case GL_RG16F:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_FLOAT, (GLfloat*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_FLOAT, (const GLfloat*)_ptr);
 		tex_type = RG_TEXTURE;
 		break;
 	case GL_RGB8:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_UNSIGNED_BYTE, (const GLubyte*)_ptr);
 		tex_type = RGB_TEXTURE;
 		break;
 	case GL_RGB16F:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_FLOAT, (GLfloat*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_FLOAT, (const GLfloat*)_ptr);
 		tex_type = RGB_TEXTURE;
 		break;
 	case GL_RGBA8:
