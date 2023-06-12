@@ -87,6 +87,14 @@ in vec2 screen_uv;
 
 const float PI = 3.1415926;
 
+// LTC lookup tables
+uniform sampler2D LTC1;
+uniform sampler2D LTC2;
+
+const float LUT_SIZE = 64.0;
+const float LUT_SCALE = (LUT_SIZE - 1.0) / LUT_SIZE;
+const float LUT_BIAS = 0.5 / LUT_SIZE;
+
 float ACESFilm(float x)
 {
 	float a = 2.51f;
@@ -240,9 +248,17 @@ vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
 	float len = length(vsum);
 	// Projection on tangent surface
 	float z = vsum.z / len;
-	if (behind) z = 0;
+	if (behind) z = -z;
 
-	return vec3(z);
+	vec2 uv = vec2(z * 0.5f + 0.5f, len);
+	uv = uv * LUT_SCALE + LUT_BIAS;
+
+	// Fetch the form factor for horizon clipping
+	float scale = texture(LTC2, uv).w;
+	float sum = len * scale;
+	if (behind) sum = 0.0f;
+
+	return vec3(sum);
 }
 
 void main(){
@@ -342,8 +358,30 @@ void main(){
 	for (uint i = 0; i < scene_info.area_count; i++){
 	    AreaLight light = area_lights[i];
 
-		vec3 Diffuse = LTC_Evaluate(Normal, -CamRay, Pos, mat3(1), i0, light.n);
-		Light_res += Diffuse;
+		float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
+		vec2 uv = vec2(Roughness, sqrt(1.0f - dotNV));
+		uv = uv * LUT_SCALE + LUT_BIAS;
+
+		// Get 4 parameters for inverse M
+		vec4 t1 = texture(LTC1, uv);
+		// Get 2 parameters for Fresnel calculation
+		vec4 t2 = texture(LTC2, uv);
+
+		mat3 Minv = mat3(
+			vec3(t1.x, 0, t1.y),
+			vec3(   0, 1,    0),
+			vec3(t1.z, 0, t1.w)
+		);
+
+		vec3 diffuse = LTC_Evaluate(Normal, -CamRay, Pos, mat3(1), i0, light.n);
+		vec3 specular = LTC_Evaluate(Normal, -CamRay, Pos, Minv, i0, light.n);
+
+		// GGX BRDF shadowing and Fresnel
+		// NOTE: I am not certain about mixing these two terms with the Specular factor
+		//       This is simply following the implementation on learnopengl.com
+		specular *= mix(t2.x, t2.y, Specular);
+
+		Light_res += light.power * light.color * (specular + Albedo * diffuse);
 
 		i0 += light.n;
 	}

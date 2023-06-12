@@ -39,7 +39,7 @@ public:
 
 	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type); // using tex_type as its slot, but you can change it if you want
 	Texture(GLuint Tile_type, int x, int y);									 // for FBO
-	Texture(int _w, int _h, GLuint _layout, void* _ptr);						 // for generated texture
+	Texture(int _w, int _h, GLuint _layout, const void* _ptr);						 // for generated texture
 	Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name);
 	Texture();
 	~Texture();
