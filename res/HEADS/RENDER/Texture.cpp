@@ -20,7 +20,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	if (tex_path.find(Texture::root_dir) == std::string::npos)
 		tex_path = Texture::root_dir + tex_path;
 
-	auto [interlayout, layout, type] = Texture::ParseFormat(tex_type);
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
 
 	switch (tex_type)
 	{
@@ -215,7 +215,7 @@ void Texture::Resize(float x, float y)
 	im_w = x;
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	auto [interlayout, layout, type] = Texture::ParseFormat(tex_type);
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
 
@@ -227,7 +227,7 @@ void Texture::Bind(GLuint slot) const
 	if (slot == -1)
 		slot = tex_type + tex_slot_offset;
 	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, tex_ID);
+	glBindTexture(std::get<3>(Texture::ParseFormat(tex_type)), tex_ID);
 	//Tex_slot = slot;
 }
 
@@ -236,7 +236,7 @@ void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE
 	if (slot == -1)
 		slot = tex_type + tex_slot_offset;
 
-	auto [layout, _1, _2] = Texture::ParseFormat(tex_type);
+	auto [layout, _1, _2, _3] = Texture::ParseFormat(tex_type);
 
 	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
 
@@ -255,7 +255,7 @@ void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRI
 	if (slot == -1)
 		slot = tex_type + tex_slot_offset;
 
-	auto [layout, _1, _2] = Texture::ParseFormat(tex_type);
+	auto [layout, _1, _2, _3] = Texture::ParseFormat(tex_type);
 
 	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
 
@@ -264,34 +264,36 @@ void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRI
 
 void Texture::Unbind() const
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(std::get<3>(Texture::ParseFormat(tex_type)), 0);
 	//glActiveTexture(0);
 }
 
-std::tuple<GLuint, GLuint, GLuint> Texture::ParseFormat(TextureType _type)
+inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 {
 	switch (_type)
 	{
 	case RGBA_TEXTURE:
 	case BUFFER_TEXTURE:
 	case SPIRIT_TEXURE:
-		return { GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE };
+		return { GL_RGBA8  , GL_RGBA, GL_UNSIGNED_BYTE, GL_TEXTURE_2D		};
 	case RGB_TEXTURE:
-		return { GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE };
+		return { GL_RGB8   , GL_RGB,  GL_UNSIGNED_BYTE, GL_TEXTURE_2D		};
 	case IBL_TEXTURE:
 	case HDR_BUFFER_TEXTURE:
-		return { GL_RGBA16F, GL_RGBA, GL_FLOAT };
+		return { GL_RGBA16F, GL_RGBA, GL_FLOAT,         GL_TEXTURE_2D		};
+	case IBL_CUBE_TEXTURE:
+		return { GL_RGBA16F, GL_RGBA, GL_FLOAT,         GL_TEXTURE_CUBE_MAP };
 	case RG_TEXTURE:
 	case FLOAT_BUFFER_TEXTURE:
-		return { GL_RG16F, GL_RG, GL_FLOAT };
+		return { GL_RG16F,	 GL_RG,	  GL_FLOAT,			GL_TEXTURE_2D		};
 	default:
 		assert(false && "WRONG FORMAT");
-		return { GL_NONE, GL_NONE ,GL_NONE };
+		return { GL_NONE,	 GL_NONE ,GL_NONE,			GL_NONE				};
 	}
 }
 
-template<GLuint Type>
-void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s, GLuint _warp_t, GLuint _lev_min, GLuint _lev_max)
+template<GLuint Type> 
+inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s /*= 0*/, GLuint _warp_t /*= 0*/, GLuint _lev_min /*= 0*/, GLuint _lev_max /*= 0*/, GLuint _warp_r /*= 0*/)
 {
 	glBindTexture(Type, _id);
 
@@ -302,6 +304,9 @@ void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _
 		glTexParameteri(Type, GL_TEXTURE_WRAP_S, _warp_s);
 		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_t);
 	}
+
+	if(_warp_r != 0)
+		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_r);
 
 	if (_lev_min + _lev_max != 0) {
 		glTexParameteri(Type, GL_TEXTURE_BASE_LEVEL, _lev_min);
@@ -327,6 +332,16 @@ void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)
 	GenIrradianceConv(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type);
 }
 
+void Texture::GenCubeMapFrom(GLuint _Tar_ID, size_t res)
+{
+	GenCubeMap(_Tar_ID, res);
+}
+
+void Texture::GenCubeMapFrom(const Texture& _Tar_Tex, size_t res)
+{
+	GenCubeMap(_Tar_Tex.GetTexID(), res);
+}
+
 void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	Timer timer("Irradiance Convolution");
@@ -344,7 +359,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
 
 	im_w = _tar_w; im_h = _tar_h; tex_type = _tar_type;
-	auto [interlayout, layout, type] = Texture::ParseFormat(_tar_type);
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
 	LOOP(8) {
 		int lod_w = im_w / pow(2, i);
@@ -398,6 +413,30 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 	irradiance_conv.UseShader();
 	irradiance_conv.SetValue("max_step", 32);
 	irradiance_conv.RunComputeShader(w/4, h/4);
+}
+
+void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_CUBE_TEXTURE*/)
+{
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+
+	if (tex_ID != 0) DelTexture();   //reset
+
+	glGenTextures(1, &tex_ID);		//for storage
+	Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+	tex_type = _tar_type;
+
+	DEBUG(std::get<3>(ParseFormat(tex_type))==GL_TEXTURE_CUBE_MAP)
+
+	LOOP(6)
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
+
+	static ComputeShader to_cubemap = ComputeShader("toCubeMap");
+
+	glBindImageTexture(0, tex_ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
+
+	to_cubemap.UseShader();
+	to_cubemap.RunComputeShader(_tar_res / 4, _tar_res / 4);
+
 }
 
 std::unordered_map<std::string, std::shared_ptr<Texture>> TextureLib::t_tex_list{};
@@ -461,7 +500,7 @@ void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 	glGenTextures(1, &id);//for storage
 	glBindTexture(GL_TEXTURE_2D_ARRAY, id);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, 6);
+	Texture::SetTexParam<GL_TEXTURE_2D_ARRAY>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, 6);
 
 	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, 6);
 

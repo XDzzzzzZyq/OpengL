@@ -1,0 +1,15 @@
+#version 460 core
+
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+//layout(rgba16f, binding = 0) uniform sampler2D U_etangular;
+layout(rgba16f, binding = 0) uniform imageCube U_result;
+
+vec3 genDirFromAngle(vec2 angle){
+	return vec3(cos(angle.y)*cos(angle.x), cos(angle.y)*sin(angle.x), sin(angle.y));
+}
+
+void main(){
+	ivec3 texCoord = ivec3(gl_GlobalInvocationID.xyz);
+
+	imageStore(U_result, texCoord, vec4(1, 0.5, 0, 1));
+}
