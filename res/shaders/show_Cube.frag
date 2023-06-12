@@ -42,4 +42,5 @@ void main(){
 	Output = vec4(0);
 
 	Output = vec4(texture(Envir_Texture_spec, Normal).rgb, 1);
+	//Output = vec4(Normal, 1);
 }

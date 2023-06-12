@@ -417,6 +417,9 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 
 void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_CUBE_TEXTURE*/)
 {
+
+	// https://learnopengl.com/Advanced-OpenGL/Cubemaps
+
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
 	if (tex_ID != 0) DelTexture();   //reset
@@ -433,9 +436,11 @@ void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type 
 	static ComputeShader to_cubemap = ComputeShader("toCubeMap");
 
 	glBindImageTexture(0, tex_ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
+	glBindImageTexture(1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
 
 	to_cubemap.UseShader();
-	to_cubemap.RunComputeShader(_tar_res / 4, _tar_res / 4);
+	to_cubemap.SetValue("resol", (int)_tar_res);
+	to_cubemap.RunComputeShader(_tar_res / 4, _tar_res / 4, 6);
 
 }
 
