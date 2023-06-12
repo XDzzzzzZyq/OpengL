@@ -103,7 +103,7 @@ void LightArrayBuffer::Init()
 	sun_buffer        = StorageBuffer(CUSTOM_LIST, 1);
 	spot_buffer       = StorageBuffer(CUSTOM_LIST, 2);
 	area_buffer       = StorageBuffer(CUSTOM_LIST, 3);
-	area_verts_buffer = StorageBuffer(VEC3_LIST, 4);
+	area_verts_buffer = StorageBuffer(CUSTOM_LIST, 4);
 	info              = UniformBuffer<SceneInfo>(5);
 }
 
@@ -186,13 +186,15 @@ void LightArrayBuffer::ParseAreaLightData(const std::unordered_map<int, std::sha
 
 			al.second->light_power,
 			(int)al.second->use_shadow,
-			(int)v.size()
+			(int)v.size() / 2
 			});
 
 		al.second->ApplyTransform();
 		for (size_t i = 0; i < v.size(); i += 2)
 		{
-			area_verts.emplace_back(glm::vec3(al.second->o_Transform * glm::vec4(v[i], v[i + 1], 0.0f, 1.0f)));
+			area_verts.emplace_back(AreaVertStruct{
+				glm::vec3(al.second->o_Transform * glm::vec4(v[i], v[i + 1], 0.0f, 1.0f))
+				});
 		}
 	}
 

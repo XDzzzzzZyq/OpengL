@@ -39,6 +39,10 @@ struct AreaLight{
 	int n;
 };
 
+struct AreaVert{
+	vec3 v;
+};
+
 layout(std430, binding = 0) buffer point_array {
 	PointLight point_lights[];
 };
@@ -52,7 +56,7 @@ layout(std430, binding = 3) buffer area_array {
     AreaLight  area_lights[];
 };
 layout(std430, binding = 4) buffer area_verts_array {
-    vec3       area_verts[];
+    AreaVert   area_verts[];
 };
 layout(std140) uniform SceneInfo {
 	int point_count;
@@ -190,6 +194,57 @@ vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, flo
 	return kDd * Albedo / PI + numerator/denominator;
 }
 
+// Compute acos(dot(v1, v2)) * normalize(cross(v1, v2))
+// https://learnopengl.com/Guest-Articles/2022/Area-Lights
+vec3 IntegrateEdge(vec3 v1, vec3 v2)
+{
+	float x = dot(v1, v2);
+	float y = abs(x);
+
+	float a = 0.8543985 + (0.4965155 + 0.0145206*y)*y;
+    float b = 3.4175940 + (4.1616724 + y)*y;
+    float v = a / b;
+
+    float theta_sintheta = (x > 0.0) ? v : 0.5*inversesqrt(max(1.0 - x*x, 1e-7)) - v;
+
+    return cross(v1, v2)*theta_sintheta;
+}
+
+vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
+{
+	// Construct orthonormal basis around N
+	vec3 T1, T2;
+	T1 = normalize(V - N * dot(V, N));
+	T2 = cross(N, T1);
+	Minv = Minv * transpose(mat3(T1, T2, N));
+
+	// Integrate vector irradiance over the edges
+	vec3 vsum = vec3(0.0f);
+	for (int i = 0; i < n; ++i)
+	{
+		// Transform light direction from LTC to cosine weighted space
+		vec3 L0 = Minv * (area_verts[i0 + i].v - P);
+		vec3 L1 = Minv * (area_verts[i0 + (i + 1) % n].v - P);
+		L0 = normalize(L0);
+		L1 = normalize(L1);
+
+		vsum += IntegrateEdge(L0, L1);
+	}
+
+	// Check if the point is behind the light
+	vec3 dir = P - area_verts[i0].v;
+	vec3 lightNormal = cross(area_verts[i0 + 1].v - area_verts[i0].v, area_verts[i0 + 2].v - area_verts[i0].v);
+	bool behind = (dot(dir, lightNormal) < 0.0);
+
+	// Form factor
+	float len = length(vsum);
+	// Projection on tangent surface
+	float z = vsum.z / len;
+	if (behind) z = 0;
+
+	return vec3(z);
+}
+
 void main(){
 
 	/* [Block : DATA] */
@@ -263,7 +318,7 @@ void main(){
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
-	for(uint i = 0; i<scene_info.spot_count; i++){
+	for(uint i = 0; i < scene_info.spot_count; i++){
 		SpotLight light = spot_lights[i];
 		vec3 toLight = Pos - light.pos;
 		float dist = length(toLight);
@@ -278,9 +333,19 @@ void main(){
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
-	for (uint i=0; i<scene_info.area_count; i++){
+	// Remove after implementing area lights
+	Light_res = vec3(0.0f);
+
+	/* [Block : Area Lights] */
+
+	int i0 = 0;
+	for (uint i = 0; i < scene_info.area_count; i++){
 	    AreaLight light = area_lights[i];
-	    Light_res = light.color;
+
+		vec3 Diffuse = LTC_Evaluate(Normal, -CamRay, Pos, mat3(1), i0, light.n);
+		Light_res += Diffuse;
+
+		i0 += light.n;
 	}
 
 	/* [Block : IBL] */
@@ -304,7 +369,7 @@ void main(){
 	/* [Block : COMP] */
 
 	Output += vec4(Light_res, 0);
-	Output += vec4(IBL_res, 0);
+	//Output += vec4(IBL_res, 0);
 	Output *= AO;
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);

@@ -117,13 +117,13 @@ int Application::Run()
 	DEBUG("\n-------------AREA LIGHT-------------")
 	std::vector<float> alVertData = {
 		0.0f, 0.0f,
-		3.0f, 0.0f,
-		5.0f, 5.0f,
-		0.0f, 5.0f
+		1.0f, 0.0f,
+		2.0f, 2.0f,
+		0.0f, 2.0f
 	};
 	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
-	areaLight1->SetPos({ 2.0f, -3.0f, -6.0f });
-	areaLight1->SetRot(glm::vec3(-60, 20, 20));
+	areaLight1->SetPos({ -1.0f, 0.0f, -4.5f });
+	areaLight1->SetRot(glm::vec3(-30, 0.0f, 0.0f));
 	renderer.UseAreaLight(areaLight1);
 
 	DEBUG("\n---------------LINE----------------")

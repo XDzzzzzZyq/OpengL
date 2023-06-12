@@ -105,10 +105,16 @@ public:
 		alignas(4) int n{ 3 };
 	};
 
+	struct AreaVertStruct
+	{
+		alignas(16) glm::vec3 v{ 0, 0, 0 };
+	};
+
 	static const GLuint Sizeof_Point = sizeof(PointStruct);
 	static const GLuint Sizeof_Sun   = sizeof(SunStruct);
 	static const GLuint Sizeof_Spot  = sizeof(SpotStruct);
 	static const GLuint Sizeof_Area  = sizeof(AreaStruct);
+	static const GLuint Sizeof_AreaVert  = sizeof(AreaVertStruct);
 
 	struct SceneInfo {
 		int point_count{ 0 };
@@ -124,7 +130,7 @@ public:
 	std::vector<SunStruct> sun;
 	std::vector<SpotStruct> spot;
 	std::vector<AreaStruct> area;
-	std::vector<glm::vec3> area_verts;
+	std::vector<AreaVertStruct> area_verts;
 	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, area_verts_buffer;
 	UniformBuffer<SceneInfo> info;
 
