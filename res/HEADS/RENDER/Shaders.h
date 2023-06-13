@@ -101,6 +101,8 @@ public:
 	std::string comp_name;
 	GLuint comp_id;
 
+	static std::unordered_map<std::string, std::shared_ptr<ComputeShader>> comp_list;
+
 public:
 
 	ComputeShader(const std::string& name);
@@ -122,6 +124,10 @@ public:
 
 	inline GLuint getShaderID(ShaderType type) const override;
 	void LocalDebug() const override;
+
+public:
+
+	static const ComputeShader& ImportShader(std::string _name);
 
 };
 

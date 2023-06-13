@@ -366,6 +366,10 @@ void RenderShader::LocalDebug() const
 #endif
 }
 
+
+
+std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
+
 ComputeShader::ComputeShader(const std::string& name)
 	:comp_name(name)
 {
@@ -429,4 +433,13 @@ void ComputeShader::LocalDebug() const
 #ifdef _DEBUG
 	//DEBUG(comp_shader)
 #endif // _DEBUG
+}
+
+const ComputeShader& ComputeShader::ImportShader(std::string _name)
+{
+	if (comp_list.find(_name) != comp_list.end())
+		return *comp_list[_name].get();
+
+	comp_list[_name] = std::make_shared<ComputeShader>(_name);
+	return *comp_list[_name].get();
 }
