@@ -3,7 +3,7 @@
 // LTC1 is the inverse M
 // LTC2 is for (GGX norm, fresnel, 0(unused), sphere for horizon-clipping)
 
-constexpr inline float LTC1[] = {
+constexpr inline float LTC1_DATA[] = {
 	1, 0, 0, 2e-05,
 	1, 0, 0, 0.000503905,
 	1, 0, 0, 0.00201562,
@@ -4102,8 +4102,7 @@ constexpr inline float LTC1[] = {
 	0.996389, -0.0808124, 0.0489007, 1.6577,
 };
 
-
-constexpr inline float LTC2[] = {
+constexpr inline float LTC2_DATA[] = {
 	1, 0, 0, 0,
 	1, 7.91421e-31, 0, 0,
 	1, 1.04392e-24, 0, 0,

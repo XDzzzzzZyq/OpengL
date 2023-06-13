@@ -161,49 +161,50 @@ Texture::Texture(GLuint Tile_type, int x, int y)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Texture::Texture(int _w, int _h, GLuint _layout, const void* _ptr)
+Texture::Texture(int _w, int _h, GLuint _layout, const void* _ptr,
+	GLint _min_filter, GLint _mag_filter, GLint _wrap_s, GLint _wrap_t)
 	:im_w(_w), im_h(_h)
 {
 
 	glGenTextures(1, &tex_ID);
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _min_filter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _mag_filter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _wrap_s);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrap_t);
 
 	switch (_layout)
 	{
 	case GL_RG8:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_UNSIGNED_BYTE, (const GLubyte*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_UNSIGNED_BYTE, _ptr);
 		tex_type = RG_TEXTURE;
 		break;
 	case GL_RG16F:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_FLOAT, (const GLfloat*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_FLOAT, _ptr);
 		tex_type = RG_TEXTURE;
 		break;
 	case GL_RGB8:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_UNSIGNED_BYTE, (const GLubyte*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_UNSIGNED_BYTE, _ptr);
 		tex_type = RGB_TEXTURE;
 		break;
 	case GL_RGB16F:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_FLOAT, (const GLfloat*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_FLOAT, _ptr);
 		tex_type = RGB_TEXTURE;
 		break;
 	case GL_RGBA8:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, _ptr);
 		tex_type = BUFFER_TEXTURE;
 		break;
 	case GL_RGBA16F:
-		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_FLOAT, (GLfloat*)_ptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_FLOAT, _ptr);
 		tex_type = HDR_BUFFER_TEXTURE;
 		break;
 	default:
 	    assert(false && "WRONG LAYOUT");
 	}
 
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Texture::Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name)
@@ -456,6 +457,30 @@ TextureLib::TextureRes TextureLib::IBL_LUT()
 		return result;
 
 	t_tex_list[_name] = std::make_shared<Texture>("ibl_brdf_lut.png", RGBA_TEXTURE, GL_CLAMP);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::LTC1()
+{
+	const std::string _name = "LTC1";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr) return result;
+
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1_DATA), GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::LTC2()
+{
+	const std::string _name = "LTC2";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr) return result;
+
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2_DATA), GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 	return t_tex_list[_name];
 }

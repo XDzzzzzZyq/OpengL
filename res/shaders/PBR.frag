@@ -248,7 +248,8 @@ vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
 	float len = length(vsum);
 	// Projection on tangent surface
 	float z = vsum.z / len;
-	if (behind) z = -z;
+	// The value of z appears to be reversed during LUT lookup
+	if (!behind) z = -z;
 
 	vec2 uv = vec2(z * 0.5f + 0.5f, len);
 	uv = uv * LUT_SCALE + LUT_BIAS;
@@ -349,9 +350,6 @@ void main(){
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
-	// Remove after implementing area lights
-	Light_res = vec3(0.0f);
-
 	/* [Block : Area Lights] */
 
 	int i0 = 0;
@@ -407,7 +405,7 @@ void main(){
 	/* [Block : COMP] */
 
 	Output += vec4(Light_res, 0);
-	//Output += vec4(IBL_res, 0);
+	Output += vec4(IBL_res, 0);
 	Output *= AO;
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);

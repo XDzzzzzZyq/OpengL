@@ -154,12 +154,10 @@ int Application::Run()
 	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
 
-	// Pass LTC matrices for area lights
-	// TODO: Move this part to a more appropriate place
-	Texture m1{64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1)};
-	Texture m2{64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2)};
-	pps1->AddBinding("LTC1",                m1.GetTexID());
-	pps1->AddBinding("LTC2",                m2.GetTexID());
+	// Pass LTC matrix lookup tables for area lights
+	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
+	pps1->AddBinding("LTC1",                13);
+	pps1->AddBinding("LTC2",                14);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")

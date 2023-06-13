@@ -359,6 +359,8 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
+		TextureLib::LTC1()->Bind(13);
+		TextureLib::LTC2()->Bind(14);
 		r_light_data.Bind();
 		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
