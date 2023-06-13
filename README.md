@@ -75,7 +75,7 @@ Or, you can also open `CMakeLists.txt` as a CMake project in Visual Studio 2022 
 			- [x] Point light
 			- [x] Sun light
 			- [x] Spot light
-			- [ ] Area light
+			- [x] Area light (currently only support pure color convex polygon)
 		- [x] PBR IBL
 
 - [x] advanced StorageBuffer
