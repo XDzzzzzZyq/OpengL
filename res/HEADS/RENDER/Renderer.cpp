@@ -495,6 +495,11 @@ void Renderer::UseAreaLight(std::shared_ptr<AreaLight> al)
 
 	is_GOlist_changed = true;
 	area_light_list[al->GetObjectID()] = al;
+	is_GOlist_changed = true;
+	obj_list[al->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(al);
+	outline_list.push_back(OutlineElement(al->o_type, al->GetObjectID(), al->o_name, 0));
+	parent_index_list.push_back(-1);
+	name_buff[al->GetObjectID()] = al->o_name;
 
 	r_light_data.ParseAreaLightData(area_light_list);
 }
