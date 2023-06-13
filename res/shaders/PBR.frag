@@ -398,15 +398,14 @@ void main(){
 
 	/* [Block : EMIS] */
 
-	IBL_res += Emission * Emission_Color;
+	Output += vec4(Emission * Emission_Color, 0);
 	//Output = vec4(lut, 0, 1);
 
 
 	/* [Block : COMP] */
 
-	Output += vec4(Light_res, 0);
-	Output += vec4(IBL_res, 0);
-	Output *= AO;
+	Output += vec4(Light_res * AO, 0);
+	Output += vec4(IBL_res * AO, 0);
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
