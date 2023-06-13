@@ -1,0 +1,63 @@
+#version 460 core
+
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+
+layout(rgba16f, binding = 0) uniform imageCube U_result;
+layout(rgba16f, binding = 1) uniform image2D U_etangular;
+
+uniform int resol;
+
+vec2 genHdrUV(vec3 dir) {
+	vec2 uv = vec2(atan(dir.y, dir.x), asin(dir.z));
+	uv *= -vec2(0.15915494, 0.31830988);
+	uv += 0.5;
+	return uv;
+}
+
+vec2 re(vec2 uv){
+    uv.x = fract(uv.x);
+    uv.y = uv.y > 0 ? uv.y :  -uv.y;
+    uv.y = uv.y < 1 ? uv.y : 2-uv.y;
+
+    return uv;
+}
+
+void main(){
+
+	ivec3 texCoord = ivec3(gl_GlobalInvocationID.xyz);
+
+	vec2 uv = (gl_GlobalInvocationID.xy + 0.5)/float(resol);
+
+    vec3 dir = normalize(vec3(1, (uv-0.5)*2));
+    vec3 X = vec3(1, 0, 0);
+    vec3 Y = vec3(0, 1, 0);
+    vec3 Z = vec3(0, 0, 1);
+    /**/
+    switch(int(gl_GlobalInvocationID.z)){
+    case 0:
+        dir = mat3(Y, -Z, -X) * dir;
+        break;
+    case 1:
+        dir = mat3(-Y, Z, -X) * dir;
+        break;
+    case 2:
+        dir = mat3(X, Y, Z) * dir;
+        break;
+    case 3:
+        dir = mat3(-X, Y, -Z) * dir;
+        break;
+    case 4:
+        dir = mat3(Z, Y, -X) * dir;
+        break;
+    case 5:
+        dir = mat3(-Z, -Y, -X) * dir;
+        break;
+    }
+
+    dir = mat3(Y, -X, Z) * dir;
+
+    vec4 col = imageLoad(U_etangular, ivec2(genHdrUV(-dir)*imageSize(U_etangular)));
+    //col = vec4(vec3(gl_GlobalInvocationID.z/6.0), 1);
+    //col = vec4(uv, 0, 0);
+	imageStore(U_result, texCoord, col);
+}

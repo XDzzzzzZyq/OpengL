@@ -45,7 +45,7 @@ public:
 	bool fixed_size = false;
 	mutable bool is_size_changed = false;
 	mutable bool is_size_changed_b = true;
-	bool IsChangeEnd() const { return (is_size_changed == false) && (is_size_changed_b == true); }
+	bool IsResizingFin() const { return (is_size_changed == false) && (is_size_changed_b == true); }
 	mutable ImVec2 uly_size;
 	mutable ImVec2 uly_size_b;
 	ImVec2 GetLayerSize() const;
