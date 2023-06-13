@@ -181,7 +181,7 @@ float GeometrySmith(float NdotV, float NdotL, float k)
     return ggx1 * ggx2;
 }
 
-vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, float Specular, vec3 Albedo, vec3 F0){
+vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, vec3 Albedo, vec3 F0){
 	vec3 H = Vec3Bisector(L, V);
 	float HdotV = max(dot(V, L), 0);
 	float NdotH = max(dot(N, H), 0);
@@ -323,16 +323,16 @@ void main(){
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Attenuation * NdotL;
-		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
 		SunLight light = sun_lights[i];
 
-		vec3 L = light.dir;
+		vec3 L = -light.dir;
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.color * light.power * NdotL;
-		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 
 	for(uint i = 0; i < scene_info.spot_count; i++){
@@ -347,7 +347,7 @@ void main(){
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL;
-		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
+		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 
 	/* [Block : Area Lights] */
