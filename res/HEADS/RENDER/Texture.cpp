@@ -314,52 +314,47 @@ inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, G
 	}
 }
 
-void Texture::GenIrradiaceConvFrom(GLuint _Tar_ID)
-{
-	int w, h;
-	glBindTexture(GL_TEXTURE_2D, _Tar_ID);
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);// DEBUG(w)
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);// DEBUG(h)
-
-	if (_Tar_ID == tex_ID)
-		DEBUG("are you sure about that?");
-
-	GenIrradianceConv(_Tar_ID, w, h);
-}
-
 void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)
 {
 	GenIrradianceConv(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type);
 }
 
-void Texture::GenCubeMapFrom(GLuint _Tar_ID, size_t res)
+void Texture::GenIBLDiffuseFrom(const Texture& _Tar_Tex)
 {
-	GenCubeMap(_Tar_ID, res);
+	GenIBLDiffuse(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type);
+}
+
+void Texture::GenIBLSpecularFrom(const Texture& _Tar_Tex)
+{
+	GenIBLSpecular(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type);
 }
 
 void Texture::GenCubeMapFrom(const Texture& _Tar_Tex, size_t res)
 {
-	GenCubeMap(_Tar_Tex.GetTexID(), res);
+	GenCubeMap(_Tar_Tex.GetTexID(), res, _Tar_Tex.tex_type);
 }
 
 void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
-	Timer timer("Irradiance Convolution");
+	assert(false && "this function has been abandoned");
+}
 
+void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
+{
 	//////////////////   Specular Importance Sampling   //////////////////
 	//			https://learnopengl.com/PBR/IBL/Specular-IBL			//
 
 	const int max_inter = 8;
 
-	if (tex_ID != 0)DelTexture();   //reset
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	glBindTexture(GL_TEXTURE_2D, ID);
 
-	glGenTextures(1, &tex_ID);		//for storage
-	glBindTexture(GL_TEXTURE_2D, tex_ID);
+	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
 	im_w = _tar_w; im_h = _tar_h; tex_type = _tar_type;
-	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
 	LOOP(8) {
 		int lod_w = im_w / pow(2, i);
@@ -371,6 +366,7 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 		glTexImage2D(GL_TEXTURE_2D, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
 	}
 
+	ComputeShader importance_samp = ComputeShader::ImportShader("Importance_Samp");
 	LOOP(8) { // 0 1 2 3 4 5 6 7
 		int lod_w = im_w / pow(2, i);
 		int lod_h = im_h / pow(2, i);
@@ -378,70 +374,74 @@ void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Te
 		lod_w -= lod_w % 4;
 		lod_h -= lod_h % 4;
 
-		//glTexImage2D(GL_TEXTURE_2D, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
 
-		static ComputeShader importance_samp = ComputeShader("Importance_Samp");
-
-		//glActiveTexture(GL_TEXTURE0 + _tar_type + 1);
 		glBindImageTexture(_tar_type, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
-		glBindImageTexture(tex_type + 1, tex_ID, i, GL_FALSE, 0, GL_WRITE_ONLY, interlayout); // IBL_TEXTURE -> IBL_TEXTURE + 1
+		glBindImageTexture(_tar_type + 1, ID, i, GL_FALSE, 0, GL_WRITE_ONLY, interlayout); // IBL_TEXTURE -> IBL_TEXTURE + 1
 
 		importance_samp.UseShader();
-		importance_samp.SetValue("s", (float)i/(float)(max_inter-1));
+		importance_samp.SetValue("s", (float)i / (float)(max_inter - 1));
 		importance_samp.SetValue("max_step", 32);
-		importance_samp.RunComputeShader(lod_w/4, lod_h/4);
-
-
+		importance_samp.RunComputeShader(lod_w / 4, lod_h / 4);
 	}
 
+	ResetTexID(ID);
+}
+
+void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
+{
 	//////////////////  Diffuse Irradience Convolution  //////////////////
 	//       https://learnopengl.com/PBR/IBL/Diffuse-irradiance         //
 
-	glBindTexture(GL_TEXTURE_2D, _tar_ID);
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	glBindTexture(GL_TEXTURE_2D, ID);
+	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, 1);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(_tar_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_MIRROR_CLAMP_TO_EDGE, GL_MIRROR_CLAMP_TO_EDGE, 0, 4);
+	im_w = _tar_w/8; im_h = _tar_h/8; tex_type = _tar_type;
 
-	static ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_w, 0, layout, type, NULL);
 
-	glBindImageTexture(tex_type + 1, tex_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
-	glBindImageTexture(_tar_type, _tar_ID, 4, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
+	glBindImageTexture(_tar_type + 1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
+	glBindImageTexture(_tar_type, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
 
-	int w, h;
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 4, GL_TEXTURE_WIDTH, &w);// DEBUG(w)
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 4, GL_TEXTURE_HEIGHT, &h);// DEBUG(h)
-	//DEBUG(w)DEBUG(h)
+	ComputeShader irradiance_conv = ComputeShader::ImportShader("Irradiance_Conv");
 	irradiance_conv.UseShader();
 	irradiance_conv.SetValue("max_step", 32);
-	irradiance_conv.RunComputeShader(w/4, h/4);
+	irradiance_conv.RunComputeShader(im_w / 4, im_w / 4);
+
+	ResetTexID(ID);
 }
 
-void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_CUBE_TEXTURE*/)
+void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 
 	// https://learnopengl.com/Advanced-OpenGL/Cubemaps
 
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
-	if (tex_ID != 0) DelTexture();   //reset
-
-	glGenTextures(1, &tex_ID);		//for storage
-	Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
-	tex_type = _tar_type;
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
 
 	DEBUG(std::get<3>(ParseFormat(tex_type))==GL_TEXTURE_CUBE_MAP)
 
 	LOOP(6)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
 
-	static ComputeShader to_cubemap = ComputeShader("toCubeMap");
+	ComputeShader to_cubemap = ComputeShader::ImportShader("toCubeMap");
 
-	glBindImageTexture(0, tex_ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
+	glBindImageTexture(0, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
 	glBindImageTexture(1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, interlayout);
 
 	to_cubemap.UseShader();
 	to_cubemap.SetValue("resol", (int)_tar_res);
 	to_cubemap.RunComputeShader(_tar_res / 4, _tar_res / 4, 6);
 
+	ResetTexID(ID);
+
+	tex_type = IBL_CUBE_TEXTURE;
+	im_w = im_h = _tar_res;
 }
 
 std::unordered_map<std::string, std::shared_ptr<Texture>> TextureLib::t_tex_list{};

@@ -96,12 +96,14 @@ public:
 
 class ComputeShader : public Shaders {
 
+private:
+	static std::unordered_map<std::string, std::shared_ptr<ComputeShader>> comp_list;
+
 public:
 
 	std::string comp_name;
 	GLuint comp_id;
-
-	static std::unordered_map<std::string, std::shared_ptr<ComputeShader>> comp_list;
+	static void ResetComputeLib();
 
 public:
 

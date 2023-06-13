@@ -65,6 +65,7 @@ public:
 	inline int GetH()const { return im_h; }
 	inline int GetDPP()const { return im_bpp; }
 	GLuint GetTexID() const { return tex_ID; }
+	void ResetTexID(GLuint _ID) { if (tex_ID>0 && tex_ID!=_ID)DelTexture(); tex_ID = _ID; }
 
 public:
 	using TexStorageInfo = std::tuple<GLuint, GLuint, GLuint, GLuint>; // internal_layout | layout | data_type | texture_type
@@ -74,15 +75,16 @@ public:
 	inline static void SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s = 0, GLuint _warp_t = 0, GLuint _lev_min = 0, GLuint _lev_max = 0, GLuint _warp_r = 0);
 
 public: // for texture processing
-	void GenIrradiaceConvFrom(GLuint _Tar_ID);
 	void GenIrradiaceConvFrom(const Texture& _Tar_Tex);
-
-	void GenCubeMapFrom(GLuint _Tar_ID, size_t res = 1024);
+	void GenIBLSpecularFrom(const Texture& _Tar_Tex);
+	void GenIBLDiffuseFrom(const Texture& _Tar_Tex);
 	void GenCubeMapFrom(const Texture& _Tar_Tex, size_t res = 1024);
 
 private:
 	void GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
-	void GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type = IBL_CUBE_TEXTURE);
+	void GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
+	void GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
+	void GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type = IBL_TEXTURE);
 };
 
 

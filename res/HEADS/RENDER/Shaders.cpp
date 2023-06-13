@@ -370,6 +370,12 @@ void RenderShader::LocalDebug() const
 
 std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
 
+void ComputeShader::ResetComputeLib()
+{
+	for (auto& sh : comp_list)
+		sh.second->DelShad();
+}
+
 ComputeShader::ComputeShader(const std::string& name)
 	:comp_name(name)
 {

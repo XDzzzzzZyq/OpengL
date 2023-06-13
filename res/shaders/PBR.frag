@@ -271,7 +271,7 @@ void main(){
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
 	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;
 	reflect_spec *= Fresnel*lut.x + lut.y;
-	vec3 reflect_diff = textureLod(Envir_Texture_diff, genHdrUV(-Normal), 4).rgb * Albedo;
+	vec3 reflect_diff = texture(Envir_Texture_diff, genHdrUV(-Normal)).rgb * Albedo;
 
 	IBL_res += reflect_diff * (1-Metalness) + reflect_spec * Specular;
 
