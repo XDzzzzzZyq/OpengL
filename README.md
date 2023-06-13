@@ -12,8 +12,8 @@
 	- [x] SSAO
 	- [x] Simple Convolution
  - [x] Multi-passes composition
-	- [ ] PBR deferred rendering
-		- [ ] PBR direct Lighting
+	- [x] PBR deferred rendering
+		- [x] PBR direct Lighting
 			- [x] Point light
 			- [x] Sun light [@theta-lin](https://github.com/theta-lin)
 			- [x] Spot light [@theta-lin](https://github.com/theta-lin)
@@ -23,8 +23,9 @@
 		- [x] PBR IBL
 
 - [x] advanced StorageBuffer
-- [ ] advanced Texture storage
-	- [ ] Cube map <-> Equirectangular map
+- [x] advanced Texture storage
+	- [x] Cube map <- Equirectangular map
+	- [ ] Equirectangular map <- Cube map
 
  - [ ] editing elements
 	- [x] outline
