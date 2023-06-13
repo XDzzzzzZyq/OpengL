@@ -17,7 +17,7 @@
 			- [x] Point light
 			- [x] Sun light [@theta-lin](https://github.com/theta-lin)
 			- [x] Spot light [@theta-lin](https://github.com/theta-lin)
-			- [ ] Area light
+			- [x] Area light (currently only support pure color convex polygon) [@theta-lin](https://github.com/theta-lin)
 
 			- [ ] Shadow Map
 		- [x] PBR IBL
@@ -25,7 +25,7 @@
 - [x] advanced StorageBuffer
 - [ ] advanced Texture storage
 	- [ ] Cube map <-> Equirectangular map
-	
+
  - [ ] editing elements
 	- [x] outline
 

@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Light.h"
+#include "AreaLight.h"
 #include "Environment.h"
 #include "DebugLine.h"
 #include "DebugPoints.h"
@@ -59,6 +60,7 @@ public:
 	std::unordered_map<int, std::shared_ptr<Camera>>			cam_list;
 	std::unordered_map<int, std::shared_ptr<Mesh>>		       mesh_list;
 	std::unordered_map<int, std::shared_ptr<Light>>			  light_list; //num | pointer
+	std::unordered_map<int, std::shared_ptr<AreaLight>>  area_light_list;
 	std::unordered_map<int, std::shared_ptr<Environment>>	  envir_list;
 	std::unordered_map<int, std::shared_ptr<Spirit>>	     spirit_list;
 	std::unordered_map<int, std::shared_ptr<DebugLine>>		  dLine_list;
@@ -98,7 +100,8 @@ public:
 
 	void UseMesh(std::shared_ptr<Mesh> mesh);
 
-	void UseLight(std::shared_ptr<Light>light);
+	void UseLight(std::shared_ptr<Light> light);
+	void UseAreaLight(std::shared_ptr<AreaLight> areaLight);
 
 	void UseEnvironment(std::shared_ptr<Environment> envir);
 	void UseEnvironment(const int& envir_id);

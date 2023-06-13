@@ -5,13 +5,13 @@
 
 enum GOType
 {
-	NONE_GO = -1, GO_CAM, GO_MESH, GO_LIGHT, GO_ENVIR, GO_SPIRIT, GO_DL, GO_DP, GO_DM
+	NONE_GO = -1, GO_CAM, GO_MESH, GO_LIGHT, GO_AREA_LIGHT, GO_ENVIR, GO_SPIRIT, GO_DL, GO_DP, GO_DM
 };
 
 class GameObject
 {
 private:
-	int id;	
+	int id;
 public:
 	mutable glm::vec3 id_color;
 	mutable glm::vec3 id_color_rand;
@@ -31,7 +31,7 @@ public:
 
 	mutable bool is_selected = false;
 	mutable bool is_activated = false;
-	
+
 	virtual ShaderLib* GetShaderStruct() { DEBUG("there is no shader be found") return (ShaderLib*)nullptr; }
 
 	GameObject();

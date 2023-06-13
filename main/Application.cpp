@@ -108,7 +108,7 @@ int Application::Run()
 	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
+	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
 	sunLight1->SetRot(glm::vec3(45));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
@@ -122,6 +122,18 @@ int Application::Run()
 	spotLight1->SetOuterCutoff(80);
 	spotLight1->SetPower(50);
 	renderer.UseLight(spotLight1);
+
+	DEBUG("\n-------------AREA LIGHT-------------")
+	std::vector<float> alVertData = {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		2.0f, 2.0f,
+		0.0f, 2.0f
+	};
+	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
+	areaLight1->SetPos({ 0.0f, -3.0f, -4.0f });
+	areaLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
+	renderer.UseAreaLight(areaLight1);
 
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
@@ -156,6 +168,11 @@ int Application::Run()
 	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
+
+	// Pass LTC matrix lookup tables for area lights
+	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
+	pps1->AddBinding("LTC1",                13);
+	pps1->AddBinding("LTC2",                14);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
@@ -203,7 +220,7 @@ int Application::Run()
 		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
 		renderer.GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
 		renderer.r_using_fxaa = !renderer.r_using_fxaa;
-		if (EventListener::active_shader) DEBUG(EventListener::active_shader->shader_struct_list[1].Main)
+		if (EventListener::active_shader) { DEBUG(EventListener::active_shader->shader_struct_list[1].Main) }
 			//DEBUG(renderer.r_using_fxaa)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {

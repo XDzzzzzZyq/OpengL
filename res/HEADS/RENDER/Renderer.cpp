@@ -269,6 +269,15 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		is_light_changed = false;
 
+		/////////    AREA LIGHTS POLYGON    /////////
+
+		for (const auto& areaLight : area_light_list)
+		{
+			areaLight.second->ApplyTransform();
+			areaLight.second->RenderPolygon(GetActiveCamera().get());
+			areaLight.second->is_Uniform_changed = false;
+			areaLight.second->o_shader->is_shader_changed = false;
+		}
 
 		/////////    DEBUG MESHES    /////////
 
@@ -330,7 +339,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  SSAO + DEPTH  ////////////
 
 		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
-		static ComputeShader ssao("SSAO", Uni("incre_average", true), Uni("kernel_length", r_ao_ksize), Uni("kernel", r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f));
+		static ComputeShader ssao("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f));
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 4);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
@@ -349,6 +358,8 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
+		TextureLib::LTC1()->Bind(13);
+		TextureLib::LTC2()->Bind(14);
 		r_light_data.Bind();
 		if (GetActiveCamera()->is_Uniform_changed)
 			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
@@ -475,6 +486,17 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	spirit_id_buff.push_back(light->light_spirit.GetObjectID());
 
 	r_light_data.ParseLightData(light_list);
+}
+
+void Renderer::UseAreaLight(std::shared_ptr<AreaLight> al)
+{
+	if (area_light_list.find(al->GetObjectID()) != area_light_list.end())
+		return;
+
+	is_GOlist_changed = true;
+	area_light_list[al->GetObjectID()] = al;
+
+	r_light_data.ParseAreaLightData(area_light_list);
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)

@@ -210,6 +210,9 @@
     <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\GO\AreaLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">
@@ -1750,6 +1753,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\GO\AreaLight.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -92,15 +92,19 @@ LightArrayBuffer::~LightArrayBuffer()
 	point_buffer.DeleteBuffer();
 	sun_buffer.DeleteBuffer();
 	spot_buffer.DeleteBuffer();
+	area_buffer.DeleteBuffer();
+	area_verts_buffer.DeleteBuffer();
 	info.DeleteBuffer();
 }
 
 void LightArrayBuffer::Init()
 {
-	point_buffer = StorageBuffer(CUSTOM_LIST, 0);
-	sun_buffer   = StorageBuffer(CUSTOM_LIST, 1);
-	spot_buffer  = StorageBuffer(CUSTOM_LIST, 2);
-	info = UniformBuffer<SceneInfo>(3);
+	point_buffer      = StorageBuffer(CUSTOM_LIST, 0);
+	sun_buffer        = StorageBuffer(CUSTOM_LIST, 1);
+	spot_buffer       = StorageBuffer(CUSTOM_LIST, 2);
+	area_buffer       = StorageBuffer(CUSTOM_LIST, 3);
+	area_verts_buffer = StorageBuffer(CUSTOM_LIST, 4);
+	info              = UniformBuffer<SceneInfo>(5);
 }
 
 void LightArrayBuffer::Bind() const
@@ -108,12 +112,13 @@ void LightArrayBuffer::Bind() const
 	point_buffer.BindBufferBase();
 	sun_buffer.BindBufferBase();
 	spot_buffer.BindBufferBase();
+	area_buffer.BindBufferBase();
+	area_verts_buffer.BindBufferBase();
 	info.Bind(0);
 }
 
 void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list)
 {
-
 	point.clear();
 	sun.clear();
 	spot.clear();
@@ -167,6 +172,37 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 	info.Update(GetSceneInfo());
 }
 
+void LightArrayBuffer::ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list)
+{
+	area.clear();
+	area_verts.clear();
+
+	for (auto &al : area_light_list)
+	{
+		auto &v = al.second->verts;
+
+		area.emplace_back(AreaStruct{
+			al.second->light_color,
+
+			al.second->light_power,
+			(int)al.second->use_shadow,
+			(int)v.size() / 2
+			});
+
+		al.second->ApplyTransform();
+		for (size_t i = 0; i < v.size(); i += 2)
+		{
+			area_verts.emplace_back(AreaVertStruct{
+				glm::vec3(al.second->o_Transform * glm::vec4(v[i], v[i + 1], 0.0f, 1.0f))
+				});
+		}
+	}
+
+	area_buffer.GenStorageBuffer(area);
+	area_verts_buffer.GenStorageBuffer(area_verts);
+	info.Update(GetSceneInfo());
+}
+
 LightArrayBuffer::SceneInfo LightArrayBuffer::GetSceneInfo() const
 {
 	SceneInfo info{};
@@ -174,7 +210,10 @@ LightArrayBuffer::SceneInfo LightArrayBuffer::GetSceneInfo() const
 	info.point_count = point.size();
 	info.sun_count = sun.size();
 	info.spot_count = spot.size();
+	info.area_count = area.size();
+	info.area_verts_count = area_verts.size();
 
+	// TODO: Implement shadow map for area light
 	LOOP(point.size() + sun.size() + spot.size()) {
 		info.shadow_maps[i] = 32 - i - 1;          // binding from 31 -> 0
 	}
@@ -184,5 +223,5 @@ LightArrayBuffer::SceneInfo LightArrayBuffer::GetSceneInfo() const
 
 GLsizei LightArrayBuffer::GetTotalCount() const
 {
-	return point.size() + sun.size() + spot.size();
+	return point.size() + sun.size() + spot.size() /*+ area.size() + area_verts.size()*/;
 }
