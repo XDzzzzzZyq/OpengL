@@ -31,6 +31,18 @@ struct SpotLight{
 	float outer_cutoff;
 };
 
+struct AreaLight{
+	vec3 color;
+
+	float power;
+	int use_shadow;
+	int n;
+};
+
+struct AreaVert{
+	vec3 v;
+};
+
 layout(std430, binding = 0) buffer point_array {
 	PointLight point_lights[];
 };
@@ -40,10 +52,17 @@ layout(std430, binding = 1) buffer sun_array {
 layout(std430, binding = 2) buffer spot_array {
 	SpotLight  spot_lights[];
 };
+layout(std430, binding = 3) buffer area_array {
+    AreaLight  area_lights[];
+};
+layout(std430, binding = 4) buffer area_verts_array {
+    AreaVert   area_verts[];
+};
 layout(std140) uniform SceneInfo {
 	int point_count;
 	int sun_count;
 	int spot_count;
+	int area_count;
 } scene_info;
 
 // passes
@@ -67,6 +86,14 @@ uniform float gamma;
 in vec2 screen_uv;
 
 const float PI = 3.1415926;
+
+// LTC lookup tables
+uniform sampler2D LTC1;
+uniform sampler2D LTC2;
+
+const float LUT_SIZE = 64.0;
+const float LUT_SCALE = (LUT_SIZE - 1.0) / LUT_SIZE;
+const float LUT_BIAS = 0.5 / LUT_SIZE;
 
 float ACESFilm(float x)
 {
@@ -175,6 +202,66 @@ vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, flo
 	return kDd * Albedo / PI + numerator/denominator;
 }
 
+// Compute acos(dot(v1, v2)) * normalize(cross(v1, v2))
+// https://learnopengl.com/Guest-Articles/2022/Area-Lights
+vec3 IntegrateEdge(vec3 v1, vec3 v2)
+{
+	float x = dot(v1, v2);
+	float y = abs(x);
+
+	float a = 0.8543985 + (0.4965155 + 0.0145206*y)*y;
+    float b = 3.4175940 + (4.1616724 + y)*y;
+    float v = a / b;
+
+    float theta_sintheta = (x > 0.0) ? v : 0.5*inversesqrt(max(1.0 - x*x, 1e-7)) - v;
+
+    return cross(v1, v2)*theta_sintheta;
+}
+
+vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
+{
+	// Construct orthonormal basis around N
+	vec3 T1, T2;
+	T1 = normalize(V - N * dot(V, N));
+	T2 = cross(N, T1);
+	Minv = Minv * transpose(mat3(T1, T2, N));
+
+	// Integrate vector irradiance over the edges
+	vec3 vsum = vec3(0.0f);
+	for (int i = 0; i < n; ++i)
+	{
+		// Transform light direction from LTC to cosine weighted space
+		vec3 L0 = Minv * (area_verts[i0 + i].v - P);
+		vec3 L1 = Minv * (area_verts[i0 + (i + 1) % n].v - P);
+		L0 = normalize(L0);
+		L1 = normalize(L1);
+
+		vsum += IntegrateEdge(L0, L1);
+	}
+
+	// Check if the point is behind the light
+	vec3 dir = P - area_verts[i0].v;
+	vec3 lightNormal = cross(area_verts[i0 + 1].v - area_verts[i0].v, area_verts[i0 + 2].v - area_verts[i0].v);
+	bool behind = (dot(dir, lightNormal) < 0.0);
+
+	// Form factor
+	float len = length(vsum);
+	// Projection on tangent surface
+	float z = vsum.z / len;
+	// The value of z appears to be reversed during LUT lookup
+	if (!behind) z = -z;
+
+	vec2 uv = vec2(z * 0.5f + 0.5f, len);
+	uv = uv * LUT_SCALE + LUT_BIAS;
+
+	// Fetch the form factor for horizon clipping
+	float scale = texture(LTC2, uv).w;
+	float sum = len * scale;
+	if (behind) sum = 0.0f;
+
+	return vec3(sum);
+}
+
 void main(){
 
 	/* [Block : DATA] */
@@ -248,7 +335,7 @@ void main(){
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
 	}
 
-	for(uint i = 0; i<scene_info.spot_count; i++){
+	for(uint i = 0; i < scene_info.spot_count; i++){
 		SpotLight light = spot_lights[i];
 		vec3 toLight = light.pos - Pos;
 		float dist = length(toLight);
@@ -261,6 +348,40 @@ void main(){
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Specular, Albedo, F0) * Radiance;
+	}
+
+	/* [Block : Area Lights] */
+
+	int i0 = 0;
+	for (uint i = 0; i < scene_info.area_count; i++){
+	    AreaLight light = area_lights[i];
+
+		float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
+		vec2 uv = vec2(Roughness, sqrt(1.0f - dotNV));
+		uv = uv * LUT_SCALE + LUT_BIAS;
+
+		// Get 4 parameters for inverse M
+		vec4 t1 = texture(LTC1, uv);
+		// Get 2 parameters for Fresnel calculation
+		vec4 t2 = texture(LTC2, uv);
+
+		mat3 Minv = mat3(
+			vec3(t1.x, 0, t1.y),
+			vec3(   0, 1,    0),
+			vec3(t1.z, 0, t1.w)
+		);
+
+		vec3 diffuse = LTC_Evaluate(Normal, -CamRay, Pos, mat3(1), i0, light.n);
+		vec3 specular = LTC_Evaluate(Normal, -CamRay, Pos, Minv, i0, light.n);
+
+		// GGX BRDF shadowing and Fresnel
+		// NOTE: I am not certain about mixing these two terms with the Specular factor
+		//       This is simply following the implementation on learnopengl.com
+		specular *= mix(t2.x, t2.y, Specular);
+
+		Light_res += light.power * light.color * (specular + Albedo * diffuse);
+
+		i0 += light.n;
 	}
 
 	/* [Block : IBL] */

@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Spirit.h"
+#include "AreaLight.h"
 
 #include "StorageBuffer.h"
 #include "UniformBuffer.h"
@@ -14,6 +15,7 @@ enum LightType
 	NONELIGHT, POINTLIGHT, SUNLIGHT, SPOTLIGHT
 };
 
+// A basic light, which can be a point light, sun light, or a spot light
 class Light : public GameObject, public Transform3D
 {
 public:
@@ -52,6 +54,9 @@ public:
 };
 
 
+// Reads a list of lights and converts them into buffers to be passed to the shader
+// It parses three basic light types through ParseLightData()
+// Area lights are parsed with ParseAreaLightData()
 struct LightArrayBuffer {
 
 public:
@@ -91,14 +96,32 @@ public:
 		alignas(4) float outer_cutoff{ 0.8 };
 	};
 
+	struct AreaStruct
+	{
+		alignas(16) glm::vec3 color{ 1 };
+
+		alignas(4) float power{ 1 };
+		alignas(4) int use_shadow{ 1 };
+		alignas(4) int n{ 3 };
+	};
+
+	struct AreaVertStruct
+	{
+		alignas(16) glm::vec3 v{ 0, 0, 0 };
+	};
+
 	static const GLuint Sizeof_Point = sizeof(PointStruct);
 	static const GLuint Sizeof_Sun   = sizeof(SunStruct);
 	static const GLuint Sizeof_Spot  = sizeof(SpotStruct);
+	static const GLuint Sizeof_Area  = sizeof(AreaStruct);
+	static const GLuint Sizeof_AreaVert  = sizeof(AreaVertStruct);
 
 	struct SceneInfo {
 		int point_count{ 0 };
 		int sun_count{ 0 };
 		int spot_count{ 0 };
+		int area_count{ 0 };
+		int area_verts_count{ 0 };
 		GLuint shadow_maps[32];
 	};
 
@@ -106,7 +129,9 @@ public:
 	std::vector<PointStruct> point;
 	std::vector<SunStruct> sun;
 	std::vector<SpotStruct> spot;
-	StorageBuffer point_buffer, sun_buffer, spot_buffer;
+	std::vector<AreaStruct> area;
+	std::vector<AreaVertStruct> area_verts;
+	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, area_verts_buffer;
 	UniformBuffer<SceneInfo> info;
 
 public:
@@ -116,6 +141,7 @@ public:
 	void Bind() const;
 
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
+	void ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list);
 	SceneInfo GetSceneInfo() const;
 	GLsizei GetTotalCount() const;
 };

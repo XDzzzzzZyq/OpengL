@@ -123,6 +123,18 @@ int Application::Run()
 	spotLight1->SetPower(50);
 	renderer.UseLight(spotLight1);
 
+	DEBUG("\n-------------AREA LIGHT-------------")
+	std::vector<float> alVertData = {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		2.0f, 2.0f,
+		0.0f, 2.0f
+	};
+	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
+	areaLight1->SetPos({ 0.0f, -3.0f, -4.0f });
+	areaLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
+	renderer.UseAreaLight(areaLight1);
+
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
 	line->PushDebugLine(5, 5, 5);
@@ -156,6 +168,11 @@ int Application::Run()
 	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
+
+	// Pass LTC matrix lookup tables for area lights
+	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
+	pps1->AddBinding("LTC1",                13);
+	pps1->AddBinding("LTC2",                14);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")

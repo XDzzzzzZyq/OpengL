@@ -6,6 +6,7 @@
 #include "support.h"
 
 #include "Shaders.h"
+#include "LtcMatrix.h"
 
 enum TextureType
 {
@@ -23,6 +24,14 @@ enum TextureType
 	FLOAT_BUFFER_TEXTURE,
 	RG_TEXTURE,
 };
+
+/*
+ * How to add a texture:
+ * 1. Assign a (GLuint) slot for the texture (slot 0-14 are currently in use)
+ * 2. Create a function that allocates a TextureRes in TextureLib
+ * 3. Call that function and bind the texture to the slot chosen in the rendering loop
+ * 4. Pass the slot number to the shader
+ */
 
 class Texture
 {
@@ -43,7 +52,9 @@ public:
 
 	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type); // using tex_type as its slot, but you can change it if you want
 	Texture(GLuint Tile_type, int x, int y);									 // for FBO
-	Texture(int _w, int _h, GLuint _layout, void* _ptr);						 // for generated texture
+	Texture(int _w, int _h, GLuint _layout, const void* _ptr,
+		GLint _min_filter = GL_LINEAR, GLint _mag_filter = GL_LINEAR,
+		GLint _wrap_s = GL_REPEAT, GLint _wrap_t = GL_REPEAT);						 // for generated texture
 	Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name);
 	Texture();
 	~Texture();
@@ -108,6 +119,9 @@ public:
 	static TextureRes Noise_2D_16x16();
 
 	static TextureRes IBL_LUT();
+
+	static TextureRes LTC1();
+	static TextureRes LTC2();
 
 private:
 	static void GenNoiseTexture(NoiseType _type, size_t _w, size_t _h);
