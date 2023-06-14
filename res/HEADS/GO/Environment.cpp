@@ -18,8 +18,8 @@ Environment::Environment(const std::string& texpath)
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 
 	Texture rough_tex(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_MIRRORED_REPEAT);
-	envir_IBL_diff.GenIBLDiffuseFrom(rough_tex);
-	envir_IBL_spec.GenIBLSpecularFrom(rough_tex);
+	envir_IBL_diff.GenIBLDiffuseFrom(rough_tex, true);
+	envir_IBL_spec.GenIBLSpecularFrom(rough_tex, true);
 	rough_tex.DelTexture();
 
 	envir_spirit.spr_type = ENVIRN_SPIRIT;
@@ -116,7 +116,7 @@ void Environment::RenderEnvironment(Camera* cam)
 	envir_shader->UseShader();
 	o_indexBuffer.Bind();
 	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
-	envir_IBL_spec.Bind();
+	envir_IBL_spec.Bind(IBL_TEXTURE);
 	//DEBUG(envir_frameBuffer->GetFBCount())
 
 	if (envir_shader->is_shader_changed)

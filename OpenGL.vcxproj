@@ -395,6 +395,8 @@
     <None Include="res\shaders\FXAA.comp" />
     <None Include="res\shaders\IBRShader.frag" />
     <None Include="res\shaders\Importance_Samp.comp" />
+    <None Include="res\shaders\Importance_Samp_E2C.comp" />
+    <None Include="res\shaders\Irradiance_Conv_E2C.comp" />
     <None Include="res\shaders\PBR.frag" />
     <None Include="res\shaders\Polygon.frag" />
     <None Include="res\shaders\Polygon.vert" />

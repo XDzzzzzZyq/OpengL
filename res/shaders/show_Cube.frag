@@ -41,6 +41,6 @@ void main(){
 	//float coef = blen/5;
 	Output = vec4(0);
 
-	Output = vec4(texture(Envir_Texture_spec, Normal).rgb, 1);
+	Output = vec4(textureLod(Envir_Texture_spec, Normal, 0.0).rgb, 1);
 	//Output = vec4(Normal, 1);
 }

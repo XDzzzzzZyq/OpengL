@@ -9,7 +9,7 @@ layout(location = 6) out vec4 IDcolor;
 layout(location = 7) out vec4 MASKcolor;
 
 in vec2 screen_uv;
-uniform sampler2D hdr_texture;
+uniform samplerCube hdr_texture;
 
 uniform mat4 cam_rotM;
 uniform float cam_fov;
@@ -54,6 +54,6 @@ void main() {
 	NORMALcolor = ray_dir;
 	POScolor = vec4(vec3(-1000), 1);
 	
-	EMIScolor = vec4(textureLod(hdr_texture, genHdrUV(normalize(vec3(ray_dir))), 0).rgb, 1.0f);
+	EMIScolor = vec4(textureLod(hdr_texture,normalize(vec3(ray_dir)), 0).rgb, 1.0f);
 	MRSEcolor = vec4(0, 0, 0, 1);
 };

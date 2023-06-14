@@ -349,18 +349,24 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 {
 	//////////////////   Specular Importance Sampling   //////////////////
 	//			https://learnopengl.com/PBR/IBL/Specular-IBL			//
-
+	
 	const int max_inter = 8;
 
 	GLuint ID;
 	glGenTextures(1, &ID);		//for storage
-	glBindTexture(GL_TEXTURE_2D, ID);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
-
+	if (to_cubemap) {
+		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, max_inter - 1, GL_CLAMP_TO_EDGE);
+		im_w = im_h = 2048; tex_type = IBL_CUBE_TEXTURE;
+	}
+	else {
+		glBindTexture(GL_TEXTURE_2D, ID);
+		Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
+		im_w = _tar_w; im_h = _tar_h; tex_type = _tar_type;
+	}
+	
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
-
-	im_w = _tar_w; im_h = _tar_h; tex_type = _tar_type;
 
 	LOOP(8) {
 		int lod_w = im_w / pow(2, i);
@@ -369,10 +375,16 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 		lod_w -= lod_w % 4;
 		lod_h -= lod_h % 4;
 
-		glTexImage2D(GL_TEXTURE_2D, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
+		if (to_cubemap) {
+			LOOP_N(6, s)
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + s, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
+		}
+		else {
+			glTexImage2D(GL_TEXTURE_2D, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
+		}
 	}
-
-	ComputeShader importance_samp = ComputeShader::ImportShader("Importance_Samp");
+	
+	ComputeShader importance_samp = ComputeShader::ImportShader(to_cubemap ? "Importance_Samp_E2C" : "Importance_Samp");
 	LOOP(8) { // 0 1 2 3 4 5 6 7
 		int lod_w = im_w / pow(2, i);
 		int lod_h = im_h / pow(2, i);
@@ -380,18 +392,17 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 		lod_w -= lod_w % 4;
 		lod_h -= lod_h % 4;
 
-
 		Texture::BindM(_tar_ID, _tar_type);
-		glBindImageTexture(_tar_type + 1, ID, i, GL_FALSE, 0, GL_WRITE_ONLY, interlayout); // IBL_TEXTURE -> IBL_TEXTURE + 1
+		glBindImageTexture(tex_type + 1, ID, i, (GLuint)to_cubemap, 0, GL_WRITE_ONLY, interlayout); // IBL_TEXTURE -> IBL_TEXTURE + 1
 
 		importance_samp.UseShader();
 		importance_samp.SetValue("s", (float)i / (float)(max_inter - 1));
 		importance_samp.SetValue("max_step", 32);
 		importance_samp.SetValue("source", _tar_type);
-		importance_samp.RunComputeShader(lod_w / 4, lod_h / 4);
+		importance_samp.RunComputeShader(lod_w / 4, lod_h / 4, to_cubemap ? 6 : 1);
 	}
 
-	ResetTexID(ID);
+	ResetTexID(ID); 
 }
 
 void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
@@ -399,26 +410,38 @@ void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textur
 	//////////////////  Diffuse Irradience Convolution  //////////////////
 	//       https://learnopengl.com/PBR/IBL/Diffuse-irradiance         //
 
-	GLuint ID;
+	GLuint ID; 
 	glGenTextures(1, &ID);		//for storage
-	glBindTexture(GL_TEXTURE_2D, ID);
-	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, 1);
-
-	im_w = _tar_w/8; im_h = _tar_h/8; tex_type = _tar_type;
-
+	if (to_cubemap) {
+		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+		im_w = im_h = 64; tex_type = IBL_CUBE_TEXTURE;
+	}
+	else {
+		glBindTexture(GL_TEXTURE_2D, ID);
+		Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT);
+		im_w = _tar_w / 8; im_h = _tar_h / 8; tex_type = _tar_type;
+	}
+	
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
-	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_w, 0, layout, type, NULL);
-
+	if (to_cubemap) {
+		LOOP_N(6, s)
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + s, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+	}
+	else {
+		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+	}
+	
 	Texture::BindM(_tar_ID, _tar_type + 1);
-	glBindImageTexture(_tar_type, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
-
-	ComputeShader irradiance_conv = ComputeShader::ImportShader("Irradiance_Conv");
+	glBindImageTexture(tex_type, ID, 0, (GLuint)to_cubemap, 0, GL_WRITE_ONLY, interlayout);
+	
+	ComputeShader irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "Irradiance_Conv_E2C" : "Irradiance_Conv");
 	irradiance_conv.UseShader();
 	irradiance_conv.SetValue("max_step", 32);
 	irradiance_conv.SetValue("source", _tar_type + 1);
-	irradiance_conv.RunComputeShader(im_w / 4, im_w / 4);
+	irradiance_conv.RunComputeShader(im_w / 4, im_w / 4, to_cubemap ? 6 : 1);
 
-	ResetTexID(ID);
+	ResetTexID(ID); 
 }
 
 void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_TEXTURE*/)

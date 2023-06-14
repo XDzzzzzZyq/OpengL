@@ -25,6 +25,7 @@
 - [x] advanced StorageBuffer
 - [x] advanced Texture storage
 	- [x] Cube map <- Equirectangular map
+		- [x] ComputeShader with Cube map
 	- [ ] Equirectangular map <- Cube map
 
  - [ ] editing elements

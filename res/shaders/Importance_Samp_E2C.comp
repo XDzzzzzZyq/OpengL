@@ -1,0 +1,117 @@
+#version 460 core
+
+// usually 1048 * 1048 * 6 
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+uniform sampler2D source;
+layout(rgba16f, binding = 6) uniform imageCube result;
+
+const float pi = 3.1415926535;
+uniform float s;
+uniform int max_step;
+
+vec2 genHdrUV(vec3 dir) {
+	vec2 uv;
+	uv.x = atan(dir.y, dir.x); 
+	uv.y = asin(dir.z);
+	return uv*vec2(0.15915494, 0.31830988)+0.5;
+}
+
+vec3 genDirFromRUV(vec2 uvf_r){
+	return vec3(cos(uvf_r.y*pi/2)*cos(uvf_r.x*pi), cos(uvf_r.y*pi/2)*sin(uvf_r.x*pi), sin(uvf_r.y*pi/2));
+}
+
+vec3 genDirFromAngle(vec2 angle){
+	return vec3(cos(angle.y)*cos(angle.x), cos(angle.y)*sin(angle.x), sin(angle.y));
+}
+
+vec2 AngleToRUV(vec2 angle){
+	return 0.5*angle/vec2(pi, pi/2) +vec2(0.5);
+}
+
+
+float DistributionGGX(vec3 N, vec3 H, float a)
+{
+    float a2     = a*a;
+    float NdotH  = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+	
+    float nom    = a2;
+    float denom  = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom        = pi * denom * denom;
+	
+    return nom / denom;
+}
+
+vec3 h(vec3 a, vec3 b){
+	return normalize(a + b);
+}
+
+vec3 GetDir(ivec3 loc){
+
+	vec2 uv = (loc.xy + 0.5)/imageSize(result).x;
+
+    vec3 dir = normalize(vec3(1, (uv-0.5)*2));
+    vec3 X = vec3(1, 0, 0);
+    vec3 Y = vec3(0, 1, 0);
+    vec3 Z = vec3(0, 0, 1);
+    /**/
+    switch(int(loc.z)){
+    case 0:
+        dir = mat3(Y, -Z, -X) * dir;
+        break;
+    case 1:
+        dir = mat3(-Y, Z, -X) * dir;
+        break;
+    case 2:
+        dir = mat3(X, Y, Z) * dir;
+        break;
+    case 3:
+        dir = mat3(-X, Y, -Z) * dir;
+        break;
+    case 4:
+        dir = mat3(Z, Y, -X) * dir;
+        break;
+    case 5:
+        dir = mat3(-Z, -Y, -X) * dir;
+        break;
+    }
+
+    return mat3(Y, -X, Z) * dir;
+}
+
+void main(){
+
+	ivec3 uv = ivec3(gl_GlobalInvocationID.xyz);
+	vec3 dir_f = GetDir(uv);
+
+	if(s < 0.001){
+		vec4 ori_color = texture(source, genHdrUV(dir_f));
+		imageStore(result, uv, ori_color);
+		return;
+	}
+
+	vec3 dir_u = normalize(cross(dir_f, dir_f+1));
+	vec3 dir_l = cross(dir_f, dir_u);
+	vec4 res = vec4(0);
+	float factor = 0;
+
+	for(int i = -max_step; i<=max_step; i++){
+		int j_m = max_step-abs(i);
+		for(int j = -j_m; j<=j_m; j++){
+			float a = s*float(i)/max_step;
+			float b = s*float(j)/max_step;
+			float c = 1 - abs(a) - abs(b);
+
+			vec3 dir = normalize(a*dir_u + b*dir_l + c*dir_f);
+			float coef = c/length(vec3(a,b,c));
+
+			res += texture(source, genHdrUV(dir)) * coef;
+			factor += coef;
+		}
+	
+	}
+
+	res /= factor;
+	res.a = 1;
+	imageStore(result, uv, res);
+}

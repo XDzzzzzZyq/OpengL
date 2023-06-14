@@ -74,8 +74,8 @@ uniform sampler2D U_mrse;
 uniform sampler2D U_color;
 uniform sampler2D U_alpha;
 
-uniform sampler2D Envir_Texture_diff;
-uniform sampler2D Envir_Texture_spec;
+uniform samplerCube Envir_Texture_diff;
+uniform samplerCube Envir_Texture_spec;
 uniform sampler2D LUT;
 
 // input
@@ -390,9 +390,9 @@ void main(){
 	vec2 lut = texture2D(LUT, vec2(clamp(NdotV, 0.0, 0.99), Roughness)).xy;
 
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
-	vec3 reflect_spec = textureLod(Envir_Texture_spec, genHdrUV(-ReflectRay), Roughness * 7).rgb;
+	vec3 reflect_spec = textureLod(Envir_Texture_spec, ReflectRay, Roughness * 7).rgb;
 	reflect_spec *= Fresnel*lut.x + lut.y;
-	vec3 reflect_diff = texture(Envir_Texture_diff, genHdrUV(-Normal)).rgb * Albedo;
+	vec3 reflect_diff = texture(Envir_Texture_diff, Normal).rgb * Albedo;
 
 	IBL_res += reflect_diff * (1-Metalness) + reflect_spec * Specular;
 

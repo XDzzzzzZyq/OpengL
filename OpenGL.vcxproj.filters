@@ -684,6 +684,8 @@
     <None Include="res\shaders\show_Cube.frag" />
     <None Include="res\shaders\Polygon.vert" />
     <None Include="res\shaders\Polygon.frag" />
+    <None Include="res\shaders\Importance_Samp_E2C.comp" />
+    <None Include="res\shaders\Irradiance_Conv_E2C.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
