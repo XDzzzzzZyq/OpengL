@@ -275,6 +275,8 @@ void Renderer::Render(bool rend, bool buff) {
 		{
 			areaLight.second->ApplyTransform();
 			areaLight.second->RenderPolygon(GetActiveCamera().get());
+			if (areaLight.second->is_Uniform_changed)
+				r_light_data.ParseAreaLightData(area_light_list);
 			areaLight.second->is_Uniform_changed = false;
 			areaLight.second->o_shader->is_shader_changed = false;
 		}
