@@ -1,7 +1,7 @@
 #version 460 core
 
 layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
-layout(rgba16f, binding = 4) uniform image2D source;
+uniform sampler2D source;
 layout(rgba16f, binding = 5) uniform image2D result;
 
 const float pi = 3.1415926535;
@@ -51,7 +51,7 @@ void main(){
 	vec2 uvf = (vec2(uv))/vec2(imageSize(result));
 
 	if(s < 0.001){
-		vec4 ori_color = imageLoad(source, uv);
+		vec4 ori_color = texture(source, uvf);
 		imageStore(result, uv, ori_color);
 		return;
 	}
@@ -76,7 +76,7 @@ void main(){
 			vec3 dir = normalize(a*dir_u + b*dir_l + c*dir_f);
 			float coef = c/length(vec3(a,b,c));
 
-			color2 += imageLoad(source, ivec2(genHdrUV(dir)*imageSize(source))) * coef;
+			color2 += texture(source, genHdrUV(dir)) * coef;
 			factor += coef;
 		}
 	

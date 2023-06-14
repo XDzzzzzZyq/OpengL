@@ -2,7 +2,7 @@
 
 layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
 layout(rgba16f, binding = 4) uniform image2D target;
-layout(rgba16f, binding = 5) uniform image2D source;
+uniform sampler2D source;
 
 const float pi = 3.1415926535;
 uniform int max_step;
@@ -51,15 +51,12 @@ void main(){
 			vec3 dir = normalize(a*dir_u + b*dir_l + c*dir_f);
 			float coef = c/length(vec3(a,b,c));
 
-			color2 += imageLoad(source, ivec2(genHdrUV(dir)*imageSize(source)));
+			color2 += texture(source, genHdrUV(dir));
 			factor += 1;
 		}
 	
 	}
 
 	color2 /= factor;
-	//color2 = vec4(vec3(uvf_r.x), 1);
-	//color2 = vec4(vec3(uvf.x), 1);
 	imageStore(target, uv, color2);
-	//imageStore(result, uv, vec4(fract(5*uvf),1,1));
 }
