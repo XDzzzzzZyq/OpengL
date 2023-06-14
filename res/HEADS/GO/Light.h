@@ -66,6 +66,8 @@ public:
 
 	struct PointStruct
 	{
+		PointStruct(const Light& light);
+
 		alignas(16) glm::vec3 color{ 1 };
 		alignas(16) glm::vec3 pos{ 0 };
 
@@ -76,6 +78,8 @@ public:
 
 	struct SunStruct
 	{
+		SunStruct(const Light& light);
+
 		alignas(16) glm::vec3 color{ 1 };
 		alignas(16) glm::vec3 pos{ 0 };
 		alignas(16) glm::vec3 dir{ 1, 0, 0 };
@@ -86,6 +90,8 @@ public:
 
 	struct SpotStruct
 	{
+		SpotStruct(const Light& light);
+
 		alignas(16) glm::vec3 color{ 1 };
 		alignas(16) glm::vec3 pos{ 0 };
 		alignas(16) glm::vec3 dir{ 1, 0, 0 };
@@ -134,6 +140,9 @@ public:
 	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, area_verts_buffer;
 	UniformBuffer<SceneInfo> info;
 
+private:
+	std::unordered_map<int, int> id_loc_cache;
+
 public:
 	LightArrayBuffer() {};
 	~LightArrayBuffer();
@@ -143,5 +152,7 @@ public:
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
 	void ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list);
 	SceneInfo GetSceneInfo() const;
-	GLsizei GetTotalCount() const;
+	inline GLsizei GetTotalCount() const;
+
+	void UpdateLight(const std::pair<int, std::shared_ptr<Light>>& light);
 };

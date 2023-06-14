@@ -117,11 +117,41 @@ void LightArrayBuffer::Bind() const
 	info.Bind(0);
 }
 
+LightArrayBuffer::PointStruct::PointStruct(const Light& light)
+	:color(light.light_color),
+	pos(light.o_position),
+
+	power(light.light_power),
+	use_shadow((int)light.use_shadow),
+	radius(light.light_radius)
+{}
+
+LightArrayBuffer::SunStruct::SunStruct(const Light& light)
+	:color(light.light_color),
+	pos(light.o_position),
+	dir(-glm::cross(light.o_dir_up, light.o_dir_right)),
+
+	power(light.light_power),
+	use_shadow((int)light.use_shadow)
+{}
+
+LightArrayBuffer::SpotStruct::SpotStruct(const Light& light)
+	:color(light.light_color),
+	pos(light.o_position),
+	dir(-glm::cross(light.o_dir_up, light.o_dir_right)),
+
+	power(light.light_power),
+	use_shadow((int)light.use_shadow),
+	cutoff(light.spot_cutoff),
+	outer_cutoff(light.spot_outer_cutoff)
+{}
+
 void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list)
 {
 	point.clear();
 	sun.clear();
 	spot.clear();
+	id_loc_cache.clear();
 
 	for (auto& light : light_list)
 	{
@@ -130,36 +160,16 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 		case NONELIGHT:
 			break;
 		case POINTLIGHT:
-			point.emplace_back(PointStruct{
-				light.second->light_color,
-				light.second->o_position,
-
-				light.second->light_power,
-				(int)light.second->use_shadow,
-				light.second->light_radius,
-				});
+			id_loc_cache[light.first] = point.size();
+			point.emplace_back(*light.second.get());
 			break;
 		case SUNLIGHT:
-			sun.emplace_back(SunStruct{
-				light.second->light_color,
-				light.second->o_position,
-				-glm::cross(light.second->o_dir_up, light.second->o_dir_right),
-
-				light.second->light_power,
-				(int)light.second->use_shadow,
-				});
+			id_loc_cache[light.first] = sun.size();
+			sun.emplace_back(*light.second.get());
 			break;
 		case SPOTLIGHT:
-			spot.emplace_back(SpotStruct{
-				light.second->light_color,
-				light.second->o_position,
-				-glm::cross(light.second->o_dir_up, light.second->o_dir_right),
-
-				light.second->light_power,
-				(int)light.second->use_shadow,
-				light.second->spot_cutoff,
-				light.second->spot_outer_cutoff
-				});
+			id_loc_cache[light.first] = spot.size();
+			spot.emplace_back(*light.second.get());
 			break;
 		default:
 			break;
@@ -214,14 +224,41 @@ LightArrayBuffer::SceneInfo LightArrayBuffer::GetSceneInfo() const
 	info.area_verts_count = area_verts.size();
 
 	// TODO: Implement shadow map for area light
-	LOOP(point.size() + sun.size() + spot.size()) {
+	LOOP(GetTotalCount()) {
 		info.shadow_maps[i] = 32 - i - 1;          // binding from 31 -> 0
 	}
 
 	return info;
 }
 
-GLsizei LightArrayBuffer::GetTotalCount() const
+inline GLsizei LightArrayBuffer::GetTotalCount() const
 {
 	return point.size() + sun.size() + spot.size() /*+ area.size() + area_verts.size()*/;
 }
+
+void LightArrayBuffer::UpdateLight(const std::pair<int, std::shared_ptr<Light>>& light)
+{
+	if (id_loc_cache.find(light.first) == id_loc_cache.end())
+		return;
+
+	switch (light.second->light_type)
+	{
+	case NONELIGHT:
+		break;
+	case POINTLIGHT:
+		point[id_loc_cache[light.first]] = *light.second.get();
+		point_buffer.GenStorageBuffer(point);
+		break;
+	case SUNLIGHT:
+		sun[id_loc_cache[light.first]] = *light.second.get();
+		sun_buffer.GenStorageBuffer(sun);
+		break;
+	case SPOTLIGHT:
+		spot[id_loc_cache[light.first]] = *light.second.get();
+		spot_buffer.GenStorageBuffer(spot);
+		break;
+	default:
+		break;
+	}
+}
+

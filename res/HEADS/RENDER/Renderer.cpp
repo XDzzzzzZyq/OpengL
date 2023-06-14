@@ -219,16 +219,17 @@ void Renderer::Render(bool rend, bool buff) {
 		light.second->ApplyTransform();
 		is_light_changed |= light.second->is_light_changed;
 		is_light_changed |= light.second->is_Uniform_changed;
-		light.second->is_light_changed = false;
-		light.second->is_Uniform_changed = false;
+
+		if (light.second->is_light_changed || light.second->is_Uniform_changed)
+			r_light_data.UpdateLight(light);
 
 		/* Depth Test for Shadow Map */
 
+
+
+		light.second->is_light_changed = false;
+		light.second->is_Uniform_changed = false;
 	}
-
-	if (is_light_changed)
-		r_light_data.ParseLightData(light_list);
-
 
 	///////////   Begin buffering    ///////////
 
