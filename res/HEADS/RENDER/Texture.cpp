@@ -384,7 +384,7 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 		}
 	}
 	
-	ComputeShader importance_samp = ComputeShader::ImportShader(to_cubemap ? "Importance_Samp_E2C" : "Importance_Samp");
+	ComputeShader& importance_samp = ComputeShader::ImportShader(to_cubemap ? "Importance_Samp_E2C" : "Importance_Samp");
 	LOOP(8) { // 0 1 2 3 4 5 6 7
 		int lod_w = im_w / pow(2, i);
 		int lod_h = im_h / pow(2, i);
@@ -435,7 +435,7 @@ void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textur
 	Texture::BindM(_tar_ID, _tar_type + 1);
 	glBindImageTexture(tex_type, ID, 0, (GLuint)to_cubemap, 0, GL_WRITE_ONLY, interlayout);
 	
-	ComputeShader irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "Irradiance_Conv_E2C" : "Irradiance_Conv");
+	ComputeShader& irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "Irradiance_Conv_E2C" : "Irradiance_Conv");
 	irradiance_conv.UseShader();
 	irradiance_conv.SetValue("max_step", 32);
 	irradiance_conv.SetValue("source", _tar_type + 1);
@@ -460,7 +460,7 @@ void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type 
 	LOOP(6)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
 
-	ComputeShader to_cubemap = ComputeShader::ImportShader("toCubeMap");
+	ComputeShader& to_cubemap = ComputeShader::ImportShader("toCubeMap");
 
 	glBindImageTexture(0, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
 	Texture::BindM(_tar_ID, 1);

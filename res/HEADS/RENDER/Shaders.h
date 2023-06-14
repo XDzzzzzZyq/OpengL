@@ -129,7 +129,9 @@ public:
 
 public:
 
-	static const ComputeShader& ImportShader(std::string _name);
+	static ComputeShader& ImportShader(std::string _name);
+	template<class... Tuples>
+	static ComputeShader& ImportShader(std::string _name, const Tuples&... args);
 
 };
 
@@ -140,3 +142,13 @@ ComputeShader::ComputeShader(const std::string& name, const Tuples&... args)
 	UseShader();
 	(std::apply([this](const auto&... args) { SetValue(args...); }, args), ...);
 };
+
+template<class... Tuples>
+ComputeShader& ComputeShader::ImportShader(std::string _name, const Tuples&... args)
+{
+	if (comp_list.find(_name) != comp_list.end())
+		return *comp_list[_name].get();
+
+	comp_list[_name] = std::make_shared<ComputeShader>(_name, args...);
+	return *comp_list[_name].get();
+}

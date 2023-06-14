@@ -368,6 +368,10 @@ void RenderShader::LocalDebug() const
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
 
 void ComputeShader::ResetComputeLib()
@@ -441,7 +445,7 @@ void ComputeShader::LocalDebug() const
 #endif // _DEBUG
 }
 
-const ComputeShader& ComputeShader::ImportShader(std::string _name)
+ComputeShader& ComputeShader::ImportShader(std::string _name)
 {
 	if (comp_list.find(_name) != comp_list.end())
 		return *comp_list[_name].get();

@@ -331,7 +331,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////    OUTLINE    ////////////
 
-		static ComputeShader outline("selection_outline");
+		ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 		if (active_GO_ID != 0) outline.RunComputeShader(r_buffer_list[_RASTER].GetSize() / 4);
 
@@ -339,7 +339,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  SSAO + DEPTH  ////////////
 
 		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
-		static ComputeShader ssao("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f));
+		ComputeShader& ssao = ComputeShader::ImportShader("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f));
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 4);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
@@ -372,7 +372,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////     FXAA     ////////////
 
-		static ComputeShader fxaa("FXAA");
+		ComputeShader& fxaa = ComputeShader::ImportShader("FXAA");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
@@ -381,7 +381,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////   EDITING ELEM   //////////
 
-		static ComputeShader editing("Editing");
+		ComputeShader& editing = ComputeShader::ImportShader("Editing");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 		editing.RunComputeShader(r_render_result->GetSize() / 4);

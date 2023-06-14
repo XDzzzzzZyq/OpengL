@@ -19,7 +19,7 @@ uniform int noise_level;
 
 uniform float update_rate;
 
-const float radius = 5.0f;
+const float radius = 1.0f;
 
 float re(float inp){
 	inp = inp>0 ? inp :  -inp;
