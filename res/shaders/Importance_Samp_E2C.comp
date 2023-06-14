@@ -98,15 +98,15 @@ void main(){
 	for(int i = -max_step; i<=max_step; i++){
 		int j_m = max_step-abs(i);
 		for(int j = -j_m; j<=j_m; j++){
-			float a = s*float(i)/max_step;
-			float b = s*float(j)/max_step;
+			float a = s*s*float(i)/max_step;
+			float b = s*s*float(j)/max_step;
 			float c = 1 - abs(a) - abs(b);
 
 			vec3 dir = normalize(a*dir_u + b*dir_l + c*dir_f);
 			float coef = c/length(vec3(a,b,c));
 
 			res += texture(source, genHdrUV(dir)) * coef;
-			factor += coef;
+			factor += 1;
 		}
 	
 	}

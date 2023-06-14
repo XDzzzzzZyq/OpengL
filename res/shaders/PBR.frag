@@ -390,7 +390,7 @@ void main(){
 	vec2 lut = texture2D(LUT, vec2(clamp(NdotV, 0.0, 0.99), Roughness)).xy;
 
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
-	vec3 reflect_spec = textureLod(Envir_Texture_spec, ReflectRay, Roughness * 7).rgb;
+	vec3 reflect_spec = textureLod(Envir_Texture_spec, ReflectRay, sqrt(Roughness) * 7).rgb;
 	reflect_spec *= Fresnel*lut.x + lut.y;
 	vec3 reflect_diff = texture(Envir_Texture_diff, Normal).rgb * Albedo;
 
