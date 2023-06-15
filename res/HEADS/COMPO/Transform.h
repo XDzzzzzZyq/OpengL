@@ -19,7 +19,7 @@ public:
 public:
 	virtual void UnsetParent(bool _keep_offset = true) = 0;
 public:
-	virtual bool ApplyTransform() = 0;
+	virtual bool ApplyTransform(bool _forced = false) = 0;
 	virtual bool ApplyAllTransform() = 0;
 	virtual bool GetInvTransform() const = 0;
 public:
@@ -82,7 +82,7 @@ private:
 	bool Set1D(glm::vec3& _tar, float _1d);
 
 public:
-	[[nodiscard("You could receive the state")]] bool ApplyTransform() override;
+	[[nodiscard("You could receive the state")]] bool ApplyTransform(bool _forced = false) override;
 	[[nodiscard("You could receive the state")]] bool ApplyAllTransform() override;
 	[[nodiscard("You could receive the state")]] bool GetInvTransform() const override;
 
@@ -184,7 +184,7 @@ public:
 	void SetParent(Transform2D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
 public:
-	[[nodiscard("You can receive the state")]] bool ApplyTransform() override;
+	[[nodiscard("You can receive the state")]] bool ApplyTransform(bool _forced = false) override;
 	[[nodiscard("You can receive the state")]] bool ApplyAllTransform() override;
 	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
 

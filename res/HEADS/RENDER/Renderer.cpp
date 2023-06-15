@@ -214,7 +214,7 @@ void Renderer::Render(bool rend, bool buff) {
 	for (auto& light : light_list) {
 
 		/*	    Capture Status		*/
-		light.second->ApplyTransform();
+		light.second->ApplyAllTransform();
 		is_light_changed |= light.second->is_light_changed;
 		is_light_changed |= light.second->is_Uniform_changed;
 
@@ -222,8 +222,6 @@ void Renderer::Render(bool rend, bool buff) {
 			r_light_data.UpdateLight(light);
 
 		/* Depth Test for Shadow Map */
-
-
 
 		light.second->is_light_changed = false;
 		light.second->is_Uniform_changed = false;
@@ -273,7 +271,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		for (const auto& areaLight : area_light_list)
 		{
-			areaLight.second->ApplyTransform();
+			areaLight.second->ApplyAllTransform();
 			areaLight.second->RenderPolygon(GetActiveCamera().get());
 			if (areaLight.second->is_Uniform_changed)
 				r_light_data.ParseAreaLightData(area_light_list);
@@ -294,7 +292,7 @@ void Renderer::Render(bool rend, bool buff) {
 		for (const auto& dPoints : dPoints_list)
 		{
 			if (!dPoints.second->is_viewport)continue;
-			dPoints.second->ApplyTransform();
+			dPoints.second->ApplyAllTransform();
 			dPoints.second->RenderDebugPoint(GetActiveCamera().get());
 			dPoints.second->is_Uniform_changed = false;
 		}

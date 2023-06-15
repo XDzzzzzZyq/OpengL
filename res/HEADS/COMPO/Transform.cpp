@@ -110,10 +110,10 @@ void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
 
 }
 
-bool Transform3D::ApplyTransform()
+bool Transform3D::ApplyTransform(bool _forced /*= false*/)
 {
 
-	if (!is_TransF_changed) return false;
+	if (!is_TransF_changed && !_forced) return false;
 
 	o_rotMat = glm::mat4_cast(rotQua);
 	o_Transform = o_rotMat * glm::scale(glm::mat4(1), o_scale);
@@ -136,38 +136,31 @@ bool Transform3D::ApplyTransform()
 
 bool Transform3D::ApplyAllTransform()
 {
-	if (o_parent_trans == nullptr) {
-		ApplyTransform();
+	if (GetParentTransPtr() != nullptr) { // skip all child node 
 		return false;
 	}
 
 	Transform3D* tar_ptr = this;
-	int i = 0;
-	do {
-		tar_ptr->ApplyTransform();
-		i++;
-		if (tar_ptr->GetParentTransPtr() == nullptr)
-			break;
-		else
-			tar_ptr = tar_ptr->GetParentTransPtr();
 
-	} while (true);
-
-	glm::mat4 post_trans = tar_ptr->o_Transform;
+	glm::mat4 post_trans = glm::mat4(1);
+	bool is_changed = false;
 	
 	do {
-		if (tar_ptr == nullptr)
-			break;
-		tar_ptr->o_Transform = post_trans * glm::mat4(1);
-		tar_ptr->is_Uniform_changed = true;
-		tar_ptr->is_TransF_changed = true;
+		is_changed |= tar_ptr->is_TransF_changed;
+		if (is_changed) {
+			tar_ptr->ApplyTransform(true);
+			tar_ptr->o_Transform = post_trans * tar_ptr->o_Transform;
+		}
+
+		tar_ptr->is_Uniform_changed = is_changed;
+		post_trans = tar_ptr->o_Transform;
+		
 		if (tar_ptr->GetChildTransPtr() == nullptr)
 			break;
-		else {
+		else 
 			tar_ptr = tar_ptr->GetChildTransPtr();
-			post_trans = post_trans * tar_ptr->o_Transform;
-		}
 	} while (true);
+
 	return true;
 
 }
@@ -281,7 +274,7 @@ void Transform2D::UnsetParent(bool _keep_offset /*= true*/)
 
 }
 
-bool Transform2D::ApplyTransform()
+bool Transform2D::ApplyTransform(bool _forced /*= false*/)
 {
 	if (!is_TransF_changed) return false;
 
