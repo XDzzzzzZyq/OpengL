@@ -33,9 +33,11 @@ public:
 	float spot_outer_cutoff{ 0.8 };
 
 	Spirit light_spirit;
+	Texture light_shadow_map;
 
 public:
 
+	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
 	inline static std::pair<SpiritType, std::string> ParseLightName(LightType _type);
 

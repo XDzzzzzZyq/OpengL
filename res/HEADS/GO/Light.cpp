@@ -1,16 +1,21 @@
 #include "Light.h"
 
+Light::Light()
+{
+	assert(false && "incorrect light initialization");
+}
+
 Light::Light(LightType type, float power, glm::vec3 color)
+	: light_type(type),	light_power(power),	light_color(color)
 {
 	o_type = GO_LIGHT;
-	light_type = type;
-	light_power = power;
-	light_color = color;
 
 	const auto [_type, _name] = ParseLightName(light_type);
 
 	light_spirit.spr_type = _type;
 	light_spirit.SetTex();
+
+	light_shadow_map = Texture(1024, 1024, IBL_CUBE_TEXTURE);
 
 	o_name = _name + std::to_string(GetObjectID());
 }

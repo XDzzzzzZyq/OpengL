@@ -191,8 +191,28 @@ Texture::Texture(int _w, int _h, GLuint _layout, const void* _ptr,
 
 Texture::Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name)
 	:im_w(_w), im_h(_h), tex_ID(_ID), tex_type(_type), tex_path(_name)
-{
+{}
 
+Texture::Texture(int _w, int _h, TextureType _type)
+	:im_w(_w), im_h(_h), tex_type(_type)
+{
+	auto [interlayout, layout, data_type, gl_type] = Texture::ParseFormat(tex_type);
+
+	glGenTextures(1, &tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
+
+	switch (gl_type)
+	{
+	case GL_TEXTURE_2D:
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT);
+		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
+		break;
+	case GL_TEXTURE_CUBE_MAP:
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+		LOOP(6)
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
+		break;
+	}
 }
 
 Texture::~Texture()
@@ -292,6 +312,10 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 	case RG_TEXTURE:
 	case FLOAT_BUFFER_TEXTURE:
 		return { GL_RG16F,	 GL_RG,	  GL_FLOAT,			GL_TEXTURE_2D		};
+	case HIGH_BIT_CUBE_TEXTURE:
+		return { GL_RGBA32F, GL_RGBA, GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
+	case HIGH_BIT_TEXTURE:
+		return { GL_RGBA32F, GL_RGBA, GL_FLOAT,			GL_TEXTURE_2D };
 	default:
 		assert(false && "WRONG FORMAT");
 		return { GL_NONE,	 GL_NONE ,GL_NONE,			GL_NONE				};
@@ -437,7 +461,7 @@ void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textur
 	
 	ComputeShader& irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "Irradiance_Conv_E2C" : "Irradiance_Conv");
 	irradiance_conv.UseShader();
-	irradiance_conv.SetValue("max_step", 32);
+	irradiance_conv.SetValue("max_step", 64);
 	irradiance_conv.SetValue("source", _tar_type + 1);
 	irradiance_conv.RunComputeShader(im_w / 4, im_w / 4, to_cubemap ? 6 : 1);
 

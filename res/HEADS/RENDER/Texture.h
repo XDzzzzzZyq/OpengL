@@ -23,6 +23,8 @@ enum TextureType
 	HDR_BUFFER_TEXTURE,		// [-inf, +inf]
 	FLOAT_BUFFER_TEXTURE,
 	RG_TEXTURE,
+	HIGH_BIT_CUBR_TEXTURE = 31,
+	HIGH_BIT_TEXTURE
 };
 
 /*
@@ -54,8 +56,9 @@ public:
 	Texture(GLuint Tile_type, int x, int y);									 // for FBO
 	Texture(int _w, int _h, GLuint _layout, const void* _ptr,
 		GLint _min_filter = GL_LINEAR, GLint _mag_filter = GL_LINEAR,
-		GLint _wrap_s = GL_REPEAT, GLint _wrap_t = GL_REPEAT);						 // for generated texture
-	Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name);
+		GLint _wrap_s = GL_REPEAT, GLint _wrap_t = GL_REPEAT);				     // for generated texture
+	Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name);   // for Copy
+	Texture(int _w, int _h, TextureType _type);									 // for emply texture
 	Texture();
 	~Texture();
 
