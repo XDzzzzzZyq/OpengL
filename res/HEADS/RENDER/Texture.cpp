@@ -484,7 +484,7 @@ void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type 
 	LOOP(6)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
 
-	ComputeShader& to_cubemap = ComputeShader::ImportShader("toCubeMap");
+	ComputeShader& to_cubemap = ComputeShader::ImportShader("To_Cube");
 
 	glBindImageTexture(0, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
 	Texture::BindM(_tar_ID, 1);
