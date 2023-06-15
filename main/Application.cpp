@@ -100,12 +100,12 @@ int Application::Run()
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
-	renderer.UseLight(pointLight1);
+	//renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight2->SetRadius(2);
-	renderer.UseLight(pointLight2);
+	//renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LIGHT----------------")
 	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
@@ -121,7 +121,7 @@ int Application::Run()
 	spotLight1->SetCutoff(60);
 	spotLight1->SetOuterCutoff(80);
 	spotLight1->SetPower(50);
-	renderer.UseLight(spotLight1);
+	//renderer.UseLight(spotLight1);
 
 	DEBUG("\n-------------AREA LIGHT-------------")
 	std::vector<float> alVertData = {
@@ -133,7 +133,7 @@ int Application::Run()
 	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
 	areaLight1->SetPos({ 0.0f, -3.0f, -4.0f });
 	areaLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
-	renderer.UseAreaLight(areaLight1);
+	//renderer.UseAreaLight(areaLight1);
 
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
@@ -143,7 +143,7 @@ int Application::Run()
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line2 = std::make_shared<DebugLine>();
 	line2->PushDebugLines({ {0,0,0} , {0,0,1} });
-	line2->SetParent(spotLight1->GetTransformPtr(), false);
+	line2->SetParent(sunLight1->GetTransformPtr(), false);
 	renderer.UseDebugLine(line2);
 
 	DEBUG("\n---------------ENVIR----------------")
@@ -234,11 +234,8 @@ int Application::Run()
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
-		if ((int)view_size.x % 2)
-			view_size.x++;
-		glViewport(0, 0, view_size.x, view_size.y);
 		camera->ChangeCamRatio(view_size);
-		renderer.FrameBufferResize(0, view_size);
+		renderer.FrameResize(view_size.x, view_size.y);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};

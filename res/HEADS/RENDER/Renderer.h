@@ -36,7 +36,9 @@ private:
 	};
 
 public:
-	int r_frame_num = 0;
+	GLuint r_frame_num = 0;
+	GLuint r_frame_width = SCREEN_W;
+	GLuint r_frame_height = SCREEN_H;
 
 private:
 	std::optional<FrameBuffer> r_render_result;
@@ -70,11 +72,12 @@ public:
 	LightArrayBuffer r_light_data;
 
 public:
-	std::string GetObjectName(int ID);
 
+	std::string GetObjectName(int ID);
 	int GetSelectID(GLuint x, GLuint y);
 
 public:
+
 	std::vector<FrameBuffer> r_buffer_list;
 	void InitFrameBuffer();
 	void BindFrameBuffer(int slot);
@@ -83,17 +86,21 @@ public:
 	GLuint GetFrameBufferTexture(int slot);
 
 public:
+
 	bool multi_select = false;
 	void EventInit();
 	void LMB_CLICK();
 	void SHIFT();
 
 public:
-	void UpdateFrame();
+
+	void NewFrame();
 	void Render(bool rend = true, bool buff = true);
 	void Reset();
+	void FrameResize(GLuint _w, GLuint _h);
 
 public:
+
 	void UseCamera(std::shared_ptr<Camera> camera);
 	void UseCamera(const int& cam_id);
 	std::shared_ptr<Camera> GetActiveCamera();
@@ -111,9 +118,7 @@ public:
 	void UseDebugPoints(std::shared_ptr<DebugPoints> dpoints);
 
 	void UsePostProcessing(std::shared_ptr<PostProcessing> pps);
-
-public:
-	std::shared_ptr<PostProcessing> GetPPS(int _tar) { return pps_list[_tar]; }
+	std::shared_ptr<PostProcessing> GetPPS(int _tar);
 
 };
 

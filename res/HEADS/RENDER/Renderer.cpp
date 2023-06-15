@@ -93,8 +93,8 @@ void Renderer::EndFrameBuffer(int slot)
 
 void Renderer::FrameBufferResize(int slot, const ImVec2& size)
 {
-	//GetActiveEnvironment()->envir_frameBuffer->Resize(size);
-	r_buffer_list[_RASTER].Resize(size);
+	for (auto& buffer : r_buffer_list)
+		buffer.Resize(size);
 	r_render_result->Resize(size);
 }
 
@@ -166,13 +166,11 @@ void Renderer::SHIFT()
 
 //////////////////////////////////////////////
 
-void Renderer::UpdateFrame()
+void Renderer::NewFrame()
 {
 	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glClearColor(0.07f, 0.13f, 0.17f, 0.0f);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	//glClearDepth(-10.0f);
-
+	glViewport(0, 0, r_frame_width, r_frame_height);
 
 	if (is_outliner_selected) {
 		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
@@ -238,7 +236,8 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBuffer();
 	}
 
-	UpdateFrame();
+	NewFrame();
+
 	if (rend) {
 		//glEnable(GL_STENCIL_TEST);
 		;
@@ -421,6 +420,13 @@ void Renderer::Reset()
 	is_light_changed = false;
 }
 
+void Renderer::FrameResize(GLuint _w, GLuint _h)
+{
+	r_frame_width = _w;
+	r_frame_height = _h;
+	FrameBufferResize(0, { (float)_w, (float)_h });
+}
+
 
 
 
@@ -583,4 +589,12 @@ void Renderer::UsePostProcessing(std::shared_ptr<PostProcessing> pps)
 	spirit_list[pps->pps_spirit.GetObjectID()] = std::shared_ptr<Spirit>(pps, &pps->pps_spirit);
 	name_buff[pps->pps_spirit.GetObjectID()] = pps->o_name; //using spirit ID
 	spirit_id_buff.push_back(pps->pps_spirit.GetObjectID());
+}
+
+std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
+{
+	if (_tar >= pps_list.size())
+		return nullptr;
+
+	return pps_list[_tar];
 }
