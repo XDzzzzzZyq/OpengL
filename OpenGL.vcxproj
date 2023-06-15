@@ -418,7 +418,8 @@
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
     <None Include="res\shaders\testS_diff.frag" />
-    <None Include="res\shaders\toCubeMap.comp" />
+    <None Include="res\shaders\To_Cube.comp" />
+    <None Include="res\shaders\To_ERect.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dep\cubicSpline\CubicSpline.h" />
@@ -431,6 +432,7 @@
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
     <ClInclude Include="main\Application.h" />
     <ClInclude Include="res\HEADS\GO\AreaLight.h" />
+    <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
     <ClInclude Include="res\HEADS\UI\ImguiTheme.h" />

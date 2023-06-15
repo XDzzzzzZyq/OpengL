@@ -242,8 +242,11 @@ int Application::Run()
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};
+	Texture rough_tex("hdr/room.hdr", IBL_TEXTURE, GL_MIRRORED_REPEAT);
+	rough_tex.GenCubeMapFrom(rough_tex);
+	rough_tex.GenERectMapFrom(rough_tex);
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
-		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_IBL_spec.GetTexID());
+		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(rough_tex.GetTexID());
 	};
 	UI.ParaUpdate = [&] {
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);

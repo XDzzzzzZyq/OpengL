@@ -1,0 +1,30 @@
+#version 460 core
+
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+
+layout(rgba16f, binding = 0) uniform image2D U_result;
+
+uniform samplerCube U_Cube;
+
+vec2 genHdrUV(vec3 dir) {
+	vec2 uv = vec2(atan(dir.y, dir.x), asin(dir.z));
+	uv *= -vec2(0.15915494, 0.31830988);
+	uv += 0.5;
+	return uv;
+}
+
+vec3 genDirFromRUV(vec2 uvf_r){
+	float pi = 3.1415026;
+	return vec3(cos(uvf_r.y*pi/2)*cos(uvf_r.x*pi), cos(uvf_r.y*pi/2)*sin(uvf_r.x*pi), sin(uvf_r.y*pi/2));
+}
+
+void main(){
+
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+	vec2 uvf = vec2(uv)/vec2(imageSize(U_result));
+
+	vec2 uvf_r = uvf*2-vec2(1.0);
+
+    vec4 col = texture(U_Cube, genDirFromRUV(uvf_r));
+	imageStore(U_result, uv, col);
+}

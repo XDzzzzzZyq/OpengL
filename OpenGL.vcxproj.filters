@@ -680,12 +680,13 @@
     <None Include="res\shaders\FXAA.comp" />
     <None Include="res\shaders\SSAO.comp" />
     <None Include="res\shaders\Importance_Samp.comp" />
-    <None Include="res\shaders\toCubeMap.comp" />
     <None Include="res\shaders\show_Cube.frag" />
     <None Include="res\shaders\Polygon.vert" />
     <None Include="res\shaders\Polygon.frag" />
     <None Include="res\shaders\Importance_Samp_E2C.comp" />
     <None Include="res\shaders\Irradiance_Conv_E2C.comp" />
+    <None Include="res\shaders\To_Cube.comp" />
+    <None Include="res\shaders\To_ERect.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1760,6 +1761,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\GO\AreaLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

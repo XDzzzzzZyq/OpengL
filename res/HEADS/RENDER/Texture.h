@@ -94,12 +94,14 @@ public: // for texture processing
 	void GenIBLSpecularFrom(const Texture& _Tar_Tex, bool to_cubemap = false);
 	void GenIBLDiffuseFrom(const Texture& _Tar_Tex, bool to_cubemap = false);
 	void GenCubeMapFrom(const Texture& _Tar_Tex, size_t res = 1024);
+	void GenERectMapFrom(const Texture& _Tar_Tex, size_t _w = 2048, size_t _h = 1024);
 
 private:
 	void GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
 	void GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
 	void GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
 	void GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type = IBL_TEXTURE);
+	void GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type = IBL_TEXTURE);
 };
 
 
