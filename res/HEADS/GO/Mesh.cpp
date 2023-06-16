@@ -50,9 +50,6 @@ Mesh::~Mesh()
 
 void Mesh::RenderObj(Camera* cam)
 {
-	
-	o_vertArry.Bind();
-	o_index.Bind();
 	o_shader->UseShader();
 
 	if(o_tex)
@@ -75,20 +72,29 @@ void Mesh::RenderObj(Camera* cam)
 
 	o_shader->SetValue("is_selected", (int)is_selected);
 
-	glDrawElements(GL_TRIANGLES, o_index.count(), GL_UNSIGNED_INT, nullptr);
+	RenderObjProxy();
 
 	//o_Transform = glm::mat4(1.0f);
 
 #if 1
-	o_index.Unbind();
 	o_shader->UnuseShader();
-	o_vertArry.Unbind();
 
 	if(o_tex)
 		o_tex->Unbind();
 #endif
 
 
+}
+
+void Mesh::RenderObjProxy() const
+{
+	o_vertArry.Bind();
+	o_index.Bind();
+
+	glDrawElements(GL_TRIANGLES, o_index.count(), GL_UNSIGNED_INT, nullptr);
+
+	o_index.Unbind();
+	o_vertArry.Unbind();
 }
 
 void Mesh::SetObjShader(std::string vert, std::string frag)

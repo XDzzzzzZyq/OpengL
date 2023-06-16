@@ -38,6 +38,7 @@ public:
 	~Mesh();
 
 	void RenderObj(Camera* cam);
+	void RenderObjProxy() const;
 
 	void SetObjShader(std::string vert, std::string frag = "");
 	void SetTex(std::string path, TextureType slot);
