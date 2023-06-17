@@ -254,10 +254,10 @@ void RenderShader::CreatShader(const std::string& verShader, const std::string& 
 	//glDeleteProgram(program_id);
 }
 ////////////////////////////////////////////////////////
-RenderShader::RenderShader(const std::string& name, const std::string& name2)
+RenderShader::RenderShader(const std::string& vert, const std::string& frag)
 {
-	vert_name = name;
-	frag_name = name2 == "" ? name : name2;
+	vert_name = vert;
+	frag_name = frag == "" ? vert : frag;
 
 	ParseShaderFile(vert_name, VERTEX_SHADER);
 	ParseShaderFile(frag_name, FRAGMENT_SHADER);

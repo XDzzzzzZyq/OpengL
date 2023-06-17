@@ -23,8 +23,8 @@ enum TextureType
 	HDR_BUFFER_TEXTURE,		// [-inf, +inf]
 	FLOAT_BUFFER_TEXTURE,
 	RG_TEXTURE,
-	HIGH_BIT_CUBE_TEXTURE = 31,
-	HIGH_BIT_TEXTURE
+	DEPTH_CUBE_TEXTURE = 31,
+	DEPTH_TEXTURE
 };
 
 /*
@@ -85,7 +85,7 @@ public:
 public:
 	using TexStorageInfo = const std::tuple<GLuint, GLuint, GLuint, GLuint>; // internal_layout | layout | data_type | texture_type
 
-	inline static TexStorageInfo ParseFormat(TextureType _type);
+	inline static TexStorageInfo ParseFormat(TextureType _type);			 // internal_layout | layout | data_type | texture_type
 	template<GLuint Type>
 	inline static void SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s = 0, GLuint _warp_t = 0, GLuint _lev_min = 0, GLuint _lev_max = 0, GLuint _warp_r = 0);
 
@@ -95,6 +95,7 @@ public: // for texture processing
 	void GenIBLDiffuseFrom(const Texture& _Tar_Tex, bool to_cubemap = false);
 	void GenCubeMapFrom(const Texture& _Tar_Tex, size_t res = 1024);
 	void GenERectMapFrom(const Texture& _Tar_Tex, size_t _w = 2048, size_t _h = 1024);
+	void ConvertDepthFrom(const Texture& _Tar_Tex);
 
 private:
 	void GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
@@ -102,6 +103,7 @@ private:
 	void GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
 	void GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type = IBL_TEXTURE);
 	void GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type = IBL_TEXTURE);
+	void ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type = DEPTH_TEXTURE);
 };
 
 

@@ -67,11 +67,11 @@ private:
 
 	std::string vert_name, frag_name;
 	ShaderPair rend_shaders;
-	GLuint vs_id, fs_id;
+	GLuint vs_id{ 0 }, fs_id{ 0 };
 
 public:
 
-	RenderShader(const std::string& name, const std::string& name2 = "");
+	RenderShader(const std::string& vert, const std::string& frag = "");
 	RenderShader();
 	~RenderShader();
 
