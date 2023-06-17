@@ -104,6 +104,7 @@ public:
 
 		alignas(4) float power{ 1 };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
+		alignas(64) glm::mat4 proj_trans;
 	};
 
 	struct SpotStruct
@@ -146,7 +147,6 @@ public:
 		int spot_count{ 0 };
 		int area_count{ 0 };
 		int area_verts_count{ 0 };
-		GLuint shadow_maps[32];
 	};
 
 public:
@@ -159,7 +159,8 @@ public:
 	UniformBuffer<SceneInfo> info;
 
 private:
-	std::unordered_map<int, int> id_loc_cache;
+	using LightInfo = std::tuple<int, LightType, GLuint>;
+	std::unordered_map<int, LightInfo> light_info_cache; // id -> loc & map_tex_ID
 
 public:
 	LightArrayBuffer() {};
@@ -169,8 +170,11 @@ public:
 
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
 	void ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list);
+
 	SceneInfo GetSceneInfo() const;
 	inline GLsizei GetTotalCount() const;
+	GLuint GetSlotOffset(LightType _type) const;
 
 	void UpdateLight(const std::pair<int, std::shared_ptr<Light>>& light);
+	void BindShadowMap() const;
 };
