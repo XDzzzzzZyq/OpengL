@@ -1,12 +1,16 @@
 #include "Light.h"
 
+FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
+
+RenderShader Light::_shadowmap_shader = RenderShader();
+
 Light::Light()
 {
 	assert(false && "incorrect light initialization");
 }
 
 Light::Light(LightType type, float power, glm::vec3 color)
-	: light_type(type),	light_power(power),	light_color(color)
+	: light_type(type), light_power(power), light_color(color)
 {
 	o_type = GO_LIGHT;
 
@@ -15,12 +19,38 @@ Light::Light(LightType type, float power, glm::vec3 color)
 	light_spirit.spr_type = _type;
 	light_spirit.SetTex();
 
-	light_shadow_map = Texture(1024, 1024, IBL_CUBE_TEXTURE);
-
 	o_name = _name + std::to_string(GetObjectID());
+
+	InitShadowMap();
 }
 
-inline  std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
+void Light::InitShadowMap()
+{
+	assert(light_type != LightType::NONELIGHT);
+
+	switch (light_type)
+	{
+	case POINTLIGHT:
+		light_shadow_map = Texture(1024, 1024, DEPTH_CUBE_TEXTURE);
+		break;
+	case SUNLIGHT:
+		light_shadow_map = Texture(2048, 2048, DEPTH_TEXTURE);
+		break;
+	case SPOTLIGHT:
+		light_shadow_map = Texture(1024, 1024, DEPTH_CUBE_TEXTURE);
+		break;
+	default:
+		assert(false);
+	}
+
+	if (_shadowmap_buffer.GetFrameBufferID() == 0)
+		_shadowmap_buffer = FrameBuffer(light_shadow_map);
+
+	if (_shadowmap_shader.getShaderID(VERTEX_SHADER) == 0)
+		_shadowmap_shader = RenderShader("Depth_Rast", "Empty");
+}
+
+inline std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
 {
 	switch (_type)
 	{
@@ -92,6 +122,41 @@ void Light::RenderLightSpr(Camera* cam)
 	light_spirit.RenderSpirit(vec3_stdVec6(o_position, light_color), cam);
 }
 
+void Light::BindShadowMapBuffer()
+{
+	_shadowmap_buffer.LinkTexture(light_shadow_map);
+	_shadowmap_buffer.BindFrameBuffer();
+}
+
+void Light::BindShadowMapShader()
+{
+	_shadowmap_shader.UseShader();
+	_shadowmap_shader.SetValue("U_lightproj", light_proj);
+}
+
+void Light::BindTargetTrans(const glm::mat4& _trans)
+{
+	_shadowmap_shader.SetValue("U_model", _trans);
+}
+
+void Light::UpdateProjMatrix()
+{
+	const float near_plane = -10.0f, far_plane = 10.0f, field = 30.0f;
+	const glm::mat4 lightProjection = glm::ortho(-field, field, -field, field, near_plane, far_plane);
+	const glm::mat4 lightView = glm::lookAt(glm::cross(o_dir_up, o_dir_right), glm::vec3(0), glm::vec3(0, 0, 1));
+
+	light_proj = lightProjection * lightView;
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
 LightArrayBuffer::~LightArrayBuffer()
 {
 	point_buffer.DeleteBuffer();
@@ -104,12 +169,12 @@ LightArrayBuffer::~LightArrayBuffer()
 
 void LightArrayBuffer::Init()
 {
-	point_buffer      = StorageBuffer(CUSTOM_LIST, 0);
-	sun_buffer        = StorageBuffer(CUSTOM_LIST, 1);
-	spot_buffer       = StorageBuffer(CUSTOM_LIST, 2);
-	area_buffer       = StorageBuffer(CUSTOM_LIST, 3);
+	point_buffer = StorageBuffer(CUSTOM_LIST, 0);
+	sun_buffer = StorageBuffer(CUSTOM_LIST, 1);
+	spot_buffer = StorageBuffer(CUSTOM_LIST, 2);
+	area_buffer = StorageBuffer(CUSTOM_LIST, 3);
 	area_verts_buffer = StorageBuffer(CUSTOM_LIST, 4);
-	info              = UniformBuffer<SceneInfo>(5);
+	info = UniformBuffer<SceneInfo>(5);
 }
 
 void LightArrayBuffer::Bind() const
@@ -192,9 +257,9 @@ void LightArrayBuffer::ParseAreaLightData(const std::unordered_map<int, std::sha
 	area.clear();
 	area_verts.clear();
 
-	for (auto &al : area_light_list)
+	for (auto& al : area_light_list)
 	{
-		auto &v = al.second->verts;
+		auto& v = al.second->verts;
 
 		area.emplace_back(AreaStruct{
 			al.second->light_color,

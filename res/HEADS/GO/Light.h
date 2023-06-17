@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "Spirit.h"
 #include "AreaLight.h"
+#include "FrameBuffer.h"
 
 #include "StorageBuffer.h"
 #include "UniformBuffer.h"
@@ -32,13 +33,17 @@ public:
 	float spot_cutoff{ 0.9 };
 	float spot_outer_cutoff{ 0.8 };
 
+public:
+
 	Spirit light_spirit;
 	Texture light_shadow_map;
+	glm::mat4 light_proj{ 1 };
 
 public:
 
 	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
+	void InitShadowMap();
 	inline static std::pair<SpiritType, std::string> ParseLightName(LightType _type);
 
 public:
@@ -51,8 +56,19 @@ public:
 	void SetCutoff(float _ang);
 	void SetOuterCutoff(float _ang);
 
+
+private:
+	static FrameBuffer _shadowmap_buffer;
+	static RenderShader _shadowmap_shader;
+
 public:
 	void RenderLightSpr(Camera* cam);
+
+	void BindShadowMapBuffer();
+	void BindShadowMapShader();
+	void BindTargetTrans(const glm::mat4& _trans);
+	void UpdateProjMatrix();
+	void BindShadowMap(GLuint _slot = GL_TEXTURE31);
 };
 
 

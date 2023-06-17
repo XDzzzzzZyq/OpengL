@@ -687,6 +687,9 @@
     <None Include="res\shaders\Irradiance_Conv_E2C.comp" />
     <None Include="res\shaders\To_Cube.comp" />
     <None Include="res\shaders\To_ERect.comp" />
+    <None Include="res\shaders\Empty.frag" />
+    <None Include="res\shaders\Depth_Rast.vert" />
+    <None Include="res\shaders\Depth_Texture.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1764,6 +1767,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

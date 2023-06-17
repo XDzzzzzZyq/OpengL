@@ -390,7 +390,10 @@
     <None Include="dep\glm\gtx\vector_query.inl" />
     <None Include="dep\glm\gtx\wrap.inl" />
     <None Include="README.md" />
+    <None Include="res\shaders\Depth_Rast.vert" />
+    <None Include="res\shaders\Depth_Texture.comp" />
     <None Include="res\shaders\Editing.comp" />
+    <None Include="res\shaders\Empty.frag" />
     <None Include="res\shaders\EnvirBG.frag" />
     <None Include="res\shaders\FXAA.comp" />
     <None Include="res\shaders\IBRShader.frag" />
@@ -431,6 +434,7 @@
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
     <ClInclude Include="main\Application.h" />
+    <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h" />
     <ClInclude Include="res\HEADS\GO\AreaLight.h" />
     <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h" />

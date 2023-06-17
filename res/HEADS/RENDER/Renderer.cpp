@@ -1,5 +1,8 @@
 #include "Renderer.h"
 
+GLint Renderer::max_resolution_w = 0;
+GLint Renderer::max_resolution_h = 0;
+
 Renderer::Renderer()
 {
 
@@ -52,6 +55,9 @@ void Renderer::Init()
 
 	DEBUG(maxAttach)
 		DEBUG(maxDrawBuf)*/
+
+	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH , &max_resolution_w);
+	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
 }
 
 Renderer::~Renderer()
@@ -208,23 +214,28 @@ void Renderer::Render(bool rend, bool buff) {
 	if (envir_list.find(0) == envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 
 	///////////  Lights Data PreCalc  ///////////
 
-	for (auto& light : light_list) {
+	for (auto& [id, light] : light_list) {
 
 		/*	    Capture Status		*/
-		light.second->ApplyAllTransform();
-		is_light_changed |= light.second->is_light_changed;
-		is_light_changed |= light.second->is_Uniform_changed;
+		light->ApplyAllTransform();
+		is_light_changed |= light->is_light_changed;
+		is_light_changed |= light->is_Uniform_changed;
 
-		if (light.second->is_light_changed || light.second->is_Uniform_changed)
-			r_light_data.UpdateLight(light);
+		if (light->is_light_changed || light->is_Uniform_changed)
+			r_light_data.UpdateLight({ id, light });
 
 		/* Depth Test for Shadow Map */
 
-		light.second->is_light_changed = false;
-		light.second->is_Uniform_changed = false;
+		if (light->is_Uniform_changed)
+			light->UpdateProjMatrix();
+
+		RenderShadowMap(light.get());
+		light->is_light_changed = false;
+		light->is_Uniform_changed = false;
 	}
 
 	///////////   Begin buffering    ///////////
@@ -248,7 +259,7 @@ void Renderer::Render(bool rend, bool buff) {
 		GetActiveCamera()->GetInvTransform();
 		GetActiveCamera()->GenFloatData();
 
-		//DEBUG(viewport_offset)
+		glDisable(GL_DEPTH_TEST);
 		GetActiveEnvironment()->RenderEnvironment(GetActiveCamera().get());
 		glEnable(GL_DEPTH_TEST);
 
@@ -388,6 +399,26 @@ void Renderer::Render(bool rend, bool buff) {
 	}
 	//DEBUG(is_spirit_selected)
 	Reset();
+}
+
+void Renderer::RenderShadowMap(Light* light)
+{
+	const GLuint map_w = light->light_shadow_map.GetW();
+	const GLuint map_h = light->light_shadow_map.GetH();
+
+	glViewport(0, 0, map_w, map_h);
+
+	light->BindShadowMapBuffer();
+	light->BindShadowMapShader();
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	for (const auto& [id, mesh] : mesh_list) {
+		light->BindTargetTrans(mesh->o_Transform);
+		mesh->RenderObjProxy();
+	}
+
+	FrameBuffer::UnbindFrameBuffer();
 }
 
 /////////////////////////////////////// FINISH RENDERING /////////////////////////////////////////////

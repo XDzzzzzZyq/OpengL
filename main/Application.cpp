@@ -239,11 +239,10 @@ int Application::Run()
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};
-	Texture rough_tex("hdr/room.hdr", IBL_TEXTURE, GL_MIRRORED_REPEAT);
-	rough_tex.GenCubeMapFrom(rough_tex);
-	rough_tex.GenERectMapFrom(rough_tex);
+	Texture temp{};
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
-		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(rough_tex.GetTexID());
+		temp.ConvertDepthFrom(sunLight1->light_shadow_map);
+		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 	};
 	UI.ParaUpdate = [&] {
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
@@ -304,6 +303,7 @@ int Application::Run()
 		pointLight2->SetPower((rotateZ + 50) * power);
 
 		sunLight1->SetRot1D<2>(Radius * 36);
+		sunLight1->SetPower(power * 10);
 
 		spotLight1->SetRot1D<2>(Radius * 36);
 		spotLight1->SetCutoff(rotateY);

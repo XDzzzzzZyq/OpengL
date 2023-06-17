@@ -36,6 +36,10 @@ private:
 	};
 
 public:
+	static GLint max_resolution_w;
+	static GLint max_resolution_h;
+
+public:
 	GLuint r_frame_num = 0;
 	GLuint r_frame_width = SCREEN_W;
 	GLuint r_frame_height = SCREEN_H;
@@ -95,7 +99,10 @@ public:
 public:
 
 	void NewFrame();
+
 	void Render(bool rend = true, bool buff = true);
+	void RenderShadowMap(Light* light);
+
 	void Reset();
 	void FrameResize(GLuint _w, GLuint _h);
 
