@@ -59,7 +59,7 @@ public:
 
 private:
 	static FrameBuffer _shadowmap_buffer;
-	static RenderShader _shadowmap_shader;
+	static FastLoadShader _shadowmap_shader;
 
 public:
 	void RenderLightSpr(Camera* cam);

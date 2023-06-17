@@ -2,7 +2,7 @@
 
 FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
 
-RenderShader Light::_shadowmap_shader = RenderShader();
+FastLoadShader Light::_shadowmap_shader = FastLoadShader();
 
 Light::Light()
 {
@@ -47,7 +47,7 @@ void Light::InitShadowMap()
 		_shadowmap_buffer = FrameBuffer(light_shadow_map);
 
 	if (_shadowmap_shader.getShaderID(VERTEX_SHADER) == 0)
-		_shadowmap_shader = RenderShader("Depth_Rast", "Empty");
+		_shadowmap_shader = FastLoadShader("Depth_Rast", "Empty");
 }
 
 inline std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)

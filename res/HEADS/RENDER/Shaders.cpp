@@ -1,6 +1,9 @@
 ﻿#include "Shaders.h"
-GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
-	GLuint id = glCreateShader(TYPE);
+GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
+
+	const auto [name, fname, glname] = Shaders::ParseShaderType(_type);
+
+	GLuint id = glCreateShader(glname);
 	const char* src = source.c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
 
 	glShaderSource(id, 1, &src, nullptr);
@@ -13,24 +16,51 @@ GLuint CompileShaderFile(GLuint TYPE, const std::string& source) {
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
 	//std::cout << status << std::endl;
-	const std::string type = Shaders::GetShaderTypeName(TYPE);
+
 	if (!status) {
 		int length;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 		char* message = new char[length];
 
 		glGetShaderInfoLog(id, length, &length, message);
-		std::cout << type + " error\n";
+		std::cout << name + " error\n";
 		std::cout << message << "\n";
 		DEBUG(source)
 		//delete message;
 		return 0;
 	}
 #ifdef _DEBUG
-	std::cout << type << " is complied successfully!\n";
+	std::cout << name << " is complied successfully!\n";
 #endif
 	//delete src;
 	return id;
+}
+
+std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
+{
+	std::string file_name = name.find(ShaderLib::folder_root) == std::string::npos ? ShaderLib::folder_root + name + ShaderLib::file_type[_type] : name;
+
+	std::ifstream Stream(file_name);
+	std::string Cache, Line;
+	while (getline(Stream, Line))
+		Cache += Line + "\n";
+
+	return Cache;
+}
+
+Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
+{
+	switch (_type)
+	{
+	case VERTEX_SHADER:
+		return { "Vertex Shader", ".vert", GL_VERTEX_SHADER };
+	case FRAGMENT_SHADER:
+		return { "Fragment Shader", ".frag", GL_FRAGMENT_SHADER };
+	case COMPUTE_SHADER:
+		return { "Compute Shader", ".comp", GL_COMPUTE_SHADER };
+	default:
+		return { "/", "/", GL_NONE };
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,21 +245,6 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const GLuint* va0
 	}
 }
 
-const char* Shaders::GetShaderTypeName(GLuint _Type, bool _using_filename)
-{
-	switch (_Type)
-	{
-	case GL_VERTEX_SHADER:
-		return _using_filename ? ".vert" : "Vertex Shader"; break;
-	case GL_FRAGMENT_SHADER:
-		return _using_filename ? ".frag" : "Fragment Shader"; break;
-	case GL_COMPUTE_SHADER:
-		return _using_filename ? ".comp" : "Compute Shader"; break;
-	default:
-		break;
-	}
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,9 +254,8 @@ const char* Shaders::GetShaderTypeName(GLuint _Type, bool _using_filename)
 void RenderShader::CreatShader(const std::string& verShader, const std::string& fragShader) {
 	program_id = glCreateProgram();
 
-	vs_id = CompileShaderFile(GL_VERTEX_SHADER, verShader);
-	//std::cout << "_______\n";
-	fs_id = CompileShaderFile(GL_FRAGMENT_SHADER, fragShader);
+	vs_id = CompileShaderCode(VERTEX_SHADER, verShader);
+	fs_id = CompileShaderCode(FRAGMENT_SHADER, fragShader);
 
 	glAttachShader(program_id, vs_id);
 	glAttachShader(program_id, fs_id);
@@ -343,18 +357,12 @@ GLuint RenderShader::getShaderID(ShaderType type) const
 {
 	switch (type)
 	{
-	case NONE_SHADER:
-		return 0;
-		break;
 	case VERTEX_SHADER:
 		return vs_id;
-		break;
 	case FRAGMENT_SHADER:
 		return fs_id;
-		break;
 	default:
 		return 0;
-		break;
 	}
 }
 
@@ -363,6 +371,69 @@ void RenderShader::LocalDebug() const
 #ifdef _DEBUG
 	for (const auto i : _uniforms_cache)
 		DEBUG(i.first + " : " + std::to_string(i.second))
+#endif
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+FastLoadShader::FastLoadShader(const std::string& vert, const std::string& frag /*= ""*/)
+{
+	vert_name = vert;
+	frag_name = frag == "" ? vert : frag;
+
+	std::string vert_code = Shaders::ReadShaderFile(VERTEX_SHADER, vert_name);
+	std::string frag_code = Shaders::ReadShaderFile(FRAGMENT_SHADER, frag_name);
+
+	CreatShader(vert_code, frag_code);
+}
+
+FastLoadShader::FastLoadShader()
+{
+
+}
+
+FastLoadShader::~FastLoadShader()
+{
+
+}
+
+void FastLoadShader::CreatShader(const std::string& verShader, const std::string& fragShader)
+{
+	program_id = glCreateProgram();
+
+	vs_id = CompileShaderCode(VERTEX_SHADER, verShader);
+	fs_id = CompileShaderCode(FRAGMENT_SHADER, fragShader);
+
+	glAttachShader(program_id, vs_id);
+	glAttachShader(program_id, fs_id);
+
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+}
+
+GLuint FastLoadShader::getShaderID(ShaderType type) const
+{
+	switch (type)
+	{
+	case VERTEX_SHADER:
+		return vs_id;
+	case FRAGMENT_SHADER:
+		return fs_id;
+	default:
+		return 0;
+	}
+}
+
+void FastLoadShader::LocalDebug() const
+{
+#ifdef _DEBUG
+	DEBUG(fast_shaders.verShader);
+	DEBUG(fast_shaders.fragShader);
 #endif
 }
 
@@ -383,15 +454,8 @@ void ComputeShader::ResetComputeLib()
 ComputeShader::ComputeShader(const std::string& name)
 	:comp_name(name)
 {
-
-	std::string file_name = name.find(ShaderLib::folder_root) == std::string::npos ? ShaderLib::folder_root + name + ShaderLib::file_type[COMPUTE_SHADER] : name;
-
-	std::ifstream Stream(file_name);
-	std::string Cache, Line;
-	while (getline(Stream, Line))
-		Cache += Line+"\n";
-
-	CreateShader(Cache);
+	std::string code = Shaders::ReadShaderFile(COMPUTE_SHADER, name);
+	CreateShader(code);
 }
 
 ComputeShader::ComputeShader()
@@ -408,7 +472,7 @@ void ComputeShader::CreateShader(const std::string& compShader)
 {
 	program_id = glCreateProgram();
 
-	comp_id = CompileShaderFile(GL_COMPUTE_SHADER, compShader);
+	comp_id = CompileShaderCode(COMPUTE_SHADER, compShader);
 
 	glAttachShader(program_id, comp_id);
 

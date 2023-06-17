@@ -12,6 +12,13 @@ enum ArrayType
 
 class Shaders {
 
+public:
+
+	using ShaderConstInfo = std::tuple<std::string, std::string, GLuint>; // name | filename | GL_name
+	static ShaderConstInfo ParseShaderType(ShaderType _type);
+	static GLuint CompileShaderCode(ShaderType _type, const std::string& source);
+	static std::string ReadShaderFile(ShaderType _type, const std::string& name);
+
 protected:
 
 	GLuint program_id;
@@ -54,10 +61,6 @@ public:
 
 	virtual void LocalDebug() const = 0;
 
-public:
-
-	static const char* GetShaderTypeName(GLuint _Type, bool _using_filename = false);
-
 };
 
 
@@ -84,6 +87,31 @@ public:
 	void ParseShaderFile(std::string _name, ShaderType _type);
 	void ParseShaderCode(const std::string& _code, ShaderType _type);
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override;
+
+public:
+
+	inline GLuint getShaderID(ShaderType type) const override;
+	void LocalDebug() const override;
+
+};
+
+
+
+class FastLoadShader : public Shaders
+{
+private:
+
+	std::string vert_name, frag_name;
+	ShaderPair fast_shaders;
+	GLuint vs_id{ 0 }, fs_id{ 0 };
+
+public:
+
+	FastLoadShader(const std::string& vert, const std::string& frag = "");
+	FastLoadShader();
+	~FastLoadShader();
+
+	void CreatShader(const std::string& verShader, const std::string& fragShader);
 
 public:
 
