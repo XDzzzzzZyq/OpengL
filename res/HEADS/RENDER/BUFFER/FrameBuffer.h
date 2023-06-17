@@ -36,20 +36,29 @@ public:
 	FBType fb_type = NONE_FB;
 	mutable std::vector<Texture> fb_tex_list;
 
+public:
+
 	FrameBuffer();
-	FrameBuffer(FBType type, GLuint attach=0);
-	FrameBuffer(int count, ...);
-	FrameBuffer(const std::vector<FBType>& _tars);
+	FrameBuffer(FBType type, GLuint attach=0);			// for single framebuffer
+	FrameBuffer(int count, ...);						// for compile-time framebuffer list
+	FrameBuffer(const std::vector<FBType>& _tars);		// for run-time framebuffer list
+	FrameBuffer(const Texture& _depth);					// for depth framebuffer
 	~FrameBuffer();
 
 	void BindFrameBuffer() const;
-	void UnbindFrameBuffer() const;
+	static void UnbindFrameBuffer();
+
+	void LinkTexture(const Texture& _tex);
+
+public:
 
 	void Resize(const ImVec2& size, bool all = false);
 	void Resize(float w, float h, bool all = false);
 	ImVec2 GetSize() const { return { fb_w, fb_h }; }
 
 	FBPixel ReadPix(GLuint x, GLuint y, FBType type);
+
+public:
 
 	void BindFrameBufferTex(int count = 0, ...) const;
 	void BindFrameBufferTex(const std::vector<FBType>& _tars) const;
@@ -58,7 +67,11 @@ public:
 	void UnbindFrameBufferTexR(FBType tar, GLuint slot) const;
 	void UnbindFrameBufferTex() const;
 
+public:
+
 	void Del() const;
+
+public:
 
 	GLuint GetFrameBufferID() const { return fb_ID; }
 	const ImVec2&& GetFrameBufferSize() const { return ImVec2(fb_w, fb_h); }

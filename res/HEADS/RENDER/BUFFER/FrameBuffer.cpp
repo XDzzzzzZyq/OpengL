@@ -123,6 +123,18 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 }
 
+FrameBuffer::FrameBuffer(const Texture& _depth)
+{
+	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_depth.tex_type);
+
+	glGenFramebuffers(1, &fb_ID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _depth.GetTexID(), 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	UnbindFrameBuffer();
+}
+
 FrameBuffer::~FrameBuffer()
 {
 	//DEBUG("FB dele")
@@ -130,12 +142,23 @@ FrameBuffer::~FrameBuffer()
 
 void FrameBuffer::BindFrameBuffer() const
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
 }
 
-void FrameBuffer::UnbindFrameBuffer() const
+void FrameBuffer::UnbindFrameBuffer()
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void FrameBuffer::LinkTexture(const Texture& _tex)
+{
+	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
+
+	BindFrameBuffer();
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _tex.GetTexID(), 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	UnbindFrameBuffer();
 }
 
 void FrameBuffer::Resize(const ImVec2& size, bool all)
