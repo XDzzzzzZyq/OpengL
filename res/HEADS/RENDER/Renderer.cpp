@@ -21,8 +21,8 @@ void Renderer::Init()
 		std::cout << "OpenGL has no error " << std::endl;
 
 
-	DEBUG("Renderer Open")
-		glEnable(GL_DEPTH_TEST);
+	DEBUG("Renderer Open");
+	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 
@@ -214,6 +214,7 @@ void Renderer::Render(bool rend, bool buff) {
 	if (envir_list.find(0) == envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
 	///////////  Lights Data PreCalc  ///////////

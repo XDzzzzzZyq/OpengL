@@ -18,6 +18,7 @@ struct SunLight{
 
 	float power;
 	int use_shadow;
+	mat4 proj_trans;
 };
 
 struct SpotLight{
@@ -77,6 +78,7 @@ uniform sampler2D U_alpha;
 uniform samplerCube Envir_Texture_diff;
 uniform samplerCube Envir_Texture_spec;
 uniform sampler2D LUT;
+uniform sampler2D shadow_test;
 
 // input
 uniform vec3 Cam_pos;
@@ -262,6 +264,23 @@ vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
 	return vec3(sum);
 }
 
+vec3 GetCoord(vec3 pos, mat4 trans){
+
+	vec4 pos_p = trans * vec4(pos, 1);
+	pos_p.xyz = pos_p.xyz/pos_p.w;
+	vec3 coord = vec3(pos_p) * 0.5 + 0.5;
+	
+	return coord;
+}
+
+float evaluateShadow(float c_depth, float min_depth){
+	float bias = 0.015;
+	float range = 0.005;
+	float delta = c_depth - min_depth - bias;  // delta greater/equal than 0
+
+	return 1-smoothstep(0, range, delta);
+}
+
 void main(){
 
 	/* [Block : DATA] */
@@ -328,6 +347,12 @@ void main(){
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
 		SunLight light = sun_lights[i];
+
+		vec3 coord = GetCoord(Pos, light.proj_trans);
+		float closestDepth = texture(shadow_test, coord.xy).r; 
+		float currentDepth = coord.z;
+		float shadow = evaluateShadow(currentDepth, closestDepth);
+		if (shadow < 0.01) continue;
 
 		vec3 L = -light.dir;
 		float NdotL = max(dot(Normal, L), 0);
@@ -411,6 +436,4 @@ void main(){
 
 	//Output = texture2D(LUT, screen_uv);
 	//Output = vec4(vec3(AO), 1);
-
-	//Output = vec4(texture2D(U_pos, screen_uv).aaa, 1);
 }

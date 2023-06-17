@@ -109,7 +109,7 @@ int Application::Run()
 
 	DEBUG("\n---------------LIGHT----------------")
 	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
-	sunLight1->SetRot(glm::vec3(45));
+	sunLight1->SetRot(glm::vec3(0,90,0));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
 	renderer.UseLight(sunLight1);
@@ -168,11 +168,9 @@ int Application::Run()
 	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
-
-	// Pass LTC matrix lookup tables for area lights
-	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
-	pps1->AddBinding("LTC1",                13);
-	pps1->AddBinding("LTC2",                14);
+	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for area lights
+	pps1->AddBinding("LTC2",				14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
+	pps1->AddBinding("shadow_test",			31);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")

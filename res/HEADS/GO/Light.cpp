@@ -141,7 +141,7 @@ void Light::BindTargetTrans(const glm::mat4& _trans)
 
 void Light::UpdateProjMatrix()
 {
-	const float near_plane = -10.0f, far_plane = 10.0f, field = 30.0f;
+	const float near_plane = -20.0f, far_plane = 20.0f, field = 20.0f;
 	const glm::mat4 lightProjection = glm::ortho(-field, field, -field, field, near_plane, far_plane);
 	const glm::mat4 lightView = glm::lookAt(glm::cross(o_dir_up, o_dir_right), glm::vec3(0), glm::vec3(0, 0, 1));
 
@@ -231,25 +231,26 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 	spot.clear();
 	light_info_cache.clear();
 
-	for (auto& light : light_list)
+	for (auto& [id, light] : light_list)
 	{
-		GLuint map_id = light.second->light_shadow_map.GetTexID();
+		GLuint map_id = light->light_shadow_map.GetTexID();
+		light->UpdateProjMatrix();
 
-		switch (light.second->light_type)
+		switch (light->light_type)
 		{
 		case NONELIGHT:
 			break;
 		case POINTLIGHT:
-			light_info_cache[light.first] = LightInfo(point.size(), POINTLIGHT, map_id);
-			point.emplace_back(*light.second.get());
+			light_info_cache[id] = LightInfo(point.size(), POINTLIGHT, map_id);
+			point.emplace_back(*light.get());
 			break;
 		case SUNLIGHT:
-			light_info_cache[light.first] = LightInfo(sun.size(), SUNLIGHT, map_id);
-			sun.emplace_back(*light.second.get());
+			light_info_cache[id] = LightInfo(sun.size(), SUNLIGHT, map_id);
+			sun.emplace_back(*light.get());
 			break;
 		case SPOTLIGHT:
-			light_info_cache[light.first] = LightInfo(spot.size(), SPOTLIGHT, map_id);
-			spot.emplace_back(*light.second.get());
+			light_info_cache[id] = LightInfo(spot.size(), SPOTLIGHT, map_id);
+			spot.emplace_back(*light.get());
 			break;
 		default:
 			break;
@@ -332,6 +333,7 @@ void LightArrayBuffer::UpdateLight(const std::pair<int, std::shared_ptr<Light>>&
 		return;
 
 	int loc = std::get<0>(light_info_cache[light.first]);
+	light.second->UpdateProjMatrix();
 
 	switch (light.second->light_type)
 	{
