@@ -38,14 +38,19 @@ GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 
 std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
 {
-	std::string file_name = name.find(ShaderLib::folder_root) == std::string::npos ? ShaderLib::folder_root + name + ShaderLib::file_type[_type] : name;
+	std::string file_name = name.find(ShaderLib::folder_root) == std::string::npos ? ShaderLib::folder_root + name : name;
+	
+	if (Shaders::ParseFileEXT(file_name) == NONE_SHADER)
+		file_name += ShaderLib::file_type[_type];
 
-	std::ifstream Stream(file_name);
-	std::string Cache, Line;
-	while (getline(Stream, Line))
-		Cache += Line + "\n";
+	std::ifstream File(file_name);
+	std::stringstream Stream;
 
-	return Cache;
+	Stream << File.rdbuf();
+
+	File.close();
+
+	return Stream.str();
 }
 
 Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
@@ -62,6 +67,19 @@ Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
 		return { "/", "/", GL_NONE };
 	}
 }
+
+ShaderType Shaders::ParseFileEXT(std::string path)
+{
+	for (int i = 0; auto & ext : ShaderLib::file_type) {
+		if (path.find(ext) != std::string::npos)
+			return ShaderType(i);
+		i++;
+	}
+
+	return NONE_SHADER;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -436,6 +454,65 @@ void FastLoadShader::LocalDebug() const
 	DEBUG(fast_shaders.fragShader);
 #endif
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ChainedShader::ChainedShader(const std::vector<std::string>& chain)
+{
+	for (auto& path : chain)
+		shader_chain.emplace_back(Shaders::ParseFileEXT(path), path, 0);
+
+	CreatShader();
+}
+
+ChainedShader::ChainedShader()
+{
+
+}
+
+ChainedShader::~ChainedShader()
+{
+
+}
+
+void ChainedShader::CreatShader()
+{
+	program_id = glCreateProgram();
+
+
+	for (auto& node : shader_chain) {
+		std::string code = Shaders::ReadShaderFile(node.type, node.name);
+		node.ID = Shaders::CompileShaderCode(node.type, code);
+	}
+
+	for (const auto& node : shader_chain) {
+		glAttachShader(program_id, node.ID);
+	}
+
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+}
+
+GLuint ChainedShader::getShaderID(ShaderType type) const
+{
+	for (auto& sh : shader_chain)
+		if (sh.type == type)
+			return sh.ID;
+	return 0;
+}
+
+void ChainedShader::LocalDebug() const
+{
+#ifdef _DEBUG
+	for (auto& sh : shader_chain)
+		DEBUG(std::get<0>(Shaders::ParseShaderType(sh.type)) + " " + sh.name + " " + std::to_string(sh.ID));
+#endif // _DEBUG
+}
+
 
 
 

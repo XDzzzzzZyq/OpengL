@@ -15,7 +15,10 @@ class Shaders {
 public:
 
 	using ShaderConstInfo = std::tuple<std::string, std::string, GLuint>; // name | filename | GL_name
+
 	static ShaderConstInfo ParseShaderType(ShaderType _type);
+	static ShaderType ParseFileEXT(std::string path);
+
 	static GLuint CompileShaderCode(ShaderType _type, const std::string& source);
 	static std::string ReadShaderFile(ShaderType _type, const std::string& name);
 
@@ -118,6 +121,37 @@ public:
 	inline GLuint getShaderID(ShaderType type) const override;
 	void LocalDebug() const override;
 
+};
+
+
+
+class ChainedShader : public Shaders
+{
+private:
+
+	struct ShaderNode 
+	{
+		ShaderType type;
+		std::string name;
+		GLuint ID = 0;
+	};
+	
+	using ShaderChain = std::vector<ShaderNode>;
+
+	ShaderChain shader_chain;
+
+public:
+
+	ChainedShader(const std::vector<std::string>& chain);
+	ChainedShader();
+	~ChainedShader();
+
+	void CreatShader();
+
+public:
+
+	inline GLuint getShaderID(ShaderType type) const override;
+	void LocalDebug() const override;
 };
 
 
