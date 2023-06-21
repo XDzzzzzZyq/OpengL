@@ -46,15 +46,7 @@ void Renderer::Init()
 
 	EventInit();
 
-	/*
-	GLint maxAttach = 0;
-	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttach);
-
-	GLint maxDrawBuf = 0;
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDrawBuf);
-
-	DEBUG(maxAttach)
-		DEBUG(maxDrawBuf)*/
+	Light::EnableShadowMap();
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH , &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);

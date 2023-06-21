@@ -2,9 +2,7 @@
 
 FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
 
-FastLoadShader Light::_shadowmap_shader = FastLoadShader();
-
-ChainedShader Light::_pointshadow_shader = ChainedShader();
+std::array<ChainedShader, 3> Light::_shadowmap_shader = {};
 
 std::array<glm::mat4, 6> Light::_point_6side = {
 					glm::lookAt(glm::vec3(0), glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0,-1.0, 0.0)),
@@ -14,6 +12,17 @@ std::array<glm::mat4, 6> Light::_point_6side = {
 					glm::lookAt(glm::vec3(0), glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0,-1.0, 0.0)),
 					glm::lookAt(glm::vec3(0), glm::vec3(0.0, 0.0,-1.0), glm::vec3(0.0,-1.0, 0.0)) };
 
+
+void Light::EnableShadowMap()
+{
+	_shadowmap_buffer = FrameBuffer(Texture(1024, 1024, DEPTH_CUBE_TEXTURE));
+
+	_shadowmap_shader[SUNLIGHT] = ChainedShader::ImportShader("Depth_Rast.vert", "Empty.frag");
+
+	_shadowmap_shader[POINTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
+	_shadowmap_shader[POINTLIGHT].UseShader();
+	_shadowmap_shader[POINTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
+}
 
 float Light::sun_shaodow_field = 20.0f;
 float Light::sun_shaodow_near = -20.0f;
@@ -60,21 +69,6 @@ void Light::InitShadowMap()
 		break;
 	default:
 		assert(false);
-	}
-	
-	if (_shadowmap_buffer.GetFrameBufferID() == 0)
-		_shadowmap_buffer = FrameBuffer(light_shadow_map);
-
-	if (_shadowmap_shader.getProgramID() == 0)
-		_shadowmap_shader = FastLoadShader("Depth_Rast", "Empty");
-
-	if (_pointshadow_shader.getProgramID() == 0) {
-		_pointshadow_shader = ChainedShader({ "Empty.vert", "6sides_trans.geom", "Depth_Linear.frag"});
-		_pointshadow_shader.UseShader();
-		_pointshadow_shader.SetValue("shadowMatrices", 6, Light::_point_6side.data());
-
-		for(auto& m : Light::_point_6side)
-			DEBUG(m)
 	}
 }
 
@@ -158,17 +152,17 @@ void Light::BindShadowMapBuffer()
 
 void Light::BindShadowMapShader()
 {
+
+	_shadowmap_shader[light_type].UseShader();
 	switch (light_type)
 	{
 	case POINTLIGHT:
-		_pointshadow_shader.UseShader();
-		_pointshadow_shader.SetValue("U_offset", o_position);
-		_pointshadow_shader.SetValue("U_lightproj", light_proj);
-		_pointshadow_shader.SetValue("far_plane", Light::point_shaodow_far);
+		_shadowmap_shader[light_type].SetValue("U_offset", o_position);
+		_shadowmap_shader[light_type].SetValue("U_lightproj", light_proj);
+		_shadowmap_shader[light_type].SetValue("far_plane", Light::point_shaodow_far);
 		break;
 	case SUNLIGHT:
-		_shadowmap_shader.UseShader();
-		_shadowmap_shader.SetValue("U_lightproj", light_proj);
+		_shadowmap_shader[light_type].SetValue("U_lightproj", light_proj);
 		break;
 	case SPOTLIGHT:
 		break;
@@ -177,17 +171,7 @@ void Light::BindShadowMapShader()
 
 void Light::BindTargetTrans(const glm::mat4& _trans)
 {
-	switch (light_type)
-	{
-	case POINTLIGHT:
-		_pointshadow_shader.SetValue("U_model", _trans);
-		break;
-	case SUNLIGHT:
-		_shadowmap_shader.SetValue("U_model", _trans);
-		break;
-	case SPOTLIGHT:
-		break;
-	}
+	_shadowmap_shader[light_type].SetValue("U_model", _trans);
 }
 
 void Light::UpdateProjMatrix()

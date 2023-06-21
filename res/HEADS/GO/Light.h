@@ -15,7 +15,7 @@
 
 enum LightType
 {
-	NONELIGHT, POINTLIGHT, SUNLIGHT, SPOTLIGHT
+	NONELIGHT = -1, POINTLIGHT, SUNLIGHT, SPOTLIGHT
 };
 
 // A basic light, which can be a point light, sun light, or a spot light
@@ -70,9 +70,11 @@ public:
 
 private:
 	static FrameBuffer _shadowmap_buffer;
-	static FastLoadShader _shadowmap_shader;
-	static ChainedShader _pointshadow_shader;
+	static std::array<ChainedShader, 3> _shadowmap_shader;
 	static std::array<glm::mat4, 6> _point_6side;
+
+public:
+	static void EnableShadowMap();
 
 public:
 	void RenderLightSpr(Camera* cam);

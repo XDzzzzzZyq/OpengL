@@ -468,6 +468,8 @@ void FastLoadShader::LocalDebug() const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+std::unordered_map<std::string, std::shared_ptr<ChainedShader>> ChainedShader::chain_sh_list = {};
+
 ChainedShader::ChainedShader(const std::vector<std::string>& chain)
 {
 	for (auto& path : chain)
@@ -502,6 +504,19 @@ void ChainedShader::CreatShader()
 
 	glLinkProgram(program_id);
 	glValidateProgram(program_id);
+}
+
+ChainedShader& ChainedShader::ImportShader(const std::vector<std::string>& chain)
+{
+	std::string _name = "";
+	for (auto& n : chain)
+		_name += n + "-";
+
+	if (chain_sh_list.find(_name) != chain_sh_list.end())
+		return *chain_sh_list[_name].get();
+
+	chain_sh_list[_name] = std::make_shared<ChainedShader>(chain);
+	return *chain_sh_list[_name].get();
 }
 
 GLuint ChainedShader::getShaderID(ShaderType type) const

@@ -129,6 +129,8 @@ public:
 class ChainedShader : public Shaders
 {
 private:
+	static std::unordered_map<std::string, std::shared_ptr<ChainedShader>> chain_sh_list;
+private:
 
 	struct ShaderNode 
 	{
@@ -138,7 +140,6 @@ private:
 	};
 	
 	using ShaderChain = std::vector<ShaderNode>;
-
 	ShaderChain shader_chain;
 
 public:
@@ -148,6 +149,9 @@ public:
 	~ChainedShader();
 
 	void CreatShader();
+	static ChainedShader& ImportShader(const std::vector<std::string>& chain);
+	template<class... _Name>
+	static ChainedShader& ImportShader(_Name ...name);
 
 public:
 
@@ -155,6 +159,11 @@ public:
 	void LocalDebug() const override;
 };
 
+template<class... _Name>
+ChainedShader& ChainedShader::ImportShader(_Name ...name)
+{
+	return ChainedShader::ImportShader(std::vector<std::string>{ name... });
+}
 
 
 class ComputeShader : public Shaders {
