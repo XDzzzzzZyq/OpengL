@@ -390,10 +390,14 @@
     <None Include="dep\glm\gtx\vector_query.inl" />
     <None Include="dep\glm\gtx\wrap.inl" />
     <None Include="README.md" />
+    <None Include="res\shaders\6sides_trans.geom" />
+    <None Include="res\shaders\Depth_Linear.frag" />
     <None Include="res\shaders\Depth_Rast.vert" />
     <None Include="res\shaders\Depth_Texture.comp" />
+    <None Include="res\shaders\Depth_Texture_C2E.comp" />
     <None Include="res\shaders\Editing.comp" />
     <None Include="res\shaders\Empty.frag" />
+    <None Include="res\shaders\Empty.vert" />
     <None Include="res\shaders\EnvirBG.frag" />
     <None Include="res\shaders\FXAA.comp" />
     <None Include="res\shaders\IBRShader.frag" />

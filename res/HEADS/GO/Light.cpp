@@ -4,6 +4,23 @@ FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
 
 FastLoadShader Light::_shadowmap_shader = FastLoadShader();
 
+ChainedShader Light::_pointshadow_shader = ChainedShader();
+
+std::array<glm::mat4, 6> Light::_point_6side = {
+					glm::lookAt(glm::vec3(0), glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0,-1.0, 0.0)),
+					glm::lookAt(glm::vec3(0), glm::vec3(-1.0,0.0, 0.0), glm::vec3(0.0,-1.0, 0.0)),
+					glm::lookAt(glm::vec3(0), glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0)),
+					glm::lookAt(glm::vec3(0), glm::vec3(0.0,-1.0, 0.0), glm::vec3(0.0, 0.0,-1.0)),
+					glm::lookAt(glm::vec3(0), glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0,-1.0, 0.0)),
+					glm::lookAt(glm::vec3(0), glm::vec3(0.0, 0.0,-1.0), glm::vec3(0.0,-1.0, 0.0)) };
+
+
+float Light::sun_shaodow_field = 20.0f;
+float Light::sun_shaodow_near = -20.0f;
+float Light::sun_shaodow_far = 20.0f;
+float Light::point_shaodow_near = 0.1f;
+float Light::point_shaodow_far = 25.0f;
+
 Light::Light()
 {
 	assert(false && "incorrect light initialization");
@@ -22,6 +39,8 @@ Light::Light(LightType type, float power, glm::vec3 color)
 	o_name = _name + std::to_string(GetObjectID());
 
 	InitShadowMap();
+	UpdateProjMatrix();
+	BindShadowMapShader();
 }
 
 void Light::InitShadowMap()
@@ -42,12 +61,21 @@ void Light::InitShadowMap()
 	default:
 		assert(false);
 	}
-
+	
 	if (_shadowmap_buffer.GetFrameBufferID() == 0)
 		_shadowmap_buffer = FrameBuffer(light_shadow_map);
 
-	if (_shadowmap_shader.getShaderID(VERTEX_SHADER) == 0)
+	if (_shadowmap_shader.getProgramID() == 0)
 		_shadowmap_shader = FastLoadShader("Depth_Rast", "Empty");
+
+	if (_pointshadow_shader.getProgramID() == 0) {
+		_pointshadow_shader = ChainedShader({ "Empty.vert", "6sides_trans.geom", "Depth_Linear.frag"});
+		_pointshadow_shader.UseShader();
+		_pointshadow_shader.SetValue("shadowMatrices", 6, Light::_point_6side.data());
+
+		for(auto& m : Light::_point_6side)
+			DEBUG(m)
+	}
 }
 
 inline std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
@@ -55,15 +83,15 @@ inline std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
 	switch (_type)
 	{
 	case NONELIGHT:
-		return { POINT_LIGHT_SPIRIT, "None Light"   };
+		return { POINT_LIGHT_SPIRIT, "None Light" };
 	case POINTLIGHT:
 		return { POINT_LIGHT_SPIRIT, "Point Light." };
 	case SUNLIGHT:
-		return { SUN_LIGHT_SPIRIT,   "Sun."			};
+		return { SUN_LIGHT_SPIRIT,   "Sun." };
 	case SPOTLIGHT:
-		return { SPOT_LIGHT_SPIRIT,  "Spot Light."  };
+		return { SPOT_LIGHT_SPIRIT,  "Spot Light." };
 	default:
-		return { POINT_LIGHT_SPIRIT, "None Light"   };
+		return { POINT_LIGHT_SPIRIT, "None Light" };
 	}
 }
 
@@ -130,22 +158,66 @@ void Light::BindShadowMapBuffer()
 
 void Light::BindShadowMapShader()
 {
-	_shadowmap_shader.UseShader();
-	_shadowmap_shader.SetValue("U_lightproj", light_proj);
+	switch (light_type)
+	{
+	case POINTLIGHT:
+		_pointshadow_shader.UseShader();
+		_pointshadow_shader.SetValue("U_offset", o_position);
+		_pointshadow_shader.SetValue("U_lightproj", light_proj);
+		_pointshadow_shader.SetValue("far_plane", Light::point_shaodow_far);
+		break;
+	case SUNLIGHT:
+		_shadowmap_shader.UseShader();
+		_shadowmap_shader.SetValue("U_lightproj", light_proj);
+		break;
+	case SPOTLIGHT:
+		break;
+	}
 }
 
 void Light::BindTargetTrans(const glm::mat4& _trans)
 {
-	_shadowmap_shader.SetValue("U_model", _trans);
+	switch (light_type)
+	{
+	case POINTLIGHT:
+		_pointshadow_shader.SetValue("U_model", _trans);
+		break;
+	case SUNLIGHT:
+		_shadowmap_shader.SetValue("U_model", _trans);
+		break;
+	case SPOTLIGHT:
+		break;
+	}
 }
 
 void Light::UpdateProjMatrix()
 {
-	const float near_plane = -20.0f, far_plane = 20.0f, field = 20.0f;
-	const glm::mat4 lightProjection = glm::ortho(-field, field, -field, field, near_plane, far_plane);
-	const glm::mat4 lightView = glm::lookAt(glm::cross(o_dir_up, o_dir_right), glm::vec3(0), glm::vec3(0, 0, 1));
+	switch (light_type)
+	{
+	case POINTLIGHT:
+		light_proj = glm::perspective(
+			glm::radians(90.0f), 
+			1.0f, 
+			Light::point_shaodow_near, 
+			Light::point_shaodow_far
+		);
+		break;
+	case SUNLIGHT:
+		const glm::mat4 lightProjection = glm::ortho(
+			-Light::sun_shaodow_field, 
+			Light::sun_shaodow_field, 
+			-Light::sun_shaodow_field, 
+			Light::sun_shaodow_field, 
+			Light::sun_shaodow_near, 
+			Light::sun_shaodow_far
+		);
+		const glm::mat4 lightView = glm::lookAt(glm::cross(o_dir_up, o_dir_right), glm::vec3(0), glm::vec3(0, 0, 1));
 
-	light_proj = lightProjection * lightView;
+		light_proj = lightProjection * lightView;
+		break;
+	case SPOTLIGHT:
+		break;
+	}
 }
 
 
@@ -359,8 +431,9 @@ void LightArrayBuffer::UpdateLight(const std::pair<int, std::shared_ptr<Light>>&
 void LightArrayBuffer::BindShadowMap() const
 {
 	for (auto& [id, info] : light_info_cache) {
-		GLuint slot = 31 - (GetSlotOffset(std::get<1>(info)) + std::get<0>(info));
-		Texture::BindM(std::get<2>(info), slot);
+		LightType type = std::get<1>(info);
+		GLuint slot = 31 - (GetSlotOffset(type) + std::get<0>(info));
+		Texture::BindM(std::get<2>(info), slot, type == SUNLIGHT ? DEPTH_TEXTURE : DEPTH_CUBE_TEXTURE);
 	}
 }
 

@@ -11,6 +11,8 @@
 #include "StorageBuffer.h"
 #include "UniformBuffer.h"
 
+#include <array>
+
 enum LightType
 {
 	NONELIGHT, POINTLIGHT, SUNLIGHT, SPOTLIGHT
@@ -41,6 +43,15 @@ public:
 
 public:
 
+	static float sun_shaodow_field;
+	static float sun_shaodow_near;
+	static float sun_shaodow_far;
+
+	static float point_shaodow_near;
+	static float point_shaodow_far;
+
+public:
+
 	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
 	void InitShadowMap();
@@ -60,6 +71,8 @@ public:
 private:
 	static FrameBuffer _shadowmap_buffer;
 	static FastLoadShader _shadowmap_shader;
+	static ChainedShader _pointshadow_shader;
+	static std::array<glm::mat4, 6> _point_6side;
 
 public:
 	void RenderLightSpr(Camera* cam);
