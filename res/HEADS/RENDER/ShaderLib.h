@@ -34,7 +34,7 @@ typedef std::tuple<int, std::string, ParaType> S_AB, S_REND; //array buffer
 
 enum ShaderType
 {
-	NONE_SHADER=-1, VERTEX_SHADER, FRAGMENT_SHADER, COMPUTE_SHADER
+	NONE_SHADER=-1, VERTEX_SHADER, FRAGMENT_SHADER, COMPUTE_SHADER, GEOMETRY_SHADER
 };
 
 enum ShaderPropType

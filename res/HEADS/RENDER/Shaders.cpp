@@ -63,6 +63,8 @@ Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
 		return { "Fragment Shader", ".frag", GL_FRAGMENT_SHADER };
 	case COMPUTE_SHADER:
 		return { "Compute Shader", ".comp", GL_COMPUTE_SHADER };
+	case GEOMETRY_SHADER:
+		return { "Geometry Shader", ".geom", GL_GEOMETRY_SHADER };
 	default:
 		return { "/", "/", GL_NONE };
 	}
@@ -95,9 +97,10 @@ void Shaders::UnuseShader() const
 	glUseProgram(0);
 }
 
-void Shaders::DelShad() const
+void Shaders::DelShad()
 {
 	glDeleteProgram(program_id);
+	program_id = 0;
 }
 
 GLuint Shaders::getVarID(const char* name) const
@@ -152,8 +155,6 @@ void Shaders::SetValue(const std::string& name, bool v0)
 	int id = getVarID(name.c_str());
 	glUniform1i(id, v0);
 }
-
-
 
 void Shaders::SetValue(const std::string& name, const GLuint& v0)
 {
@@ -261,6 +262,12 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const GLuint* va0
 	default:
 		break;
 	}
+}
+
+void Shaders::SetValue(const std::string& name, GLsizei count, const glm::mat4* va0)
+{
+	int id = getVarID(name.c_str());
+	glUniformMatrix4fv(id, count, GL_FALSE, (GLfloat*)va0);
 }
 
 

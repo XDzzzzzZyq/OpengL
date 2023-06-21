@@ -39,7 +39,7 @@ public:
 
 	void UseShader() const;
 	void UnuseShader() const;
-	void DelShad() const;
+	void DelShad();
 
 public:
 
@@ -59,6 +59,7 @@ public:
 	void SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const GLuint* va0, ArrayType TYPE);
+	void SetValue(const std::string& name, GLsizei count, const glm::mat4* va0);
 
 public:
 
