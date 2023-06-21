@@ -79,6 +79,9 @@ uniform samplerCube Envir_Texture_diff;
 uniform samplerCube Envir_Texture_spec;
 uniform sampler2D LUT;
 uniform sampler2D shadow_test;
+uniform samplerCube p_shadow_test;
+
+uniform float point_far;
 
 // input
 uniform vec3 Cam_pos;
@@ -339,6 +342,11 @@ void main(){
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
 
+		float closestDepth = texture(p_shadow_test, -L).r; 
+		float currentDepth = dist/point_far;
+		float shadow = evaluateShadow(currentDepth, closestDepth);
+		if (shadow < 0.01) continue;
+
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Attenuation * NdotL;
@@ -434,6 +442,8 @@ void main(){
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
 
+
+	//vec3 dir = normalize(Pos - point_lights[0].pos);
 	//Output = texture2D(LUT, screen_uv);
-	//Output = vec4(vec3(AO), 1);
+	//Output = vec4(vec3(abs(texture(p_shadow_test, dir).r - distance(Pos, point_lights[0].pos)/25)), 1);
 }
