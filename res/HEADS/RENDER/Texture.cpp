@@ -208,7 +208,7 @@ Texture::Texture(int _w, int _h, TextureType _type)
 		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
 		break;
 	case GL_TEXTURE_CUBE_MAP:
-		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
 		LOOP(6)
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
 		break;
@@ -545,7 +545,7 @@ void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _ta
 	const bool type_correct = (_tar_type == DEPTH_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE);
 	if (!type_correct) return;
 
-	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+	auto [interlayout, layout, type, gl_type] = Texture::ParseFormat(_tar_type);
 
 	GLuint ID;
 	glGenTextures(1, &ID);		//for storage
@@ -553,7 +553,7 @@ void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _ta
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, _w, _h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	ComputeShader& to_texture = ComputeShader::ImportShader("Depth_Texture");
+	ComputeShader& to_texture = ComputeShader::ImportShader(gl_type == GL_TEXTURE_2D ? "Depth_Texture" : "Depth_Texture_C2E");
 
 	Texture::BindM(_tar_ID, 0, _tar_type);
 	glBindImageTexture(1, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);

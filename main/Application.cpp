@@ -100,7 +100,7 @@ int Application::Run()
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
-	//renderer.UseLight(pointLight1);
+	renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -112,7 +112,7 @@ int Application::Run()
 	sunLight1->SetRot(glm::vec3(0,90,0));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
-	renderer.UseLight(sunLight1);
+	//renderer.UseLight(sunLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -170,7 +170,7 @@ int Application::Run()
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
 	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for area lights
 	pps1->AddBinding("LTC2",				14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
-	pps1->AddBinding("shadow_test",			31);
+	pps1->AddBinding("p_shadow_test",		31);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
@@ -239,7 +239,6 @@ int Application::Run()
 	};
 	Texture temp{};
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
-		temp.ConvertDepthFrom(sunLight1->light_shadow_map);
 		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 	};
 	UI.ParaUpdate = [&] {
@@ -317,6 +316,11 @@ int Application::Run()
 		renderer.Render();
 		UI.RenderUI();
 		Event.Reset();
+
+		if (renderer.r_frame_num % 10 == 0) {
+			temp.ConvertDepthFrom(pointLight1->light_shadow_map);
+			UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
+		}
 		//GLDEBUG
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
