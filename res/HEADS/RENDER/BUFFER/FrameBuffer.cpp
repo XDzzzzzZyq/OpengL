@@ -129,7 +129,15 @@ FrameBuffer::FrameBuffer(const Texture& _depth)
 
 	glGenFramebuffers(1, &fb_ID);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _depth.GetTexID(), 0);
+	switch (gl_type)
+	{
+	case GL_TEXTURE_2D:
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _depth.GetTexID(), 0);
+		break;
+	case GL_TEXTURE_CUBE_MAP:
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depth.GetTexID(), 0);
+		break;
+	}
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	UnbindFrameBuffer();
@@ -155,7 +163,17 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
 
 	BindFrameBuffer();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _tex.GetTexID(), 0);
+
+	switch (gl_type)
+	{
+	case GL_TEXTURE_2D:
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _tex.GetTexID(), 0);
+		break;
+	case GL_TEXTURE_CUBE_MAP:
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _tex.GetTexID(), 0);
+		break;
+	}
+
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	UnbindFrameBuffer();
