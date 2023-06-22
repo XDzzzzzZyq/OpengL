@@ -347,7 +347,7 @@ void main(){
 
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
-		vec3 Radiance = light.power * light.color * Attenuation * NdotL;
+		vec3 Radiance = light.power * light.color * Attenuation * NdotL * shadow;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 

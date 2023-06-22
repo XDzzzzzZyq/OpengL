@@ -16,17 +16,29 @@ float evaluateShadow(float c_depth, float min_depth){
 	return 1-smoothstep(0, range, delta);
 }
 
-void main(){
-
-	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
-
+float shadow_at(ivec2 uv, vec3 offset){
 	vec3 Pos = imageLoad(U_pos, uv).xyz;
 	vec3 L = Pos - light_pos;
 	float dist = length(L);
 
-	float closestDepth = texture(Shadow_Map, normalize(L)).r; 
+	float closestDepth = texture(Shadow_Map, normalize(L)+offset).r; 
 	float currentDepth = dist/light_far;
-	float shadow = evaluateShadow(currentDepth, closestDepth);
+	return evaluateShadow(currentDepth, closestDepth);
+}
+
+void main(){
+
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+
+	float shadow = 0.0;
+	float samples = 3.0;
+	float offset  = 0.03;
+	for(float x = -offset; x < offset; x += offset / (samples * 0.5))
+	    for(float y = -offset; y < offset; y += offset / (samples * 0.5))
+	        for(float z = -offset; z < offset; z += offset / (samples * 0.5))
+	            shadow += shadow_at(uv, vec3(x, y, z));
+
+	shadow /= (samples * samples * samples);
 
 	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));
 }
