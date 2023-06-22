@@ -47,6 +47,12 @@ namespace xdzm {
 		return r * glm::normalize(_rand);
 	}
 
+	inline std::vector<glm::vec3> rand3nv(size_t s) {
+		std::vector<glm::vec3> res(s);
+		LOOP(s) res[i] = rand3n();
+		return res;
+	}
+
 	inline std::vector<glm::vec3> rand3nhv(size_t s) {
 		std::vector<glm::vec3> res(s);
 		LOOP(s) res[i] = rand3nh();
