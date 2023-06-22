@@ -170,7 +170,7 @@ int Application::Run()
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
 	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for area lights
 	pps1->AddBinding("LTC2",				14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
-	pps1->AddBinding("p_shadow_test",		31);
+	pps1->AddBinding("shadow_test",			31);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
@@ -318,8 +318,7 @@ int Application::Run()
 		Event.Reset();
 
 		if (renderer.r_frame_num % 10 == 0) {
-			temp.ConvertDepthFrom(pointLight1->light_shadow_map);
-			UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
+			UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.r_light_data.shadow_cache[pointLight1->GetObjectID()].GetTexID());
 		}
 		//GLDEBUG
 		/* Swap front and back buffers */

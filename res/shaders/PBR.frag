@@ -342,9 +342,7 @@ void main(){
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
 
-		float closestDepth = texture(p_shadow_test, -L).r; 
-		float currentDepth = dist/point_far;
-		float shadow = evaluateShadow(currentDepth, closestDepth);
+		float shadow = texture(shadow_test, screen_uv).r;
 		if (shadow < 0.01) continue;
 
 		float Attenuation = 1.0 / (dist * dist);
