@@ -296,6 +296,7 @@ void Texture::Unbind() const
 
 inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 {
+	// https://docs.gl/gl4/glTexImage2D
 
 	switch (_type)
 	{
@@ -313,6 +314,8 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 	case RG_TEXTURE:
 	case FLOAT_BUFFER_TEXTURE:
 		return { GL_RG16F,				GL_RG,				GL_FLOAT,			GL_TEXTURE_2D		};
+	case LIGHTING_CACHE:
+		return { GL_R16F,				GL_RED,				GL_FLOAT,			GL_TEXTURE_2D		};
 	case DEPTH_CUBE_TEXTURE:
 		return { GL_DEPTH_COMPONENT,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
 	case DEPTH_TEXTURE:
