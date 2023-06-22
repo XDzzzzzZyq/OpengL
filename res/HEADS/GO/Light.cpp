@@ -438,7 +438,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 	static auto pos_offset = xdzm::rand3nv(16);
 	static float update_rate = 0.05;
 
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Point_Shadow", Uni("Shadow_Map", 0), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Point_Shadow", Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
+	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Sun_Shadow",   Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
+
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;
 
@@ -446,7 +448,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 		{
 		case POINTLIGHT:
 
-			Texture::BindM(map_id, 0, DEPTH_CUBE_TEXTURE);
+			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
 			shadow_cache[id].BindC(4);
 
 			point_shadow.UseShader();
@@ -458,6 +460,16 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 
 			break;
 		case SUNLIGHT:
+
+			Texture::BindM(map_id, 31);
+			shadow_cache[id].BindC(4);
+
+			sun_shadow.UseShader();
+			sun_shadow.SetValue("proj_trans", sun[loc].proj_trans);
+			sun_shadow.SetValue("frame", frame);
+			sun_shadow.SetValue("offset", Light::point_blur_range);
+			sun_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+
 			break;
 		case SPOTLIGHT:
 			break;
