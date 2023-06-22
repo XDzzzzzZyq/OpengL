@@ -22,15 +22,23 @@ void Light::EnableShadowMap()
 	_shadowmap_shader[POINTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
 	_shadowmap_shader[POINTLIGHT].UseShader();
 	_shadowmap_shader[POINTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
+
+	_shadowmap_shader[SPOTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
+	_shadowmap_shader[SPOTLIGHT].UseShader();
+	_shadowmap_shader[SPOTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 }
 
 float Light::sun_shaodow_field = 20.0f;
 float Light::sun_shaodow_near = -20.0f;
 float Light::sun_shaodow_far = 20.0f;
+
 float Light::point_shaodow_near = 0.1f;
 float Light::point_shaodow_far = 25.0f;
-
 float Light::point_blur_range = 0.02f;
+
+float Light::spot_shaodow_near = 0.1f;
+float Light::spot_shaodow_far = 25.0f;
+float Light::spot_blur_range = 0.02f;
 
 Light::Light()
 {
@@ -169,6 +177,9 @@ void Light::BindShadowMapShader()
 		_shadowmap_shader[light_type].SetValue("U_lightproj", light_proj);
 		break;
 	case SPOTLIGHT:
+		_shadowmap_shader[light_type].SetValue("U_offset", o_position);
+		_shadowmap_shader[light_type].SetValue("U_lightproj", light_proj);
+		_shadowmap_shader[light_type].SetValue("far_plane", Light::spot_shaodow_far);
 		break;
 	default:
 		assert(false && "Unknown Light Type");
@@ -207,6 +218,12 @@ void Light::UpdateProjMatrix()
 		light_proj = lightProjection * lightView;
 		break;
 	case SPOTLIGHT:
+		light_proj = glm::perspective(
+			glm::radians(90.0f),
+			1.0f,
+			Light::spot_shaodow_near,
+			Light::spot_shaodow_far
+		);
 		break;
 	default:
 		assert(false && "Unknown Light Type");
@@ -440,6 +457,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 
 	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
 	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
+	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot" , Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
 
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;
@@ -472,6 +490,19 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 
 			break;
 		case SPOTLIGHT:
+
+			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
+			shadow_cache[id].BindC(4);
+
+			spot_shadow.UseShader();
+			spot_shadow.SetValue("light_pos", spot[loc].pos);
+			spot_shadow.SetValue("light_dir", spot[loc].dir);
+			spot_shadow.SetValue("outer_cutoff", spot[loc].outer_cutoff);
+			spot_shadow.SetValue("light_far", Light::spot_shaodow_far);
+			spot_shadow.SetValue("frame", frame);
+			spot_shadow.SetValue("offset", Light::spot_blur_range);
+			spot_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+
 			break;
 		default:
 			assert(false && "Unknown Light Type");

@@ -351,12 +351,15 @@ void main(){
 		float dist = length(toLight);
 		vec3 L = normalize(toLight);
 
+		float shadow = texture(U_Shadow[scene_info.point_count+scene_info.sun_count+i], screen_uv).r;
+		if (shadow < 0.01) continue;
+
 		float theta = dot(-L, light.dir);
 		float epsilon = light.cutoff - light.outer_cutoff;
 		float Intensity = clamp((theta - light.outer_cutoff) / epsilon, 0.0, 1.0);
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
-		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL;
+		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL * shadow;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 

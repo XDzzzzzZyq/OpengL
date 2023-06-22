@@ -100,19 +100,19 @@ int Application::Run()
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
-	renderer.UseLight(pointLight1);
+	//renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight2->SetRadius(2);
-	renderer.UseLight(pointLight2);
+	//renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LIGHT----------------")
 	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
 	sunLight1->SetRot(glm::vec3(0,90,0));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
-	renderer.UseLight(sunLight1);
+	//renderer.UseLight(sunLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -121,7 +121,7 @@ int Application::Run()
 	spotLight1->SetCutoff(60);
 	spotLight1->SetOuterCutoff(80);
 	spotLight1->SetPower(50);
-	//renderer.UseLight(spotLight1);
+	renderer.UseLight(spotLight1);
 
 	DEBUG("\n-------------AREA LIGHT-------------")
 	std::vector<float> alVertData = {
@@ -143,7 +143,7 @@ int Application::Run()
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line2 = std::make_shared<DebugLine>();
 	line2->PushDebugLines({ {0,0,0} , {0,0,1} });
-	line2->SetParent(sunLight1->GetTransformPtr(), false);
+	line2->SetParent(spotLight1->GetTransformPtr(), false);
 	renderer.UseDebugLine(line2);
 
 	DEBUG("\n---------------ENVIR----------------")
@@ -306,8 +306,8 @@ int Application::Run()
 		spotLight1->SetRot1D<2>(Radius * 36);
 		spotLight1->SetCutoff(rotateY);
 		spotLight1->SetOuterCutoff(rotateZ);
-		spotLight1->SetPower(power * 40 + 5);
-		spotLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
+		spotLight1->SetPower(power * 80 + 20);
+		spotLight1->SetPos(ImVec4_vec3_Uni(LightPos, 20.0f));
 
 		areaLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
 
