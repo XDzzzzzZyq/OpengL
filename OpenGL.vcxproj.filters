@@ -695,6 +695,7 @@
     <None Include="res\shaders\Depth_Linear.frag" />
     <None Include="res\shaders\6sides_trans.geom" />
     <None Include="res\shaders\Depth_Texture_C2E.comp" />
+    <None Include="res\shaders\Point_Shadow.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

@@ -68,7 +68,8 @@ void Light::InitShadowMap()
 		light_shadow_map = Texture(1024, 1024, DEPTH_CUBE_TEXTURE);
 		break;
 	default:
-		assert(false);
+		assert(false && "Unknown Light Type");
+		break;
 	}
 }
 
@@ -85,6 +86,7 @@ inline std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
 	case SPOTLIGHT:
 		return { SPOT_LIGHT_SPIRIT,  "Spot Light." };
 	default:
+		assert(false && "Unknown Light Type");
 		return { POINT_LIGHT_SPIRIT, "None Light" };
 	}
 }
@@ -166,6 +168,9 @@ void Light::BindShadowMapShader()
 		break;
 	case SPOTLIGHT:
 		break;
+	default:
+		assert(false && "Unknown Light Type");
+		break;
 	}
 }
 
@@ -200,6 +205,9 @@ void Light::UpdateProjMatrix()
 		light_proj = lightProjection * lightView;
 		break;
 	case SPOTLIGHT:
+		break;
+	default:
+		assert(false && "Unknown Light Type");
 		break;
 	}
 }
@@ -292,6 +300,8 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 		GLuint map_id = light->light_shadow_map.GetTexID();
 		light->UpdateProjMatrix();
 
+		shadow_cache[id] = Texture((int)cache_w, (int)cache_h, LIGHTING_CACHE);
+
 		switch (light->light_type)
 		{
 		case NONELIGHT:
@@ -309,6 +319,7 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 			spot.emplace_back(*light.get());
 			break;
 		default:
+			assert(false && "Unknown Light Type");
 			break;
 		}
 	}
@@ -379,45 +390,84 @@ GLuint LightArrayBuffer::GetSlotOffset(LightType _type) const
 	case SPOTLIGHT:
 		return point.size() + sun.size();
 	default:
+		assert(false && "Unknown Light Type");
 		return 0;
 	}
 }
 
-void LightArrayBuffer::UpdateLight(const std::pair<int, std::shared_ptr<Light>>& light)
+void LightArrayBuffer::Resize(GLuint _w, GLuint _h){
+	cache_w = _w;
+	cache_h = _h;
+
+	for (auto& [_, cache] : shadow_cache)
+		cache.Resize(cache_w, cache_h);
+}
+
+void LightArrayBuffer::UpdateLight(Light* light)
 {
-	if (light_info_cache.find(light.first) == light_info_cache.end())
+	if (light_info_cache.find(light->GetObjectID()) == light_info_cache.end())
 		return;
 
-	int loc = std::get<0>(light_info_cache[light.first]);
-	light.second->UpdateProjMatrix();
+	int loc = std::get<0>(light_info_cache[light->GetObjectID()]);
+	light->UpdateProjMatrix();
 
-	switch (light.second->light_type)
+	switch (light->light_type)
 	{
-	case NONELIGHT:
-		break;
 	case POINTLIGHT:
-		point[loc] = *light.second.get();
+		point[loc] = *light;
 		point_buffer.GenStorageBuffer(point);
 		break;
 	case SUNLIGHT:
-		sun[loc] = *light.second.get();
+		sun[loc] = *light;
 		sun_buffer.GenStorageBuffer(sun);
 		break;
 	case SPOTLIGHT:
-		spot[loc] = *light.second.get();
+		spot[loc] = *light;
 		spot_buffer.GenStorageBuffer(spot);
 		break;
 	default:
+		assert(false && "Unknown Light Type");
 		break;
+	}
+}
+
+void LightArrayBuffer::UpdateLightingCache()
+{
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Point_Shadow", Uni("Shadow_Map", 0));
+	for (const auto& [id, info] : light_info_cache) {
+		auto [loc, type, map_id] = info;
+
+		switch (type)
+		{
+		case POINTLIGHT:
+
+			Texture::BindM(map_id, 0, DEPTH_CUBE_TEXTURE);
+			shadow_cache[id].BindC(4, GL_WRITE_ONLY);
+
+			point_shadow.UseShader();
+			point_shadow.SetValue("light_pos", point[loc].pos);
+			point_shadow.SetValue("light_far", Light::point_shaodow_far);
+			point_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+
+			break;
+		case SUNLIGHT:
+			break;
+		case SPOTLIGHT:
+			break;
+		default:
+			assert(false && "Unknown Light Type");
+			break;
+		}
+
 	}
 }
 
 void LightArrayBuffer::BindShadowMap() const
 {
 	for (auto& [id, info] : light_info_cache) {
-		LightType type = std::get<1>(info);
-		GLuint slot = 31 - (GetSlotOffset(type) + std::get<0>(info));
-		Texture::BindM(std::get<2>(info), slot, type == SUNLIGHT ? DEPTH_TEXTURE : DEPTH_CUBE_TEXTURE);
+		auto [loc, type, _] = info;
+		GLuint slot = 31 - (GetSlotOffset(type) + loc);
+		shadow_cache[id].Bind(slot);
 	}
 }
 

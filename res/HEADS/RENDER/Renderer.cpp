@@ -219,7 +219,7 @@ void Renderer::Render(bool rend, bool buff) {
 		is_light_changed |= light->is_Uniform_changed;
 
 		if (light->is_light_changed || light->is_Uniform_changed)
-			r_light_data.UpdateLight({ id, light });
+			r_light_data.UpdateLight(light.get());
 
 		/* Depth Test for Shadow Map */
 
@@ -357,6 +357,11 @@ void Renderer::Render(bool rend, bool buff) {
 		ssao.SetValue("noise_level", r_frame_num % 6);
 		ssao.RunComputeShader(r_render_result->GetSize() / 8);
 
+		//////////// LIGHTING CACHE ////////////
+
+		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
+		r_light_data.UpdateLightingCache();
+
 		////////////  PBR COMPOSE  ////////////
 
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
@@ -448,6 +453,7 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 	r_frame_width = _w;
 	r_frame_height = _h;
 	FrameBufferResize(0, { (float)_w, (float)_h });
+	r_light_data.Resize(_w, _h);
 }
 
 

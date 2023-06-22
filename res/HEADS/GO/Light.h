@@ -79,6 +79,8 @@ public:
 public:
 	void RenderLightSpr(Camera* cam);
 
+public:
+
 	void BindShadowMapBuffer();
 	void BindShadowMapShader();
 	void BindTargetTrans(const glm::mat4& _trans);
@@ -165,31 +167,46 @@ public:
 	};
 
 public:
+
 	std::vector<PointStruct> point;
 	std::vector<SunStruct> sun;
 	std::vector<SpotStruct> spot;
 	std::vector<AreaStruct> area;
 	std::vector<AreaVertStruct> area_verts;
+
+	mutable std::unordered_map<int, Texture> shadow_cache;
 	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, area_verts_buffer;
+
 	UniformBuffer<SceneInfo> info;
 
 private:
-	using LightInfo = std::tuple<int, LightType, GLuint>;
-	std::unordered_map<int, LightInfo> light_info_cache; // id -> loc & map_tex_ID
+
+	using LightInfo = std::tuple<int, LightType, GLuint>; // id -> loc & type & map_tex_ID
+	std::unordered_map<int, LightInfo> light_info_cache;  // id -> loc & type & map_tex_ID
+	GLuint cache_w = SCREEN_W;
+	GLuint cache_h = SCREEN_H;
 
 public:
+
 	LightArrayBuffer() {};
 	~LightArrayBuffer();
 	void Init();
 	void Bind() const;
 
+public:
+
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
 	void ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list);
+
+public:
 
 	SceneInfo GetSceneInfo() const;
 	inline GLsizei GetTotalCount() const;
 	GLuint GetSlotOffset(LightType _type) const;
+	void Resize(GLuint _w, GLuint _h);
 
-	void UpdateLight(const std::pair<int, std::shared_ptr<Light>>& light);
+public:
+	void UpdateLight(Light* light);
+	void UpdateLightingCache();
 	void BindShadowMap() const;
 };
