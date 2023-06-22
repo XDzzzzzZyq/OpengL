@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Spirit.h"
-#include "AreaLight.h"
+#include "PolygonLight.h"
 #include "FrameBuffer.h"
 
 #include "StorageBuffer.h"
@@ -96,7 +96,7 @@ public:
 
 // Reads a list of lights and converts them into buffers to be passed to the shader
 // It parses three basic light types through ParseLightData()
-// Area lights are parsed with ParseAreaLightData()
+// Polygonal lights are parsed with ParsePolygonLightData()
 struct LightArrayBuffer {
 
 public:
@@ -143,7 +143,7 @@ public:
 		alignas(4) float outer_cutoff{ 0.8 };
 	};
 
-	struct AreaStruct
+	struct PolyStruct
 	{
 		alignas(16) glm::vec3 color{ 1 };
 
@@ -152,7 +152,7 @@ public:
 		alignas(4) int n{ 3 };
 	};
 
-	struct AreaVertStruct
+	struct PolyVertStruct
 	{
 		alignas(16) glm::vec3 v{ 0, 0, 0 };
 	};
@@ -160,15 +160,15 @@ public:
 	static const GLuint Sizeof_Point = sizeof(PointStruct);
 	static const GLuint Sizeof_Sun   = sizeof(SunStruct);
 	static const GLuint Sizeof_Spot  = sizeof(SpotStruct);
-	static const GLuint Sizeof_Area  = sizeof(AreaStruct);
-	static const GLuint Sizeof_AreaVert  = sizeof(AreaVertStruct);
+	static const GLuint Sizeof_Poly  = sizeof(PolyStruct);
+	static const GLuint Sizeof_PolyVert  = sizeof(PolyVertStruct);
 
 	struct SceneInfo {
 		int point_count{ 0 };
 		int sun_count{ 0 };
 		int spot_count{ 0 };
-		int area_count{ 0 };
-		int area_verts_count{ 0 };
+		int poly_count{ 0 };
+		int poly_verts_count{ 0 };
 	};
 
 public:
@@ -176,11 +176,11 @@ public:
 	std::vector<PointStruct> point;
 	std::vector<SunStruct> sun;
 	std::vector<SpotStruct> spot;
-	std::vector<AreaStruct> area;
-	std::vector<AreaVertStruct> area_verts;
+	std::vector<PolyStruct> poly;
+	std::vector<PolyVertStruct> poly_verts;
 
 	mutable std::unordered_map<int, Texture> shadow_cache;
-	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, area_verts_buffer;
+	StorageBuffer point_buffer, sun_buffer, spot_buffer, poly_buffer, poly_verts_buffer;
 
 	UniformBuffer<SceneInfo> info;
 
@@ -203,7 +203,7 @@ public:
 public:
 
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
-	void ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list);
+	void ParsePolygonLightData(const std::unordered_map<int, std::shared_ptr<PolygonLight>>& poly_light_list);
 
 public:
 

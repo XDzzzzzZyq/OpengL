@@ -32,7 +32,7 @@ struct SpotLight{
 	float outer_cutoff;
 };
 
-struct AreaLight{
+struct PolygonLight{
 	vec3 color;
 
 	float power;
@@ -40,7 +40,7 @@ struct AreaLight{
 	int n;
 };
 
-struct AreaVert{
+struct PolyLightVert{
 	vec3 v;
 };
 
@@ -53,17 +53,17 @@ layout(std430, binding = 1) buffer sun_array {
 layout(std430, binding = 2) buffer spot_array {
 	SpotLight  spot_lights[];
 };
-layout(std430, binding = 3) buffer area_array {
-    AreaLight  area_lights[];
+layout(std430, binding = 3) buffer polygon_array {
+    PolygonLight  polygon_lights[];
 };
-layout(std430, binding = 4) buffer area_verts_array {
-    AreaVert   area_verts[];
+layout(std430, binding = 4) buffer polygon_verts_array {
+    PolyLightVert   polygon_verts[];
 };
 layout(std140) uniform SceneInfo {
 	int point_count;
 	int sun_count;
 	int spot_count;
-	int area_count;
+	int polygon_count;
 } scene_info;
 
 // passes
@@ -235,8 +235,8 @@ vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
 	for (int i = 0; i < n; ++i)
 	{
 		// Transform light direction from LTC to cosine weighted space
-		vec3 L0 = Minv * (area_verts[i0 + i].v - P);
-		vec3 L1 = Minv * (area_verts[i0 + (i + 1) % n].v - P);
+		vec3 L0 = Minv * (polygon_verts[i0 + i].v - P);
+		vec3 L1 = Minv * (polygon_verts[i0 + (i + 1) % n].v - P);
 		L0 = normalize(L0);
 		L1 = normalize(L1);
 
@@ -244,8 +244,8 @@ vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
 	}
 
 	// Check if the point is behind the light
-	vec3 dir = P - area_verts[i0].v;
-	vec3 lightNormal = cross(area_verts[i0 + 1].v - area_verts[i0].v, area_verts[i0 + 2].v - area_verts[i0].v);
+	vec3 dir = P - polygon_verts[i0].v;
+	vec3 lightNormal = cross(polygon_verts[i0 + 1].v - polygon_verts[i0].v, polygon_verts[i0 + 2].v - polygon_verts[i0].v);
 	bool behind = (dot(dir, lightNormal) < 0.0);
 
 	// Form factor
@@ -363,11 +363,11 @@ void main(){
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 
-	/* [Block : Area Lights] */
+	/* [Block : Polygon Lights] */
 
 	int i0 = 0;
-	for (uint i = 0; i < scene_info.area_count; i++){
-	    AreaLight light = area_lights[i];
+	for (uint i = 0; i < scene_info.polygon_count; i++){
+	    PolygonLight light = polygon_lights[i];
 
 		float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
 		vec2 uv = vec2(Roughness, sqrt(1.0f - dotNV));

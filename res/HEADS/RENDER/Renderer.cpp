@@ -271,16 +271,16 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		is_light_changed = false;
 
-		/////////    AREA LIGHTS POLYGON    /////////
+		/////////  POLYGONAL LIGHTS POLYGON    /////////
 
-		for (const auto& areaLight : area_light_list)
+		for (const auto& polyLight : poly_light_list)
 		{
-			areaLight.second->ApplyAllTransform();
-			areaLight.second->RenderPolygon(GetActiveCamera().get());
-			if (areaLight.second->is_Uniform_changed)
-				r_light_data.ParseAreaLightData(area_light_list);
-			areaLight.second->is_Uniform_changed = false;
-			areaLight.second->o_shader->is_shader_changed = false;
+			polyLight.second->ApplyAllTransform();
+			polyLight.second->RenderPolygon(GetActiveCamera().get());
+			if (polyLight.second->is_Uniform_changed)
+				r_light_data.ParsePolygonLightData(poly_light_list);
+			polyLight.second->is_Uniform_changed = false;
+			polyLight.second->o_shader->is_shader_changed = false;
 		}
 
 		/////////    DEBUG MESHES    /////////
@@ -528,20 +528,20 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	r_light_data.ParseLightData(light_list);
 }
 
-void Renderer::UseAreaLight(std::shared_ptr<AreaLight> al)
+void Renderer::UsePolygonLight(std::shared_ptr<PolygonLight> polyLight)
 {
-	if (area_light_list.find(al->GetObjectID()) != area_light_list.end())
+	if (poly_light_list.find(polyLight->GetObjectID()) != poly_light_list.end())
 		return;
 
 	is_GOlist_changed = true;
-	area_light_list[al->GetObjectID()] = al;
+	poly_light_list[polyLight->GetObjectID()] = polyLight;
 	is_GOlist_changed = true;
-	obj_list[al->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(al);
-	outline_list.push_back(OutlineElement(al->o_type, al->GetObjectID(), al->o_name, 0));
+	obj_list[polyLight->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(polyLight);
+	outline_list.push_back(OutlineElement(polyLight->o_type, polyLight->GetObjectID(), polyLight->o_name, 0));
 	parent_index_list.push_back(-1);
-	name_buff[al->GetObjectID()] = al->o_name;
+	name_buff[polyLight->GetObjectID()] = polyLight->o_name;
 
-	r_light_data.ParseAreaLightData(area_light_list);
+	r_light_data.ParsePolygonLightData(poly_light_list);
 }
 
 void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)

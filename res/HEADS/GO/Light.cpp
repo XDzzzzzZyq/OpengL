@@ -245,8 +245,8 @@ LightArrayBuffer::~LightArrayBuffer()
 	point_buffer.DeleteBuffer();
 	sun_buffer.DeleteBuffer();
 	spot_buffer.DeleteBuffer();
-	area_buffer.DeleteBuffer();
-	area_verts_buffer.DeleteBuffer();
+	poly_buffer.DeleteBuffer();
+	poly_verts_buffer.DeleteBuffer();
 	info.DeleteBuffer();
 }
 
@@ -255,8 +255,8 @@ void LightArrayBuffer::Init()
 	point_buffer = StorageBuffer(CUSTOM_LIST, 0);
 	sun_buffer = StorageBuffer(CUSTOM_LIST, 1);
 	spot_buffer = StorageBuffer(CUSTOM_LIST, 2);
-	area_buffer = StorageBuffer(CUSTOM_LIST, 3);
-	area_verts_buffer = StorageBuffer(CUSTOM_LIST, 4);
+	poly_buffer = StorageBuffer(CUSTOM_LIST, 3);
+	poly_verts_buffer = StorageBuffer(CUSTOM_LIST, 4);
 	info = UniformBuffer<SceneInfo>(5);
 }
 
@@ -265,8 +265,8 @@ void LightArrayBuffer::Bind() const
 	point_buffer.BindBufferBase();
 	sun_buffer.BindBufferBase();
 	spot_buffer.BindBufferBase();
-	area_buffer.BindBufferBase();
-	area_verts_buffer.BindBufferBase();
+	poly_buffer.BindBufferBase();
+	poly_verts_buffer.BindBufferBase();
 	info.Bind(0);
 	BindShadowMap();
 }
@@ -349,16 +349,16 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 	info.Update(GetSceneInfo());
 }
 
-void LightArrayBuffer::ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list)
+void LightArrayBuffer::ParsePolygonLightData(const std::unordered_map<int, std::shared_ptr<PolygonLight>>& poly_light_list)
 {
-	area.clear();
-	area_verts.clear();
+	poly.clear();
+	poly_verts.clear();
 
-	for (auto& al : area_light_list)
+	for (auto& al : poly_light_list)
 	{
 		auto& v = al.second->verts;
 
-		area.emplace_back(AreaStruct{
+		poly.emplace_back(PolyStruct{
 			al.second->light_color,
 
 			al.second->light_power,
@@ -369,14 +369,14 @@ void LightArrayBuffer::ParseAreaLightData(const std::unordered_map<int, std::sha
 		al.second->ApplyTransform();
 		for (size_t i = 0; i < v.size(); i += 2)
 		{
-			area_verts.emplace_back(AreaVertStruct{
+			poly_verts.emplace_back(PolyVertStruct{
 				glm::vec3(al.second->o_Transform * glm::vec4(v[i], v[i + 1], 0.0f, 1.0f))
 				});
 		}
 	}
 
-	area_buffer.GenStorageBuffer(area);
-	area_verts_buffer.GenStorageBuffer(area_verts);
+	poly_buffer.GenStorageBuffer(poly);
+	poly_verts_buffer.GenStorageBuffer(poly_verts);
 	info.Update(GetSceneInfo());
 }
 
@@ -387,8 +387,8 @@ LightArrayBuffer::SceneInfo LightArrayBuffer::GetSceneInfo() const
 	info.point_count = point.size();
 	info.sun_count = sun.size();
 	info.spot_count = spot.size();
-	info.area_count = area.size();
-	info.area_verts_count = area_verts.size();
+	info.poly_count = poly.size();
+	info.poly_verts_count = poly_verts.size();
 
 	return info;
 }

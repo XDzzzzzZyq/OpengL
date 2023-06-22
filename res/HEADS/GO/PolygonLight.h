@@ -15,7 +15,7 @@
 
 #include "Transform.h"
 
-class AreaLight : public GameObject, public Transform3D
+class PolygonLight : public GameObject, public Transform3D
 {
 private:
 	VertexArray o_vertArray;
@@ -29,8 +29,8 @@ public:
 	bool use_shadow;
 
 	mutable std::optional<RenderShader> o_shader;
-	AreaLight(const std::vector<float> &verts, const glm::vec3 &light_color = {1.0f, 1.0f, 1.0f}, float light_power = 1.0f, bool useShadow = true);
-	~AreaLight();
+	PolygonLight(const std::vector<float> &verts, const glm::vec3 &light_color = {1.0f, 1.0f, 1.0f}, float light_power = 1.0f, bool useShadow = true);
+	~PolygonLight();
 
 	void RenderPolygon(Camera* cam);
 	void SetPolygonShader();

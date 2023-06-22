@@ -210,7 +210,7 @@
     <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\GO\AreaLight.cpp">
+    <ClCompile Include="res\HEADS\GO\PolygonLight.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1770,7 +1770,7 @@
     <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\GO\AreaLight.h">
+    <ClInclude Include="res\HEADS\GO\PolygonLight.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h">

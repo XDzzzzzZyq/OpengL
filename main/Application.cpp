@@ -121,19 +121,19 @@ int Application::Run()
 	spotLight1->SetCutoff(60);
 	spotLight1->SetOuterCutoff(80);
 	spotLight1->SetPower(50);
-	renderer.UseLight(spotLight1);
+	//renderer.UseLight(spotLight1);
 
-	DEBUG("\n-------------AREA LIGHT-------------")
-	std::vector<float> alVertData = {
+	DEBUG("\n------------POLYGON LIGHT-------------")
+	std::vector<float> plVertData = {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
 		2.0f, 2.0f,
 		0.0f, 2.0f
 	};
-	std::shared_ptr<AreaLight> areaLight1 = std::make_shared<AreaLight>(alVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
-	areaLight1->SetPos({ 0.0f, -3.0f, -4.0f });
-	areaLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
-	//renderer.UseAreaLight(areaLight1);
+	std::shared_ptr<PolygonLight> polyLight1 = std::make_shared<PolygonLight>(plVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
+	polyLight1->SetPos({ 0.0f, -3.0f, -4.0f });
+	polyLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
+	renderer.UsePolygonLight(polyLight1);
 
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
@@ -168,7 +168,7 @@ int Application::Run()
 	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
-	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for area lights
+	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2",				14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	renderer.UsePostProcessing(pps1);
 
@@ -309,7 +309,7 @@ int Application::Run()
 		spotLight1->SetPower(power * 80 + 20);
 		spotLight1->SetPos(ImVec4_vec3_Uni(LightPos, 20.0f));
 
-		areaLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
+		polyLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);

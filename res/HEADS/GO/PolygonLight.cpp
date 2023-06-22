@@ -1,12 +1,12 @@
-#include "AreaLight.h"
+#include "PolygonLight.h"
 #include "support.h"
 #include <numeric>
 
-AreaLight::AreaLight(const std::vector<float> &verts, const glm::vec3 &light_color, float light_power, bool use_shadow)
+PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &light_color, float light_power, bool use_shadow)
 	: verts(verts), light_color{light_color}, light_power{light_power}, use_shadow{use_shadow}
 {
-	o_type = GO_AREA_LIGHT;
-	o_name = "Area Light";
+	o_type = GO_POLYLIGHT;
+	o_name = "Polygonal Light";
 
 	std::vector<GLuint> indexArray = std::vector<GLuint>{0, 1, 2, 0, 2, 3};
 
@@ -22,12 +22,12 @@ AreaLight::AreaLight(const std::vector<float> &verts, const glm::vec3 &light_col
 	SetPolygonShader();
 }
 
-AreaLight::~AreaLight()
+PolygonLight::~PolygonLight()
 {
 	DeletePolygon();
 }
 
-void AreaLight::RenderPolygon(Camera* cam)
+void PolygonLight::RenderPolygon(Camera* cam)
 {
 	o_vertArray.Bind();
 	o_index.Bind();
@@ -57,7 +57,7 @@ void AreaLight::RenderPolygon(Camera* cam)
 	o_vertArray.Unbind();
 }
 
-void AreaLight::SetPolygonShader()
+void PolygonLight::SetPolygonShader()
 {
 	o_shader = RenderShader("Polygon");
 	o_shader->UseShader();
@@ -74,7 +74,7 @@ void AreaLight::SetPolygonShader()
 	};
 }
 
-void AreaLight::DeletePolygon()
+void PolygonLight::DeletePolygon()
 {
 	if(o_shader)o_shader->UnuseShader();
 	o_index.Unbind();
