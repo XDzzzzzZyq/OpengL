@@ -354,15 +354,12 @@ void main(){
 	for(uint i = 0; i<scene_info.sun_count; i++){
 		SunLight light = sun_lights[i];
 
-		vec3 coord = GetCoord(Pos, light.proj_trans);
-		float closestDepth = texture(shadow_test, coord.xy).r; 
-		float currentDepth = coord.z;
-		float shadow = evaluateShadow(currentDepth, closestDepth);
+		float shadow = texture(shadow_test, screen_uv).r;
 		if (shadow < 0.01) continue;
 
 		vec3 L = -light.dir;
 		float NdotL = max(dot(Normal, L), 0);
-		vec3 Radiance = light.color * light.power * NdotL;
+		vec3 Radiance = light.color * light.power * NdotL * shadow;
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 
@@ -442,6 +439,6 @@ void main(){
 
 
 	//vec3 dir = normalize(Pos - point_lights[0].pos);
-	//Output = texture2D(LUT, screen_uv);
+	//Output = texture2D(U_mrse, screen_uv);
 	//Output = vec4(vec3(abs(texture(p_shadow_test, dir).r - distance(Pos, point_lights[0].pos)/25)), 1);
 }

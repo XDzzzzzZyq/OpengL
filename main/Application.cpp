@@ -100,7 +100,7 @@ int Application::Run()
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
-	renderer.UseLight(pointLight1);
+	//renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -112,7 +112,7 @@ int Application::Run()
 	sunLight1->SetRot(glm::vec3(0,90,0));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
-	//renderer.UseLight(sunLight1);
+	renderer.UseLight(sunLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
