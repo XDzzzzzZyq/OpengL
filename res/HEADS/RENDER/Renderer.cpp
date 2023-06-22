@@ -360,7 +360,8 @@ void Renderer::Render(bool rend, bool buff) {
 		//////////// LIGHTING CACHE ////////////
 
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
-		r_light_data.UpdateLightingCache();
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+		r_light_data.UpdateLightingCache(r_frame_num);
 
 		////////////  PBR COMPOSE  ////////////
 

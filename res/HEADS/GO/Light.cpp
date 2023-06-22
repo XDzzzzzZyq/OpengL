@@ -30,6 +30,8 @@ float Light::sun_shaodow_far = 20.0f;
 float Light::point_shaodow_near = 0.1f;
 float Light::point_shaodow_far = 25.0f;
 
+float Light::point_blur_range = 0.02f;
+
 Light::Light()
 {
 	assert(false && "incorrect light initialization");
@@ -431,9 +433,12 @@ void LightArrayBuffer::UpdateLight(Light* light)
 	}
 }
 
-void LightArrayBuffer::UpdateLightingCache()
+void LightArrayBuffer::UpdateLightingCache(int frame)
 {
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Point_Shadow", Uni("Shadow_Map", 0));
+	static auto pos_offset = xdzm::rand3nv(16);
+	static float update_rate = 0.05;
+
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Point_Shadow", Uni("Shadow_Map", 0), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;
 
@@ -442,11 +447,13 @@ void LightArrayBuffer::UpdateLightingCache()
 		case POINTLIGHT:
 
 			Texture::BindM(map_id, 0, DEPTH_CUBE_TEXTURE);
-			shadow_cache[id].BindC(4, GL_WRITE_ONLY);
+			shadow_cache[id].BindC(4);
 
 			point_shadow.UseShader();
 			point_shadow.SetValue("light_pos", point[loc].pos);
 			point_shadow.SetValue("light_far", Light::point_shaodow_far);
+			point_shadow.SetValue("frame", frame);
+			point_shadow.SetValue("offset", Light::point_blur_range);
 			point_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
 
 			break;

@@ -49,6 +49,7 @@ public:
 
 	static float point_shaodow_near;
 	static float point_shaodow_far;
+	static float point_blur_range;
 
 public:
 
@@ -207,6 +208,6 @@ public:
 
 public:
 	void UpdateLight(Light* light);
-	void UpdateLightingCache();
+	void UpdateLightingCache(int frame);
 	void BindShadowMap() const;
 };

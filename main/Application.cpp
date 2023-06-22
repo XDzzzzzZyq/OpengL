@@ -207,6 +207,7 @@ int Application::Run()
 	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
 	AverageTime<10> AvTime;
 	int tex_type = 0;
+	static float testf;
 	static float Metalness = 0.0f;
 	static float Roughness = 0.0f;
 	static float Specular = 1.0f;
@@ -254,6 +255,7 @@ int Application::Run()
 		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
 		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
 		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
+		testf = UI.GetParaValue("test layer", "testf")->para_data.fdata;
 		Metalness = UI.GetParaValue("test layer", "Metalness")->para_data.fdata;
 		Roughness = UI.GetParaValue("test layer", "Roughness")->para_data.fdata;
 		Specular = UI.GetParaValue("test layer", "Specular")->para_data.fdata;
@@ -312,6 +314,8 @@ int Application::Run()
 
 		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
+
+		Light::point_blur_range = 0.001 + testf/10;
 
 		renderer.Render();
 		UI.RenderUI();
