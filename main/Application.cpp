@@ -100,12 +100,12 @@ int Application::Run()
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
-	//renderer.UseLight(pointLight1);
+	renderer.UseLight(pointLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight2->SetRadius(2);
-	//renderer.UseLight(pointLight2);
+	renderer.UseLight(pointLight2);
 
 	DEBUG("\n---------------LIGHT----------------")
 	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
@@ -170,7 +170,6 @@ int Application::Run()
 	pps1->AddBinding("LUT",					PNG_TEXTURE);
 	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for area lights
 	pps1->AddBinding("LTC2",				14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
-	pps1->AddBinding("shadow_test",			31);
 	renderer.UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------")
@@ -302,7 +301,7 @@ int Application::Run()
 		pointLight2->SetPower((rotateZ + 50) * power);
 
 		sunLight1->SetRot1D<2>(Radius * 36);
-		sunLight1->SetPower(power * 10);
+		sunLight1->SetPower(power * 4);
 
 		spotLight1->SetRot1D<2>(Radius * 36);
 		spotLight1->SetCutoff(rotateY);

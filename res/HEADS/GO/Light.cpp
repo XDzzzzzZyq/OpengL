@@ -376,7 +376,7 @@ LightArrayBuffer::SceneInfo LightArrayBuffer::GetSceneInfo() const
 	return info;
 }
 
-inline GLsizei LightArrayBuffer::GetTotalCount() const
+GLsizei LightArrayBuffer::GetTotalCount() const
 {
 	return point.size() + sun.size() + spot.size() /*+ area.size() + area_verts.size()*/;
 }

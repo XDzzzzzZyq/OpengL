@@ -195,6 +195,8 @@ public:
 	void Bind() const;
 
 public:
+	static constexpr int shadow_slot[16]{31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16};
+public:
 
 	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
 	void ParseAreaLightData(const std::unordered_map<int, std::shared_ptr<AreaLight>>& area_light_list);
@@ -202,7 +204,7 @@ public:
 public:
 
 	SceneInfo GetSceneInfo() const;
-	inline GLsizei GetTotalCount() const;
+	GLsizei GetTotalCount() const;
 	GLuint GetSlotOffset(LightType _type) const;
 	void Resize(GLuint _w, GLuint _h);
 

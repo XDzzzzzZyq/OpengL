@@ -368,6 +368,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
+		pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
 		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
 		TextureLib::LTC1()->Bind(13);
 		TextureLib::LTC2()->Bind(14);
