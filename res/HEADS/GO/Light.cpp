@@ -438,8 +438,8 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 	static auto pos_offset = xdzm::rand3nv(16);
 	static float update_rate = 0.05;
 
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Point_Shadow", Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
-	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Sun_Shadow",   Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
+	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
 
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;
