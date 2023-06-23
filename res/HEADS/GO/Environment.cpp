@@ -2,16 +2,6 @@
 
 Environment::Environment(const std::string& texpath)
 {
-
-	static std::vector<float> screenQuad = {
-		// positions		// texCoords
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		 1.0f, 1.0f,	1.0f, 1.0f,
-		-1.0f,-1.0f,	0.0f, 0.0f,
-		 1.0f,-1.0f,	1.0f, 0.0f
-	};
-	static auto indexArray = std::vector<GLuint>{ 0,2,1,1,2,3 };
-
 	o_type = GO_ENVIR;
 	envir_shader = RenderShader("Screen", "EnvirBG");	
 
@@ -28,18 +18,6 @@ Environment::Environment(const std::string& texpath)
 	//envir_frameBuffer = FrameBuffer(AVAIL_PASSES);
 
 	o_name = "Environment." + std::to_string(GetObjectID());
-
-	o_vertBuffer = VertexBuffer(screenQuad.data(), screenQuad.size() * sizeof(float));
-
-	BufferLayout layout;
-	layout.Push<float>(2); //2D position
-	layout.Push<float>(2); //UV
-
-	o_vertArry.AddBuffer(o_vertBuffer, layout);
-
-	GLuint* index = indexArray.data();
-
-	o_indexBuffer = IndexBuffer(index, indexArray.size() * sizeof(GLuint)); 
 
 	envir_shader->InitShader = [&] {
 		envir_shader->UseShader();
@@ -112,9 +90,7 @@ void Environment::GenFloatData() const
 
 void Environment::RenderEnvironment(Camera* cam)
 {
-	o_vertArry.Bind();
 	envir_shader->UseShader();
-	o_indexBuffer.Bind();
 	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 	envir_IBL_spec.Bind(IBL_TEXTURE);
 	//DEBUG(envir_frameBuffer->GetFBCount())
@@ -130,8 +106,9 @@ void Environment::RenderEnvironment(Camera* cam)
 		envir_shader->SetValue("cam_ratio", cam->cam_w / cam->cam_h);
 	}
 
+	MeshLib::Square->RenderObjProxy();
+
 	envir_shader->is_shader_changed = false;
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 void Environment::RenderEnvirSpr(Camera* cam)

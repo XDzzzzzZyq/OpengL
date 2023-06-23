@@ -47,6 +47,8 @@ int Application::Init()
 	renderer.Init();
 	UI.Init();
 	Event.SetWindow(window);
+
+	MeshLib::MeshLibInit();
 	/* Make the window's context current */
 	return 0;
 }

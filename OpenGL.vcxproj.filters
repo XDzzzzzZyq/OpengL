@@ -213,6 +213,9 @@
     <ClCompile Include="res\HEADS\GO\PolygonLight.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\MeshData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">
@@ -697,6 +700,7 @@
     <None Include="res\shaders\Depth_Texture_C2E.comp" />
     <None Include="res\shaders\Shadow_Sun.comp" />
     <None Include="res\shaders\Shadow_Point.comp" />
+    <None Include="res\shaders\Shadow_Spot.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1777,6 +1781,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\MeshData.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,7 +18,7 @@ uniform float U_Scale;
 void main() {
 	L_pos = vec3(Light_data[0], Light_data[1], Light_data[2]);
 	L_color = vec3(Light_data[3], Light_data[4], Light_data[5]);
-	uv = uvIn;
+	uv = 1-uvIn;
 
 	mat4 post_cam_trans = transpose(mat4(mat3(U_cam_trans)));
 	dist = distance(L_pos, vec3(U_cam_trans*vec4(vec3(0),-1)));

@@ -1,37 +1,14 @@
 #pragma once
 
-#include "GL/glew.h"
-
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-
-#include "Texture.h"
-#include "Shaders.h"
-
-#include "GameObject.h"
-#include "Camera.h"
-#include "Light.h"
-
-#include "Transform.h"
-#include <optional>
-
+#include "MeshData.h"
 
 class Mesh : public GameObject, public Transform3D
 {
 private:
-	static std::string obj_file_root;
-private:
-
-	Reading read;
-	VertexArray o_vertArry;
-	VertexBuffer o_vertBuffer;
-	IndexBuffer o_index;
 	std::optional<Texture> o_tex;
-
-	glm::vec3 center=glm::vec3(0.0f);
-
 public:
 
+	std::shared_ptr<MeshData> o_mesh;
 	mutable std::optional<RenderShader> o_shader;
 	Mesh(const std::string& path);
 	Mesh();
@@ -58,4 +35,5 @@ void Mesh::SetShaderValue(std::string _name, T ..._v)
 	o_shader->SetValue(_name, _v...);
 	o_shader->UnuseShader();
 }
+
 

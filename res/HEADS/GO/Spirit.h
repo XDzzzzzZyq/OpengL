@@ -3,9 +3,8 @@
 #include "GL/glew.h"
 #include "glm/glm.hpp"
 
-#include "VertexArray.h"
-#include "IndexBuffer.h"
 #include "GameObject.h"
+#include "MeshData.h"
 
 #include "Texture.h"
 #include "Shaders.h"
@@ -28,9 +27,7 @@ class Spirit : public GameObject
 private:
 	static std::string fileroot;
 public:
-	VertexArray r_vertArry;
-	VertexBuffer r_vertBuffer;
-	IndexBuffer r_index;
+
 	std::optional<Texture> r_tex;
 
 public:

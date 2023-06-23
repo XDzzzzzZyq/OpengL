@@ -1,17 +1,14 @@
 #pragma once
+
 #include "GameObject.h"
 #include "Transform.h"
 #include "Texture.h"
 #include "Spirit.h"
 #include "Camera.h"
+#include "MeshData.h"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
 #include "FrameBuffer.h"
 
-#include "support.h"
-#include "structs.h"
 #include "Shaders.h"
 
 #include "glm/glm.hpp"
@@ -25,11 +22,6 @@ enum EnvironmentType
 
 class Environment : public GameObject, public Transform3D
 {
-private:
-	VertexArray o_vertArry;
-	VertexBuffer o_vertBuffer;
-	IndexBuffer o_indexBuffer;
-
 public:
 	// std::optional<FrameBuffer> envir_frameBuffer;
 	std::optional<RenderShader> envir_shader;

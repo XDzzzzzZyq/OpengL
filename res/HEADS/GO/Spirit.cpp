@@ -4,27 +4,8 @@ std::string Spirit::fileroot = "res/tex/spirit/";
 
 Spirit::Spirit()
 {
-	static std::vector<float>VertData = {
-		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
-		 1.0f, 1.0f, 0.0f,		1.0f, 0.0f,
-		-1.0f,-1.0f, 0.0f,		0.0f, 1.0f,
-		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
-	};
-
-	static std::vector<GLuint> indexArray = std::vector<GLuint>{ 0,2,1,1,2,3 };
-
 	o_type = GO_SPIRIT;
-	//std::cout << VertData[100] << std::endl;
-	r_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
 
-	BufferLayout layout;
-	layout.Push<float>(3); //3D position
-	layout.Push<float>(2); //UV
-
-	r_vertArry.AddBuffer(r_vertBuffer, layout);
-	/*o_verts.Unbind();*/
-
-	r_index = IndexBuffer(indexArray.data(), indexArray.size() * sizeof(GLuint));
 	SetSpiritShader();
 
 	o_name = "Spirit." + std::to_string(GetObjectID());
@@ -38,8 +19,6 @@ Spirit::~Spirit()
 
 void Spirit::RenderSpirit(const std::vector<float>& light_data, Camera* cam)
 {
-	r_vertArry.Bind();
-	r_index.Bind();
 	r_shader->UseShader();
 	r_tex->Bind(SPIRIT_TEXURE);
 
@@ -59,18 +38,7 @@ void Spirit::RenderSpirit(const std::vector<float>& light_data, Camera* cam)
 	r_shader->SetValue("U_Scale", SPIRIT_SIZE);
 	//light settings
 
-
-
-	glDrawElements(GL_TRIANGLES, r_index.count(), GL_UNSIGNED_INT, nullptr);
-
-
-	//o_Transform = glm::mat4(1.0f);
-	//r_index.Unbind();
-	//r_shader->UnuseShader();
-	//r_vertArry.Unbind();
-	//r_tex->Unbind();
-
-
+	MeshLib::Square->RenderObjProxy();
 }
 
 void Spirit::RenderSpirit(Camera* cam)
@@ -85,9 +53,7 @@ void Spirit::RenderSpirit(Camera* cam)
 	r_shader->SetValue("U_Scale", SPIRIT_SIZE);
 	//light settings
 
-
-
-	glDrawElements(GL_TRIANGLES, r_index.count(), GL_UNSIGNED_INT, nullptr);
+	MeshLib::Square->RenderObjProxy();
 }
 
 void Spirit::SetSpiritShader()
@@ -116,15 +82,9 @@ void Spirit::DeleteSpirit()
 {
 	r_tex->Unbind();
 	r_shader->UnuseShader();
-	r_index.Unbind();
-	r_vertArry.Unbind();
-	r_vertBuffer.Unbind();
 
 	r_tex->DelTexture();
 	r_shader->DelShad();
-	r_index.DelIndBuff();
-	r_vertBuffer.DelVertBuff();
-	r_vertArry.DelVertArr();
 }
 
 std::string Spirit::ParsePath() const
