@@ -77,5 +77,5 @@ void PostProcessing::RenderPPS()
 
 void PostProcessing::RenderPPSSpr(Camera* cam)
 {
-	pps_spirit.RenderSpirit(vec3_stdVec6(pps_field.o_position, {1,1,1}), cam);
+	pps_spirit.RenderSpirit(pps_field.o_position, glm::vec3(1), cam);
 }

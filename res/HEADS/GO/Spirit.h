@@ -39,7 +39,7 @@ public:
 	Spirit();
 	~Spirit();
 
-	void RenderSpirit(const std::vector<float>& light_pos, Camera* cam);
+	void RenderSpirit(const glm::vec3& pos, const glm::vec3& col, Camera* cam);
 	void RenderSpirit(Camera* cam);
 
 	void SetSpiritShader();

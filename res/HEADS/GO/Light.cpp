@@ -170,7 +170,7 @@ void Light::SetRatio(float _ratio)
 
 void Light::RenderLightSpr(Camera* cam)
 {
-	light_spirit.RenderSpirit(vec3_stdVec6(o_position, light_color), cam);
+	light_spirit.RenderSpirit(o_position, light_color, cam);
 }
 
 void Light::BindShadowMapBuffer()

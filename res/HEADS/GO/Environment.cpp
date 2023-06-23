@@ -113,5 +113,5 @@ void Environment::RenderEnvironment(Camera* cam)
 
 void Environment::RenderEnvirSpr(Camera* cam)
 {
-	envir_spirit.RenderSpirit(vec3_stdVec6(o_position, envir_color), cam);
+	envir_spirit.RenderSpirit(o_position, envir_color, cam);
 }
