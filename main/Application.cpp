@@ -96,6 +96,11 @@ int Application::Run()
 	go4->SetRot({ 0,90,90 });
 	renderer.UseMesh(go4);
 
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("square.obj");
+	go5->SetObjShader("testS", "Rasterization");
+	renderer.UseMesh(go5);
+
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
@@ -123,6 +128,14 @@ int Application::Run()
 	spotLight1->SetPower(50);
 	//renderer.UseLight(spotLight1);
 
+	DEBUG("\n-------------AREA LIGHT-------------")
+		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(2));
+	areaLight1->SetRot({ 0, 90, 45 });
+	areaLight1->SetPower(50);
+	areaLight1->SetRatio(1.5f);
+	go5->SetParent(areaLight1->GetTransformPtr(), false);
+	renderer.UseLight(areaLight1);
+
 	DEBUG("\n------------POLYGON LIGHT-------------")
 	std::vector<float> plVertData = {
 		0.0f, 0.0f,
@@ -133,7 +146,7 @@ int Application::Run()
 	std::shared_ptr<PolygonLight> polyLight1 = std::make_shared<PolygonLight>(plVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
 	polyLight1->SetPos({ 0.0f, -3.0f, -4.0f });
 	polyLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
-	renderer.UsePolygonLight(polyLight1);
+	//renderer.UsePolygonLight(polyLight1);
 
 	DEBUG("\n---------------LINE----------------")
 		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
@@ -199,7 +212,7 @@ int Application::Run()
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
 	static float rotateZ = 0.0f;
-	static float Radius;
+	static float Radius_W;
 	double mouse_x = 0.0f, mouse_y = 0.0f;
 	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
 	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
@@ -250,7 +263,7 @@ int Application::Run()
 		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
-		Radius = UI.GetParaValue("__Parameters__", "W")->para_data.fdata;
+		Radius_W = UI.GetParaValue("__Parameters__", "W")->para_data.fdata;
 		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
 		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
 		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
@@ -295,19 +308,25 @@ int Application::Run()
 		pointLight1->SetColor(LightColor);
 		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
 		pointLight1->SetPower((rotateY + 50) * power);
-		pointLight1->SetRadius(Radius);
+		pointLight1->SetRadius(Radius_W);
 
 		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
 		pointLight2->SetPower((rotateZ + 50) * power);
 
-		sunLight1->SetRot1D<2>(Radius * 36);
+		sunLight1->SetRot1D<2>(Radius_W * 36);
 		sunLight1->SetPower(power * 4);
 
-		spotLight1->SetRot1D<2>(Radius * 36);
+		spotLight1->SetRot1D<2>(Radius_W * 36);
 		spotLight1->SetCutoff(rotateY);
 		spotLight1->SetOuterCutoff(rotateZ);
 		spotLight1->SetPower(power * 80 + 20);
 		spotLight1->SetPos(ImVec4_vec3_Uni(LightPos, 20.0f));
+
+		areaLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
+		areaLight1->SetPower(power * 30 + 10);
+		areaLight1->SetColor(LightColor);
+		areaLight1->SetRatio((rotateY + 135)/180);
+		areaLight1->SetRot1D<2>(Radius_W * 36);
 
 		polyLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
 

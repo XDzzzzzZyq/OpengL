@@ -32,6 +32,15 @@ struct SpotLight{
 	float outer_cutoff;
 };
 
+struct AreaLight{
+	vec3 color;
+	mat4 trans;
+
+	float power;
+	int use_shadow;
+	float ratio;
+};
+
 struct PolygonLight{
 	vec3 color;
 
@@ -53,16 +62,20 @@ layout(std430, binding = 1) buffer sun_array {
 layout(std430, binding = 2) buffer spot_array {
 	SpotLight  spot_lights[];
 };
-layout(std430, binding = 3) buffer polygon_array {
+layout(std430, binding = 3) buffer area_array {
+	AreaLight  area_lights[];
+};
+layout(std430, binding = 4) buffer polygon_array {
     PolygonLight  polygon_lights[];
 };
-layout(std430, binding = 4) buffer polygon_verts_array {
+layout(std430, binding = 5) buffer polygon_verts_array {
     PolyLightVert   polygon_verts[];
 };
 layout(std140) uniform SceneInfo {
 	int point_count;
 	int sun_count;
 	int spot_count;
+	int area_count;
 	int polygon_count;
 } scene_info;
 
@@ -208,8 +221,8 @@ vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, flo
 
 // Compute acos(dot(v1, v2)) * normalize(cross(v1, v2))
 // https://learnopengl.com/Guest-Articles/2022/Area-Lights
-vec3 IntegrateEdge(vec3 v1, vec3 v2)
-{
+vec3 IntegrateEdge(vec3 v1, vec3 v2){
+
 	float x = dot(v1, v2);
 	float y = abs(x);
 
@@ -222,31 +235,71 @@ vec3 IntegrateEdge(vec3 v1, vec3 v2)
     return cross(v1, v2)*theta_sintheta;
 }
 
-vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
-{
+vec4 Vector_Irradiance_Area(vec3 N, vec3 V, vec3 P, mat3 Minv, mat4 Area_T, float ratio){
+	vec3 T1, T2;
+	T1 = normalize(V - N * dot(V, N));
+	T2 = cross(N, T1);
+	Minv = Minv * transpose(mat3(T1, T2, N));
+
+
+	vec3 L0 = vec3(Area_T * vec4( ratio, 1, 0, 1)) - P;
+	vec3 L1 = vec3(Area_T * vec4(-ratio, 1, 0, 1)) - P;
+	vec3 L2 = vec3(Area_T * vec4(-ratio,-1, 0, 1)) - P;
+	vec3 L3 = vec3(Area_T * vec4( ratio,-1, 0, 1)) - P;
+
+	vec3 dir = normalize(P - vec3(Area_T * vec4(vec3(0), 1)));
+	vec3 lightNormal = normalize(mat3(Area_T)*vec3(0, 0, 1));
+	bool behind = (dot(dir, lightNormal) < 0.0);
+
+		// Transform light direction from LTC to cosine weighted space
+	L0 = normalize(Minv * L0);
+	L1 = normalize(Minv * L1);
+	L2 = normalize(Minv * L2);
+	L3 = normalize(Minv * L3);
+	vec3 vsum = vec3(0.0f);
+	vsum += IntegrateEdge(L0, L1);
+	vsum += IntegrateEdge(L1, L2);
+	vsum += IntegrateEdge(L2, L3);
+	vsum += IntegrateEdge(L3, L0);
+
+	return vec4(vsum, behind);
+}
+
+vec4 Vector_Irradiance_Poly(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n){
+
 	// Construct orthonormal basis around N
 	vec3 T1, T2;
 	T1 = normalize(V - N * dot(V, N));
 	T2 = cross(N, T1);
 	Minv = Minv * transpose(mat3(T1, T2, N));
 
-	// Integrate vector irradiance over the edges
 	vec3 vsum = vec3(0.0f);
 	for (int i = 0; i < n; ++i)
 	{
 		// Transform light direction from LTC to cosine weighted space
 		vec3 L0 = Minv * (polygon_verts[i0 + i].v - P);
 		vec3 L1 = Minv * (polygon_verts[i0 + (i + 1) % n].v - P);
-		L0 = normalize(L0);
-		L1 = normalize(L1);
 
-		vsum += IntegrateEdge(L0, L1);
+		vsum += IntegrateEdge(normalize(L0), normalize(L1));
 	}
 
-	// Check if the point is behind the light
 	vec3 dir = P - polygon_verts[i0].v;
 	vec3 lightNormal = cross(polygon_verts[i0 + 1].v - polygon_verts[i0].v, polygon_verts[i0 + 2].v - polygon_verts[i0].v);
 	bool behind = (dot(dir, lightNormal) < 0.0);
+
+	return vec4(vsum, behind);
+}
+
+vec3 LTC_Evaluate(vec4 Vec_Irrad)
+{
+	// Integrate vector irradiance over the edges
+	vec4 vec_irrad = Vec_Irrad;
+	vec3 vsum = vec_irrad.xyz;
+
+	// Check if the point is behind the light
+	bool behind = bool(vec_irrad.w);
+	if(behind)
+		return vec3(0);
 
 	// Form factor
 	float len = length(vsum);
@@ -261,7 +314,6 @@ vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, int i0, int n)
 	// Fetch the form factor for horizon clipping
 	float scale = texture(LTC2, uv).w;
 	float sum = len * scale;
-	if (behind) sum = 0.0f;
 
 	return vec3(sum);
 }
@@ -298,6 +350,21 @@ void main(){
 	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
 	vec3 Fresnel = fresnelSchlick(NdotV, F0);
 	vec3 ks = Fresnel;
+
+	float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
+	vec2 uv = vec2(Roughness, sqrt(1.0f - dotNV));
+	uv = uv * LUT_SCALE + LUT_BIAS;
+
+	// Get 4 parameters for inverse M
+	vec4 t1 = texture(LTC1, uv);
+	// Get 2 parameters for Fresnel calculation
+	vec4 t2 = texture(LTC2, uv);
+
+	mat3 Minv = mat3(
+		vec3(t1.x, 0, t1.y),
+		vec3(   0, 1,    0),
+		vec3(t1.z, 0, t1.w)
+	);
 
 	//vec4 uvcolor = texture(U_Texture, uv);
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
@@ -363,29 +430,32 @@ void main(){
 		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
 	}
 
+	for (uint i = 0; i < scene_info.area_count; i++){
+	    AreaLight light = area_lights[i];
+
+		vec4 vec_irrad_spec = Vector_Irradiance_Area(Normal, -CamRay, Pos, mat3(1), light.trans, light.ratio);
+		vec3 diffuse = LTC_Evaluate(vec_irrad_spec);
+		vec4 vec_irrad_diff = Vector_Irradiance_Area(Normal, -CamRay, Pos, Minv   , light.trans, light.ratio);
+		vec3 specular = LTC_Evaluate(vec_irrad_diff);
+
+		// GGX BRDF shadowing and Fresnel
+		// NOTE: I am not certain about mixing these two terms with the Specular factor
+		//       This is simply following the implementation on learnopengl.com
+		specular *= mix(t2.x, t2.y, Specular);
+
+		Light_res += light.power * light.color * (specular + Albedo * diffuse);
+	}
+
 	/* [Block : Polygon Lights] */
 
 	int i0 = 0;
 	for (uint i = 0; i < scene_info.polygon_count; i++){
 	    PolygonLight light = polygon_lights[i];
 
-		float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
-		vec2 uv = vec2(Roughness, sqrt(1.0f - dotNV));
-		uv = uv * LUT_SCALE + LUT_BIAS;
-
-		// Get 4 parameters for inverse M
-		vec4 t1 = texture(LTC1, uv);
-		// Get 2 parameters for Fresnel calculation
-		vec4 t2 = texture(LTC2, uv);
-
-		mat3 Minv = mat3(
-			vec3(t1.x, 0, t1.y),
-			vec3(   0, 1,    0),
-			vec3(t1.z, 0, t1.w)
-		);
-
-		vec3 diffuse = LTC_Evaluate(Normal, -CamRay, Pos, mat3(1), i0, light.n);
-		vec3 specular = LTC_Evaluate(Normal, -CamRay, Pos, Minv, i0, light.n);
+		vec4 vec_irrad_spec = Vector_Irradiance_Poly(Normal, -CamRay, Pos, mat3(1), i0, light.n);
+		vec3 diffuse = LTC_Evaluate(vec_irrad_spec);
+		vec4 vec_irrad_diff = Vector_Irradiance_Poly(Normal, -CamRay, Pos, Minv   , i0, light.n);
+		vec3 specular = LTC_Evaluate(vec_irrad_diff);
 
 		// GGX BRDF shadowing and Fresnel
 		// NOTE: I am not certain about mixing these two terms with the Specular factor
@@ -424,6 +494,8 @@ void main(){
 
 
 	//vec3 dir = normalize(Pos - point_lights[0].pos);
+	//Output = vec4(vec3(area_lights[0].trans*vec4(vec3(0), 1)), 1);
+	//Output = vec4(vec3(area_lights[0].power/30), 1);
 	//Output = texture2D(U_mrse, screen_uv);
 	//Output = vec4(vec3(abs(texture(p_shadow_test, dir).r - distance(Pos, point_lights[0].pos)/25)), 1);
 }

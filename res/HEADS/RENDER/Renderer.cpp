@@ -404,6 +404,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 void Renderer::RenderShadowMap(Light* light)
 {
+	if (light->light_type == AREALIGHT) return;
+
 	const GLuint map_w = light->light_shadow_map.GetW();
 	const GLuint map_h = light->light_shadow_map.GetH();
 

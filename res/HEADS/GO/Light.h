@@ -15,7 +15,7 @@
 
 enum LightType
 {
-	NONELIGHT = -1, POINTLIGHT, SUNLIGHT, SPOTLIGHT
+	NONELIGHT = -1, POINTLIGHT, SUNLIGHT, SPOTLIGHT, AREALIGHT
 };
 
 // A basic light, which can be a point light, sun light, or a spot light
@@ -34,6 +34,9 @@ public:
 	// spot light
 	float spot_cutoff{ 0.9 };
 	float spot_outer_cutoff{ 0.8 };
+
+	// area light
+	float area_ratio{ 1.0 };
 
 public:
 
@@ -71,11 +74,11 @@ public:
 	void SetRadius(float _rad);
 	void SetCutoff(float _ang);
 	void SetOuterCutoff(float _ang);
-
+	void SetRatio(float _ratio);
 
 private:
 	static FrameBuffer _shadowmap_buffer;
-	static std::array<ChainedShader, 3> _shadowmap_shader;
+	static std::array<ChainedShader, 4> _shadowmap_shader;
 	static std::array<glm::mat4, 6> _point_6side;
 
 public:
@@ -126,7 +129,7 @@ public:
 
 		alignas(4) float power{ 1 };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
-		alignas(64) glm::mat4 proj_trans;
+		alignas(16) glm::mat4 proj_trans;
 	};
 
 	struct SpotStruct
@@ -141,6 +144,18 @@ public:
 		alignas(4) int use_shadow{ 1 };      // bool -> int
 		alignas(4) float cutoff{ 0.9 };
 		alignas(4) float outer_cutoff{ 0.8 };
+	};
+
+	struct AreaStruct
+	{
+		AreaStruct(const Light& light);
+
+		alignas(16) glm::vec3 color{ 1 };
+		alignas(16) glm::mat4 trans{ 1 };
+
+		alignas(4) float power{ 1 };
+		alignas(4) int use_shadow{ 1 };      // bool -> int
+		alignas(4) float ratio{ 1 };
 	};
 
 	struct PolyStruct
@@ -160,6 +175,7 @@ public:
 	static const GLuint Sizeof_Point = sizeof(PointStruct);
 	static const GLuint Sizeof_Sun   = sizeof(SunStruct);
 	static const GLuint Sizeof_Spot  = sizeof(SpotStruct);
+	static const GLuint Sizeof_Area = sizeof(AreaStruct);
 	static const GLuint Sizeof_Poly  = sizeof(PolyStruct);
 	static const GLuint Sizeof_PolyVert  = sizeof(PolyVertStruct);
 
@@ -167,20 +183,22 @@ public:
 		int point_count{ 0 };
 		int sun_count{ 0 };
 		int spot_count{ 0 };
+		int area_count{ 0 };
 		int poly_count{ 0 };
 		int poly_verts_count{ 0 };
 	};
 
 public:
 
-	std::vector<PointStruct> point;
-	std::vector<SunStruct> sun;
-	std::vector<SpotStruct> spot;
-	std::vector<PolyStruct> poly;
+	std::vector<PointStruct> point_list;
+	std::vector<SunStruct> sun_list;
+	std::vector<SpotStruct> spot_list;
+	std::vector<AreaStruct> area_list;
+	std::vector<PolyStruct> poly_list;
 	std::vector<PolyVertStruct> poly_verts;
 
 	mutable std::unordered_map<int, Texture> shadow_cache;
-	StorageBuffer point_buffer, sun_buffer, spot_buffer, poly_buffer, poly_verts_buffer;
+	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, poly_buffer, poly_verts_buffer;
 
 	UniformBuffer<SceneInfo> info;
 
