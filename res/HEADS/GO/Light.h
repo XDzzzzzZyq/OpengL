@@ -58,6 +58,10 @@ public:
 	static float spot_shaodow_far;
 	static float spot_blur_range;
 
+	static float area_shaodow_near;
+	static float area_shaodow_far;
+	static float area_blur_range;
+
 public:
 
 	Light();

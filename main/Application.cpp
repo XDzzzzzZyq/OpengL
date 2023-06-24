@@ -120,7 +120,7 @@ int Application::Run()
 	sunLight1->SetRot(glm::vec3(0,90,0));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
-	renderer.UseLight(sunLight1);
+	//renderer.UseLight(sunLight1);
 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -137,7 +137,7 @@ int Application::Run()
 	areaLight1->SetPower(50);
 	areaLight1->SetRatio(1.5f);
 	go5->SetParent(areaLight1->GetTransformPtr(), false);
-	//renderer.UseLight(areaLight1);
+	renderer.UseLight(areaLight1);
 
 	DEBUG("\n------------POLYGON LIGHT-------------")
 	std::vector<float> plVertData = {
@@ -330,6 +330,7 @@ int Application::Run()
 		areaLight1->SetColor(LightColor);
 		areaLight1->SetRatio((rotateY + 135)/180);
 		areaLight1->SetRot1D<2>(Radius_W * 36);
+		areaLight1->SetScale(glm::vec3(1.0f + (rotateZ) / 20));
 
 		polyLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
 

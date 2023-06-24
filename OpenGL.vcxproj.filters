@@ -701,6 +701,8 @@
     <None Include="res\shaders\Shadow_Sun.comp" />
     <None Include="res\shaders\Shadow_Point.comp" />
     <None Include="res\shaders\Shadow_Spot.comp" />
+    <None Include="res\shaders\Empty_Rand.vert" />
+    <None Include="res\shaders\Shadow_Area.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

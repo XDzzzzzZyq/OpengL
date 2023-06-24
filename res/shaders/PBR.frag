@@ -433,6 +433,9 @@ void main(){
 	for (uint i = 0; i < scene_info.area_count; i++){
 	    AreaLight light = area_lights[i];
 
+		float shadow = texture(U_Shadow[scene_info.point_count+scene_info.sun_count+scene_info.spot_count+i], screen_uv).r;
+		if (shadow < 0.01) continue;
+
 		vec4 vec_irrad_spec = Vector_Irradiance_Area(Normal, -CamRay, Pos, mat3(1), light.trans, light.ratio);
 		vec3 diffuse = LTC_Evaluate(vec_irrad_spec);
 		vec4 vec_irrad_diff = Vector_Irradiance_Area(Normal, -CamRay, Pos, Minv   , light.trans, light.ratio);
@@ -443,7 +446,7 @@ void main(){
 		//       This is simply following the implementation on learnopengl.com
 		specular *= mix(t2.x, t2.y, Specular);
 
-		Light_res += light.power * light.color * (specular + Albedo * diffuse);
+		Light_res += light.power * light.color * (specular + Albedo * diffuse) * shadow;
 	}
 
 	/* [Block : Polygon Lights] */
