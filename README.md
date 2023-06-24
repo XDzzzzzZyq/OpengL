@@ -19,7 +19,7 @@
 			- [x] Spot light [@theta-lin](https://github.com/theta-lin)
 			- [x] Area light (currently only support pure color convex polygon) [@theta-lin](https://github.com/theta-lin)
 
-			- [ ] Shadow Map
+			- [x] Shadow Map
 		- [x] PBR IBL
 
 - [x] advanced StorageBuffer
