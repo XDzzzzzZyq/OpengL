@@ -1,31 +1,19 @@
 #include "DebugLine.h"
 
 DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
+	:DebugLine(std::vector<glm::vec3>{start, end})
 {
-	o_type = GO_DL;
-	LOOP(3) {
-		dLine_pos_list.push_back(start[i]);
-	}
-	LOOP(3) {
-		dLine_pos_list.push_back(end[i]);
-	}
-
-
-	SetDLineShader();
-
-	o_name = "Debug Line." + std::to_string(GetObjectID());
-	multiLine = false;
+	is_multi_lines = false;
 }
 
 DebugLine::DebugLine(const std::vector<glm::vec3>& vertices)
 {
 	o_type = GO_DL;
-	for (const auto& vert : vertices) {
-		LOOP(3) {
-			dLine_pos_list.push_back(vert[i]);
-		}
-	}
-	multiLine = true;
+
+	for (const auto& vert : vertices) 
+		dLine_pos_list.push_back(vert);
+
+	is_multi_lines = true;
 	vert_count = vertices.size();
 
 	SetDLineShader();
@@ -55,33 +43,25 @@ void DebugLine::SetDebugLineParas(bool stipple, bool smooth, float width, float 
 
 void DebugLine::PushDebugLine(const glm::vec3& point)
 {
-	dLine_pos_list.push_back(point[0]);
-	dLine_pos_list.push_back(point[1]);
-	dLine_pos_list.push_back(point[2]);
+	dLine_pos_list.emplace_back(point);
 }
 
 void DebugLine::PushDebugLine(float x, float y, float z)
 {
-	dLine_pos_list.push_back(x);
-	dLine_pos_list.push_back(y);
-	dLine_pos_list.push_back(z);
+	PushDebugLine({ x, y, z });
 }
 
 void DebugLine::PushDebugLines(const std::vector<glm::vec3>& points)
 {
-	dLine_pos_list.reserve(dLine_pos_list.size() + points.size() * 3);
+	dLine_pos_list.reserve(dLine_pos_list.size() + points.size());
 
-	LOOP(points.size()) {
-
-		dLine_pos_list.emplace_back(points[i][0]);
-		dLine_pos_list.emplace_back(points[i][1]);
-		dLine_pos_list.emplace_back(points[i][2]);
-
-	}
+	LOOP(points.size())
+		dLine_pos_list.emplace_back(points[i]);
 }
 
 void DebugLine::RenderDdbugLine(Camera* camera)
 {
+
 	if (dLine_pos_list.size() < 2)return;
 
 	dLine_shader->UseShader();
@@ -118,9 +98,8 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	//glDrawElements(GL_LINE, dLine_index.count(), GL_UNSIGNED_INT, nullptr);
 
 	glVertexPointer(3, GL_FLOAT, 0, dLine_pos_list.data());
-	glDrawArrays(GL_LINE_STRIP, 0, dLine_pos_list.size()/3);
+	glDrawArrays(GL_LINE_STRIP, 0, dLine_pos_list.size());
 	//glMultiDrawArrays(GL_LINES,)
-
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glPopAttrib();
@@ -130,7 +109,7 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 		glDisable(GL_LINE_STIPPLE);
 
 	dLine_shader->UnuseShader();
-	
+	dLine_shader->is_shader_changed = false;
 }
 
 void DebugLine::SetDLineShader()

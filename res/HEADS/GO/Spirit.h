@@ -3,9 +3,8 @@
 #include "GL/glew.h"
 #include "glm/glm.hpp"
 
-#include "VertexArray.h"
-#include "IndexBuffer.h"
 #include "GameObject.h"
+#include "MeshData.h"
 
 #include "Texture.h"
 #include "Shaders.h"
@@ -19,7 +18,7 @@
 
 enum SpiritType
 {
-	NONE_SPIRIT, LIGHT_SPIRIT, CAM_SPIRIT, ENVIRN_SPIRIT, PARTIC_SPIRIT
+	NONE_SPIRIT, POINT_LIGHT_SPIRIT, SUN_LIGHT_SPIRIT, SPOT_LIGHT_SPIRIT, CAM_SPIRIT, ENVIRN_SPIRIT, PARTIC_SPIRIT
 };
 
 class Spirit : public GameObject
@@ -28,17 +27,9 @@ class Spirit : public GameObject
 private:
 	static std::string fileroot;
 public:
-	VertexArray r_vertArry;
-	VertexBuffer r_vertBuffer;
-	IndexBuffer r_index;
+
 	std::optional<Texture> r_tex;
 
-	std::vector<float> VertData = {
-		-1.0f, 1.0f, 0.0f,		0.0f, 0.0f,
-		 1.0f, 1.0f, 0.0f,		1.0f, 0.0f,
-		-1.0f,-1.0f, 0.0f,		0.0f, 1.0f,
-		 1.0f,-1.0f, 0.0f,		1.0f, 1.0f
-	};
 public:
 	float spirit_opacity = 0.9f;
 
@@ -48,7 +39,7 @@ public:
 	Spirit();
 	~Spirit();
 
-	void RenderSpirit(const std::vector<float>& light_pos, Camera* cam);
+	void RenderSpirit(const glm::vec3& pos, const glm::vec3& col, Camera* cam);
 	void RenderSpirit(Camera* cam);
 
 	void SetSpiritShader();

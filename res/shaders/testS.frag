@@ -1,9 +1,13 @@
 #version 430 core
 
-layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 IDcolor;
-layout(location = 2) out vec4 RANDcolor;
-layout(location = 3) out vec4 SELECcolor;
+layout(location = 0) out vec4 COMBcolor;
+layout(location = 1) out vec4 POScolor;
+layout(location = 2) out vec4 NORMALcolor;
+layout(location = 3) out vec4 ALBEDOcolor;
+layout(location = 4) out vec4 MRSEcolor;
+layout(location = 5) out vec4 RANDcolor;
+layout(location = 6) out vec4 IDcolor;
+layout(location = 7) out vec4 MASKcolor;
 
 in vec2 uv;
 in vec4 testcolor;
@@ -110,6 +114,11 @@ void main() {
 	
 	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
+	MASKcolor = vec4(1, is_selected, 0, 1);
+	POScolor = vec4(pix_pos, 1);
+	NORMALcolor = vec4(vec3(Snormal_color), 1);
+	ALBEDOcolor = texture2D(U_Texture, uv);
+	MRSEcolor = vec4(vec3(blen[0]), 1);
 
 	//Generate PL_LIST & pL_list Shading
 	for (int i = 0;i < L_point[0];i++) {
@@ -137,9 +146,10 @@ void main() {
 
 	vec4 uvcolor = texture(U_Texture, uv);
 	vec3 reflectcolor = vec3(texture(Envir_Texture, genHdrUV(-ReflectRay)));
-	SELECcolor.a = float(is_selected);
+
 	
 	//color = uvcolor * vec4(LightMap.Diffuse_map + LightMap.Specular_map*2, 1.0f);
 
-	color = vec4(reflectcolor, 1.0f);
+	COMBcolor = vec4(reflectcolor, 1.0f);
+
 };

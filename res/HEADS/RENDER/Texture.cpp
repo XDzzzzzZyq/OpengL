@@ -1,36 +1,41 @@
 ﻿#include "Texture.h"
 #include "stb_image/stb_image.h"
 
+std::string Texture::root_dir = "res/tex/";
+
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
-	:m_path(texpath), m_buffer(nullptr), Tex_type(tex_type), Tex_slot(tex_type),
+	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
 
 	GLfloat maxAnti;
 	//std::cout << Tex_ID << std::endl;
 	stbi_set_flip_vertically_on_load(1);
-	glGenTextures(1, &Tex_ID);
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	glGenTextures(1, &tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
+
+	GLubyte* m_buffer = nullptr;
+	GLfloat* m_buffer_f = nullptr;
+
+	if (tex_path.find(Texture::root_dir) == std::string::npos)
+		tex_path = Texture::root_dir + tex_path;
+
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
+
 	switch (tex_type)
 	{
 	case RGBA_TEXTURE:
 
-		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		// std::cout << Tex_ID << std::endl;
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR, Tile_type, Tile_type, 0, 4);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+		glTexStorage2D(GL_TEXTURE_2D, 1, interlayout, im_w, im_h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer);
 
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
 		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
@@ -53,16 +58,13 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 	case SPIRIT_TEXURE:
 		stbi_set_flip_vertically_on_load(0);
-		m_buffer = stbi_load(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 1);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+		glTexStorage2D(GL_TEXTURE_2D, 1, interlayout, im_w, im_h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -80,21 +82,16 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		break;
 
 	case IBL_TEXTURE:
-		m_buffer_f = stbi_loadf(texpath.c_str(), &im_w, &im_h, &im_bpp, 4);
+		m_buffer_f = stbi_loadf(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Tile_type);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Tile_type);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 8);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
-		glTexStorage2D(GL_TEXTURE_2D, 8, GL_RGBA16F, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_FLOAT, m_buffer_f);
+		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer_f);
 
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 8);
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
 		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
@@ -115,27 +112,10 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		break;
 
 	case BUFFER_TEXTURE:
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		break;
-
 	case HDR_BUFFER_TEXTURE:
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_FLOAT, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		break;
-
 	case FLOAT_BUFFER_TEXTURE:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, SCREEN_W, SCREEN_H, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, SCREEN_W, SCREEN_H, 0, layout, type, NULL);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -153,18 +133,86 @@ Texture::Texture()
 }
 
 Texture::Texture(GLuint Tile_type, int x, int y)
-	:m_path(""), m_buffer(nullptr), Tex_type(BUFFER_TEXTURE), Tex_slot(BUFFER_TEXTURE),
+	:tex_path(NULL), tex_type(BUFFER_TEXTURE),
 	im_bpp(8), im_h(y), im_w(x)
 {
-	glGenTextures(1, &Tex_ID);
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	glGenTextures(1, &tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST, GL_REPEAT, GL_REPEAT);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+Texture::Texture(int _w, int _h, GLuint _layout, const void* _ptr,
+	GLint _min_filter, GLint _mag_filter, GLint _wrap_s, GLint _wrap_t)
+	:im_w(_w), im_h(_h)
+{
+
+	glGenTextures(1, &tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
+
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, _min_filter, _mag_filter, _wrap_s, _wrap_t, 0, 1);
+
+	switch (_layout)
+	{
+	case GL_RG8:
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_UNSIGNED_BYTE, _ptr);
+		tex_type = RG_TEXTURE;
+		break;
+	case GL_RG16F:
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RG, GL_FLOAT, _ptr);
+		tex_type = RG_TEXTURE;
+		break;
+	case GL_RGB8:
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_UNSIGNED_BYTE, _ptr);
+		tex_type = RGB_TEXTURE;
+		break;
+	case GL_RGB16F:
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGB, GL_FLOAT, _ptr);
+		tex_type = RGB_TEXTURE;
+		break;
+	case GL_RGBA8:
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, _ptr);
+		tex_type = BUFFER_TEXTURE;
+		break;
+	case GL_RGBA16F:
+		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_FLOAT, _ptr);
+		tex_type = HDR_BUFFER_TEXTURE;
+		break;
+	default:
+	    assert(false && "WRONG LAYOUT");
+	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+Texture::Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name)
+	:im_w(_w), im_h(_h), tex_ID(_ID), tex_type(_type), tex_path(_name)
+{}
+
+Texture::Texture(int _w, int _h, TextureType _type)
+	:im_w(_w), im_h(_h), tex_type(_type)
+{
+	auto [interlayout, layout, data_type, gl_type] = Texture::ParseFormat(tex_type);
+
+	glGenTextures(1, &tex_ID);
+	glBindTexture(gl_type, tex_ID);
+
+	switch (gl_type)
+	{
+	case GL_TEXTURE_2D:
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT);
+		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
+		break;
+	case GL_TEXTURE_CUBE_MAP:
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+		LOOP(6)
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
+		break;
+	}
 }
 
 Texture::~Texture()
@@ -174,131 +222,480 @@ Texture::~Texture()
 
 void Texture::DelTexture() const
 {
-	glDeleteTextures(1, &Tex_ID);
+	glDeleteTextures(1, &tex_ID);
 }
 
 void Texture::Resize(const ImVec2& size)
 {
-	im_h = size.y;
-	im_w = size.x;
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
-
-	if (Tex_type == RGBA_TEXTURE || Tex_type == BUFFER_TEXTURE)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else if (Tex_type == HDR_BUFFER_TEXTURE || Tex_type == IBL_TEXTURE)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
-	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	Resize(size.x, size.y);
 }
 
 void Texture::Resize(float x, float y)
 {
 	im_h = y;
 	im_w = x;
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	if (Tex_type == BUFFER_TEXTURE)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	else if (Tex_type == HDR_BUFFER_TEXTURE)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, NULL);
-	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, im_w, im_h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST);
 }
 
 void Texture::Bind(GLuint slot) const
 {
 	if (slot == -1)
-		slot = Tex_slot;
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
-	//Tex_slot = slot;
+		slot = tex_type + tex_slot_offset;
+
+	Texture::BindM(tex_ID, slot, tex_type);
+}
+
+void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE*/, GLuint _level /*= 0*/) const
+{
+	if (slot == -1)
+		slot = tex_type + tex_slot_offset;
+
+	auto [layout, _1, _2, _3] = Texture::ParseFormat(tex_type);
+	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
+
+	glBindImageTexture(slot, tex_ID, 0, is_array, 0, read_or_write, layout);
+}
+
+void Texture::BindU(GLuint slot /*= -1*/) const
+{
+	if (slot == -1) slot = tex_type;
+
+	glBindTextureUnit(slot, tex_ID);
+}
+
+inline void Texture::BindM(GLuint _id, GLuint _slot /*= 0*/, TextureType _type/*=RGBA_TEXTURE*/)
+{
+	const GLuint gl_type = std::get<3>(Texture::ParseFormat(_type));
+	glActiveTexture(GL_TEXTURE0 + _slot);
+	glBindTexture(gl_type, _id);
+}
+
+void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE*/, GLuint _level /*= 0*/) const
+{
+	if (slot == -1)
+		slot = tex_type + tex_slot_offset;
+
+	auto [layout, _1, _2, _3] = Texture::ParseFormat(tex_type);
+
+	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
+
+	glBindImageTexture(slot, 0, 0, is_array, 0, GL_READ_ONLY, layout);
 }
 
 void Texture::Unbind() const
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(std::get<3>(Texture::ParseFormat(tex_type)), 0);
 	//glActiveTexture(0);
 }
 
-void Texture::GenIrradiaceConvFrom(GLuint _Tar_ID)
+inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 {
-	int w, h;
-	glBindTexture(GL_TEXTURE_2D, _Tar_ID);
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);// DEBUG(w)
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);// DEBUG(h)
+	// https://docs.gl/gl4/glTexImage2D
 
-	if (_Tar_ID == Tex_ID)
-		DEBUG("are you sure about that?");
+	switch (_type)
+	{
+	case RGBA_TEXTURE:
+	case BUFFER_TEXTURE:
+	case SPIRIT_TEXURE:
+		return { GL_RGBA8,				GL_RGBA,			GL_UNSIGNED_BYTE,	GL_TEXTURE_2D		};
+	case RGB_TEXTURE:
+		return { GL_RGB8,				GL_RGB,				GL_UNSIGNED_BYTE,	GL_TEXTURE_2D		};
+	case IBL_TEXTURE:
+	case HDR_BUFFER_TEXTURE:
+		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D		};
+	case IBL_CUBE_TEXTURE:
+		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
+	case RG_TEXTURE:
+	case FLOAT_BUFFER_TEXTURE:
+		return { GL_RG16F,				GL_RG,				GL_FLOAT,			GL_TEXTURE_2D		};
+	case LIGHTING_CACHE:
+		return { GL_R16F,				GL_RED,				GL_FLOAT,			GL_TEXTURE_2D		};
+	case DEPTH_CUBE_TEXTURE:
+		return { GL_DEPTH_COMPONENT,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
+	case DEPTH_TEXTURE:
+		return { GL_DEPTH_COMPONENT,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_2D		};
+	default:
+		assert(false && "WRONG FORMAT");
+		return { GL_NONE,				GL_NONE ,			GL_NONE,			GL_NONE				};
+	}
+}
 
-	GenIrradianceConv(_Tar_ID, w, h);
+template<GLuint Type>
+inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s /*= 0*/, GLuint _warp_t /*= 0*/, GLuint _lev_min /*= 0*/, GLuint _lev_max /*= 0*/, GLuint _warp_r /*= 0*/)
+{
+	glBindTexture(Type, _id);
+
+	glTexParameteri(Type, GL_TEXTURE_MIN_FILTER, _fil_min);
+	glTexParameteri(Type, GL_TEXTURE_MAG_FILTER, _fil_max);
+
+	if (_warp_s * _warp_t != 0) {
+		glTexParameteri(Type, GL_TEXTURE_WRAP_S, _warp_s);
+		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_t);
+	}
+
+	if(_warp_r != 0)
+		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_r);
+
+	if (_lev_min + _lev_max != 0) {
+		glTexParameteri(Type, GL_TEXTURE_BASE_LEVEL, _lev_min);
+		glTexParameteri(Type, GL_TEXTURE_MAX_LEVEL, _lev_max);
+	}
 }
 
 void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)
 {
-	GenIrradianceConv(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.Tex_type);
+	GenIrradianceConv(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type);
 }
 
-void Texture::GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
+void Texture::GenIBLDiffuseFrom(const Texture& _Tar_Tex, bool to_cubemap /*= false*/)
 {
-	Timer timer("Start Irradiance Convolution");
+	GenIBLDiffuse(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type, to_cubemap);
+}
+
+void Texture::GenIBLSpecularFrom(const Texture& _Tar_Tex, bool to_cubemap /*= false*/)
+{
+	GenIBLSpecular(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type, to_cubemap);
+}
+
+void Texture::GenCubeMapFrom(const Texture& _Tar_Tex, size_t res)
+{
+	GenCubeMap(_Tar_Tex.GetTexID(), res, _Tar_Tex.tex_type);
+}
+
+void Texture::GenERectMapFrom(const Texture& _Tar_Tex, size_t _w /*= 2048*/, size_t _h /*= 1024*/)
+{
+	GenERectMap(_Tar_Tex.GetTexID(), _w, _h, _Tar_Tex.tex_type);
+}
+
+void Texture::ConvertDepthFrom(const Texture& _Tar_Tex)
+{
+	ConvertDepth(_Tar_Tex.GetTexID(), _Tar_Tex.GetW(), _Tar_Tex.GetH(), _Tar_Tex.tex_type);
+}
+
+void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
+{
+	assert(false && "this function has been abandoned");
+}
+
+void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
+{
+	//////////////////   Specular Importance Sampling   //////////////////
+	//			https://learnopengl.com/PBR/IBL/Specular-IBL			//
 	
-	if (Tex_ID != 0)DelTexture();   //reset
+	const int max_inter = 8;
 
-	glGenTextures(1, &Tex_ID);//for storage
-	glBindTexture(GL_TEXTURE_2D, Tex_ID);
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	if (to_cubemap) {
+		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, max_inter - 1, GL_CLAMP_TO_EDGE);
+		im_w = im_h = 2048; tex_type = IBL_CUBE_TEXTURE;
+	}
+	else {
+		glBindTexture(GL_TEXTURE_2D, ID);
+		Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT, 0, max_inter - 1);
+		im_w = _tar_w; im_h = _tar_h; tex_type = _tar_type;
+	}
+	
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 5);
+	LOOP(8) {
+		int lod_w = im_w / pow(2, i);
+		int lod_h = im_h / pow(2, i);
+
+		lod_w -= lod_w % 4;
+		lod_h -= lod_h % 4;
+
+		if (to_cubemap) {
+			LOOP_N(6, s)
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + s, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
+		}
+		else {
+			glTexImage2D(GL_TEXTURE_2D, i, interlayout, lod_w, lod_h, 0, layout, type, NULL);
+		}
+	}
+	
+	ComputeShader& importance_samp = ComputeShader::ImportShader(to_cubemap ? "Importance_Samp_E2C" : "Importance_Samp");
+	LOOP(8) { // 0 1 2 3 4 5 6 7
+		int lod_w = im_w / pow(2, i);
+		int lod_h = im_h / pow(2, i);
+
+		lod_w -= lod_w % 4;
+		lod_h -= lod_h % 4;
+
+		Texture::BindM(_tar_ID, _tar_type);
+		glBindImageTexture(tex_type + 1, ID, i, (GLuint)to_cubemap, 0, GL_WRITE_ONLY, interlayout); // IBL_TEXTURE -> IBL_TEXTURE + 1
+
+		importance_samp.UseShader();
+		importance_samp.SetValue("s", (float)i / (float)(max_inter - 1));
+		importance_samp.SetValue("max_step", 32);
+		importance_samp.SetValue("source", _tar_type);
+		importance_samp.RunComputeShader(lod_w / 4, lod_h / 4, to_cubemap ? 6 : 1);
+	}
+
+	ResetTexID(ID); 
+}
+
+void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
+{
+	//////////////////  Diffuse Irradience Convolution  //////////////////
+	//       https://learnopengl.com/PBR/IBL/Diffuse-irradiance         //
+
+	GLuint ID; 
+	glGenTextures(1, &ID);		//for storage
+	if (to_cubemap) {
+		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+		im_w = im_h = 64; tex_type = IBL_CUBE_TEXTURE;
+	}
+	else {
+		glBindTexture(GL_TEXTURE_2D, ID);
+		Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_MIRRORED_REPEAT);
+		im_w = _tar_w / 8; im_h = _tar_h / 8; tex_type = _tar_type;
+	}
+	
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+	if (to_cubemap) {
+		LOOP_N(6, s)
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + s, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+	}
+	else {
+		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+	}
+	
+	Texture::BindM(_tar_ID, _tar_type + 1);
+	glBindImageTexture(tex_type, ID, 0, (GLuint)to_cubemap, 0, GL_WRITE_ONLY, interlayout);
+	
+	ComputeShader& irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "Irradiance_Conv_E2C" : "Irradiance_Conv");
+	irradiance_conv.UseShader();
+	irradiance_conv.SetValue("max_step", 64);
+	irradiance_conv.SetValue("source", _tar_type + 1);
+	irradiance_conv.RunComputeShader(im_w / 4, im_w / 4, to_cubemap ? 6 : 1);
+
+	ResetTexID(ID); 
+}
+
+void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_TEXTURE*/)
+{
+	const bool type_correct = !((_tar_type == IBL_CUBE_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE));
+	assert(type_correct && "Wrong input texture type");
+
+	// https://learnopengl.com/Advanced-OpenGL/Cubemaps
+
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+
+	LOOP(6)
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
+
+	ComputeShader& to_cubemap = ComputeShader::ImportShader("To_Cube");
+
+	glBindImageTexture(0, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
+	Texture::BindM(_tar_ID, 1);
+
+	to_cubemap.UseShader();
+	to_cubemap.SetValue("resol", (int)_tar_res);
+	to_cubemap.SetValue("U_etangular", 1);
+	to_cubemap.RunComputeShader(_tar_res / 4, _tar_res / 4, 6);
+
+	ResetTexID(ID);
+
+	tex_type = IBL_CUBE_TEXTURE;
+	im_w = im_h = _tar_res;
+}
+
+void Texture::GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type /*= IBL_TEXTURE*/)
+{
+	const bool type_correct = (_tar_type == IBL_CUBE_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE);
+	assert(type_correct && "Wrong input texture type");
+
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, _w, _h, 0, layout, type, NULL);
+
+	ComputeShader& to_cubemap = ComputeShader::ImportShader("To_ERect");
+
+	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
+	Texture::BindM(_tar_ID, 1, _tar_type);
+
+	to_cubemap.UseShader();
+	to_cubemap.SetValue("U_Cube", 1);
+	to_cubemap.RunComputeShader(_w / 4, _h / 4);
+
+	ResetTexID(ID);
+
+	tex_type = IBL_TEXTURE;
+	im_w = _w; im_h = _h;
+}
+
+void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type /*= DEPTH_TEXTURE*/)
+{
+
+	const bool type_correct = (_tar_type == DEPTH_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE);
+	if (!type_correct) return;
+
+	auto [interlayout, layout, type, gl_type] = Texture::ParseFormat(_tar_type);
+
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, _w, _h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	ComputeShader& to_texture = ComputeShader::ImportShader(gl_type == GL_TEXTURE_2D ? "Depth_Texture" : "Depth_Texture_C2E");
+
+	Texture::BindM(_tar_ID, 0, _tar_type);
+	glBindImageTexture(1, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+
+	to_texture.UseShader();
+	to_texture.SetValue("U_depth", 0);
+	to_texture.RunComputeShader(_w / 4, _h / 4);
+
+	ResetTexID(ID);
+
+	tex_type = PNG_TEXTURE;
+	im_w = _w; im_h = _h;
+}
 
 
-	im_w = _tar_w/2; im_h = _tar_h/2; Tex_type = _tar_type;
 
 
-	switch (_tar_type)
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+std::unordered_map<std::string, std::shared_ptr<Texture>> TextureLib::t_tex_list{};
+
+std::shared_ptr<Texture> TextureLib::GetTexture(const std::string& _name)
+{
+	if (t_tex_list.find(_name) == t_tex_list.end())
+		return nullptr;
+
+	return t_tex_list[_name];
+}
+
+GLuint TextureLib::GetTextureID(const std::string& _name)
+{
+	return TextureLib::GetTexture(_name)->GetTexID();
+}
+
+std::shared_ptr<Texture> TextureLib::Noise_2D_4x4()
+{
+	const std::string _name = "Uni.2D.4.4";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr)
+		return result;
+
+	GenNoiseTexture(UNI_2D_NOISE, 4, 4);
+
+	return t_tex_list[_name];
+}
+
+std::shared_ptr<Texture> TextureLib::Noise_2D_16x16()
+{
+	const std::string _name = "Uni.2D.16.16";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr)
+		return result;
+
+	GenNoiseTexture(UNI_2D_NOISE, 16, 16);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::IBL_LUT()
+{
+	const std::string _name = "IBL_LUT";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr)
+		return result;
+
+	t_tex_list[_name] = std::make_shared<Texture>("ibl_brdf_lut.png", RGBA_TEXTURE, GL_CLAMP);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::LTC1()
+{
+	const std::string _name = "LTC1";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr) return result;
+
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1_DATA), GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::LTC2()
+{
+	const std::string _name = "LTC2";
+	auto result = GetTexture(_name);
+
+	if (result != nullptr) return result;
+
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2_DATA), GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+	return t_tex_list[_name];
+}
+
+void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
+{
+	GLuint id;
+
+	glGenTextures(1, &id);//for storage
+	glBindTexture(GL_TEXTURE_2D_ARRAY, id);
+
+	Texture::SetTexParam<GL_TEXTURE_2D_ARRAY>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, 6);
+
+	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, 6);
+
+	LOOP_N(6, level) {
+		std::vector<glm::vec4> list(_w * _h);
+		LOOP(_w * _h) list[i] = xdzm::rand4();
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, level, _w, _h, 1, GL_RGBA, GL_FLOAT, (float*)list.data());
+	}
+
+	std::string type_name;
+	int dimension = 4;
+
+	switch (_type)
 	{
-	case RGBA_TEXTURE:
-		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGBA8, im_w, im_h);
-		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	case TextureLib::NONE_NOISE:
+		type_name = "Non";
 		break;
-	case RGB_TEXTURE:
-		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGB8, im_w, im_h);
-		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	case TextureLib::UNIFORM_NOISE:
+		type_name = "Uni";
 		break;
-	case IBL_TEXTURE:
-		glTexStorage2D(GL_TEXTURE_2D, 6, GL_RGBA16F, im_w, im_h);
-		//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, lod_w, lod_h, GL_RGBA, GL_FLOAT, nullptr);
+	case TextureLib::GAUSSIAN_NOISE:
+		type_name = "Gau";
+		break;
+	case TextureLib::UNI_2D_NOISE:
+		type_name = "Uni";
+		dimension = 2;
 		break;
 	default:
 		break;
 	}
 
-	GLDEBUG
-	LOOP(6) { //0 1 2 3 4 5
-		int lod_w = im_w / pow(2, i);
-		int lod_h = im_h / pow(2, i);
+	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h);
 
-		ComputeShader irradiance_conv = ComputeShader("Irradiance_Conv");
-
-		//glActiveTexture(GL_TEXTURE0 + _tar_type + 1);
-		glBindImageTexture(_tar_type, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);
-		glBindImageTexture(this->Tex_type + 1, this->Tex_ID, i, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA16F); // IBL_TEXTURE -> IBL_TEXTURE + 1
-
-		irradiance_conv.UseShader();;
-		irradiance_conv.SetValue("s", (float)(i+1)/6);
-		irradiance_conv.SetValue("max_step", 32 / (int)pow(2, 5-i));
-		irradiance_conv.RunComputeShader(lod_w, lod_h);
-
-	}
-	
+	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, IBL_TEXTURE, noise_name);
 }

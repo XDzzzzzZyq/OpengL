@@ -207,6 +207,15 @@
     <ClCompile Include="main\Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\GO\PolygonLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\MeshData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\glm\detail\func_common.inl">
@@ -628,12 +637,11 @@
     </None>
     <None Include="README.md" />
     <None Include="res\shaders\IBRShader.frag" />
-    <None Include="res\shaders\IBRShader.vert" />
+    <None Include="res\shaders\Screen.vert" />
     <None Include="res\shaders\LineShader.frag" />
     <None Include="res\shaders\LineShader.vert" />
     <None Include="res\shaders\PointsShader.frag" />
     <None Include="res\shaders\PointsShader.vert" />
-    <None Include="res\shaders\PointsShader_proj.frag" />
     <None Include="res\shaders\PointsShader_proj.vert" />
     <None Include="res\shaders\SpiritShader.frag" />
     <None Include="res\shaders\SpiritShader.vert" />
@@ -665,6 +673,36 @@
     </None>
     <None Include="res\shaders\Irradiance_Conv.comp" />
     <None Include="res\shaders\testS_diff.frag" />
+    <None Include="res\shaders\EnvirBG.frag" />
+    <None Include="res\shaders\ShowTexture.frag" />
+    <None Include="res\shaders\PBR.frag" />
+    <None Include="res\shaders\Rasterization.frag" />
+    <None Include="res\shaders\selection_outline.comp" />
+    <None Include="res\shaders\Editing.comp" />
+    <None Include="res\shaders\Post_Visual.frag" />
+    <None Include="res\shaders\FXAA.comp" />
+    <None Include="res\shaders\SSAO.comp" />
+    <None Include="res\shaders\Importance_Samp.comp" />
+    <None Include="res\shaders\show_Cube.frag" />
+    <None Include="res\shaders\Polygon.vert" />
+    <None Include="res\shaders\Polygon.frag" />
+    <None Include="res\shaders\Importance_Samp_E2C.comp" />
+    <None Include="res\shaders\Irradiance_Conv_E2C.comp" />
+    <None Include="res\shaders\To_Cube.comp" />
+    <None Include="res\shaders\To_ERect.comp" />
+    <None Include="res\shaders\Empty.frag" />
+    <None Include="res\shaders\Depth_Rast.vert" />
+    <None Include="res\shaders\Depth_Texture.comp" />
+    <None Include="res\shaders\ShadowTest.frag" />
+    <None Include="res\shaders\Empty.vert" />
+    <None Include="res\shaders\Depth_Linear.frag" />
+    <None Include="res\shaders\6sides_trans.geom" />
+    <None Include="res\shaders\Depth_Texture_C2E.comp" />
+    <None Include="res\shaders\Shadow_Sun.comp" />
+    <None Include="res\shaders\Shadow_Point.comp" />
+    <None Include="res\shaders\Shadow_Spot.comp" />
+    <None Include="res\shaders\Empty_Rand.vert" />
+    <None Include="res\shaders\Shadow_Area.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1735,6 +1773,21 @@
     <ClInclude Include="main\Application.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\GO\PolygonLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\RENDER\MeshData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">
@@ -1765,6 +1818,12 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="dep\GLEW\doc\travis.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\tex\ibl_brdf_lut.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\tex\rough.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

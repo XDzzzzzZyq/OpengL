@@ -9,6 +9,7 @@ public:
 
 
 	RenderBuffer();
+	RenderBuffer(GLuint _type);
 	~RenderBuffer();
 
 	void BindRenderBuffer() const;

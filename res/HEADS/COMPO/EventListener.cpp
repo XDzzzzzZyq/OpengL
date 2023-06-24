@@ -3,6 +3,11 @@
 KeyMouseEvent EventListener::EVT_STATUS;
 GLFWwindow* EventListener::evt_window = (GLFWwindow*)nullptr;
 
+float EventListener::random_float1;
+float EventListener::random_float2;
+float EventListener::random_float3;
+float EventListener::random_float4;
+
 bool EventListener::is_key_pressed;
 bool EventListener::is_mouse_pressed;
 bool EventListener::is_key_pressed_b;
@@ -37,7 +42,7 @@ bool EventListener::is_GOlist_changed = true;
 bool EventListener::is_selected_changed = true;
 bool EventListener::is_outliner_selected = false;
 
-std::function<void* (int)> EventListener::GetActiveShader = [&](int) { return (void*)nullptr;};
+std::function<void* (int)> EventListener::GetActiveShader = [](int) { return (void*)nullptr;};
 
 int EventListener::active_GO_ID;
 int EventListener::pre_act_go_ID;
@@ -118,11 +123,16 @@ bool EventListener::is_scr_changed = false;
 
 void EventListener::UpdateEvent(GLFWwindow* window) const
 {
+
+	/*		Mouse Input 	*/	
+
 	mouse_b_x = mouse_x;
 	mouse_b_y = mouse_y;
 	glfwGetCursorPos(window, &mouse_x, &mouse_y);
 	glfwSetScrollCallback(window, EventListener::scrollCall);
-	//spe_key update
+
+	/*	  KeyBoard Input 	*/
+
 	if (ListenSpecialKeyEvent(window, 0) == 0)
 	{
 		EVT_STATUS.FirstKey = 0;
@@ -144,6 +154,13 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 	}
 
 	EVT_STATUS.Mouse = ListenMouseEvent(window);
+
+	/*		Global Randoms  	*/
+
+	random_float1 = xdzm::rand01();
+	random_float2 = xdzm::rand01();
+	random_float3 = xdzm::rand01();
+	random_float4 = xdzm::rand01();
 
 }
 

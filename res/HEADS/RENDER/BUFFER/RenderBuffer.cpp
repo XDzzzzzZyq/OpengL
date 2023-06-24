@@ -7,6 +7,13 @@ RenderBuffer::RenderBuffer()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_W, SCREEN_H);
 }
 
+RenderBuffer::RenderBuffer(GLuint _type)
+{
+	glGenRenderbuffers(1, &rb_ID);
+	glBindRenderbuffer(GL_RENDERBUFFER, rb_ID);
+	glRenderbufferStorage(GL_RENDERBUFFER, _type, SCREEN_W, SCREEN_H);
+}
+
 RenderBuffer::~RenderBuffer()
 {
 	//glDeleteRenderbuffers(1, &rb_ID);

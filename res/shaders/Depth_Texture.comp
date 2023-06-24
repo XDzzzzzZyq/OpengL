@@ -1,0 +1,26 @@
+#version 460 core
+
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+
+uniform sampler2D U_depth;
+layout(rgba8, binding = 1) uniform image2D U_result;
+
+float ACESFilm(float x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
+
+	return (x * (a * x + b)) / (x * (c * x + d) + e);
+}
+
+void main(){
+
+	vec2 texCoord = vec2(gl_GlobalInvocationID.xy);
+
+    float depth = texture(U_depth, texCoord/imageSize(U_result)).r;
+	imageStore(U_result, ivec2(texCoord), vec4(vec3(ACESFilm(depth)), 1));
+
+}

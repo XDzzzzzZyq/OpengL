@@ -1,8 +1,8 @@
 #include "ShaderLib.h"
 
-std::vector<std::string> ShaderStruct::type_table = { "none", "float", "int", "bool", "vec2", "vec3", "vec4", "mat3", "mat4", "sampler2D"};
+std::vector<std::string> ShaderStruct::type_table = { "none", "float", "int", "bool", "vec2", "vec3", "vec4", "mat3", "mat4", "sampler2D", "samplerCube"};
 std::string ShaderLib::folder_root = "res/shaders/";;
-std::vector<std::string> ShaderLib::file_type = { ".vert", ".frag", ".comp" };
+std::vector<std::string> ShaderLib::file_type = { ".vert", ".frag", ".comp", ".geom"};
 
 ShaderLib::ShaderLib()
 {
@@ -26,7 +26,7 @@ void ShaderLib::InitLib()
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC3_PARA, 1, "pix_pos");
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "normal_color");
 	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "Snormal_color");
-					 
+
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "cam_trans");
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "obj_trans");
 	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "ProjectM");
@@ -41,7 +41,7 @@ void ShaderLib::InitLib()
 	shader_struct_list[VERTEX_SHADER].SetGlob(VEC4_PARA, 1.0f, "const_color");
 
 	shader_struct_list[VERTEX_SHADER].DefStruct(
-		"spot_light", 
+		"spot_light",
 		{ {VEC3_PARA, "pos"}, {VEC3_PARA, "color"}, {FLOAT_PARA, "power"} }
 	);
 

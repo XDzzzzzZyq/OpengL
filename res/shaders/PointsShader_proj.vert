@@ -10,15 +10,13 @@ uniform int pos_count;
 uniform vec3 point_color;
 out vec3 L_color;
 
-uniform vec3 testList[8];
-
 uniform mat4 U_cam_trans;
 mat4 post_cam_trans;
 
 uniform mat4 U_ProjectM;
 uniform float U_Scale;
 
-vec4 inst_pos;
+out vec4 inst_pos;
 
 void main() {
 	L_color = point_color;

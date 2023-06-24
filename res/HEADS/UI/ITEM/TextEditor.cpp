@@ -1499,6 +1499,16 @@ void TextEditor::InsertText(const char* aValue)
 	Colorize(start.mLine - 1, totalLines + 2);
 }
 
+void TextEditor::InsertKeyword(std::string _kw)
+{
+	mLanguageDefinition.mKeywords.insert(_kw);
+}
+
+bool TextEditor::ChechKeyword(std::string _kw) const
+{
+	return mLanguageDefinition.mKeywords.find(_kw) != mLanguageDefinition.mKeywords.end();
+}
+
 void TextEditor::DeleteSelection()
 {
 	assert(mState.mSelectionEnd >= mState.mSelectionStart);
@@ -2840,7 +2850,7 @@ const TextEditor::LanguageDefinition& TextEditor::LanguageDefinition::HLSL()
 			"RWTexture1D", "RWTexture1DArray", "RWTexture2D", "RWTexture2DArray", "RWTexture3D", "sample", "sampler", "SamplerState", "SamplerComparisonState", "shared", "snorm", "stateblock", "stateblock_state",
 			"static", "string", "struct", "switch", "StructuredBuffer", "tbuffer", "technique", "technique10", "technique11", "texture", "Texture1D", "Texture1DArray", "Texture2D", "Texture2DArray", "Texture2DMS",
 			"Texture2DMSArray", "Texture3D", "TextureCube", "TextureCubeArray", "true", "typedef", "triangle", "triangleadj", "TriangleStream", "uint", "uniform", "unorm", "unsigned", "vector", "vertexfragment",
-			"VertexShader", "void", "volatile", "while",
+			"VertexShader", "void", "volatile", "while", "buffer", "layout", "readonly", "binding", "std430", "std140", "location",
 			"bool1","bool2","bool3","bool4","double1","double2","double3","double4", "float1", "float2", "float3", "float4", "int1", "int2", "int3", "int4", "in", "out", "inout", "vec2", "ivec2", "vec3", "vec4", "mat2", "mat3", "mat4",
 			"uint1", "uint2", "uint3", "uint4", "dword1", "dword2", "dword3", "dword4", "half1", "half2", "half3", "half4",
 			"float1x1","float2x1","float3x1","float4x1","float1x2","float2x2","float3x2","float4x2",

@@ -42,47 +42,40 @@ template<typename T>
 void UI::ParaInput::SetDefulValue(const T& _def)
 {
 
-	if (std::is_same<T, int>)
+	if constexpr (std::is_same<T, int>())
 	{
 		uitm_para.para_data.idata = _def;
 
 	}
-	else if (std::is_same<T, bool>)
+	else if (std::is_same<T, bool>())
 	{
 		uitm_para.para_data.bdata = _def;
 
 	}
-	else if (std::is_same<T, float>)
+	else if (std::is_same<T, float>())
 	{
 		uitm_para.para_data.fdata = _def;
 
 	}
-	else if (std::is_same<T, std::string>)
+	else if (std::is_same<T, std::string>())
 	{
 		uitm_para.para_data.sdata = _def;
 
 	}
-	else if (std::is_same<T, glm::vec2>)
+	else if (std::is_same<T, glm::vec2>())
 	{
 		uitm_para.para_data.v2data = _def;
 
 	}
-	else if (std::is_same<T, glm::vec3>)
+	else if (std::is_same<T, glm::vec3>())
 	{
 		uitm_para.para_data.v3data = _def;
 
 	}
-	else if (std::is_same<T, glm::vec4>)
+	else if (std::is_same<T, glm::vec4>())
 	{
 		uitm_para.para_data.v4data = _def;
 
 	}
 }
 
-//#pragma once
-//template<typename T>
-//UI::ParaInput::ParaInput(ImItemType type, const std::string& name, const T& _def)
-//	:ParaInput(type, name)
-//{
-//	SetDefulValue(_def);
-//}

@@ -4,7 +4,7 @@
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-#include "GL\glew.h"
+#include "GL/glew.h"
 
 //[使用单例模式]
 

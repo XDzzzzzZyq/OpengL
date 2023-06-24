@@ -6,16 +6,12 @@ Viewport::Viewport()
 }
 
 Viewport::Viewport(const std::string& name)
-{
-	uly_name = name;
-	PushItem(new UI::TextureView("Viewport", 0, ImVec2(SCREEN_W, SCREEN_H)));
-}
+	:Viewport(name, 0)
+{}
 
 Viewport::Viewport(const std::string& name, GLuint texID)
-{
-	uly_name = name;
-	PushItem(new UI::TextureView("Viewport", texID, ImVec2(SCREEN_W, SCREEN_H)));
-}
+	: Viewport(name, 0, ImVec2(SCREEN_W, SCREEN_H))
+{}
 
 Viewport::Viewport(const std::string& name, GLuint texID, const ImVec2& vp_size)
 {
@@ -46,9 +42,11 @@ void Viewport::RenderLayer() const
 		EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
 		EventListener::is_in_viewport = ITEM::is_inside(uly_size);
 
-		if (IsChangeEnd())
-			if (resize_event)
+		if (IsResizingFin())
+			if (resize_event) {
+				item_list[0]->ResetSize(uly_size + ImVec2(10, 10));
 				resize_event();
+			}
 
 		is_size_changed_b = is_size_changed;
 		is_size_changed = false;

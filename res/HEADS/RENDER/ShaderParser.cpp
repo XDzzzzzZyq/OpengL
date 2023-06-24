@@ -1,12 +1,16 @@
 #include "Shaders.h"
 #include "ShaderLib.h"
 
-void RenderShader::ParseShaderFile(const std::string& _name, ShaderType _type) {
+void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 	Timer timer("ParseShader");
 
 	active_shader = _type;
 	shader_struct_list[active_shader].is_struct_changed = false;
-	std::ifstream Stream(ShaderLib::folder_root + _name + ShaderLib::file_type[_type]);
+
+	if (_name.find(ShaderLib::folder_root) == std::string::npos) 
+		_name = ShaderLib::folder_root + _name + ShaderLib::file_type[_type];
+
+	std::ifstream Stream(_name);
 
 	ParseShaderStream(Stream, active_shader);
 
@@ -24,7 +28,6 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 	std::string cache = "";
 	Args args_cache;
 
-	int line_count = 0;
 	while (getline(_stream, Line)) {
 
 
@@ -38,7 +41,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("layout") != std::string::npos) {
 			// [layout]
-			int layout = std::atoi(Line.substr(18, 1).c_str());
+			int layout = std::atoi(Line.substr(18, Line.find(")") - 18).c_str());
 			if (Line.find("in ") != std::string::npos) {
 				std::istringstream str(Line);
 				std::string word;
@@ -61,7 +64,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				str >> word;
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
-				shader_struct_list[_type].SetPass(layout, paratype, word.erase(word.size() - 1, 1));
+				const std::string name = word.erase(word.size() - 1, 1);
+				shader_struct_list[_type].SetPass(layout, paratype, name);
 			}
 			else if (Line.find("buffer ") != std::string::npos) {
 				layout = std::atoi(Line.substr(25, 1).c_str());
@@ -70,27 +74,48 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				LOOP(6)
 					str >> name;
 
-				do {
+				while (Line != "};") {
 					getline(_stream, Line);
-					//shaders[type] << Line << "\n";
-					cache += Line + "\n";
+
+					if (Line == "};") break;
 
 					std::istringstream str(Line);
 					std::string word;
 					str >> word;
 
-					if (word != "};") {
-						ParaType paratype = ShaderStruct::ParseType(word);
-						str >> word;
-						word.erase(word.end() - 1);
-						args_cache.emplace_back(paratype, word);
-					}
-				} while (Line != "};");
+					ParaType paratype = ShaderStruct::ParseType(word);
+					str >> word;
+					word.erase(word.end() - 1);
+					args_cache.emplace_back(paratype, word);
+				};
 
 				shader_struct_list[_type].SetSB(layout, name, args_cache);
 
 				args_cache = {};
-				cache = "";
+			}
+			else if (Line.find("uniform ") != std::string::npos) {
+				int start = Line.find("uniform ") + 8;
+				std::string type_name = Line.substr(start, Line.find(" {") - start);
+				while (Line.find("}") == std::string::npos) {
+					getline(_stream, Line);
+
+					if (Line.find("}") != std::string::npos) break;
+
+					std::istringstream str(Line);
+					std::string word;
+					str >> word;
+
+					ParaType paratype = ShaderStruct::ParseType(word);
+					str >> word;
+					word.erase(word.end() - 1);
+					args_cache.emplace_back(paratype, word);
+				}
+				start = Line.find("} ") + 2;
+				std::string var_name = Line.substr(start, Line.find(";") - start);
+
+				shader_struct_list[_type].SetUB(type_name, var_name, args_cache);
+
+				args_cache = {};
 			}
 		}
 		else if (Line.find("in ") != std::string::npos) {
@@ -100,11 +125,17 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("out ") != std::string::npos) {
 			// [out]
-			std::string name = Line.substr(9, Line.size() - 10);
+			std::istringstream str(Line);
+			std::string name;			
+			std::string type;
+			str >> name;
+			str >> type;
+			str >> name;
 			assert(!_is_link_repeat(name));
-			ParaType type = ShaderStruct::ParseType(Line.substr(4, 4));
-			shader_struct_list[_type].SetOut(type, 1, name);
-			shader_struct_list[1 - _type].SetInp(type, 1, name);
+			ParaType para_type = ShaderStruct::ParseType(type);
+
+			shader_struct_list[_type].SetOut(para_type, 1, name);
+			shader_struct_list[1 - _type].SetInp(para_type, 1, name);
 
 			_LINK_LOC[name] = _LINK_LOC.size();
 		}
@@ -127,29 +158,28 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("struct") != std::string::npos) {
 			// [Sturct]
-			std::string name = Line.substr(7, Line.size() - 9);
+			std::string name = Line.substr(7, Line.size() - 8);
 			ShaderStruct::ADD_TYPE(name);
-			do {
+			while (Line != "};") {
 				getline(_stream, Line);
-				//shaders[type] << Line << "\n";
-				cache += Line + "\n";
+
+				if (Line == "};") break;
+
+				if (Line.find("//") != std::string::npos || Line == "")
+					continue;
 
 				std::istringstream str(Line);
 				std::string word;
 				str >> word;
-
-				if (word != "};") {
-					ParaType paratype = ShaderStruct::ParseType(word);
-					str >> word;
-					word.erase(word.end() - 1);
-					args_cache.emplace_back(paratype, word);
-				}
-			} while (Line != "};");
+				ParaType paratype = ShaderStruct::ParseType(word);
+				str >> word;
+				word.erase(word.end() - 1);
+				args_cache.emplace_back(paratype, word);
+			}
 
 			shader_struct_list[_type].DefStruct(name, args_cache);
 
 			args_cache = {};
-			cache = "";
 		}
 		else if (Line.find("const") != std::string::npos) {
 			// [Const]
@@ -164,7 +194,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			shader_struct_list[_type].SetConst(paratype, name, content);
 		}
 		else if (Line.find("void main") != std::string::npos) {
-			int blanc_count = 1;
+			int blanc_count = (Line.find("{") != std::string::npos) ? 1 : 0;
 			do {
 				getline(_stream, Line);
 				if (Line.find("{") != std::string::npos) blanc_count++;
@@ -245,99 +275,133 @@ std::string ShaderLib::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 			shader_list[type] = ""; // RESET
 			shader_list[type] += "#version " + std::to_string(shader_struct_list[type].version) + " core\n\n";
 
-
-
+			std::string code_block = "";
 			if (shader_struct_list[type].AB_list.size()) {
-				shader_list[type] += "// [ARRAY_BUFFER]\n";
+				code_block += "// [ARRAY_BUFFER]\n";
 				for (const auto& i : shader_struct_list[type].AB_list)
-					shader_list[type] += "layout(location = " + std::to_string(std::get<0>(i)) + ") in " + ShaderStruct::ParseType(std::get<2>(i))/* + " In_"*/ + " " + std::get<1>(i) + ";\n";
-				shader_list[type] += "\n";
+					code_block += "layout(location = " + std::to_string(std::get<0>(i)) + ") in " + ShaderStruct::ParseType(std::get<2>(i))/* + " In_"*/ + " " + std::get<1>(i) + ";\n";
+				code_block += "\n";
 			}
+			shader_list[type] += code_block;
 
-			if (shader_struct_list[type].SB_list.size()) {
-				shader_list[type] += "// [STORAGE_BUFFER]\n";
-				for (const auto& i : shader_struct_list[type].SB_list) {
-					shader_list[type] += "layout(std430, binding = " + std::to_string(std::get<0>(i)) + ") buffer " + std::get<1>(i) + " {\n";
-					for (const auto& j : std::get<2>(i)) {
-						shader_list[type] += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
-					}
-					shader_list[type] += "};\n";
-				}
-				shader_list[type] += "\n";
-			}
-
+			code_block = "";
 			if (shader_struct_list[type].pass_list.size()) {
-				shader_list[type] += "// [RENDER_BUFFER]\n";
+				code_block += "// [RENDER_BUFFER]\n";
 				for (const auto& i : shader_struct_list[type].pass_list)
-					shader_list[type] += "layout(location = " + std::to_string(std::get<0>(i)) + ") out " + ShaderStruct::ParseType(std::get<2>(i))/* + " Ch_"*/ + " " + std::get<1>(i) + ";\n";
-				shader_list[type] += "\n";
+					code_block += "layout(location = " + std::to_string(std::get<0>(i)) + ") out " + ShaderStruct::ParseType(std::get<2>(i))/* + " Ch_"*/ + " " + std::get<1>(i) + ";\n";
+				code_block += "\n";
 			}
+			shader_list[type] += code_block;
 
-			if (shader_struct_list[type].uniform_list.size()) {
-				shader_list[type] += "// [UNIFORM]\n";
-				for (const auto& i : shader_struct_list[type].uniform_list)
-					shader_list[type] += "uniform " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " U_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-				shader_list[type] += "\n";
-			}
-
-			if (shader_struct_list[type].input_list.size()) {
-				shader_list[type] += "// [IN]\n";
-				for (const auto& i : shader_struct_list[type].input_list)
-					shader_list[type] += "in " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-				shader_list[type] += "\n";
-			}
-
-			if (shader_struct_list[type].output_list.size()) {
-				shader_list[type] += "// [OUT]\n";
-				for (const auto& i : shader_struct_list[type].output_list)
-					shader_list[type] += "out " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-				shader_list[type] += "\n";
-			}
-
+			code_block = "";
 			if (shader_struct_list[type].struct_def_list.size()) {
-				shader_list[type] += "// [STRUCTURE_DEFINE]\n";
+				code_block += "// [STRUCTURE_DEFINE]\n";
 				for (const auto& i : shader_struct_list[type].struct_def_list) {
-					shader_list[type] += "struct " + std::get<1>(i) + "{\n";
+					code_block += "struct " + std::get<1>(i) + "{\n";
 					for (const auto& j : std::get<2>(i)) {
-						shader_list[type] += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+						code_block += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
 					}
-					shader_list[type] += "};\n\n";
+					code_block += "};\n\n";
 				}
 			}
+			shader_list[type] += code_block;
 
+			code_block = "";
+			if (shader_struct_list[type].SB_list.size()) {
+				code_block += "// [STORAGE_BUFFER]\n";
+				for (const auto& i : shader_struct_list[type].SB_list) {
+					code_block += "layout(std430, binding = " + std::to_string(std::get<0>(i)) + ") buffer " + std::get<1>(i) + " {\n";
+					for (const auto& j : std::get<2>(i)) {
+						code_block += "\treadonly " + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+					}
+					code_block += "};\n";
+				}
+				code_block += "\n";
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
+			if (shader_struct_list[type].ubuffer_list.size()) {
+				code_block += "// [UNIFORM BUFFER]\n";
+				for (const auto& i : shader_struct_list[type].ubuffer_list) {
+					code_block += "layout(std140) uniform " + std::get<1>(i) + " {\n";
+					for (const auto& j : std::get<3>(i)) {
+						code_block += "\t" + ShaderStruct::ParseType(j.first) + " " + j.second + ";\n";
+					}
+					code_block += "} " + std::get<2>(i) + ";\n";
+				}
+				code_block += "\n";
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
+			if (shader_struct_list[type].uniform_list.size()) {
+				code_block += "// [UNIFORM]\n";
+				for (const auto& i : shader_struct_list[type].uniform_list)
+					code_block += "uniform " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " U_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				code_block += "\n";
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
+			if (shader_struct_list[type].input_list.size()) {
+				code_block += "// [IN]\n";
+				for (const auto& i : shader_struct_list[type].input_list)
+					code_block += "in " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				code_block += "\n";
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
+			if (shader_struct_list[type].output_list.size()) {
+				code_block += "// [OUT]\n";
+				for (const auto& i : shader_struct_list[type].output_list)
+					code_block += "out " + ShaderStruct::ParseType(std::get<1>(i)) /*+ " Out_" */ + " " + std::get<0>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				code_block += "\n";
+			}
+			shader_list[type] += code_block;
+
+			code_block = "";
 			if (shader_struct_list[type].glob_list.size()) {
-				shader_list[type] += "// [GLOBES]\n";
+				code_block += "// [GLOBES]\n";
 				for (const auto& i : shader_struct_list[type].glob_list)
-					shader_list[type] += ShaderStruct::ParseType(std::get<1>(i)) /* + " Glob_"*/ + std::get<0>(i) + " = " + ShaderStruct::ParseType(std::get<1>(i)) + "(" + std::to_string(std::get<2>(i)) + ");\n";
-				shader_list[type] += "\n";
+					code_block += ShaderStruct::ParseType(std::get<1>(i)) /* + " Glob_"*/ + std::get<0>(i) + " = " + ShaderStruct::ParseType(std::get<1>(i)) + "(" + std::to_string(std::get<2>(i)) + ");\n";
+				code_block += "\n";
 			}
+			shader_list[type] += code_block;
 
+			code_block = "";
 			if (shader_struct_list[type].const_list.size()) {
-				shader_list[type] += "// [CONSTS]\n";
+				code_block += "// [CONSTS]\n";
 				for (const auto& i : shader_struct_list[type].const_list)
-					shader_list[type] += "const " + ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + " = " + std::get<2>(i) + ";\n";
-				shader_list[type] += "\n";
+					code_block += "const " + ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + " = " + std::get<2>(i) + ";\n";
+				code_block += "\n";
 			}
+			shader_list[type] += code_block;
 
+			code_block = "";
 			if (shader_struct_list[type].vari_list.size()) {
-				shader_list[type] += "// [VARS]\n";
+				code_block += "// [VARS]\n";
 				for (const auto& i : shader_struct_list[type].vari_list)
-					shader_list[type] += std::get<0>(i) + " " + std::get<1>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
-				shader_list[type] += "\n";
+					code_block += std::get<0>(i) + " " + std::get<1>(i) + ShaderStruct::ParseCount(std::get<2>(i)) + ";\n";
+				code_block += "\n";
 			}
+			shader_list[type] += code_block;
 
+			code_block = "";
 			if (shader_struct_list[type].func_list.size()) {
-				shader_list[type] += "// [FUNCTION_DEFINE]\n";
+				code_block += "// [FUNCTION_DEFINE]\n";
 				for (const auto& i : shader_struct_list[type].func_list) {
-					shader_list[type] += ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + ShaderStruct::ParseArgs(std::get<3>(i)) + "{\n";
-					shader_list[type] += std::get<2>(i);
-					shader_list[type] += "\n}\n\n";
+					code_block += ShaderStruct::ParseType(std::get<0>(i)) + " " + std::get<1>(i) + ShaderStruct::ParseArgs(std::get<3>(i)) + "{\n";
+					code_block += std::get<2>(i);
+					code_block += "\n}\n\n";
 				}
 			}
+			shader_list[type] += code_block;
 
 			shader_list[type] += "\nvoid main(){\n";
 			shader_list[type] += shader_struct_list[type].Main;
-			shader_list[type] += "};\n";
+			shader_list[type] += "\n};\n";
 		}
 		shader_struct_list[type].is_struct_changed = true;
 	}

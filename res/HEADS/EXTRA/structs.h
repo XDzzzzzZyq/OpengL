@@ -17,6 +17,7 @@
 #define SCREEN_W 1740
 #define SCREEN_H 810
 #define LOOP(x) for(int i = 0; i < x; i++)
+#define LOOP_N(x, n) for(int n = 0; n < x; n++)
 
 
 
@@ -97,21 +98,12 @@ struct Face
 	}
 };
 
-template<int num>
+template<int _L>
 struct AverageTime
 {
-	float* timelist = new float[num] {0.0f};
-	int count = 0;
 	float result = 0;
-	void Add(const float& in) {
-		if (count >= num)count = 0;
-		result -= timelist[count];
-		timelist[count] = in / num;
-		result += in / num;
-		count++;
-	}
-	~AverageTime() {
-		delete timelist;
+	void Update(float _rate) {
+		result += (_rate - result) / _L;
 	}
 };
 

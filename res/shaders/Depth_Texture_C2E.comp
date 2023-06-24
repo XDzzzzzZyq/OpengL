@@ -1,0 +1,35 @@
+#version 460 core
+
+layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
+
+uniform samplerCube U_depth;
+layout(rgba8, binding = 1) uniform image2D U_result;
+
+
+vec3 genDirFromRUV(vec2 uvf_r){
+	float pi = 3.1415926; 
+	return vec3(cos(uvf_r.y*pi/2)*cos(uvf_r.x*pi), cos(uvf_r.y*pi/2)*sin(uvf_r.x*pi), sin(uvf_r.y*pi/2));
+}
+
+float ACESFilm(float x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
+
+	return (x * (a * x + b)) / (x * (c * x + d) + e);
+}
+
+void main(){
+
+	vec2 texCoord = vec2(gl_GlobalInvocationID.xy);
+
+	vec2 uv = texCoord/vec2(imageSize(U_result));
+	uv = uv*2-1;
+
+    float depth = texture(U_depth, genDirFromRUV(uv)).r;
+	imageStore(U_result, ivec2(texCoord), vec4(vec3(depth), 1));
+
+}

@@ -55,26 +55,42 @@ struct KeyMouseEvent
 class EventListener
 {
 public:
+
 	static KeyMouseEvent EVT_STATUS;
 	static GLFWwindow* evt_window;
+
 public:
+
+	static float random_float1;
+	static float random_float2;
+	static float random_float3;
+	static float random_float4;
+
+public:
+
 	static bool is_key_pressed;
 	static bool is_mouse_pressed;
 	static bool is_key_pressed_b;
 	static bool is_mouse_pressed_b;
-	bool IsMouseLeft() const { return is_mouse_pressed_b == true && is_mouse_pressed == false; }    // true if mouse button on Left
-	bool IsMouseClick() const {	return is_mouse_pressed_b == false && is_mouse_pressed == true; }  // true if mouse button on Click
+	static bool IsMouseLeft()  { return is_mouse_pressed_b == true && is_mouse_pressed == false; }    // true if mouse button on Left
+	static bool IsMouseClick() { return is_mouse_pressed_b == false && is_mouse_pressed == true; }    // true if mouse button on Click
+
 public:
+
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }
 	static const double GetDeltaMouseY() { return mouse_y - mouse_b_y; }
-	static const ImVec2 GetDeltaMouse() { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
-	static const ImVec2 GetMousePos() { return { (float)mouse_x, (float)mouse_y }; }
+	static const ImVec2 GetDeltaMouse()  { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
+	static const ImVec2 GetMousePos()    { return { (float)mouse_x, (float)mouse_y }; }
+
 public:
+
 	static std::vector<int> EVT_NK_LIST;
 	static void PushNormKey(int _ID);
 	static void PushNormKey(char _name);
+
 public:
+
 	static bool is_spirit_selected;
 	static bool is_GOlist_changed;
 	static bool is_selected_changed;
@@ -89,11 +105,15 @@ public:
 	std::vector<int> GetParentRelatData() { return parent_index_list; }
 
 	static ShaderLib* active_shader;
+
 public:
+
 	static ImVec2 window_pos;
 	static ImVec2 viewport_offset;
 	static bool is_in_viewport;
+
 public:
+
 	EventListener();
 	EventListener(GLFWwindow* window);
 	static void SetWindow(GLFWwindow* window);
@@ -101,6 +121,7 @@ public:
 	~EventListener();
 
 public:
+
 	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> EventList;
 	int ListenMouseEvent(GLFWwindow* window) const;
 	int ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const;
@@ -119,7 +140,9 @@ public:
 
 	void EventActivate();
 	void Reset();
+
 public:
+
 	static std::vector<std::string> EVT_AVAIL_KEYS;
 	static const KeyMouseEvent ParseShortCut(const std::string& _shortcut);
 

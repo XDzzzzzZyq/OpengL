@@ -1,17 +1,14 @@
 #pragma once
+
 #include "GameObject.h"
 #include "Transform.h"
 #include "Texture.h"
 #include "Spirit.h"
 #include "Camera.h"
+#include "MeshData.h"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
 #include "FrameBuffer.h"
 
-#include "support.h"
-#include "structs.h"
 #include "Shaders.h"
 
 #include "glm/glm.hpp"
@@ -25,32 +22,18 @@ enum EnvironmentType
 
 class Environment : public GameObject, public Transform3D
 {
-private:
-	std::vector<float> screenQuad = {
-		// positions		// texCoords
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		 1.0f, 1.0f,	1.0f, 1.0f,
-		-1.0f,-1.0f,	0.0f, 0.0f,
-		 1.0f,-1.0f,	1.0f, 0.0f
-
-	};
-
-	VertexArray o_vertArry;
-	VertexBuffer o_vertBuffer;
-	IndexBuffer o_indexBuffer;
-
 public:
-	std::optional<FrameBuffer> envir_frameBuffer;
+	// std::optional<FrameBuffer> envir_frameBuffer;
 	std::optional<RenderShader> envir_shader;
 
-	Texture envir_IBL_spec, envir_IBL_diff;
+	Texture envir_IBL_diff, envir_IBL_spec;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
 	bool use_envir = false;
 
 	Spirit envir_spirit;
 
 	float envir_gamma = 2.2f;
-	glm::vec3 envir_color = glm::vec3(0.1f);
+	glm::vec3 envir_color = glm::vec3(1.0f);
 
 	Environment(const std::string& texpath);
 	Environment();
@@ -60,15 +43,18 @@ public:
 	void ChangeEnvirType(EnvironmentType type) const;
 
 	void BindFrameBuffer() const;
-	void UnBindFrameBuffer() const;
+	void UnbindFrameBuffer() const;
 	void SwapFrameBuffer(FBType type);
+
+	void BindEnvironTexture() const;
+	void UnbindEnvironTexture() const;
 
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;
 	ShaderLib* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }
 
-	void RenderEnvironment(Camera* cam, int act = -1);
-
+	void RenderEnvironment(Camera* cam);
+	void RenderEnvirSpr(Camera* cam);
 
 };
 

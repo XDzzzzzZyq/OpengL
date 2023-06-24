@@ -2,6 +2,7 @@
 #include "ImGui/imgui.h"
 #include <iostream>
 #include <unordered_map>
+#include <vector>
 
 //https://github.com/traverseda/OpenFontIcons
 #define ICON_MIN 0xe000

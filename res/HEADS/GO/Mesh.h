@@ -1,57 +1,51 @@
 #pragma once
 
-#include "GL/glew.h"
-
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-
-#include "Texture.h"
-#include "Shaders.h"
-
-#include "GameObject.h"
-#include "Camera.h"
-#include "Light.h"
-
-#include "Transform.h"
-#include <optional>
-
+#include "MeshData.h"
 
 class Mesh : public GameObject, public Transform3D
 {
 private:
-	Reading read;
-	float* VertData;
-	VertexArray o_vertArry;
-	VertexBuffer o_vertBuffer;
-	IndexBuffer o_index;
 	std::optional<Texture> o_tex;
-
-	glm::vec3 center=glm::vec3(0.0f);
 public:
 
+	std::shared_ptr<MeshData> o_mesh;
 	mutable std::optional<RenderShader> o_shader;
-	Mesh(const char* path);
+
+	bool using_shadow{ true };
+
+public:
+
+	Mesh(const std::string& path);
 	Mesh();
 	~Mesh();
 
-	void RenderObj(Camera* cam, const std::unordered_map<int, Light*>& light_list);
+public:
+
+	void RenderObj(Camera* cam);
+	void RenderObjProxy() const;
+
+public:
 
 	void SetObjShader(std::string vert, std::string frag = "");
 	void SetTex(std::string path, TextureType slot);
 	void SetCenter();
-	template<typename T>
-	void SetShaderValue(std::string _name, T _v);
+	void SetShadow(bool _shadow);
+	template<typename... T>
+	void SetShaderValue(std::string _name, T ..._v);
+
+public:
 
 	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&o_shader.value()); }
 	
 	void DeleteObj();
 };
 
-template<typename T>
-void Mesh::SetShaderValue(std::string _name, T _v)
+template<typename... T>
+void Mesh::SetShaderValue(std::string _name, T ..._v)
 {
 	o_shader->UseShader();
-	o_shader->SetValue(_name, _v);
+	o_shader->SetValue(_name, _v...);
 	o_shader->UnuseShader();
 }
+
 
