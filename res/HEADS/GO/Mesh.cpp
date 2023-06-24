@@ -100,6 +100,11 @@ void Mesh::SetCenter()
 	SetPos(-o_mesh->GetMeshCenter());
 }
 
+void Mesh::SetShadow(bool _shadow)
+{
+	using_shadow = _shadow;
+}
+
 void Mesh::DeleteObj()
 {
 	if (o_tex)o_tex->Unbind();

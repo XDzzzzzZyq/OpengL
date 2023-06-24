@@ -417,6 +417,8 @@ void Renderer::RenderShadowMap(Light* light)
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	for (const auto& [id, mesh] : mesh_list) {
+		if(!mesh->using_shadow) continue;
+
 		light->BindTargetTrans(mesh->o_Transform);
 		mesh->RenderObjProxy();
 	}
