@@ -91,7 +91,7 @@ public:
 
 public:
 
-	static bool is_spirit_selected;
+	static bool is_sprite_selected;
 	static bool is_GOlist_changed;
 	static bool is_selected_changed;
 	static bool is_outliner_selected;

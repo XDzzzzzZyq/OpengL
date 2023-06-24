@@ -143,13 +143,13 @@ void Renderer::LMB_CLICK()
 		is_selected_changed = pre_act_go_ID != active_GO_ID;
 	}
 
-	for (auto i : spirit_id_buff) {
+	for (auto i : sprite_id_buff) {
 		if (i == active_GO_ID) {
-			is_spirit_selected = true;
+			is_sprite_selected = true;
 			return;
 		}
 		else {
-			is_spirit_selected = false;
+			is_sprite_selected = false;
 		}
 
 	}
@@ -307,15 +307,15 @@ void Renderer::Render(bool rend, bool buff) {
 		glEnable(GL_BLEND);
 		for (const auto& light : light_list)
 		{
-			if (!light.second->light_spirit.is_viewport)continue;
+			if (!light.second->light_sprite.is_viewport)continue;
 			light.second->RenderLightSpr(GetActiveCamera().get());
 		}
 		for (const auto& envir : envir_list) {
-			if (!envir.second->envir_spirit.is_viewport)continue;
+			if (!envir.second->envir_sprite.is_viewport)continue;
 			envir.second->RenderEnvirSpr(GetActiveCamera().get());
 		}
 		for (const auto& pps : pps_list) {
-			if (!pps->pps_spirit.is_viewport)continue;
+			if (!pps->pps_sprite.is_viewport)continue;
 			pps->RenderPPSSpr(GetActiveCamera().get());
 		}
 	}
@@ -398,7 +398,6 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 		editing.RunComputeShader(r_render_result->GetSize() / 4);
 	}
-	//DEBUG(is_spirit_selected)
 	Reset();
 }
 
@@ -518,14 +517,14 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	is_GOlist_changed = true;
 	is_light_changed = true;
 	light_list[light->GetObjectID()] = light;
-	obj_list[light->light_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
+	obj_list[light->light_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
 
-	outline_list.push_back(OutlineElement(light->o_type, light->light_spirit.GetObjectID(), light->o_name, 0));
+	outline_list.push_back(OutlineElement(light->o_type, light->light_sprite.GetObjectID(), light->o_name, 0));
 	parent_index_list.push_back(-1);
 
-	spirit_list[light->light_spirit.GetObjectID()] = std::shared_ptr<Spirit>(light, &light->light_spirit);
-	name_buff[light->light_spirit.GetObjectID()] = light->o_name; //using spirit ID
-	spirit_id_buff.push_back(light->light_spirit.GetObjectID());
+	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
+	name_buff[light->light_sprite.GetObjectID()] = light->o_name; //using sprite ID
+	sprite_id_buff.push_back(light->light_sprite.GetObjectID());
 
 	r_light_data.ParseLightData(light_list);
 }
@@ -557,15 +556,15 @@ void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)
 	is_GOlist_changed = true;
 	envir_list[envir->GetObjectID()] = envir;
 	envir_list[0] = envir;
-	name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name;
-	obj_list[envir->envir_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
+	name_buff[envir->envir_sprite.GetObjectID()] = envir->o_name;
+	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
 
-	outline_list.push_back(OutlineElement(envir->o_type, envir->envir_spirit.GetObjectID(), envir->o_name, 0));
+	outline_list.push_back(OutlineElement(envir->o_type, envir->envir_sprite.GetObjectID(), envir->o_name, 0));
 	parent_index_list.push_back(-1);
 
-	spirit_list[envir->envir_spirit.GetObjectID()] = std::shared_ptr<Spirit>(envir, &envir->envir_spirit);
-	name_buff[envir->envir_spirit.GetObjectID()] = envir->o_name; //using spirit ID
-	spirit_id_buff.push_back(envir->envir_spirit.GetObjectID());
+	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
+	name_buff[envir->envir_sprite.GetObjectID()] = envir->o_name; //using sprite ID
+	sprite_id_buff.push_back(envir->envir_sprite.GetObjectID());
 }
 
 void Renderer::UseEnvironment(const int& envir_id)
@@ -613,15 +612,15 @@ void Renderer::UseDebugPoints(std::shared_ptr<DebugPoints> dpoints)
 void Renderer::UsePostProcessing(std::shared_ptr<PostProcessing> pps)
 {
 	pps_list.emplace_back(pps);
-	name_buff[pps->pps_spirit.GetObjectID()] = pps->o_name;
-	obj_list[pps->pps_spirit.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(pps);
+	name_buff[pps->pps_sprite.GetObjectID()] = pps->o_name;
+	obj_list[pps->pps_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(pps);
 
-	outline_list.push_back(OutlineElement(pps->o_type, pps->pps_spirit.GetObjectID(), pps->o_name, 0));
+	outline_list.push_back(OutlineElement(pps->o_type, pps->pps_sprite.GetObjectID(), pps->o_name, 0));
 	parent_index_list.push_back(-1);
 
-	spirit_list[pps->pps_spirit.GetObjectID()] = std::shared_ptr<Spirit>(pps, &pps->pps_spirit);
-	name_buff[pps->pps_spirit.GetObjectID()] = pps->o_name; //using spirit ID
-	spirit_id_buff.push_back(pps->pps_spirit.GetObjectID());
+	sprite_list[pps->pps_sprite.GetObjectID()] = std::shared_ptr<Sprite>(pps, &pps->pps_sprite);
+	name_buff[pps->pps_sprite.GetObjectID()] = pps->o_name; //using sprite ID
+	sprite_id_buff.push_back(pps->pps_sprite.GetObjectID());
 }
 
 std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)

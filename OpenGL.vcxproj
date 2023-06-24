@@ -166,6 +166,7 @@
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp" />
     <ClCompile Include="main\Application.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
+    <ClCompile Include="res\HEADS\GO\Sprite.cpp" />
     <ClCompile Include="res\HEADS\RENDER\MeshData.cpp" />
     <ClCompile Include="res\HEADS\GO\PolygonLight.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp" />
@@ -220,7 +221,6 @@
     <ClCompile Include="res\HEADS\RENDER\VertexArray.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Shaders.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp" />
-    <ClCompile Include="res\HEADS\GO\Spirit.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\TextureView.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
@@ -426,8 +426,8 @@
     <None Include="res\shaders\PointsShader.vert" />
     <None Include="res\shaders\PointsShader_proj.vert" />
     <None Include="res\shaders\show_Cube.frag" />
-    <None Include="res\shaders\SpiritShader.frag" />
-    <None Include="res\shaders\SpiritShader.vert" />
+    <None Include="res\shaders\SpriteShader.frag" />
+    <None Include="res\shaders\SpriteShader.vert" />
     <None Include="res\shaders\SSAO.comp" />
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
@@ -445,6 +445,7 @@
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
     <ClInclude Include="main\Application.h" />
+    <ClInclude Include="res\HEADS\GO\Sprite.h" />
     <ClInclude Include="res\HEADS\RENDER\MeshData.h" />
     <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h" />
     <ClInclude Include="res\HEADS\GO\PolygonLight.h" />
@@ -789,7 +790,6 @@
     <ClInclude Include="res\HEADS\RENDER\VertexArray.h" />
     <ClInclude Include="res\HEADS\RENDER\Shaders.h" />
     <ClInclude Include="res\HEADS\RENDER\Texture.h" />
-    <ClInclude Include="res\HEADS\GO\Spirit.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\TextureView.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />

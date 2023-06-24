@@ -15,13 +15,13 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
-#include "Spirit.h"
+#include "Sprite.h"
 
 class PostProcessing : public GameObject
 {
 public:
 	Field pps_field{};
-	Spirit pps_spirit;
+	Sprite pps_sprite;
 
 public:
 	PostProcessing(const std::string& _shader, ShaderType _type = FRAGMENT_SHADER);

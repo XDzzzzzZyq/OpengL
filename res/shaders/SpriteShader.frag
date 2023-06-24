@@ -19,14 +19,14 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 
 void main() {
-	vec4 spirit_color = texture(U_Texture, uv);
+	vec4 sprite_color = texture(U_Texture, uv);
 	float range = smoothstep(0, 100, dist)*0.3+0.05;
-	float alpha = smoothstep(0.5-range, 0.5+range, spirit_color.r);
+	float alpha = smoothstep(0.5-range, 0.5+range, sprite_color.r);
 	float bound = distance(uv, vec2(0.5)) < 0.5 ? 1 : 0;
 	//color = vec4(uv,0.0f,1.0f);
 	EMIScolor = vec4(L_color, alpha);
 	IDcolor = vec4(ID_color / 256, bound);
 	RANDcolor = vec4(RAND_color, bound);
 	MRSEcolor = vec4(0, 0, 0, alpha);
-	MASKcolor = vec4(spirit_color.r * SpiritOpacity, 0, 0, alpha);
+	MASKcolor = vec4(sprite_color.r * SpiritOpacity, 0, 0, alpha);
 };

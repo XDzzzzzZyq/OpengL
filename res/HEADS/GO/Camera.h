@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "DebugMesh.h"
 #include "EventListener.h"
-/*#include "Spirit.h"*/
+/*#include "Sprite.h"*/
 
 #include "support.h"
 

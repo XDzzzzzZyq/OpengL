@@ -14,7 +14,7 @@
 
 #include "EventListener.h"
 
-#include "Spirit.h"
+#include "Sprite.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -47,7 +47,7 @@ public:
 private:
 	std::optional<FrameBuffer> r_render_result;
 	std::unordered_map<int, std::string> name_buff;
-	std::vector<int> spirit_id_buff;
+	std::vector<int> sprite_id_buff;
 public:
 	Renderer();
 	void Init();
@@ -68,7 +68,7 @@ public:
 	std::unordered_map<int, std::shared_ptr<Light>>			  light_list; //num | pointer
 	std::unordered_map<int, std::shared_ptr<PolygonLight>>  poly_light_list;
 	std::unordered_map<int, std::shared_ptr<Environment>>	  envir_list;
-	std::unordered_map<int, std::shared_ptr<Spirit>>	     spirit_list;
+	std::unordered_map<int, std::shared_ptr<Sprite>>	     sprite_list;
 	std::unordered_map<int, std::shared_ptr<DebugLine>>		  dLine_list;
 	std::unordered_map<int, std::shared_ptr<DebugPoints>>	dPoints_list;
 	std::vector		  <std::shared_ptr<PostProcessing>>			pps_list;

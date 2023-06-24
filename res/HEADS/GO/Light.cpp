@@ -60,8 +60,8 @@ Light::Light(LightType type, float power, glm::vec3 color)
 
 	const auto [_type, _name] = ParseLightName(light_type);
 
-	light_spirit.spr_type = _type;
-	light_spirit.SetTex();
+	light_sprite.spr_type = _type;
+	light_sprite.SetTex();
 
 	o_name = _name + std::to_string(GetObjectID());
 
@@ -94,23 +94,23 @@ void Light::InitShadowMap()
 	}
 }
 
-inline std::pair<SpiritType, std::string> Light::ParseLightName(LightType _type)
+inline std::pair<SpriteType, std::string> Light::ParseLightName(LightType _type)
 {
 	switch (_type)
 	{
 	case NONELIGHT:
-		return { POINT_LIGHT_SPIRIT, "None Light" };
+		return { POINT_LIGHT_SPRITE, "None Light" };
 	case POINTLIGHT:
-		return { POINT_LIGHT_SPIRIT, "Point Light." };
+		return { POINT_LIGHT_SPRITE, "Point Light." };
 	case SUNLIGHT:
-		return { SUN_LIGHT_SPIRIT,   "Sun." };
+		return { SUN_LIGHT_SPRITE,   "Sun." };
 	case SPOTLIGHT:
-		return { SPOT_LIGHT_SPIRIT,  "Spot Light." };
+		return { SPOT_LIGHT_SPRITE,  "Spot Light." };
 	case AREALIGHT:
-		return { POINT_LIGHT_SPIRIT,  "Area Light." };
+		return { POINT_LIGHT_SPRITE,  "Area Light." };
 	default:
 		assert(false && "Unknown Light Type");
-		return { POINT_LIGHT_SPIRIT, "None Light" };
+		return { POINT_LIGHT_SPRITE, "None Light" };
 	}
 }
 
@@ -174,7 +174,7 @@ void Light::SetRatio(float _ratio)
 
 void Light::RenderLightSpr(Camera* cam)
 {
-	light_spirit.RenderSpirit(o_position, light_color, cam);
+	light_sprite.RenderSprite(o_position, light_color, cam);
 }
 
 void Light::BindShadowMapBuffer()

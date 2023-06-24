@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Texture.h"
-#include "Spirit.h"
+#include "Sprite.h"
 #include "Camera.h"
 #include "MeshData.h"
 
@@ -30,7 +30,7 @@ public:
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
 	bool use_envir = false;
 
-	Spirit envir_spirit;
+	Sprite envir_sprite;
 
 	float envir_gamma = 2.2f;
 	glm::vec3 envir_color = glm::vec3(1.0f);

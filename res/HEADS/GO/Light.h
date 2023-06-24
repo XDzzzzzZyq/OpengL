@@ -4,7 +4,7 @@
 
 #include "GameObject.h"
 #include "Transform.h"
-#include "Spirit.h"
+#include "Sprite.h"
 #include "PolygonLight.h"
 #include "FrameBuffer.h"
 
@@ -40,7 +40,7 @@ public:
 
 public:
 
-	Spirit light_spirit;
+	Sprite light_sprite;
 	Texture light_shadow_map;
 	glm::mat4 light_proj{ 1 };
 
@@ -67,7 +67,7 @@ public:
 	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
 	void InitShadowMap();
-	inline static std::pair<SpiritType, std::string> ParseLightName(LightType _type);
+	inline static std::pair<SpriteType, std::string> ParseLightName(LightType _type);
 
 public:
 

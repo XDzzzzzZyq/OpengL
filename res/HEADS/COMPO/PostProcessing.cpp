@@ -40,8 +40,8 @@ PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type
 
 	o_name = _shader_name;
 
-	pps_spirit.spr_type = ENVIRN_SPIRIT;
-	pps_spirit.SetTex();
+	pps_sprite.spr_type = ENVIRN_SPRITE;
+	pps_sprite.SetTex();
 }
 
 void PostProcessing::UpdateBindings()
@@ -77,5 +77,5 @@ void PostProcessing::RenderPPS()
 
 void PostProcessing::RenderPPSSpr(Camera* cam)
 {
-	pps_spirit.RenderSpirit(pps_field.o_position, glm::vec3(1), cam);
+	pps_sprite.RenderSprite(pps_field.o_position, glm::vec3(1), cam);
 }

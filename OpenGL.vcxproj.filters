@@ -99,9 +99,6 @@
     <ClCompile Include="res\HEADS\COMPO\Transform.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Spirit.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="res\HEADS\GO\DebugMesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -214,6 +211,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\RENDER\MeshData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\GO\Sprite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -643,8 +643,6 @@
     <None Include="res\shaders\PointsShader.frag" />
     <None Include="res\shaders\PointsShader.vert" />
     <None Include="res\shaders\PointsShader_proj.vert" />
-    <None Include="res\shaders\SpiritShader.frag" />
-    <None Include="res\shaders\SpiritShader.vert" />
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
     <None Include="dep\GLEW\bin\Release\Win32\glew32.dll" />
@@ -703,6 +701,8 @@
     <None Include="res\shaders\Shadow_Spot.comp" />
     <None Include="res\shaders\Empty_Rand.vert" />
     <None Include="res\shaders\Shadow_Area.comp" />
+    <None Include="res\shaders\SpriteShader.frag" />
+    <None Include="res\shaders\SpriteShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
@@ -1659,9 +1659,6 @@
     <ClInclude Include="res\HEADS\COMPO\Transform.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Spirit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="res\HEADS\GO\DebugMesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -1786,6 +1783,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\MeshData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\GO\Sprite.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

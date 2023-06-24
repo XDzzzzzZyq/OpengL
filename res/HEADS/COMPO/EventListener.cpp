@@ -37,7 +37,7 @@ void EventListener::PushNormKey(char _name)
 	EVT_NK_LIST.push_back((int)_name);
 }
 
-bool EventListener::is_spirit_selected = false;
+bool EventListener::is_sprite_selected = false;
 bool EventListener::is_GOlist_changed = true;
 bool EventListener::is_selected_changed = true;
 bool EventListener::is_outliner_selected = false;

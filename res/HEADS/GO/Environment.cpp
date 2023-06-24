@@ -12,8 +12,8 @@ Environment::Environment(const std::string& texpath)
 	envir_IBL_spec.GenIBLSpecularFrom(rough_tex, true);
 	rough_tex.DelTexture();
 
-	envir_spirit.spr_type = ENVIRN_SPIRIT;
-	envir_spirit.SetTex();
+	envir_sprite.spr_type = ENVIRN_SPRITE;
+	envir_sprite.SetTex();
 
 	//envir_frameBuffer = FrameBuffer(AVAIL_PASSES);
 
@@ -113,5 +113,5 @@ void Environment::RenderEnvironment(Camera* cam)
 
 void Environment::RenderEnvirSpr(Camera* cam)
 {
-	envir_spirit.RenderSpirit(o_position, envir_color, cam);
+	envir_sprite.RenderSprite(o_position, envir_color, cam);
 }
