@@ -1,27 +1,35 @@
 # OpenGL_Test
 
-##### Opengl based renderer development from XDzZyq
+##### OpenGL based renderer development by XDzZyq
 
-# RECORD
+
+
+# RECORDs
 
 https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
 
+
+
 # TUTORIALs 
 
-https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
-https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
+[OpenGL - YouTube](https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2)
+[OpenGL Tutorials - YouTube](https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-)
+
+[Learn OpenGL, extensive tutorial resource for learning Modern OpenGL](https://learnopengl.com/)
+
+\[docs.gl](https://docs.gl/)
+
+
 
 # FEATUREs
 
 #### **Objects**
 
-- [x] baisc transform
-- [ ] transform handle
-- [x] parenting
+- [x] basic transformation
+  - [ ] parenting
+  - [ ] transform handle
 - [x] unique ID generator
-- [x] object name generator
 - [x] select operation
-
 - [x] Mesh
   - [x] smooth normal
   - [ ] dynamic mesh
@@ -31,7 +39,7 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [x] frustum matrix
   - [ ] Debug outline
   - [x] Camera transform
-  - [x] dynamic parameters
+  - [x] adjustable parameters
 - [x] Debug Line
 - [ ] Debug Mesh
 - [x] Debug Points
@@ -40,59 +48,100 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
 - [ ] Image Plane
 - [x] Light
   - [x] point light
-  - [ ] sun light
-  - [ ] spot light
+  - [x] sun light
+  - [x] spot light
+  - [x] area light
 - [x] Environment
-  - [x] HDR texture
+  - [x] IBL
   - [ ] z-Fog
   - [ ] atmosphere shading
 
-#### **Render**
+
+
+#### **Rendering**
 
 - **Algorithms**
 
   - [x] Z-buffer
   - [x] Dynamic frame buffer
   - [ ] Stencil-buffer
-  - [x] Fimic convert
+  - [x] Filmic convert
   - [x] Gamma convert
-  - [x] HDR rendering
-  - [x] outline shader (high-light)
-  - [ ] FXAA
-- [ ] multi-pass composition (deferred rendering)
+  - [x] Selection highlight
+  - [x] FXAA
+  - [x] SSAO
+  
+- [x] multi-pass composition (deferred rendering)
   - Blinn-Phong
 
-    - [x] diffuse
-    - [x] specular
-    - [x] environment
-    - [x] IBL environment
-    - [x] IBL lighting
-      - [ ] roughness blur
-    - [ ] AO
-    - [ ] shadow
-      - [ ] shadow map
-      - [ ] soft shadow
+    - [removed]
+
   - PBR
 
     - [ ] material system
-  
-    - [ ] pbr diffuse
-    - [ ] pbr specular
+    - [x] PBR Lighting
+      - [x] point light
+      - [x] sun light
+      - [x] spot light
+      - [x] area light
+    - [x] PBR IBL
+      - [x] diffuse
+      - [x] specular
+    - [x] AO
+    - [x] shadow
+      - [x] shadow mapping
+      - [x] soft shadow
+
 - Ray tracing ?
+
 - DL style transfer ?
 
-- **Shader**
-  - [x] GLSL interpreter(sturcture analysis)
+
+
+- **Shaders**
+
+  - Vertex Shader & Fragment Shader
+
+  - Compute Shader
+
+  - Geometry Shader
+
+    
+
+  **for Vertex Shader & Fragment Shader**
+
+  - [x] GLSL interpreter (structure analysis)
+    - [x] Structure Parser
     - [ ] Build-in Lib
     - [ ] Advanced analysis
+
+  - [x] Buffering
+
+    - [x] Storage Buffer
+    - [x] Uniform Buffer
+
   - [x] dynamic compiling
+
   - [ ] dynamic uniform
+
     - [ ] node system
-  - [x] shader storage buffer
-- **Advance**
-- render mode switch
-- visible switch
-- dynamic exposure  
+
+  **for Compute Shader**
+
+  - [x] Texture computation
+    - [x] Equirtangular Map ←→ Cube Map
+  - [x] Rendering Pipeline
+    - [x] SSAO
+    - [x] FXAA
+    - [x] Shadow mapping
+
+  
+
+- **Advanced**
+
+  - render mode switch
+  - visible switch
+  - dynamic exposure  
 
 #### **UI**
 - [x] Basic Debug
@@ -104,13 +153,13 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
     - [x] Parameters Layer
     - [x] Menu Layer
     - [ ] Tools Layer
-    - [x] OutLiner Layer
+    - [x] Outliner Layer
     - [x] Shader Editor Layer
         - [x] Structure Editor
         - [x] Code Editor
         - [ ] Node Editor
     - [ ] Transform(Property) Layer
-- [x] Imgui parameters flow
+- [x] ImGui parameters flow
 
 - [ ] files management
 - [ ] node system
@@ -121,13 +170,15 @@ https://www.youtube.com/playlist?list=PLPaoO-vpZnumdcb4tZc4x5Q-v7CkrQ6M-
   - [x] pool rendering
     - [ ] advance speed up
 - [x] model importer
+  - [x] build-in mesh data
   - [x] .obj importer
   - [ ] advance speed up
 - [x] texture importer
   - [x] .png importer
-- [x] .hdr importer
+  - [x] .hdr importer
   - [ ] multi-texture importer
 - [x] Event listener
-    - [x] Advanced (globle event)
+    - [x] Advanced (global event)
+    - [x] Advanced (global randoms)
     - [ ] Advanced (...)
 - [x] Timer (struct)
