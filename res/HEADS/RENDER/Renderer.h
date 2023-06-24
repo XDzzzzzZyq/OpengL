@@ -86,7 +86,7 @@ public:
 	void InitFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);
-	void FrameBufferResize(int slot, const ImVec2& size);
+	void FrameBufferResize(const ImVec2& size);
 	GLuint GetFrameBufferTexture(int slot);
 
 public:

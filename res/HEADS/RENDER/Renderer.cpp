@@ -89,7 +89,7 @@ void Renderer::EndFrameBuffer(int slot)
 	r_buffer_list[slot].UnbindFrameBuffer();
 }
 
-void Renderer::FrameBufferResize(int slot, const ImVec2& size)
+void Renderer::FrameBufferResize(const ImVec2& size)
 {
 	for (auto& buffer : r_buffer_list)
 		buffer.Resize(size);
@@ -455,7 +455,8 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 {
 	r_frame_width = _w;
 	r_frame_height = _h;
-	FrameBufferResize(0, { (float)_w, (float)_h });
+
+	FrameBufferResize({ (float)_w, (float)_h });
 	r_light_data.Resize(_w, _h);
 }
 

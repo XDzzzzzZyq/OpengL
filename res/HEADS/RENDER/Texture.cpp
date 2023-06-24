@@ -234,11 +234,11 @@ void Texture::Resize(float x, float y)
 {
 	im_h = y;
 	im_w = x;
-	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
+	auto [interlayout, layout, type, gl_type] = Texture::ParseFormat(tex_type);
+	glBindTexture(gl_type, tex_ID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+	glTexImage2D(gl_type, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
 
 	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST);
 }
@@ -321,7 +321,7 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 	case DEPTH_TEXTURE:
 		return { GL_DEPTH_COMPONENT,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_2D		};
 	default:
-		assert(false && "WRONG FORMAT");
+		//assert(false && "WRONG FORMAT");
 		return { GL_NONE,				GL_NONE ,			GL_NONE,			GL_NONE				};
 	}
 }
