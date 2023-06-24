@@ -337,7 +337,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-		if (active_GO_ID != 0) outline.RunComputeShader(r_buffer_list[_RASTER].GetSize() / 4);
+		if (active_GO_ID != 0) outline.RunComputeShader(r_buffer_list[_RASTER].GetSize() / 8);
 
 
 		////////////  SSAO + DEPTH  ////////////

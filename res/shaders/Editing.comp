@@ -12,14 +12,14 @@ float map(float x, float ai, float bi, float ao, float bo){
 
 void main(){
 
+	float range = 0.05;
+
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec4 inp = imageLoad(U_combine, uv);
 
 	float Select = imageLoad(U_selection, uv).g;
-	Select = map(Select, 0.5, 0.55, 1, 0)* map(Select, 0.2, 0.25, 0, 1);
+	Select = smoothstep(1.0-range, 0.5+range, Select) * smoothstep(0.0+range, 0.5-range, Select);
 
-	imageStore(U_combine, uv, inp+vec4(vec3(Select), 1));
-
-	//imageStore(result, uv, color2*vec4(vec3(3),1));
-	//imageStore(result, uv, vec4(fract(5*uvf),1,1));
+	imageStore(U_combine, uv, inp+vec4(vec3(Select), 0));
+	//imageStore(U_combine, uv, vec4(vec3(Select), 1));
 }
