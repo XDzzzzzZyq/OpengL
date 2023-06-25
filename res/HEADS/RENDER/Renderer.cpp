@@ -386,7 +386,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////      SSR     ////////////
 
-		ComputeShader& ssr = ComputeShader::ImportShader("SSR");
+		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -394,6 +394,10 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(ALBEDO_FB, 4);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(LIGHT_AO_FB, 6);
+		r_render_result->BindFrameBufferTex(DIR_DIFF_FB, 7);
+		r_render_result->BindFrameBufferTex(DIR_SPEC_FB, 8);
+		r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
+		r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
 		if (GetActiveCamera()->is_Uniform_changed) {
 			ssr.UseShader();
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);

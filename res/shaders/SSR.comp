@@ -10,6 +10,11 @@ layout(rgba8  , binding = 4) uniform image2D U_albedo;
 layout(rgba8  , binding = 5) uniform image2D U_alpha;
 layout(rgba16f, binding = 6) uniform image2D U_cache;
 
+uniform sampler2D U_dir_diff;
+uniform sampler2D U_dir_spec;
+uniform sampler2D U_ind_diff;
+uniform sampler2D U_ind_spec;
+
 uniform vec3 cam_pos;
 uniform mat4 cam_trans;
 
@@ -115,12 +120,15 @@ vec3 hash(vec3 a)
 
 void main(){
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+	vec2 uv_f = vec2(uv)/imageSize(U_combine);
 
 	float Alpha = imageLoad(U_alpha, uv).r;
 	if(Alpha < 0.5)
 		return;
 
 	vec3 Direct = imageLoad(U_combine, uv).rgb;
+	vec3 Dir_Diff = texture(U_dir_diff, uv_f).rgb;
+	vec3 Dir_Spec = texture(U_dir_spec, uv_f).rgb;
 
 	vec4 Pos_Depth = imageLoad(U_pos, uv);
 	vec4 Normal_AO = imageLoad(U_normal, uv);
@@ -151,11 +159,15 @@ void main(){
 	vec4 MarchResult = RayMarching(reflect_dir, ray_pos);
 
 	vec3 Reflection = imageLoad(U_combine, ivec2(MarchResult.xy)).rgb;
+	vec3 Ind_Diff = texture(U_ind_diff, MarchResult.xy/imageSize(U_combine)).rgb;
+	vec3 Ind_Spec = texture(U_ind_spec, MarchResult.xy/imageSize(U_combine)).rgb;
+	Reflection+=Ind_Diff;
+	Reflection+=Ind_Spec;
 	vec3 Reflection_b = imageLoad(U_cache, uv).gba;
 
 	float update_rate = clamp(pow(1 - Roughness, 5), 0.1, 1.0);
 	Reflection = clamp(Reflection_b + update_rate * (Reflection - Reflection_b), 0, 1);
 
 	imageStore(U_cache  , uv, vec4(Normal_AO.a, Reflection));
-	imageStore(U_combine, uv, vec4(Reflection, 1));
+	imageStore(U_combine, uv, vec4(Dir_Diff + Dir_Spec + Reflection, 1));
 }

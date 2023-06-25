@@ -1,6 +1,10 @@
 #version 430 core
 
 layout(location = 0) out vec4 Output;
+layout(location = 1) out vec4 OutDirDiff;
+layout(location = 2) out vec4 OutDirSpec;
+layout(location = 3) out vec4 OutIndDiff;
+layout(location = 4) out vec4 OutIndSpec;
 
 struct PointLight{
 	vec3 color;
@@ -51,6 +55,11 @@ struct PolygonLight{
 
 struct PolyLightVert{
 	vec3 v;
+};
+
+struct Diff_Spec{
+	vec3 diff;
+	vec3 spec;
 };
 
 layout(std430, binding = 0) buffer point_array {
@@ -198,7 +207,7 @@ float GeometrySmith(float NdotV, float NdotL, float k)
     return ggx1 * ggx2;
 }
 
-vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, vec3 Albedo, vec3 F0){
+Diff_Spec BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, float Metalness, vec3 Albedo, vec3 F0){
 	vec3 H = Vec3Bisector(L, V);
 	float HdotV = max(dot(V, L), 0);
 	float NdotH = max(dot(N, H), 0);
@@ -216,7 +225,11 @@ vec3 BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness, flo
 	float denominator = 4.0 * NdotV * NdotL + 0.0001;
 	vec3 specular     = numerator / denominator;
 
-	return kDd * Albedo / PI + numerator/denominator;
+	Diff_Spec result;
+	result.diff = kDd * Albedo / PI;
+	result.spec = numerator/denominator;
+
+	return result;
 }
 
 // Compute acos(dot(v1, v2)) * normalize(cross(v1, v2))
@@ -380,10 +393,12 @@ void main(){
 		return;
 	}
 
+	vec3 Dir_Diff = vec3(0);
+	vec3 Dir_Spec = vec3(0);
+	vec3 Ind_Diff = vec3(0);
+	vec3 Ind_Spec = vec3(0);
 
 	/* [Block : Lighting] */
-
-	vec3 Light_res = vec3(0);
 
 	for(uint i = 0; i<scene_info.point_count; i++){
 		PointLight light = point_lights[i];
@@ -397,7 +412,10 @@ void main(){
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Attenuation * NdotL * shadow;
-		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
+		Diff_Spec result = BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0);
+
+		Dir_Diff += result.diff * Radiance;
+		Dir_Spec += result.spec * Radiance;
 	}
 
 	for(uint i = 0; i<scene_info.sun_count; i++){
@@ -409,7 +427,11 @@ void main(){
 		vec3 L = -light.dir;
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.color * light.power * NdotL * shadow;
-		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
+
+		Diff_Spec result = BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0);
+
+		Dir_Diff += result.diff * Radiance;
+		Dir_Spec += result.spec * Radiance;
 	}
 
 	for(uint i = 0; i < scene_info.spot_count; i++){
@@ -427,7 +449,11 @@ void main(){
 		float Attenuation = 1.0 / (dist * dist);
 		float NdotL = max(dot(Normal, L), 0);
 		vec3 Radiance = light.power * light.color * Intensity * Attenuation * NdotL * shadow;
-		Light_res += BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0) * Radiance;
+
+		Diff_Spec result = BRDF(NdotL, NdotV, -CamRay, Normal, L, Roughness, Metalness, Albedo, F0);
+
+		Dir_Diff += result.diff * Radiance;
+		Dir_Spec += result.spec * Radiance;
 	}
 
 	for (uint i = 0; i < scene_info.area_count; i++){
@@ -446,7 +472,8 @@ void main(){
 		//       This is simply following the implementation on learnopengl.com
 		specular *= mix(t2.x, t2.y, Specular);
 
-		Light_res += light.power * light.color * (specular + Albedo * diffuse) * shadow;
+		Dir_Diff += light.power * light.color * (Albedo * diffuse) * shadow;
+		Dir_Spec += light.power * light.color * specular * shadow;
 	}
 
 	/* [Block : Polygon Lights] */
@@ -465,14 +492,14 @@ void main(){
 		//       This is simply following the implementation on learnopengl.com
 		specular *= mix(t2.x, t2.y, Specular);
 
-		Light_res += light.power * light.color * (specular + Albedo * diffuse);
+		Dir_Diff += light.power * light.color * (Albedo * diffuse);
+		Dir_Spec += light.power * light.color * specular;
 
 		i0 += light.n;
 	}
 
 	/* [Block : IBL] */
 
-	vec3 IBL_res = vec3(0);
 	vec2 lut = texture2D(LUT, vec2(clamp(NdotV, 0.0, 0.99), Roughness)).xy;
 
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
@@ -480,7 +507,8 @@ void main(){
 	reflect_spec *= Fresnel*lut.x + lut.y;
 	vec3 reflect_diff = texture(Envir_Texture_diff, Normal).rgb * Albedo;
 
-	IBL_res += reflect_diff * (1-Metalness) + reflect_spec * Specular;
+	Ind_Diff += reflect_diff * (1-Metalness);
+	Ind_Spec += reflect_spec * Specular;
 
 	/* [Block : EMIS] */
 
@@ -490,10 +518,16 @@ void main(){
 
 	/* [Block : COMP] */
 
-	Output += vec4(Light_res * AO, 0);
-	Output += vec4(IBL_res * AO, 0);
+	vec3 Light_res = (Dir_Diff + Ind_Diff) * AO + (Dir_Spec + Ind_Spec);
+
+	Output += vec4(Light_res, 0);
 	Output.a = 1;
 	Output = Vec4Film(Output, 1, gamma);
+
+	OutDirDiff = vec4(Dir_Diff, 1);
+	OutDirSpec = vec4(Dir_Spec, 1);
+	OutIndDiff = vec4(Ind_Diff, 1);
+	OutIndSpec = vec4(Ind_Spec, 1);
 
 
 	//vec3 dir = normalize(Pos - point_lights[0].pos);
