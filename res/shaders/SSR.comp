@@ -145,7 +145,7 @@ void main(){
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
-	vec3 jitt = mix(vec3(0.0), vec3(hash(Pos)), Roughness);
+	vec3 jitt = mix(vec3(0.0), vec3(hash(Direct)), Roughness);
 	vec3 reflect_dir = normalize(reflect(normalize(Pos - cam_pos), Normal) + jitt);
 	vec3 ray_pos = Pos;
 
@@ -158,7 +158,7 @@ void main(){
 
 	vec4 MarchResult = RayMarching(reflect_dir, ray_pos);
 
-	vec3 Reflection = imageLoad(U_combine, ivec2(MarchResult.xy)).rgb;
+	vec3 Reflection = imageLoad(U_combine, ivec2(MarchResult.xy)).rgb * Fresnel;
 	vec3 Ind_Diff = texture(U_ind_diff, MarchResult.xy/imageSize(U_combine)).rgb;
 	vec3 Ind_Spec = texture(U_ind_spec, MarchResult.xy/imageSize(U_combine)).rgb;
 	Reflection+=Ind_Diff;
