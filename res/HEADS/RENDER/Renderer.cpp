@@ -74,7 +74,7 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 
 void Renderer::InitFrameBuffer()
 {
-	r_render_result = FrameBuffer({ COMBINE_FB });
+	r_render_result = FrameBuffer(std::vector<FBType>RESULT_PASSES);
 	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
 	r_buffer_list.emplace_back(std::vector<FBType>{ LIGHT_AO_FB });
 }
@@ -357,11 +357,13 @@ void Renderer::Render(bool rend, bool buff) {
 		ssao.SetValue("noise_level", r_frame_num % 6);
 		ssao.RunComputeShader(r_render_result->GetSize() / 8);
 
+
 		//////////// LIGHTING CACHE ////////////
 
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_light_data.UpdateLightingCache(r_frame_num);
+
 
 		////////////  PBR COMPOSE  ////////////
 
@@ -380,6 +382,24 @@ void Renderer::Render(bool rend, bool buff) {
 
 		// store render result
 		r_render_result->UnbindFrameBuffer();
+
+
+		////////////      SSR     ////////////
+
+		ComputeShader& ssr = ComputeShader::ImportShader("SSR");
+		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MRSE_FB, 3);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(ALBEDO_FB, 4);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+		r_buffer_list[_AO_ELS].BindFrameBufferTex(LIGHT_AO_FB, 6);
+		if (GetActiveCamera()->is_Uniform_changed) {
+			ssr.UseShader();
+			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
+			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+		}
+		if (r_using_ssr) ssr.RunComputeShader(r_render_result->GetSize() / 8);
 
 
 		////////////     FXAA     ////////////

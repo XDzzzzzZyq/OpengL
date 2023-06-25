@@ -3,9 +3,9 @@
 TextureType FrameBuffer::PareseTexType(FBType _type)
 {
 	TextureType textype = NONE_TEXTURE;
-	if (COMBINE_FB <= _type && _type <= NORMAL_FB)
+	if (COMBINE_FB <= _type && _type < ALBEDO_FB)
 		textype = HDR_BUFFER_TEXTURE;
-	else if (ALBEDO_FB <= _type && _type <= ID_FB)
+	else if (ALBEDO_FB <= _type && _type < SINGLE_FB)
 		textype = BUFFER_TEXTURE;
 	else if (SINGLE_FB <= _type && _type <= SHADOW_FB)
 		textype = FLOAT_BUFFER_TEXTURE;

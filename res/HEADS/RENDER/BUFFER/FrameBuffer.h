@@ -7,14 +7,24 @@
 enum FBType
 {
 	/* nothing */	NONE_FB = -1,
-	/*     HDR */	COMBINE_FB, EMIS_COL_FB, LIGHT_AO_FB = 1, POS_FB, MRSE_FB, NORMAL_FB, // MRSE: metalness roughness specular emission 
-	/*     RGB */	ALBEDO_FB, MASK_FB, RAND_FB, ID_FB,
-	/*   Float */	SINGLE_FB, SHADOW_FB,
+	/*     HDR */	COMBINE_FB = 0, 
+					EMIS_COL_FB, LIGHT_AO_FB = 1, DIR_DIFF_FB = 1, 
+					POS_FB,						  DIR_SPEC_FB = 2,
+					MRSE_FB,					  IND_DIFF_FB = 3,			// MRSE: metalness roughness specular emission 
+					NORMAL_FB,					  IND_SPEC_FB = 4,
+												  DIR_EMIS_FB = 5,
+	/*     RGB */	ALBEDO_FB, 
+					MASK_FB, 
+					RAND_FB, 
+					ID_FB,
+	/*   Float */	SINGLE_FB, 
+					SHADOW_FB,
 					MAX_FB,
 	/*   Depth */	DEPTH_FB = GL_DEPTH_ATTACHMENT - GL_COLOR_ATTACHMENT0
 };
 
 #define AVAIL_PASSES { EMIS_COL_FB, POS_FB, NORMAL_FB, ALBEDO_FB, MRSE_FB, RAND_FB, ID_FB, MASK_FB }
+#define RESULT_PASSES { COMBINE_FB, DIR_DIFF_FB, DIR_SPEC_FB, IND_DIFF_FB, IND_SPEC_FB, DIR_EMIS_FB }
 
 struct FBPixel
 {

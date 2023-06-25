@@ -703,6 +703,8 @@
     <None Include="res\shaders\Shadow_Area.comp" />
     <None Include="res\shaders\SpriteShader.frag" />
     <None Include="res\shaders\SpriteShader.vert" />
+    <None Include="res\shaders\Compose.comp" />
+    <None Include="res\shaders\SSR.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

@@ -56,6 +56,7 @@ public:
 public:
 	bool r_deferred_rendering = true;
 	bool r_using_fxaa = true;
+	bool r_using_ssr = true;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;

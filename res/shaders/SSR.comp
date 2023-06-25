@@ -1,0 +1,161 @@
+#version 460 core
+
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+layout(rgba16f, binding = 0) uniform image2D U_combine;
+layout(rgba16f, binding = 1) uniform image2D U_pos;
+layout(rgba16f, binding = 2) uniform image2D U_normal;
+layout(rgba16f, binding = 3) uniform image2D U_mrse;
+layout(rgba8  , binding = 4) uniform image2D U_albedo;
+layout(rgba8  , binding = 5) uniform image2D U_alpha;
+layout(rgba16f, binding = 6) uniform image2D U_cache;
+
+uniform vec3 cam_pos;
+uniform mat4 cam_trans;
+
+const float stride = 0.1f;
+const float range = 0.3f;
+const int max_step = 128;
+const int max_bs_step = 32;
+const float bs_range = 0.05f;
+
+const vec3 Scale = vec3(.8, .8, .8);
+const float K = 19.19;
+
+bool IsOutScreen(vec2 uv){
+	bool x = uv.x<0 || uv.x>1;
+	bool y = uv.y<0 || uv.y>1;
+	return x || y;
+}
+
+vec4 DepthSample(vec3 ray_pos){
+
+	vec4 screen_pos = cam_trans * vec4(ray_pos, 1);
+	vec2 frag_pos = screen_pos.xy / screen_pos.w / 2 + 0.5;
+
+	if(IsOutScreen(frag_pos))
+		return vec4(0);
+
+	ivec2 uv_f = ivec2(frag_pos * imageSize(U_pos));
+	float screen_depth = distance(imageLoad(U_pos, uv_f).xyz, cam_pos);
+	float sample_depth = distance(ray_pos, cam_pos);
+
+	return vec4(uv_f, sample_depth, screen_depth);
+}
+
+vec4 BindarySearch(vec3 begin, vec3 end){
+	vec3 range = end - begin;
+	float len = length(range) * 0.5;
+	vec3 dir = normalize(range);
+
+	vec3 cur = (begin + end) * 0.5;
+	vec4 result;
+
+	for(int i = 0; i < max_bs_step; i++){
+		result = DepthSample(cur);
+		float dDepth = result.z - result.w;
+		len *= 0.5;
+
+		if(dDepth > bs_range){
+			// marching too much
+			cur -= len*dir;
+		}else{
+			// keep marching
+			cur += len*dir;
+		}
+	}
+
+	return result;
+}
+
+vec4 RayMarching(vec3 dir, inout vec3 ray_pos){
+	
+	vec4 result = DepthSample(ray_pos);
+	vec3 ray_pos_b;
+
+	for(int i = 0; i < max_step; i++){
+		ray_pos_b = ray_pos;
+		ray_pos += stride * dir;
+
+		vec4 depth_test = DepthSample(ray_pos);
+		float dDepth = depth_test.z - depth_test.w;
+
+		if(dDepth == 0)
+			break;
+
+		if(dDepth < 0)
+			continue;
+
+		if(dDepth >= range)
+			break;
+
+		if(dDepth < range)
+			result = BindarySearch(ray_pos_b, ray_pos);
+	}
+
+	return result;
+}
+
+float fresnel(float Cos, float F0){
+	return mix(exp2((-5.55437*Cos-6.98314)*Cos), 1.0, F0);
+}
+
+vec3 fresnelSchlick(float Cos, vec3 F0){
+	return vec3(fresnel(Cos,F0.x), fresnel(Cos,F0.y), fresnel(Cos,F0.z));
+}
+
+vec3 hash(vec3 a)
+{
+    a = fract(a * Scale);
+    a += dot(a, a.yxz + K);
+    return fract((a.xxy + a.yxx)*a.zyx)*2-1;
+}
+
+
+
+void main(){
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+
+	float Alpha = imageLoad(U_alpha, uv).r;
+	if(Alpha < 0.5)
+		return;
+
+	vec3 Direct = imageLoad(U_combine, uv).rgb;
+
+	vec4 Pos_Depth = imageLoad(U_pos, uv);
+	vec4 Normal_AO = imageLoad(U_normal, uv);
+
+	vec3 Pos = Pos_Depth.xyz;
+	vec3 Normal = Normal_AO.xyz;
+
+	
+	vec3 Albedo = imageLoad(U_albedo, uv).rgb;
+
+	vec4 MRSE = imageLoad(U_mrse, uv).rgba;
+	float Metalness = clamp(MRSE.r, 0.001, 0.999);
+	float Roughness = clamp(MRSE.g, 0.001, 0.999);
+	float Specular = MRSE.b;
+	float Emission = MRSE.a;
+
+	vec3 jitt = mix(vec3(0.0), vec3(hash(Pos)), Roughness);
+	vec3 reflect_dir = normalize(reflect(normalize(Pos - cam_pos), Normal) + jitt);
+	vec3 ray_pos = Pos;
+
+	vec3 CamRay = normalize(Pos - cam_pos);
+	float NdotV = max(dot(Normal, -CamRay), 0);
+	float NdotL = max(dot(Normal, reflect_dir), 0);
+
+	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
+	vec3 Fresnel = fresnelSchlick(NdotV, F0);
+
+	vec4 MarchResult = RayMarching(reflect_dir, ray_pos);
+
+	vec3 Reflection = imageLoad(U_combine, ivec2(MarchResult.xy)).rgb;
+	vec3 Reflection_b = imageLoad(U_cache, uv).gba;
+
+	float update_rate = clamp(pow(1 - Roughness, 5), 0.1, 1.0);
+	Reflection = clamp(Reflection_b + update_rate * (Reflection - Reflection_b), 0, 1);
+
+	imageStore(U_cache  , uv, vec4(Normal_AO.a, Reflection));
+	imageStore(U_combine, uv, vec4(Reflection, 1));
+}
