@@ -106,9 +106,6 @@ uniform float point_far;
 
 // input
 uniform vec3 Cam_pos;
-
-uniform float gamma;
-
 in vec2 screen_uv;
 
 const float PI = 3.1415926;
@@ -120,31 +117,6 @@ uniform sampler2D LTC2;
 const float LUT_SIZE = 64.0;
 const float LUT_SCALE = (LUT_SIZE - 1.0) / LUT_SIZE;
 const float LUT_BIAS = 0.5 / LUT_SIZE;
-
-float ACESFilm(float x)
-{
-	float a = 2.51f;
-	float b = 0.03f;
-	float c = 2.43f;
-	float d = 0.59f;
-	float e = 0.14f;
-
-	return (x * (a * x + b)) / (x * (c * x + d) + e);
-}
-
-vec3 Vec3Film(vec3 x, float fac, float gamma)
-{
-	x[0] = ACESFilm(x[0] * fac);
-	x[1] = ACESFilm(x[1] * fac);
-	x[2] = ACESFilm(x[2] * fac);
-	return pow(x, vec3(1.0/gamma));
-}
-
-vec4 Vec4Film(vec4 x, float fac, float gamma)
-{
-	x.rgb = Vec3Film(x.rgb, fac, gamma);
-	return x;
-}
 
 vec3 Vec3Bisector(vec3 a, vec3 b) {
 	return normalize(normalize(a) + normalize(b));
@@ -388,7 +360,6 @@ void main(){
 
 	if(Alpha < 0.05){
 		Output += vec4(Emission * Emission_Color, 1);
-		Output = Vec4Film(Output, 1, gamma);
 		//Output = texture2D(LUT, screen_uv);
 		return;
 	}
@@ -522,7 +493,6 @@ void main(){
 
 	Output += vec4(Light_res, 0);
 	Output.a = 1;
-	Output = Vec4Film(Output, 1, gamma);
 
 	OutDirDiff = vec4(Dir_Diff, 1);
 	OutDirSpec = vec4(Dir_Spec, 1);

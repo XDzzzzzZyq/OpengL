@@ -368,7 +368,6 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  PBR COMPOSE  ////////////
 
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-		pps_list[_PBR_COMP_PPS]->SetShaderValue("gamma", r_gamma);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
 		pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
 		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
@@ -398,11 +397,12 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBufferTex(DIR_SPEC_FB, 8);
 		r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
 		r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
+		ssr.UseShader();
 		if (GetActiveCamera()->is_Uniform_changed) {
-			ssr.UseShader();
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
 			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 		}
+		ssr.SetValue("gamma", r_gamma);
 		if (r_using_ssr) ssr.RunComputeShader(r_render_result->GetSize() / 8);
 
 

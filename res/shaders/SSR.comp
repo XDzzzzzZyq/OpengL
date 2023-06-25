@@ -17,6 +17,7 @@ uniform sampler2D U_ind_spec;
 
 uniform vec3 cam_pos;
 uniform mat4 cam_trans;
+uniform float gamma;
 
 const float stride = 0.1f;
 const float range = 0.3f;
@@ -116,17 +117,37 @@ vec3 hash(vec3 a)
     return fract((a.xxy + a.yxx)*a.zyx)*2-1;
 }
 
+float ACESFilm(float x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
 
+	return (x * (a * x + b)) / (x * (c * x + d) + e);
+}
+
+vec3 Vec3Film(vec3 x, float fac, float gamma)
+{
+	x[0] = ACESFilm(x[0] * fac);
+	x[1] = ACESFilm(x[1] * fac);
+	x[2] = ACESFilm(x[2] * fac);
+	return pow(x, vec3(1.0/gamma));
+}
 
 void main(){
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec2 uv_f = vec2(uv)/imageSize(U_combine);
 
-	float Alpha = imageLoad(U_alpha, uv).r;
-	if(Alpha < 0.5)
-		return;
-
 	vec3 Direct = imageLoad(U_combine, uv).rgb;
+
+	float Alpha = imageLoad(U_alpha, uv).r;
+	if(Alpha < 0.5){
+		imageStore(U_combine, uv, vec4(Vec3Film(Direct, 1, gamma), 1));;
+		return;
+	}
+
 	vec3 Dir_Diff = texture(U_dir_diff, uv_f).rgb;
 	vec3 Dir_Spec = texture(U_dir_spec, uv_f).rgb;
 
@@ -145,7 +166,7 @@ void main(){
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
-	vec3 jitt = mix(vec3(0.0), vec3(hash(Direct)), Roughness);
+	vec3 jitt = mix(vec3(0.0), vec3(hash(Pos)), Roughness);
 	vec3 reflect_dir = normalize(reflect(normalize(Pos - cam_pos), Normal) + jitt);
 	vec3 ray_pos = Pos;
 
@@ -168,6 +189,8 @@ void main(){
 	float update_rate = clamp(pow(1 - Roughness, 5), 0.1, 1.0);
 	Reflection = clamp(Reflection_b + update_rate * (Reflection - Reflection_b), 0, 1);
 
+	vec3 Output = Vec3Film(Dir_Diff + Dir_Spec + Reflection, 1, gamma);
+
 	imageStore(U_cache  , uv, vec4(Normal_AO.a, Reflection));
-	imageStore(U_combine, uv, vec4(Dir_Diff + Dir_Spec + Reflection, 1));
+	imageStore(U_combine, uv, vec4(Output, 1));
 }
