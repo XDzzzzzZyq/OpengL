@@ -19,11 +19,13 @@ uniform vec3 cam_pos;
 uniform mat4 cam_trans;
 uniform float gamma;
 
-const float stride = 0.1f;
+uniform float noise;
+
+const float stride = 0.2f;
 const float range = 0.3f;
 const int max_step = 128;
 const int max_bs_step = 32;
-const float bs_range = 0.05f;
+const float bs_range = 0.005f;
 
 const vec3 Scale = vec3(.8, .8, .8);
 const float K = 19.19;
@@ -65,9 +67,11 @@ vec4 BindarySearch(vec3 begin, vec3 end){
 		if(dDepth > bs_range){
 			// marching too much
 			cur -= len*dir;
-		}else{
+		}else if(dDepth < 0){
 			// keep marching
 			cur += len*dir;
+		}else{
+			break;
 		}
 	}
 
@@ -76,7 +80,7 @@ vec4 BindarySearch(vec3 begin, vec3 end){
 
 vec4 RayMarching(vec3 dir, inout vec3 ray_pos){
 	
-	vec4 result = DepthSample(ray_pos);
+	vec4 result = vec4(-1);
 	vec3 ray_pos_b;
 
 	for(int i = 0; i < max_step; i++){
@@ -128,11 +132,11 @@ float ACESFilm(float x)
 	return (x * (a * x + b)) / (x * (c * x + d) + e);
 }
 
-vec3 Vec3Film(vec3 x, float fac, float gamma)
+vec3 Vec3Film(vec3 x, float gamma)
 {
-	x[0] = ACESFilm(x[0] * fac);
-	x[1] = ACESFilm(x[1] * fac);
-	x[2] = ACESFilm(x[2] * fac);
+	x[0] = ACESFilm(x[0]);
+	x[1] = ACESFilm(x[1]);
+	x[2] = ACESFilm(x[2]);
 	return pow(x, vec3(1.0/gamma));
 }
 
@@ -144,7 +148,7 @@ void main(){
 
 	float Alpha = imageLoad(U_alpha, uv).r;
 	if(Alpha < 0.5){
-		imageStore(U_combine, uv, vec4(Vec3Film(Direct, 1, gamma), 1));;
+		imageStore(U_combine, uv, vec4(Vec3Film(Direct, gamma), 1));;
 		return;
 	}
 
@@ -166,7 +170,7 @@ void main(){
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
-	vec3 jitt = mix(vec3(0.0), vec3(hash(Pos)), Roughness);
+	vec3 jitt = mix(vec3(0.0), vec3(hash(Pos+noise)), Roughness);
 	vec3 reflect_dir = normalize(reflect(normalize(Pos - cam_pos), Normal) + jitt);
 	vec3 ray_pos = Pos;
 
@@ -179,18 +183,15 @@ void main(){
 
 	vec4 MarchResult = RayMarching(reflect_dir, ray_pos);
 
-	vec3 Reflection = imageLoad(U_combine, ivec2(MarchResult.xy)).rgb * Fresnel;
-	vec3 Ind_Diff = texture(U_ind_diff, MarchResult.xy/imageSize(U_combine)).rgb;
-	vec3 Ind_Spec = texture(U_ind_spec, MarchResult.xy/imageSize(U_combine)).rgb;
-	Reflection+=Ind_Diff;
-	Reflection+=Ind_Spec;
+	vec3 Reflection = MarchResult.x < 0 ? vec3(0) : imageLoad(U_combine, ivec2(MarchResult.xy)).rgb * Fresnel;
 	vec3 Reflection_b = imageLoad(U_cache, uv).gba;
 
-	float update_rate = clamp(pow(1 - Roughness, 5), 0.1, 1.0);
-	Reflection = clamp(Reflection_b + update_rate * (Reflection - Reflection_b), 0, 1);
+	float update_rate = smoothstep(0.9, 1.0, 1 - Roughness)*0.95 + 0.05;
+	Reflection = max(Reflection_b + update_rate * (Reflection - Reflection_b), 0);
 
-	vec3 Output = Vec3Film(Dir_Diff + Dir_Spec + Reflection, 1, gamma);
+	vec3 Output = Vec3Film(Direct + Reflection, gamma);
 
+	memoryBarrierBuffer();
 	imageStore(U_cache  , uv, vec4(Normal_AO.a, Reflection));
 	imageStore(U_combine, uv, vec4(Output, 1));
 }

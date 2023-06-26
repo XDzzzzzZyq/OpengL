@@ -385,6 +385,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////      SSR     ////////////
 
+		static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
 		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
@@ -403,6 +404,7 @@ void Renderer::Render(bool rend, bool buff) {
 			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 		}
 		ssr.SetValue("gamma", r_gamma);
+		ssr.SetValue("noise", EventListener::random_float1);
 		if (r_using_ssr) ssr.RunComputeShader(r_render_result->GetSize() / 8);
 
 
