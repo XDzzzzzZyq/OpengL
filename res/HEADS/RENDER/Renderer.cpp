@@ -386,9 +386,9 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////      SSR     ////////////
 
 		static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10));
+		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
+		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MRSE_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(ALBEDO_FB, 4);
