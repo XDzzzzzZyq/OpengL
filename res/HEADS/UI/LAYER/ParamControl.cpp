@@ -8,6 +8,7 @@ ParamControl::ParamControl()
 ParamControl::ParamControl(const std::string& name)
 {
 	uly_name = name;
+	uly_type = PARAS_UILAYER;
 }
 
 

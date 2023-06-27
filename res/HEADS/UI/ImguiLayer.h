@@ -35,9 +35,11 @@ public:
 	virtual ~ImguiLayer();
 public:
 	std::string uly_name;
-	mutable unsigned int uly_ID = -1;
+	GLuint uly_ID = -1;
 	ImLayerType uly_type = NONE_UILAYER;
-	mutable std::vector<ImguiItem*> item_list;
+	std::vector<std::shared_ptr<ImguiItem>> item_list;
+
+private:
 	mutable std::unordered_map<std::string, int> item_name_buffer;
 
 public:
@@ -54,7 +56,9 @@ public:
 public:
 	bool is_docking = true;
 	
-	void PushItem(ImguiItem* item);
+	template<class ItemType, class... Args>
+	void PushItem(Args... args);
+	void PushItem(std::shared_ptr<ImguiItem> item);
 	void PushItem(ImItemType type);      //quick push
 	ImguiItem* FindImguiItem(const std::string& name)const;
 	ImguiItem* FindImguiItem(int id)const;   //start with 0
@@ -77,4 +81,11 @@ public:
 	void EventInit();
 	void LMB();
 };
+
+template<class ItemType, class... Args>
+void ImguiLayer::PushItem(Args... args)
+{
+	std::shared_ptr<ItemType> item = std::make_shared<ItemType>(args...);
+	PushItem(std::dynamic_pointer_cast<ImguiItem>(item));
+}
 

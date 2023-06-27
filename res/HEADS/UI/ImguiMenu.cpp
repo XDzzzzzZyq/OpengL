@@ -16,7 +16,7 @@ ImguiMenu::~ImguiMenu()
 	//	delete item.second;
 }
 
-void ImguiMenu::PushSubMenu(ImguiMenuItem* subm)
+void ImguiMenu::PushSubMenu(std::shared_ptr<ImguiMenuItem> subm)
 {
 	name_order[subm->mitem_name] = subm_list.size();
 	subm_list.push_back(subm);

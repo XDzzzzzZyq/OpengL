@@ -21,10 +21,6 @@ void ImguiManager::Init()
 
 ImguiManager::~ImguiManager()
 {
-	for (auto& i : layer_list)
-		delete i;
-	for (auto& i : menu_list)
-		delete i;
 }
 
 void ImguiManager::ManagerInit(GLFWwindow* window)
@@ -72,14 +68,14 @@ void ImguiManager::NewFrame() const
 	ImGui::NewFrame();
 }
 
-void ImguiManager::PushImguiLayer(ImguiLayer* layer)
+void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 {
 	layer->uly_ID = layer_list.size(); //start with 0
 	layer_list.push_back(layer);
 	active_layer_id = layer->uly_ID;
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
 
-	ImguiMenuItem* window = new ImguiMenuItem(layer->uly_name, "", BOOL_MITEM);
+	std::shared_ptr<ImguiMenuItem> window = std::make_shared<ImguiMenuItem>(layer->uly_name, "", BOOL_MITEM);
 	window->tar_state = std::shared_ptr<bool>(&layer->uly_is_rendered);
 	FindImguiMenu("WINDOW")->PushSubMenu(window);
 }
@@ -93,13 +89,13 @@ void ImguiManager::SetActiveImguiLayer(const std::string& name) const
 
 ImguiLayer* ImguiManager::GetActiveImguiLayer() const
 {
-	return layer_list[active_layer_id];
+	return layer_list[active_layer_id].get();
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 {
 	if (layer_name_buffer.find(name) != layer_name_buffer.end())
-		return layer_list[layer_name_buffer[name]];
+		return layer_list[layer_name_buffer[name]].get();
 	DEBUG("[ no layer named " + name + " ]")
 		return nullptr;
 }
@@ -109,7 +105,7 @@ ImguiLayer* ImguiManager::FindImguiLayer(int id) const
 	if (id > layer_list.size())
 		return nullptr;
 
-	return layer_list[id];
+	return layer_list[id].get();
 }
 
 ImguiItem* ImguiManager::FindImguiItem(const std::string& layer, const std::string& name) const
@@ -127,26 +123,34 @@ ImguiItem* ImguiManager::FindImguiItem(int id, int item_id) const
 	return FindImguiLayer(id)->FindImguiItem(item_id);
 }
 
-void ImguiManager::PushImguiMenu(ImguiMenu* Menu)
+void ImguiManager::PushImguiMenu(std::shared_ptr<ImguiMenu> _menu)
 {
-	Menu->menu_id = menu_list.size();
-	menu_list.push_back(Menu);
-	menu_name_buffer[Menu->menu_name] = Menu->menu_id;
+	_menu->menu_id = menu_list.size();
+	menu_list.push_back(_menu);
+	menu_name_buffer[_menu->menu_name] = _menu->menu_id;
 
-	for (auto& i : Menu->mitm_func_list) {
+	for (auto& i : _menu->mitm_func_list) {
 		EventList[i.first] = std::move(i.second);
 		//i.first.Debug();
 	}
 
-	Menu->mitm_func_list.clear();
+	_menu->mitm_func_list.clear();
 }
 
 ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
 {
 	if (menu_name_buffer.find(name) != menu_name_buffer.end())
-		return menu_list[menu_name_buffer[name]];
+		return menu_list[menu_name_buffer[name]].get();
 	DEBUG("[ no menu named " + name + " ]")
 		return nullptr;
+}
+
+std::shared_ptr<ImguiMenu> ImguiManager::CreateImguiMenu(std::string name)
+{
+	std::shared_ptr<ImguiMenu> menu = std::make_shared<ImguiMenu>(name);
+	PushImguiMenu(menu);
+
+	return menu;
 }
 
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)

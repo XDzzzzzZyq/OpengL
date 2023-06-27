@@ -23,8 +23,9 @@
 class ImguiManager : public EventListener
 {
 private:
-	mutable std::vector<ImguiLayer*> layer_list;
-	mutable std::vector<ImguiMenu*> menu_list;
+	std::vector<std::shared_ptr<ImguiLayer>> layer_list;
+	std::vector<std::shared_ptr<ImguiMenu>> menu_list;
+	
 	ImGuiIO* io = nullptr;
 	ImGuiStyle* m_style= nullptr;
 	GLFWwindow* window=nullptr;
@@ -56,11 +57,16 @@ public:
 	void RenderUI(bool rend = true);
 
 public:
-	void PushImguiMenu(ImguiMenu* Menu);
-	ImguiMenu* FindImguiMenu(const std::string& name)const;
+	void PushImguiMenu(std::shared_ptr<ImguiMenu> _menu);
+	std::shared_ptr<ImguiMenu> CreateImguiMenu(std::string name);
+
+	ImguiMenu* FindImguiMenu(const std::string& name) const;
 
 public:
-	void PushImguiLayer(ImguiLayer* layer);
+	void PushImguiLayer(std::shared_ptr<ImguiLayer> layer);
+	template<class LayerType>
+	std::shared_ptr<ImguiLayer> CreateImguiLayer(std::string name);
+
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;
 	ImguiLayer* FindImguiLayer(const std::string& name)const;
@@ -78,4 +84,13 @@ public:
 	mutable std::function<void(void)> ParaUpdate = [] {};
 
 };
+
+template<class LayerType>
+std::shared_ptr<ImguiLayer> ImguiManager::CreateImguiLayer(std::string name)
+{
+	std::shared_ptr<LayerType> layer = std::make_shared<LayerType>(name);
+	PushImguiLayer(std::dynamic_pointer_cast<ImguiLayer>(layer));
+
+	return layer;
+}
 
