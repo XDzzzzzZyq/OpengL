@@ -339,6 +339,7 @@ void RenderShader::ParseShaderCode(const std::string& _code, ShaderType _type)
 		ParseShaderStream(Stream, _type);
 	}
 	else {
+		shader_list[_type] = _code;
 		std::stringstream Stream(_code);
 		ParseShaderStream(Stream, _type);
 	}
@@ -376,6 +377,33 @@ GLuint RenderShader::CompileShader(ShaderType tar)
 	}
 	tar == 0 ? vs_id = shader_id : fs_id = shader_id;
 	return shader_id;
+}
+
+void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
+{
+	glDeleteProgram(getProgramID());
+	glDeleteShader(getShaderID(tar));
+
+	GLuint program_id = glCreateProgram();
+
+	GLuint shader_id = CompileShader(tar);
+	glAttachShader(program_id, shader_id);
+	glAttachShader(program_id, getShaderID((ShaderType)(1-tar)));
+
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+
+	int link_state = -1;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
+
+	if (link_state != GL_TRUE)
+		DEBUG("Shader Link Error")
+
+	ResetID(tar, shader_id);
+	ResetID(NONE_SHADER, program_id);
+	ResetCache();
+
+	is_shader_changed = true;
 }
 
 GLuint RenderShader::getShaderID(ShaderType type) const

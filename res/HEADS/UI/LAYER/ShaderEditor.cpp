@@ -69,7 +69,7 @@ void ShaderEditor::UpdateKeyword()
 
 void ShaderEditor::RenderName(const std::string& _label, std::string* _name, float _width, bool read_only) const
 {
-	RenderName((_label+*_name).c_str(), _name, _width, read_only);
+	RenderName((_label + *_name).c_str(), _name, _width, read_only);
 }
 
 void ShaderEditor::RenderName(const char* _label, std::string* _name, float _width, bool read_only /*= true*/) const
@@ -79,7 +79,7 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 	//DEBUG(_name->size())
 	temp.copy(name, temp.size());
 	*(name + temp.size()) = '\0';
-	ImGui::InputTextMultiline(_label, name, CHAR_MAX, ImVec2(_width==0.0f?ImGui::GetContentRegionAvail().x:_width, 20), ImGuiInputTextFlags_NoName | (read_only ? ImGuiInputTextFlags_ReadOnly : 0));
+	ImGui::InputTextMultiline(_label, name, CHAR_MAX, ImVec2(_width == 0.0f ? ImGui::GetContentRegionAvail().x : _width, 20), ImGuiInputTextFlags_NoName | (read_only ? ImGuiInputTextFlags_ReadOnly : 0));
 
 	if (!read_only)
 		*_name = std::string(name);
@@ -116,7 +116,7 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetAB(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	// [PASS]
@@ -133,7 +133,7 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetPass(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[IN]
@@ -150,7 +150,7 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[OUT]
@@ -167,7 +167,7 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[UNIFORM]
@@ -188,7 +188,7 @@ void ShaderEditor::RenderShaderStruct() const
 					active_shader->shader_struct_list[current_shad_type].SetUni(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
 			//ImGui::PopFont();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[STRUCT]
@@ -207,7 +207,7 @@ void ShaderEditor::RenderShaderStruct() const
 				if (active_shader)
 					active_shader->shader_struct_list[current_shad_type].DefStruct(std::get<1>(add_args), std::get<3>(add_args));
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[Globs]
@@ -224,7 +224,7 @@ void ShaderEditor::RenderShaderStruct() const
 			{
 
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[Const]
@@ -234,7 +234,7 @@ void ShaderEditor::RenderShaderStruct() const
 			for (auto& i : active_shader->shader_struct_list[current_shad_type].const_list) {
 				ImGui::PushID(vari_id);
 				if (ImGui::TreeNode(std::get<1>(i).c_str())) {
-					RenderName(("name_"+std::get<1>(i)).c_str(), &std::get<1>(i), 100);
+					RenderName(("name_" + std::get<1>(i)).c_str(), &std::get<1>(i), 100);
 					ImGui::SameLine();
 					RenderName(("content" + std::get<1>(i)).c_str(), &std::get<2>(i), 200, false);
 
@@ -245,7 +245,7 @@ void ShaderEditor::RenderShaderStruct() const
 			{
 
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	//[Funcs]
@@ -261,13 +261,13 @@ void ShaderEditor::RenderShaderStruct() const
 					&op_ev,
 					&st_ev,
 					0,
-					(active_func!=vari_id)
+					(active_func != vari_id)
 				);
 				if (op_ev) {
 					SE_CodeEditor.SetText(std::get<2>(i));
 					active_func = vari_id;
 				}
-				if (active_func==vari_id && is_op) {
+				if (active_func == vari_id && is_op) {
 					RenderName("func name", &std::get<1>(i));
 
 					if (ImGui::TreeNode("arguments list")) {
@@ -279,9 +279,9 @@ void ShaderEditor::RenderShaderStruct() const
 					}
 					SE_CodeEditor.Render(std::get<1>(i).c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 100), true);
 				}ImGui::PopID();
-				if(is_op)ImGui::TreePop();
+				if (is_op)ImGui::TreePop();
 				if (st_ev) {
-					if(SE_CodeEditor.IsTextChanged())
+					if (SE_CodeEditor.IsTextChanged())
 						std::get<2>(i) = SE_CodeEditor.GetText();
 					active_shader->shader_struct_list[current_shad_type].is_struct_changed = true;
 				}
@@ -290,7 +290,7 @@ void ShaderEditor::RenderShaderStruct() const
 			{
 
 			}ImGui::TreePop();
-		}ImGui::PopID();vari_id = 0;
+		}ImGui::PopID(); vari_id = 0;
 	}
 
 	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 5, 20)))
@@ -302,7 +302,7 @@ void ShaderEditor::RenderShaderStruct() const
 void ShaderEditor::RenderLayout(int* _loc, std::string* _name, ParaType* _type)const
 {
 	ImGui::SetNextItemWidth(80);
-	ImGui::InputInt(_name->c_str(), _loc, 1, 100, ImGuiInputTextFlags_NoName);ImGui::SameLine();ImGui::SetNextItemWidth(60);
+	ImGui::InputInt(_name->c_str(), _loc, 1, 100, ImGuiInputTextFlags_NoName); ImGui::SameLine(); ImGui::SetNextItemWidth(60);
 	if (ImGui::BeginCombo(std::to_string(*_type).c_str(), ShaderStruct::ParseType((ParaType)*_type).c_str(), ImGuiComboFlags_NoName)) {
 		LOOP(ShaderStruct::type_table.size())
 			if (ImGui::Selectable(ShaderStruct::type_table[i].c_str(), &sel))
@@ -310,7 +310,7 @@ void ShaderEditor::RenderLayout(int* _loc, std::string* _name, ParaType* _type)c
 		ImGui::EndCombo();
 	}ImGui::SameLine();
 	_name->copy(add_name, CHAR_MAX, 0);
-	*(add_name + _name->size()) = '\0';ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	*(add_name + _name->size()) = '\0'; ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 	ImGui::InputText((*_name + "name").c_str(), add_name, CHAR_MAX, ImGuiInputTextFlags_NoName | ImGuiInputTextFlags_ReadOnly);
 	*_name = std::string(add_name);
 }
@@ -318,7 +318,7 @@ void ShaderEditor::RenderLayout(int* _loc, std::string* _name, ParaType* _type)c
 void ShaderEditor::RenderSSBO(int* _loc, std::string* _name, ParaType* _type, Args* _args) const
 {
 	RenderLayout(_loc, _name, _type);
-	
+
 }
 
 void ShaderEditor::RenderArg(Arg& _arg, int _index, bool _is_editable) const
@@ -362,59 +362,35 @@ void ShaderEditor::RenderArgs(Args& args, int _type) const
 {
 	int index = 0;
 	for (auto& arg : args)
-		RenderArg(arg, index++, _type!=-1);
+		RenderArg(arg, index++, _type != -1);
 }
 
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 	if (active_shader)
-		if(current_edit == CODE_EDITOR)
+		if (current_edit == CODE_EDITOR)
 			SE_CodeEditor.SetText(active_shader->shader_list[current_shad_type]);
-		else if(current_edit == STRUCT_EDITOR)
+		else if (current_edit == STRUCT_EDITOR)
 			SE_CodeEditor.SetText(_code);
 }
 
 void ShaderEditor::CompileShader() const {
-	if (active_shader) {
-		
-		Timer timer;
-		switch (current_edit) {
-		case CODE_EDITOR:
-			if (SE_CodeEditor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
-			active_shader->shader_list[(ShaderType)current_shad_type] = SE_CodeEditor.GetText();
-			dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode("", (ShaderType)current_shad_type);
-			UpdateKeyword();
-			break;
-		case STRUCT_EDITOR:
-			is_shad_type_changed = true;
-			active_shader->GenerateShader((ShaderType)current_shad_type);
-			break;
-		}
 
-		glDeleteProgram(dynamic_cast<RenderShader*>(active_shader)->getProgramID());
-		glDeleteShader(dynamic_cast<RenderShader*>(active_shader)->getShaderID((ShaderType)current_shad_type));
+	if (!active_shader)return;
 
-		GLuint program_id = glCreateProgram();
-
-		GLuint shader_id = active_shader->CompileShader((ShaderType)current_shad_type);
-		glAttachShader(program_id, shader_id);
-		glAttachShader(program_id, dynamic_cast<RenderShader*>(active_shader)->getShaderID(current_shad_type == VERTEX_SHADER ? FRAGMENT_SHADER : VERTEX_SHADER));
-
-		glLinkProgram(program_id);
-		glValidateProgram(program_id);
-
-		int link_state = -1;
-		glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
-
-		if (link_state != GL_TRUE)
-			DEBUG("Shader Link Error")
-
-		dynamic_cast<RenderShader*>(active_shader)->ResetID((ShaderType)current_shad_type, shader_id);
-		dynamic_cast<RenderShader*>(active_shader)->ResetID((ShaderType)NONE_SHADER, program_id);
-		dynamic_cast<RenderShader*>(active_shader)->ResetCache();
-
-		active_shader->is_shader_changed = true;
+	Timer timer;
+	switch (current_edit) {
+	case CODE_EDITOR:
+		if (SE_CodeEditor.GetText() == active_shader->shader_list[(ShaderType)current_shad_type]) return;
+		dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode(SE_CodeEditor.GetText(), (ShaderType)current_shad_type);
+		UpdateKeyword();
+		break;
+	case STRUCT_EDITOR:
+		is_shad_type_changed = true;
+		active_shader->GenerateShader((ShaderType)current_shad_type);
+		break;
 	}
 
+	dynamic_cast<RenderShader*>(active_shader)->RelinkShader((ShaderType)current_shad_type);
 }
 
 void ShaderEditor::RenderLayer() const

@@ -31,6 +31,7 @@ public:
 
 	inline GLuint getProgramID() const { return program_id; }
 	virtual GLuint getShaderID(ShaderType type) const = 0;
+	virtual void RelinkShader(ShaderType tar = NONE_SHADER) = 0;
 
 public:
 
@@ -92,6 +93,8 @@ public:
 	void ParseShaderCode(const std::string& _code, ShaderType _type);
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override;
 
+	void RelinkShader(ShaderType tar = NONE_SHADER) override;
+
 public:
 
 	inline GLuint getShaderID(ShaderType type) const override;
@@ -116,6 +119,7 @@ public:
 	~FastLoadShader();
 
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
+	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
 
 public:
 
@@ -153,6 +157,8 @@ public:
 	template<class... _Name>
 	static ChainedShader& ImportShader(_Name ...name);
 
+	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
+
 public:
 
 	inline GLuint getShaderID(ShaderType type) const override;
@@ -188,6 +194,8 @@ public:
 	void ResetID(GLuint _id) { comp_id = _id; }
 	void CreateShader(const std::string& compShader);
 	GLuint CompileShader();
+
+	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
 
 public:
 
