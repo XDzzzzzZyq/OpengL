@@ -5,9 +5,6 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 
-#include "Texture.h"
-#include "Shaders.h"
-
 #include "GameObject.h"
 #include "Camera.h"
 

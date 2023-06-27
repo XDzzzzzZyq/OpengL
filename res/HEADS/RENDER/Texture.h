@@ -5,9 +5,6 @@
 
 #include "support.h"
 
-#include "Shaders.h"
-#include "LtcMatrix.h"
-
 enum TextureType
 {
 	NONE_TEXTURE,

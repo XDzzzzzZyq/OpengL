@@ -270,6 +270,26 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const glm::mat4* 
 	glUniformMatrix4fv(id, count, GL_FALSE, (GLfloat*)va0);
 }
 
+void Shaders::SetValue(Material* mat)
+{
+	for (const auto& [ptype, pdata] : mat->mat_params) {
+	
+		const auto& [dtype, dfloat, dcol, _] = pdata;
+		switch (dtype)
+		{
+		case Material::MPARA_FLT:
+			SetValue("U_" + Material::mat_uniform_name[ptype], dfloat);
+			break;
+		case Material::MPARA_COL:
+			SetValue("U_" + Material::mat_uniform_name[ptype], dcol);
+			break;
+		case Material::MPARA_TEX:
+			SetValue("U_" + Material::mat_uniform_name[ptype], ptype);
+			break;
+		}
+	}
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

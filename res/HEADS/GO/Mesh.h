@@ -2,14 +2,18 @@
 
 #include "MeshData.h"
 
+#include "Texture.h"
+#include "Shaders.h"
+
+#include "Material.h"
+
 class Mesh : public GameObject, public Transform3D
 {
-private:
-	std::shared_ptr<Texture> o_tex;
 public:
 
+	std::shared_ptr<Material> o_material;
 	std::shared_ptr<MeshData> o_mesh;
-	mutable std::optional<RenderShader> o_shader;
+	std::shared_ptr<RenderShader> o_shader;
 
 	bool using_shadow{ true };
 
@@ -35,7 +39,7 @@ public:
 
 public:
 
-	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&o_shader.value()); }
+	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(o_shader.get()); }
 	
 	void DeleteObj();
 };

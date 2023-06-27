@@ -346,6 +346,9 @@ inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, G
 	}
 }
 
+#include "Shaders.h"
+#include "LtcMatrix.h"
+
 void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)
 {
 	GenIrradianceConv(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type);

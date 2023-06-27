@@ -8,6 +8,7 @@ Mesh::Mesh(const std::string& path)
 
 	o_name = o_mesh->GetMeshName();
 
+	o_material = std::make_shared<Material>();
 }
 
 Mesh::Mesh()
@@ -23,9 +24,6 @@ Mesh::~Mesh()
 void Mesh::RenderObj(Camera* cam)
 {
 	o_shader->UseShader();
-
-	if (o_tex)
-		o_tex->Bind();
 
 	if (o_shader->is_shader_changed)
 		o_shader->InitShader();
@@ -44,15 +42,15 @@ void Mesh::RenderObj(Camera* cam)
 
 	o_shader->SetValue("is_selected", (int)is_selected);
 
-	RenderObjProxy();
+	o_shader->SetValue(o_material.get());
 
-	//o_Transform = glm::mat4(1.0f);
+	o_material->BindMatTexture();
+
+	RenderObjProxy();
 
 #if 1
 	o_shader->UnuseShader();
 
-	if (o_tex)
-		o_tex->Unbind();
 #endif
 
 
@@ -65,7 +63,7 @@ void Mesh::RenderObjProxy() const
 
 void Mesh::SetObjShader(std::string vert, std::string frag)
 {
-	o_shader = RenderShader(vert, frag);
+	o_shader = std::make_shared<RenderShader>(vert, frag);
 	//std::cout << "Shader:" << (glGetError()) << "\n";
 	o_shader->UseShader();
 	//matrix = glm::translate(matrix, o_position);
@@ -83,16 +81,13 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 		o_shader->SetValue("U_ProjectM", o_Transform);
 		o_shader->SetValue("ID_color", id_color);
 
-		if (o_tex)
-			o_shader->SetValue("U_Texture", o_tex->tex_type + o_tex->tex_slot_offset);
-
 		o_shader->UnuseShader();
 	};
 }
 
 void Mesh::SetTex(std::string _name)
 {
-	o_tex = TextureLib::LoadTexture(_name);
+	o_material->SetMatParam(MAT_ALBEDO, TextureLib::LoadTexture(_name));
 }
 
 void Mesh::SetCenter()
@@ -107,9 +102,7 @@ void Mesh::SetShadow(bool _shadow)
 
 void Mesh::DeleteObj()
 {
-	if (o_tex)o_tex->Unbind();
 	if (o_shader)o_shader->UnuseShader();
 
-	if (o_tex)o_tex->DelTexture();
 	if (o_shader)o_shader->DelShad();
 }
