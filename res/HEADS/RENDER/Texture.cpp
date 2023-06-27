@@ -1,8 +1,6 @@
 ﻿#include "Texture.h"
 #include "stb_image/stb_image.h"
 
-std::string Texture::root_dir = "res/tex/";
-
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
@@ -17,8 +15,8 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	GLubyte* m_buffer = nullptr;
 	GLfloat* m_buffer_f = nullptr;
 
-	if (tex_path.find(Texture::root_dir) == std::string::npos)
-		tex_path = Texture::root_dir + tex_path;
+	if (tex_path.find(TextureLib::root_dir) == std::string::npos)
+		tex_path = TextureLib::root_dir + tex_path;
 
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
 
@@ -579,12 +577,31 @@ void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _ta
 ///////////////////////////////////////////////////////////////////////////////////////
 
 std::unordered_map<std::string, std::shared_ptr<Texture>> TextureLib::t_tex_list{};
+std::string TextureLib::root_dir = "res/tex/";
+
+TextureType TextureLib::ParseFileEXT(std::string path)
+{
+	if (path.find(".png") != std::string::npos)	return PNG_TEXTURE;
+	else if (path.find(".jpg") != std::string::npos)	return JPG_TEXTURE;
+	else if (path.find(".hdr") != std::string::npos)	return HDR_TEXTURE;
+	return NONE_TEXTURE;
+}
 
 std::shared_ptr<Texture> TextureLib::GetTexture(const std::string& _name)
 {
 	if (t_tex_list.find(_name) == t_tex_list.end())
 		return nullptr;
 
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::LoadTexture(std::string _name)
+{
+	if (t_tex_list.find(_name) != t_tex_list.end())
+		return t_tex_list[_name];
+
+	TextureType _type = TextureLib::ParseFileEXT(_name);
+	t_tex_list[_name] = std::make_shared<Texture>(_name, _type, GL_REPEAT);
 	return t_tex_list[_name];
 }
 

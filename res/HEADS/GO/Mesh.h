@@ -5,7 +5,7 @@
 class Mesh : public GameObject, public Transform3D
 {
 private:
-	std::optional<Texture> o_tex;
+	std::shared_ptr<Texture> o_tex;
 public:
 
 	std::shared_ptr<MeshData> o_mesh;
@@ -27,7 +27,7 @@ public:
 public:
 
 	void SetObjShader(std::string vert, std::string frag = "");
-	void SetTex(std::string path, TextureType slot);
+	void SetTex(std::string _name);
 	void SetCenter();
 	void SetShadow(bool _shadow);
 	template<typename... T>

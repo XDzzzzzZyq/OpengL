@@ -66,7 +66,7 @@ int Application::Run()
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("monkey2.obj");
 	go1->SetObjShader("testS", "Rasterization");
-	go1->SetTex("avatar2.png", RGBA_TEXTURE);
+	go1->SetTex("avatar2.png");
 	go1->SetCenter();
 	go1->ApplyTransform();
 	renderer.UseMesh(go1);
@@ -74,7 +74,7 @@ int Application::Run()
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
-	go2->SetTex("avatar1.png", RGBA_TEXTURE);
+	go2->SetTex("avatar1.png");
 	go2->SetCenter();
 	go2->SetPos({ 8, 0, 0 });
 	go2->SetScale(glm::vec3(1.5f));
@@ -92,7 +92,7 @@ int Application::Run()
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->SetObjShader("testS", "Rasterization");
-	go4->SetTex("rough.png", RGBA_TEXTURE);
+	go4->SetTex("rough.png");
 	go4->SetPos({ 0,-7,0 });
 	go4->SetScale({ 2,2,2 });
 	go4->SetRot({ 0,90,90 });

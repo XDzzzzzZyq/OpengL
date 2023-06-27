@@ -40,10 +40,6 @@ class Texture
 {
 private:
 
-	static std::string root_dir;
-
-private:
-
 	int im_w = 0, im_h = 0, im_bpp = 0;
 	std::string tex_path;
 	GLuint tex_ID = 0;
@@ -110,6 +106,12 @@ private:
 
 class TextureLib {
 
+
+public:
+
+	static std::string root_dir;
+	static TextureType ParseFileEXT(std::string path);
+
 	using TextureRes = std::shared_ptr<Texture>;
 
 public:
@@ -123,6 +125,7 @@ private:
 
 public:
 	static TextureRes GetTexture(const std::string& _name);
+	static TextureRes LoadTexture(std::string _name);
 	static GLuint GetTextureID(const std::string& _name);
 
 public:

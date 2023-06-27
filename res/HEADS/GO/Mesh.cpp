@@ -90,9 +90,9 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 	};
 }
 
-void Mesh::SetTex(std::string _path, TextureType _type)
+void Mesh::SetTex(std::string _name)
 {
-	o_tex = Texture(_path, _type, GL_REPEAT);
+	o_tex = TextureLib::LoadTexture(_name);
 }
 
 void Mesh::SetCenter()
