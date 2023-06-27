@@ -191,6 +191,7 @@ public:
 
 public:
 
+	void RunComputeShaderSCR(const ImVec2& _scr_size, GLuint _batch, bool _edge_fix = true);
 	void RunComputeShader(const ImVec2& _size);
 	void RunComputeShader(GLuint workgroup_count_x = 1, GLuint workgroup_count_y = 1, GLuint workgroup_count_z = 1) const;
 

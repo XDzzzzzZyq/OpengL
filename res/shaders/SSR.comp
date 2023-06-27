@@ -1,6 +1,6 @@
 #version 460 core
 
-layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 layout(rgba16f, binding = 0) uniform image2D U_combine;
 layout(rgba16f, binding = 2) uniform image2D U_normal;
@@ -196,7 +196,7 @@ void main(){
 	vec3 Reflection = MarchResult.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(MarchResult.xy) * Fresnel;
 	vec3 Reflection_b = imageLoad(U_cache, uv).gba;
 
-	float update_rate = smoothstep(0.9, 1.0, 1 - Roughness)*0.95 + 0.05;
+	float update_rate = smoothstep(0.95, 1.0, 1 - Roughness)*0.97 + 0.05;
 	Reflection = max(Reflection_b + update_rate * (Reflection - Reflection_b), 0);
 
 	vec3 Output = Vec3Film(Direct + Reflection, gamma);

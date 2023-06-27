@@ -337,7 +337,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-		if (active_GO_ID != 0) outline.RunComputeShader(r_buffer_list[_RASTER].GetSize() / 8);
+		if (active_GO_ID != 0) outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
 
 
 		////////////  SSAO + DEPTH  ////////////
@@ -355,7 +355,7 @@ void Renderer::Render(bool rend, bool buff) {
 			ssao.SetValue("Proj_Trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 		}
 		ssao.SetValue("noise_level", r_frame_num % 6);
-		ssao.RunComputeShader(r_render_result->GetSize() / 8);
+		ssao.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 
 		//////////// LIGHTING CACHE ////////////
@@ -405,7 +405,7 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 		ssr.SetValue("gamma", r_gamma);
 		ssr.SetValue("noise", EventListener::random_float1);
-		if (r_using_ssr) ssr.RunComputeShader(r_render_result->GetSize() / 8);
+		if (r_using_ssr) ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 
 		////////////     FXAA     ////////////
@@ -414,7 +414,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
-		if (r_using_fxaa) fxaa.RunComputeShader(r_render_result->GetSize() / 4);
+		if (r_using_fxaa) fxaa.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 
 		//////////   EDITING ELEM   //////////
@@ -422,7 +422,7 @@ void Renderer::Render(bool rend, bool buff) {
 		ComputeShader& editing = ComputeShader::ImportShader("Editing");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
-		editing.RunComputeShader(r_render_result->GetSize() / 4);
+		editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 	}
 	Reset();
 }

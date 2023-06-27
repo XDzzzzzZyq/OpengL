@@ -583,6 +583,11 @@ GLuint ComputeShader::CompileShader()
 	return comp_id;
 }
 
+void ComputeShader::RunComputeShaderSCR(const ImVec2& _scr_size, GLuint _batch, bool _edge_fix /*= true*/)
+{
+	RunComputeShader(_scr_size / _batch + (_edge_fix ? glm::vec2(1) : glm::vec2(0)));
+}
+
 void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint workgroup_count_y /*= 1*/, GLuint workgroup_count_z /*= 1*/) const
 {
 	glDispatchCompute(workgroup_count_x, workgroup_count_y, workgroup_count_z);
