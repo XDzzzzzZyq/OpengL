@@ -173,6 +173,7 @@
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main\Application.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
+    <ClCompile Include="res\HEADS\UI\LAYER\MaterialViewer.cpp" />
     <ClCompile Include="res\HEADS\GO\Sprite.cpp" />
     <ClCompile Include="res\HEADS\RENDER\MeshData.cpp" />
     <ClCompile Include="res\HEADS\GO\PolygonLight.cpp" />
@@ -315,6 +316,7 @@
     <ClInclude Include="dep\gui\ImGui\imstb_textedit.h" />
     <ClInclude Include="dep\gui\ImGui\imstb_truetype.h" />
     <ClInclude Include="main\Application.h" />
+    <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h" />
     <ClInclude Include="res\HEADS\GO\Sprite.h" />
     <ClInclude Include="res\HEADS\RENDER\MeshData.h" />
     <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h" />

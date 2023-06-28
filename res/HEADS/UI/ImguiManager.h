@@ -10,6 +10,7 @@
 #include "LAYER/Outliner.h"
 #include "LAYER/ParamControl.h"
 #include "LAYER/ShaderEditor.h"
+#include "LAYER/MaterialViewer.h"
 
 #include "ImguiMenu.h"
 #include "EventListener.h"

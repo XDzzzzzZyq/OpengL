@@ -213,6 +213,9 @@
     <ClCompile Include="res\HEADS\RENDER\ShaderBuildIn.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\UI\LAYER\MaterialViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -534,6 +537,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\gui\ImGui\imstb_textedit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

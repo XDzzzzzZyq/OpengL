@@ -26,6 +26,7 @@ void ImguiManager::DefultViewports() {
 	layer1->PushItem<UI::Button>   ("testB");
 	layer1->PushItem<UI::Text>	   ("test[%.1f]");
 	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "testf")->para_data.fdata);
+	layer1->uly_is_rendered = false;
 
 	auto layer2 = CreateImguiLayer<ParamControl>("__Parameters__");
 	layer2->PushItem<UI::Text>("Frame Rate %.3f ms/frame (%.1f FPS)");
@@ -50,6 +51,8 @@ void ImguiManager::DefultViewports() {
 	auto outline = CreateImguiLayer<Outliner>("Outliner");
 
 	auto shaderedit = CreateImguiLayer<ShaderEditor>("Shader Editor");     //ShaderEditor must after Outliner since the order of "EventListener::is_selected_changed"
+
+	auto material = CreateImguiLayer<MaterialViewer>("material");
 
 	SetActiveImguiLayer("__Parameters__");
 }
