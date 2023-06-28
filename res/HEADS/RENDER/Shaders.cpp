@@ -520,8 +520,8 @@ GLuint RenderShader::getShaderID(ShaderType type) const
 void RenderShader::LocalDebug() const
 {
 #ifdef _DEBUG
-	for (const auto i : _uniforms_cache)
-		DEBUG(i.first + " : " + std::to_string(i.second))
+	for (const auto& [name, loc] : _uniforms_cache)
+		DEBUG(name + " : " + std::to_string(loc))
 #endif
 }
 
@@ -672,8 +672,8 @@ std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::c
 
 void ComputeShader::ResetComputeLib()
 {
-	for (auto& sh : comp_list)
-		sh.second->DelShad();
+	for (auto& [name, sh] : comp_list)
+		sh->DelShad();
 }
 
 ComputeShader::ComputeShader(const std::string& name)

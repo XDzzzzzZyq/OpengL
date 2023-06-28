@@ -77,8 +77,8 @@ std::string ShaderStruct::ParseArgs(const Args& args)
 	std::string result="(";
 
 	if (args.size()) {
-		for (const auto i : args)
-			result += ParseType(i.first) + " " + i.second + ", ";
+		for (const auto& [type, name] : args)
+			result += ParseType(type) + " " + name + ", ";
 		result.erase(result.end() - 2, result.end() - 1);
 	}
 	return result+")";

@@ -260,60 +260,60 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////    MESHES    ////////////
 
 		GetActiveEnvironment()->BindEnvironTexture();
-		for (const auto& mesh : mesh_list)
+		for (const auto& [id, mesh] : mesh_list)
 		{
-			if (!mesh.second->is_viewport)continue;
+			if (!mesh->is_viewport)continue;
 
-			mesh.second->ApplyAllTransform();
-			mesh.second->RenderObj(GetActiveCamera().get());
-			mesh.second->is_Uniform_changed = false;
-			mesh.second->o_shader->is_shader_changed = false;
-			mesh.second->o_material->is_mat_struct_changed = false;
+			mesh->ApplyAllTransform();
+			mesh->RenderObj(GetActiveCamera().get());
+			mesh->is_Uniform_changed = false;
+			mesh->o_shader->is_shader_changed = false;
+			mesh->o_material->is_mat_struct_changed = false;
 		}
 		is_light_changed = false;
 
 		/////////  POLYGONAL LIGHTS POLYGON    /////////
 
-		for (const auto& polyLight : poly_light_list)
+		for (const auto& [id, polyLight] : poly_light_list)
 		{
-			polyLight.second->ApplyAllTransform();
-			polyLight.second->RenderPolygon(GetActiveCamera().get());
-			if (polyLight.second->is_Uniform_changed)
+			polyLight->ApplyAllTransform();
+			polyLight->RenderPolygon(GetActiveCamera().get());
+			if (polyLight->is_Uniform_changed)
 				r_light_data.ParsePolygonLightData(poly_light_list);
-			polyLight.second->is_Uniform_changed = false;
-			polyLight.second->o_shader->is_shader_changed = false;
+			polyLight->is_Uniform_changed = false;
+			polyLight->o_shader->is_shader_changed = false;
 		}
 
 		/////////    DEBUG MESHES    /////////
 
-		for (const auto& dLine : dLine_list)
+		for (const auto& [id, dLine] : dLine_list)
 		{
-			if (!dLine.second->is_viewport)continue;
-			dLine.second->ApplyAllTransform();
-			dLine.second->RenderDdbugLine(GetActiveCamera().get());
-			dLine.second->is_Uniform_changed = false;
+			if (!dLine->is_viewport)continue;
+			dLine->ApplyAllTransform();
+			dLine->RenderDdbugLine(GetActiveCamera().get());
+			dLine->is_Uniform_changed = false;
 		}
 
-		for (const auto& dPoints : dPoints_list)
+		for (const auto& [id, dPoints] : dPoints_list)
 		{
-			if (!dPoints.second->is_viewport)continue;
-			dPoints.second->ApplyAllTransform();
-			dPoints.second->RenderDebugPoint(GetActiveCamera().get());
-			dPoints.second->is_Uniform_changed = false;
+			if (!dPoints->is_viewport)continue;
+			dPoints->ApplyAllTransform();
+			dPoints->RenderDebugPoint(GetActiveCamera().get());
+			dPoints->is_Uniform_changed = false;
 		}
 
 
 		////////////    ICONS    ////////////
 
 		glEnable(GL_BLEND);
-		for (const auto& light : light_list)
+		for (const auto& [id, light] : light_list)
 		{
-			if (!light.second->light_sprite.is_viewport)continue;
-			light.second->RenderLightSpr(GetActiveCamera().get());
+			if (!light->light_sprite.is_viewport)continue;
+			light->RenderLightSpr(GetActiveCamera().get());
 		}
-		for (const auto& envir : envir_list) {
-			if (!envir.second->envir_sprite.is_viewport)continue;
-			envir.second->RenderEnvirSpr(GetActiveCamera().get());
+		for (const auto& [id, envir] : envir_list) {
+			if (!envir->envir_sprite.is_viewport)continue;
+			envir->RenderEnvirSpr(GetActiveCamera().get());
 		}
 		for (const auto& pps : pps_list) {
 			if (!pps->pps_sprite.is_viewport)continue;
