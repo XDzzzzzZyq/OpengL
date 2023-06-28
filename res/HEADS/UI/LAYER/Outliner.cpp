@@ -28,7 +28,7 @@ void Outliner::SetObjectList(OutlineData* data)
 	actIndex = -1;
 	LOOP(ol_data.size())
 	{
-		PushItem<UI::OpaButton>(ol_data[i].NAME, ol_data[i].ID);
+		PushItem<UI::OpaButton>(ol_data[i].NAME, ol_data[i].ID, false);
 		id2index[ol_data[i].ID] = item_list.size() - 1;
 		index2id[item_list.size() - 1] = ol_data[i].ID;
 		item_list[item_list.size() - 1]->ResetSize(size);
