@@ -126,7 +126,7 @@
     <ClCompile Include="res\HEADS\UI\ITEM\ParaInput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\TextureView.cpp">
+    <ClCompile Include="res\HEADS\UI\ITEM\TextureViewer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp">
@@ -431,7 +431,7 @@
     <ClInclude Include="res\HEADS\UI\ITEM\ParaInput.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\TextureView.h">
+    <ClInclude Include="res\HEADS\UI\ITEM\TextureViewer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\UI\ITEM\Text.h">

@@ -16,7 +16,7 @@ Viewport::Viewport(const std::string& name, GLuint texID)
 Viewport::Viewport(const std::string& name, GLuint texID, const ImVec2& vp_size)
 {
 	uly_name = name;
-	PushItem<UI::TextureView>("Viewport", texID, vp_size);
+	PushItem<UI::TextureViewer>("Viewport", texID, vp_size);
 }
 
 Viewport::~Viewport()

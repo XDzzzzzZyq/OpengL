@@ -297,15 +297,8 @@ int Application::Run()
 
 		go1->SetScale(0.7f * glm::vec3(scale));
 		go1->SetRot(glm::vec3(0.0f, 0.0f, renderer.r_frame_num / 25.0f));
-		//go1.SetPos(ImVec4_vec3(LightPos, 10.0f));
 
-		//go2->SetPos(ImVec4_vec3_Uni(LightColor, 10.0f) + glm::vec3(8, 0, 0));
-		//go2->SetScale(glm::vec3(power * 3));
 		go2->SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
-
-		go3->SetShaderValue("blen", Roughness);
-		go3->SetShaderValue("metalness", Metalness);
-		go3->SetShaderValue("specular", Specular);
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);

@@ -221,7 +221,7 @@
     <ClCompile Include="res\HEADS\RENDER\Shaders.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\TextureView.cpp" />
+    <ClCompile Include="res\HEADS\UI\ITEM\TextureViewer.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp" />
@@ -375,7 +375,7 @@
     <ClInclude Include="res\HEADS\RENDER\Shaders.h" />
     <ClInclude Include="res\HEADS\RENDER\Texture.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\TextureView.h" />
+    <ClInclude Include="res\HEADS\UI\ITEM\TextureViewer.h" />
     <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h" />
     <ClInclude Include="res\HEADS\RENDER\ShaderLib.h" />

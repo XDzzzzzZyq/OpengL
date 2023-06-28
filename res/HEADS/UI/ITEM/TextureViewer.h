@@ -3,7 +3,7 @@
 
 namespace UI {
 
-	class TextureView : public ImguiItem
+	class TextureViewer : public ImguiItem
 	{
 	private:
 		GLuint vp_fboTex_ID = 0;
@@ -12,10 +12,10 @@ namespace UI {
 		ImVec2 uv_max;
 		ImVec2 vp_size;
 
-		TextureView();
-		TextureView(const std::string& name, GLuint texID);
-		TextureView(const std::string& name, GLuint texID, const ImVec2& vp_size);
-		~TextureView();
+		TextureViewer();
+		TextureViewer(const std::string& name, GLuint texID);
+		TextureViewer(const std::string& name, GLuint texID, const ImVec2& vp_size);
+		~TextureViewer();
 
 		bool show_size;
 

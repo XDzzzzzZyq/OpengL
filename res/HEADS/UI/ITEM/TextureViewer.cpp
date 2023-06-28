@@ -1,32 +1,32 @@
-#include "TextureView.h"
+#include "TextureViewer.h"
 
-UI::TextureView::TextureView()
+UI::TextureViewer::TextureViewer()
 {
 
 }
 
-UI::TextureView::~TextureView()
+UI::TextureViewer::~TextureViewer()
 {
 
 }
 
-void UI::TextureView::ResetUV(const ImVec2& min, const ImVec2& max)
+void UI::TextureViewer::ResetUV(const ImVec2& min, const ImVec2& max)
 {
 	uv_min = min;
 	uv_max = max;
 }
 
-void UI::TextureView::ResetSize(const ImVec2& size)
+void UI::TextureViewer::ResetSize(const ImVec2& size)
 {
 	vp_size = size;
 }
 
-void UI::TextureView::ResetBufferID(GLuint id)
+void UI::TextureViewer::ResetBufferID(GLuint id)
 {
 	vp_fboTex_ID = id;
 }
 
-void UI::TextureView::RenderItem() const
+void UI::TextureViewer::RenderItem() const
 {
 
 	ImGui::GetWindowDrawList()->AddImage(
@@ -41,14 +41,14 @@ void UI::TextureView::RenderItem() const
 	ImGui::Text("[ %.1f , %.1f ]", vp_size.x, vp_size.y);
 }
 
-UI::TextureView::TextureView(const std::string& name, GLuint texID, const ImVec2& vp_size)
+UI::TextureViewer::TextureViewer(const std::string& name, GLuint texID, const ImVec2& vp_size)
 	:vp_fboTex_ID(texID), vp_size(vp_size)
 {
 	uitm_name = name;
 	uitm_type = IMAGE_OUTP;
 }
 
-UI::TextureView::TextureView(const std::string& name, GLuint texID)
+UI::TextureViewer::TextureViewer(const std::string& name, GLuint texID)
 	: vp_fboTex_ID(texID)
 {
 	uitm_name = name;
