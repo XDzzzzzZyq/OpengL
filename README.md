@@ -26,13 +26,14 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
 #### **Objects**
 
 - [x] basic transformation
-  - [ ] parenting
+  - [x] parenting
   - [ ] transform handle
 - [x] unique ID generator
 - [x] select operation
 - [x] Mesh
   - [x] smooth normal
   - [ ] dynamic mesh
+  - [x] Material
 - [x] Spirit
   - [ ] batch rendering
 - [x] Camera
@@ -78,7 +79,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
 
   - PBR
 
-    - [ ] material system
+    - [x] Material system
     - [x] PBR Lighting
       - [x] point light
       - [x] sun light
@@ -113,6 +114,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
   - [x] GLSL interpreter (structure analysis)
     - [x] Structure Parser
     - [ ] Build-in Lib
+        - [x] Material params
     - [ ] Advanced analysis
 
   - [x] Buffering
@@ -122,7 +124,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
 
   - [x] dynamic compiling
 
-  - [ ] dynamic uniform
+  - [x] dynamic uniform
 
     - [ ] node system
 
