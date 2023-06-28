@@ -71,6 +71,9 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
   - [x] Selection highlight
   - [x] FXAA
   - [x] SSAO
+
+  - [ ] Normal map
+  - [ ] Bump map
   
 - [x] multi-pass composition (deferred rendering)
   - Blinn-Phong
@@ -94,6 +97,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
       - [x] soft shadow
 
 - Ray tracing ?
+    - [x] Screen Space Reflections
 
 - DL style transfer ?
 
@@ -161,6 +165,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
         - [x] Code Editor
         - [ ] Node Editor
     - [ ] Transform(Property) Layer
+    - [x] Material Layer
 - [x] ImGui parameters flow
 
 - [ ] files management
