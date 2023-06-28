@@ -26,8 +26,8 @@ enum ImLayerType
 class ImguiLayer : public EventListener
 {
 public:
-	mutable ImVec2 content_pos;
-	mutable ImVec2 content_size;
+	ImVec2 content_pos;
+	ImVec2 content_size;
 	
 public:
 	ImguiLayer();
@@ -48,9 +48,9 @@ public:
 	mutable bool is_size_changed = false;
 	mutable bool is_size_changed_b = true;
 	bool IsResizingFin() const { return (is_size_changed == false) && (is_size_changed_b == true); }
-	mutable ImVec2 uly_size;
-	mutable ImVec2 uly_size_b;
-	ImVec2 GetLayerSize() const;
+	ImVec2 uly_size;
+	ImVec2 uly_size_b;
+	ImVec2 GetLayerSize();
 	void UpdateLayerPos();
 
 public:
@@ -60,23 +60,23 @@ public:
 	void PushItem(Args... args);
 	void PushItem(std::shared_ptr<ImguiItem> item);
 	void PushItem(ImItemType type);      //quick push
-	ImguiItem* FindImguiItem(const std::string& name)const;
+	ImguiItem* FindImguiItem(const std::string& name) const;
 	ImguiItem* FindImguiItem(int id)const;   //start with 0
 
-	mutable bool uly_activate = true;
-	mutable bool uly_is_rendered = true;
+	bool uly_activate = true;
+	bool uly_is_rendered = true;
 
 public:
 	bool uly_show_type = false;
-	mutable std::function<void(void)> pre_RenderLayer = [] {};
-	mutable std::function<void(void)> extra_RenderLayer = [] {};
-	mutable std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer() const { DEBUG("no Render function overrided")return; };
+	std::function<void(void)> pre_RenderLayer = [] {};
+	std::function<void(void)> extra_RenderLayer = [] {};
+	std::function<void(void)> resize_event = [] {};
+	virtual void RenderLayer() { DEBUG("no Render function overrided")return; };
 	virtual void UpdateLayer() {};
 
 	//for outline          |  TYPE  |  NAME  |
 	virtual void SetObjectList(OutlineData* data){ DEBUG(uly_name + " is not a Outline") return; }
-	mutable std::function<void(void)> set_active = [] {};
+	std::function<void(void)> set_active = [] {};
 
 	void EventInit();
 	void LMB();

@@ -29,7 +29,7 @@ void Viewport::UpdateLayer()
 {
 }
 
-void Viewport::RenderLayer() const
+void Viewport::RenderLayer()
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 

@@ -17,7 +17,7 @@ ParamControl::~ParamControl()
 
 }
 
-void ParamControl::RenderLayer() const
+void ParamControl::RenderLayer()
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 		if (pre_RenderLayer)

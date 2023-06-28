@@ -47,7 +47,7 @@ void Outliner::UpdateLayer()
 	}
 }
 
-void Outliner::RenderLayer() const
+void Outliner::RenderLayer()
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 

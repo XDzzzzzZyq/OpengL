@@ -44,12 +44,12 @@ private:
 
 	static const std::string edit_mode[3];
 	static const std::string shader_type[2];
-	mutable int active_func{0};
+	int active_func{0};
 
-	mutable int current_edit = 0, current_shad_type = 0;
-	mutable bool is_edit_changed = true, is_shad_type_changed = true;
-	mutable bool add_button = false;
-	mutable bool sel;
+	int current_edit = 0, current_shad_type = 0;
+	bool is_edit_changed = true, is_shad_type_changed = true;
+	bool add_button = false;
+	bool sel;
 
 public:
 
@@ -63,10 +63,11 @@ public:
 	mutable S_U add_prop;
 	mutable S_func add_args;
 	mutable char add_name[CHAR_MAX];
-	bool AddParam(const char* c_name = "", const char* c_sld_name = "") const;
-	bool AddStruct(bool def_type = false) const;
+
+	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
+	bool AddStruct(bool def_type = false);
 	bool AddLink();
-	void CompileShader() const;
+	void CompileShader();
 
 public:
 
@@ -78,12 +79,12 @@ public:
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
-	void RenderShaderStruct() const;
+	void RenderShaderStruct();
 	void RenderLayout(int* _loc, std::string* _name, ParaType* _type) const;
 	void RenderSSBO(int* _loc, std::string* _name, ParaType* _type, Args* _args) const;
 	void RenderArg(Arg& _arg, int _index, bool _is_editable = true) const;
 	void RenderArg(ParaType& _type, std::string& _name, int _index, bool _is_editable = true) const;
 	void RenderArgs(Args& args, int _type) const;
 
-	void RenderLayer() const override;
+	void RenderLayer() override;
 };

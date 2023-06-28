@@ -15,6 +15,6 @@ public:
 public:
 
 	void UpdateLayer() override;
-	void RenderLayer() const override;
+	void RenderLayer() override;
 };
 

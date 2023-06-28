@@ -23,7 +23,7 @@ ShaderEditor::~ShaderEditor()
 
 }
 
-bool ShaderEditor::AddParam(const char* c_name, const char* c_sld_name) const
+bool ShaderEditor::AddParam(const char* c_name /*= ""*/, const char* c_sld_name /*= ""*/)
 {
 
 	add_button = ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)) || add_button;
@@ -36,7 +36,7 @@ bool ShaderEditor::AddParam(const char* c_name, const char* c_sld_name) const
 	return false;
 }
 
-bool ShaderEditor::AddStruct(bool def_type) const
+bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 {
 	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)) || add_button)
 	{
@@ -93,7 +93,7 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 		*_name = std::string(name);
 }
 
-void ShaderEditor::RenderShaderStruct() const
+void ShaderEditor::RenderShaderStruct()
 {
 	int type_id = 0, vari_id = 0;
 	// [BASE INFO]
@@ -388,7 +388,8 @@ void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 		SE_CodeEditor.SetText(_code);
 }
 
-void ShaderEditor::CompileShader() const {
+void ShaderEditor::CompileShader()
+{
 
 	ShaderLib* active_shader = ShaderEditor::GetActiveShaderPtr();
 
@@ -411,7 +412,7 @@ void ShaderEditor::CompileShader() const {
 	dynamic_cast<RenderShader*>(active_shader)->RelinkShader((ShaderType)current_shad_type);
 }
 
-void ShaderEditor::RenderLayer() const
+void ShaderEditor::RenderLayer()
 {
 
 	ShaderLib* active_shader = ShaderEditor::GetActiveShaderPtr();

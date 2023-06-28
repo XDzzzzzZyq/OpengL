@@ -16,7 +16,7 @@ ImguiLayer::~ImguiLayer()
 {
 }
 
-ImVec2 ImguiLayer::GetLayerSize() const
+ImVec2 ImguiLayer::GetLayerSize()
 {
 
 	if (ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin() == uly_size) {

@@ -9,6 +9,6 @@ public:
 	~ParamControl();
 
 public:
-	void RenderLayer() const override;
+	void RenderLayer() override;
 };
 
