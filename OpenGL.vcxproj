@@ -176,8 +176,8 @@
     <ClCompile Include="res\HEADS\GO\Sprite.cpp" />
     <ClCompile Include="res\HEADS\RENDER\MeshData.cpp" />
     <ClCompile Include="res\HEADS\GO\PolygonLight.cpp" />
+    <ClCompile Include="res\HEADS\RENDER\ShaderBuildIn.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BuildinShader.cpp" />
     <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp" />
     <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp" />
     <ClCompile Include="res\HEADS\UI\ImguiTheme.cpp" />

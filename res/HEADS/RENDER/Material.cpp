@@ -1,15 +1,15 @@
 #include "Material.h"
 
 std::vector<std::string> Material::mat_uniform_name = { 
-	"m_albedo",
-	"m_metal",
-	"m_rough",
-	"m_specu",
-	"m_emis_c",
-	"m_emis_s",
-	"m_alpha",
-	"m_normal",
-	"m_bump"
+	"albedo",
+	"metal",
+	"rough",
+	"specu",
+	"emis_c",
+	"emis_s",
+	"alpha",
+	"normal",
+	"bump"
 };
 
 void Material::InitParamData()

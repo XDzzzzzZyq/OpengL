@@ -159,9 +159,6 @@
     <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BuildinShader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="res\HEADS\UI\ITEM\TextEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -211,6 +208,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\RENDER\ShaderBuildIn.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

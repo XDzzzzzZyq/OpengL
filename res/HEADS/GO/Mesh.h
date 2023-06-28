@@ -31,7 +31,9 @@ public:
 public:
 
 	void SetObjShader(std::string vert, std::string frag = "");
-	void SetTex(std::string _name);
+	void SetTex(MatParaType _type, std::string _name);
+	void SetMatColor(MatParaType _type, float _val);
+	void SetMatColor(MatParaType _type, glm::vec3 _col);
 	void SetCenter();
 	void SetShadow(bool _shadow);
 	template<typename... T>

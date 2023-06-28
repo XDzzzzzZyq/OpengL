@@ -90,7 +90,7 @@ public:
 
 public:
 
-	void UpdateMaterial(const Material& mat);
+	void UpdateMaterial(Material* mat);
 
 	void ParseShaderStream(std::istream& _stream, ShaderType _type);
 	void ParseShaderFile(std::string _name, ShaderType _type);

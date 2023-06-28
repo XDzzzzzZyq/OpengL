@@ -15,18 +15,20 @@ in vec4 normal_color;
 in vec4 Snormal_color;
 
 uniform sampler2D U_albedo;
-
-uniform float blen;
-uniform float U_metalness;
-uniform float U_specular;
+uniform float U_metal;
+uniform float U_rough;
+uniform float U_specu;
+uniform vec3 U_emis_c;
+uniform float U_emis_s;
+uniform float U_alpha;
 uniform vec3 ID_color;
 uniform vec3 RAND_color;
 uniform int is_selected;
 
 const vec3 m_albedo = texture2D(U_albedo, uv).rgb;
-const float m_metal = U_metalness;
-const float m_rough = blen;
-const float m_specu = U_specular;
+const float m_metal = U_metal;
+const float m_rough = U_rough;
+const float m_specu = U_specu;
 const vec3 m_emis_c = vec3(1);
 const float m_emis_s = 0;
 const float m_alpha = 1;
@@ -39,6 +41,6 @@ void main() {
 	POScolor = vec4(pix_pos, 1);
 	MASKcolor = vec4(1, is_selected, 0, 1);
 	ALBEDOcolor = vec4(m_albedo, 1);
-	MRSEcolor = vec4(1, blen, 1, 0);
+	MRSEcolor = vec4(m_metal, m_rough, m_specu, 0);
 
 };

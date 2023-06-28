@@ -25,6 +25,9 @@ void Mesh::RenderObj(Camera* cam)
 {
 	o_shader->UseShader();
 
+	if (o_material->is_mat_struct_changed)
+		o_shader->UpdateMaterial(o_material.get());
+
 	if (o_shader->is_shader_changed)
 		o_shader->InitShader();
 
@@ -50,7 +53,6 @@ void Mesh::RenderObj(Camera* cam)
 
 #if 1
 	o_shader->UnuseShader();
-
 #endif
 
 
@@ -72,22 +74,29 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 
 	o_shader->InitShader = [&] {
 		o_shader->UseShader();
-
-		o_shader->SetValue("blen", 0.5f);
-		o_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-		o_shader->SetValue("Envir_Texture", IBL_TEXTURE);
-		o_shader->SetValue("Envir_Texture_diff", IBL_TEXTURE + 1);
 		o_shader->SetValue("RAND_color", id_color_rand);
 		o_shader->SetValue("U_ProjectM", o_Transform);
 		o_shader->SetValue("ID_color", id_color);
 
 		o_shader->UnuseShader();
 	};
+
+	o_shader->UpdateMaterial(o_material.get());
 }
 
-void Mesh::SetTex(std::string _name)
+void Mesh::SetTex(MatParaType _type, std::string _name)
 {
-	o_material->SetMatParam(MAT_ALBEDO, TextureLib::LoadTexture(_name));
+	o_material->SetMatParam(_type, TextureLib::LoadTexture(_name));
+}
+
+void Mesh::SetMatColor(MatParaType _type, float _val)
+{
+	o_material->SetMatParam(_type, _val);
+}
+
+void Mesh::SetMatColor(MatParaType _type, glm::vec3 _col)
+{
+	o_material->SetMatParam(_type, _col);
 }
 
 void Mesh::SetCenter()

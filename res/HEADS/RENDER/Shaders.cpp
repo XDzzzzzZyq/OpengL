@@ -312,6 +312,84 @@ void RenderShader::CreatShader(const std::string& verShader, const std::string& 
 	//glDeleteShader(fs_id);
 	//glDeleteProgram(program_id);
 }
+
+#include <algorithm>
+void RenderShader::UpdateMaterial(Material* mat)
+{
+	ShaderStruct& sh_struct = shader_struct_list[FRAGMENT_SHADER];
+	for (const auto& [ptype, pdata] : mat->mat_params) {
+		const auto& [dtype, dfloat, dcol, dtex] = pdata;
+
+		if(ptype == MAT_NORMAL || ptype == MAT_BUMP)
+			continue;  // skip them currently
+
+		auto loc_const = std::find_if(
+			sh_struct.const_list.begin(),
+			sh_struct.const_list.end(),
+			[ptype](const S_const& con) ->bool {
+				return std::get<1>(con) == "m_" + Material::mat_uniform_name[ptype];     // e.g. MAT_ALBEDO -> m_albedo
+			}
+		);
+
+		auto loc_uniform = std::find_if(
+			sh_struct.uniform_list.begin(),
+			sh_struct.uniform_list.end(),
+			[ptype](const S_U& uni) ->bool {
+				return std::get<0>(uni) == "U_" + Material::mat_uniform_name[ptype];     // e.g. MAT_ALBEDO -> m_albedo
+			}
+		);
+
+		switch (dtype)
+		{
+		case Material::MPARA_FLT:
+
+			if (loc_uniform != sh_struct.uniform_list.end())
+				std::get<1>(*loc_uniform) = FLOAT_PARA;
+			else
+				sh_struct.SetUni(FLOAT_PARA, 1, "U_" + Material::mat_uniform_name[ptype]);
+
+			if (loc_const != sh_struct.const_list.end())
+				*loc_const = ShaderLib::v_material[ptype];
+			else
+				sh_struct.const_list.emplace_back(ShaderLib::v_material[ptype]);
+
+			break;
+		case Material::MPARA_COL:
+
+			if (loc_uniform != sh_struct.uniform_list.end())
+				std::get<1>(*loc_uniform) = VEC3_PARA;
+			else
+				sh_struct.SetUni(VEC3_PARA, 1, "U_" + Material::mat_uniform_name[ptype]);
+
+			if (loc_const != sh_struct.const_list.end())
+				*loc_const = ShaderLib::v_material[ptype];
+			else
+				sh_struct.const_list.emplace_back(ShaderLib::v_material[ptype]);
+
+			break;
+		case Material::MPARA_TEX:
+
+			if (loc_uniform != sh_struct.uniform_list.end())
+				std::get<1>(*loc_uniform) = TEXTURE_PARA;
+			else
+				sh_struct.SetUni(TEXTURE_PARA, 1, "U_" + Material::mat_uniform_name[ptype]);
+
+			if (loc_const != sh_struct.const_list.end())
+				*loc_const = ShaderLib::t_material[ptype];
+			else
+				sh_struct.const_list.emplace_back(ShaderLib::t_material[ptype]);
+
+			break;
+		}
+	}
+
+	sh_struct.is_struct_changed = true;
+	is_shader_changed = true;
+
+	GenerateShader(FRAGMENT_SHADER);
+	RelinkShader(FRAGMENT_SHADER);
+}
+
 ////////////////////////////////////////////////////////
 RenderShader::RenderShader(const std::string& vert, const std::string& frag)
 {
