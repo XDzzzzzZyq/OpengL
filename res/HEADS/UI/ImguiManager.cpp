@@ -206,7 +206,7 @@ void ImguiManager::RenderUI(bool rend)
 		//ImGui::ShowStyleEditor();
 	}
 	else {
-		io->ConfigFlags != ImGuiConfigFlags_DockingEnable;
+		io->ConfigFlags = !ImGuiConfigFlags_DockingEnable;
 	}
 
 	if (is_prefW_open)

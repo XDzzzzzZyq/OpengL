@@ -3,7 +3,7 @@
 #define NORM_KEY_LEN 36
 
 #include "support.h"
-#include "ShaderLib.h"
+#include "GameObject.h"
 
 #include<unordered_map>
 #include<unordered_set>
@@ -95,16 +95,16 @@ public:
 	static bool is_GOlist_changed;
 	static bool is_selected_changed;
 	static bool is_outliner_selected;
-	static std::function<void* (int)> GetActiveShader;
+	static std::function<GameObject* (int)> GetActiveObject;
 	static int active_GO_ID;
 	static int pre_act_go_ID;
 	static std::vector<int> selec_list;
 	static std::vector<int>parent_index_list;
 	static OutlineData outline_list;
-	OutlineData* GetOutlineData() { return &outline_list; }
-	std::vector<int> GetParentRelatData() { return parent_index_list; }
+	static OutlineData* GetOutlineData() { return &outline_list; }
+	static std::vector<int> GetParentRelatData() { return parent_index_list; }
 
-	static ShaderLib* active_shader;
+	static GameObject* active_object;
 
 public:
 

@@ -67,6 +67,14 @@ void ShaderEditor::UpdateKeyword()
 			SE_CodeEditor.InsertKeyword(table[i + CUSTOM_PARA]);
 }
 
+ShaderLib* ShaderEditor::GetActiveShaderPtr()
+{
+	if (EventListener::active_object == nullptr)
+		return nullptr;
+
+	return (ShaderLib*)(EventListener::active_object->GetShaderStruct());
+}
+
 void ShaderEditor::RenderName(const std::string& _label, std::string* _name, float _width, bool read_only) const
 {
 	RenderName((_label + *_name).c_str(), _name, _width, read_only);
@@ -90,6 +98,8 @@ void ShaderEditor::RenderShaderStruct() const
 	int type_id = 0, vari_id = 0;
 	// [BASE INFO]
 	ImGui::PushID(type_id++);
+
+	ShaderLib* active_shader = ShaderEditor::GetActiveShaderPtr();
 
 	if (ImGui::TreeNode("Base Information")) {
 		ImGui::Text("========================");
@@ -366,16 +376,24 @@ void ShaderEditor::RenderArgs(Args& args, int _type) const
 }
 
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
-	if (active_shader)
-		if (current_edit == CODE_EDITOR)
-			SE_CodeEditor.SetText(active_shader->shader_list[current_shad_type]);
-		else if (current_edit == STRUCT_EDITOR)
-			SE_CodeEditor.SetText(_code);
+
+	ShaderLib* active_shader = ShaderEditor::GetActiveShaderPtr();
+
+	if (active_shader == nullptr)
+		return;
+
+	if (current_edit == CODE_EDITOR)
+		SE_CodeEditor.SetText(active_shader->shader_list[current_shad_type]);
+	else if (current_edit == STRUCT_EDITOR)
+		SE_CodeEditor.SetText(_code);
 }
 
 void ShaderEditor::CompileShader() const {
 
-	if (!active_shader)return;
+	ShaderLib* active_shader = ShaderEditor::GetActiveShaderPtr();
+
+	if (active_shader == nullptr)
+		return;
 
 	Timer timer;
 	switch (current_edit) {
@@ -395,6 +413,9 @@ void ShaderEditor::CompileShader() const {
 
 void ShaderEditor::RenderLayer() const
 {
+
+	ShaderLib* active_shader = ShaderEditor::GetActiveShaderPtr();
+
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
 			LOOP(3)

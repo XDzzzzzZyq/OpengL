@@ -42,7 +42,7 @@ public:
 	void SetShaderValue(const std::string& _name, GLsizei _count, const float* va0, ArrayType _TYPE);
 	void AddBinding(std::string _pass_name, GLuint _slot);
 
-	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>( &pps_shader.value() ); }
+	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>( &pps_shader.value() ); }
 
 public:
 	void RenderPPS();

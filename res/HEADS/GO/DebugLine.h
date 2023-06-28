@@ -49,7 +49,7 @@ public:
 	void RenderDdbugLine(Camera* camera);
 
 	void SetDLineShader();
-	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&dLine_shader.value()); }
+	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&dLine_shader.value()); }
 	void DeleteDLine();
 
 };

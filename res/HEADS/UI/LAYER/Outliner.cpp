@@ -2,13 +2,13 @@
 
 Outliner::Outliner()
 {
+	uly_type = OUTLINER_UILAYER;
 	uly_name = "Outliner";
-
-
 }
 
 Outliner::Outliner(const std::string& name)
 {
+	uly_type = OUTLINER_UILAYER;
 	uly_name = name;
 
 	ImGui::GetIO().Fonts->AddFontDefault();
@@ -42,8 +42,8 @@ void Outliner::UpdateStyle()
 
 void Outliner::UpdateLayer()
 {
-	if (is_GOlist_changed) {
-		SetObjectList(&outline_list);
+	if (EventListener::is_GOlist_changed) {
+		SetObjectList(&EventListener::outline_list);
 	}
 }
 
@@ -71,23 +71,26 @@ void Outliner::RenderLayer() const
 		LOOP(item_list.size()) {
 			if (item_list[i]->is_activated) {
 				if (i != actIndex) {
-					is_selected_changed = true;
-					pre_act_go_ID = active_GO_ID;
-					active_GO_ID = index2id[i];
+					EventListener::is_selected_changed = true;
+					EventListener::pre_act_go_ID = EventListener::active_GO_ID;
+					EventListener::active_GO_ID = index2id[i];
 
-					is_outliner_selected = true;
+					EventListener::is_outliner_selected = true;
 				}
 			}
 
 		}
 
-		if (is_selected_changed) {
-			if (pre_act_go_ID != 0)
-				FindImguiItem(id2index[pre_act_go_ID])->is_activated = false;
-			if (active_GO_ID != 0) {
-				actIndex = id2index[active_GO_ID];
-				if(EventListener::GetActiveShader(active_GO_ID))
-					active_shader = static_cast<ShaderLib*>(EventListener::GetActiveShader(active_GO_ID));
+		if (EventListener::is_selected_changed) {
+
+			// deselect previous object
+			if (EventListener::pre_act_go_ID != 0)
+				FindImguiItem(id2index[EventListener::pre_act_go_ID])->is_activated = false;
+
+			// select new objects
+			if (EventListener::active_GO_ID != 0) {
+				actIndex = id2index[EventListener::active_GO_ID];
+				EventListener::active_object = EventListener::GetActiveObject(active_GO_ID);
 				FindImguiItem(actIndex)->is_activated = true;
 			}
 

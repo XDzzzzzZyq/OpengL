@@ -45,7 +45,7 @@ public:
 	void SetSpriteShader();
 	std::string ParsePath() const;
 	void SetTex();
-	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&spr_shader.value()); };
+	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&spr_shader.value()); };
 
 	void DeleteSprite();
 };

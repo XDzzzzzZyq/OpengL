@@ -49,7 +49,7 @@ public:
 	void PushDebugPoint(float x, float y, float z);
 	void PushDebugPoints(const std::vector<glm::vec3>& points);
 
-	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&dp_shader[(int)is_proj].value()); }
+	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&dp_shader[(int)is_proj].value()); }
 
 	void DeleteDebugPoints() const;
 };

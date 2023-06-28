@@ -12,9 +12,10 @@ enum ShEditMode {
 	CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
 };
 
-class ShaderEditor : public ImguiLayer, public EventListener
+class ShaderEditor : public ImguiLayer
 {
 private:
+
 	class MiniPropPanel final
 	{
 	private:
@@ -35,10 +36,12 @@ private:
 	};
 
 private:
+
 	static TextEditor SE_CodeEditor;
 	static NodeEditor SE_NodeEditor;
 
 private:
+
 	static const std::string edit_mode[3];
 	static const std::string shader_type[2];
 	mutable int active_func{0};
@@ -47,11 +50,15 @@ private:
 	mutable bool is_edit_changed = true, is_shad_type_changed = true;
 	mutable bool add_button = false;
 	mutable bool sel;
+
 public:
+
 	ShaderEditor();
 	ShaderEditor(const std::string& name);
 	~ShaderEditor();
+
 public:
+
 	mutable MiniPropPanel Panel;
 	mutable S_U add_prop;
 	mutable S_func add_args;
@@ -60,10 +67,13 @@ public:
 	bool AddStruct(bool def_type = false) const;
 	bool AddLink();
 	void CompileShader() const;
+
 public:
+
 	void UpdateShaderEditor(const std::string& _code = "") const;
 	void UpdateLayer() override;
 	static void UpdateKeyword();
+	static ShaderLib* GetActiveShaderPtr();
 
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;

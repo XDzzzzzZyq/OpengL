@@ -42,7 +42,7 @@ bool EventListener::is_GOlist_changed = true;
 bool EventListener::is_selected_changed = true;
 bool EventListener::is_outliner_selected = false;
 
-std::function<void* (int)> EventListener::GetActiveShader = [](int) { return (void*)nullptr;};
+std::function<GameObject* (int)> EventListener::GetActiveObject = NULL;
 
 int EventListener::active_GO_ID;
 int EventListener::pre_act_go_ID;
@@ -51,7 +51,7 @@ std::vector<int> EventListener::selec_list;
 std::vector<int> EventListener::parent_index_list;
 OutlineData EventListener::outline_list;
 
-ShaderLib* EventListener::active_shader = (ShaderLib*)nullptr;
+GameObject* EventListener::active_object = (GameObject*)nullptr;
 
 ImVec2 EventListener::window_pos = ImVec2(0, 0);
 ImVec2 EventListener::viewport_offset = ImVec2(0, 0);

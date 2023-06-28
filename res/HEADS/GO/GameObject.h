@@ -1,7 +1,6 @@
 #pragma once
 #include "structs.h"
 #include "support.h"
-#include "ShaderLib.h"
 
 enum GOType
 {
@@ -32,7 +31,9 @@ public:
 	mutable bool is_selected = false;
 	mutable bool is_activated = false;
 
-	virtual ShaderLib* GetShaderStruct() { DEBUG("there is no shader be found") return (ShaderLib*)nullptr; }
+	virtual void* GetShaderStruct() { DEBUG("there is no shader be found")		return nullptr; }
+	virtual void* GetTransform()	{ DEBUG("there is no transform be found")	return nullptr; }
+	virtual void* GetMaterial()		{ DEBUG("there is no material be found")	return nullptr; }
 
 	GameObject();
 	~GameObject();

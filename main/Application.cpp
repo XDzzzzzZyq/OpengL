@@ -238,8 +238,6 @@ int Application::Run()
 		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
 		renderer.GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
 		renderer.r_using_fxaa = !renderer.r_using_fxaa;
-		if (EventListener::active_shader) { DEBUG(EventListener::active_shader->shader_struct_list[1].Main) }
-			//DEBUG(renderer.r_using_fxaa)
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = xdzm::rand3n(8.65f);

@@ -109,7 +109,7 @@ void Renderer::EventInit()
 	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Renderer::LMB_CLICK);
 	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
 
-	EventListener::GetActiveShader = [&](int id) { return obj_list[id]->GetShaderStruct(); };
+	EventListener::GetActiveObject = [&](int id) { return obj_list[id].get(); };
 }
 
 void Renderer::LMB_CLICK()
@@ -125,13 +125,13 @@ void Renderer::LMB_CLICK()
 
 		if (obj_list.find(active_GO_ID) != obj_list.end()) {
 			obj_list[active_GO_ID]->is_selected = true;
-			active_shader = obj_list[active_GO_ID]->GetShaderStruct();
+			EventListener::active_object = obj_list[active_GO_ID].get();
 		}
 
 	}
 	else {
 		active_GO_ID = 0;
-		active_shader = nullptr;
+		EventListener::active_object = nullptr;
 		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
 			obj_list[pre_act_go_ID]->is_selected = false;
 	}

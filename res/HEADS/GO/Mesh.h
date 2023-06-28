@@ -41,7 +41,7 @@ public:
 
 public:
 
-	ShaderLib* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(o_shader.get()); }
+	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(o_shader.get()); }
 	
 	void DeleteObj();
 };

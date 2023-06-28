@@ -51,7 +51,7 @@ public:
 
 	mutable std::vector<float> envir_floatData;
 	void GenFloatData() const;
-	ShaderLib* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }
+	void* GetShaderStruct() { return dynamic_cast<ShaderLib*>(&envir_shader.value()); }
 
 	void RenderEnvironment(Camera* cam);
 	void RenderEnvirSpr(Camera* cam);
