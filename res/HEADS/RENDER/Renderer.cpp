@@ -268,6 +268,7 @@ void Renderer::Render(bool rend, bool buff) {
 			mesh.second->RenderObj(GetActiveCamera().get());
 			mesh.second->is_Uniform_changed = false;
 			mesh.second->o_shader->is_shader_changed = false;
+			mesh.second->o_material->is_mat_struct_changed = false;
 		}
 		is_light_changed = false;
 
