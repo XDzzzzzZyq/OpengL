@@ -34,7 +34,7 @@ typedef std::tuple<int, std::string, ParaType> S_AB, S_REND; //array buffer
 
 enum ShaderType
 {
-	NONE_SHADER=-1, VERTEX_SHADER, FRAGMENT_SHADER, COMPUTE_SHADER, GEOMETRY_SHADER
+	NONE_SHADER = -1, VERTEX_SHADER, FRAGMENT_SHADER, COMPUTE_SHADER, GEOMETRY_SHADER
 };
 
 enum ShaderPropType
@@ -44,17 +44,22 @@ enum ShaderPropType
 
 struct ShaderStruct {
 private:
-	int _max_loc[3]{0,0,0};
+
+	int _max_loc[3]{ 0,0,0 };
 	std::vector<int> _LAY_LOC[3];
 	bool _is_registered(int _loc, ShaderPropType _type) { for (int i : _LAY_LOC[(int)_type]) if (i == _loc)return true; return false; }
 	int _get_avail_loc(int _loc, ShaderPropType _type) { while (_is_registered(_loc, _type))_loc++; _LAY_LOC[(int)_type].push_back(_loc); return _loc; }
+
 public:
 	static std::vector<std::string> type_table;
 public:
+
 	bool is_struct_changed = true;
 	int version = 330;
 	ShaderType type = NONE_SHADER;
+
 public:
+
 	std::vector<S_AB> AB_list;
 	std::vector<S_REND> pass_list;
 	std::vector<S_UBuffer> ubuffer_list;
@@ -72,18 +77,24 @@ public:
 	std::vector<S_func> func_list, buildin_func_list;
 
 	std::string Main;
+
 public:
+
 	static std::string ParseType(ParaType type);
 	static ParaType ParseType(const std::string& type);
 	static std::string ParseCount(int count);
 	static std::string ParseArgs(const Args& args);
 	static Args ParseArgs(const std::string& args);
+
 public:
+
 	static bool IsAvailType(const std::string& type);
 	bool IsIOLinked(std::string_view _name, bool _type = 0);
 	static void ADD_TYPE(const std::string& name);
 	static void Debug() { for (auto& i : type_table) DEBUG("|" + i + "|"); }
+
 public:
+
 	void SetAB			(int _loc, ParaType type, const std::string& _name)				{ is_struct_changed = true; AB_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_IN_PROP)	 , _name, type);}
 	void SetPass		(int _loc, ParaType type, const std::string& _name)				{ is_struct_changed = true; pass_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_BUFFER_PROP), _name, type);}
 	void SetSB			(int _loc, const std::string& _name, const Args& args)			{ is_struct_changed = true; SB_list.emplace_back	(_get_avail_loc(_loc, LAYOUT_OUT_PROP)	 , _name, args);}
@@ -98,30 +109,38 @@ public:
 	void SetBuildinC	(const S_const& buildin)										{ is_struct_changed = true; const_list.emplace_back(buildin); }
 	void SetConst		(ParaType _type, const std::string& _name, const std::string& content) { is_struct_changed = true; const_list.emplace_back(_type, _name, content, NULL); }
 	void SetVar			(const std::string& _type, const std::string& _name, int count)	{ is_struct_changed = true; vari_list.emplace_back(_type, _name, count); }
+
 public:
+
 	void Reset();
+
 };
 
 class ShaderLib
 {
-private:
-
 public:
+
 	ShaderLib();
 	~ShaderLib();
 
 	void InitLib();
+
 public:
+
 	std::string vert_name, frag_name;
 	bool using_nodes = false;
 	bool is_shader_changed = true;
 	ShaderType active_shader;
 	ShaderStruct shader_struct_list[2];
 	std::string shader_list[2];
+
 public:
+
 	std::unordered_map<std::string, int> _LINK_LOC;
 	bool _is_link_repeat(const std::string _name) { for (auto& i : _LINK_LOC) if (_name == i.first)return true; return false; }
+
 public:
+
 	std::string GenerateShader(ShaderType tar = NONE_SHADER);
 	virtual GLuint CompileShader(ShaderType tar) = 0;
 	void ShaderLibDebug() {
@@ -129,18 +148,40 @@ public:
 		DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER])
 #endif
 	};
+
 public:
+
 	static std::string folder_root;
 	static std::vector<std::string> file_type;
+
 public:
 	// Function Lib
-	static S_func gamma;
-	static S_func FilmicF;
-	static S_func FilmicV4;
+	const static S_func gamma;
+	const static S_func FilmicF;
+	const static S_func FilmicV4;
 public:
 	// Struct Lib
 public:
 	// Const Lib
-	static S_const PI;
-	static S_const Pix_UV_ratio;
+	const static S_const PI;
+	const static S_const Pix_UV_ratio;
+
+	const static S_const v_albedo;
+	const static S_const v_metal;
+	const static S_const v_rough;
+	const static S_const v_specu;
+	const static S_const v_emis_c;
+	const static S_const v_emis_s;
+	const static S_const v_alpha;
+
+	const static S_const t_albedo;
+	const static S_const t_metal;
+	const static S_const t_rough;
+	const static S_const t_specu;
+	const static S_const t_emis_c;
+	const static S_const t_emis_s;
+	const static S_const t_alpha;
+
+	const static std::vector<S_const> v_material;
+	const static std::vector<S_const> t_material;
 };
