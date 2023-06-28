@@ -74,6 +74,8 @@ public:
 	inline int GetH()const { return im_h; }
 	inline int GetDPP()const { return im_bpp; }
 	GLuint GetTexID() const { return tex_ID; }
+	std::string GetTexName() const { return tex_path; }
+
 	void ResetTexID(GLuint _ID) { if (tex_ID>0 && tex_ID!=_ID)DelTexture(); tex_ID = _ID; }
 
 public:
