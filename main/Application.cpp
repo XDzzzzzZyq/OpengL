@@ -49,156 +49,13 @@ int Application::Init()
 	Event.SetWindow(window);
 
 	MeshLib::MeshLibInit();
+	
 	/* Make the window's context current */
 	return 0;
 }
 
 int Application::Run()
 {
-	DEBUG("\n---------------CAMERA----------------")
-		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
-	camera->SetPos({ 0.0f, 20.0f, 0.0f });
-	camera->SetRot({ 90, 0, 180 });
-	camera->ApplyTransform();
-	camera->GetInvTransform();
-	renderer.UseCamera(camera);
-
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("monkey2.obj");
-	go1->SetObjShader("testS", "Rasterization");
-	go1->SetTex(MAT_ALBEDO,"avatar2.png");
-	go1->SetCenter();
-	go1->ApplyTransform();
-	go1->SetScale(glm::vec3(0.3));
-	renderer.UseMesh(go1);
-
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
-	go2->SetObjShader("testS", "Rasterization");
-	go2->SetTex(MAT_ALBEDO,"avatar1.png");
-	go2->SetCenter();
-	go2->SetPos({ 8, 0, 0 });
-	go2->SetScale(glm::vec3(1.5f));
-	go2->ApplyTransform();
-	go1->SetParent(go2->GetTransformPtr());
-	renderer.UseMesh(go2);
-
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("UVsphere.obj");
-	go3->SetObjShader("testS", "Rasterization");
-	go3->SetTex(MAT_ROUGH, "avatar1.png");
-	go3->SetMatColor(MAT_ALBEDO, glm::vec3(0.1));
-	go3->SetMatColor(MAT_METAL, 0.1);
-	go3->SetPos({ -8,0,0 });
-	go3->SetScale({ 3,3,3 });
-	renderer.UseMesh(go3);
-
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
-	go4->SetObjShader("testS", "Rasterization");
-	go4->SetTex(MAT_ALBEDO,"rough.png");
-	go4->SetMatColor(MAT_ROUGH, 0.9);
-;	go4->SetPos({ 0,-7,0 });
-	go4->SetScale({ 2,2,2 });
-	go4->SetRot({ 0,90,90 });
-	renderer.UseMesh(go4);
-
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("square.obj");
-	go5->SetObjShader("testS", "Rasterization");
-	go5->SetShadow(false);
-	renderer.UseMesh(go5);
-
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
-	pointLight1->ApplyTransform();
-	//renderer.UseLight(pointLight1);
-
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight2->SetRadius(2);
-	//renderer.UseLight(pointLight2);
-
-	DEBUG("\n---------------LIGHT----------------")
-	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
-	sunLight1->SetRot(glm::vec3(0,90,0));
-	sunLight1->SetPos(glm::vec3(2));
-	sunLight1->SetPower(20);
-	//renderer.UseLight(sunLight1);
-
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
-	spotLight1->SetRot(glm::vec3(45));
-	spotLight1->SetPos({ 6,-6,0 });
-	spotLight1->SetCutoff(60);
-	spotLight1->SetOuterCutoff(80);
-	spotLight1->SetPower(50);
-	//renderer.UseLight(spotLight1);
-
-	DEBUG("\n-------------AREA LIGHT-------------")
-		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(2));
-	areaLight1->SetRot({ 0, 90, 45 });
-	areaLight1->SetPower(50);
-	areaLight1->SetRatio(1.5f);
-	go5->SetParent(areaLight1->GetTransformPtr(), false);
-	renderer.UseLight(areaLight1);
-
-	DEBUG("\n------------POLYGON LIGHT-------------")
-	std::vector<float> plVertData = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		2.0f, 2.0f,
-		0.0f, 2.0f
-	};
-	std::shared_ptr<PolygonLight> polyLight1 = std::make_shared<PolygonLight>(plVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
-	polyLight1->SetPos({ 0.0f, -3.0f, -4.0f });
-	polyLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
-	//renderer.UsePolygonLight(polyLight1);
-
-	DEBUG("\n---------------LINE----------------")
-		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
-	line->PushDebugLine(5, 5, 5);
-	renderer.UseDebugLine(line);
-
-	DEBUG("\n---------------LINE----------------")
-		std::shared_ptr<DebugLine> line2 = std::make_shared<DebugLine>();
-	line2->PushDebugLines({ {0,0,0} , {0,0,1} });
-	line2->SetParent(spotLight1->GetTransformPtr(), false);
-	renderer.UseDebugLine(line2);
-
-	DEBUG("\n---------------ENVIR----------------")
-		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
-	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
-	renderer.UseEnvironment(environment);
-
-	DEBUG("\n---------------POINT----------------")
-		std::shared_ptr<DebugPoints> points = std::make_shared<DebugPoints>();
-	points->PushDebugPoint(5, 5, 5);
-	renderer.UseDebugPoints(points);
-
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
-	pps1->AddBinding("U_color",				BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos",				BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal",			BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo",			BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse",				BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission",			BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha",				BUFFER_TEXTURE + MASK_FB);
-	pps1->AddBinding("Envir_Texture_diff",	IBL_TEXTURE);
-	pps1->AddBinding("Envir_Texture_spec",	IBL_TEXTURE + 1);
-	pps1->AddBinding("LUT",					PNG_TEXTURE);
-	pps1->AddBinding("LTC1",                13);	// Pass LTC matrix lookup tables for poly & area lights
-	pps1->AddBinding("LTC2",				14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
-	renderer.UsePostProcessing(pps1);
-
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
-	pps2->AddBinding("U_combine",			BUFFER_TEXTURE + COMBINE_FB);
-	pps2->AddBinding("U_select",			BUFFER_TEXTURE + MASK_FB);
-	renderer.UsePostProcessing(pps2);
-
 	DEBUG("-------------------------------")
 		/////////////////////////////////
 
@@ -214,6 +71,8 @@ int Application::Run()
 	// 	}
 
 	UI.ManagerInit(window);
+
+	renderer.UseScene(SceneManager::SceneConfig1());
 
 	static float scale = 0.3f;
 	static float power = 0.5f;
@@ -242,8 +101,8 @@ int Application::Run()
 		});
 	UI.SetButtonFunc("test layer", "testB", [&] {
 		glm::vec3 newpoint2 = xdzm::rand3n(8.65f);
-		points->PushDebugPoint(newpoint2);
-		line->PushDebugLine(newpoint2);
+		//points->PushDebugPoint(newpoint2);
+		//line->PushDebugLine(newpoint2);
 		UI.GetParaValue("test layer", "Roughness")->para_data.fdata = xdzm::rand11();
 		//go1.o_shader->ShaderLibDebug();
 		//environment->envir_shader->ShaderLibDebug();
@@ -251,7 +110,7 @@ int Application::Run()
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
-		camera->ChangeCamRatio(view_size);
+		renderer.GetActiveCamera()->ChangeCamRatio(view_size);
 		renderer.FrameResize(view_size.x, view_size.y);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
@@ -296,12 +155,8 @@ int Application::Run()
 
 		/* Render here */
 
-		go1->SetRot1D<2>(renderer.r_frame_num / 25.0f);
-
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
-
-		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
 
 		Light::point_blur_range = 0.001 + testf/10;
 
@@ -309,9 +164,6 @@ int Application::Run()
 		UI.RenderUI();
 		Event.Reset();
 
-		if (renderer.r_frame_num % 10 == 0) {
-			UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(renderer.r_light_data.shadow_cache[pointLight1->GetObjectID()].GetTexID());
-		}
 		//GLDEBUG
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

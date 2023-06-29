@@ -60,10 +60,10 @@ Renderer::~Renderer()
 
 std::string Renderer::GetObjectName(int ID)
 {
-	if(obj_list.find(ID) == obj_list.end())
+	if(r_scene->obj_list.find(ID) == r_scene->obj_list.end())
 		return "None";
 
-	return obj_list[ID]->o_name;
+	return r_scene->obj_list[ID]->o_name;
 }
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
@@ -112,7 +112,7 @@ void Renderer::EventInit()
 	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Renderer::LMB_CLICK);
 	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
 
-	EventListener::GetActiveObject = [&](int id) { return obj_list[id].get(); };
+	EventListener::GetActiveObject = [&](int id) { return r_scene->obj_list[id].get(); };
 }
 
 void Renderer::LMB_CLICK()
@@ -123,13 +123,13 @@ void Renderer::LMB_CLICK()
 	int id = GetSelectID(mouse_x, mouse_y);
 	if (id == EventListener::active_GO_ID) return;
 
-	if (obj_list.find(active_GO_ID) != obj_list.end())
-		obj_list[EventListener::active_GO_ID]->is_selected = false;
+	if (r_scene->obj_list.find(EventListener::active_GO_ID) != r_scene->obj_list.end())
+		r_scene->obj_list[EventListener::active_GO_ID]->is_selected = false;
 
 	EventListener::active_GO_ID = id;
 
-	if (obj_list.find(EventListener::active_GO_ID) != obj_list.end()) {
-		obj_list[EventListener::active_GO_ID]->is_selected = true;
+	if (r_scene->obj_list.find(EventListener::active_GO_ID) != r_scene->obj_list.end()) {
+		r_scene->obj_list[EventListener::active_GO_ID]->is_selected = true;
 		EventListener::active_object = EventListener::GetActiveObject(EventListener::active_GO_ID);
 	}
 	else {
@@ -140,7 +140,7 @@ void Renderer::LMB_CLICK()
 
 	EventListener::is_selected_changed = true;
 
-	for (auto [id, _] : sprite_list)
+	for (auto [id, _] : r_scene->sprite_list)
 		is_sprite_selected |= id == active_GO_ID;
 }
 
@@ -176,8 +176,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/* Check at least one camera and environment */
 
-	if (cam_list.find(0) == cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
-	if (envir_list.find(0) == envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
+	if (r_scene->cam_list.find(0) == r_scene->cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
+	if (r_scene->envir_list.find(0) == r_scene->envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
@@ -185,7 +185,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	///////////  Lights Data PreCalc  ///////////
 
-	for (auto& [id, light] : light_list) {
+	for (auto& [id, light] : r_scene->light_list) {
 
 		/*	    Capture Status		*/
 		light->ApplyAllTransform();
@@ -234,7 +234,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////    MESHES    ////////////
 
 		GetActiveEnvironment()->BindEnvironTexture();
-		for (const auto& [id, mesh] : mesh_list)
+		for (const auto& [id, mesh] : r_scene->mesh_list)
 		{
 			if (!mesh->is_viewport)continue;
 
@@ -248,19 +248,19 @@ void Renderer::Render(bool rend, bool buff) {
 
 		/////////  POLYGONAL LIGHTS POLYGON    /////////
 
-		for (const auto& [id, polyLight] : poly_light_list)
+		for (const auto& [id, polyLight] : r_scene->poly_light_list)
 		{
 			polyLight->ApplyAllTransform();
 			polyLight->RenderPolygon(GetActiveCamera().get());
 			if (polyLight->is_Uniform_changed)
-				r_light_data.ParsePolygonLightData(poly_light_list);
+				r_light_data.ParsePolygonLightData(r_scene->poly_light_list);
 			polyLight->is_Uniform_changed = false;
 			polyLight->o_shader->is_shader_changed = false;
 		}
 
 		/////////    DEBUG MESHES    /////////
 
-		for (const auto& [id, dLine] : dLine_list)
+		for (const auto& [id, dLine] : r_scene->dLine_list)
 		{
 			if (!dLine->is_viewport)continue;
 			dLine->ApplyAllTransform();
@@ -268,7 +268,7 @@ void Renderer::Render(bool rend, bool buff) {
 			dLine->is_Uniform_changed = false;
 		}
 
-		for (const auto& [id, dPoints] : dPoints_list)
+		for (const auto& [id, dPoints] : r_scene->dPoints_list)
 		{
 			if (!dPoints->is_viewport)continue;
 			dPoints->ApplyAllTransform();
@@ -280,16 +280,16 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////    ICONS    ////////////
 
 		glEnable(GL_BLEND);
-		for (const auto& [id, light] : light_list)
+		for (const auto& [id, light] : r_scene->light_list)
 		{
 			if (!light->light_sprite.is_viewport)continue;
 			light->RenderLightSpr(GetActiveCamera().get());
 		}
-		for (const auto& [id, envir] : envir_list) {
+		for (const auto& [id, envir] : r_scene->envir_list) {
 			if (!envir->envir_sprite.is_viewport)continue;
 			envir->RenderEnvirSpr(GetActiveCamera().get());
 		}
-		for (const auto& pps : pps_list) {
+		for (const auto& pps : r_scene->pps_list) {
 			if (!pps->pps_sprite.is_viewport)continue;
 			pps->RenderPPSSpr(GetActiveCamera().get());
 		}
@@ -343,16 +343,16 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  PBR COMPOSE  ////////////
 
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-		pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
-		pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
+		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
+		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
 		TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
 		TextureLib::LTC1()->Bind(13);
 		TextureLib::LTC2()->Bind(14);
 		r_light_data.Bind();
 		if (GetActiveCamera()->is_Uniform_changed)
-			pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+			r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		r_render_result->BindFrameBuffer();
-		pps_list[_PBR_COMP_PPS]->RenderPPS();
+		r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS();
 
 		// store render result
 		r_render_result->UnbindFrameBuffer();
@@ -414,7 +414,7 @@ void Renderer::RenderShadowMap(Light* light)
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	for (const auto& [id, mesh] : mesh_list) {
+	for (const auto& [id, mesh] : r_scene->mesh_list) {
 		if(!mesh->using_shadow) continue;
 
 		light->BindTargetTrans(mesh->o_Transform);
@@ -464,156 +464,46 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 
 
 
-void Renderer::UseCamera(std::shared_ptr<Camera> camera)
+void Renderer::UseScene(std::shared_ptr<SceneResource> _scene)
 {
-	if (cam_list.find(camera->GetObjectID()) == cam_list.end())
-	{
-		cam_list[0] = camera;
-		return;
-	}
+	r_scene = _scene;
 
-	is_GOlist_changed = true;
-	cam_list[camera->GetObjectID()] = camera;
-	obj_list[camera->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(camera);
-	cam_list[0] = camera;
-	outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
-	parent_index_list.push_back(-1);
+	r_light_data.ParseLightData(_scene->light_list);
+	r_light_data.ParsePolygonLightData(_scene->poly_light_list);
 }
 
-void Renderer::UseCamera(const int& cam_id)
+void Renderer::ActivateCamera(int cam_id)
 {
-	if (cam_list.find(cam_id) == cam_list.end())
+	if (r_scene->cam_list.find(cam_id) == r_scene->cam_list.end())
 		return;
 
 	is_GOlist_changed = true;
-	cam_list[0] = cam_list[cam_id];
+	r_scene->cam_list[0] = r_scene->cam_list[cam_id];
 }
 
 std::shared_ptr<Camera> Renderer::GetActiveCamera()
 {
-	return cam_list[0];
+	return r_scene->cam_list[0];
 }
 
-//////////////////////////////////////////////
-void Renderer::UseMesh(std::shared_ptr<Mesh> mesh)
+void Renderer::ActivateEnvironment(int envir_id)
 {
-	if (mesh_list.find(mesh->GetObjectID()) != mesh_list.end())
+	if (r_scene->envir_list.find(envir_id) == r_scene->envir_list.end())
 		return;
 
 	is_GOlist_changed = true;
-	mesh_list[mesh->GetObjectID()] = mesh;
-	obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(mesh);
-	outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
-	parent_index_list.push_back(-1);
-
-}
-
-//////////////////////////////////////////////
-void Renderer::UseLight(std::shared_ptr<Light> light)
-{
-	if (light_list.find(light->GetObjectID()) != light_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	is_light_changed = true;
-	light_list[light->GetObjectID()] = light;
-	obj_list[light->light_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
-
-	outline_list.push_back(OutlineElement(light->o_type, light->light_sprite.GetObjectID(), light->o_name, 0));
-	parent_index_list.push_back(-1);
-
-	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
-
-	r_light_data.ParseLightData(light_list);
-}
-
-void Renderer::UsePolygonLight(std::shared_ptr<PolygonLight> polyLight)
-{
-	if (poly_light_list.find(polyLight->GetObjectID()) != poly_light_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	poly_light_list[polyLight->GetObjectID()] = polyLight;
-	is_GOlist_changed = true;
-	obj_list[polyLight->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(polyLight);
-	outline_list.push_back(OutlineElement(polyLight->o_type, polyLight->GetObjectID(), polyLight->o_name, 0));
-	parent_index_list.push_back(-1);
-
-	r_light_data.ParsePolygonLightData(poly_light_list);
-}
-
-void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)
-{
-	if (envir_list.find(envir->GetObjectID()) != envir_list.end())
-	{
-		envir_list[0] = envir;
-		return;
-	}
-
-	is_GOlist_changed = true;
-	envir_list[envir->GetObjectID()] = envir;
-	envir_list[0] = envir;
-	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
-
-	outline_list.push_back(OutlineElement(envir->o_type, envir->envir_sprite.GetObjectID(), envir->o_name, 0));
-	parent_index_list.push_back(-1);
-
-	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
-}
-
-void Renderer::UseEnvironment(const int& envir_id)
-{
-	if (envir_list.find(envir_id) == envir_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	envir_list[0] = envir_list[envir_id];
-
+	r_scene->envir_list[0] = r_scene->envir_list[envir_id];
 }
 
 std::shared_ptr<Environment> Renderer::GetActiveEnvironment()
 {
-	return envir_list[0];
-}
-
-void Renderer::UseDebugLine(std::shared_ptr<DebugLine> dline)
-{
-	if (dLine_list.find(dline->GetObjectID()) != dLine_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	dLine_list[dline->GetObjectID()] = dline;
-	obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dline);
-	outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
-	parent_index_list.push_back(-1);
-
-}
-
-void Renderer::UseDebugPoints(std::shared_ptr<DebugPoints> dpoints)
-{
-	if (dPoints_list.find(dpoints->GetObjectID()) != dPoints_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	dPoints_list[dpoints->GetObjectID()] = dpoints;
-	obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dpoints);
-	outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
-	parent_index_list.push_back(-1);
-}
-
-void Renderer::UsePostProcessing(std::shared_ptr<PostProcessing> pps)
-{
-	pps_list.emplace_back(pps);
-	obj_list[pps->pps_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(pps);
-
-	outline_list.push_back(OutlineElement(pps->o_type, pps->pps_sprite.GetObjectID(), pps->o_name, 0));
-	parent_index_list.push_back(-1);
+	return r_scene->envir_list[0];
 }
 
 std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
 {
-	if (_tar >= pps_list.size())
+	if (_tar >= r_scene->pps_list.size())
 		return nullptr;
 
-	return pps_list[_tar];
+	return r_scene->pps_list[_tar];
 }

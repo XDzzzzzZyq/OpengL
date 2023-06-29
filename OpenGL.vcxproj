@@ -90,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -111,7 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -173,6 +173,7 @@
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main\Application.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
+    <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\MaterialViewer.cpp" />
     <ClCompile Include="res\HEADS\GO\Sprite.cpp" />
     <ClCompile Include="res\HEADS\RENDER\MeshData.cpp" />
@@ -213,7 +214,6 @@
     <ClCompile Include="res\HEADS\GO\GameObject.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Renderer.cpp" />
     <ClCompile Include="res\HEADS\GO\Mesh.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\ImGuiWIndow.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BufferLayout.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\IndexBuffer.cpp" />
     <ClCompile Include="res\HEADS\stb_image\stb_image.cpp" />
@@ -230,6 +230,7 @@
     <ClCompile Include="res\HEADS\UI\NodesColor.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\TransformPanel.cpp" />
+    <ClCompile Include="res\HEADS\FILEIO\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\cubicSpline\CubicSplineHelpers.inl" />
@@ -367,7 +368,6 @@
     <ClInclude Include="res\HEADS\GO\GameObject.h" />
     <ClInclude Include="res\HEADS\RENDER\Renderer.h" />
     <ClInclude Include="res\HEADS\GO\Mesh.h" />
-    <ClInclude Include="res\HEADS\RENDER\ImGuiWIndow.h" />
     <ClInclude Include="res\HEADS\RENDER\BufferLayout.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h" />
     <ClInclude Include="res\HEADS\stb_image\stb_image.h" />
@@ -385,6 +385,7 @@
     <ClInclude Include="res\HEADS\UI\LAYER\ShaderEditor.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\TransformPanel.h" />
+    <ClInclude Include="res\HEADS\FILEIO\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="dep\GLEW\doc\github.png" />

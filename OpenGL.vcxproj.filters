@@ -39,9 +39,6 @@
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\ImGuiWIndow.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="res\HEADS\GO\Mesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -219,6 +216,12 @@
     <ClCompile Include="res\HEADS\UI\LAYER\TransformPanel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\FILEIO\SceneManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -345,9 +348,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\ImGui\imgui_impl_glfw.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\ImGuiWIndow.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\GO\Mesh.h">
@@ -546,6 +546,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\UI\LAYER\TransformPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\FILEIO\SceneManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,19 +2,10 @@
 
 #include "support.h"
 
-#include "Mesh.h"
-#include "Camera.h"
-#include "Light.h"
-#include "PolygonLight.h"
-#include "Environment.h"
-#include "DebugLine.h"
-#include "DebugPoints.h"
-#include "PostProcessing.h"
-#include "FrameBuffer.h"
-
 #include "EventListener.h"
 
-#include "Sprite.h"
+#include "SceneManager.h"
+#include "FrameBuffer.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -61,16 +52,7 @@ public:
 public:
 	bool is_light_changed = false;
 
-	std::unordered_map<int, std::shared_ptr<GameObject>>		obj_list; //for selectables
-	std::unordered_map<int, std::shared_ptr<Camera>>			cam_list;
-	std::unordered_map<int, std::shared_ptr<Mesh>>		       mesh_list;
-	std::unordered_map<int, std::shared_ptr<Light>>			  light_list; //num | pointer
-	std::unordered_map<int, std::shared_ptr<PolygonLight>>  poly_light_list;
-	std::unordered_map<int, std::shared_ptr<Environment>>	  envir_list;
-	std::unordered_map<int, std::shared_ptr<Sprite>>	     sprite_list;
-	std::unordered_map<int, std::shared_ptr<DebugLine>>		  dLine_list;
-	std::unordered_map<int, std::shared_ptr<DebugPoints>>	dPoints_list;
-	std::vector		  <std::shared_ptr<PostProcessing>>			pps_list;
+	std::shared_ptr<SceneResource> r_scene;
 
 	LightArrayBuffer r_light_data;
 
@@ -107,24 +89,13 @@ public:
 
 public:
 
-	void UseCamera(std::shared_ptr<Camera> camera);
-	void UseCamera(const int& cam_id);
+	void UseScene(std::shared_ptr<SceneResource> _scene);
+
+	void ActivateCamera(int cam_id);
+	void ActivateEnvironment(int envir_id);
+
 	std::shared_ptr<Camera> GetActiveCamera();
-
-	void UseMesh(std::shared_ptr<Mesh> mesh);
-
-	void UseLight(std::shared_ptr<Light> light);
-	void UsePolygonLight(std::shared_ptr<PolygonLight> polyLight);
-
-	void UseEnvironment(std::shared_ptr<Environment> envir);
-	void UseEnvironment(const int& envir_id);
 	std::shared_ptr<Environment> GetActiveEnvironment();
-
-	void UseDebugLine(std::shared_ptr<DebugLine> dline);
-	void UseDebugPoints(std::shared_ptr<DebugPoints> dpoints);
-
-	void UsePostProcessing(std::shared_ptr<PostProcessing> pps);
 	std::shared_ptr<PostProcessing> GetPPS(int _tar);
-
 };
 
