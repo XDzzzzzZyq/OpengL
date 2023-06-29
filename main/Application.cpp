@@ -49,17 +49,8 @@ int Application::Init()
 	Event.SetWindow(window);
 
 	MeshLib::MeshLibInit();
-	
-	/* Make the window's context current */
-	return 0;
-}
 
-int Application::Run()
-{
-	DEBUG("-------------------------------")
-		/////////////////////////////////
-
-		UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
+	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
@@ -72,7 +63,16 @@ int Application::Run()
 
 	UI.ManagerInit(window);
 
-	renderer.UseScene(SceneManager::SceneConfig1());
+	renderer.UseScene(SceneManager::SceneConfig2());
+	
+	/* Make the window's context current */
+	return 0;
+}
+
+int Application::Run()
+{
+	DEBUG("-------------------------------")
+		/////////////////////////////////
 
 	static float scale = 0.3f;
 	static float power = 0.5f;
@@ -157,8 +157,6 @@ int Application::Run()
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
-
-		Light::point_blur_range = 0.001 + testf/10;
 
 		renderer.Render();
 		UI.RenderUI();

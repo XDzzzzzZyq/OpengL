@@ -72,7 +72,7 @@ public:
 public:
 
 	bool is_light_changed{ false };
-	void SetColor(ImVec4 _col);
+	void SetColor(const glm::vec3& _col);
 	void SetPower(float _power);
 	void SetShadow(bool _state);
 	void SetRadius(float _rad);

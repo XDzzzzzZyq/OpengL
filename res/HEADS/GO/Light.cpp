@@ -114,12 +114,12 @@ inline std::pair<SpriteType, std::string> Light::ParseLightName(LightType _type)
 	}
 }
 
-void Light::SetColor(ImVec4 _col)
+void Light::SetColor(const glm::vec3& _col)
 {
-	if (ImVec4_vec3(_col) == light_color) return;
+	if (_col == light_color) return;
 
 	is_light_changed = true;
-	light_color = ImVec4_vec3(_col);
+	light_color = _col;
 }
 
 void Light::SetPower(float _power)
