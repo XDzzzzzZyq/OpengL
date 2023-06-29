@@ -3640,37 +3640,42 @@ bool ImGui::InputScalar(const char* label, ImGuiDataType data_type, void* p_data
 
 bool ImGui::InputScalarN(const char* label, ImGuiDataType data_type, void* p_data, int components, const void* p_step, const void* p_step_fast, const char* format, ImGuiInputTextFlags flags)
 {
-    ImGuiWindow* window = GetCurrentWindow();
-    if (window->SkipItems)
-        return false;
+    return InputScalarNM(label, data_type, p_data, components, p_step, p_step_fast, format, flags, label);
+}
 
-    ImGuiContext& g = *GImGui;
-    bool value_changed = false;
-    BeginGroup();
-    PushID(label);
-    PushMultiItemsWidths(components, CalcItemWidth());
-    size_t type_size = GDataTypeInfo[data_type].Size;
-    for (int i = 0; i < components; i++)
-    {
-        PushID(i);
-        if (i > 0)
-            SameLine(0, g.Style.ItemInnerSpacing.x);
-        value_changed |= InputScalar("", data_type, p_data, p_step, p_step_fast, format, flags);
-        PopID();
-        PopItemWidth();
-        p_data = (void*)((char*)p_data + type_size);
-    }
-    PopID();
+IMGUI_API bool ImGui::InputScalarNM(const char* label, ImGuiDataType data_type, void* p_data, int components, const void* p_step /*= NULL*/, const void* p_step_fast /*= NULL*/, const char* format /*= NULL*/, ImGuiInputTextFlags flags /*= 0*/, const char* _ID /*= nullptr*/)
+{
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
 
-    const char* label_end = FindRenderedTextEnd(label);
-    if (label != label_end)
-    {
-        SameLine(0.0f, g.Style.ItemInnerSpacing.x);
-        TextEx(label, label_end);
-    }
+	ImGuiContext& g = *GImGui;
+	bool value_changed = false;
+	BeginGroup();
+	PushID(_ID);
+	PushMultiItemsWidths(components, CalcItemWidth());
+	size_t type_size = GDataTypeInfo[data_type].Size;
+	for (int i = 0; i < components; i++)
+	{
+		PushID(i);
+		if (i > 0)
+			SameLine(0, g.Style.ItemInnerSpacing.x);
+		value_changed |= InputScalar("", data_type, p_data, p_step, p_step_fast, format, flags);
+		PopID();
+		PopItemWidth();
+		p_data = (void*)((char*)p_data + type_size);
+	}
+	PopID();
 
-    EndGroup();
-    return value_changed;
+	const char* label_end = FindRenderedTextEnd(label);
+	if (label != label_end)
+	{
+		SameLine(0.0f, g.Style.ItemInnerSpacing.x);
+		TextEx(label, label_end);
+	}
+
+	EndGroup();
+	return value_changed;
 }
 
 bool ImGui::InputFloat(const char* label, float* v, float step, float step_fast, const char* format, ImGuiInputTextFlags flags)
@@ -3687,6 +3692,11 @@ bool ImGui::InputFloat2(const char* label, float v[2], const char* format, ImGui
 bool ImGui::InputFloat3(const char* label, float v[3], const char* format, ImGuiInputTextFlags flags)
 {
     return InputScalarN(label, ImGuiDataType_Float, v, 3, NULL, NULL, format, flags);
+}
+
+IMGUI_API bool ImGui::InputFloat3M(const char* id, const char* label, float v[3], const char* format /*= "%.3f"*/, ImGuiInputTextFlags flags /*= 0*/)
+{
+    return InputScalarNM(label, ImGuiDataType_Float, v, 3, NULL, NULL, format, flags, id);
 }
 
 bool ImGui::InputFloat4(const char* label, float v[4], const char* format, ImGuiInputTextFlags flags)
