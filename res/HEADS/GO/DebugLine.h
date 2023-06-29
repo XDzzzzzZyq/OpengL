@@ -50,6 +50,8 @@ public:
 
 	void SetDLineShader();
 	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(&dLine_shader.value()); }
+	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
+
 	void DeleteDLine();
 
 };

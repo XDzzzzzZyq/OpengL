@@ -35,4 +35,6 @@ public:
 	void RenderPolygon(Camera* cam);
 	void SetPolygonShader();
 	void DeletePolygon();
+
+	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 };

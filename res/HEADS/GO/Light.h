@@ -98,6 +98,9 @@ public:
 	void BindTargetTrans(const glm::mat4& _trans);
 	void UpdateProjMatrix();
 	void BindShadowMap(GLuint _slot = GL_TEXTURE31);
+
+public:
+	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 };
 
 

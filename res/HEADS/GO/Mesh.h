@@ -43,6 +43,7 @@ public:
 
 	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>(o_shader.get()); }
 	void* GetMaterial()		override { return o_material.get(); }
+	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 	
 	void DeleteObj();
 };
