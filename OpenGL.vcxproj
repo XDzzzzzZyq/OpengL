@@ -229,6 +229,7 @@
     <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp" />
     <ClCompile Include="res\HEADS\UI\NodesColor.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp" />
+    <ClCompile Include="res\HEADS\UI\LAYER\TransformPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\cubicSpline\CubicSplineHelpers.inl" />
@@ -383,6 +384,7 @@
     <ClInclude Include="res\HEADS\RENDER\ShaderLib.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\ShaderEditor.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h" />
+    <ClInclude Include="res\HEADS\UI\LAYER\TransformPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="dep\GLEW\doc\github.png" />

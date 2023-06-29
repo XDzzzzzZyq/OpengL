@@ -52,7 +52,9 @@ void ImguiManager::DefultViewports() {
 
 	auto shaderedit = CreateImguiLayer<ShaderEditor>("Shader Editor");     //ShaderEditor must after Outliner since the order of "EventListener::is_selected_changed"
 
-	auto material = CreateImguiLayer<MaterialViewer>("material");
+	auto material = CreateImguiLayer<MaterialViewer>("Material");
+
+	auto transform = CreateImguiLayer<TransformPanel>("Transform");
 
 	SetActiveImguiLayer("__Parameters__");
 }

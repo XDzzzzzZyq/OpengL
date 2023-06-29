@@ -69,6 +69,7 @@ int Application::Run()
 	go1->SetTex(MAT_ALBEDO,"avatar2.png");
 	go1->SetCenter();
 	go1->ApplyTransform();
+	go1->SetScale(glm::vec3(0.3));
 	renderer.UseMesh(go1);
 
 	DEBUG("\n---------------MESH----------------")
@@ -295,41 +296,11 @@ int Application::Run()
 
 		/* Render here */
 
-		go1->SetScale(0.7f * glm::vec3(scale));
-		go1->SetRot(glm::vec3(0.0f, 0.0f, renderer.r_frame_num / 25.0f));
-
-		go2->SetRot(ImVec4_vec3_Uni(LightRot, 90.0f));
+		go1->SetRot1D<2>(renderer.r_frame_num / 25.0f);
 
 		renderer.GetActiveCamera()->EventActivate();
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 
-		pointLight1->SetColor(LightColor);
-		pointLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		pointLight1->SetPower((rotateY + 50) * power);
-		pointLight1->SetRadius(Radius_W);
-
-		pointLight2->SetPos(ImVec4_vec3_Uni(LightPos, -10.0f));
-		pointLight2->SetPower((rotateZ + 50) * power);
-
-		sunLight1->SetRot1D<2>(Radius_W * 36);
-		sunLight1->SetPower(power * 4);
-
-		spotLight1->SetRot1D<2>(Radius_W * 36);
-		spotLight1->SetCutoff(rotateY);
-		spotLight1->SetOuterCutoff(rotateZ);
-		spotLight1->SetPower(power * 80 + 20);
-		spotLight1->SetPos(ImVec4_vec3_Uni(LightPos, 20.0f));
-
-		areaLight1->SetPos(ImVec4_vec3_Uni(LightPos, 10.0f));
-		areaLight1->SetPower(power * 30 + 10);
-		areaLight1->SetColor(LightColor);
-		areaLight1->SetRatio((rotateY + 135)/180);
-		areaLight1->SetRot1D<2>(Radius_W * 36);
-		areaLight1->SetScale(glm::vec3(1.0f + (rotateZ) / 20));
-
-		polyLight1->SetPos(glm::vec3{ 6,-6,0 } + ImVec4_vec3_Uni(LightPos, 2.0f));
-
-		line->SetPos(glm::vec3(rotateX, 0, 0));
 		line->dLine_color = glm::vec3(1, (90 - rotateY) / 90, (90 - rotateZ) / 90);
 
 		Light::point_blur_range = 0.001 + testf/10;
