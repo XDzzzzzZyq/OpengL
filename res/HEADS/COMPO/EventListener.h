@@ -97,7 +97,6 @@ public:
 	static bool is_outliner_selected;
 	static std::function<GameObject* (int)> GetActiveObject;
 	static int active_GO_ID;
-	static int pre_act_go_ID;
 	static std::vector<int> selec_list;
 	static std::vector<int>parent_index_list;
 	static OutlineData outline_list;

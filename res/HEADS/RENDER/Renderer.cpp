@@ -60,7 +60,10 @@ Renderer::~Renderer()
 
 std::string Renderer::GetObjectName(int ID)
 {
-	return name_buff[ID];
+	if(obj_list.find(ID) == obj_list.end())
+		return "None";
+
+	return obj_list[ID]->o_name;
 }
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
@@ -69,12 +72,12 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 		return r_buffer_list[_RASTER].ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 	else
-		return active_GO_ID;
+		return EventListener::active_GO_ID;
 }
 
 void Renderer::InitFrameBuffer()
 {
-	r_render_result = FrameBuffer(std::vector<FBType>RESULT_PASSES);
+	r_render_result = std::make_shared<FrameBuffer>(std::vector<FBType>RESULT_PASSES);
 	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
 	r_buffer_list.emplace_back(std::vector<FBType>{ LIGHT_AO_FB });
 }
@@ -114,47 +117,31 @@ void Renderer::EventInit()
 
 void Renderer::LMB_CLICK()
 {
-	if (!IsMouseClick()) return;
-	pre_act_go_ID = active_GO_ID;
+	if (!EventListener::IsMouseClick()) return;
+	if (!EventListener::is_in_viewport) return;
 
-	active_GO_ID = GetSelectID(mouse_x, mouse_y);
+	int id = GetSelectID(mouse_x, mouse_y);
+	if (id == EventListener::active_GO_ID) return;
 
-	if (name_buff.find(active_GO_ID) != name_buff.end()) {
-		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
-			obj_list[pre_act_go_ID]->is_selected = false;
+	if (obj_list.find(active_GO_ID) != obj_list.end())
+		obj_list[EventListener::active_GO_ID]->is_selected = false;
 
-		if (obj_list.find(active_GO_ID) != obj_list.end()) {
-			obj_list[active_GO_ID]->is_selected = true;
-			EventListener::active_object = obj_list[active_GO_ID].get();
-		}
+	EventListener::active_GO_ID = id;
 
+	if (obj_list.find(EventListener::active_GO_ID) != obj_list.end()) {
+		obj_list[EventListener::active_GO_ID]->is_selected = true;
+		EventListener::active_object = EventListener::GetActiveObject(EventListener::active_GO_ID);
 	}
 	else {
-		active_GO_ID = 0;
+		EventListener::active_GO_ID = 0;
 		EventListener::active_object = nullptr;
-		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
-			obj_list[pre_act_go_ID]->is_selected = false;
-	}
-
-	if (multi_select) {
-		is_selected_changed = pre_act_go_ID != active_GO_ID;
-	}
-	else {
-		is_selected_changed = pre_act_go_ID != active_GO_ID;
-	}
-
-	for (auto i : sprite_id_buff) {
-		if (i == active_GO_ID) {
-			is_sprite_selected = true;
-			return;
-		}
-		else {
-			is_sprite_selected = false;
-		}
-
 	}
 
 
+	EventListener::is_selected_changed = true;
+
+	for (auto [id, _] : sprite_list)
+		is_sprite_selected |= id == active_GO_ID;
 }
 
 void Renderer::SHIFT()
@@ -169,19 +156,6 @@ void Renderer::NewFrame()
 	glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glViewport(0, 0, r_frame_width, r_frame_height);
-
-	if (is_outliner_selected) {
-		if (pre_act_go_ID != 0 && obj_list.find(pre_act_go_ID) != obj_list.end())
-			obj_list[pre_act_go_ID]->is_selected = false;
-
-		if (obj_list.find(active_GO_ID) != obj_list.end()) {
-			obj_list[active_GO_ID]->is_selected = true;
-			//active_shader = obj_list[active_GO_ID]->GetShaderStruct();
-		}
-
-		is_outliner_selected = false;
-	}
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -504,7 +478,6 @@ void Renderer::UseCamera(std::shared_ptr<Camera> camera)
 	cam_list[0] = camera;
 	outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
 	parent_index_list.push_back(-1);
-	name_buff[camera->GetObjectID()] = camera->o_name;
 }
 
 void Renderer::UseCamera(const int& cam_id)
@@ -532,7 +505,6 @@ void Renderer::UseMesh(std::shared_ptr<Mesh> mesh)
 	obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(mesh);
 	outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
 	parent_index_list.push_back(-1);
-	name_buff[mesh->GetObjectID()] = mesh->o_name;
 
 }
 
@@ -551,8 +523,6 @@ void Renderer::UseLight(std::shared_ptr<Light> light)
 	parent_index_list.push_back(-1);
 
 	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
-	name_buff[light->light_sprite.GetObjectID()] = light->o_name; //using sprite ID
-	sprite_id_buff.push_back(light->light_sprite.GetObjectID());
 
 	r_light_data.ParseLightData(light_list);
 }
@@ -568,7 +538,6 @@ void Renderer::UsePolygonLight(std::shared_ptr<PolygonLight> polyLight)
 	obj_list[polyLight->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(polyLight);
 	outline_list.push_back(OutlineElement(polyLight->o_type, polyLight->GetObjectID(), polyLight->o_name, 0));
 	parent_index_list.push_back(-1);
-	name_buff[polyLight->GetObjectID()] = polyLight->o_name;
 
 	r_light_data.ParsePolygonLightData(poly_light_list);
 }
@@ -584,15 +553,12 @@ void Renderer::UseEnvironment(std::shared_ptr<Environment> envir)
 	is_GOlist_changed = true;
 	envir_list[envir->GetObjectID()] = envir;
 	envir_list[0] = envir;
-	name_buff[envir->envir_sprite.GetObjectID()] = envir->o_name;
 	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
 
 	outline_list.push_back(OutlineElement(envir->o_type, envir->envir_sprite.GetObjectID(), envir->o_name, 0));
 	parent_index_list.push_back(-1);
 
 	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
-	name_buff[envir->envir_sprite.GetObjectID()] = envir->o_name; //using sprite ID
-	sprite_id_buff.push_back(envir->envir_sprite.GetObjectID());
 }
 
 void Renderer::UseEnvironment(const int& envir_id)
@@ -619,7 +585,6 @@ void Renderer::UseDebugLine(std::shared_ptr<DebugLine> dline)
 	dLine_list[dline->GetObjectID()] = dline;
 	obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dline);
 	outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
-	name_buff[dline->GetObjectID()] = dline->o_name;
 	parent_index_list.push_back(-1);
 
 }
@@ -633,22 +598,16 @@ void Renderer::UseDebugPoints(std::shared_ptr<DebugPoints> dpoints)
 	dPoints_list[dpoints->GetObjectID()] = dpoints;
 	obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dpoints);
 	outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
-	name_buff[dpoints->GetObjectID()] = dpoints->o_name;
 	parent_index_list.push_back(-1);
 }
 
 void Renderer::UsePostProcessing(std::shared_ptr<PostProcessing> pps)
 {
 	pps_list.emplace_back(pps);
-	name_buff[pps->pps_sprite.GetObjectID()] = pps->o_name;
 	obj_list[pps->pps_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(pps);
 
 	outline_list.push_back(OutlineElement(pps->o_type, pps->pps_sprite.GetObjectID(), pps->o_name, 0));
 	parent_index_list.push_back(-1);
-
-	sprite_list[pps->pps_sprite.GetObjectID()] = std::shared_ptr<Sprite>(pps, &pps->pps_sprite);
-	name_buff[pps->pps_sprite.GetObjectID()] = pps->o_name; //using sprite ID
-	sprite_id_buff.push_back(pps->pps_sprite.GetObjectID());
 }
 
 std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)

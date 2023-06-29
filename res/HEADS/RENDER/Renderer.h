@@ -45,9 +45,7 @@ public:
 	GLuint r_frame_height = SCREEN_H;
 
 private:
-	std::optional<FrameBuffer> r_render_result;
-	std::unordered_map<int, std::string> name_buff;
-	std::vector<int> sprite_id_buff;
+	std::shared_ptr<FrameBuffer> r_render_result;
 public:
 	Renderer();
 	void Init();

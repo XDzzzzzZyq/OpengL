@@ -22,15 +22,17 @@ Outliner::~Outliner()
 
 void Outliner::SetObjectList(OutlineData* data)
 {
+	id2index.clear();
+	index2id.clear();
 	item_list.clear();
+
 	ImVec2 size = ImVec2(uly_size.x, ol_width - 4);
 	ol_data = *data;
-	actIndex = -1;
-	LOOP(ol_data.size())
+	for (const auto& oele : ol_data)
 	{
-		PushItem<UI::OpaButton>(ol_data[i].NAME, ol_data[i].ID, false);
-		id2index[ol_data[i].ID] = item_list.size() - 1;
-		index2id[item_list.size() - 1] = ol_data[i].ID;
+		PushItem<UI::OpaButton>(oele.NAME, oele.ID, false);
+		id2index[oele.ID] = item_list.size() - 1;
+		index2id[item_list.size() - 1] = oele.ID;
 		item_list[item_list.size() - 1]->ResetSize(size);
 	}
 }
@@ -61,39 +63,33 @@ void Outliner::RenderLayer()
 
 		ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.1f, 0.5f));
 		ImGui::PushFont(fontA);
-		for (auto& item : item_list) {
+		for (int i = 0; auto & item : item_list) {
+			item->is_activated = EventListener::active_GO_ID == index2id[i];
 			item->RenderItem();
+			i++;
 		}
 		ImGui::PopFont();
 		ImGui::PopStyleVar();
 
-
 		LOOP(item_list.size()) {
-			if (item_list[i]->is_activated) {
-				if (i != actIndex) {
-					EventListener::is_selected_changed = true;
-					EventListener::pre_act_go_ID = EventListener::active_GO_ID;
-					EventListener::active_GO_ID = index2id[i];
 
-					EventListener::is_outliner_selected = true;
-				}
-			}
+			if (!item_list[i]->is_activated)
+				continue;
+			if (i == id2index[EventListener::active_GO_ID])
+				continue;
 
-		}
+			if (EventListener::active_object != nullptr)
+				EventListener::active_object->is_selected = false;
 
-		if (EventListener::is_selected_changed) {
+			if (id2index.find(EventListener::active_GO_ID) != id2index.end())
+				item_list[id2index[EventListener::active_GO_ID]]->is_activated = false;
 
-			// deselect previous object
-			if (EventListener::pre_act_go_ID != 0)
-				FindImguiItem(id2index[EventListener::pre_act_go_ID])->is_activated = false;
+			EventListener::active_GO_ID = index2id[i];
 
-			// select new objects
-			if (EventListener::active_GO_ID != 0) {
-				actIndex = id2index[EventListener::active_GO_ID];
-				EventListener::active_object = EventListener::GetActiveObject(active_GO_ID);
-				FindImguiItem(actIndex)->is_activated = true;
-			}
+			EventListener::active_object = EventListener::GetActiveObject(EventListener::active_GO_ID);
+			EventListener::active_object->is_selected = true;
 
+			EventListener::is_selected_changed = true;
 		}
 
 		if (is_size_changed)

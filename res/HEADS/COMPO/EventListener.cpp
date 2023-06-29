@@ -45,7 +45,6 @@ bool EventListener::is_outliner_selected = false;
 std::function<GameObject* (int)> EventListener::GetActiveObject = NULL;
 
 int EventListener::active_GO_ID;
-int EventListener::pre_act_go_ID;
 
 std::vector<int> EventListener::selec_list;
 std::vector<int> EventListener::parent_index_list;
