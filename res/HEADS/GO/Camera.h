@@ -12,18 +12,20 @@
 
 class Camera : public GameObject, public Transform3D, public EventListener
 {
-private:
-
-
 public:
+
 	float cam_w, cam_h, cam_pers, cam_near, cam_far, cam_foc;
 	glm::vec3 cam_tar = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	bool is_frustum_changed = true;
-
 	glm::mat4 cam_frustum=glm::mat4(-1.0f);
+
+public:
+
 	Camera(float w,float h,float per,float n,float f);
 	Camera();
+
+public:
 
 	float* GetCameraParas() const;
 	mutable std::vector<float> cam_floatData;
@@ -31,6 +33,10 @@ public:
 	void ChangeCamRatio(float w, float h);
 	void ChangeCamRatio(const ImVec2& size);
 	void ChangeCamPersp(float persp);
+
+	void SetTarPos(const glm::vec3& _pos);
+
+public:
 
 	void SHIFT_MMB();
 	void CTRL_MMB();

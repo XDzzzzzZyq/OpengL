@@ -59,33 +59,50 @@ void Camera::GenFloatData() const
 
 void Camera::ChangeCamRatio(float w, float h)
 {
-	if (w != cam_w || h != cam_h) {
-		cam_w = w;
-		cam_h = h;
+	if (w == cam_w && h == cam_h)
+		return;
 
-		cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
-		is_frustum_changed = true;
-	}
+	cam_w = w;
+	cam_h = h;
+
+	cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
+	is_frustum_changed = true;
 }
 
 void Camera::ChangeCamRatio(const ImVec2& size)
 {
-	if (size != ImVec2(cam_w, cam_h)) {
-		cam_w = size.x;
-		cam_h = size.y;
+	if (size == ImVec2(cam_w, cam_h))
+		return;
 
-		cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
-		is_frustum_changed = true;
-	}
+	cam_w = size.x;
+	cam_h = size.y;
+
+	cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
+	is_frustum_changed = true;
 }
 
 void Camera::ChangeCamPersp(float persp)
 {
-	if (persp != cam_pers) {
-		cam_pers = persp;
-		cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
-		is_frustum_changed = true;
-	}
+	if (persp == cam_pers)
+		return;
+
+	cam_pers = persp;
+	cam_frustum = glm::perspective(glm::radians(cam_pers), cam_w / cam_h, cam_near, cam_far);
+	is_frustum_changed = true;
+}
+
+void Camera::SetTarPos(const glm::vec3& _pos)
+{
+	if (_pos == cam_tar)
+		return;
+
+	cam_tar = _pos;
+
+	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
+
+
+	//is_rot_changed = true;
+	is_TransF_changed = true;
 }
 
 void Camera::SHIFT_MMB()
