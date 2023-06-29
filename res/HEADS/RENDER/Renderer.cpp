@@ -387,8 +387,9 @@ void Renderer::Render(bool rend, bool buff) {
 
 		ComputeShader& fxaa = ComputeShader::ImportShader("FXAA");
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 1);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 2);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 3);
 		if (r_using_fxaa) fxaa.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 
