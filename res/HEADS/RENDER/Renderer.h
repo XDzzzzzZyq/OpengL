@@ -49,6 +49,7 @@ public:
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;
+	float r_ao_radius = 0.5;
 public:
 	bool is_light_changed = false;
 

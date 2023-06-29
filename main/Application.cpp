@@ -143,6 +143,8 @@ int Application::Run()
 
 	EventListener::ShowEvents();
 
+	renderer.r_ao_radius = 0.1;
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
