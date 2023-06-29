@@ -75,7 +75,7 @@ bool MaterialViewer::RenderMatParam(MatParaType _type, Material::MatParamData& _
 		is_changed = ImGui::SliderFloat(pname, &val, 0, 1);
 		break;
 	case Material::MPARA_COL:
-		is_changed = ImGui::SliderFloat3(pname, (float*)&col, 0, 1);
+		is_changed = ImGui::ColorEdit3(pname, (float*)&col);
 		break;
 	case Material::MPARA_TEX:
 		ImGui::InputText(pname, (char*)tex->GetTexName().c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
