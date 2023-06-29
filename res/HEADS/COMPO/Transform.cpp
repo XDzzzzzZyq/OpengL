@@ -101,7 +101,7 @@ void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 	if (!_keep_offset) return;
 
 	SetScale(o_scale / _p_trans->o_scale);
-	SetPos((o_position - _p_trans->o_position) * o_scale);
+	SetPos((o_position - _p_trans->o_position) / _p_trans->o_scale);
 	ApplyTransform();
 }
 
