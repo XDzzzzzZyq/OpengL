@@ -90,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\stb_image;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -111,7 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\stb_image;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -171,6 +171,7 @@
     <ClCompile Include="dep\gui\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="dep\stb_image\stb_image.cpp" />
     <ClCompile Include="main\Application.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
     <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp" />
@@ -216,7 +217,6 @@
     <ClCompile Include="res\HEADS\GO\Mesh.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BufferLayout.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\IndexBuffer.cpp" />
-    <ClCompile Include="res\HEADS\stb_image\stb_image.cpp" />
     <ClCompile Include="res\HEADS\RENDER\BUFFER\VertexBuffer.cpp" />
     <ClCompile Include="res\HEADS\RENDER\VertexArray.cpp" />
     <ClCompile Include="res\HEADS\RENDER\Shaders.cpp" />
@@ -318,8 +318,9 @@
     <ClInclude Include="dep\gui\ImGui\imstb_rectpack.h" />
     <ClInclude Include="dep\gui\ImGui\imstb_textedit.h" />
     <ClInclude Include="dep\gui\ImGui\imstb_truetype.h" />
+    <ClInclude Include="dep\stb_image\stb_image.h" />
+    <ClInclude Include="dep\stb_image\stb_image_write.h" />
     <ClInclude Include="main\Application.h" />
-    <ClInclude Include="res\HEADS\stb_image\stb_image_write.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h" />
     <ClInclude Include="res\HEADS\GO\Sprite.h" />
     <ClInclude Include="res\HEADS\RENDER\MeshData.h" />
@@ -372,7 +373,6 @@
     <ClInclude Include="res\HEADS\GO\Mesh.h" />
     <ClInclude Include="res\HEADS\RENDER\BufferLayout.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h" />
-    <ClInclude Include="res\HEADS\stb_image\stb_image.h" />
     <ClInclude Include="res\HEADS\EXTRA\structs.h" />
     <ClInclude Include="res\HEADS\EXTRA\support.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h" />

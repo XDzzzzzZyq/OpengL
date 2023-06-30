@@ -1,5 +1,5 @@
 ﻿#include "Texture.h"
-#include "stb_image/stb_image.h"
+#include "stb_image.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
 	:tex_path(texpath), tex_type(tex_type),
@@ -602,7 +602,7 @@ void Texture::ConvertPNG(GLuint _tar_ID, size_t _w, size_t _h)
 	im_w = _w; im_h = _h;
 }
 
-#include "stb_image/stb_image_write.h"
+#include "stb_image_write.h"
 void Texture::SaveTexture(std::string _path) const
 {
 	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);

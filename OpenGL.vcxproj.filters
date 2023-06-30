@@ -33,9 +33,6 @@
     <ClCompile Include="res\HEADS\RENDER\Shaders.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\stb_image\stb_image.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="res\HEADS\RENDER\Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -222,6 +219,9 @@
     <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="dep\stb_image\stb_image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -316,9 +316,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\Shaders.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\stb_image\stb_image.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\Texture.h">
@@ -552,7 +549,10 @@
     <ClInclude Include="res\HEADS\FILEIO\SceneManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\stb_image\stb_image_write.h">
+    <ClInclude Include="dep\stb_image\stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\stb_image\stb_image_write.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
