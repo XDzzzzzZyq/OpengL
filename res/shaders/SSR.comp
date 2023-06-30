@@ -52,24 +52,30 @@ vec4 DepthSample(vec3 ray_pos){
 }
 
 vec4 BindarySearch(vec3 begin, vec3 end){
-	vec3 range = end - begin;
-	float len = length(range) * 0.5;
-	vec3 dir = normalize(range);
+	
+	vec3 c_begin = DepthSample(begin).xyz;
+	vec3 c_end = DepthSample(end).xyz;
 
-	vec3 cur = (begin + end) * 0.5;
+	float cur = 0.5;
+	float move = 0.5;
 	vec4 result;
 
 	for(int i = 0; i < max_bs_step; i++){
-		result = DepthSample(cur);
-		float dDepth = result.z - result.w;
-		len *= 0.5;
+		
+		vec2 loc = mix(c_begin.xy, c_end.xy, cur);
+
+		result = vec4(loc, 0, 0);
+		float cur_depth = mix(c_begin.z, c_end.z, cur);
+		float min_depth = distance(texture(U_pos, loc).xyz, cam_pos);
+		float dDepth = cur_depth - min_depth;
+		move *= 0.5;
 
 		if(dDepth > bs_range){
 			// marching too much
-			cur -= len*dir;
+			cur -= move;
 		}else if(dDepth < 0){
 			// keep marching
-			cur += len*dir;
+			cur += move;
 		}else{
 			break;
 		}
