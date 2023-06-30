@@ -25,7 +25,7 @@ const float stride = 0.2f;
 const float range = 1.0f;
 const int max_step = 128;
 const int max_bs_step = 32;
-const float bs_range = 0.005f;
+const float bs_range = 0.01f;
 
 const vec3 Scale = vec3(.8, .8, .8);
 const float K = 19.19;
@@ -204,4 +204,26 @@ void main(){
 	memoryBarrierBuffer();
 	imageStore(U_cache  , uv, vec4(Normal_AO.a, Reflection));
 	imageStore(U_combine, uv, vec4(Output, 1));
+
+	// filtering
+
+	float RoughL = imageLoad(U_mrse, uv+ivec2(-1, 0)).g;
+	float RoughR = imageLoad(U_mrse, uv+ivec2( 1, 0)).g;
+	float RoughU = imageLoad(U_mrse, uv+ivec2( 0, 1)).g;
+	float RoughD = imageLoad(U_mrse, uv+ivec2( 0,-1)).g;
+
+	vec4 CacheL = imageLoad(U_cache, uv+ivec2(-1, 0)).rgba;
+	vec4 CacheR = imageLoad(U_cache, uv+ivec2( 1, 0)).rgba;
+	vec4 CacheU = imageLoad(U_cache, uv+ivec2( 0, 1)).rgba;
+	vec4 CacheD = imageLoad(U_cache, uv+ivec2( 0,-1)).rgba;
+
+	CacheL.gba = mix(CacheL.gba, Reflection, RoughL*Roughness/2);
+	CacheR.gba = mix(CacheR.gba, Reflection, RoughR*Roughness/2);
+	CacheU.gba = mix(CacheU.gba, Reflection, RoughU*Roughness/2);
+	CacheD.gba = mix(CacheD.gba, Reflection, RoughD*Roughness/2);
+
+	imageStore(U_cache, uv+ivec2(-1, 0), CacheL);
+	imageStore(U_cache, uv+ivec2( 1, 0), CacheR);
+	imageStore(U_cache, uv+ivec2( 0, 1), CacheU);
+	imageStore(U_cache, uv+ivec2( 0,-1), CacheD);
 }
