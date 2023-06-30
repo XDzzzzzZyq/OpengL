@@ -98,5 +98,10 @@ public:
 	std::shared_ptr<Camera> GetActiveCamera();
 	std::shared_ptr<Environment> GetActiveEnvironment();
 	std::shared_ptr<PostProcessing> GetPPS(int _tar);
+
+public:
+
+	void ScreenShot();
+
 };
 

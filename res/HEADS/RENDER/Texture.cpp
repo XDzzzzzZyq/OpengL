@@ -379,6 +379,11 @@ void Texture::ConvertDepthFrom(const Texture& _Tar_Tex)
 	ConvertDepth(_Tar_Tex.GetTexID(), _Tar_Tex.GetW(), _Tar_Tex.GetH(), _Tar_Tex.tex_type);
 }
 
+void Texture::ConvertPNGFrom(const Texture& _Tar_Tex)
+{
+	ConvertPNG(_Tar_Tex.GetTexID(), _Tar_Tex.GetW(), _Tar_Tex.GetH());
+}
+
 void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	assert(false && "this function has been abandoned");
@@ -570,6 +575,57 @@ void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _ta
 
 	tex_type = PNG_TEXTURE;
 	im_w = _w; im_h = _h;
+}
+
+void Texture::ConvertPNG(GLuint _tar_ID, size_t _w, size_t _h)
+{
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(PNG_TEXTURE);
+
+	GLuint ID;
+	glGenTextures(1, &ID);		//for storage
+	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, _w, _h, 0, layout, type, NULL);
+
+	ComputeShader& hdr_to_png = ComputeShader::ImportShader("HDR_2_PNG");
+
+	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
+	glBindImageTexture(1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);;
+
+	hdr_to_png.UseShader();
+	hdr_to_png.SetValue("U_HDR", 1);
+	hdr_to_png.RunComputeShader(_w, _h);
+
+	ResetTexID(ID);
+
+	tex_type = PNG_TEXTURE;
+	im_w = _w; im_h = _h;
+}
+
+#include "stb_image/stb_image_write.h"
+void Texture::SaveTexture(std::string _path) const
+{
+	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
+
+	if (type != GL_UNSIGNED_BYTE) {
+		static Texture hdr_png;
+		hdr_png.ConvertPNGFrom(*this);
+		hdr_png.SaveTexture(_path);
+		return;
+	}
+
+	static std::string root = "result/";
+	stbi_flip_vertically_on_write(1);
+
+	GLbyte* odata = (GLbyte*)malloc(im_w * im_h * 4 * sizeof(GLbyte));
+
+	glBindTexture(gl_type, tex_ID);
+	glGetTexImage(gl_type, 0, layout, type, odata);
+
+	std::string outputPath = root + _path + ".png";
+	stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata, 0);
+
+	delete odata;
 }
 
 

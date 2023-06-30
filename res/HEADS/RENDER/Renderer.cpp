@@ -508,3 +508,8 @@ std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
 
 	return r_scene->pps_list[_tar];
 }
+
+void Renderer::ScreenShot()
+{
+	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture("result");
+}

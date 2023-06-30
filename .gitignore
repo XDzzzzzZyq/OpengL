@@ -63,8 +63,13 @@ ScaffoldingReadMe.txt
 # StyleCop
 StyleCopReport.xml
 
-# Files built by Visual Studio
+# Blender project back-up
 *.blend1
+
+# Render result
+result/
+
+# Files built by Visual Studio
 *_i.c
 *_p.c
 *_h.h
