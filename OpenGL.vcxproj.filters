@@ -551,6 +551,9 @@
     <ClInclude Include="res\HEADS\FILEIO\SceneManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="res\HEADS\stb_image\stb_image_write.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">
