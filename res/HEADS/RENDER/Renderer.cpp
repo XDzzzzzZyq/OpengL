@@ -279,19 +279,21 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////    ICONS    ////////////
 
-		glEnable(GL_BLEND);
-		for (const auto& [id, light] : r_scene->light_list)
-		{
-			if (!light->light_sprite.is_viewport)continue;
-			light->RenderLightSpr(GetActiveCamera().get());
-		}
-		for (const auto& [id, envir] : r_scene->envir_list) {
-			if (!envir->envir_sprite.is_viewport)continue;
-			envir->RenderEnvirSpr(GetActiveCamera().get());
-		}
-		for (const auto& pps : r_scene->pps_list) {
-			if (!pps->pps_sprite.is_viewport)continue;
-			pps->RenderPPSSpr(GetActiveCamera().get());
+		if (r_render_icons) {
+			glEnable(GL_BLEND);
+			for (const auto& [id, light] : r_scene->light_list)
+			{
+				if (!light->light_sprite.is_viewport)continue;
+				light->RenderLightSpr(GetActiveCamera().get());
+			}
+			for (const auto& [id, envir] : r_scene->envir_list) {
+				if (!envir->envir_sprite.is_viewport)continue;
+				envir->RenderEnvirSpr(GetActiveCamera().get());
+			}
+			for (const auto& pps : r_scene->pps_list) {
+				if (!pps->pps_sprite.is_viewport)continue;
+				pps->RenderPPSSpr(GetActiveCamera().get());
+			}
 		}
 	}
 	if (buff) {
