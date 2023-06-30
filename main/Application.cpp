@@ -68,8 +68,10 @@ int Application::Init()
 	renderer.UseScene(SceneManager::SceneConfig1());
 #else
 	renderer.UseScene(SceneManager::SceneConfig2());
-	renderer.r_ao_radius = 0.1;
+	renderer.r_ao_radius = 0.8;
 	renderer.r_render_icons = false;
+
+	Light::area_blur_range = 0.03;
 #endif
 	
 	/* Make the window's context current */

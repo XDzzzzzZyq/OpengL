@@ -513,5 +513,5 @@ std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
 
 void Renderer::ScreenShot()
 {
-	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture("result");
+	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture("result""-" + std::to_string(EventListener::random_float1));
 }

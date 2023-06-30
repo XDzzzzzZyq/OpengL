@@ -16,15 +16,15 @@ uniform float update_rate;
 uniform float offset;
 
 float evaluateShadow(float c_depth, float min_depth){
-	float bias = 0.015;
-	float range = 0.005;
+	float bias = 0.01;
+	float range = 0.001;
 	float delta = c_depth - min_depth - bias;  // delta greater/equal than 0
 
 	return 1-smoothstep(0, range, delta);
 }
 
 float shadow_at(vec3 Pos, ivec2 uv, vec3 offset, vec3 light_pos){
-	vec3 L = Pos - light_pos + offset * U_offset[frame%16] * 10;
+	vec3 L = Pos - light_pos + offset * U_offset[frame%16];
 	float dist = length(L);
 
 	float closestDepth = texture(Shadow_Map, normalize(L)+offset).r; 
