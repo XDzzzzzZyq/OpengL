@@ -229,12 +229,12 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2()
 	config2->UseMesh(light);
 
 	DEBUG("\n-------------AREA LIGHT-------------")
-		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(2));
+		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT);
 	areaLight1->SetColor({ 1, 1, 0.7 });
-	areaLight1->SetPos({ 0, 0, 1.93 });
+	areaLight1->SetPos({ 0, 0, 1.95 });
 	areaLight1->SetScale(glm::vec3(0.25));
 	areaLight1->SetRot({ 180, 0, 0 });
-	areaLight1->SetPower(1);
+	areaLight1->SetPower(10);
 	config2->UseLight(areaLight1);
 
 	Light::point_blur_range = 0.005;

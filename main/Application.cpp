@@ -63,7 +63,14 @@ int Application::Init()
 
 	UI.ManagerInit(window);
 
+	
+#if 0
+	renderer.UseScene(SceneManager::SceneConfig1());
+#else
 	renderer.UseScene(SceneManager::SceneConfig2());
+	renderer.r_ao_radius = 0.1;
+	renderer.r_render_icons = false;
+#endif
 	
 	/* Make the window's context current */
 	return 0;
@@ -144,7 +151,6 @@ int Application::Run()
 
 	EventListener::ShowEvents();
 
-	renderer.r_ao_radius = 0.1;
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -159,13 +165,19 @@ int Application::Run()
 		/* Render here */
 
 		renderer.GetActiveCamera()->EventActivate();
+#if 0
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
+#endif
 
 		renderer.Render();
 		UI.RenderUI();
 		Event.Reset();
 
-		//GLDEBUG
+#if 0
+		DEBUG(renderer.GetActiveCamera()->o_position)
+		DEBUG(renderer.GetActiveCamera()->cam_pers)
+#endif
+
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
