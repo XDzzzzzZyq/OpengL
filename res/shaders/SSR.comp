@@ -14,6 +14,7 @@ uniform sampler2D U_dir_diff;
 uniform sampler2D U_dir_spec;
 uniform sampler2D U_ind_diff;
 uniform sampler2D U_ind_spec;
+uniform sampler2D U_emission;
 
 uniform vec3 cam_pos;
 uniform mat4 cam_trans;
@@ -21,8 +22,8 @@ uniform float gamma;
 
 uniform float noise;
 
-const float stride = 0.2f;
-const float range = 1.0f;
+const float stride = 0.1f;
+const float range = 0.3f;
 const int max_step = 128;
 const int max_bs_step = 32;
 const float bs_range = 0.01f;
@@ -98,8 +99,10 @@ vec4 RayMarching(vec3 dir, inout vec3 ray_pos){
 		if(dDepth >= range)
 			break;
 
-		if(dDepth < range)
+		if(dDepth < range){
 			result = BindarySearch(ray_pos_b, ray_pos);
+			break;
+		}
 	}
 
 	return result;
@@ -145,13 +148,14 @@ vec3 sample_combine(vec2 uv){
 	vec3 Dir_Spec = texture(U_dir_spec, uv).rgb;
 	vec3 Ind_Diff = texture(U_ind_diff, uv).rgb;
 	vec3 Ind_Spec = texture(U_ind_spec, uv).rgb;
+	vec3 Emission = texture(U_emission, uv).rgb;
 
-	return Dir_Diff+Dir_Spec+Ind_Diff+Ind_Spec;
+	return Dir_Diff + Dir_Spec + Ind_Diff + Ind_Spec + Emission;
 }
 
 void main(){
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
-	vec2 uv_f = vec2(uv)/imageSize(U_combine);
+	vec2 uv_f = (vec2(uv)+0.5)/imageSize(U_combine);
 
 	vec3 Direct = imageLoad(U_combine, uv).rgb;
 
@@ -165,6 +169,7 @@ void main(){
 	vec3 Dir_Spec = texture(U_dir_spec, uv_f).rgb;
 	vec3 Ind_Diff = texture(U_ind_diff, uv_f).rgb;
 	vec3 Ind_Spec = texture(U_ind_spec, uv_f).rgb;
+	vec3 Emission = texture(U_emission, uv_f).rgb;
 
 	vec4 Pos_Depth = texture(U_pos, uv_f);
 	vec4 Normal_AO = imageLoad(U_normal, uv);
@@ -179,10 +184,11 @@ void main(){
 	float Metalness = clamp(MRSE.r, 0.001, 0.999);
 	float Roughness = clamp(MRSE.g, 0.001, 0.999);
 	float Specular = MRSE.b;
-	float Emission = MRSE.a;
 
-	vec3 jitt = mix(vec3(0.0), vec3(hash(Pos+noise)), Roughness);
-	vec3 reflect_dir = normalize(reflect(normalize(Pos - cam_pos), Normal) + jitt);
+	vec3 jitt = mix(vec3(0.0), clamp(hash(hash(Pos+noise)), -1, 1), Roughness);
+	vec3 reflect_dir = mix(reflect(normalize(Pos - cam_pos), Normal), Normal, Roughness);
+	reflect_dir = normalize(reflect_dir) + jitt;
+	reflect_dir = normalize(reflect_dir);
 	vec3 ray_pos = Pos;
 
 	vec3 CamRay = normalize(Pos - cam_pos);
@@ -194,16 +200,16 @@ void main(){
 
 	vec4 MarchResult = RayMarching(reflect_dir, ray_pos);
 
-	vec3 Reflection = MarchResult.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(MarchResult.xy) * Fresnel;
-	vec3 Reflection_b = imageLoad(U_cache, uv).gba;
+	vec3 Indirect = MarchResult.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(MarchResult.xy) * Fresnel;
+	vec3 Indirect_b = imageLoad(U_cache, uv).gba;
 
 	float update_rate = smoothstep(0.95, 1.0, 1 - Roughness)*0.97 + 0.05;
-	Reflection = max(Reflection_b + update_rate * (Reflection - Reflection_b), 0);
+	Indirect = max(Indirect_b + update_rate * (Indirect - Indirect_b), 0);
 
-	vec3 Output = Vec3Film(Direct + Reflection, gamma);
+	vec3 Output = Vec3Film(Emission + Dir_Diff + Dir_Spec + Indirect, gamma);
 
 	memoryBarrierBuffer();
-	imageStore(U_cache  , uv, vec4(Normal_AO.a, Reflection));
+	imageStore(U_cache  , uv, vec4(Normal_AO.a, Indirect));
 	imageStore(U_combine, uv, vec4(Output, 1));
 
 	// filtering
@@ -218,10 +224,10 @@ void main(){
 	vec4 CacheU = imageLoad(U_cache, uv+ivec2( 0, 1)).rgba;
 	vec4 CacheD = imageLoad(U_cache, uv+ivec2( 0,-1)).rgba;
 
-	CacheL.gba = mix(CacheL.gba, Reflection, RoughL*Roughness/2);
-	CacheR.gba = mix(CacheR.gba, Reflection, RoughR*Roughness/2);
-	CacheU.gba = mix(CacheU.gba, Reflection, RoughU*Roughness/2);
-	CacheD.gba = mix(CacheD.gba, Reflection, RoughD*Roughness/2);
+	CacheL.gba = mix(CacheL.gba, Indirect, RoughL*Roughness/2);
+	CacheR.gba = mix(CacheR.gba, Indirect, RoughR*Roughness/2);
+	CacheU.gba = mix(CacheU.gba, Indirect, RoughU*Roughness/2);
+	CacheD.gba = mix(CacheD.gba, Indirect, RoughD*Roughness/2);
 
 	imageStore(U_cache, uv+ivec2(-1, 0), CacheL);
 	imageStore(U_cache, uv+ivec2( 1, 0), CacheR);

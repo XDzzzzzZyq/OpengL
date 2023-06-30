@@ -363,7 +363,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////      SSR     ////////////
 
 		static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10));
+		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -375,6 +375,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBufferTex(DIR_SPEC_FB, 8);
 		r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
 		r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
+		r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
 		ssr.UseShader();
 		if (GetActiveCamera()->is_Uniform_changed) {
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);

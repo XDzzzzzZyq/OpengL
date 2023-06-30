@@ -5,6 +5,7 @@ layout(location = 1) out vec4 OutDirDiff;
 layout(location = 2) out vec4 OutDirSpec;
 layout(location = 3) out vec4 OutIndDiff;
 layout(location = 4) out vec4 OutIndSpec;
+layout(location = 5) out vec4 OutEmission;
 
 struct PointLight{
 	vec3 color;
@@ -489,7 +490,7 @@ void main(){
 
 	/* [Block : COMP] */
 
-	vec3 Light_res = (Dir_Diff + Ind_Diff) * AO + (Dir_Spec + Ind_Spec);
+	vec3 Light_res = (Dir_Diff + Ind_Diff) + (Dir_Spec + Ind_Spec);
 
 	Output += vec4(Light_res, 0);
 	Output.a = 1;
@@ -498,6 +499,7 @@ void main(){
 	OutDirSpec = vec4(Dir_Spec, 1);
 	OutIndDiff = vec4(Ind_Diff, 1);
 	OutIndSpec = vec4(Ind_Spec, 1);
+	OutEmission = vec4(Emission * Emission_Color, Emission);
 
 
 	//vec3 dir = normalize(Pos - point_lights[0].pos);
