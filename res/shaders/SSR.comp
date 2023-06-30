@@ -133,10 +133,11 @@ float ACESFilm(float x)
 
 vec3 Vec3Film(vec3 x, float gamma)
 {
+	x = pow(x, vec3(1.0/gamma));
 	x[0] = ACESFilm(x[0]);
 	x[1] = ACESFilm(x[1]);
 	x[2] = ACESFilm(x[2]);
-	return pow(x, vec3(1.0/gamma));
+	return x;
 }
 
 vec3 sample_combine(vec2 uv){
