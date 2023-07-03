@@ -2,18 +2,6 @@
 
 PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type)
 {
-
-	static std::vector<float> screenQuad = {
-		// positions		// texCoords
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		 1.0f, 1.0f,	1.0f, 1.0f,
-		-1.0f,-1.0f,	0.0f, 0.0f,
-		 1.0f,-1.0f,	1.0f, 0.0f
-
-	};
-
-	static auto indexArray = std::vector<GLuint>{ 0,2,1,1,2,3 };
-
 	switch (_type)
 	{
 	case FRAGMENT_SHADER:
@@ -25,18 +13,6 @@ PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type
 	default:
 		break;
 	}
-
-	pps_vertBuffer = VertexBuffer(screenQuad.data(), screenQuad.size() * sizeof(float));
-
-	BufferLayout layout;
-	layout.Push<float>(2); //2D position
-	layout.Push<float>(2); //UV
-
-	pps_vertArry.AddBuffer(pps_vertBuffer, layout);
-
-	GLuint* index = indexArray.data();
-
-	pps_indexBuffer = IndexBuffer(index, indexArray.size() * sizeof(GLuint));
 
 	o_name = _shader_name;
 
@@ -65,14 +41,12 @@ void PostProcessing::AddBinding(std::string _pass_name, GLuint _slot)
 
 void PostProcessing::RenderPPS()
 {
-	pps_vertArry.Bind();
 	pps_shader->UseShader();
-	pps_indexBuffer.Bind();
 
 	if (pps_shader->is_shader_changed)
 		UpdateBindings();
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	MeshLib::Square->RenderObjProxy();
 }
 
 void PostProcessing::RenderPPSSpr(Camera* cam)

@@ -11,10 +11,6 @@
 #include "Texture.h"
 #include "BUFFER/FrameBuffer.h"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-
 #include "Sprite.h"
 
 class PostProcessing : public GameObject
@@ -27,9 +23,6 @@ public:
 	PostProcessing(const std::string& _shader, ShaderType _type = FRAGMENT_SHADER);
 
 private:
-	VertexArray pps_vertArry;
-	VertexBuffer pps_vertBuffer;
-	IndexBuffer pps_indexBuffer;
 
 	std::unordered_map<std::string, GLuint> pps_bindings;
 	void UpdateBindings();
