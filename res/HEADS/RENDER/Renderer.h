@@ -45,9 +45,11 @@ public:
 public:
 
 	bool r_using_of = true;				// Optical Flow Correction
+	bool r_forward_of = false;
 	bool r_deferred_rendering = true;	// Multi-passes Deferred Rendering
 	bool r_using_fxaa = true;			// Fast Approximate Anti-Aliasing
 	bool r_using_ssr = true;			// Screen Space Reflection
+	bool r_using_shadow_map = true;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;
@@ -56,6 +58,7 @@ public:
 public:
 
 	bool r_render_icons = true;
+	bool r_is_preview = true;
 
 public:
 	bool is_light_changed = false;

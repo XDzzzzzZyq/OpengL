@@ -43,11 +43,19 @@ void UpdateOF(ivec2 uv){
 	memoryBarrier();
 }
 
+float BOF_sample(ivec2 uv){
+
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_Lighting)).rg;
+	ivec2 uv_b = uv + ivec2(OF * imageSize(U_Lighting));
+	return imageLoad(U_Lighting, uv_b).r;
+
+}
+
 void main(){
 
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 
-	UpdateOF(uv);
+	//UpdateOF(uv);
 
 	float alpha = imageLoad(U_alpha, uv).r;
 	if(alpha < 0.5){
@@ -72,7 +80,7 @@ void main(){
 
 	shadow /= (samples * samples * samples);
 
-	float shadow_b = imageLoad(U_Lighting, uv).r;
+	float shadow_b = BOF_sample(uv);
 	shadow = shadow_b + update_rate * (shadow - shadow_b);
 
 	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));

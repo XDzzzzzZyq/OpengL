@@ -186,6 +186,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	////////////    CAM TRANSFORM    /////////////
 
+	glm::mat4 proj_trans_b = GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform;
 	GetActiveCamera()->ApplyTransform();
 	GetActiveCamera()->GetInvTransform();
 	GetActiveCamera()->GenFloatData();
@@ -193,12 +194,15 @@ void Renderer::Render(bool rend, bool buff) {
 	
 	////////////     OPTICAL FLOW     ////////////
 
-	ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
-	r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
-	r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
-	of.UseShader();
-	of.SetValue("proj_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
-	if(r_using_of) of.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+	if (r_using_of && r_forward_of) 
+	{
+		static ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
+		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
+		r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
+		of.UseShader();
+		of.SetValue("proj_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+		of.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+	}
 
 
 	///////////  Lights Data PreCalc  ///////////
@@ -324,15 +328,30 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////    OUTLINE    ////////////
 
-		ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-		if (active_GO_ID != 0) outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
+		if (r_is_preview) {
+			static ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
+			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
+			if (active_GO_ID != 0) outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
+		}
 
+
+		//////// BACKWARD OPTICAL FLOW ////////
+
+		if (r_using_of && !r_forward_of)
+		{
+			static ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
+			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
+			r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
+			of_b.UseShader();
+			of_b.SetValue("proj_trans_b", proj_trans_b);
+			of_b.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+		}
+		
 
 		////////////  SSAO + DEPTH  ////////////
 
 		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
-		ComputeShader& ssao = ComputeShader::ImportShader("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f), Uni("radius", r_ao_radius), Uni("U_opt_flow", 1));
+		static ComputeShader& ssao = ComputeShader::ImportShader("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f), Uni("radius", r_ao_radius), Uni("U_opt_flow", 1));
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
@@ -351,10 +370,12 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////// LIGHTING CACHE ////////////
 
-		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
-		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
-		r_light_data.UpdateLightingCache(r_frame_num);
+		if (r_using_shadow_map) {
+			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
+			r_light_data.UpdateLightingCache(r_frame_num);
+		}
 
 
 		////////////  PBR COMPOSE  ////////////
@@ -377,46 +398,54 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////      SSR     ////////////
 
-		static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12));
-		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
-		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MRSE_FB, 3);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(ALBEDO_FB, 4);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
-		r_buffer_list[_AO_ELS].BindFrameBufferTex(LIGHT_AO_FB, 6);
-		r_render_result->BindFrameBufferTex(DIR_DIFF_FB, 7);
-		r_render_result->BindFrameBufferTex(DIR_SPEC_FB, 8);
-		r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
-		r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
-		r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
-		ssr.UseShader();
-		if (GetActiveCamera()->is_Uniform_changed) {
-			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
-			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+		if (r_using_ssr) {
+			static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
+			static ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12));
+			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+			r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(MRSE_FB, 3);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(ALBEDO_FB, 4);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+			r_buffer_list[_AO_ELS].BindFrameBufferTex(LIGHT_AO_FB, 6);
+			r_render_result->BindFrameBufferTex(DIR_DIFF_FB, 7);
+			r_render_result->BindFrameBufferTex(DIR_SPEC_FB, 8);
+			r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
+			r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
+			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
+			ssr.UseShader();
+			if (GetActiveCamera()->is_Uniform_changed) {
+				ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
+				ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+			}
+			ssr.SetValue("gamma", r_gamma);
+			ssr.SetValue("noise", EventListener::random_float1);
+			ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
-		ssr.SetValue("gamma", r_gamma);
-		ssr.SetValue("noise", EventListener::random_float1);
-		if (r_using_ssr) ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 
 		////////////     FXAA     ////////////
-
-		ComputeShader& fxaa = ComputeShader::ImportShader("FXAA");
-		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 3);
-		if (r_using_fxaa) fxaa.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+		
+		if (r_using_fxaa) {
+			static ComputeShader& fxaa = ComputeShader::ImportShader("FXAA");
+			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 3);
+			fxaa.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+		}
 
 
 		//////////   EDITING ELEM   //////////
 
-		ComputeShader& editing = ComputeShader::ImportShader("Editing");
-		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
-		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
-		editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+		if(r_is_preview)
+		{
+			static ComputeShader& editing = ComputeShader::ImportShader("Editing");
+			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
+			editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+		}
+
 	}
 	Reset();
 }

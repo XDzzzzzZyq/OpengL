@@ -43,6 +43,14 @@ void UpdateOF(ivec2 uv){
 
 }
 
+vec4 BOF_sample(ivec2 uv){
+
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_AO)).rg;
+	ivec2 uv_b = uv + ivec2(OF * imageSize(U_AO));
+	return imageLoad(U_AO, uv_b).rgba;
+
+}
+
 void main(){
 
 	float AO = 0;
@@ -51,14 +59,14 @@ void main(){
 
 	////////////////////////////////
 
-	UpdateOF(uv);
+	//UpdateOF(uv);
 
 	////////////////////////////////
 	vec3 pos = imageLoad(U_pos, uv).rgb;
 	vec3 normal = imageLoad(U_normal, uv).rgb;
 	ivec3 uv_n = ivec3(uv % noise_size, noise_level);
 
-	vec4 LIGHT_AO = imageLoad(U_AO, uv);
+	vec4 LIGHT_AO = BOF_sample(uv);
 
 	vec3 rand = vec3(imageLoad(Noise, uv_n).rg + vec2(noise_level*0.5-1.5), LIGHT_AO.r);
 
