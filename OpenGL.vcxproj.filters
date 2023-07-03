@@ -295,6 +295,7 @@
     <None Include="res\shaders\Compose.comp" />
     <None Include="res\shaders\SSR.comp" />
     <None Include="res\shaders\HDR_2_PNG.comp" />
+    <None Include="res\shaders\Optical_Flow.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

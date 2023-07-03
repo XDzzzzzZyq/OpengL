@@ -471,8 +471,8 @@ void main(){
 	}
 
 	/* [Block : IBL] */
-
-	vec2 lut = texture2D(LUT, vec2(clamp(NdotV, 0.0, 0.99), Roughness)).xy;
+	vec2 lut_uv = vec2(NdotV, Roughness)*0.9975 + 0.00125;
+	vec2 lut = texture2D(LUT, lut_uv).xy;
 
 	//ReflectRay = normalize(mix(ReflectRay, Normal, Roughness));
 	vec3 reflect_spec = textureLod(Envir_Texture_spec, ReflectRay, sqrt(Roughness) * 7).rgb;

@@ -1,6 +1,7 @@
 #version 460 core
 
 layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout(rgba16f, binding = 2) uniform image2D U_pos_b;
 layout(rgba16f, binding = 3) uniform image2D U_pos;
 layout(rgba16f, binding = 4) uniform image2D U_normal;
 layout(rgba8  , binding = 5) uniform image2D U_alpha;
@@ -9,6 +10,7 @@ layout(rgba16f, binding = 7) uniform image2DArray Noise;
 
 uniform vec3 Cam_pos;
 uniform mat4 Proj_Trans;
+uniform sampler2D U_opt_flow;
 
 uniform bool incre_average;
 uniform int kernel_length;
@@ -31,11 +33,27 @@ vec2 apply(vec2 inp){
 	return vec2(re(inp.x), re(inp.y));
 }
 
+void UpdateOF(ivec2 uv){
+
+	vec4 Cache_B = imageLoad(U_AO, uv).rgba;
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_AO)).rg;
+
+	imageStore(U_AO, ivec2(uv + OF*imageSize(U_AO)), Cache_B);
+	memoryBarrier();
+
+}
+
 void main(){
 
 	float AO = 0;
 
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+
+	////////////////////////////////
+
+	UpdateOF(uv);
+
+	////////////////////////////////
 	vec3 pos = imageLoad(U_pos, uv).rgb;
 	vec3 normal = imageLoad(U_normal, uv).rgb;
 	ivec3 uv_n = ivec3(uv % noise_size, noise_level);
@@ -47,6 +65,7 @@ void main(){
 	float depth = distance(pos, Cam_pos);
 	vec4 pos_n = vec4(pos, depth);
 	imageStore(U_pos, uv, pos_n);
+	imageStore(U_pos_b, uv, pos_n);
 
 	float alpha = imageLoad(U_alpha, uv).r;
 	if(alpha < 0.5){

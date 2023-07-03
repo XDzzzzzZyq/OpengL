@@ -79,7 +79,7 @@ void Renderer::InitFrameBuffer()
 {
 	r_render_result = std::make_shared<FrameBuffer>(std::vector<FBType>RESULT_PASSES);
 	r_buffer_list.emplace_back(std::vector<FBType>AVAIL_PASSES);
-	r_buffer_list.emplace_back(std::vector<FBType>{ LIGHT_AO_FB });
+	r_buffer_list.emplace_back(std::vector<FBType>{ LIGHT_AO_FB, POS_B_FB, OPT_FLW_FB });
 }
 
 void Renderer::BindFrameBuffer(int slot)
@@ -183,6 +183,24 @@ void Renderer::Render(bool rend, bool buff) {
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
+
+	////////////    CAM TRANSFORM    /////////////
+
+	GetActiveCamera()->ApplyTransform();
+	GetActiveCamera()->GetInvTransform();
+	GetActiveCamera()->GenFloatData();
+
+	
+	////////////     OPTICAL FLOW     ////////////
+
+	ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
+	r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
+	r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
+	of.UseShader();
+	of.SetValue("proj_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+	if(r_using_of) of.RunComputeShaderSCR(r_render_result->GetSize(), 16);
+
+
 	///////////  Lights Data PreCalc  ///////////
 
 	for (auto& [id, light] : r_scene->light_list) {
@@ -219,12 +237,6 @@ void Renderer::Render(bool rend, bool buff) {
 		;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDisable(GL_BLEND);
-
-		/////////    CAM TRANSFORM    /////////
-
-		GetActiveCamera()->ApplyTransform();
-		GetActiveCamera()->GetInvTransform();
-		GetActiveCamera()->GenFloatData();
 
 		glDisable(GL_DEPTH_TEST);
 		GetActiveEnvironment()->RenderEnvironment(GetActiveCamera().get());
@@ -320,7 +332,9 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  SSAO + DEPTH  ////////////
 
 		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
-		ComputeShader& ssao = ComputeShader::ImportShader("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f), Uni("radius", r_ao_radius));
+		ComputeShader& ssao = ComputeShader::ImportShader("SSAO", Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("update_rate", 0.05f), Uni("radius", r_ao_radius), Uni("U_opt_flow", 1));
+		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
+		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 4);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
@@ -339,6 +353,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
 		r_light_data.UpdateLightingCache(r_frame_num);
 
 
@@ -363,7 +378,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////      SSR     ////////////
 
 		static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11));
+		ComputeShader& ssr = ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);

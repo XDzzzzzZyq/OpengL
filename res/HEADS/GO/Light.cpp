@@ -518,10 +518,10 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 	static auto pos_offset = xdzm::rand3nv(16);
 	static float update_rate = 0.05;
 
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
-	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
-	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot",  Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
-	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area",  Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate/4));
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
+	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
+	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
+	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate/4));
 
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;

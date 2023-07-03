@@ -9,8 +9,8 @@ enum FBType
 	/* nothing */	NONE_FB = -1,
 	/*     HDR */	COMBINE_FB = 0, 
 					EMIS_COL_FB, LIGHT_AO_FB = 1, DIR_DIFF_FB = 1, 
-					POS_FB,						  DIR_SPEC_FB = 2,
-					MRSE_FB,					  IND_DIFF_FB = 3,			// MRSE: metalness roughness specular emission 
+					POS_FB,	     POS_B_FB = 2,	  DIR_SPEC_FB = 2,
+					MRSE_FB,	 OPT_FLW_FB = 3,  IND_DIFF_FB = 3,			// MRSE: metalness roughness specular emission 
 					NORMAL_FB,					  IND_SPEC_FB = 4,
 												  DIR_EMIS_FB = 5,
 	/*     RGB */	ALBEDO_FB, 
