@@ -24,7 +24,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 {
 	fb_type_list[(FBType)type] = 0;
 	TextureType textype = FrameBuffer::PareseTexType(type);
-	fb_tex_list.emplace_back("", textype, GL_NEAREST);
+	fb_tex_list.emplace_back("", textype, GL_LINEAR);
 	fb_tex_list[0].OffsetSlot(type);
 
 	//IDTexture = Texture("", BUFFER_TEXTURE, GL_NEAREST);
@@ -64,7 +64,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 		TextureType textype = FrameBuffer::PareseTexType((FBType)type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
-		fb_tex_list.emplace_back("", textype, GL_NEAREST);
+		fb_tex_list.emplace_back("", textype, GL_LINEAR);
 		fb_tex_list[i].OffsetSlot(type_inp);
 		
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
@@ -100,7 +100,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 		TextureType textype = FrameBuffer::PareseTexType(type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
-		fb_tex_list.emplace_back("", textype, GL_NEAREST);
+		fb_tex_list.emplace_back("", textype, GL_LINEAR);
 		fb_tex_list[i].OffsetSlot(type_inp);
 
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;

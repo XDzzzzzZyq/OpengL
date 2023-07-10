@@ -90,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\stb_image;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -111,7 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>D:\Blender\proj\OpenGL_master\dep\GLFW\include;D:\Blender\proj\OpenGL_master\dep\GLEW\include;D:\Blender\proj\OpenGL_master\dep\gui;D:\Blender\proj\OpenGL_master\dep\stb_image;D:\Blender\proj\OpenGL_master\dep\glm;D:\Blender\proj\OpenGL_master\res\HEADS\GO;D:\Blender\proj\OpenGL_master\res\HEADS\EXTRA;D:\Blender\proj\OpenGL_master\res\HEADS\FILEIO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER;D:\Blender\proj\OpenGL_master\res\HEADS;D:\Blender\proj\OpenGL_master\res\HEADS\COMPO;D:\Blender\proj\OpenGL_master\res\HEADS\RENDER\BUFFER;D:\Blender\proj\OpenGL_master\res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>

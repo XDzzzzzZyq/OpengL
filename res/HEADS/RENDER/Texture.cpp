@@ -139,7 +139,7 @@ Texture::Texture(GLuint Tile_type, int x, int y)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST, GL_REPEAT, GL_REPEAT);
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -238,7 +238,7 @@ void Texture::Resize(float x, float y)
 
 	glTexImage2D(gl_type, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_NEAREST, GL_NEAREST);
+	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR);
 }
 
 void Texture::Bind(GLuint slot) const
@@ -715,7 +715,7 @@ TextureLib::TextureRes TextureLib::LTC1()
 
 	if (result != nullptr) return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1_DATA), GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 	return t_tex_list[_name];
 }
@@ -727,7 +727,7 @@ TextureLib::TextureRes TextureLib::LTC2()
 
 	if (result != nullptr) return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2_DATA), GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 	return t_tex_list[_name];
 }
