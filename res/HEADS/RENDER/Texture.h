@@ -3,7 +3,7 @@
 #include <string>
 #include <GL/glew.h>
 
-#include "support.h"
+#include "glm/glm.hpp"
 
 enum TextureType
 {
@@ -57,7 +57,7 @@ public:
 	~Texture();
 
 	void DelTexture() const;
-	void Resize(const ImVec2& size);
+	void Resize(const glm::vec2& size);
 	void Resize(float x, float y);
 	void OffsetSlot(GLuint _offset) { tex_slot_offset += _offset; };
 
@@ -108,6 +108,7 @@ public:
 	void SaveTexture(std::string _path) const;
 };
 
+#include <unordered_map>
 
 class TextureLib {
 

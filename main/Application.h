@@ -3,26 +3,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <iostream>
-
-#include <fstream>
-#include <string>
-#include <numeric>
-
-#include "support.h"
 #include "Renderer.h"
-#include "Camera.h"
-
-#include "EventListener.h"
-#include "DebugLine.h"
-#include "DebugPoints.h"
-#include "Environment.h"
-
-
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_glfw.h"
-#include "ImGui/imgui_impl_opengl3.h"
 #include "ImguiManager.h"
+#include "EventListener.h"
 
 // using singleton
 class Application

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "support.h"
-
 #include "GameObject.h"
 #include "Transform.h"
 #include "Sprite.h"

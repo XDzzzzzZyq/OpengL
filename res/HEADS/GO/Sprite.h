@@ -10,8 +10,6 @@
 #include "Shaders.h"
 #include "Camera.h"
 
-#include "support.h"
-
 #include <optional>
 
 #define SPRITE_SIZE 0.7f

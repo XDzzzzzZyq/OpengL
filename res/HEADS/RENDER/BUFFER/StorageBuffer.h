@@ -5,8 +5,6 @@
 #include <vector>
 #include <cstring>
 
-#include "support.h"
-
 enum SSBType
 {
 	NONE_LIST, FLOAT_LIST, INT_LIST, VEC2_LIST, VEC3_LIST, CUSTOM_LIST

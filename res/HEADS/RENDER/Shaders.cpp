@@ -1,4 +1,6 @@
 ﻿#include "Shaders.h"
+#include "operator.h"
+
 GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 
 	const auto [name, fname, glname] = Shaders::ParseShaderType(_type);
@@ -709,7 +711,7 @@ GLuint ComputeShader::CompileShader()
 	return comp_id;
 }
 
-void ComputeShader::RunComputeShaderSCR(const ImVec2& _scr_size, GLuint _batch, bool _edge_fix /*= true*/)
+void ComputeShader::RunComputeShaderSCR(const glm::vec2& _scr_size, GLuint _batch, bool _edge_fix /*= true*/)
 {
 	RunComputeShader(_scr_size / _batch + (_edge_fix ? glm::vec2(1) : glm::vec2(0)));
 }
@@ -720,10 +722,10 @@ void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint wo
 	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }
 
-void ComputeShader::RunComputeShader(const ImVec2& _size)
+void ComputeShader::RunComputeShader(const glm::vec2& _size)
 {
 	UseShader();
-	RunComputeShader(_size[0], _size[1], 1);
+	RunComputeShader(_size.x, _size.y, 1);
 	UnuseShader();
 }
 

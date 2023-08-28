@@ -37,9 +37,8 @@ void Viewport::RenderLayer()
 
 		GetLayerSize();
 		if(uly_name == "Viewport")
-			EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
+			EventListener::viewport_offset = -(window_pos - ImGui::GetWindowPos());
 
-		EventListener::viewport_offset = ImGui::GetWindowPos() - window_pos;
 		EventListener::is_in_viewport = ITEM::is_inside(uly_size);
 
 		if (IsResizingFin())

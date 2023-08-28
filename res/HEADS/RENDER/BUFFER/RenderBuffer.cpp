@@ -1,4 +1,5 @@
 #include "RenderBuffer.h"
+#include "macros.h"
 
 RenderBuffer::RenderBuffer()
 {
@@ -42,7 +43,7 @@ void RenderBuffer::Resize(float w, float h)
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
 }
 
-void RenderBuffer::Resize(const ImVec2& size) 
+void RenderBuffer::Resize(const glm::vec2& size)
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, rb_ID);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);

@@ -1,4 +1,5 @@
 #include "Light.h"
+#include "xdz_math.h"
 
 FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
 

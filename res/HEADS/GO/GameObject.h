@@ -1,6 +1,7 @@
 #pragma once
+
 #include "structs.h"
-#include "support.h"
+#include "glm/glm.hpp"
 
 enum GOType
 {

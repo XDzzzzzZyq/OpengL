@@ -1,6 +1,6 @@
 #include "GameObject.h"
-#include "support.h"
-
+#include "macros.h"
+#include "xdz_math.h"
 
 int GameObject::count = 0;
 

@@ -7,27 +7,30 @@
 #include "glm/gtc/quaternion.hpp"
 
 #include "ImGui/imgui.h"
+#include <iostream>
+#include <vector>
+
 inline std::ostream& operator<<(std::ostream& stream, const glm::vec4& vec)
 {
-	stream << "[ " << vec[0] << " , " << vec[1] << " , " << vec[2] << " , " << vec[3] << " ]\n";
+	stream << "[ " << vec.x << " , " << vec.y << " , " << vec.z << " , " << vec.w << " ]\n";
 	return stream;
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const glm::vec3& vec)
 {
-	stream << "[ " << vec[0] << " , " << vec[1] << " , " << vec[2] << " ]\n";
+	stream << "[ " << vec.x << " , " << vec.y << " , " << vec.z << " ]\n";
 	return stream;
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const ImVec2& vec)
 {
-	stream << "[ " << vec[0] << " , " << vec[1] << " ]\n";
+	stream << "[ " << vec.x << " , " << vec.y << " ]\n";
 	return stream;
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const glm::vec2& vec)
 {
-	stream << "[ " << vec[0] << " , " << vec[1] << " ]\n";
+	stream << "[ " << vec.x << " , " << vec.y << " ]\n";
 	return stream;
 }
 
@@ -99,63 +102,81 @@ inline std::string operator+=(const std::string& bas, const std::string& add) {
 }
 
 inline ImVec2 operator+(const ImVec2& a, const ImVec2& b) {
-	return { a[0] + b[0], a[1] + b[1] };
+	return { a.x + b.x, a.y + b.y };
 }
 
 inline ImVec2 operator-(const ImVec2& a, const ImVec2& b) {
 	
-	return { a[0] - b[0], a[1] - b[1] };
+	return { a.x - b.x, a.y - b.y };
 }
 
 inline ImVec2 operator*(const ImVec2& a, const ImVec2& b) {
-	return 	{ a[0] * b[0], a[1] * b[1] };
+	return 	{ a.x * b.x, a.y * b.y };
 }
 
 inline ImVec2 operator/(const ImVec2& a, const ImVec2& b) {
-	return { a[0] / b[0], a[1] / b[1] };
+	return { a.x / b.x, a.y / b.y };
 }
 
 inline bool operator==(const ImVec2& a, const ImVec2& b) {
-	return a[0]==b[0]&&a[1]==b[1];
+	return a.x==b.x&&a.y==b.y;
 }
 
 inline bool operator!=(const ImVec2& a, const ImVec2& b) {
-	return a[0] != b[0] || a[1] != b[1];
+	return a.x != b.x || a.y != b.y;
 }
 
 inline bool operator<(const ImVec2& a, const ImVec2& b) {
-	return a[0] < b[0] && a[1] < b[1];
+	return a.x < b.x && a.y < b.y;
 }
 
 inline bool operator>(const ImVec2& a, const ImVec2& b) {
-	return a[0] > b[0]&& a[1] > b[1];
+	return a.x > b.x && a.y > b.y;
+}
+
+inline bool operator<(const glm::vec2& a, const glm::vec2& b) {
+	return a.x < b.x && a.y < b.y;
+}
+
+inline bool operator>(const glm::vec2& a, const glm::vec2& b) {
+	return a.x > b.x && a.y > b.y;
 }
 
 inline ImVec2 operator/(const ImVec2& a, float fac) {
-	return { a[0] / fac, a[1] / fac };
+	return { a.x / fac, a.y / fac };
 }
 
 inline ImVec2 operator+(const ImVec2& a, const glm::vec2& b) {
-	return { a[0] + b[0], a[1] + b[1] };
+	return { a.x + b.x, a.y + b.y };
 }
 
 inline ImVec2 operator-(const ImVec2& a, const glm::vec2& b) {
-	return { a[0] - b[0], a[1] - b[1] };
+	return { a.x - b.x, a.y - b.y };
 }
 
 
 inline ImVec2 operator*(const ImVec2& a, const glm::vec2& b) {
-	return { a[0] * b[0], a[1] * b[1] };
+	return { a.x * b.x, a.y * b.y };
 }
 
 inline glm::vec2 operator+(const glm::vec2& a, const ImVec2& b) {
-	return { a[0] + b[0], a[1] + b[1] };
+	return { a.x + b.x, a.y + b.y };
 }
 
 inline glm::vec2 operator-(const glm::vec2& a, const ImVec2& b) {
-	return { a[0] - b[0], a[1] - b[1] };
+	return { a.x - b.x, a.y - b.y };
 }
 
 inline glm::vec2 operator*(const glm::vec2& a, const ImVec2& b) {
-	return { a[0] * b[0], a[1] * b[1] };
+	return { a.x * b.x, a.y * b.y };
+}
+
+inline glm::vec2 operator/(const glm::vec2& a, GLuint fac) {
+	return { a.x / fac, a.y / fac };
+}
+
+template<typename In, typename Out>
+static inline Out VecConvert(const In& v)
+{
+	return Out{ v.x, v.y };
 }

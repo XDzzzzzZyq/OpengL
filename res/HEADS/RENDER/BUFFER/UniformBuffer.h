@@ -1,6 +1,7 @@
 #pragma once
 
-#include "support.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 template<class _S>
 class UniformBuffer

@@ -1,5 +1,4 @@
 #include "PolygonLight.h"
-#include "support.h"
 #include <numeric>
 
 PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &light_color, float light_power, bool use_shadow)

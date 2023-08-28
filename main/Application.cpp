@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "xdz_math.h"
 
 Application::Application()
 {
@@ -120,7 +121,7 @@ int Application::Run()
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
-		renderer.GetActiveCamera()->ChangeCamRatio(view_size);
+		renderer.GetActiveCamera()->ChangeCamRatio(view_size.x, view_size.y);
 		renderer.FrameResize(view_size.x, view_size.y);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));

@@ -305,9 +305,6 @@
     <ClInclude Include="res\HEADS\EXTRA\structs.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="res\HEADS\EXTRA\support.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -555,6 +552,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\stb_image\stb_image_write.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\EXTRA\macros.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

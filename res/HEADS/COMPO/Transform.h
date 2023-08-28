@@ -1,10 +1,12 @@
 #pragma once
-#include "support.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/rotate_vector.hpp"
+
+#include "macros.h"
 
 //https://glm.g-truc.net/0.9.9/api/a00356.html
 

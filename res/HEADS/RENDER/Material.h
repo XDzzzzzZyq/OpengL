@@ -1,12 +1,7 @@
 #pragma once
 
-#ifndef MATERIAL_H
-#define MATERIAL_H
-
 #include "Parameters.h"
 #include "Texture.h"
-
-#include "support.h"
 
 #include <array>
 
@@ -54,5 +49,3 @@ public:
 	void BindMatTexture() const;
 
 };
-
-#endif

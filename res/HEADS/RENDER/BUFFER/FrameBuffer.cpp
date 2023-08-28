@@ -179,7 +179,7 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 	UnbindFrameBuffer();
 }
 
-void FrameBuffer::Resize(const ImVec2& size, bool all)
+void FrameBuffer::Resize(const glm::vec2& size, bool all)
 {
 	Resize(size[0], size[1], all);
 }
@@ -195,6 +195,7 @@ void FrameBuffer::Resize(float w, float h, bool all)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
 }
 
+#include "glm/glm.hpp"
 //https://docs.gl/gl3/glReadPixels
 FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
 {

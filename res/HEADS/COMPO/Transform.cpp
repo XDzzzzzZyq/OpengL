@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "xdz_math.h"
 
 Transform3D::Transform3D()
 {

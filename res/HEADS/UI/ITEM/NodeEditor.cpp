@@ -1,5 +1,9 @@
 #include "NodeEditor.h"
+
 #include <cstdint>
+#include <string>
+
+#include "operator.h"
 
 const ImVec2 ImguiNodes::GetInPinPos(const ImVec2& _header_size, float _offset, int _idx)
 {
@@ -455,8 +459,8 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				ImGui::GetWindowDrawList()->AddBezierCurve(
 					tar_pin_pos,
 					tar_pin_pos + handle_offset,
-					EventListener::GetMousePos() + EventListener::window_pos - handle_offset,      // handle merge to cursor: out -> cursor
-					EventListener::GetMousePos() + EventListener::window_pos,
+					ImGui::GetMousePos() - handle_offset,      // handle merge to cursor: out -> cursor
+					ImGui::GetMousePos(),
 					Nodes::pin_color_list[editing_para_type],
 					0.5 * o_scale[0]
 				);
@@ -495,8 +499,8 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			else {
 				RenderMark(ADD_MARK);
 				ImGui::GetWindowDrawList()->AddBezierCurve(
-					EventListener::GetMousePos() + EventListener::window_pos,
-					EventListener::GetMousePos() + EventListener::window_pos + handle_offset,
+					ImGui::GetMousePos(),
+					ImGui::GetMousePos() + handle_offset,
 					tar_pin_pos - handle_offset,
 					tar_pin_pos,
 					Nodes::pin_color_list[editing_para_type],
@@ -527,9 +531,9 @@ void NodeEditor::RenderMark(MarkType _type, bool _is_left /*= true*/)
 {
 	const float offset = 7;
 	if (_is_left)
-		RenderMark(_type, EventListener::GetMousePos() + EventListener::window_pos + ImVec2(-offset, -offset));
+		RenderMark(_type, ImGui::GetMousePos() + ImVec2(-offset, -offset));
 	else
-		RenderMark(_type, EventListener::GetMousePos() + EventListener::window_pos + ImVec2( offset, -offset));
+		RenderMark(_type, ImGui::GetMousePos() + ImVec2( offset, -offset));
 }
 
 void NodeEditor::RenderMark(MarkType _type, ImVec2 _pos)
@@ -587,10 +591,11 @@ void NodeEditor::SHIFT_MMB()
 		Move({ GetDeltaMouseX() / o_scale[0], GetDeltaMouseY() / o_scale[0] });
 }
 
+#include "xdz_math.h"
 void NodeEditor::CTRL_MMB()
 {
 	if (ITEM::is_inside(NE_size))
-		Zoom(glm::pow(0.8f, -0.05 * dir_float_dist(GetDeltaMouseX(), GetDeltaMouseY())));
+		Zoom(glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(GetDeltaMouseX(), GetDeltaMouseY())));
 }
 
 void NodeEditor::SCRLL()

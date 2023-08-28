@@ -1,4 +1,5 @@
 #include "TextureViewer.h"
+#include "operator.h"
 
 UI::TextureViewer::TextureViewer()
 {

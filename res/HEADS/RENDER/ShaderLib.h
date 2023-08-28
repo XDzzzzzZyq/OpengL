@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include <algorithm>
 
-#include "structs.h"
 #include "Parameters.h"
+#include "macros.h"
 
 typedef std::pair<ParaType, std::string> Arg;
 typedef std::vector<Arg> Args;

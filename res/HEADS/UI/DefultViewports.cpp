@@ -37,7 +37,7 @@ void ImguiManager::DefultViewports() {
 	layer2->PushItem<UI::ParaInput>(FLOAT_INP, "Y", -90.0f, 90.0f);
 	layer2->PushItem<UI::ParaInput>(FLOAT_INP, "Z", -90.0f, 90.0f);
 	layer2->PushItem<UI::ParaInput>(FLOAT_INP, "W", 0.0f, 10.0f);
-	layer2->PushItem<UI::ParaInput>(FLOAT_INP, "GAMMA", 0.0f, 30.0f, 2.4f);
+	layer2->PushItem<UI::ParaInput>(FLOAT_INP, "GAMMA", 0.0f, 30.0f, 1.5f);
 	layer2->PushItem<UI::ParaInput>(RGB_INP,   "Light Color", glm::vec3{ 0.5,0.5,0.5 });
 	layer2->PushItem<UI::ParaInput>(RGB_INP,   "Light Position");
 	layer2->PushItem<UI::ParaInput>(RGB_INP,   "Light Rotation", glm::vec3{ 0.5,0.5,0.5 });

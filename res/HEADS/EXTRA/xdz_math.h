@@ -1,5 +1,15 @@
 #pragma once
+
 #include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/quaternion.hpp"
+#include "glm/gtx/euler_angles.hpp"
+#include "glm/gtx/rotate_vector.hpp"
+
+#include "macros.h"
+#include "operator.h"
+
+#include <random>
 
 namespace xdzm {
 	inline float sin01(float in) {
@@ -22,7 +32,8 @@ namespace xdzm {
 	}
 
 	inline float rand01() {
-		return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+		std::mt19937 rng(std::random_device{}());
+		return std::uniform_real_distribution<float>{0.f, 1.f}(rng);
 	}
 
 	inline float rand11() {
@@ -68,5 +79,47 @@ namespace xdzm {
 
 	inline glm::vec4 rand4() {
 		return { rand11(), rand11(), rand11(), rand11() };
+	}
+
+	inline glm::vec3 ImVec4_vec3(const ImVec4& color, float fac = 1.0f) {
+
+		return fac * glm::vec3(color.x, color.y, color.z);
+	}
+
+	inline glm::vec3 ImVec4_vec3_Uni(const ImVec4& color, const float& fac) {
+
+		return glm::vec3(color.x * fac - 0.5f * fac, color.y * fac - 0.5f * fac, color.z * fac - 0.5f * fac);
+	}
+
+	inline glm::vec3 stdVec3_vec3(const std::vector<float>& inp) {
+		return glm::vec3{ inp[0], inp[1], inp[2] };
+	}
+
+	inline std::vector<float> vec3_stdVec3(const glm::vec3& inp) {
+		return std::vector<float>{	inp[0], inp[1], inp[2]};
+	}
+
+	inline std::vector<float> vec3_stdVec6(const glm::vec3& inp, const glm::vec3& inp2) {
+
+		return std::vector<float>{inp[0], inp[1], inp[2], inp2[0], inp2[1], inp2[2]};
+	}
+
+	inline float float_dist(const float& a, const float& b) {
+		return glm::sqrt(a * a + b * b);
+	}
+
+	inline float dir_float_dist(const float& a, const float& b) {
+		return b > a ? -float_dist(a, b) : float_dist(a, b);
+	}
+
+	inline glm::vec3 Vec3Spin(const glm::vec3& vecInp, const glm::vec3& anch, const glm::vec3& axis, const float& angle)
+	{
+		glm::vec3 result = vecInp;
+		glm::qua rotQua = glm::qua<float>(glm::radians(glm::vec3(0.0f, 0.0f, 0.0f)));
+		rotQua = glm::rotate(rotQua, angle, axis);
+		glm::mat4 rotMat = glm::mat4_cast(rotQua);
+
+		result -= anch;
+		return anch + rotMat * result;
 	}
 }

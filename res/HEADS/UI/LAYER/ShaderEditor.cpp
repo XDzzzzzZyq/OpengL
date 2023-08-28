@@ -1,4 +1,5 @@
 #include "ShaderEditor.h"
+#include "operator.h"
 
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
 std::string const ShaderEditor::shader_type[2] = { "Vertex Shader", "Fragment Shader" };

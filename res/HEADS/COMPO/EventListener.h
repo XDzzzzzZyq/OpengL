@@ -2,8 +2,12 @@
 #define SPE_KEY_LEN 3 // alt ctrl shift
 #define NORM_KEY_LEN 36
 
-#include "support.h"
 #include "GameObject.h"
+#include "structs.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "glm/glm.hpp"
 
 #include<unordered_map>
 #include<unordered_set>
@@ -80,8 +84,8 @@ public:
 	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
 	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }
 	static const double GetDeltaMouseY() { return mouse_y - mouse_b_y; }
-	static const ImVec2 GetDeltaMouse()  { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
-	static const ImVec2 GetMousePos()    { return { (float)mouse_x, (float)mouse_y }; }
+	static const glm::vec2 GetDeltaMouse()  { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
+	static const glm::vec2 GetMousePos()    { return { (float)mouse_x, (float)mouse_y }; }
 
 public:
 
@@ -107,8 +111,8 @@ public:
 
 public:
 
-	static ImVec2 window_pos;
-	static ImVec2 viewport_offset;
+	static glm::vec2 window_pos;
+	static glm::vec2 viewport_offset;
 	static bool is_in_viewport;
 
 public:

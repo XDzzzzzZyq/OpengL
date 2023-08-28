@@ -4,7 +4,6 @@
 #include <vector>
 #include <functional>
 
-#include "support.h"
 #include "EventListener.h"
 
 #include "ImGui/imgui.h"

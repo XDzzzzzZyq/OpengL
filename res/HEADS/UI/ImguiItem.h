@@ -1,6 +1,5 @@
 #pragma once
 #include "ImGui/imgui.h"
-#include "support.h"
 
 #include "Parameters.h"
 #include "EventListener.h"
@@ -11,7 +10,7 @@
 #include <type_traits>
 #include <cstdarg>
 
-
+#include "macros.h"
 
 enum ImItemType
 {
@@ -73,7 +72,7 @@ public:
 
 };
 
-
+#include "operator.h"
 namespace ITEM {
 
 	inline const bool is_inside(const ImVec2& size) {

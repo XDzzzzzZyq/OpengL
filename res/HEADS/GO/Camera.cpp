@@ -1,6 +1,5 @@
 ﻿#include "Camera.h"
-#include "support.h"
-
+#include "xdz_math.h"
 
 Camera::Camera(float w, float h, float per, float n, float f)
 	:cam_w(w), cam_h(h), cam_pers(per), cam_near(n), cam_far(f)
@@ -69,9 +68,9 @@ void Camera::ChangeCamRatio(float w, float h)
 	is_frustum_changed = true;
 }
 
-void Camera::ChangeCamRatio(const ImVec2& size)
+void Camera::ChangeCamRatio(const glm::vec2& size)
 {
-	if (size == ImVec2(cam_w, cam_h))
+	if (size == glm::vec2(cam_w, cam_h))
 		return;
 
 	cam_w = size.x;
@@ -118,7 +117,7 @@ void Camera::CTRL_MMB()
 {
 	if (!EventListener::is_in_viewport) return;
 
-	o_position += glm::cross(o_dir_up, o_dir_right) * dir_float_dist((float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y)) * 0.05f;
+	o_position += glm::cross(o_dir_up, o_dir_right) * xdzm::dir_float_dist((float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y)) * 0.05f;
 	is_TransF_changed = true;
 }
 

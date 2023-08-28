@@ -1,6 +1,5 @@
 #pragma once
 
-#include "support.h"
 #include "Transform.h"
 
 enum FieldType

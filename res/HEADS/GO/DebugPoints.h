@@ -1,5 +1,4 @@
 #pragma once
-#include "support.h"
 
 #include "GameObject.h"
 #include "VertexArray.h"

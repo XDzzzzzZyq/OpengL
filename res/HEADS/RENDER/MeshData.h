@@ -9,12 +9,35 @@
 #include "Camera.h"
 
 #include "Transform.h"
-#include "support.h"
 #include <numeric>
 #include <optional>
 
-
 class MeshData {
+
+public:
+
+	struct Reading
+	{
+		std::vector<float> data_array;
+		glm::vec3 center = { 0,0,0 };
+		int count[4] = { 0,0,0,0 };
+
+		std::string name = "";
+	};
+
+	struct Face
+	{
+		int pos, uv, norm, smo_norm;
+		void copy(const Face& inp) {
+			pos = inp.pos;
+			uv = inp.uv;
+			norm = inp.norm;
+			smo_norm = inp.smo_norm;
+		}
+		void print() {
+			std::cout << pos << " " << uv << " " << norm << "\n";
+		}
+	};
 
 private:
 	static std::string obj_file_root;

@@ -323,6 +323,7 @@
     <ClInclude Include="dep\stb_image\stb_image.h" />
     <ClInclude Include="dep\stb_image\stb_image_write.h" />
     <ClInclude Include="main\Application.h" />
+    <ClInclude Include="res\HEADS\EXTRA\macros.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h" />
     <ClInclude Include="res\HEADS\GO\Sprite.h" />
     <ClInclude Include="res\HEADS\RENDER\MeshData.h" />
@@ -376,7 +377,6 @@
     <ClInclude Include="res\HEADS\RENDER\BufferLayout.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h" />
     <ClInclude Include="res\HEADS\EXTRA\structs.h" />
-    <ClInclude Include="res\HEADS\EXTRA\support.h" />
     <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h" />
     <ClInclude Include="res\HEADS\RENDER\VertexArray.h" />
     <ClInclude Include="res\HEADS\RENDER\Shaders.h" />

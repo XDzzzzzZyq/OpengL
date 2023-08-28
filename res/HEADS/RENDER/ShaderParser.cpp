@@ -1,5 +1,6 @@
 #include "Shaders.h"
 #include "ShaderLib.h"
+#include "structs.h"
 
 void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 	Timer timer("ParseShader");

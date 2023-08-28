@@ -234,7 +234,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2()
 	areaLight1->SetPos({ 0, 0, 1.95 });
 	areaLight1->SetScale(glm::vec3(0.25));
 	areaLight1->SetRot({ 180, 0, 0 });
-	areaLight1->SetPower(10);
+	areaLight1->SetPower(15);
 	config2->UseLight(areaLight1);
 
 	Light::point_blur_range = 0.005;

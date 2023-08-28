@@ -1,5 +1,4 @@
 #pragma once
-#include "support.h"
 
 #include "glm/glm.hpp"
 

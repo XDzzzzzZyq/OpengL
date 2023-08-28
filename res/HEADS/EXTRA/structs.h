@@ -3,30 +3,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/quaternion.hpp"
-
-#include "ImGui/imgui.h"
-
-#include <iostream>
-#include <unordered_map>
-#include <ctime>
+#include <string>
 #include <vector>
-
-#define SCREEN_W 1740
-#define SCREEN_H 810
-#define LOOP(x) for(int i = 0; i < x; i++)
-#define LOOP_N(x, n) for(int n = 0; n < x; n++)
-
-
-
-struct ShaderPair {
-	std::string verShader;
-	std::string fragShader;
-
-};
-
+#include <ctime>
 struct Timer
 {
 	time_t start = 0, end = 0, tick = 0, temp = 0;
@@ -75,29 +54,6 @@ struct Timer
 	}
 };
 
-struct Reading
-{
-	std::vector<float> data_array;
-	std::vector<float> center = { 0,0,0 };
-	int count[4] = { 0,0,0,0 };
-
-	std::string name = "";
-};
-
-struct Face
-{
-	int pos, uv, norm, smo_norm;
-	void copy(const Face& inp) {
-		pos = inp.pos;
-		uv = inp.uv;
-		norm = inp.norm;
-		smo_norm = inp.smo_norm;
-	}
-	void print() {
-		std::cout << pos << " " << uv << " " << norm << "\n";
-	}
-};
-
 template<int _L>
 struct AverageTime
 {
@@ -120,3 +76,19 @@ struct OutlineElement
 };
 //			| TYPE | ID | NAME | LEVEL |
 typedef std::vector<OutlineElement> OutlineData;
+
+inline std::string glDebug_xdz() {
+	const GLuint err = glGetError();
+	switch (err)
+	{
+#define GL_ERR(err) case GL_##err: return #err
+		GL_ERR(NO_ERROR);
+		GL_ERR(INVALID_ENUM);
+		GL_ERR(INVALID_VALUE);
+		GL_ERR(INVALID_OPERATION);
+		GL_ERR(INVALID_FRAMEBUFFER_OPERATION);
+		GL_ERR(OUT_OF_MEMORY);
+	default:
+		return "UNKOWN_ERROR" + std::to_string(err);
+	}
+}

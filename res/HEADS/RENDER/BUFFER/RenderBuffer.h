@@ -18,8 +18,7 @@ public:
 	void Del() const;
 
 	void Resize(float w, float h);
-	void Resize(const ImVec2& size);
+	void Resize(const glm::vec2& size);
 
 	GLuint GetRenderBufferID() const { return rb_ID; }
 };
-

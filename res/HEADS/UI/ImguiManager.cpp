@@ -181,7 +181,7 @@ void ImguiManager::RenderUI(bool rend)
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 		ImGui::BeginMainMenuBar();
-		EventListener::window_pos = ImGui::GetWindowPos();
+		EventListener::window_pos = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos());
 		/*			ImGui::BeginMenuBar();*/
 		for (const auto& menu : menu_list) {
 			menu->RenderMenu();

@@ -5,11 +5,6 @@
 #include "EventListener.h"
 /*#include "Sprite.h"*/
 
-#include "support.h"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-
 class Camera : public GameObject, public Transform3D, public EventListener
 {
 public:
@@ -31,7 +26,7 @@ public:
 	mutable std::vector<float> cam_floatData;
 	void GenFloatData() const; // 6f(trans) + 1f(ratio) + 1f(angle)
 	void ChangeCamRatio(float w, float h);
-	void ChangeCamRatio(const ImVec2& size);
+	void ChangeCamRatio(const glm::vec2& size);
 	void ChangeCamPersp(float persp);
 
 	void SetTarPos(const glm::vec3& _pos);

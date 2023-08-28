@@ -1,8 +1,13 @@
 #pragma once
-#include "Texture.h"
+
 #include "RenderBuffer.h"
+#include "macros.h"
+
 #include <cstdarg>
 #include <optional>
+#include <unordered_map>
+#include <vector>
+
 
 enum FBType
 {
@@ -62,9 +67,9 @@ public:
 
 public:
 
-	void Resize(const ImVec2& size, bool all = false);
+	void Resize(const glm::vec2& size, bool all = false);
 	void Resize(float w, float h, bool all = false);
-	ImVec2 GetSize() const { return { fb_w, fb_h }; }
+	glm::vec2 GetSize() const { return { fb_w, fb_h }; }
 
 	FBPixel ReadPix(GLuint x, GLuint y, FBType type);
 
@@ -84,7 +89,7 @@ public:
 public:
 
 	GLuint GetFrameBufferID() const { return fb_ID; }
-	const ImVec2&& GetFrameBufferSize() const { return ImVec2(fb_w, fb_h); }
+	const glm::vec2&& GetFrameBufferSize() const { return { fb_w, fb_h }; }
 	GLuint GetFBTextureID(FBType type) const { return fb_tex_list[fb_type_list[type]].GetTexID(); }
 	Texture* GetFBTexturePtr(FBType type) const { return &fb_tex_list[fb_type_list[type]]; }
 	size_t GetFBCount() const { return fb_tex_list.size(); }

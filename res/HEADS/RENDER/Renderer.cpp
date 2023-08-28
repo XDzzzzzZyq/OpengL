@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "xdz_math.h"
 
 GLint Renderer::max_resolution_w = 0;
 GLint Renderer::max_resolution_h = 0;
@@ -68,7 +69,7 @@ std::string Renderer::GetObjectName(int ID)
 
 int Renderer::GetSelectID(GLuint x, GLuint y)
 {
-	if (viewport_offset - ImVec2(5, 5) < ImVec2(x, y) && ImVec2(x, y) < viewport_offset + r_buffer_list[_RASTER].GetFrameBufferSize() * ImVec2(1, 2))
+	if (viewport_offset - glm::vec2(5, 5) < glm::vec2(x, y) && glm::vec2(x, y) < viewport_offset + r_buffer_list[_RASTER].GetFrameBufferSize() * glm::vec2(1, 2))
 		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 		return r_buffer_list[_RASTER].ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
 	else
@@ -92,7 +93,7 @@ void Renderer::EndFrameBuffer(int slot)
 	r_buffer_list[slot].UnbindFrameBuffer();
 }
 
-void Renderer::FrameBufferResize(const ImVec2& size)
+void Renderer::FrameBufferResize(const glm::vec2& size)
 {
 	for (auto& buffer : r_buffer_list)
 		buffer.Resize(size);

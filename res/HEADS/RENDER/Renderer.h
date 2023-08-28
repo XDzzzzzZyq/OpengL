@@ -1,7 +1,5 @@
 #pragma once
 
-#include "support.h"
-
 #include "EventListener.h"
 
 #include "SceneManager.h"
@@ -11,7 +9,6 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <unordered_map>
-#include <optional>
 
 class Renderer : public EventListener
 {
@@ -78,7 +75,7 @@ public:
 	void InitFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);
-	void FrameBufferResize(const ImVec2& size);
+	void FrameBufferResize(const glm::vec2& size);
 	GLuint GetFrameBufferTexture(int slot);
 
 public:

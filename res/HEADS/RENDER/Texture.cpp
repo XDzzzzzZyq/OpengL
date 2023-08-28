@@ -1,5 +1,7 @@
 ﻿#include "Texture.h"
 #include "stb_image.h"
+#include "macros.h"
+#include "xdz_math.h"
 
 Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
 	:tex_path(texpath), tex_type(tex_type),
@@ -223,7 +225,7 @@ void Texture::DelTexture() const
 	glDeleteTextures(1, &tex_ID);
 }
 
-void Texture::Resize(const ImVec2& size)
+void Texture::Resize(const glm::vec2& size)
 {
 	Resize(size.x, size.y);
 }

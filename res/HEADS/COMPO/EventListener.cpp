@@ -1,4 +1,5 @@
 #include "EventListener.h"
+#include "macros.h"
 
 KeyMouseEvent EventListener::EVT_STATUS;
 GLFWwindow* EventListener::evt_window = (GLFWwindow*)nullptr;
@@ -52,8 +53,8 @@ OutlineData EventListener::outline_list;
 
 GameObject* EventListener::active_object = (GameObject*)nullptr;
 
-ImVec2 EventListener::window_pos = ImVec2(0, 0);
-ImVec2 EventListener::viewport_offset = ImVec2(0, 0);
+glm::vec2 EventListener::window_pos = glm::vec2(0);
+glm::vec2 EventListener::viewport_offset = glm::vec2(0);
 bool EventListener::is_in_viewport = false;
 
 EventListener::EventListener()
@@ -120,6 +121,7 @@ int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<in
 float EventListener::scroll_dir = 80;
 bool EventListener::is_scr_changed = false;
 
+#include "xdz_math.h"
 void EventListener::UpdateEvent(GLFWwindow* window) const
 {
 
@@ -193,6 +195,7 @@ void EventListener::Reset()
 
 std::vector<std::string> EventListener::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
 
+#include <sstream>
 const KeyMouseEvent EventListener::ParseShortCut(const std::string& _shortcut)
 {
 	KeyMouseEvent result;

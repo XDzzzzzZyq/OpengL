@@ -15,6 +15,14 @@ class Shaders {
 
 public:
 
+	struct ShaderPair {
+		std::string verShader;
+		std::string fragShader;
+
+	};
+
+public:
+
 	using ShaderConstInfo = std::tuple<std::string, std::string, GLuint>; // name | filename | GL_name
 
 	static ShaderConstInfo ParseShaderType(ShaderType _type);
@@ -203,8 +211,8 @@ public:
 
 public:
 
-	void RunComputeShaderSCR(const ImVec2& _scr_size, GLuint _batch, bool _edge_fix = true);
-	void RunComputeShader(const ImVec2& _size);
+	void RunComputeShaderSCR(const glm::vec2& _scr_size, GLuint _batch, bool _edge_fix = true);
+	void RunComputeShader(const glm::vec2& _size);
 	void RunComputeShader(GLuint workgroup_count_x = 1, GLuint workgroup_count_y = 1, GLuint workgroup_count_z = 1) const;
 
 public:
