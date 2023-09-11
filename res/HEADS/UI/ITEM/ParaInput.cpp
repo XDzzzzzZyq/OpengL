@@ -92,8 +92,9 @@ bool UI::ParaInput::RenderParam(
 {
 	switch (_type)
 	{
+	default:
 	case NONE_INP:
-		break;
+		return false;
 	case FLOAT_INP:
 		return ImGui::SliderFloat(
 
@@ -189,8 +190,6 @@ bool UI::ParaInput::RenderParam(
 
 		);
 		return true;
-	default:
-		break;
 	}
 }
 
@@ -241,7 +240,6 @@ ImItemType UI::ParaInput::ParseParamType(ParaType _type)
 	switch (_type)
 	{
 	default:
-		break;
 	case NONE_PARA:
 		return NONE_INP;
 		break;

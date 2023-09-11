@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <iostream>
+
 struct Timer
 {
 	time_t start = 0, end = 0, tick = 0, temp = 0;

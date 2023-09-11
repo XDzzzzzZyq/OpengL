@@ -54,6 +54,8 @@ std::string ImguiItem::GetTagName() const
 		return "[BOOL] ";
 		break;
 	default:
+
+		return "[UNKNOWN]";
 		break;
 	}
 }

@@ -7,6 +7,10 @@
 #include "glm/gtx/rotate_vector.hpp"
 
 #include "macros.h"
+#ifdef _DEBUG
+#include "operator.h"
+#include <iostream>
+#endif
 
 //https://glm.g-truc.net/0.9.9/api/a00356.html
 

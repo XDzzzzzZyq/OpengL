@@ -1,4 +1,5 @@
 #include "FrameBuffer.h"
+#include "macros.h"
 
 TextureType FrameBuffer::PareseTexType(FBType _type)
 {

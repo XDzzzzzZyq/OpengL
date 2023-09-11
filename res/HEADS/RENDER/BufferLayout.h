@@ -16,6 +16,7 @@ struct BufferElement
 		case GL_UNSIGNED_INT:	return 4;
 		case GL_UNSIGNED_BYTE:	return 1;
 		}
+		return 0;
 	}
 };
 

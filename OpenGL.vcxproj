@@ -109,7 +109,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,7 +136,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,13 +146,14 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW64\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -180,7 +181,7 @@
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

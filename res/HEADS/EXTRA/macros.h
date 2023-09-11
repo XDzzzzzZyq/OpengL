@@ -4,6 +4,7 @@
 
 #define DEBUG(x) std::cout<<(x)<<"\n";
 #define DEBUGS(x) std::cout<__func__<<" : "<<__LINE__<<" : "<<(x)<<"\n";
+#include "structs.h"
 #define GLDEBUG std::cout<<__func__<<" : "<<__LINE__<<" : "<<glDebug_xdz()<<"\n";
 
 #else

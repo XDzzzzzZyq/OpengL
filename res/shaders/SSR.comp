@@ -45,28 +45,28 @@ vec4 DepthSample(vec3 ray_pos){
 	if(IsOutScreen(frag_pos))
 		return vec4(0);
 
-	float screen_depth = distance(texture(U_pos, frag_pos).xyz, cam_pos);
+	float screen_depth = texture(U_pos, frag_pos).w;
 	float sample_depth = distance(ray_pos, cam_pos);
 
 	return vec4(frag_pos, sample_depth, screen_depth);
 }
 
-vec4 BindarySearch(vec3 begin, vec3 end){
+vec2 BindarySearch(vec3 begin, vec3 end){
 	
 	vec3 c_begin = DepthSample(begin).xyz;
 	vec3 c_end = DepthSample(end).xyz;
 
 	float cur = 0.5;
 	float move = 0.5;
-	vec4 result;
+	vec2 result;
 
 	for(int i = 0; i < max_bs_step; i++){
 		
 		vec2 loc = mix(c_begin.xy, c_end.xy, cur);
 
-		result = vec4(loc, 0, 0);
+		result = loc;
 		float cur_depth = mix(c_begin.z, c_end.z, cur);
-		float min_depth = distance(texture(U_pos, loc).xyz, cam_pos);
+		float min_depth = texture(U_pos, loc).w;
 		float dDepth = cur_depth - min_depth;
 		move *= 0.5;
 
@@ -84,9 +84,9 @@ vec4 BindarySearch(vec3 begin, vec3 end){
 	return result;
 }
 
-vec4 RayMarching(vec3 dir, inout vec3 ray_pos){
+vec2 RayMarching(vec3 dir, inout vec3 ray_pos){
 	
-	vec4 result = vec4(-1);
+	vec2 result = vec2(-1);
 	vec3 ray_pos_b;
 
 	for(int i = 0; i < max_step; i++){
@@ -204,9 +204,9 @@ void main(){
 	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
 	vec3 Fresnel = fresnelSchlick(NdotV, F0);
 
-	vec4 MarchResult = RayMarching(reflect_dir, ray_pos);
+	vec2 MarchResult = RayMarching(reflect_dir, ray_pos);
 
-	vec3 Indirect = MarchResult.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(MarchResult.xy) * Fresnel;
+	vec3 Indirect = MarchResult.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(MarchResult) * Fresnel;
 	vec3 Indirect_b = imageLoad(U_cache, uv).gba;
 
 	float update_rate = smoothstep(0.95, 1.0, 1 - Roughness)*0.97 + 0.02;
