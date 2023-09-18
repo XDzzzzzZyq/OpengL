@@ -6,7 +6,7 @@
 
 # RECORDs
 
-https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
+[合集·__Test_OpenGL__](https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334)
 
 
 
@@ -17,7 +17,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
 
 [Learn OpenGL, extensive tutorial resource for learning Modern OpenGL](https://learnopengl.com/)
 
-\[docs.gl](https://docs.gl/)
+[OpenGL API Documentation](https://docs.gl/)
 
 
 
@@ -56,8 +56,10 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
   - [x] IBL
   - [ ] z-Fog
   - [ ] atmosphere shading
-
-
+- [x] Post Processing
+  - [x] Screen Space PPS
+  - [ ] Field PPS
+  - [ ] Compute Shader supports
 
 #### **Rendering**
 
@@ -74,8 +76,10 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
 
   - [ ] Normal map
   - [ ] Bump map
+        
+- - [ ] Signed Distance Field
   
-- [x] multi-pass composition (deferred rendering)
+- - [x] Multi-pass composition (deferred rendering)
   - Blinn-Phong
 
     - [removed]
@@ -95,9 +99,11 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
     - [x] shadow
       - [x] shadow mapping
       - [x] soft shadow
+      - [ ] SDF shadow
 
 - Ray tracing ?
     - [x] Screen Space Reflections
+    - [ ] SDF SSR
 
 - DL style transfer ?
 
@@ -140,7 +146,7 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
     - [x] SSAO
     - [x] FXAA
     - [x] Shadow mapping
-
+  - [ ] Shader Editor supports
   
 
 - **Advanced**
@@ -168,6 +174,8 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
     - [x] Material Layer
 - [x] ImGui parameters flow
 
+- [ ] Gizmos
+
 - [ ] files management
 - [ ] node system
 
@@ -189,3 +197,5 @@ https://space.bilibili.com/302469604/channel/collectiondetail?sid=572334
     - [x] Advanced (global randoms)
     - [ ] Advanced (...)
 - [x] Timer (struct)
+
+- [ ] CUDA acceleration
