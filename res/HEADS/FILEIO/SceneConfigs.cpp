@@ -1,13 +1,14 @@
 #include "SceneManager.h"
 
 
-std::shared_ptr<SceneResource> SceneManager::SceneConfig1()
+std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="scene1"*/)
 {
 
-	if (SceneManager::sce_configs.find("config 1") != SceneManager::sce_configs.end())
-		return SceneManager::sce_configs["config 1"];
+	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
+		return SceneManager::sce_configs[_name];
 
 	std::shared_ptr<SceneResource> config1 = std::make_shared<SceneResource>();
+	SceneManager::sce_configs[_name] = config1;
 
 	DEBUG("\n---------------CAMERA----------------")
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
@@ -50,7 +51,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1()
 	go4->SetObjShader("testS", "Rasterization");
 	go4->SetTex(MAT_ALBEDO, "rough.png");
 	go4->SetMatColor(MAT_ROUGH, 0.9);
-	;	go4->SetPos({ 0,-7,0 });
+	go4->SetPos({ 0,-7,0 });
 	go4->SetScale({ 2,2,2 });
 	go4->SetRot({ 0,90,90 });
 	config1->UseMesh(go4);
@@ -151,16 +152,16 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1()
 	pps2->AddBinding("U_select", BUFFER_TEXTURE + MASK_FB);
 	config1->UsePostProcessing(pps2);
 
-	SceneManager::sce_configs["config 1"] = config1;
 	return config1;
 }
 
-std::shared_ptr<SceneResource> SceneManager::SceneConfig2()
+std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="cornellbox"*/)
 {
-	if (SceneManager::sce_configs.find("config 2") != SceneManager::sce_configs.end())
-		return SceneManager::sce_configs["config 2"];
+	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
+		return SceneManager::sce_configs[_name];
 
 	std::shared_ptr<SceneResource> config2 = std::make_shared<SceneResource>();
+	SceneManager::sce_configs[_name] = config2;
 
 	DEBUG("\n---------------CAMERA----------------")
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 39.5978f, 0.1f, 300.0f);
@@ -263,3 +264,54 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2()
 
 	return config2;
 }
+
+std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="SDF test"*/)
+{
+	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
+		return SceneManager::sce_configs[_name];
+
+	std::shared_ptr<SceneResource> config3 = std::make_shared<SceneResource>();
+	SceneManager::sce_configs[_name] = config3;
+
+	DEBUG("\n---------------CAMERA----------------")
+		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	camera->SetPos({ 0.0f, 20.0f, 0.0f });
+	camera->SetRot({ 90, 0, 180 });
+	camera->ApplyTransform();
+	camera->GetInvTransform();
+	config3->UseCamera(camera);
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	go4->SetObjShader("testS", "Rasterization");
+	go4->SetMatColor(MAT_ROUGH, 0.9);
+	go4->SetMatColor(MAT_ALBEDO, { 1,1,1 });
+	go4->SetPos({ 0,-7,0 });
+	go4->SetScale({ 2,2,2 });
+	config3->UseMesh(go4);
+
+	DEBUG("\n---------------ENVIR----------------")
+		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
+	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
+	config3->UseEnvironment(environment);
+
+	DEBUG("\n---------------POSTPRCS----------------")
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
+	pps1->pps_field.SetPos({ 5, 5, 5 });
+	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
+	pps1->AddBinding("LUT", PNG_TEXTURE);
+	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
+	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
+	config3->UsePostProcessing(pps1);
+
+	return config3;
+}
+

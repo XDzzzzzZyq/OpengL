@@ -127,7 +127,7 @@ std::unordered_map<std::string, std::shared_ptr<SceneResource>> SceneManager::sc
 
 std::shared_ptr<SceneResource> SceneManager::GetSceneConfig(std::string _name)
 {
-	if(SceneManager::sce_configs.find(_name) == SceneManager::sce_configs.end())
+	if (SceneManager::sce_configs.find(_name) == SceneManager::sce_configs.end())
 		return nullptr;
 
 	return SceneManager::sce_configs[_name];

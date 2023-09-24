@@ -65,8 +65,10 @@ int Application::Init()
 	UI.ManagerInit(window);
 
 	
-#if 0
-	renderer.UseScene(SceneManager::SceneConfig1());
+#if 1
+	renderer.UseScene(SceneManager::SceneConfig3());
+	renderer.r_using_shadow_map = false;
+	renderer.r_using_ssr = false;
 #else
 	renderer.UseScene(SceneManager::SceneConfig2());
 	renderer.r_ao_radius = 0.8;
