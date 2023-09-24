@@ -192,12 +192,6 @@
     <ClCompile Include="dep\gui\ImGui\imgui_draw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="dep\gui\ImGui\imgui_impl_glfw.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="dep\gui\ImGui\imgui_impl_opengl3.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -235,6 +229,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dep\gui\Guizmo\ImSequencer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dep\gui\ImGui\backends\imgui_impl_opengl3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dep\gui\ImGui\backends\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -336,30 +336,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\ImGui\imconfig.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imgui.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imgui_impl_opengl3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imgui_internal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imstb_rectpack.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imstb_textedit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imstb_truetype.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imgui_impl_opengl3_loader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imgui_impl_glfw.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\GO\Mesh.h">
@@ -536,15 +512,6 @@
     <ClInclude Include="dep\gui\ImGui\imgui.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imgui_impl_glfw.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imgui_impl_opengl3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imgui_impl_opengl3_loader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -588,6 +555,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_opengl3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_glfw.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

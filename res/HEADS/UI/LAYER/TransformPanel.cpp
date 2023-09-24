@@ -33,7 +33,6 @@ bool TransformPanel::RenderTransfroms(Transform3D& trans)
 	const bool is_pos_ch = ImGui::InputFloat3M((id + "p").c_str(), "Position", (float*)&pos, "%.1f");
 	const bool is_rot_ch = ImGui::InputFloat3M((id + "r").c_str(), "Rotation", (float*)&rot, "%.1f");
 	const bool is_scl_ch = ImGui::InputFloat3M((id + "s").c_str(), "Scale",	   (float*)&scl, "%.1f");
-
 	if (is_pos_ch)
 		trans.SetPos(pos);
 	if (is_rot_ch)

@@ -91,9 +91,9 @@ int Application::Run()
 	static float rotateZ = 0.0f;
 	static float Radius_W;
 	double mouse_x = 0.0f, mouse_y = 0.0f;
-	ImVec4 LightColor = ImVec4(1.0f, 0.5f, 0.5f, 1.00f);
-	ImVec4 LightPos = ImVec4(0.7f, 0.7f, 1.0f, 1.00f);
-	ImVec4 LightRot = ImVec4(0.5f, 0.5f, 0.5f, 1.00f);
+	glm::vec3 LightColor = glm::vec3(1.0f, 0.5f, 0.5f);
+	glm::vec3 LightPos = glm::vec3(0.7f, 0.7f, 1.0f);
+	glm::vec3 LightRot = glm::vec3(0.5f, 0.5f, 0.5f);
 	AverageTime<10> AvTime;
 	int tex_type = 0;
 	static float testf;
@@ -140,9 +140,9 @@ int Application::Run()
 		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
 		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
 		Radius_W = UI.GetParaValue("__Parameters__", "W")->para_data.fdata;
-		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
-		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
-		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
+		//LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
+		//LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
+		//LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
 		testf = UI.GetParaValue("test layer", "testf")->para_data.fdata;
 		Metalness = UI.GetParaValue("test layer", "Metalness")->para_data.fdata;
 		Roughness = UI.GetParaValue("test layer", "Roughness")->para_data.fdata;

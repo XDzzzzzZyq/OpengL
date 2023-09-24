@@ -307,7 +307,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 							start_p = ImVec2(_node_pool[_node_index_cache[tar_link.first]].max.x, _node_pool[_node_index_cache[tar_link.first]].min.y) + ImVec2(margin, margin);
 
 						if (!click && editing_in_pin != &i_p) {
-							ImGui::GetWindowDrawList()->AddBezierCurve(                     // static rendering: out -> in
+							ImGui::GetWindowDrawList()->AddBezierCubic(                     // static rendering: out -> in
 								start_p,
 								start_p + ImVec2(th_curvity * 10, 0) * o_scale,
 								inp_curs - ImVec2(th_curvity * 10, 0) * o_scale,
@@ -400,7 +400,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 							end_p = ImVec2(_node_pool[_node_index_cache[tar_link.first]].max.x, _node_pool[_node_index_cache[tar_link.first]].min.y) + ImVec2(margin, margin);
 
 						//DEBUG(_node_pool[_node_index_cache[tar_link.first]]->n_name)
-						ImGui::GetWindowDrawList()->AddBezierCurve(
+						ImGui::GetWindowDrawList()->AddBezierCubic(
 							end_p,
 							end_p + ImVec2(th_curvity * 10, 0) * o_scale,
 							pin_pos - ImVec2(th_curvity * 10, 0) * o_scale,
@@ -456,7 +456,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			}
 			else {
 				RenderMark(ADD_MARK, false);
-				ImGui::GetWindowDrawList()->AddBezierCurve(
+				ImGui::GetWindowDrawList()->AddBezierCubic(
 					tar_pin_pos,
 					tar_pin_pos + handle_offset,
 					ImGui::GetMousePos() - handle_offset,      // handle merge to cursor: out -> cursor
@@ -498,7 +498,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			}
 			else {
 				RenderMark(ADD_MARK);
-				ImGui::GetWindowDrawList()->AddBezierCurve(
+				ImGui::GetWindowDrawList()->AddBezierCubic(
 					ImGui::GetMousePos(),
 					ImGui::GetMousePos() + handle_offset,
 					tar_pin_pos - handle_offset,
