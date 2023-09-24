@@ -2,6 +2,10 @@
 #include "ImguiLayer.h"
 #include "ITEM/TextureViewer.h"
 
+#include "Guizmo/ImGuizmo.h"
+#include "Camera.h"
+#include "Transform.h"
+
 class Viewport : public ImguiLayer
 {
 private:
@@ -16,5 +20,10 @@ public:
 
 	void UpdateLayer() override;
 	void RenderLayer() override;
+
+public: 
+
+	void RenderGrids();
+	void RenderGuizmos();
 };
 

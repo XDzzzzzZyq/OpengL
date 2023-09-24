@@ -122,4 +122,17 @@ namespace xdzm {
 		result -= anch;
 		return anch + rotMat * result;
 	}
+
+	inline glm::mat4 transpose(const glm::mat4 _tar) {
+		glm::mat4 result(glm::transpose(glm::mat3(_tar)));
+		result[3][3] = 1;
+		result = glm::translate(result, glm::vec3(_tar[3]));
+		return result;
+	}
+
+	static const glm::mat4 identityMatrix =
+	  { 1.f, 0.f, 0.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f };
 }

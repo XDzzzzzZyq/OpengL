@@ -89,7 +89,7 @@ public:
 public:
 
 	GLuint GetFrameBufferID() const { return fb_ID; }
-	const glm::vec2&& GetFrameBufferSize() const { return { fb_w, fb_h }; }
+	glm::vec2 GetFrameBufferSize() const { return { fb_w, fb_h }; }
 	GLuint GetFBTextureID(FBType type) const { return fb_tex_list[fb_type_list[type]].GetTexID(); }
 	Texture* GetFBTexturePtr(FBType type) const { return &fb_tex_list[fb_type_list[type]]; }
 	size_t GetFBCount() const { return fb_tex_list.size(); }

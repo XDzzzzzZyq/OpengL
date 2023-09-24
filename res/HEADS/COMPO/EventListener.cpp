@@ -44,6 +44,7 @@ bool EventListener::is_selected_changed = true;
 bool EventListener::is_outliner_selected = false;
 
 std::function<GameObject* (int)> EventListener::GetActiveObject = NULL;
+std::function<GameObject* (void)> EventListener::GetActiveCamera = NULL;
 
 int EventListener::active_GO_ID;
 

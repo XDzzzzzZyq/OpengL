@@ -18,17 +18,11 @@ ImguiLayer::~ImguiLayer()
 
 ImVec2 ImguiLayer::GetLayerSize()
 {
+	const ImVec2 size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
+	is_size_changed = !(size == uly_size);
+	uly_size = size;
 
-	if (ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin() == uly_size) {
-		is_size_changed = false;
-		return uly_size;
-	}
-	else
-	{
-		uly_size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
-		is_size_changed = true;
-		return uly_size;
-	}
+	return uly_size;
 }
 
 void ImguiLayer::UpdateLayerPos()

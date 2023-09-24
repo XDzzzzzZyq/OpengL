@@ -100,6 +100,7 @@ public:
 	static bool is_selected_changed;
 	static bool is_outliner_selected;
 	static std::function<GameObject* (int)> GetActiveObject;
+	static std::function<GameObject* (void)> GetActiveCamera;
 	static int active_GO_ID;
 	static std::vector<int> selec_list;
 	static std::vector<int>parent_index_list;

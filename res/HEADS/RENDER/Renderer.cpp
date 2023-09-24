@@ -114,6 +114,7 @@ void Renderer::EventInit()
 	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
 
 	EventListener::GetActiveObject = [&](int id) { return r_scene->obj_list[id].get(); };
+	EventListener::GetActiveCamera = [&]()		 { return dynamic_cast<GameObject*>(GetActiveCamera().get()); };
 }
 
 void Renderer::LMB_CLICK()
