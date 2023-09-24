@@ -66,7 +66,7 @@ void Viewport::RenderGrids()
 	if (active_cam == nullptr)
 		return;
 
-	ImGuizmo::DrawGrid(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], &xdzm::identityMatrix[0][0], 30.f);
+	ImGuizmo::DrawGrid(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], &xdzm::identityMatrix[0][0], 30.f, 0.5f);
 }
 
 void Viewport::RenderGuizmos()
