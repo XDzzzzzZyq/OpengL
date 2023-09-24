@@ -222,6 +222,21 @@
     <ClCompile Include="dep\stb_image\stb_image.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="dep\gui\Guizmo\GraphEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dep\gui\Guizmo\ImCurveEdit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dep\gui\Guizmo\ImGradient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dep\gui\Guizmo\ImGuizmo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dep\gui\Guizmo\ImSequencer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -555,6 +570,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\EXTRA\macros.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\GraphEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImCurveEdit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImGradient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImGuizmo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImSequencer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

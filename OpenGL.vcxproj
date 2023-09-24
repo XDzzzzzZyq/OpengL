@@ -98,7 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\Guizmo;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -122,7 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\Guizmo;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -186,6 +186,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp" />
+    <ClCompile Include="dep\gui\Guizmo\GraphEditor.cpp" />
+    <ClCompile Include="dep\gui\Guizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="dep\gui\Guizmo\ImGradient.cpp" />
+    <ClCompile Include="dep\gui\Guizmo\ImGuizmo.cpp" />
+    <ClCompile Include="dep\gui\Guizmo\ImSequencer.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_demo.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_draw.cpp" />
@@ -334,6 +339,12 @@
     <ClInclude Include="dep\GLEW\include\GL\wglew.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
     <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="dep\gui\Guizmo\GraphEditor.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImCurveEdit.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImGradient.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImGuizmo.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImSequencer.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
     <ClInclude Include="dep\gui\ImGui\imgui.h" />
     <ClInclude Include="dep\gui\ImGui\imgui_impl_glfw.h" />
     <ClInclude Include="dep\gui\ImGui\imgui_impl_opengl3.h" />
