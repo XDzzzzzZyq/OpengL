@@ -70,7 +70,7 @@ public:
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const GLuint* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const glm::mat4* va0);
-	void SetValue(Material* mat);
+	void SetValue(const Material* mat);
 
 public:
 

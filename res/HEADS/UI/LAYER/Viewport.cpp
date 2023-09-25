@@ -35,8 +35,8 @@ void Viewport::RenderLayer()
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
 		GetLayerSize();
-		if (uly_name == "Viewport")
-			EventListener::viewport_offset = -(window_pos - ImGui::GetWindowPos());
+		if (uly_name == "Viewport")ImGui::GetWindowContentRegionMin();
+			EventListener::viewport_offset = -(EventListener::window_pos - ImGui::GetWindowPos());
 		EventListener::is_in_viewport = ITEM::is_inside(uly_size);
 
 		item_list[0]->RenderItem();

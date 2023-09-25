@@ -306,6 +306,8 @@
     <None Include="res\shaders\Polygon.vert" />
     <None Include="res\shaders\Post_Visual.frag" />
     <None Include="res\shaders\Rasterization.frag" />
+    <None Include="res\shaders\SDF_Construct.geom" />
+    <None Include="res\shaders\SDF_Visual.frag" />
     <None Include="res\shaders\selection_outline.comp" />
     <None Include="res\shaders\ShadowTest.frag" />
     <None Include="res\shaders\Shadow_Area.comp" />

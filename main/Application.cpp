@@ -156,9 +156,6 @@ int Application::Run()
 
 	EventListener::ShowEvents();
 
-	SDFField field(3, 3, 3);
-	field.ReadSDF();
-
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{

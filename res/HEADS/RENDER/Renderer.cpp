@@ -257,7 +257,7 @@ void Renderer::Render(bool rend, bool buff) {
 			if (!mesh->is_viewport)continue;
 
 			mesh->ApplyAllTransform();
-			mesh->RenderObj(GetActiveCamera().get());
+			mesh->RenderMesh(GetActiveCamera().get());
 			mesh->is_Uniform_changed = false;
 			mesh->o_shader->is_shader_changed = false;
 			mesh->o_material->is_mat_struct_changed = false;

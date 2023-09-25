@@ -59,7 +59,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("square.obj");
 	go5->SetObjShader("testS", "Rasterization");
-	go5->SetShadow(false);
+	go5->EnableShadow(false);
 	config1->UseMesh(go5);
 
 	DEBUG("\n---------------LIGHT----------------")
@@ -283,12 +283,20 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
-	go4->SetObjShader("testS", "Rasterization");
-	go4->SetMatColor(MAT_ROUGH, 0.9);
-	go4->SetMatColor(MAT_ALBEDO, { 1,1,1 });
+	go4->SetObjShader("testS", "SDF_Visual");
+	go4->EnableMaterial(false);
 	go4->SetPos({ 0,-7,0 });
 	go4->SetScale({ 2,2,2 });
 	config3->UseMesh(go4);
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
+	go2->SetObjShader("testS", "Rasterization");
+	go2->SetTex(MAT_ALBEDO, "avatar1.png");
+	go2->SetCenter();
+	go2->SetPos({ 8, 0, 0 });
+	go2->SetScale(glm::vec3(1.5f));
+	config3->UseMesh(go2);
 
 	DEBUG("\n---------------ENVIR----------------")
 		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");

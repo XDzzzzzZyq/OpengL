@@ -315,6 +315,8 @@
     <None Include="res\shaders\HDR_2_PNG.comp" />
     <None Include="res\shaders\Optical_Flow.comp" />
     <None Include="res\shaders\Optical_Flow_Back.comp" />
+    <None Include="res\shaders\SDF_Visual.frag" />
+    <None Include="res\shaders\SDF_Construct.geom" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

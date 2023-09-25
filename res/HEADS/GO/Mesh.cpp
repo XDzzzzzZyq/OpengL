@@ -21,11 +21,11 @@ Mesh::~Mesh()
 	DeleteObj();
 }
 
-void Mesh::RenderObj(Camera* cam)
+void Mesh::RenderMesh(const Camera* cam)
 {
 	o_shader->UseShader();
 
-	if (o_material->is_mat_struct_changed)
+	if (o_material->is_mat_struct_changed && using_material)
 		o_shader->UpdateMaterial(o_material.get());
 
 	if (o_shader->is_shader_changed)
@@ -45,9 +45,11 @@ void Mesh::RenderObj(Camera* cam)
 
 	o_shader->SetValue("is_selected", (int)is_selected);
 
-	o_shader->SetValue(o_material.get());
+	if (using_material)
+		o_shader->SetValue(o_material.get());
 
-	o_material->BindMatTexture();
+	if (using_material)
+		o_material->BindMatTexture();
 
 	RenderObjProxy();
 
@@ -81,7 +83,8 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 		o_shader->UnuseShader();
 	};
 
-	o_shader->UpdateMaterial(o_material.get());
+	if (using_material)
+		o_shader->UpdateMaterial(o_material.get());
 }
 
 void Mesh::SetTex(MatParaType _type, std::string _name)
@@ -104,9 +107,9 @@ void Mesh::SetCenter()
 	SetPos(-o_mesh->GetMeshCenter());
 }
 
-void Mesh::SetShadow(bool _shadow)
+void Mesh::EnableShadow(bool _enable)
 {
-	using_shadow = _shadow;
+	using_shadow = _enable;
 }
 
 void Mesh::DeleteObj()

@@ -16,6 +16,7 @@ public:
 	std::shared_ptr<RenderShader> o_shader;
 
 	bool using_shadow{ true };
+	bool using_material{ true };
 
 public:
 
@@ -25,7 +26,7 @@ public:
 
 public:
 
-	void RenderObj(Camera* cam);
+	void RenderMesh(const Camera* cam);
 	void RenderObjProxy() const;
 
 public:
@@ -35,7 +36,8 @@ public:
 	void SetMatColor(MatParaType _type, float _val);
 	void SetMatColor(MatParaType _type, glm::vec3 _col);
 	void SetCenter();
-	void SetShadow(bool _shadow);
+	void EnableShadow(bool _enable);
+	void EnableMaterial(bool _enable) { using_material = _enable; }
 	template<typename... T>
 	void SetShaderValue(std::string _name, T ..._v);
 

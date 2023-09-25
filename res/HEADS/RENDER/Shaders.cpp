@@ -272,7 +272,7 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const glm::mat4* 
 	glUniformMatrix4fv(id, count, GL_FALSE, (GLfloat*)va0);
 }
 
-void Shaders::SetValue(Material* mat)
+void Shaders::SetValue(const Material* mat)
 {
 	for (const auto& [ptype, pdata] : mat->mat_params) {
 	
