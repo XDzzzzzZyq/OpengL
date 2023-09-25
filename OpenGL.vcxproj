@@ -258,6 +258,7 @@
     <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp" />
     <ClCompile Include="res\HEADS\UI\LAYER\TransformPanel.cpp" />
     <ClCompile Include="res\HEADS\FILEIO\SceneManager.cpp" />
+    <ClCompile Include="res\HEADS\GO\SDFField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dep\cubicSpline\CubicSplineHelpers.inl" />
@@ -415,6 +416,7 @@
     <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\TransformPanel.h" />
     <ClInclude Include="res\HEADS\FILEIO\SceneManager.h" />
+    <ClInclude Include="res\HEADS\GO\SDFField.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="dep\GLEW\doc\github.png" />

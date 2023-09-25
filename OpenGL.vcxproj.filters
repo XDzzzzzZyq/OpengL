@@ -237,6 +237,9 @@
     <ClCompile Include="dep\gui\ImGui\backends\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\GO\SDFField.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -564,6 +567,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_glfw.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\GO\SDFField.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

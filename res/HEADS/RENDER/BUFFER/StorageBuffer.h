@@ -40,8 +40,12 @@ public:
 	template <typename T>
 	void GenStorageBuffer(const std::vector<T>& src);
 
+	template <typename T>
+	void ReadStorageBuffer(std::vector<T>& tar);
+
 	template <typename _Point, typename _Sun, typename _Spot>
 	void GenStorageBuffers(const std::vector<_Point>& _point, const std::vector<_Sun>& _sun, const std::vector<_Spot>& _spot);
+
 };
 
 template <typename T>
@@ -51,6 +55,28 @@ void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
 
 	BindBuffer();
 	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_STATIC_DRAW);
+	UnbindBuffer();
+}
+
+template <typename T>
+void StorageBuffer::ReadStorageBuffer(std::vector<T>& tar)
+{
+	BindBuffer();
+	T* dataPtr = static_cast<T*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY));
+
+	if (dataPtr == nullptr)
+		return;
+
+	GLint bufferSize = tar.size();
+
+	if (bufferSize == 0) {
+		glGetBufferParameteriv(GL_SHADER_STORAGE_BUFFER, GL_BUFFER_SIZE, &bufferSize);
+		tar.resize(bufferSize);
+	}
+
+	std::memcpy(tar.data(), dataPtr, bufferSize * sizeof(T));
+
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 	UnbindBuffer();
 }
 
