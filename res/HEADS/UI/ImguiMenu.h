@@ -21,6 +21,8 @@ public:
 	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> mitm_func_list;
 	void PushSubMenu(std::shared_ptr<ImguiMenuItem> subm);
 
+	ImguiMenuItem* FindMenuItem(const std::string _name);
+
 	void RenderMenu() const;
 };
 

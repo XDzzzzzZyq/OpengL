@@ -27,6 +27,14 @@ void ImguiMenu::PushSubMenu(std::shared_ptr<ImguiMenuItem> subm)
 
 }
 
+ImguiMenuItem* ImguiMenu::FindMenuItem(const std::string _name)
+{
+	if (name_order.find(_name) == name_order.end())
+		return nullptr;
+
+	return subm_list[name_order[_name]].get();
+}
+
 void ImguiMenu::RenderMenu() const
 {
 	if (ImGui::BeginMenu(menu_name.c_str()))
@@ -51,7 +59,7 @@ void ImguiMenu::RenderMenu() const
 				if (ImGui::MenuItem(
 					item->mitem_name.c_str(),
 					item->mitem_shortcut.c_str(),
-					*item->tar_state,
+					item->tar_state.get(),
 					item->mitem_enable
 				)) {
 					item->mitem_func();

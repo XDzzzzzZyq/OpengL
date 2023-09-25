@@ -25,15 +25,17 @@ ImguiMenuItem::ImguiMenuItem(const std::string& name, MenuItemType _type)
 ImguiMenuItem::ImguiMenuItem(const std::string& name, const std::string& shortcut, MenuItemType _type)
 	: mitem_name(name), mitem_shortcut(shortcut), mitem_type(_type)
 {
-	if (_type == BOOL_MITEM)
+	if (_type == BOOL_MITEM) {
 		mitem_func = [&] {
-		if (tar_state)
-			*tar_state = !*tar_state;
-		return true;
-	};
-	else
-		mitem_func = [&] {
-		DEBUG(mitem_shortcut)
+			//if (tar_state)
+			//	*tar_state = !*tar_state;
 			return true;
-	};
+		};
+	}
+	else {
+		mitem_func = [&] {
+			DEBUG(mitem_shortcut)
+				return true;
+		};
+	}
 }

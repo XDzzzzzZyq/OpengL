@@ -15,6 +15,11 @@ void ImguiManager::DefultViewports() {
 
 	auto menu3 = CreateImguiMenu("WINDOW");
 
+	auto menu4 = CreateImguiMenu("VIEW");
+	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Axis", "", BOOL_MITEM));
+	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Grid", "", BOOL_MITEM));
+	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Transform", "", BOOL_MITEM));
+
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");
 	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "testf", 0.0, 1.0);
 	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Metalness", 0.0, 1.0);
@@ -55,6 +60,10 @@ void ImguiManager::DefultViewports() {
 	auto material = CreateImguiLayer<MaterialViewer>("Material");
 
 	auto transform = CreateImguiLayer<TransformPanel>("Transform");
+
+	FindImguiMenuItem("VIEW", "Axis")->tar_state = std::shared_ptr<bool>(viewport, &viewport->display_axis);
+	FindImguiMenuItem("VIEW", "Grid")->tar_state = std::shared_ptr<bool>(viewport, &viewport->display_grid);
+	FindImguiMenuItem("VIEW", "Transform")->tar_state = std::shared_ptr<bool>(viewport, &viewport->display_trans_handle);
 
 	SetActiveImguiLayer("__Parameters__");
 }

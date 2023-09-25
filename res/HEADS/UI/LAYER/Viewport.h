@@ -8,7 +8,11 @@
 
 class Viewport : public ImguiLayer
 {
-private:
+public:
+
+	bool display_axis{ true };
+	bool display_grid{ true };
+	bool display_trans_handle{ true };
 
 public:
 	Viewport();
@@ -21,9 +25,10 @@ public:
 	void UpdateLayer() override;
 	void RenderLayer() override;
 
-public: 
+private:
 
 	void RenderGrids();
-	void RenderGuizmos();
+	void RenderAxis();
+	void RenderHandle();
 };
 

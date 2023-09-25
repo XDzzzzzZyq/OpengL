@@ -63,11 +63,12 @@ public:
 	std::shared_ptr<ImguiMenu> CreateImguiMenu(std::string name);
 
 	ImguiMenu* FindImguiMenu(const std::string& name) const;
+	ImguiMenuItem* FindImguiMenuItem(const std::string& menu, const std::string& submenu) const;
 
 public:
 	void PushImguiLayer(std::shared_ptr<ImguiLayer> layer);
 	template<class LayerType>
-	std::shared_ptr<ImguiLayer> CreateImguiLayer(std::string name);
+	std::shared_ptr<LayerType> CreateImguiLayer(std::string name);
 
 	void SetActiveImguiLayer(const std::string& name)const;
 	ImguiLayer* GetActiveImguiLayer()const;
@@ -88,7 +89,7 @@ public:
 };
 
 template<class LayerType>
-std::shared_ptr<ImguiLayer> ImguiManager::CreateImguiLayer(std::string name)
+std::shared_ptr<LayerType> ImguiManager::CreateImguiLayer(std::string name)
 {
 	std::shared_ptr<LayerType> layer = std::make_shared<LayerType>(name);
 	PushImguiLayer(std::dynamic_pointer_cast<ImguiLayer>(layer));
