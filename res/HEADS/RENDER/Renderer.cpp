@@ -44,6 +44,7 @@ void Renderer::Init()
 
 	InitFrameBuffer();
 	r_light_data.Init();
+	r_sdf_field = SDFField(10, 10, 10);
 
 	EventInit();
 
@@ -252,6 +253,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////    MESHES    ////////////
 
 		GetActiveEnvironment()->BindEnvironTexture();
+		r_sdf_field.Bind();
 		for (const auto& [id, mesh] : r_scene->mesh_list)
 		{
 			if (!mesh->is_viewport)continue;

@@ -64,6 +64,7 @@ public:
 	std::shared_ptr<SceneResource> r_scene;
 
 	LightArrayBuffer r_light_data;
+	SDFField r_sdf_field;
 
 public:
 

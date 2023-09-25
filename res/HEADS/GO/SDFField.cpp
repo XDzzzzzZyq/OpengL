@@ -14,7 +14,7 @@ SDFField::SDFField(GLuint width, GLuint height, GLuint depth)
 	o_type = GO_SDFFIELD;
 	o_name = "SDF Field";
 
-	sdf_data = StorageBuffer(FLOAT_LIST, 0);
+	sdf_data = StorageBuffer(FLOAT_LIST, 6);
 
 	ResetBuffer();
 }

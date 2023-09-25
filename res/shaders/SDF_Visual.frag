@@ -18,13 +18,15 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 uniform int is_selected;
 
-layout(std430, binding = 0) buffer SDF {
+layout(std430, binding = 6) buffer SDF {
 	float SDF_data[];
 };
 
 void main() {
 
-	EMIScolor = vec4(vec3(1), 1);
+	float sdf = SDF_data[0];
+
+	EMIScolor = vec4(vec3(sdf), 1);
 	IDcolor = vec4(ID_color / 256, 1.0f);
 	RANDcolor = vec4(RAND_color, 1.0f);
 	NORMALcolor = normal_color;
