@@ -79,8 +79,8 @@ void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
 
 	std::shared_ptr<ImguiMenuItem> window = std::make_shared<ImguiMenuItem>(layer->uly_name, "", BOOL_MITEM);
-	window->tar_state = std::shared_ptr<bool>(layer, &layer->uly_is_rendered);
-	FindImguiMenu("WINDOW")->PushSubMenu(window);
+	window->BindSwitch(layer, &layer->uly_is_rendered);
+	FindImguiMenu("Window")->PushSubMenu(window);
 }
 
 void ImguiManager::SetActiveImguiLayer(const std::string& name) const

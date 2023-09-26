@@ -1,10 +1,8 @@
 #include "Application.h"
 #include "xdz_math.h"
 
-Application::Application()
-{
+Application::Application(){}
 
-}
 
 Application* Application::m_app;
 
@@ -132,6 +130,15 @@ int Application::Run()
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
 		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 	};
+
+	UI.FindImguiMenuItem("Render", "Optical Flow")->BindSwitch(&renderer.r_using_of);
+	UI.FindImguiMenuItem("Render", "Forward Optical Flow")->BindSwitch(&renderer.r_forward_of);
+	UI.FindImguiMenuItem("Render", "Deferred Rendering")->BindSwitch(&renderer.r_deferred_rendering);
+	UI.FindImguiMenuItem("Render", "FXAA")->BindSwitch(&renderer.r_using_fxaa);
+	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindSwitch(&renderer.r_using_ssr);
+	UI.FindImguiMenuItem("Render", "Shadow Map")->BindSwitch(&renderer.r_using_shadow_map);
+	UI.FindImguiMenuItem("Render", "Icons")->BindSwitch(&renderer.r_render_icons);
+
 	UI.ParaUpdate = [&] {
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
 		UI.FindImguiItem("__Parameters__", "Frame Rate %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);

@@ -4,21 +4,30 @@
 void ImguiManager::DefultViewports() {
 
 
-	auto menu1 = CreateImguiMenu("FILE");
+	auto menu1 = CreateImguiMenu("File");
 	menu1->PushSubMenu(std::make_shared<ImguiMenuItem>("test", "ctrl + A"));
 	menu1->PushSubMenu(std::make_shared<ImguiMenuItem>("test2", "ctrl + S"));
 
-	auto menu2 = CreateImguiMenu("EDIT");
+	auto menu2 = CreateImguiMenu("Edit");
 	menu2->PushSubMenu(std::make_shared<ImguiMenuItem>("undo", "ctrl + Z"));
 	menu2->PushSubMenu(std::make_shared<ImguiMenuItem>("redo", "ctrl + Y"));
 	menu2->PushSubMenu(std::make_shared<ImguiMenuItem>("preference", "ctrl + P"));
 
-	auto menu3 = CreateImguiMenu("WINDOW");
+	auto menu3 = CreateImguiMenu("Window");
 
-	auto menu4 = CreateImguiMenu("VIEW");
+	auto menu4 = CreateImguiMenu("View");
 	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Axis", "", BOOL_MITEM));
 	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Grid", "", BOOL_MITEM));
 	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Transform", "", BOOL_MITEM));
+
+	auto menu5 = CreateImguiMenu("Render");
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Optical Flow", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Forward Optical Flow", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Deferred Rendering", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("FXAA", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Screen Space Reflection", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Shadow Map", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Icons", "", BOOL_MITEM));
 
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");
 	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "testf", 0.0, 1.0);
@@ -61,9 +70,9 @@ void ImguiManager::DefultViewports() {
 
 	auto transform = CreateImguiLayer<TransformPanel>("Transform");
 
-	FindImguiMenuItem("VIEW", "Axis")->tar_state = std::shared_ptr<bool>(viewport, &viewport->display_axis);
-	FindImguiMenuItem("VIEW", "Grid")->tar_state = std::shared_ptr<bool>(viewport, &viewport->display_grid);
-	FindImguiMenuItem("VIEW", "Transform")->tar_state = std::shared_ptr<bool>(viewport, &viewport->display_trans_handle);
+	FindImguiMenuItem("View", "Axis")->BindSwitch(viewport, &viewport->display_axis);
+	FindImguiMenuItem("View", "Grid")->BindSwitch(viewport, &viewport->display_grid);
+	FindImguiMenuItem("View", "Transform")->BindSwitch(viewport, &viewport->display_trans_handle);
 
 	SetActiveImguiLayer("__Parameters__");
 }

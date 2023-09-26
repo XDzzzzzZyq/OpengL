@@ -39,3 +39,10 @@ ImguiMenuItem::ImguiMenuItem(const std::string& name, const std::string& shortcu
 		};
 	}
 }
+
+void ImguiMenuItem::BindSwitch(bool* _switch)
+{
+	assert(mitem_type == BOOL_MITEM);
+
+	tar_state = std::shared_ptr<bool>(_switch);
+}

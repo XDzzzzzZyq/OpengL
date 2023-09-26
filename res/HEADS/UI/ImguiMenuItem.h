@@ -15,7 +15,7 @@ enum MenuItemType
 	NONE_MITEM, BUTTON_MITEM, BOOL_MITEM
 };
 
-class ImguiMenuItem 
+class ImguiMenuItem
 {
 public:
 	std::string mitem_name = "";
@@ -23,8 +23,8 @@ public:
 	MenuItemType mitem_type = BUTTON_MITEM;
 
 public:
-	mutable bool mitem_press{false};
-	mutable bool mitem_onclick_b{false};
+	mutable bool mitem_press{ false };
+	mutable bool mitem_onclick_b{ false };
 	mutable bool mitem_onclick{ false };
 	bool mitem_enable = true;
 
@@ -41,5 +41,17 @@ public:
 	ImguiMenuItem(const std::string& name, const std::string& shortcut);
 	ImguiMenuItem(const std::string& name, MenuItemType _type);
 	ImguiMenuItem(const std::string& name, const std::string& shortcut, MenuItemType _type);
+
+	template<class T>
+	void BindSwitch(std::shared_ptr<T> _src, bool* _switch);
+	void BindSwitch(bool* _switch);
 };
+
+template<class T>
+void ImguiMenuItem::BindSwitch(std::shared_ptr<T> _src, bool* _switch)
+{
+	assert(mitem_type == BOOL_MITEM);
+
+	tar_state = std::shared_ptr<bool>(_src, _switch);
+}
 
