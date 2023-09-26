@@ -92,7 +92,7 @@ void SDFField::LoadSDF(const std::vector<float>& _data)
 
 GLuint SDFField::GetSDFIndex(GLuint x, GLuint y, GLuint z)
 {
-	return x + y * sdf_depth + z * sdf_depth * sdf_width;
+	return x + y * sdf_width + z * sdf_depth * sdf_width;
 }
 
 void SDFField::RenderSDF(const Camera* cam)
@@ -107,7 +107,7 @@ void SDFField::SDFLinearGrad()
 
 void SDFField::SDFRadialGrad()
 {
-	std::vector<float> buffer(sdf_width * sdf_depth * sdf_height, -999);
+	std::vector<float> buffer(sdf_width * sdf_depth * sdf_height);
 	SDFInfo info(o_position, o_scale, glm::vec3{ sdf_width, sdf_depth, sdf_height }, sdf_subdiv);
 
 	LOOP_N(sdf_width, x) {
