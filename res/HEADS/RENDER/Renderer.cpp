@@ -45,6 +45,7 @@ void Renderer::Init()
 	InitFrameBuffer();
 	r_light_data.Init();
 	r_sdf_field = SDFField(10, 10, 10);
+	r_sdf_field.ReadSDF();
 
 	EventInit();
 

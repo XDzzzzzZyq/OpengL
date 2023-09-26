@@ -29,7 +29,9 @@ void SDFField::ResetBuffer()
 	assert(sdf_width * sdf_depth * sdf_height > 0);
 
 	std::vector<float> buffer(sdf_width * sdf_depth * sdf_height, -999);
-	sdf_data.GenStorageBuffer(buffer);
+	SDFInfo info(o_position, o_scale, glm::vec3{ sdf_width, sdf_depth, sdf_height }, sdf_subdiv);
+
+	sdf_data.GenStorageBuffers(info, buffer);
 }
 
 // width: x-axis, depth: y-axis, height: z-axis

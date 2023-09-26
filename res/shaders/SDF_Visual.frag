@@ -19,6 +19,10 @@ uniform vec3 RAND_color;
 uniform int is_selected;
 
 layout(std430, binding = 6) buffer SDF {
+	vec3 SDF_pos;
+	vec3 SDF_scale;
+	vec3 SDF_size;
+	int SDF_subdiv;
 	float SDF_data[];
 };
 

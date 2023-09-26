@@ -283,8 +283,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
-	go4->SetObjShader("testS", "SDF_Visual");
 	go4->EnableMaterial(false);
+	go4->SetObjShader("testS", "SDF_Visual");
 	go4->SetPos({ 0,-7,0 });
 	go4->SetScale({ 2,2,2 });
 	config3->UseMesh(go4);

@@ -14,6 +14,15 @@ public:
 	GLuint sdf_width = 0, sdf_depth = 0, sdf_height = 0;
 	GLuint sdf_subdiv = 1;
 
+private:
+
+	struct SDFInfo {
+		alignas(16) glm::vec3 pos;
+		alignas(16) glm::vec3 scale;
+		alignas(16) glm::vec3 size;
+		GLuint subdiv;
+	};
+
 public:
 
 	SDFField();

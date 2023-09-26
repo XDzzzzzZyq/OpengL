@@ -10,6 +10,12 @@ enum SSBType
 	NONE_LIST, FLOAT_LIST, INT_LIST, VEC2_LIST, VEC3_LIST, CUSTOM_LIST
 };
 
+template<typename T>
+struct is_not_vector : std::true_type {};
+
+template<typename T, typename C>
+struct is_not_vector<std::vector<T, C>> : std::false_type {};
+
 class StorageBuffer  //shader storage buffer object SSBO
 {
 private:
@@ -41,12 +47,26 @@ public:
 	void GenStorageBuffer(const std::vector<T>& src);
 
 	template <typename T>
-	void ReadStorageBuffer(std::vector<T>& tar);
+	void ReadStorageBuffer(std::vector<T>& tar, GLuint _offset = 0);
 
-	template <typename _Point, typename _Sun, typename _Spot>
-	void GenStorageBuffers(const std::vector<_Point>& _point, const std::vector<_Sun>& _sun, const std::vector<_Spot>& _spot);
+	template <typename _Info, typename _Ele> requires is_not_vector<_Info>::value
+	void GenStorageBuffers(const _Info& _info, const std::vector<_Ele>& _data);
 
 };
+
+template <typename _Info, typename _Ele> requires is_not_vector<_Info>	::value
+void StorageBuffer::GenStorageBuffers(const _Info& _info, const std::vector<_Ele>& _data)
+{
+	BindBuffer();
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(_Info) + _data.size()*sizeof(_Ele), nullptr, GL_STATIC_DRAW);
+
+	void* bufferData = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
+	std::memcpy(static_cast<char*>(bufferData), &_info, sizeof(_Info));
+	std::memcpy(static_cast<char*>(bufferData) + sizeof(_Info), _data.data(), _data.size() * sizeof(_Ele));
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+
+	UnbindBuffer();
+}
 
 template <typename T>
 void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
@@ -59,7 +79,7 @@ void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
 }
 
 template <typename T>
-void StorageBuffer::ReadStorageBuffer(std::vector<T>& tar)
+void StorageBuffer::ReadStorageBuffer(std::vector<T>& tar, GLuint _offset)
 {
 	BindBuffer();
 	T* dataPtr = static_cast<T*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY));
@@ -78,27 +98,5 @@ void StorageBuffer::ReadStorageBuffer(std::vector<T>& tar)
 
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 	UnbindBuffer();
-}
-
-template <typename _Point, typename _Sun, typename _Spot>
-void StorageBuffer::GenStorageBuffers(const std::vector<_Point>& _point, const std::vector<_Sun>& _sun, const std::vector<_Spot>& _spot)
-{
-	BindBuffer();
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_id);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, _point.size()*sizeof(_Point) + _sun.size()*sizeof(_Sun) + _spot.size()*sizeof(_Spot), nullptr, GL_STATIC_DRAW);
-
-	void* bufferData = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
-	size_t offset = 0;
-	std::memcpy(static_cast<char*>(bufferData) + offset, _point.data(), _point.size() * sizeof(_Point));
-	offset += _point.size() * sizeof(_Point);
-	std::memcpy(static_cast<char*>(bufferData) + offset, _sun.data(), _sun.size() * sizeof(_Sun));
-	offset += _sun.size() * sizeof(_Sun);
-	std::memcpy(static_cast<char*>(bufferData) + offset, _spot.data(), _spot.size() * sizeof(_Spot));
-	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo_id);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_id);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo_id);
-
 }
 
