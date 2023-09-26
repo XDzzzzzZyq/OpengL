@@ -65,7 +65,9 @@ ParaType ShaderStruct::ParseType(const std::string& type)
 		if (type_table[i] == type)
 			return (ParaType)i;
 	}
-	return NONE_PARA;
+
+	ADD_TYPE(type);
+	return ParseType(type);
 }
 
 std::string ShaderStruct::ParseCount(int count)
