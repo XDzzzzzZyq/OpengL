@@ -82,20 +82,22 @@ template <typename T>
 void StorageBuffer::ReadStorageBuffer(std::vector<T>& tar, GLuint _offset)
 {
 	BindBuffer();
-	T* dataPtr = static_cast<T*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY));
+	void* dataPtr = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
 
 	if (dataPtr == nullptr)
 		return;
 
-	GLint bufferSize = tar.size();
+	// | -- Offset -- | -----------  Target  -----------|
+	// |-------------   Whole Data Range   -------------|
 
-	if (bufferSize == 0) {
+	if (tar.size() == 0) {
+		GLint bufferSize;
 		glGetBufferParameteriv(GL_SHADER_STORAGE_BUFFER, GL_BUFFER_SIZE, &bufferSize);
-		tar.resize(bufferSize);
+		tar.resize(bufferSize - _offset);
 	}
 
-	std::memcpy(tar.data(), dataPtr, bufferSize * sizeof(T));
-
+	std::memcpy(tar.data(), static_cast<char*>(dataPtr) + _offset, tar.size() * sizeof(T));
+	
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 	UnbindBuffer();
 }

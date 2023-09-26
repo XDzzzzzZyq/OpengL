@@ -47,8 +47,16 @@ public:
 	float ReadSDFAt(GLuint x, GLuint y, GLuint z);
 	void LoadSDF(const std::vector<float>& _data);
 
+	GLuint GetSDFIndex(GLuint x, GLuint y, GLuint z);
+
 public:
 
 	void RenderSDF(const Camera* cam);
+
+public:
+
+	// only for debug
+	void SDFLinearGrad();
+	void SDFRadialGrad();
 };
 
