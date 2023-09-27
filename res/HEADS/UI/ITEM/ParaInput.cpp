@@ -67,22 +67,22 @@ UI::ParaInput::ParaInput(ImItemType type, const std::string& name, float min, fl
 void UI::ParaInput::RenderItem() const
 {
 	//DEBUG("render "+uitm_name)
-	is_value_changed = RenderParam(&uitm_para, GetCharName(), GetCharName(), uitm_type, false);
+	is_value_changed = RenderParam((Parameters*)&uitm_para, GetCharName(), GetCharName(), uitm_type, false);
 	
 }
 
-bool UI::ParaInput::RenderParam(const Parameters* _param, const char* _ID, ImItemType _type, float _size)
+bool UI::ParaInput::RenderParam(Parameters* _param, const char* _ID, ImItemType _type, float _size)
 {
 	return RenderParam(_param, _param->para_name.c_str(), _ID, _type);
 }
 
-bool UI::ParaInput::RenderParam(const Parameters* _param, const char* _ID, float _size /*= 1.0f*/, float _length /*= 10.0f*/)
+bool UI::ParaInput::RenderParam(Parameters* _param, const char* _ID, float _size /*= 1.0f*/, float _length /*= 10.0f*/)
 {
 	return RenderParam(_param, _param->para_name.c_str(), _ID, ParaInput::ParseParamType(_param->para_type), true, _size, _length);
 }
 
 bool UI::ParaInput::RenderParam(
-	const Parameters* _param, 
+	Parameters* _param, 
 	const char* _name, 
 	const char* _ID, 
 	ImItemType _type /*= FLOAT_INP*/, 
@@ -99,7 +99,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderFloat(
 
 			_name,
-			&_param->para_data.fdata,
+			(float*)&_param->para_data.fdata,
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -113,7 +113,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderInt(
 
 			_name,
-			&_param->para_data.idata,
+			(int*)&_param->para_data.idata,
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -127,21 +127,21 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::ColorEdit3(
 
 			_name,
-			_param->para_data.v3data
+			(float*)&_param->para_data.v3data
 
 		);
 	case RGBA_INP:
 		return ImGui::ColorEdit4(
 
 			_name,
-			_param->para_data.v4data
+			(float*)&_param->para_data.v4data
 
 		);
 	case VEC2_INP:
 		return ImGui::SliderFloat2(
 
 			_name,
-			_param->para_data.v2data,
+			(float*)&_param->para_data.v2data,
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -156,7 +156,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderFloat3(
 
 			_name,
-			_param->para_data.v3data,
+			(float*)&_param->para_data.v3data,
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -171,7 +171,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderFloat4(
 
 			_name,
-			_param->para_data.v4data,
+			(float*)&_param->para_data.v4data,
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,

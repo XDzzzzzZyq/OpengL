@@ -15,14 +15,14 @@ struct ParaData
 	ParaData() {}
 	ParaData(const ParaData& copy);
 	~ParaData() {}
-	mutable float fdata=0.0f;
-	mutable int idata=0;
-	mutable std::string sdata="";
-	mutable bool bdata=false;
-	mutable float v2data[2] = { 0.0f,0.0f };
-	mutable float v3data[3] = {0.0f,0.0f,0.0f };
-	mutable float v4data[4] = {0.0f,0.0f,0.0f ,0.0f };
-	mutable float data_range[2] = { -10.0f, 10.0f };
+	float fdata{ 0.0f };
+	int idata{ 0 };
+	std::string sdata{ "" };
+	bool bdata{ false };
+	glm::vec2 v2data{ 0.0f };
+	glm::vec3 v3data{ 0.0f };
+	glm::vec4 v4data{ 0.0f };
+	glm::vec2 data_range{ -10.0f, 10.0f };
 };
 
 class Parameters
