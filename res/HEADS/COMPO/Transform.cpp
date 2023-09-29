@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "xdz_math.h"
+#include "glm/gtx/matrix_decompose.hpp"
 
 Transform3D::Transform3D()
 {
@@ -38,7 +39,29 @@ bool Transform3D::SetRot(const glm::vec3& rot)
 	is_TransF_changed = true;
 	is_rot_changed = true;
 	o_rot = rot;
-	rotQua = glm::qua(glm::radians(o_rot));
+	o_rotQua = glm::qua(glm::radians(o_rot));
+
+	return true;
+}
+
+bool Transform3D::SetTrans(const glm::mat4& _trans)
+{
+	if (_trans == o_Transform)
+		return false;
+
+	glm::vec3 scale, position, skew;
+	glm::quat rotation;
+	glm::vec4 perspective;
+
+	glm::decompose(_trans, scale, rotation, position, skew, perspective);
+
+	o_Transform = _trans;
+	o_position = position;
+	o_rot = glm::degrees(glm::eulerAngles(rotation));
+	o_scale = scale;
+	o_rotQua = glm::qua(glm::radians(o_rot));
+
+	is_TransF_changed = true;
 
 	return true;
 }
@@ -63,9 +86,9 @@ void Transform3D::Move(const glm::vec3& d_pos)
 void Transform3D::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle)
 {
 	is_invTransF_changed = true;
-	rotQua = glm::qua<float>(glm::radians(o_rot));
-	rotQua = glm::rotate(rotQua, angle, axis);
-	o_rotMat = glm::mat4_cast(rotQua);
+	o_rotQua = glm::qua<float>(glm::radians(o_rot));
+	o_rotQua = glm::rotate(o_rotQua, angle, axis);
+	o_rotMat = glm::mat4_cast(o_rotQua);
 	o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
 
 	o_position -= anch;
@@ -83,8 +106,8 @@ void Transform3D::LookAt(const glm::vec3& tar)
 	is_TransF_changed = false;
 
 	//rotMat = glm::lookAt(o_position, tar, o_dir_up);
-	rotQua = glm::quatLookAt(glm::normalize(tar - o_position), o_dir_up);
-	o_rotMat = glm::mat4_cast(rotQua);
+	o_rotQua = glm::quatLookAt(glm::normalize(tar - o_position), o_dir_up);
+	o_rotMat = glm::mat4_cast(o_rotQua);
 
 	o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
 	o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
@@ -116,7 +139,7 @@ bool Transform3D::ApplyTransform(bool _forced /*= false*/)
 
 	if (!is_TransF_changed && !_forced) return false;
 
-	o_rotMat = glm::mat4_cast(rotQua);
+	o_rotMat = glm::mat4_cast(o_rotQua);
 	o_Transform = o_rotMat * glm::scale(glm::mat4(1), o_scale);
 	o_Transform = OffestTransform(o_Transform, o_position);
 

@@ -169,19 +169,22 @@ int Application::Run()
 		/* Update here */
 		renderer.r_frame_num++;
 		UI.NewFrame();
+
 		Event.UpdateEvent(window);
+		UI.RenderUI();
+
 		AvTime.Update(UI.GetIO()->Framerate);
+
 		renderer.EventActivate();
+		renderer.GetActiveCamera()->EventActivate();
 
 		/* Render here */
 
-		renderer.GetActiveCamera()->EventActivate();
 #if 0
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 #endif
 
 		renderer.Render();
-		UI.RenderUI();
 		Event.Reset();
 
 #if 0

@@ -60,8 +60,8 @@ public:
 	mutable glm::vec3 o_dir_right{ 1.0f, 0.0f, 0.0f };
 
 public:
-	glm::qua<float> rotQua{ glm::qua(glm::radians(o_rot)) };
-	glm::mat4 o_rotMat{ glm::mat4_cast(rotQua) };
+	glm::qua<float> o_rotQua{ glm::qua(glm::radians(o_rot)) };
+	glm::mat4 o_rotMat{ glm::mat4_cast(o_rotQua) };
 
 public:
 	bool SetPos(const glm::vec3& pos);
@@ -73,6 +73,7 @@ public:
 	bool SetRot(const glm::vec3& rot);
 	template <int _Dim>
 	bool SetRot1D(float _1d);
+	bool SetTrans(const glm::mat4& _trans);
 
 	void Trans(const glm::mat4& _trans);
 	void Move(const glm::vec3& d_pos);
@@ -142,7 +143,7 @@ bool Transform3D::SetRot1D(float _1d)
 	if (!res) return false;
 
 	is_rot_changed = true;
-	rotQua = glm::qua(glm::radians(o_rot));
+	o_rotQua = glm::qua(glm::radians(o_rot));
 	return true;
 }
 

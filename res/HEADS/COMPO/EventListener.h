@@ -112,9 +112,18 @@ public:
 
 public:
 
+	enum ViewPortStatus
+	{
+		None,
+		OnHover,
+		OnClick
+	};
+
 	static glm::vec2 window_pos;
 	static glm::vec2 viewport_offset;
 	static bool is_in_viewport;
+	static ViewPortStatus viewport_status;
+	static void ReportGuizmoStatus(bool hover, bool click);
 
 public:
 

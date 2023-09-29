@@ -1,5 +1,6 @@
 #include "Viewport.h"
 #include "xdz_math.h"
+#include "Guizmo/ImGuizmo.h"
 
 Viewport::Viewport()
 {
@@ -102,6 +103,9 @@ void Viewport::RenderHandle()
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(EventListener::active_object);
 	Camera* active_cam = dynamic_cast<Camera*>(EventListener::GetActiveCamera());
 
+	if (active_trans == nullptr)
+		return;
+
 	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 	static bool useSnap = false;
@@ -111,14 +115,12 @@ void Viewport::RenderHandle()
 	static bool boundSizing = false;
 	static bool boundSizingSnap = false;
 
-	if (active_trans == nullptr)
-		return;
-
 	//ImGuizmo::DrawCubes(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], &active_trans->o_Transform[0][0], 1);
 	glm::mat4 obj_trans = active_trans->o_Transform;
 
-	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], mCurrentGizmoOperation, mCurrentGizmoMode, &obj_trans[0][0], NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+	bool hover, click;
+	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], mCurrentGizmoOperation, mCurrentGizmoMode, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+	EventListener::ReportGuizmoStatus(hover, click);
 
-	if (obj_trans != active_trans->o_Transform) {
-	}
+	active_trans->SetTrans(obj_trans);
 }

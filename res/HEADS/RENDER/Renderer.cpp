@@ -124,6 +124,7 @@ void Renderer::LMB_CLICK()
 {
 	if (!EventListener::IsMouseClick()) return;
 	if (!EventListener::is_in_viewport) return;
+	if (EventListener::viewport_status != EventListener::ViewPortStatus::None) return;
 
 	int id = GetSelectID(mouse_x, mouse_y);
 	if (id == EventListener::active_GO_ID) return;

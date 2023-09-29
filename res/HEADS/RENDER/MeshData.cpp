@@ -215,7 +215,7 @@ void MeshData::RenderObjProxy() const
 	me_vertArry.Bind();
 	me_index.Bind();
 
-	glDrawElements(GL_TRIANGLES, me_index.count(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, me_index.count(), GL_UNSIGNED_INT, NULL);
 
 	me_index.Unbind();
 	me_vertArry.Unbind();

@@ -57,6 +57,15 @@ GameObject* EventListener::active_object = (GameObject*)nullptr;
 glm::vec2 EventListener::window_pos = glm::vec2(0);
 glm::vec2 EventListener::viewport_offset = glm::vec2(0);
 bool EventListener::is_in_viewport = false;
+EventListener::ViewPortStatus EventListener::viewport_status = EventListener::ViewPortStatus::None;
+
+void EventListener::ReportGuizmoStatus(bool hover, bool click)
+{
+	if (hover)
+		EventListener::viewport_status = EventListener::ViewPortStatus::OnHover;
+	if (click)
+		EventListener::viewport_status = EventListener::ViewPortStatus::OnClick;
+}
 
 EventListener::EventListener()
 {
@@ -192,6 +201,8 @@ void EventListener::Reset()
 	is_GOlist_changed = false;
 	is_scr_changed = false;
 	is_selected_changed = false;
+
+	viewport_status = ViewPortStatus::None;
 }
 
 std::vector<std::string> EventListener::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
