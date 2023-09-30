@@ -106,7 +106,7 @@ float ReadSDF(vec3 pos){
 	vec3 over = transf - clamp(transf, -1, 1);  // over the field
 	transf = clamp(transf, -1, 1) + 1;			// [0, 2]
 	transf *= 0.5;								// [0, 1]
-	transf *= (SDF_size - 1);					// [(0,0,0), (W,D,H)]
+	transf *= (SDF_size - 1);					// [(0,0,0), (W-1,D-1,H-1)]
 
 
 	float distance_000 = ReadSDFAt(ivec3(transf) + ivec3(0,0,0));

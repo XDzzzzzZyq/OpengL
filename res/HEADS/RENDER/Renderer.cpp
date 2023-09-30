@@ -213,7 +213,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	ConstructSDF();
+	if(r_frame_num % 5 == 0)
+		ConstructSDF();
 
 
 	///////////  Lights Data PreCalc  ///////////

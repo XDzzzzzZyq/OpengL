@@ -13,9 +13,8 @@ layout(std430, binding = 6) buffer SDF {
 };
 
 vec3 GetPosFromIndex(int x, int y, int z){
-	vec3 center = 0.5f * SDF_size - 0.5f;
-	vec3 pos_raw = vec3(x, y, z) - center;
-	pos_raw /= length(center);
+	vec3 pos_raw = vec3(x, y, z) / (SDF_size - 1);
+    pos_raw = pos_raw * 2 - 1;
 
 	return pos_raw * SDF_scale + SDF_pos;
 }
