@@ -19,7 +19,6 @@ class Transform {
 public:
 	mutable bool is_TransF_changed = true;						 // pos / scale / rot changed
 	mutable bool is_invTransF_changed = true;					 //
-	mutable bool is_rot_changed = true;							 //
 	mutable bool is_Uniform_changed = true;						 //
 	mutable bool is_invUniform_changed = true;					 //
 public:
@@ -60,10 +59,6 @@ public:
 	mutable glm::vec3 o_dir_right{ 1.0f, 0.0f, 0.0f };
 
 public:
-	glm::qua<float> o_rotQua{ glm::qua(glm::radians(o_rot)) };
-	glm::mat4 o_rotMat{ glm::mat4_cast(o_rotQua) };
-
-public:
 	bool SetPos(const glm::vec3& pos);
 	template <int _Dim>
 	bool SetPos1D(float _1d);
@@ -78,6 +73,7 @@ public:
 	void Trans(const glm::mat4& _trans);
 	void Move(const glm::vec3& d_pos);
 	void Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle);
+	void Spin(const glm::vec3& anch, const glm::vec2& angle);
 	void LookAt(const glm::vec3& tar);
 
 
@@ -87,6 +83,8 @@ public:
 private:
 	template <int _Dim>
 	bool Set1D(glm::vec3& _tar, float _1d);
+
+	void UpdateDirections();
 
 public:
 	[[nodiscard("You could receive the state")]] bool ApplyTransform(bool _forced = false) override;
@@ -142,8 +140,7 @@ bool Transform3D::SetRot1D(float _1d)
 	bool res = Set1D<_Dim>(o_rot, _1d);
 	if (!res) return false;
 
-	is_rot_changed = true;
-	o_rotQua = glm::qua(glm::radians(o_rot));
+	UpdateDirections();
 	return true;
 }
 

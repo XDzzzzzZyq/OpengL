@@ -99,7 +99,7 @@ void Environment::RenderEnvironment(Camera* cam)
 		envir_shader->InitShader();
 
 	if(cam->is_invUniform_changed || envir_shader->is_shader_changed)
-		envir_shader->SetValue("cam_rotM", cam->o_rotMat);
+		envir_shader->SetValue("cam_rotM", cam->o_Transform);
 
 	if (cam->is_frustum_changed || envir_shader->is_shader_changed) {
 		envir_shader->SetValue("cam_fov", glm::radians(cam->cam_pers));

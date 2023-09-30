@@ -49,7 +49,7 @@ void main() {
 	MASKcolor = vec4(0, 0, 0, 1);
 
 	reUV =  reMapUV(screen_uv);
-	ray_dir = cam_rotM * vec4(vec3(1, 1, -1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 1);
+	ray_dir = cam_rotM * vec4(vec3(1, 1, -1) * normalize(vec3(reUV * tan(cam_fov / 2) * vec2(cam_ratio, 1), 1)), 0);
 
 	NORMALcolor = ray_dir;
 	POScolor = vec4(vec3(-1000), 1);

@@ -37,9 +37,9 @@ bool Transform3D::SetRot(const glm::vec3& rot)
 	if (o_rot == rot) return false;
 
 	is_TransF_changed = true;
-	is_rot_changed = true;
 	o_rot = rot;
-	o_rotQua = glm::qua(glm::radians(o_rot));
+
+	UpdateDirections();
 
 	return true;
 }
@@ -59,8 +59,8 @@ bool Transform3D::SetTrans(const glm::mat4& _trans)
 	o_position = position;
 	o_rot = glm::degrees(glm::eulerAngles(rotation));
 	o_scale = scale;
-	o_rotQua = glm::qua(glm::radians(o_rot));
 
+	UpdateDirections();
 	is_TransF_changed = true;
 
 	return true;
@@ -76,45 +76,32 @@ void Transform3D::Trans(const glm::mat4& _trans)
 
 void Transform3D::Move(const glm::vec3& d_pos)
 {
-	is_TransF_changed = true;
-	o_Transform = glm::translate(o_Transform, -o_position);
-	o_position += d_pos;
-	/*ApplyTransform();*/
-	o_Transform = glm::translate(o_Transform, o_position);
+	assert(false);
 }
 
 void Transform3D::Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle)
 {
-	is_invTransF_changed = true;
-	o_rotQua = glm::qua<float>(glm::radians(o_rot));
-	o_rotQua = glm::rotate(o_rotQua, angle, axis);
-	o_rotMat = glm::mat4_cast(o_rotQua);
-	o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
+	assert(false);
+}
 
+void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle)
+{
 	o_position -= anch;
-	o_position = anch + o_rotMat * o_position;
 
-	o_Transform = glm::translate(o_Transform, o_position);
+	o_position = glm::rotateZ(o_position, angle.x);
+	SetRot(o_rot + glm::vec3(0.0f, 0.0f, glm::degrees(angle.x)));
 
-	o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
-	o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
+	o_position = glm::rotate(o_position, angle.y, o_dir_right);
+	SetRot(o_rot + glm::vec3(glm::degrees(angle.y), 0.0f, 0.0f));
+
+	o_position += anch;
+
+	is_TransF_changed = true;
 }
 
 void Transform3D::LookAt(const glm::vec3& tar)
 {
-	is_invTransF_changed = true;
-	is_TransF_changed = false;
-
-	//rotMat = glm::lookAt(o_position, tar, o_dir_up);
-	o_rotQua = glm::quatLookAt(glm::normalize(tar - o_position), o_dir_up);
-	o_rotMat = glm::mat4_cast(o_rotQua);
-
-	o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
-	o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
-
-	o_Transform = glm::scale(glm::mat4(1.0f), o_scale);
-
-	o_Transform = glm::translate(o_Transform, o_position);
+	assert(false);
 }
 
 void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
@@ -134,22 +121,23 @@ void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
 
 }
 
+void Transform3D::UpdateDirections()
+{
+	glm::mat4 rot_mat = glm::mat4_cast(glm::qua(glm::radians(o_rot)));
+
+	o_dir_up = rot_mat * glm::vec3(0.0f, 1.0f, 0.0f);
+	o_dir_right = rot_mat * glm::vec3(1.0f, 0.0f, 0.0f);
+}
+
 bool Transform3D::ApplyTransform(bool _forced /*= false*/)
 {
 
 	if (!is_TransF_changed && !_forced) return false;
 
-	o_rotMat = glm::mat4_cast(o_rotQua);
-	o_Transform = o_rotMat * glm::scale(glm::mat4(1), o_scale);
+	glm::mat4 rot_mat = glm::mat4_cast(glm::qua(glm::radians(o_rot)));
+	o_Transform = rot_mat * glm::scale(glm::mat4(1), o_scale);
 	o_Transform = OffestTransform(o_Transform, o_position);
 
-	if (is_rot_changed)
-	{
-		o_dir_up = o_rotMat * glm::vec3(0.0f, 1.0f, 0.0f);
-		o_dir_right = o_rotMat * glm::vec3(1.0f, 0.0f, 0.0f);
-		is_rot_changed = false;
-
-	}
 	is_invTransF_changed = true;
 	is_TransF_changed = false;
 	is_Uniform_changed = true;

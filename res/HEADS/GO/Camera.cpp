@@ -108,9 +108,10 @@ void Camera::SHIFT_MMB()
 {
 	if (!EventListener::is_in_viewport) return;
 
-	o_position += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
-	cam_tar += -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
-	is_TransF_changed = true;
+	const glm::vec3 delta = -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
+	SetPos(o_position + delta);
+
+	cam_tar += delta;
 }
 
 void Camera::CTRL_MMB()
@@ -125,41 +126,29 @@ void Camera::ALT_MMB()
 {
 	if (!EventListener::is_in_viewport) return;
 
-	glm::vec3 Delt_angle = glm::vec3((float)(mouse_y - mouse_b_y) * 0.05f, (float)(mouse_x - mouse_b_x) * 0.05f, 0.0f);
-	is_rot_changed = true;
-	is_TransF_changed = true;
+	glm::vec3 Delt_angle = glm::vec3(EventListener::GetDeltaMouseY(), 0.0f, EventListener::GetDeltaMouseX()) * 0.05f;
+
 	SetRot(o_rot + Delt_angle);
 
 	cam_tar -= o_position;
-	cam_tar = glm::mat4_cast(glm::qua<float>(glm::radians(Delt_angle))) * cam_tar + o_position;
+	cam_tar = glm::mat4_cast(glm::qua<float>(glm::radians(Delt_angle))) * cam_tar;
+	cam_tar += o_position;
 }
 
 void Camera::MMB()
 {
 	if (!EventListener::is_in_viewport) return;
 
-	o_position -= cam_tar;
+	const glm::vec2 angle =	EventListener::GetDeltaMouse() * -0.01f;
 
-	o_position = glm::rotateZ(o_position, -(float)(mouse_x - mouse_b_x) * 0.01f);
-	SetRot(o_rot + glm::vec3(0.0f, 0.0f, glm::degrees(-(float)(mouse_x - mouse_b_x) * 0.01f)));
-
-	o_position = glm::rotate(o_position, -(float)(mouse_y - mouse_b_y) * 0.01f, o_dir_right);
-	SetRot(o_rot + glm::vec3(glm::degrees(-(float)(mouse_y - mouse_b_y) * 0.01f), 0.0f, 0.0f));
-
-	o_position += cam_tar;
-
-
-	is_TransF_changed = true;
-	is_rot_changed = true;
+	Spin(cam_tar, angle);
 }
 
 void Camera::SCROLL()
 {
 	if (!EventListener::is_in_viewport)return;
 
-	o_position -= cam_tar;
-	o_position = cam_tar + o_position * glm::pow(0.8f, scroll_dir);
-
-	is_TransF_changed = true;
+	const glm::vec3 delta = o_position - cam_tar;
+	SetPos(cam_tar + delta * glm::pow(0.8f, EventListener::scroll_dir));
 }
 
