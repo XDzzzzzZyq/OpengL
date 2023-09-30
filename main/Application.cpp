@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "xdz_math.h"
 
-Application::Application(){}
+Application::Application() {}
 
 
 Application* Application::m_app;
@@ -62,7 +62,7 @@ int Application::Init()
 
 	UI.ManagerInit(window);
 
-	
+
 #if 1
 	renderer.UseScene(SceneManager::SceneConfig3());
 	renderer.r_using_shadow_map = false;
@@ -74,7 +74,7 @@ int Application::Init()
 
 	Light::area_blur_range = 0.03;
 #endif
-	
+
 	/* Make the window's context current */
 	return 0;
 }
@@ -84,7 +84,7 @@ int Application::Run()
 	DEBUG("-------------------------------")
 		/////////////////////////////////
 
-	static float scale = 0.3f;
+		static float scale = 0.3f;
 	static float power = 0.5f;
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
@@ -188,8 +188,8 @@ int Application::Run()
 		Event.Reset();
 
 #if 0
-		DEBUG(renderer.GetActiveCamera()->o_position)
-		DEBUG(renderer.GetActiveCamera()->cam_pers)
+		DEBUG(renderer.GetActiveCamera()->o_position);
+		DEBUG(renderer.GetActiveCamera()->cam_pers);
 #endif
 
 		/* Swap front and back buffers */
@@ -198,8 +198,8 @@ int Application::Run()
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
-	DEBUG(std::to_string(1000 / AvTime.result) + "ms")
-		std::cout << std::endl << "[ Finished ]" << std::endl;
+	DEBUG(std::to_string(1000 / AvTime.result) + "ms");
+	std::cout << std::endl << "[ Finished ]" << std::endl;
 	std::cout << GameObject::count << " object(s)" << std::endl;
 
 	return 0;

@@ -17,6 +17,7 @@ public:
 
 	bool using_shadow{ true };
 	bool using_material{ true };
+	bool using_sdf{ true };
 
 public:
 
@@ -36,8 +37,11 @@ public:
 	void SetMatColor(MatParaType _type, float _val);
 	void SetMatColor(MatParaType _type, glm::vec3 _col);
 	void SetCenter();
-	void EnableShadow(bool _enable);
+
+	void EnableShadow(bool _enable) { using_shadow = _enable; }
 	void EnableMaterial(bool _enable) { using_material = _enable; }
+	void EnableSDF(bool _enable) { using_sdf = _enable; }
+
 	template<typename... T>
 	void SetShaderValue(std::string _name, T ..._v);
 

@@ -44,15 +44,15 @@ void Renderer::Init()
 
 	InitFrameBuffer();
 	r_light_data.Init();
-	r_sdf_field = SDFField(10, 10, 10);
-	r_sdf_field.SDFRadialGrad();
-	r_sdf_field.ReadSDF();
+	r_sdf_field = SDFField(32, 32, 32);
+	r_sdf_field.SetScale({ 3,3,3 });
+	r_sdf_field.ResetBuffer();
 
 	EventInit();
 
 	Light::EnableShadowMap();
 
-	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH , &max_resolution_w);
+	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
 }
 
@@ -64,7 +64,7 @@ Renderer::~Renderer()
 
 std::string Renderer::GetObjectName(int ID)
 {
-	if(r_scene->obj_list.find(ID) == r_scene->obj_list.end())
+	if (r_scene->obj_list.find(ID) == r_scene->obj_list.end())
 		return "None";
 
 	return r_scene->obj_list[ID]->o_name;
@@ -197,10 +197,10 @@ void Renderer::Render(bool rend, bool buff) {
 	GetActiveCamera()->GetInvTransform();
 	GetActiveCamera()->GenFloatData();
 
-	
+
 	////////////     OPTICAL FLOW     ////////////
 
-	if (r_using_of && r_forward_of) 
+	if (r_using_of && r_forward_of)
 	{
 		static ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
@@ -209,6 +209,11 @@ void Renderer::Render(bool rend, bool buff) {
 		of.SetValue("proj_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 		of.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 	}
+
+
+	/////////// Signed Distance Field ///////////
+
+	ConstructSDF();
 
 
 	///////////  Lights Data PreCalc  ///////////
@@ -353,7 +358,7 @@ void Renderer::Render(bool rend, bool buff) {
 			of_b.SetValue("proj_trans_b", proj_trans_b);
 			of_b.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
-		
+
 
 		////////////  SSAO + DEPTH  ////////////
 
@@ -432,7 +437,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 
 		////////////     FXAA     ////////////
-		
+
 		if (r_using_fxaa) {
 			static ComputeShader& fxaa = ComputeShader::ImportShader("FXAA");
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
@@ -445,7 +450,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////   EDITING ELEM   //////////
 
-		if(r_is_preview)
+		if (r_is_preview)
 		{
 			static ComputeShader& editing = ComputeShader::ImportShader("Editing");
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
@@ -469,14 +474,36 @@ void Renderer::RenderShadowMap(Light* light)
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	for (const auto& [id, mesh] : r_scene->mesh_list) {
-		if(!mesh->using_shadow) continue;
+	for (const auto& [id, mesh] : r_scene->mesh_list)
+	{
+		if (!mesh->using_shadow) continue;
+		if (!mesh->is_viewport) continue;
 
 		light->BindTargetTrans(mesh->o_Transform);
 		mesh->RenderObjProxy();
 	}
 
 	FrameBuffer::UnbindFrameBuffer();
+}
+
+void Renderer::ConstructSDF()
+{
+	r_sdf_field.Bind();
+	r_sdf_field.ResetDistance();
+
+	r_sdf_field.BindShader();
+
+	for (const auto& [id, mesh] : r_scene->mesh_list)
+	{
+		if (!mesh->using_sdf) continue;
+		if (!mesh->is_viewport) continue;
+
+		r_sdf_field.BindTargetTrans(mesh->o_Transform);
+		mesh->RenderObjProxy();
+	}
+
+	r_sdf_field.Unbind();
+	r_sdf_field.UnbindShader();
 }
 
 /////////////////////////////////////// FINISH RENDERING /////////////////////////////////////////////

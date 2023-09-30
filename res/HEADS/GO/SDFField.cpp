@@ -2,6 +2,8 @@
 #include "xdz_math.h"
 #include "macros.h"
 
+ChainedShader SDFField::sdf_shader = {};
+
 SDFField::SDFField()
 {
 
@@ -15,6 +17,7 @@ SDFField::SDFField(GLuint width, GLuint height, GLuint depth)
 	o_name = "SDF Field";
 
 	sdf_data = StorageBuffer(FLOAT_LIST, 6);
+	sdf_shader = ChainedShader::ImportShader("Empty.vert", "SDF_Construct.geom");
 
 	ResetBuffer();
 }
@@ -28,10 +31,18 @@ void SDFField::ResetBuffer()
 {
 	assert(sdf_width * sdf_depth * sdf_height > 0);
 
-	std::vector<float> buffer(sdf_width * sdf_depth * sdf_height, -999);
+	std::vector<GLuint> buffer(sdf_width * sdf_depth * sdf_height, 999);
 	SDFInfo info(o_position, o_scale, glm::vec3{ sdf_width, sdf_depth, sdf_height }, sdf_subdiv);
 
 	sdf_data.GenStorageBuffers(info, buffer);
+}
+
+void SDFField::ResetDistance()
+{
+	static ComputeShader& reset_distance = ComputeShader::ImportShader("Reset_Distance", Uni("default_dist", 999.0f));
+	reset_distance.UseShader();
+	reset_distance.RunComputeShader(sdf_width, sdf_depth, sdf_height);
+	reset_distance.UnuseShader();
 }
 
 // width: x-axis, depth: y-axis, height: z-axis
@@ -55,6 +66,22 @@ void SDFField::Bind(GLuint _base /*= -1*/)
 void SDFField::Unbind()
 {
 	sdf_data.UnbindBuffer();
+}
+
+void SDFField::BindShader()
+{
+	sdf_shader.UseShader();
+	sdf_shader.SetValue("U_offset", glm::vec3(0));
+}
+
+void SDFField::BindTargetTrans(const glm::mat4& _trans)
+{
+	sdf_shader.SetValue("U_model", _trans);
+}
+
+void SDFField::UnbindShader()
+{
+	sdf_shader.UnuseShader();
 }
 
 void SDFField::Subdivide(GLuint _iter)
@@ -100,6 +127,17 @@ void SDFField::RenderSDF(const Camera* cam)
 
 }
 
+
+GLuint FloatFlip3(float fl)
+{
+	GLuint f = *(GLuint*)(&fl);
+	return (f << 1) | (f >> 31);		//Rotate sign bit to least significant
+}
+float IFloatFlip3(GLuint f2)
+{
+	GLuint u = (f2 >> 1) | (f2 << 31);
+	return *(float*)(&u);
+}
 void SDFField::SDFLinearGrad()
 {
 
@@ -107,7 +145,7 @@ void SDFField::SDFLinearGrad()
 
 void SDFField::SDFRadialGrad()
 {
-	std::vector<float> buffer(sdf_width * sdf_depth * sdf_height);
+	std::vector<GLuint> buffer(sdf_width * sdf_depth * sdf_height);
 	SDFInfo info(o_position, o_scale, glm::vec3{ sdf_width, sdf_depth, sdf_height }, sdf_subdiv);
 
 	LOOP_N(sdf_width, x) {
@@ -116,7 +154,7 @@ void SDFField::SDFRadialGrad()
 				GLuint index = GetSDFIndex(x, y, z);
 				glm::vec3 center = 0.5f * info.size - 0.5f;
 				glm::vec3 dir = glm::vec3(x, y, z) - center;
-				buffer.data()[index] = glm::length(dir) / glm::length(center);
+				buffer.data()[index] = FloatFlip3(glm::length(dir) / glm::length(center));
 			}
 		}
 	}

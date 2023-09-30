@@ -93,6 +93,7 @@ public:
 
 	void Render(bool rend = true, bool buff = true);
 	void RenderShadowMap(Light* light);
+	void ConstructSDF();
 
 	void Reset();
 	void FrameResize(GLuint _w, GLuint _h);

@@ -54,6 +54,10 @@ public:
 	void UseDebugPoints(Resource<DebugPoints> dpoints);
 	void UsePostProcessing(Resource<PostProcessing> pps);
 
+public:
+
+	void UpdateTransform();
+
 };
 
 class SceneManager

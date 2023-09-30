@@ -275,8 +275,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 
 	DEBUG("\n---------------CAMERA----------------")
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
-	camera->SetPos({ 0.0f, 20.0f, 0.0f });
-	camera->SetRot({ 90, 0, 180 });
+	camera->SetPos({ 10, 0, 10 });
+	camera->SetRot({ 45, 0, 90 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
 	config3->UseCamera(camera);
@@ -284,9 +284,11 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->EnableMaterial(false);
+	go4->EnableSDF(false);
 	go4->SetObjShader("testS", "SDF_Visual");
-	go4->SetPos({ 0,-7,0 });
+	go4->SetPos({ 0,0,0 });
 	go4->SetScale({ 2,2,2 });
+	go4->SetRot({ 0,0,90 });
 	config3->UseMesh(go4);
 
 	DEBUG("\n---------------MESH----------------")
@@ -294,7 +296,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	go2->SetObjShader("testS", "Rasterization");
 	go2->SetTex(MAT_ALBEDO, "avatar1.png");
 	go2->SetCenter();
-	go2->SetPos({ 8, 0, 0 });
+	go2->SetPos({ 0, 0, 0 });
 	go2->SetScale(glm::vec3(1.5f));
 	config3->UseMesh(go2);
 

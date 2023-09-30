@@ -1,0 +1,27 @@
+#version 460 core
+#extension GL_ARB_compute_shader : enable
+#extension GL_ARB_shader_storage_buffer_object : enable
+
+uniform float default_dist;
+
+layout(std430, binding = 6) buffer SDF {
+	vec3 SDF_pos;
+	vec3 SDF_scale;
+	vec3 SDF_size;
+	int SDF_subdiv;
+	uint SDF_data[];
+};
+
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+uint FloatFlip3(float fl)
+{
+    uint f = floatBitsToUint(fl);
+    return (f << 1) | (f >> 31);		//Rotate sign bit to least significant
+}
+
+void main(){
+
+	int index = int(gl_GlobalInvocationID.x + gl_GlobalInvocationID.y * SDF_size.x + gl_GlobalInvocationID.z * SDF_size.x * SDF_size.y);
+	SDF_data[index] = FloatFlip3(default_dist);
+}

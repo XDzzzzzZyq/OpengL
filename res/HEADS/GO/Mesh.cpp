@@ -107,11 +107,6 @@ void Mesh::SetCenter()
 	SetPos(-o_mesh->GetMeshCenter());
 }
 
-void Mesh::EnableShadow(bool _enable)
-{
-	using_shadow = _enable;
-}
-
 void Mesh::DeleteObj()
 {
 	if (o_shader)o_shader->UnuseShader();

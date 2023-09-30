@@ -23,7 +23,7 @@ layout(std430, binding = 6) buffer SDF {
 	vec3 SDF_scale;
 	vec3 SDF_size;
 	int SDF_subdiv;
-	float SDF_data[];
+	uint SDF_data[];
 };
 
 // This shader partially refered to the Repo: https://github.com/GPUOpen-Effects/TressFX/tree/master
@@ -85,9 +85,20 @@ float TrilinearInterpolate(float a, float b, float c, float d, float e, float f,
     return LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r);
 }
 
+uint FloatFlip3(float fl)
+{
+    uint f = floatBitsToUint(fl);
+    return (f << 1) | (f >> 31);		//Rotate sign bit to least significant
+}
+float IFloatFlip3(uint f2)
+{
+    uint u = (f2 >> 1) | (f2 << 31);
+	return uintBitsToFloat(u);
+}
+
 float ReadSDFAt(ivec3 index){
 	int index_linear = int(index.x + index.y * SDF_size.x + index.z * SDF_size.x * SDF_size.y);
-	return SDF_data[index_linear];
+	return IFloatFlip3(SDF_data[index_linear]);
 }
 
 float ReadSDF(vec3 pos){

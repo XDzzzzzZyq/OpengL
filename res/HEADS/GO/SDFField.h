@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "StorageBuffer.h"
 #include "Camera.h"
+#include "Shaders.h"
 
 class SDFField :  public GameObject, public Transform3D
 {
@@ -23,6 +24,8 @@ private:
 		GLuint subdiv;
 	};
 
+	static ChainedShader sdf_shader;
+
 public:
 
 	SDFField();
@@ -36,9 +39,14 @@ private:
 public:
 
 	void ResetBuffer();
+	void ResetDistance();
 	void Resize(GLuint width, GLuint depth, GLuint height);
 	void Bind(GLuint _base = -1);
 	void Unbind();
+
+	void BindShader();
+	void BindTargetTrans(const glm::mat4& _trans);
+	void UnbindShader();
 
 public:
 
