@@ -44,24 +44,21 @@ bool Transform3D::SetRot(const glm::vec3& rot)
 	return true;
 }
 
-bool Transform3D::SetTrans(const glm::mat4& _trans)
+bool Transform3D::SetTrans(const glm::mat4& _trans, bool pos /*= true*/, bool rot /*= true*/, bool scl /*= true*/)
 {
 	if (_trans == o_Transform)
 		return false;
 
-	glm::vec3 scale, position, skew;
+	glm::vec3 scale, position, _sk;
 	glm::quat rotation;
-	glm::vec4 perspective;
+	glm::vec4 _pers;
 
-	glm::decompose(_trans, scale, rotation, position, skew, perspective);
+	glm::decompose(_trans, scale, rotation, position, _sk, _pers);
 
-	o_Transform = _trans;
-	o_position = position;
-	o_rot = glm::degrees(glm::eulerAngles(rotation));
-	o_scale = scale;
-
-	UpdateDirections();
-	is_TransF_changed = true;
+	if (pos) SetPos(position);
+	if (rot) SetRot(glm::degrees(glm::eulerAngles(rotation)));
+	if (scl) SetScale(scale);
+	if (pos && rot && scl) o_Transform = _trans;
 
 	return true;
 }
@@ -84,19 +81,17 @@ void Transform3D::Spin(const glm::vec3& anch, const glm::vec3& axis, const float
 	assert(false);
 }
 
-void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle)
+void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle, bool global_up/* = true*/)
 {
 	o_position -= anch;
 
-	o_position = glm::rotateZ(o_position, angle.x);
+	o_position = global_up ? glm::rotateZ(o_position, angle.x) : glm::rotate(o_position, angle.y, o_dir_up);
 	SetRot(o_rot + glm::vec3(0.0f, 0.0f, glm::degrees(angle.x)));
 
 	o_position = glm::rotate(o_position, angle.y, o_dir_right);
 	SetRot(o_rot + glm::vec3(glm::degrees(angle.y), 0.0f, 0.0f));
-
+	
 	o_position += anch;
-
-	is_TransF_changed = true;
 }
 
 void Transform3D::LookAt(const glm::vec3& tar)

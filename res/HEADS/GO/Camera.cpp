@@ -1,5 +1,6 @@
 ﻿#include "Camera.h"
 #include "xdz_math.h"
+#include "glm/gtx/matrix_decompose.hpp"
 
 Camera::Camera(float w, float h, float per, float n, float f)
 	:cam_w(w), cam_h(h), cam_pers(per), cam_near(n), cam_far(f)
@@ -8,8 +9,9 @@ Camera::Camera(float w, float h, float per, float n, float f)
 	//cam_frustum = glm::ortho(-cam_w / 2, cam_w / 2, -cam_h / 2, cam_h / 2, cam_near, cam_far);
 	cam_frustum = glm::perspective(glm::radians(per), w / h, n, f); //fov angle from y axis
 
-	EventInit();
 	o_name = "Camera." + std::to_string(GetObjectID());
+
+	EventInit();
 }
 
 Camera::Camera()
@@ -34,13 +36,7 @@ Camera::~Camera()
 
 }
 
-float* Camera::GetCameraParas() const
-{
-	float paras[6];
-	return paras;
-}
-
-void Camera::GenFloatData() const
+void Camera::GenFloatData()
 {
 	cam_floatData = {
 		o_position[0],
@@ -102,6 +98,32 @@ void Camera::SetTarPos(const glm::vec3& _pos)
 
 	//is_rot_changed = true;
 	is_TransF_changed = true;
+}
+
+void Camera::SetCamTrans(const glm::mat4& _trans, bool pos /*= true*/, bool rot /*= true*/)
+{
+	if (_trans == o_Transform)
+		return;
+
+	glm::vec3 _s, position, _sk;
+	glm::quat rotation;
+	glm::vec4 _per;
+
+	glm::decompose(_trans, _s, rotation, position, _sk, _per);
+
+	if (pos)
+	{ 
+		cam_tar += position - o_position;
+		SetPos(position);
+	}
+
+	if (rot)
+	{ 
+		const glm::vec3 delta = glm::eulerAngles(rotation) - glm::radians(o_rot);
+		//DEBUG(delta);
+		Spin(cam_tar, { delta.z, delta.x });
+		//SetRot(glm::degrees(glm::eulerAngles(rotation)));
+	}
 }
 
 void Camera::SHIFT_MMB()

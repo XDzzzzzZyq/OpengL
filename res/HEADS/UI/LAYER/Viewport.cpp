@@ -93,8 +93,11 @@ void Viewport::RenderAxis()
 	if (active_cam == nullptr)
 		return;
 
-	ImGuizmo::ViewManipulate(&active_cam->o_InvTransform[0][0], 5, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
+	glm::mat4 cam_trans = active_cam->o_InvTransform;
+	static glm::mat4 test_trans{1};
+	ImGuizmo::ViewManipulate(&cam_trans[0][0], 5, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
 
+	active_cam->SetCamTrans(glm::transpose(cam_trans), false, true);
 }
 
 void Viewport::RenderHandle()
@@ -122,5 +125,6 @@ void Viewport::RenderHandle()
 	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], mCurrentGizmoOperation, mCurrentGizmoMode, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 	EventListener::ReportGuizmoStatus(hover, click);
 
-	active_trans->SetTrans(obj_trans);
+	if(click)
+		active_trans->SetTrans(obj_trans);
 }

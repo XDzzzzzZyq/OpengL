@@ -68,12 +68,12 @@ public:
 	bool SetRot(const glm::vec3& rot);
 	template <int _Dim>
 	bool SetRot1D(float _1d);
-	bool SetTrans(const glm::mat4& _trans);
+	bool SetTrans(const glm::mat4& _trans, bool pos = true, bool rot = true, bool scl = true);
 
 	void Trans(const glm::mat4& _trans);
 	void Move(const glm::vec3& d_pos);
 	void Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle);
-	void Spin(const glm::vec3& anch, const glm::vec2& angle);
+	void Spin(const glm::vec3& anch, const glm::vec2& angle, bool global_up = true);
 	void LookAt(const glm::vec3& tar);
 
 

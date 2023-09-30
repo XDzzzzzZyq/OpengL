@@ -22,14 +22,16 @@ public:
 
 public:
 
-	float* GetCameraParas() const;
-	mutable std::vector<float> cam_floatData;
-	void GenFloatData() const; // 6f(trans) + 1f(ratio) + 1f(angle)
+	std::vector<float> cam_floatData;
+	void GenFloatData(); // 6f(trans) + 1f(ratio) + 1f(angle)
 	void ChangeCamRatio(float w, float h);
 	void ChangeCamRatio(const glm::vec2& size);
 	void ChangeCamPersp(float persp);
 
 	void SetTarPos(const glm::vec3& _pos);
+	void SetCamTrans(const glm::mat4& _trans, bool pos = true, bool rot = true);
+
+	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
 public:
 
