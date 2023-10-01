@@ -27,6 +27,7 @@ void ImguiManager::DefultViewports() {
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("FXAA", "", BOOL_MITEM));
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Screen Space Reflection", "", BOOL_MITEM));
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Shadow Map", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("SDF Field", "", BOOL_MITEM));
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Icons", "", BOOL_MITEM));
 
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");

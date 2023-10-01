@@ -63,7 +63,7 @@ int Application::Init()
 	UI.ManagerInit(window);
 
 
-#if 1
+#if 0
 	renderer.UseScene(SceneManager::SceneConfig3());
 	renderer.r_using_shadow_map = false;
 	renderer.r_using_ssr = false;
@@ -71,6 +71,7 @@ int Application::Init()
 	renderer.UseScene(SceneManager::SceneConfig2());
 	renderer.r_ao_radius = 0.8;
 	renderer.r_render_icons = false;
+	renderer.r_using_SDF_field = false;
 
 	Light::area_blur_range = 0.03;
 #endif
@@ -137,6 +138,7 @@ int Application::Run()
 	UI.FindImguiMenuItem("Render", "FXAA")->BindSwitch(&renderer.r_using_fxaa);
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindSwitch(&renderer.r_using_ssr);
 	UI.FindImguiMenuItem("Render", "Shadow Map")->BindSwitch(&renderer.r_using_shadow_map);
+	UI.FindImguiMenuItem("Render", "SDF Field")->BindSwitch(&renderer.r_using_SDF_field);
 	UI.FindImguiMenuItem("Render", "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {

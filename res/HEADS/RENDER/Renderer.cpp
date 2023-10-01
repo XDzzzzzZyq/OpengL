@@ -189,13 +189,14 @@ void Renderer::Render(bool rend, bool buff) {
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
-
-	////////////    CAM TRANSFORM    /////////////
+	////////////    CAM CACHED    /////////////
 
 	glm::mat4 proj_trans_b = GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform;
-	GetActiveCamera()->ApplyTransform();
-	GetActiveCamera()->GetInvTransform();
-	GetActiveCamera()->GenFloatData();
+
+
+	////////////  TRANSFORM UDPATE  /////////////
+
+	r_scene->UpdateObjTransforms();
 
 
 	////////////     OPTICAL FLOW     ////////////
@@ -213,18 +214,14 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	if(r_frame_num % 5 == 0)
+	if(r_using_SDF_field && r_scene->is_object_trans_changed)
 		ConstructSDF();
 
 
 	///////////  Lights Data PreCalc  ///////////
 
 	for (auto& [id, light] : r_scene->light_list) {
-
-		/*	    Capture Status		*/
-		light->ApplyAllTransform();
-		is_light_changed |= light->is_light_changed;
-		is_light_changed |= light->is_Uniform_changed;
+		if (!light->is_viewport) return;
 
 		if (light->is_light_changed || light->is_Uniform_changed)
 			r_light_data.UpdateLight(light.get());
@@ -235,8 +232,6 @@ void Renderer::Render(bool rend, bool buff) {
 			light->UpdateProjMatrix();
 
 		RenderShadowMap(light.get());
-		light->is_light_changed = false;
-		light->is_Uniform_changed = false;
 	}
 
 	///////////   Begin buffering    ///////////
@@ -266,25 +261,17 @@ void Renderer::Render(bool rend, bool buff) {
 		for (const auto& [id, mesh] : r_scene->mesh_list)
 		{
 			if (!mesh->is_viewport)continue;
-
-			mesh->ApplyAllTransform();
 			mesh->RenderMesh(GetActiveCamera().get());
-			mesh->is_Uniform_changed = false;
-			mesh->o_shader->is_shader_changed = false;
-			mesh->o_material->is_mat_struct_changed = false;
 		}
-		is_light_changed = false;
 
 		/////////  POLYGONAL LIGHTS POLYGON    /////////
 
 		for (const auto& [id, polyLight] : r_scene->poly_light_list)
 		{
-			polyLight->ApplyAllTransform();
+			if (!polyLight->is_viewport)continue;
 			polyLight->RenderPolygon(GetActiveCamera().get());
 			if (polyLight->is_Uniform_changed)
 				r_light_data.ParsePolygonLightData(r_scene->poly_light_list);
-			polyLight->is_Uniform_changed = false;
-			polyLight->o_shader->is_shader_changed = false;
 		}
 
 		/////////    DEBUG MESHES    /////////
@@ -292,17 +279,13 @@ void Renderer::Render(bool rend, bool buff) {
 		for (const auto& [id, dLine] : r_scene->dLine_list)
 		{
 			if (!dLine->is_viewport)continue;
-			dLine->ApplyAllTransform();
 			dLine->RenderDdbugLine(GetActiveCamera().get());
-			dLine->is_Uniform_changed = false;
 		}
 
 		for (const auto& [id, dPoints] : r_scene->dPoints_list)
 		{
 			if (!dPoints->is_viewport)continue;
-			dPoints->ApplyAllTransform();
-			dPoints->RenderDebugPoint(GetActiveCamera().get());
-			dPoints->is_Uniform_changed = false;
+			dPoints->RenderDebugPoint(GetActiveCamera().get());;
 		}
 
 
@@ -529,10 +512,8 @@ void Renderer::Reset()
 		if (selec_list.size())
 			selec_list.clear();
 	}
-	GetActiveCamera()->is_Uniform_changed = false;
-	GetActiveCamera()->is_invUniform_changed = false;
-	GetActiveCamera()->is_frustum_changed = false;
-	is_light_changed = false;
+
+	r_scene->ResetStatus();
 }
 
 void Renderer::FrameResize(GLuint _w, GLuint _h)
@@ -566,7 +547,7 @@ void Renderer::ActivateCamera(int cam_id)
 
 std::shared_ptr<Camera> Renderer::GetActiveCamera()
 {
-	return r_scene->cam_list[0];
+	return r_scene->GetActiveCamera();
 }
 
 void Renderer::ActivateEnvironment(int envir_id)
@@ -580,15 +561,12 @@ void Renderer::ActivateEnvironment(int envir_id)
 
 std::shared_ptr<Environment> Renderer::GetActiveEnvironment()
 {
-	return r_scene->envir_list[0];
+	return r_scene->GetActiveEnvironment();
 }
 
 std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
 {
-	if (_tar >= r_scene->pps_list.size())
-		return nullptr;
-
-	return r_scene->pps_list[_tar];
+	return r_scene->GetPPS(_tar);
 }
 
 void Renderer::ScreenShot()

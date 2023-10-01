@@ -29,6 +29,9 @@ public:
 
 public:
 	bool is_scene_changed = true;
+	bool is_object_trans_changed = true;
+	bool is_light_changed = true;
+	bool is_shader_changed = true;
 public:
 
 	ResPool<GameObject>			obj_list;
@@ -54,9 +57,15 @@ public:
 	void UseDebugPoints(Resource<DebugPoints> dpoints);
 	void UsePostProcessing(Resource<PostProcessing> pps);
 
+	std::shared_ptr<Camera> GetActiveCamera();
+	std::shared_ptr<Environment> GetActiveEnvironment();
+	std::shared_ptr<PostProcessing> GetPPS(int _tar);
+
 public:
 
-	void UpdateTransform();
+	void UpdateObjTransforms();
+
+	void ResetStatus();
 
 };
 

@@ -118,11 +118,114 @@ void SceneResource::UsePostProcessing(Resource<PostProcessing> pps)
 }
 
 
-void SceneResource::UpdateTransform()
+std::shared_ptr<Camera> SceneResource::GetActiveCamera()
 {
-
+	assert(cam_list.find(0) != cam_list.end());
+	return cam_list[0];
 }
 
+std::shared_ptr<Environment> SceneResource::GetActiveEnvironment()
+{
+	assert(envir_list.find(0) != envir_list.end());
+	return envir_list[0];
+}
+
+std::shared_ptr<PostProcessing> SceneResource::GetPPS(int _tar)
+{
+	assert(_tar >= 0 && _tar < pps_list.size());
+	return pps_list[_tar];
+}
+
+void SceneResource::UpdateObjTransforms()
+{
+	// The update of transform should ignore the visibility of objects
+
+	GetActiveCamera()->ApplyTransform();
+	GetActiveCamera()->GetInvTransform();
+	GetActiveCamera()->GenFloatData();
+
+	for (auto& [id, mesh] : mesh_list) 
+	{
+		mesh->ApplyAllTransform();
+		is_object_trans_changed |= mesh->is_Uniform_changed;
+		is_shader_changed |= mesh->o_shader->is_shader_changed;
+	}
+
+	for (auto& [id, light] : light_list) 
+	{
+		light->ApplyAllTransform();
+		/*	    Capture Status		*/
+		is_light_changed |= light->is_light_changed;
+		is_light_changed |= light->is_Uniform_changed;
+		is_object_trans_changed |= light->is_Uniform_changed;
+	}
+
+	for (auto& [id, polyLight] : poly_light_list) 
+	{
+		polyLight->ApplyAllTransform();
+		is_object_trans_changed |= polyLight->is_Uniform_changed;
+	}
+
+	for (auto& [id, dLine] : dLine_list)
+	{
+		dLine->ApplyAllTransform();
+		is_object_trans_changed |= dLine->is_Uniform_changed;
+	}
+
+	for (auto& [id, dPoint] : dPoints_list)
+	{
+		dPoint->ApplyAllTransform();
+		is_object_trans_changed |= dPoint->is_Uniform_changed;
+	}
+
+	is_scene_changed = 
+		is_light_changed || 
+		is_object_trans_changed || 
+		GetActiveCamera()->is_Uniform_changed ||
+		is_shader_changed;
+}
+
+
+void SceneResource::ResetStatus()
+{
+	is_scene_changed = false;
+	is_object_trans_changed = false;
+	is_light_changed = false;
+	is_shader_changed = false;
+
+	for (auto& [id, light] : light_list) 
+	{
+		light->is_light_changed = false;
+		light->is_Uniform_changed = false;
+	}
+
+	for (auto& [id, mesh] : mesh_list)
+	{
+		mesh->is_Uniform_changed = false;
+		mesh->o_shader->is_shader_changed = false;
+		mesh->o_material->is_mat_struct_changed = false;
+	}
+
+	for (auto& [id, polyLight] : poly_light_list)
+	{
+		polyLight->is_Uniform_changed = false;
+		polyLight->o_shader->is_shader_changed = false;
+	}
+
+	for (auto& [id, dLine] : dLine_list)
+	{
+		dLine->is_Uniform_changed = false;
+	}
+
+	for (auto& [id, dPoint] : dPoints_list)
+	{
+		dPoint->is_Uniform_changed = false;
+	}
+
+	GetActiveCamera()->is_Uniform_changed = false;
+	GetActiveCamera()->is_invUniform_changed = false;
+	GetActiveCamera()->is_frustum_changed = false;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////

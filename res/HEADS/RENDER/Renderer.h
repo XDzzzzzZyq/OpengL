@@ -48,6 +48,7 @@ public:
 	bool r_using_fxaa = true;			// Fast Approximate Anti-Aliasing
 	bool r_using_ssr = true;			// Screen Space Reflection
 	bool r_using_shadow_map = true;
+	bool r_using_SDF_field = true;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;
@@ -59,7 +60,6 @@ public:
 	bool r_is_preview = true;
 
 public:
-	bool is_light_changed = false;
 
 	std::shared_ptr<SceneResource> r_scene;
 
