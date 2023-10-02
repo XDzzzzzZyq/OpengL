@@ -2,6 +2,8 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices=3) out;
 
+uniform int U_closure;
+
 // This shader partially refered to the Repo: https://github.com/GPUOpen-Effects/TressFX/tree/master
 
 layout(std430, binding = 6) buffer SDF {
@@ -110,6 +112,7 @@ void main()
 				int index = int(x + y * SDF_size.x + z * SDF_size.y * SDF_size.x);
 				vec3 sdf_pos = GetPosFromIndex(x,y,z);
 				float dist = SignedDistancePointToTriangle(sdf_pos, vec3(gl_in[0].gl_Position), vec3(gl_in[1].gl_Position), vec3(gl_in[2].gl_Position));
+                dist = U_closure>0 ? dist : abs(dist);
                 atomicMin(SDF_data[index], FloatFlip3(dist));
 			}
 		}

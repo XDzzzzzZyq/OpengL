@@ -32,6 +32,7 @@ public:
 	bool is_object_trans_changed = true;
 	bool is_light_changed = true;
 	bool is_shader_changed = true;
+	bool is_SDF_changed = true;
 public:
 
 	ResPool<GameObject>			obj_list;

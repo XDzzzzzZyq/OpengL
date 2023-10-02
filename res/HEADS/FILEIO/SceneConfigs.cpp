@@ -177,6 +177,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	monkey->SetObjShader("testS", "Rasterization");
 	monkey->SetMatColor(MAT_ROUGH, 0.0f);
 	monkey->SetMatColor(MAT_METAL, 1.0f);
+	monkey->SetLowPoly("cornellbox/monkey_low.obj");
 	config2->UseMesh(monkey);
 
 	DEBUG("\n---------------MESH----------------")
@@ -185,6 +186,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	back_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.9));
 	back_wall->SetMatColor(MAT_ROUGH, 0.90f);
 	back_wall->SetMatColor(MAT_METAL, 0.05f);
+	back_wall->is_closure = false;
 	config2->UseMesh(back_wall);
 
 	DEBUG("\n---------------MESH----------------")
@@ -193,6 +195,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	left_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.8, 0.22, 0.2));
 	left_wall->SetMatColor(MAT_ROUGH, 0.90f);
 	left_wall->SetMatColor(MAT_METAL, 0.05f);
+	left_wall->is_closure = false;
 	config2->UseMesh(left_wall);
 
 	DEBUG("\n---------------MESH----------------")
@@ -201,6 +204,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	right_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.26, 0.8, 0.29));
 	right_wall->SetMatColor(MAT_ROUGH, 0.90f);
 	right_wall->SetMatColor(MAT_METAL, 0.05f);
+	right_wall->is_closure = false;
 	config2->UseMesh(right_wall);
 
 	DEBUG("\n---------------MESH----------------")
@@ -227,7 +231,19 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	light->SetMatColor(MAT_METAL, 1.0);
 	light->SetMatColor(MAT_EMIS_COL, glm::vec3(1));
 	light->SetMatColor(MAT_EMIS_STR, 1.0);
+	light->is_closure = false;
 	config2->UseMesh(light);
+
+	DEBUG("\n----- ------SDF VISUAL--------------")
+		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	go4->EnableMaterial(false);
+	go4->EnableSDF(false);
+	go4->EnableShadow(false);
+	go4->SetObjShader("testS", "SDF_Visual");
+	go4->SetPos({ 0,0,0 });
+	go4->SetScale({ 2,2,2 });
+	go4->SetRot({ 0,0,90 });
+	config2->UseMesh(go4);
 
 	DEBUG("\n-------------AREA LIGHT-------------")
 		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT);

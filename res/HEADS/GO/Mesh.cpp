@@ -60,9 +60,12 @@ void Mesh::RenderMesh(const Camera* cam)
 
 }
 
-void Mesh::RenderObjProxy() const
+void Mesh::RenderObjProxy(bool using_original /*= true*/) const
 {
-	o_mesh->RenderObjProxy();
+	if(!using_original && o_mesh_low != nullptr)
+		o_mesh_low->RenderObjProxy();
+	else
+		o_mesh->RenderObjProxy();
 }
 
 void Mesh::SetObjShader(std::string vert, std::string frag)
@@ -105,6 +108,11 @@ void Mesh::SetMatColor(MatParaType _type, glm::vec3 _col)
 void Mesh::SetCenter()
 {
 	SetPos(-o_mesh->GetMeshCenter());
+}
+
+void Mesh::SetLowPoly(const std::string& path /*= ""*/)
+{
+	o_mesh_low = path == "" ? nullptr : MeshLib::LoadMesh(path);
 }
 
 void Mesh::DeleteObj()

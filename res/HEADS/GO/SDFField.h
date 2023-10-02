@@ -45,7 +45,7 @@ public:
 	void Unbind();
 
 	void BindShader();
-	void BindTargetTrans(const glm::mat4& _trans);
+	void BindTargetTrans(const glm::mat4& _trans, bool _is_closure);
 	void UnbindShader();
 
 public:

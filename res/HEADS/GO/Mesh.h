@@ -13,11 +13,13 @@ public:
 
 	std::shared_ptr<Material> o_material;
 	std::shared_ptr<MeshData> o_mesh;
+	std::shared_ptr<MeshData> o_mesh_low { nullptr };
 	std::shared_ptr<RenderShader> o_shader;
 
 	bool using_shadow{ true };
 	bool using_material{ true };
 	bool using_sdf{ true };
+	bool is_closure{ true };
 
 public:
 
@@ -28,7 +30,7 @@ public:
 public:
 
 	void RenderMesh(const Camera* cam);
-	void RenderObjProxy() const;
+	void RenderObjProxy(bool using_original = true) const;
 
 public:
 
@@ -37,6 +39,8 @@ public:
 	void SetMatColor(MatParaType _type, float _val);
 	void SetMatColor(MatParaType _type, glm::vec3 _col);
 	void SetCenter();
+
+	void SetLowPoly(const std::string& path = "");
 
 	void EnableShadow(bool _enable) { using_shadow = _enable; }
 	void EnableMaterial(bool _enable) { using_material = _enable; }

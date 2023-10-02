@@ -143,12 +143,14 @@ void SceneResource::UpdateObjTransforms()
 	GetActiveCamera()->ApplyTransform();
 	GetActiveCamera()->GetInvTransform();
 	GetActiveCamera()->GenFloatData();
+	is_object_trans_changed |= GetActiveCamera()->is_Uniform_changed;
 
 	for (auto& [id, mesh] : mesh_list) 
 	{
 		mesh->ApplyAllTransform();
 		is_object_trans_changed |= mesh->is_Uniform_changed;
 		is_shader_changed |= mesh->o_shader->is_shader_changed;
+		is_SDF_changed |= mesh->is_Uniform_changed && mesh->using_sdf;
 	}
 
 	for (auto& [id, light] : light_list) 
@@ -182,7 +184,8 @@ void SceneResource::UpdateObjTransforms()
 		is_light_changed || 
 		is_object_trans_changed || 
 		GetActiveCamera()->is_Uniform_changed ||
-		is_shader_changed;
+		is_shader_changed ||
+		is_SDF_changed;
 }
 
 
@@ -192,6 +195,7 @@ void SceneResource::ResetStatus()
 	is_object_trans_changed = false;
 	is_light_changed = false;
 	is_shader_changed = false;
+	is_SDF_changed = false;
 
 	for (auto& [id, light] : light_list) 
 	{

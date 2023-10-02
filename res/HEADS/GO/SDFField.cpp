@@ -74,9 +74,10 @@ void SDFField::BindShader()
 	sdf_shader.SetValue("U_offset", glm::vec3(0));
 }
 
-void SDFField::BindTargetTrans(const glm::mat4& _trans)
+void SDFField::BindTargetTrans(const glm::mat4& _trans, bool _is_closure)
 {
 	sdf_shader.SetValue("U_model", _trans);
+	sdf_shader.SetValue("U_closure", (int)_is_closure);
 }
 
 void SDFField::UnbindShader()

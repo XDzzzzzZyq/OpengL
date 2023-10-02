@@ -45,7 +45,7 @@ void Renderer::Init()
 	InitFrameBuffer();
 	r_light_data.Init();
 	r_sdf_field = SDFField(32, 32, 32);
-	r_sdf_field.SetScale({ 3,3,3 });
+	r_sdf_field.SetScale({ 2,2,2 });
 	r_sdf_field.ResetBuffer();
 
 	EventInit();
@@ -214,7 +214,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	if(r_using_SDF_field && r_scene->is_object_trans_changed)
+	if(r_using_SDF_field && r_scene->is_SDF_changed)
 		ConstructSDF();
 
 
@@ -482,8 +482,8 @@ void Renderer::ConstructSDF()
 		if (!mesh->using_sdf) continue;
 		if (!mesh->is_viewport) continue;
 
-		r_sdf_field.BindTargetTrans(mesh->o_Transform);
-		mesh->RenderObjProxy();
+		r_sdf_field.BindTargetTrans(mesh->o_Transform, mesh->is_closure);
+		mesh->RenderObjProxy(false);
 	}
 
 	r_sdf_field.Unbind();
