@@ -414,7 +414,6 @@ void Renderer::Render(bool rend, bool buff) {
 				ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
 				ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 			}
-			ssr.SetValue("gamma", r_gamma);
 			ssr.SetValue("noise", EventListener::random_float1);
 			ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
@@ -430,6 +429,15 @@ void Renderer::Render(bool rend, bool buff) {
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 3);
 			fxaa.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
+
+
+		//////////  COLOR ADJUSTMENT  /////////
+
+		static ComputeShader& tone = ComputeShader::ImportShader("Compose");
+		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
+		tone.UseShader();
+		tone.SetValue("gamma", r_gamma);
+		tone.RunComputeShaderSCR(r_render_result->GetSize(), 8);
 
 
 		//////////   EDITING ELEM   //////////
