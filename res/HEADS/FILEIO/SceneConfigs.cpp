@@ -240,6 +240,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	go4->EnableSDF(false);
 	go4->EnableShadow(false);
 	go4->SetObjShader("testS", "SDF_Visual");
+	go4->is_viewport = false;
 	go4->SetPos({ 0,0,0 });
 	go4->SetScale({ 2,2,2 });
 	go4->SetRot({ 0,0,90 });

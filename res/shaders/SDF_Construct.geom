@@ -4,6 +4,9 @@ layout (triangle_strip, max_vertices=3) out;
 
 uniform int U_closure;
 
+in vec3 normal_color[];
+in vec3 Snormal_color[];
+
 // This shader partially refered to the Repo: https://github.com/GPUOpen-Effects/TressFX/tree/master
 
 layout(std430, binding = 6) buffer SDF {
@@ -35,7 +38,7 @@ float DistancePointToEdge(vec3 p, vec3 x0, vec3 x1, out vec3 n)
     return d;
 }
 
-float SignedDistancePointToTriangle(vec3 p, vec3 x0, vec3 x1, vec3 x2)
+float SignedDistancePointToTriangle(vec3 p, vec3 x0, vec3 x1, vec3 x2, vec3 nTri)
 {
     float d = 0;
     vec3 x02 = x0 - x2;
@@ -53,7 +56,6 @@ float SignedDistancePointToTriangle(vec3 p, vec3 x0, vec3 x1, vec3 x2)
     float c = 1 - a - b;
 
     // normal vector of triangle. Don't need to normalize this yet.
-    vec3 nTri = cross((x1 - x0), (x2 - x0));
     vec3 n;
 
     float tol = 1e-8f;
@@ -63,10 +65,10 @@ float SignedDistancePointToTriangle(vec3 p, vec3 x0, vec3 x1, vec3 x2)
         n = p - (a*x0 + b*x1 + c*x2);
         d = length(n);
 
-        vec3 n1 = n / d;
-        vec3 n2 = nTri / (length(nTri) + 1e-30f);		// if d == 0
-
-        n = (d > 0) ? n1 : n2;
+        //vec3 n1 = n / d;
+        //vec3 n2 = nTri / (length(nTri) + 1e-30f);		// if d == 0
+        //
+        //n = (d > 0) ? n1 : n2;
     }
     else
     {
@@ -80,8 +82,8 @@ float SignedDistancePointToTriangle(vec3 p, vec3 x0, vec3 x1, vec3 x2)
         d = min(d, d12);
         d = min(d, d02);
 
-        n = (d == d12) ? n_12 : n;
-        n = (d == d02) ? n_02 : n;
+        //n = (d == d12) ? n_12 : n;
+        //n = (d == d02) ? n_02 : n;
     }
 
     d = (dot(p - x0, nTri) < 0.f) ? -d : d;
@@ -111,7 +113,7 @@ void main()
 			for(int x = 0; x < SDF_size.x; x++){
 				int index = int(x + y * SDF_size.x + z * SDF_size.y * SDF_size.x);
 				vec3 sdf_pos = GetPosFromIndex(x,y,z);
-				float dist = SignedDistancePointToTriangle(sdf_pos, vec3(gl_in[0].gl_Position), vec3(gl_in[1].gl_Position), vec3(gl_in[2].gl_Position));
+				float dist = SignedDistancePointToTriangle(sdf_pos, vec3(gl_in[0].gl_Position), vec3(gl_in[1].gl_Position), vec3(gl_in[2].gl_Position), normal_color[0]);
                 dist = U_closure>0 ? dist : abs(dist);
                 atomicMin(SDF_data[index], FloatFlip3(dist));
 			}

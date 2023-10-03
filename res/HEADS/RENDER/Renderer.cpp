@@ -44,8 +44,9 @@ void Renderer::Init()
 
 	InitFrameBuffer();
 	r_light_data.Init();
-	r_sdf_field = SDFField(32, 32, 32);
-	r_sdf_field.SetScale({ 2,2,2 });
+	r_sdf_field = SDFField(64, 64, 64);
+	r_sdf_field.SetScale({ 1.1,1.1,1.1 });
+	r_sdf_field.SetPos({ 0,0,1 });
 	r_sdf_field.ResetBuffer();
 
 	EventInit();

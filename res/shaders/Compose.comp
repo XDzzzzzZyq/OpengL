@@ -3,6 +3,7 @@
 layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 layout(rgba16f, binding = 0) uniform image2D U_combine;
+layout(rgba16f, binding = 2) uniform image2D U_normal;
 
 uniform float gamma;
 
@@ -28,6 +29,8 @@ void main(){
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec3 color = imageLoad(U_combine, uv).rgb;
 	vec3 color_new = Vec3Film(color, gamma);
+
+	vec3 normal = imageLoad(U_normal, uv).rgb;
 
 	imageStore(U_combine, uv, vec4(color_new, 1));
 }
