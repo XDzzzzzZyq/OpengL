@@ -144,12 +144,8 @@ float k_IBL(float r){
 	return r*r/2;
 }
 
-float fresnel(float Cos, float F0){
-	return mix(exp2((-5.55437*Cos-6.98314)*Cos), 1.0, F0);
-}
-
-vec3 fresnelSchlick(float Cos, vec3 F0){
-	return vec3(fresnel(Cos,F0.x), fresnel(Cos,F0.y), fresnel(Cos,F0.z));
+vec3 fresnelSG(float Cos, vec3 F0){
+	return mix(vec3(exp2((-5.55437*Cos-6.98314)*Cos)), vec3(1.0), F0);
 }
 
 float DistributionGGX(float NdotH, float a)
@@ -188,7 +184,7 @@ Diff_Spec BRDF(float NdotL, float NdotV, vec3 V, vec3 N, vec3 L, float Roughness
 	float NDF = DistributionGGX(NdotH, Roughness);
 	float G = GeometrySmith(NdotV, NdotL, k_light(Roughness));
 
-	vec3 Fd = fresnelSchlick(NdotV, F0);
+	vec3 Fd = fresnelSG(NdotV, F0);
 
 	vec3 kSd = Fd;
 	vec3 kDd = vec3(1.0) - kSd;
@@ -334,7 +330,7 @@ void main(){
 	float Select = texture2D(U_alpha, screen_uv).g;
 
 	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
-	vec3 Fresnel = fresnelSchlick(NdotV, F0);
+	vec3 Fresnel = fresnelSG(NdotV, F0);
 	vec3 ks = Fresnel;
 
 	float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);

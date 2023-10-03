@@ -318,6 +318,7 @@
     <None Include="res\shaders\SDF_Visual.frag" />
     <None Include="res\shaders\SDF_Construct.geom" />
     <None Include="res\shaders\Reset_Distance.comp" />
+    <None Include="res\shaders\SSR_SDF.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">

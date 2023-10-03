@@ -19,6 +19,7 @@ void ImguiManager::DefultViewports() {
 	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Axis", "", BOOL_MITEM));
 	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Grid", "", BOOL_MITEM));
 	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Transform", "", BOOL_MITEM));
+	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Icons", "", BOOL_MITEM));
 
 	auto menu5 = CreateImguiMenu("Render");
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Optical Flow", "", BOOL_MITEM));
@@ -28,7 +29,7 @@ void ImguiManager::DefultViewports() {
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Screen Space Reflection", "", BOOL_MITEM));
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Shadow Map", "", BOOL_MITEM));
 	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("SDF Field", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Icons", "", BOOL_MITEM));
+	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("SDF Screen Space Reflection", "", BOOL_MITEM));
 
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");
 	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "testf", 0.0, 1.0);

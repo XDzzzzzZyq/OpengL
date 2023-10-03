@@ -328,6 +328,7 @@
     <None Include="res\shaders\SpriteShader.vert" />
     <None Include="res\shaders\SSAO.comp" />
     <None Include="res\shaders\SSR.comp" />
+    <None Include="res\shaders\SSR_SDF.comp" />
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
     <None Include="res\shaders\testS_diff.frag" />

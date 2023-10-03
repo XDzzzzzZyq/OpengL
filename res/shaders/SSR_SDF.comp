@@ -30,16 +30,92 @@ const float bs_range = 0.01f;
 const vec3 Scale = vec3(.8, .8, .8);
 const float K = 19.19;
 
+layout(std430, binding = 6) readonly buffer SDF {
+	vec3 SDF_pos;
+	vec3 SDF_scale;
+	vec3 SDF_size;
+	int SDF_subdiv;
+	uint SDF_data[];
+};
+
+// This shader partially refered to the Repo: https://github.com/GPUOpen-Effects/TressFX/tree/master
+
+float LinearInterpolate(float a, float b, float t)
+{
+    return a * (1.0f - t) + b * t;
+}
+
+
+//    x = BilinearInterpolate(a, b, c, d, p, q)
+//      = LinearInterpolate(LinearInterpolate(a, b, p), LinearInterpolate(c, d, p), q)
+float BilinearInterpolate(float a, float b, float c, float d, float p, float q)
+{
+    return LinearInterpolate( LinearInterpolate(a, b, p), LinearInterpolate(c, d, p), q );
+}
+
+//		x = TrilinearInterpolate(a, b, c, d, e, f, g, h, p, q, r)
+//		  = LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r)
+float TrilinearInterpolate(float a, float b, float c, float d, float e, float f, float g, float h, float p, float q, float r)
+{
+    return LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r);
+}
+
+uint FloatFlip3(float fl)
+{
+    uint f = floatBitsToUint(fl);
+    return (f << 1) | (f >> 31);		//Rotate sign bit to least significant
+}
+float IFloatFlip3(uint f2)
+{
+    uint u = (f2 >> 1) | (f2 << 31);
+	return uintBitsToFloat(u);
+}
+
+float ReadSDFAt(ivec3 index){
+	int index_linear = int(index.x + index.y * SDF_size.x + index.z * SDF_size.x * SDF_size.y);
+	return IFloatFlip3(SDF_data[index_linear]);
+}
+
+float ReadSDF(vec3 pos){
+	vec3 transf = (pos - SDF_pos) / SDF_scale;  // normalize
+	vec3 over = transf - clamp(transf, -1, 1);  // over the field
+	transf = clamp(transf, -1, 1) + 1;			// [0, 2]
+	transf *= 0.5;								// [0, 1]
+	transf *= (SDF_size - 1);					// [(0,0,0), (W-1,D-1,H-1)]
+
+
+	float distance_000 = ReadSDFAt(ivec3(transf) + ivec3(0,0,0));
+	float distance_001 = ReadSDFAt(ivec3(transf) + ivec3(0,0,1));
+	float distance_010 = ReadSDFAt(ivec3(transf) + ivec3(0,1,0));
+	float distance_011 = ReadSDFAt(ivec3(transf) + ivec3(0,1,1));
+	float distance_100 = ReadSDFAt(ivec3(transf) + ivec3(1,0,0));
+	float distance_101 = ReadSDFAt(ivec3(transf) + ivec3(1,0,1));
+	float distance_110 = ReadSDFAt(ivec3(transf) + ivec3(1,1,0));
+	float distance_111 = ReadSDFAt(ivec3(transf) + ivec3(1,1,1));
+
+	vec3 interp = fract(transf);
+
+	return TrilinearInterpolate(distance_000, distance_100, distance_010, distance_110,
+                                distance_001, distance_101, distance_011, distance_111,
+                                interp.x, interp.y, interp.z) + length(over);
+}
+
 bool IsOutScreen(vec2 uv){
 	bool x = uv.x<0 || uv.x>1;
 	bool y = uv.y<0 || uv.y>1;
 	return x || y;
 }
 
+vec2 pos2uv(vec3 pos){
+	vec4 screen_pos = cam_trans * vec4(pos, 1);
+	vec2 frag_pos = screen_pos.xy / screen_pos.w / 2 + 0.5;
+
+	return frag_pos;
+}
+
 vec4 DepthSample(vec3 ray_pos){
 
-	vec4 screen_pos = cam_trans * vec4(ray_pos, 1);
-	vec2 frag_pos = screen_pos.xy / screen_pos.w / 2 + 0.5;
+	vec2 frag_pos = pos2uv(ray_pos);
 
 	if(IsOutScreen(frag_pos))
 		return vec4(0);
@@ -83,34 +159,37 @@ vec2 BindarySearch(vec3 begin, vec3 end){
 	return result;
 }
 
-vec2 RayMarching(vec3 dir, inout vec3 ray_pos){
+vec2 FastRayMarching(vec3 dir, inout vec3 ray_pos){
 	
 	vec2 result = vec2(-1);
 	vec3 ray_pos_b;
 
 	for(int i = 0; i < max_step; i++){
 		ray_pos_b = ray_pos;
-		ray_pos += stride * dir;
+		float dist = ReadSDF(ray_pos);
+		ray_pos += abs(dist) * dir;
 
 		vec4 depth_test = DepthSample(ray_pos);
 		float dDepth = depth_test.z - depth_test.w;
 
 		if(dDepth == 0)
-			break;
+			return vec2(-1);
 
 		if(dDepth < 0)
 			continue;
 
-		if(dDepth >= range)
-			break;
+		if(dist < 0)
+			return vec2(-4);
 
-		if(dDepth < range){
-			result = BindarySearch(ray_pos_b, ray_pos);
-			break;
-		}
+		if(dDepth >= range)
+			return vec2(-2);
+
+		if(dDepth < range)
+			return BindarySearch(ray_pos_b, ray_pos);
+
 	}
 
-	return result;
+	return vec2(-3);
 }
 
 vec3 fresnelSG(float Cos, vec3 F0){
@@ -132,6 +211,22 @@ vec3 sample_combine(vec2 uv){
 	vec3 Emission = texture(U_emission, uv).rgb;
 
 	return Dir_Diff + Dir_Spec + Ind_Diff + Ind_Spec + Emission;
+} 
+
+vec3 ParseRayHitDebug(vec2 result, vec3 Ind_Diff, vec3 Ind_Spec, vec3 Fresnel){
+	if(result.x >= 0)
+		return sample_combine(result) * Fresnel;
+	else if(result.x >= -1)
+		//return Ind_Diff+Ind_Spec;
+		return vec3(1,0,0);
+	else if(result.x >= -2)
+		return vec3(0,1,0);
+	else if(result.x >= -3)
+		return vec3(0,0,1);
+}
+
+vec3 ParseRayHit(vec2 result, vec3 Ind_Diff, vec3 Ind_Spec, vec3 Fresnel){
+	return result.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(result) * Fresnel;
 }
 
 void main(){
@@ -179,9 +274,9 @@ void main(){
 	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
 	vec3 Fresnel = fresnelSG(NdotV, F0);
 
-	vec2 MarchResult = RayMarching(reflect_dir, ray_pos);
+	vec2 MarchResult = FastRayMarching(reflect_dir, ray_pos);
 
-	vec3 Indirect = MarchResult.x < 0 ? Ind_Diff+Ind_Spec : sample_combine(MarchResult) * Fresnel;
+	vec3 Indirect = ParseRayHit(MarchResult, Ind_Diff, Ind_Spec, Fresnel);
 	vec3 Indirect_b = imageLoad(U_cache, uv).gba;
 
 	float update_rate = smoothstep(0.95, 1.0, 1 - Roughness)*0.97 + 0.02;

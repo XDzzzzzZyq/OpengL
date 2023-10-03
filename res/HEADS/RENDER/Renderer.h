@@ -49,6 +49,7 @@ public:
 	bool r_using_ssr = true;			// Screen Space Reflection
 	bool r_using_shadow_map = true;
 	bool r_using_SDF_field = true;
+	bool r_using_SDF_SSR = true;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;

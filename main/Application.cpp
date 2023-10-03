@@ -131,6 +131,7 @@ int Application::Run()
 		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 	};
 
+	dynamic_cast<Viewport*>(UI.FindImguiLayer("Viewport"))->display_grid = false;
 	UI.FindImguiMenuItem("Render", "Optical Flow")->BindSwitch(&renderer.r_using_of);
 	UI.FindImguiMenuItem("Render", "Forward Optical Flow")->BindSwitch(&renderer.r_forward_of);
 	UI.FindImguiMenuItem("Render", "Deferred Rendering")->BindSwitch(&renderer.r_deferred_rendering);
@@ -138,7 +139,8 @@ int Application::Run()
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindSwitch(&renderer.r_using_ssr);
 	UI.FindImguiMenuItem("Render", "Shadow Map")->BindSwitch(&renderer.r_using_shadow_map);
 	UI.FindImguiMenuItem("Render", "SDF Field")->BindSwitch(&renderer.r_using_SDF_field);
-	UI.FindImguiMenuItem("Render", "Icons")->BindSwitch(&renderer.r_render_icons);
+	UI.FindImguiMenuItem("Render", "SDF Screen Space Reflection")->BindSwitch(&renderer.r_using_SDF_SSR);
+	UI.FindImguiMenuItem("View", "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
