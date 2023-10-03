@@ -103,7 +103,7 @@
 
 - Ray tracing ?
     - [x] Screen Space Reflections
-    - [ ] SDF SSR
+    - [x] SDF SSR
 
 - DL style transfer ?
 

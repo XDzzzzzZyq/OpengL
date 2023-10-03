@@ -232,6 +232,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	light->SetMatColor(MAT_EMIS_COL, glm::vec3(1));
 	light->SetMatColor(MAT_EMIS_STR, 1.0);
 	light->is_closure = false;
+	light->EnableSDF(false);
 	config2->UseMesh(light);
 
 	DEBUG("\n----- ------SDF VISUAL--------------")

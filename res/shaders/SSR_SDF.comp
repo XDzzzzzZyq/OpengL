@@ -23,8 +23,8 @@ uniform float noise;
 
 const float stride = 0.1f;
 const float range = 0.2f;
-const int max_step = 16;
-const int max_bs_step = 16;
+const int max_step = 64;
+const int max_bs_step = 8;
 const float bs_range = 0.01f;
 
 const vec3 Scale = vec3(.8, .8, .8);
