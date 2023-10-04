@@ -12,7 +12,7 @@
 
 enum MenuItemType
 {
-	NONE_MITEM, BUTTON_MITEM, BOOL_MITEM
+	NONE_MITEM, BUTTON_MITEM, BOOL_MITEM, OPTION_MITEM
 };
 
 class ImguiMenuItem
@@ -23,17 +23,15 @@ public:
 	MenuItemType mitem_type = BUTTON_MITEM;
 
 public:
-	mutable bool mitem_press{ false };
-	mutable bool mitem_onclick_b{ false };
-	mutable bool mitem_onclick{ false };
+	bool mitem_press{ false };
+	bool mitem_onclick_b{ false };
+	bool mitem_onclick{ false };
 	bool mitem_enable = true;
 
-	std::shared_ptr<bool> tar_state;
-	mutable std::function<bool(void)> mitem_func; //return onopen state;
+	std::function<bool(bool)> mitem_func; // pass the target status, return the new status
 
 public:
 	void EnableMenuItem(bool en) { mitem_enable = en; }
-	void ListenEvent();
 
 public:
 	ImguiMenuItem();
@@ -42,16 +40,19 @@ public:
 	ImguiMenuItem(const std::string& name, MenuItemType _type);
 	ImguiMenuItem(const std::string& name, const std::string& shortcut, MenuItemType _type);
 
-	template<class T>
-	void BindSwitch(std::shared_ptr<T> _src, bool* _switch);
-	void BindSwitch(bool* _switch);
+	virtual void BindOption(char* _option) { assert(false && "Not a option item\n"); };
+	virtual void BindSwitch(bool* _switch) { assert(false && "Not a switch item\n"); };
+
+	template<typename T> requires std::is_enum_v<T>
+	void BindOption(T* _option);
+
+	virtual void RenderMenuItem() { assert(false && "no Render function overrided\n"); };
 };
 
-template<class T>
-void ImguiMenuItem::BindSwitch(std::shared_ptr<T> _src, bool* _switch)
-{
-	assert(mitem_type == BOOL_MITEM);
 
-	tar_state = std::shared_ptr<bool>(_src, _switch);
+template<typename T> requires std::is_enum_v<T>
+void ImguiMenuItem::BindOption(T* _option)
+{
+	BindOption((char*)_option);
 }
 

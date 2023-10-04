@@ -132,14 +132,12 @@ int Application::Run()
 	};
 
 	dynamic_cast<Viewport*>(UI.FindImguiLayer("Viewport"))->display_grid = false;
-	UI.FindImguiMenuItem("Render", "Optical Flow")->BindSwitch(&renderer.r_using_of);
-	UI.FindImguiMenuItem("Render", "Forward Optical Flow")->BindSwitch(&renderer.r_forward_of);
-	UI.FindImguiMenuItem("Render", "Deferred Rendering")->BindSwitch(&renderer.r_deferred_rendering);
-	UI.FindImguiMenuItem("Render", "FXAA")->BindSwitch(&renderer.r_using_fxaa);
-	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindSwitch(&renderer.r_using_ssr);
-	UI.FindImguiMenuItem("Render", "Shadow Map")->BindSwitch(&renderer.r_using_shadow_map);
-	UI.FindImguiMenuItem("Render", "SDF Field")->BindSwitch(&renderer.r_using_SDF_field);
-	UI.FindImguiMenuItem("Render", "SDF Screen Space Reflection")->BindSwitch(&renderer.r_using_SDF_SSR);
+	UI.FindImguiMenuItem("Render", "Rendering PipeLine")->BindOption(&renderer.r_pipeline);
+	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.r_of_algorithm);
+	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.r_anti_alias);
+	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.r_ssr_algorithm);
+	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.r_shadow_algorithm);
+	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.r_ao_algorithm);
 	UI.FindImguiMenuItem("View", "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {
@@ -174,9 +172,11 @@ int Application::Run()
 		UI.NewFrame();
 
 		Event.UpdateEvent(window);
-		UI.RenderUI();
-
 		AvTime.Update(UI.GetIO()->Framerate);
+
+		UI.EventActivate();
+
+		UI.RenderUI();
 
 		renderer.EventActivate();
 		renderer.GetActiveCamera()->EventActivate();
@@ -188,6 +188,8 @@ int Application::Run()
 #endif
 
 		renderer.Render();
+
+		renderer.Reset();
 		Event.Reset();
 
 #if 0

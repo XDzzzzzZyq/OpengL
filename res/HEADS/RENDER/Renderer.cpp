@@ -202,7 +202,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	////////////     OPTICAL FLOW     ////////////
 
-	if (r_using_of && r_forward_of)
+	if (r_of_algorithm == OptFlwAlg::Forward)
 	{
 		static ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
@@ -215,7 +215,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	if(r_using_SDF_field && r_scene->is_SDF_changed)
+	if((r_ssr_algorithm==SSRAlg::SDFRayMarching || r_shadow_algorithm==Light::ShadowAlg::SDFSoftShadow) && r_scene->is_SDF_changed)
 		ConstructSDF();
 
 
@@ -334,7 +334,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////// BACKWARD OPTICAL FLOW ////////
 
-		if (r_using_of && !r_forward_of)
+		if (r_of_algorithm==OptFlwAlg::Backward)
 		{
 			static ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
@@ -367,7 +367,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////// LIGHTING CACHE ////////////
 
-		if (r_using_shadow_map) {
+		if (r_shadow_algorithm!=Light::ShadowAlg::None) {
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
@@ -395,9 +395,9 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////      SSR     ////////////
 
-		if (r_using_ssr) {
+		if (r_ssr_algorithm!=SSRAlg::None) {
 			static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-			ComputeShader& ssr = r_using_SDF_SSR ?
+			ComputeShader& ssr = r_ssr_algorithm==SSRAlg::SDFRayMarching ?
 				ComputeShader::ImportShader("SSR_SDF", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12))
 				: ComputeShader::ImportShader("SSR", Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
@@ -423,7 +423,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////     FXAA     ////////////
 
-		if (r_using_fxaa) {
+		if (r_anti_alias==AAAlg::FXAA) {
 			static ComputeShader& fxaa = ComputeShader::ImportShader("FXAA");
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
@@ -453,7 +453,6 @@ void Renderer::Render(bool rend, bool buff) {
 		}
 
 	}
-	Reset();
 }
 
 void Renderer::RenderShadowMap(Light* light)

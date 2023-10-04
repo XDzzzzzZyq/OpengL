@@ -79,11 +79,20 @@ public:
 	void SetRatio(float _ratio);
 
 private:
+
 	static FrameBuffer _shadowmap_buffer;
 	static std::array<ChainedShader, 4> _shadowmap_shader;
 	static std::array<glm::mat4, 6> _point_6side;
 
 public:
+
+	enum class ShadowAlg : char
+	{
+		None,
+		ShadowMap,
+		SDFSoftShadow
+	};
+
 	static void EnableShadowMap();
 
 public:

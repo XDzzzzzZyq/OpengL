@@ -5,31 +5,30 @@ void ImguiManager::DefultViewports() {
 
 
 	auto menu1 = CreateImguiMenu("File");
-	menu1->PushSubMenu(std::make_shared<ImguiMenuItem>("test", "ctrl + A"));
-	menu1->PushSubMenu(std::make_shared<ImguiMenuItem>("test2", "ctrl + S"));
+	menu1->PushSubMenu<UI::ImguiMButton>("test", "ctrl + A");
+	menu1->PushSubMenu<UI::ImguiMButton>("test2", "ctrl + S");
 
 	auto menu2 = CreateImguiMenu("Edit");
-	menu2->PushSubMenu(std::make_shared<ImguiMenuItem>("undo", "ctrl + Z"));
-	menu2->PushSubMenu(std::make_shared<ImguiMenuItem>("redo", "ctrl + Y"));
-	menu2->PushSubMenu(std::make_shared<ImguiMenuItem>("preference", "ctrl + P"));
+	menu2->PushSubMenu<UI::ImguiMButton>("undo", "ctrl + Z");
+	menu2->PushSubMenu<UI::ImguiMButton>("redo", "ctrl + Y");
+	menu2->PushSubMenu<UI::ImguiMButton>("preference", "ctrl + P");
 
 	auto menu3 = CreateImguiMenu("Window");
 
 	auto menu4 = CreateImguiMenu("View");
-	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Axis", "", BOOL_MITEM));
-	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Grid", "", BOOL_MITEM));
-	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Transform", "", BOOL_MITEM));
-	menu4->PushSubMenu(std::make_shared<ImguiMenuItem>("Icons", "", BOOL_MITEM));
+	menu4->PushSubMenu<UI::ImguiMSwitch>("Axis");
+	menu4->PushSubMenu<UI::ImguiMSwitch>("Grid");
+	menu4->PushSubMenu<UI::ImguiMSwitch>("Transform");
+	menu4->PushSubMenu<UI::ImguiMSwitch>("Icons");
+	menu4->PushSubMenu<UI::ImguiMOption>("Render Result",			OPTIONS("Combine", "Position", "Normal", "MRSE", "Random", "AO"));
 
 	auto menu5 = CreateImguiMenu("Render");
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Optical Flow", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Forward Optical Flow", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Deferred Rendering", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("FXAA", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Screen Space Reflection", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("Shadow Map", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("SDF Field", "", BOOL_MITEM));
-	menu5->PushSubMenu(std::make_shared<ImguiMenuItem>("SDF Screen Space Reflection", "", BOOL_MITEM));
+	menu5->PushSubMenu<UI::ImguiMOption>("Rendering PipeLine",		OPTIONS("Forward", "Deferred", "Custom (future)"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Optical Flow",			OPTIONS("None", "Forward", "Backward"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Anti Aliasing",			OPTIONS("None", "MSAA (future)", "FXAA"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Screen Space Reflection", OPTIONS("None", "Ray Marching", "SDF Ray Marching"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Shadow",					OPTIONS("None", "Shadow Map", "SDF Soft Shadow"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Ambient Occlusion",		OPTIONS("None", "SSAO", "HBAO (future)"));
 
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");
 	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "testf", 0.0, 1.0);
@@ -72,9 +71,9 @@ void ImguiManager::DefultViewports() {
 
 	auto transform = CreateImguiLayer<TransformPanel>("Transform");
 
-	FindImguiMenuItem("View", "Axis")->BindSwitch(viewport, &viewport->display_axis);
-	FindImguiMenuItem("View", "Grid")->BindSwitch(viewport, &viewport->display_grid);
-	FindImguiMenuItem("View", "Transform")->BindSwitch(viewport, &viewport->display_trans_handle);
+	FindImguiMenuItem("View", "Axis")->BindSwitch(&viewport->display_axis);
+	FindImguiMenuItem("View", "Grid")->BindSwitch(&viewport->display_grid);
+	FindImguiMenuItem("View", "Transform")->BindSwitch(&viewport->display_trans_handle);
 
 	SetActiveImguiLayer("__Parameters__");
 }

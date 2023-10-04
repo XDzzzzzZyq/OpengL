@@ -35,6 +35,9 @@ private:
 	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
 	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID
+
+	void RegistarMenuEvents();
+
 public:
 	static bool is_prefW_open;
 

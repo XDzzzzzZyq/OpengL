@@ -19,10 +19,24 @@ void ImguiManager::Init()
 	m_style = &ImGui::GetStyle();
 
 	DefultViewports();
+	RegistarMenuEvents();
 }
 
 ImguiManager::~ImguiManager()
 {
+}
+
+void ImguiManager::RegistarMenuEvents()
+{
+	for(auto& menu : menu_list)
+		for(auto& submenu : menu->subm_list){
+		
+			if (submenu->mitem_shortcut.empty()) continue;
+		
+			EventList[EventListener::ParseShortCut(submenu->mitem_shortcut)] = [submenu] {
+				submenu->mitem_func(true);
+				};
+		}
 }
 
 void ImguiManager::ManagerInit(GLFWwindow* window)
@@ -73,13 +87,15 @@ void ImguiManager::NewFrame() const
 
 void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 {
+	assert(layer_name_buffer.find(layer->uly_name) == layer_name_buffer.end());
+
 	layer->uly_ID = layer_list.size(); //start with 0
 	layer_list.push_back(layer);
 	active_layer_id = layer->uly_ID;
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
 
-	std::shared_ptr<ImguiMenuItem> window = std::make_shared<ImguiMenuItem>(layer->uly_name, "", BOOL_MITEM);
-	window->BindSwitch(layer, &layer->uly_is_rendered);
+	auto window = std::make_shared<UI::ImguiMSwitch>(layer->uly_name);
+	window->BindSwitch(&layer->uly_is_rendered);
 	FindImguiMenu("Window")->PushSubMenu(window);
 }
 
@@ -143,11 +159,6 @@ void ImguiManager::PushImguiMenu(std::shared_ptr<ImguiMenu> _menu)
 	_menu->menu_id = menu_list.size();
 	menu_list.push_back(_menu);
 	menu_name_buffer[_menu->menu_name] = _menu->menu_id;
-
-	for (auto& i : _menu->mitm_func_list)
-		EventList[i.first] = std::move(i.second);
-
-	_menu->mitm_func_list.clear();
 }
 
 ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const

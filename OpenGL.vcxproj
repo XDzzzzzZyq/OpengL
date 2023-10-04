@@ -199,6 +199,9 @@
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="dep\stb_image\stb_image.cpp" />
+    <ClCompile Include="res\HEADS\UI\MENU\ImguiMButton.cpp" />
+    <ClCompile Include="res\HEADS\UI\MENU\ImguiMOption.cpp" />
+    <ClCompile Include="res\HEADS\UI\MENU\ImguiMSwitch.cpp" />
     <ClCompile Include="main\Application.cpp" />
     <ClCompile Include="main\MAIN.cpp" />
     <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp" />
@@ -360,6 +363,9 @@
     <ClInclude Include="dep\gui\ImGui\imstb_truetype.h" />
     <ClInclude Include="dep\stb_image\stb_image.h" />
     <ClInclude Include="dep\stb_image\stb_image_write.h" />
+    <ClInclude Include="res\HEADS\UI\MENU\ImguiMButton.h" />
+    <ClInclude Include="res\HEADS\UI\MENU\ImguiMOption.h" />
+    <ClInclude Include="res\HEADS\UI\MENU\ImguiMSwitch.h" />
     <ClInclude Include="main\Application.h" />
     <ClInclude Include="res\HEADS\EXTRA\macros.h" />
     <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h" />

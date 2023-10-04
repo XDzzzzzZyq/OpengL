@@ -42,14 +42,52 @@ public:
 	~Renderer();
 public:
 
-	bool r_using_of = true;				// Optical Flow Correction
-	bool r_forward_of = false;
-	bool r_deferred_rendering = true;	// Multi-passes Deferred Rendering
-	bool r_using_fxaa = true;			// Fast Approximate Anti-Aliasing
-	bool r_using_ssr = true;			// Screen Space Reflection
-	bool r_using_shadow_map = true;
-	bool r_using_SDF_field = true;
-	bool r_using_SDF_SSR = true;
+	// Rendering Pipe-Lines
+	enum class RenderPipeLine : char
+	{
+		Forward,
+		Deferred,
+		Custom0
+	};
+
+	// Optical Flow Algorithms
+	enum class OptFlwAlg : char
+	{
+		None,
+		Forward,
+		Backward
+	};
+
+	// Screen Space Reflection Algorithms
+	enum class SSRAlg : char
+	{
+		None,
+		RayMarching,
+		SDFRayMarching,
+	};
+
+	// Anti Aliasing Algorithms
+	enum class AAAlg : char
+	{
+		None,
+		MSAA,
+		FXAA
+	};
+
+	// Ambient Occlusion Algorithms
+	enum class AOAlg : char
+	{
+		None,
+		SSAO,
+		HBAO
+	};
+
+	OptFlwAlg r_of_algorithm = OptFlwAlg::Backward;
+	RenderPipeLine r_pipeline = RenderPipeLine::Deferred;	// Multi-passes Deferred Rendering
+	AAAlg r_anti_alias = AAAlg::FXAA;						// Fast Approximate Anti-Aliasing
+	SSRAlg r_ssr_algorithm = SSRAlg::SDFRayMarching;					// Screen Space Reflection
+	AOAlg r_ao_algorithm = AOAlg::SSAO;
+	Light::ShadowAlg r_shadow_algorithm = Light::ShadowAlg::ShadowMap;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;

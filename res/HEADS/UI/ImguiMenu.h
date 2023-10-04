@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
 
-#include "ImguiMenuItem.h"
+#include "MENU/ImguiMButton.h"
+#include "MENU/ImguiMOption.h"
+#include "MENU/ImguiMSwitch.h"
 
 class ImguiMenu
 {
@@ -18,11 +20,22 @@ public:
 
 public:
 	mutable std::vector<std::shared_ptr<ImguiMenuItem>> subm_list;
-	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> mitm_func_list;
+
+	template<class MItemType, class... Args>
+	void PushSubMenu(Args... args);
 	void PushSubMenu(std::shared_ptr<ImguiMenuItem> subm);
 
 	ImguiMenuItem* FindMenuItem(const std::string _name);
 
 	void RenderMenu() const;
 };
+
+
+
+template<class MItemType, class... Args>
+void ImguiMenu::PushSubMenu(Args... args)
+{
+	std::shared_ptr<MItemType> item = std::make_shared<MItemType>(args...);
+	PushSubMenu(std::dynamic_pointer_cast<ImguiMenuItem>(item));
+}
 

@@ -240,6 +240,15 @@
     <ClCompile Include="res\HEADS\GO\SDFField.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="res\HEADS\UI\MENU\ImguiMSwitch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\UI\MENU\ImguiMButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="res\HEADS\UI\MENU\ImguiMOption.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -574,6 +583,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="res\HEADS\GO\SDFField.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\MENU\ImguiMSwitch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\MENU\ImguiMButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res\HEADS\UI\MENU\ImguiMOption.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
