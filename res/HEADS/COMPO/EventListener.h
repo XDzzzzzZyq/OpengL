@@ -76,8 +76,11 @@ public:
 	static bool is_mouse_pressed;
 	static bool is_key_pressed_b;
 	static bool is_mouse_pressed_b;
-	static bool IsMouseLeft()  { return is_mouse_pressed_b == true && is_mouse_pressed == false; }    // true if mouse button on Left
-	static bool IsMouseClick() { return is_mouse_pressed_b == false && is_mouse_pressed == true; }    // true if mouse button on Click
+	static bool is_key_changed;
+	static bool IsMouseLeft()	{ return is_mouse_pressed_b == true && is_mouse_pressed == false; }    // true if mouse button on Left
+	static bool IsMouseClick()	{ return is_mouse_pressed_b == false && is_mouse_pressed == true; }    // true if mouse button on Click
+	static bool IsKeyLeft()		{ return is_key_pressed_b == true && is_key_pressed == false; }    // true if key button on Left
+	static bool IsKeyClick()	{ return is_key_pressed_b == false && is_key_pressed == true; }    // true if key button on Click
 
 public:
 
@@ -143,7 +146,6 @@ public:
 	static float scroll_dir;
 	static bool is_scr_changed;
 	static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
-		is_scr_changed = true;
 		scroll_dir = yoffset;
 	}
 

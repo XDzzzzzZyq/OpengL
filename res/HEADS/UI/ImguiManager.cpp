@@ -34,7 +34,8 @@ void ImguiManager::RegistarMenuEvents()
 			if (submenu->mitem_shortcut.empty()) continue;
 		
 			EventList[EventListener::ParseShortCut(submenu->mitem_shortcut)] = [submenu] {
-				submenu->mitem_func(true);
+				if(EventListener::is_key_changed)
+					submenu->mitem_func(true);
 				};
 		}
 }
@@ -210,7 +211,6 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 void ImguiManager::RenderUI(bool rend)
 {
 	if (rend) {
-		EventActivate();
 
 		if (ParaUpdate)
 			ParaUpdate();

@@ -13,6 +13,8 @@ bool EventListener::is_key_pressed;
 bool EventListener::is_mouse_pressed;
 bool EventListener::is_key_pressed_b;
 bool EventListener::is_mouse_pressed_b;
+bool EventListener::is_key_changed;
+
 double EventListener::mouse_x;
 double EventListener::mouse_y;
 double EventListener::mouse_b_x;
@@ -88,14 +90,10 @@ EventListener::~EventListener()
 
 int EventListener::ListenMouseEvent(GLFWwindow* window) const
 {
-	is_mouse_pressed_b = is_mouse_pressed;
-	is_mouse_pressed = false;
 	//update
 	LOOP(3)
-		if (glfwGetMouseButton(window, i) == GLFW_PRESS) {
-			is_mouse_pressed = true;
+		if (glfwGetMouseButton(window, i) == GLFW_PRESS) 
 			return i + 1;
-		}
 
 	return 0;
 }
@@ -109,11 +107,9 @@ int EventListener::ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const
 {
 	LOOP(3)
 		if (glfwGetKey(window, 340 + i) == GLFW_PRESS)
-			if (ignor != i + 1) {
+			if (ignor != i + 1) 
 				return i + 1;
-			}
 
-	is_key_pressed = false;
 	return 0;//no key is pressed
 }
 
@@ -128,41 +124,32 @@ int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<in
 	return 0;
 }
 
-float EventListener::scroll_dir = 80;
+float EventListener::scroll_dir = 0;
 bool EventListener::is_scr_changed = false;
 
 #include "xdz_math.h"
 void EventListener::UpdateEvent(GLFWwindow* window) const
 {
-
+	KeyMouseEvent event_b = EVT_STATUS;
 	/*		Mouse Input 	*/	
 
 	mouse_b_x = mouse_x;
 	mouse_b_y = mouse_y;
+	is_mouse_pressed_b = is_mouse_pressed;
 	glfwGetCursorPos(window, &mouse_x, &mouse_y);
 	glfwSetScrollCallback(window, EventListener::scrollCall);
 
 	/*	  KeyBoard Input 	*/
 
-	if (ListenSpecialKeyEvent(window, 0) == 0)
-	{
-		EVT_STATUS.FirstKey = 0;
-		EVT_STATUS.SecondKey = 0;
-	}
-	else {
-		EVT_STATUS.FirstKey = ListenSpecialKeyEvent(window, 0);
-		EVT_STATUS.SecondKey = ListenSpecialKeyEvent(window, EVT_STATUS.FirstKey);
-	}
+	is_key_pressed_b = is_key_pressed;
 
-	if (EVT_NK_LIST.size())
+	EVT_STATUS.FirstKey = ListenSpecialKeyEvent(window, 0);
+	EVT_STATUS.SecondKey = ListenSpecialKeyEvent(window, EVT_STATUS.FirstKey);
+
+	if (!EVT_NK_LIST.empty())
 		EVT_STATUS.NormKey = ListenNormalKeyEvent(window, EVT_NK_LIST);
 
-	if (is_scr_changed) {
-		EVT_STATUS.Scr = scroll_dir;
-	}
-	else {
-		EVT_STATUS.Scr = 0;
-	}
+	EVT_STATUS.Scr = scroll_dir;
 
 	EVT_STATUS.Mouse = ListenMouseEvent(window);
 
@@ -173,6 +160,10 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 	random_float3 = xdzm::rand01();
 	random_float4 = xdzm::rand01();
 
+	is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
+	is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
+	is_mouse_pressed = EVT_STATUS.Mouse != 0;
+	is_key_pressed = EVT_STATUS.FirstKey + EVT_STATUS.SecondKey + EVT_STATUS.NormKey != 0;
 }
 
 const KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
@@ -199,8 +190,8 @@ void EventListener::EventActivate()
 void EventListener::Reset()
 {
 	is_GOlist_changed = false;
-	is_scr_changed = false;
 	is_selected_changed = false;
+	scroll_dir = 0;
 
 	viewport_status = ViewPortStatus::None;
 }
