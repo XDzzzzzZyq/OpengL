@@ -35,7 +35,7 @@ public:
 	void SetShaderValue(const std::string& _name, GLsizei _count, const float* va0, ArrayType _TYPE);
 	void AddBinding(std::string _pass_name, GLuint _slot);
 
-	void* GetShaderStruct() override { return dynamic_cast<ShaderLib*>( &pps_shader.value() ); }
+	void* GetShader()		override { return &pps_shader.value(); };
 	void* GetTransform()	override { return dynamic_cast<Transform*>( pps_field.GetTransformPtr()); }
 
 public:

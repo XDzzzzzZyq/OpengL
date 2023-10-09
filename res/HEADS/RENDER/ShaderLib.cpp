@@ -15,45 +15,6 @@ ShaderLib::~ShaderLib()
 
 }
 
-void ShaderLib::InitLib()
-{
-	shader_struct_list[VERTEX_SHADER].SetAB(0, VEC3_PARA, "position");
-	shader_struct_list[VERTEX_SHADER].SetAB(1, VEC2_PARA, "uvIn");
-	shader_struct_list[VERTEX_SHADER].SetAB(2, VEC3_PARA, "normal");
-	shader_struct_list[VERTEX_SHADER].SetAB(3, VEC3_PARA, "smo_normal");
-
-	shader_struct_list[VERTEX_SHADER].SetOut(VEC2_PARA, 1, "uv");
-	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "testcolor");
-	shader_struct_list[VERTEX_SHADER].SetOut(VEC3_PARA, 1, "pix_pos");
-	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "normal_color");
-	shader_struct_list[VERTEX_SHADER].SetOut(VEC4_PARA, 1, "Snormal_color");
-
-	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "cam_trans");
-	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "obj_trans");
-	shader_struct_list[VERTEX_SHADER].SetUni(MAT4_PARA, 1, "ProjectM");
-	shader_struct_list[VERTEX_SHADER].SetUni(FLOAT_PARA, 5, "z_inp");
-
-	shader_struct_list[VERTEX_SHADER].SetPass(0, VEC4_PARA, "color");
-	shader_struct_list[VERTEX_SHADER].SetPass(1, VEC4_PARA, "IDcolor");
-	shader_struct_list[VERTEX_SHADER].SetPass(2, VEC4_PARA, "RANDcolor");
-	shader_struct_list[VERTEX_SHADER].SetPass(3, VEC4_PARA, "SELECcolor");
-
-	shader_struct_list[VERTEX_SHADER].SetGlob(FLOAT_PARA, 3.1415926f, "pi");
-	shader_struct_list[VERTEX_SHADER].SetGlob(VEC4_PARA, 1.0f, "const_color");
-
-	shader_struct_list[VERTEX_SHADER].DefStruct(
-		"spot_light",
-		{ {VEC3_PARA, "pos"}, {VEC3_PARA, "color"}, {FLOAT_PARA, "power"} }
-	);
-
-	shader_struct_list[VERTEX_SHADER].DefFunc(
-		VEC3_PARA,
-		"Filmic",
-		"\treturn x * inp;\n\n",
-		{ {FLOAT_PARA, "x"},{VEC3_PARA, "inp"} }
-	);
-}
-
 std::string ShaderStruct::ParseType(ParaType type)
 {
 	return type_table[type];

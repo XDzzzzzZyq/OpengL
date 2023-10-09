@@ -47,7 +47,7 @@ private:
 	int active_func{0};
 
 	int current_edit = 0, current_shad_type = 0;
-	bool is_edit_changed = true, is_shad_type_changed = true;
+	bool is_mode_changed = true, is_shad_type_changed = true;
 	bool add_button = false;
 	bool sel;
 
@@ -74,7 +74,8 @@ public:
 	void UpdateShaderEditor(const std::string& _code = "") const;
 	void UpdateLayer() override;
 	static void UpdateKeyword();
-	static ShaderLib* GetActiveShaderPtr();
+	static Shaders* GetActiveShaderPtr();
+	static Shaders::ShaderUnit* GetShaderUnitPtr(ShaderType tar);
 
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;

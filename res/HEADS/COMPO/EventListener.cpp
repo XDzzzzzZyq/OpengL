@@ -192,8 +192,6 @@ void EventListener::Reset()
 	is_GOlist_changed = false;
 	is_selected_changed = false;
 	scroll_dir = 0;
-
-	viewport_status = ViewPortStatus::None;
 }
 
 std::vector<std::string> EventListener::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };

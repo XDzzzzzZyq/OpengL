@@ -301,11 +301,11 @@ void Shaders::SetValue(const Material* mat)
 void RenderShader::CreatShader(const std::string& verShader, const std::string& fragShader) {
 	program_id = glCreateProgram();
 
-	vs_id = CompileShaderCode(VERTEX_SHADER, verShader);
-	fs_id = CompileShaderCode(FRAGMENT_SHADER, fragShader);
+	shader_data[VERTEX_SHADER].sh_ID = CompileShaderCode(VERTEX_SHADER, verShader);
+	shader_data[FRAGMENT_SHADER].sh_ID = CompileShaderCode(FRAGMENT_SHADER, fragShader);
 
-	glAttachShader(program_id, vs_id);
-	glAttachShader(program_id, fs_id);
+	glAttachShader(program_id, shader_data[VERTEX_SHADER].sh_ID);
+	glAttachShader(program_id, shader_data[FRAGMENT_SHADER].sh_ID);
 
 	glLinkProgram(program_id);
 	glValidateProgram(program_id);
@@ -318,7 +318,9 @@ void RenderShader::CreatShader(const std::string& verShader, const std::string& 
 #include <algorithm>
 void RenderShader::UpdateMaterial(Material* mat)
 {
-	ShaderStruct& sh_struct = shader_struct_list[FRAGMENT_SHADER];
+	assert(shader_data[FRAGMENT_SHADER].sh_struct.has_value());
+
+	ShaderStruct& sh_struct = *shader_data[FRAGMENT_SHADER].sh_struct;
 	for (const auto& [ptype, pdata] : mat->mat_params) {
 		const auto& [dtype, dfloat, dcol, dtex] = pdata;
 
@@ -395,13 +397,19 @@ void RenderShader::UpdateMaterial(Material* mat)
 ////////////////////////////////////////////////////////
 RenderShader::RenderShader(const std::string& vert, const std::string& frag)
 {
-	vert_name = vert;
-	frag_name = frag == "" ? vert : frag;
+	shader_data[VERTEX_SHADER].sh_name = vert;
+	shader_data[FRAGMENT_SHADER].sh_name = frag == "" ? vert : frag;
 
-	ParseShaderFile(vert_name, VERTEX_SHADER);
-	ParseShaderFile(frag_name, FRAGMENT_SHADER);
-	GenerateShader();
-	CreatShader(shader_list[VERTEX_SHADER], shader_list[FRAGMENT_SHADER]);
+	shader_data[VERTEX_SHADER].sh_struct = ShaderStruct();
+	shader_data[FRAGMENT_SHADER].sh_struct = ShaderStruct();
+
+	ParseShaderFile(shader_data[VERTEX_SHADER].sh_name, VERTEX_SHADER);
+	ParseShaderFile(shader_data[FRAGMENT_SHADER].sh_name, FRAGMENT_SHADER);
+
+	GenerateShader(FRAGMENT_SHADER);
+	GenerateShader(VERTEX_SHADER);
+
+	CreatShader(shader_data[VERTEX_SHADER].sh_code, shader_data[FRAGMENT_SHADER].sh_code);
 }
 
 RenderShader::RenderShader()
@@ -420,10 +428,8 @@ void RenderShader::ResetID(ShaderType type, GLuint id)
 		program_id = id;
 		break;
 	case VERTEX_SHADER:
-		vs_id = id;
-		break;
 	case FRAGMENT_SHADER:
-		fs_id = id;
+		shader_data[type].sh_ID = id;
 		break;
 	default:
 		break;
@@ -432,22 +438,18 @@ void RenderShader::ResetID(ShaderType type, GLuint id)
 
 void RenderShader::ParseShaderCode(const std::string& _code, ShaderType _type)
 {
-	shader_struct_list[_type].Reset();
+	shader_data[_type].sh_struct->Reset();
 	_LINK_LOC = {};
-	if (_code.empty()) {
-		std::stringstream Stream(shader_list[_type]);
-		ParseShaderStream(Stream, _type);
-	}
-	else {
-		shader_list[_type] = _code;
-		std::stringstream Stream(_code);
-		ParseShaderStream(Stream, _type);
-	}
+	if (!_code.empty()) 
+		shader_data[_type].sh_code = _code;
+
+	std::stringstream Stream(shader_data[_type].sh_code);
+	ParseShaderStream(Stream, _type);
 }
 
 GLuint RenderShader::CompileShader(ShaderType tar)
 {
-	const char* src = shader_list[tar].c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
+	const char* src = shader_data[tar].sh_code.c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
 	GLuint shader_id = glCreateShader(tar == 0 ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
 
 	glShaderSource(shader_id, 1, &src, nullptr);
@@ -473,22 +475,22 @@ GLuint RenderShader::CompileShader(ShaderType tar)
 	}
 	else {
 		std::cout << type << " is complied successfully!" << std::endl;
-		shader_struct_list[tar].is_struct_changed = false;
+		shader_data[tar].sh_struct->is_struct_changed = false;
 	}
-	tar == 0 ? vs_id = shader_id : fs_id = shader_id;
+	shader_data[tar].sh_ID = shader_id;
 	return shader_id;
 }
 
 void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 {
-	glDeleteProgram(getProgramID());
-	glDeleteShader(getShaderID(tar));
+	glDeleteProgram(GetProgramID());
+	glDeleteShader(GetShaderID(tar));
 
 	GLuint program_id = glCreateProgram();
 
 	GLuint shader_id = CompileShader(tar);
 	glAttachShader(program_id, shader_id);
-	glAttachShader(program_id, getShaderID((ShaderType)(1-tar)));
+	glAttachShader(program_id, GetShaderID((ShaderType)(1-tar)));
 
 	glLinkProgram(program_id);
 	glValidateProgram(program_id);
@@ -506,14 +508,31 @@ void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 	is_shader_changed = true;
 }
 
-GLuint RenderShader::getShaderID(ShaderType type) const
+void RenderShader::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
+{
+	assert(tar != NONE_SHADER);
+
+	if (!shader_data[tar].sh_struct->is_struct_changed)
+		return;
+
+	shader_data[tar].sh_struct->is_struct_changed = false;
+	shader_data[tar].sh_code = shader_data[tar].sh_struct->GenerateShader();
+}
+
+Shaders::ShaderUnit* RenderShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)
+{
+	assert(tar != NONE_SHADER);
+
+	return &shader_data[tar];
+}
+
+GLuint RenderShader::GetShaderID(ShaderType type) const
 {
 	switch (type)
 	{
 	case VERTEX_SHADER:
-		return vs_id;
 	case FRAGMENT_SHADER:
-		return fs_id;
+		return shader_data[type].sh_ID;
 	default:
 		return 0;
 	}
@@ -569,7 +588,7 @@ void FastLoadShader::CreatShader(const std::string& verShader, const std::string
 	glValidateProgram(program_id);
 }
 
-GLuint FastLoadShader::getShaderID(ShaderType type) const
+GLuint FastLoadShader::GetShaderID(ShaderType type) const
 {
 	switch (type)
 	{
@@ -601,7 +620,7 @@ std::unordered_map<std::string, std::shared_ptr<ChainedShader>> ChainedShader::c
 ChainedShader::ChainedShader(const std::vector<std::string>& chain)
 {
 	for (auto& path : chain)
-		shader_chain.emplace_back(Shaders::ParseFileEXT(path), path, 0);
+		shader_chain.emplace_back(Shaders::ParseFileEXT(path), path);
 
 	CreatShader();
 }
@@ -622,12 +641,13 @@ void ChainedShader::CreatShader()
 
 
 	for (auto& node : shader_chain) {
-		std::string code = Shaders::ReadShaderFile(node.type, node.name);
-		node.ID = Shaders::CompileShaderCode(node.type, code);
+		std::string code = Shaders::ReadShaderFile(node.sh_type, node.sh_name);
+		node.sh_ID = Shaders::CompileShaderCode(node.sh_type, code);
+		node.sh_code = code;
 	}
 
 	for (const auto& node : shader_chain) {
-		glAttachShader(program_id, node.ID);
+		glAttachShader(program_id, node.sh_ID);
 	}
 
 	glLinkProgram(program_id);
@@ -647,11 +667,11 @@ ChainedShader& ChainedShader::ImportShader(const std::vector<std::string>& chain
 	return *chain_sh_list[_name].get();
 }
 
-GLuint ChainedShader::getShaderID(ShaderType type) const
+GLuint ChainedShader::GetShaderID(ShaderType type) const
 {
 	for (auto& sh : shader_chain)
-		if (sh.type == type)
-			return sh.ID;
+		if (sh.sh_type == type)
+			return sh.sh_ID;
 	return 0;
 }
 
@@ -659,7 +679,7 @@ void ChainedShader::LocalDebug() const
 {
 #ifdef _DEBUG
 	for (auto& sh : shader_chain)
-		DEBUG(std::get<0>(Shaders::ParseShaderType(sh.type)) + " " + sh.name + " " + std::to_string(sh.ID));
+		DEBUG(std::get<0>(Shaders::ParseShaderType(sh.sh_type)) + " " + sh.sh_name + " " + std::to_string(sh.sh_ID));
 #endif // _DEBUG
 }
 
@@ -706,11 +726,6 @@ void ComputeShader::CreateShader(const std::string& compShader)
 	glLinkProgram(program_id);
 }
 
-GLuint ComputeShader::CompileShader()
-{
-	return comp_id;
-}
-
 void ComputeShader::RunComputeShaderSCR(const glm::vec2& _scr_size, GLuint _batch, bool _edge_fix /*= true*/)
 {
 	RunComputeShader(_scr_size / _batch + (_edge_fix ? glm::vec2(1) : glm::vec2(0)));
@@ -729,7 +744,7 @@ void ComputeShader::RunComputeShader(const glm::vec2& _size)
 	UnuseShader();
 }
 
-GLuint ComputeShader::getShaderID(ShaderType type) const
+GLuint ComputeShader::GetShaderID(ShaderType type) const
 {
 	return comp_id;
 }

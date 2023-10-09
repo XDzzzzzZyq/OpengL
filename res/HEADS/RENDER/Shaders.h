@@ -2,6 +2,7 @@
 
 #include "ShaderLib.h"
 #include <functional>
+#include <optional>
 
 enum ArrayType
 {
@@ -18,7 +19,15 @@ public:
 	struct ShaderPair {
 		std::string verShader;
 		std::string fragShader;
+	};
 
+	struct ShaderUnit
+	{
+		ShaderType sh_type;
+		std::string sh_name;
+		GLuint sh_ID{ 0 };
+		std::string sh_code{ "" };
+		std::optional<ShaderStruct> sh_struct{};
 	};
 
 public:
@@ -34,13 +43,25 @@ public:
 protected:
 
 	GLuint program_id;
+	ShaderType active_shader;
+
+protected:
+
 	mutable std::unordered_map<std::string, GLuint> _uniforms_cache;
+	std::unordered_map<std::string, int> _LINK_LOC;
+
+	bool _is_link_repeat(const std::string _name) { for (auto& i : _LINK_LOC) if (_name == i.first)return true; return false; }
 
 public:
 
-	inline GLuint getProgramID() const { return program_id; }
-	virtual GLuint getShaderID(ShaderType type) const = 0;
+	bool is_shader_changed;
+	inline GLuint GetProgramID() const { return program_id; }
+
+	virtual GLuint GetShaderID(ShaderType type) const = 0;
 	virtual void RelinkShader(ShaderType tar = NONE_SHADER) = 0;
+	virtual void GenerateShader(ShaderType tar = NONE_SHADER) = 0;
+	virtual ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) = 0;
+	virtual GLuint CompileShader(ShaderType tar) = 0;
 
 public:
 
@@ -79,13 +100,11 @@ public:
 };
 
 
-class RenderShader : public Shaders, public ShaderLib
+class RenderShader : public Shaders
 {
 private:
 
-	std::string vert_name, frag_name;
-	ShaderPair rend_shaders;
-	GLuint vs_id{ 0 }, fs_id{ 0 };
+	std::array<ShaderUnit, 2> shader_data;
 
 public:
 
@@ -106,10 +125,12 @@ public:
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override;
 
 	void RelinkShader(ShaderType tar = NONE_SHADER) override;
+	void GenerateShader(ShaderType tar = NONE_SHADER) override;
+	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override;
 
 public:
 
-	inline GLuint getShaderID(ShaderType type) const override;
+	inline GLuint GetShaderID(ShaderType type) const override;
 	void LocalDebug() const override;
 
 };
@@ -132,10 +153,11 @@ public:
 
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
 	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
+	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
 
 public:
 
-	inline GLuint getShaderID(ShaderType type) const override;
+	inline GLuint GetShaderID(ShaderType type) const override;
 	void LocalDebug() const override;
 
 };
@@ -147,15 +169,8 @@ class ChainedShader : public Shaders
 private:
 	static std::unordered_map<std::string, std::shared_ptr<ChainedShader>> chain_sh_list;
 private:
-
-	struct ShaderNode 
-	{
-		ShaderType type;
-		std::string name;
-		GLuint ID = 0;
-	};
 	
-	using ShaderChain = std::vector<ShaderNode>;
+	using ShaderChain = std::vector<ShaderUnit>;
 	ShaderChain shader_chain;
 
 public:
@@ -170,10 +185,13 @@ public:
 	static ChainedShader& ImportShader(_Name ...name);
 
 	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
+	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
+	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override { return nullptr; };
+	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
 
 public:
 
-	inline GLuint getShaderID(ShaderType type) const override;
+	inline GLuint GetShaderID(ShaderType type) const override;
 	void LocalDebug() const override;
 };
 
@@ -205,9 +223,13 @@ public:
 
 	void ResetID(GLuint _id) { comp_id = _id; }
 	void CreateShader(const std::string& compShader);
-	GLuint CompileShader();
+
+	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
 
 	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
+	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
+
+	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override { return nullptr; };
 
 public:
 
@@ -217,7 +239,7 @@ public:
 
 public:
 
-	inline GLuint getShaderID(ShaderType type) const override;
+	inline GLuint GetShaderID(ShaderType type) const override;
 	void LocalDebug() const override;
 
 public:

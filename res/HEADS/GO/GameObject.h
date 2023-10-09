@@ -32,7 +32,7 @@ public:
 	mutable bool is_selected = false;
 	mutable bool is_activated = false;
 
-	virtual void* GetShaderStruct() { return nullptr; }
+	virtual void* GetShader()		{ return nullptr; }
 	virtual void* GetTransform()	{ return nullptr; }
 	virtual void* GetMaterial()		{ return nullptr; }
 

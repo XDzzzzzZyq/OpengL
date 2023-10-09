@@ -42,7 +42,7 @@ enum ShaderPropType
 	NONE_PROP = -1, LAYOUT_IN_PROP, LAYOUT_BUFFER_PROP, LAYOUT_OUT_PROP, IN_PROP, OUT_PROP, UNIFRON_PROP, STURCT_DEF_PROP, STURCT_PROP, UNIFORM_STRUCT_PROP, CONST_PROP, GLOB_PROP, FUNC_DEF_PROP, END_PROP
 };
 
-struct ShaderStruct {
+class ShaderStruct {
 private:
 
 	int _max_loc[3]{ 0,0,0 };
@@ -56,7 +56,6 @@ public:
 
 	bool is_struct_changed = true;
 	int version = 330;
-	ShaderType type = NONE_SHADER;
 
 public:
 
@@ -112,6 +111,7 @@ public:
 
 public:
 
+	std::string GenerateShader();
 	void Reset();
 
 };
@@ -122,32 +122,6 @@ public:
 
 	ShaderLib();
 	~ShaderLib();
-
-	void InitLib();
-
-public:
-
-	std::string vert_name, frag_name;
-	bool using_nodes = false;
-	bool is_shader_changed = true;
-	ShaderType active_shader;
-	ShaderStruct shader_struct_list[2];
-	std::string shader_list[2];
-
-public:
-
-	std::unordered_map<std::string, int> _LINK_LOC;
-	bool _is_link_repeat(const std::string _name) { for (auto& i : _LINK_LOC) if (_name == i.first)return true; return false; }
-
-public:
-
-	std::string GenerateShader(ShaderType tar = NONE_SHADER);
-	virtual GLuint CompileShader(ShaderType tar) = 0;
-	void ShaderLibDebug() {
-#ifdef _DEBUG
-		DEBUG("[Vert Shader]\n" + shader_list[FRAGMENT_SHADER])
-#endif
-	};
 
 public:
 

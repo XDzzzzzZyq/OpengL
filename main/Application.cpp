@@ -175,12 +175,11 @@ int Application::Run()
 		AvTime.Update(UI.GetIO()->Framerate);
 
 		UI.EventActivate();
+		renderer.EventActivate();
 
 		UI.RenderUI();
 
-		renderer.EventActivate();
 		renderer.GetActiveCamera()->EventActivate();
-
 		/* Render here */
 
 #if 0
