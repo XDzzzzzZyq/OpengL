@@ -17,17 +17,13 @@ UI::ParaInput::ParaInput(ImItemType type, const std::string& name)
 UI::ParaInput::ParaInput(ImItemType type, const std::string& name, const glm::vec4& _def)
 	:ParaInput(type, name)
 {
-	//SetDefulValue(_def);
-	LOOP(4)
-		uitm_para.para_data.v4data[i] = _def[i];
+	SetDefulValue(_def);
 }
 
 UI::ParaInput::ParaInput(ImItemType type, const std::string& name, const glm::vec3& _def)
 	: ParaInput(type, name)
 {
-	//SetDefulValue(_def);
-	LOOP(3)
-		uitm_para.para_data.v3data[i] = _def[i];
+	SetDefulValue(_def);
 }
 
 UI::ParaInput::ParaInput(const Parameters& para)
@@ -49,15 +45,15 @@ UI::ParaInput::ParaInput(ImItemType type, const std::string& name, float min, fl
 		break;
 	case FLOAT_INP:
 		uitm_para = Parameters(FLOAT_PARA);
-		uitm_para.para_data.fdata = def;
+		uitm_para.Get<float>() = def;
 		break;
 	case BOOL_INP:
 		uitm_para = Parameters(BOOL_PARA);
-		uitm_para.para_data.bdata = def;
+		uitm_para.Get<bool>() = def;
 		break;
 	case INT_INP:
 		uitm_para = Parameters(INT_PARA);
-		uitm_para.para_data.idata = def;
+		uitm_para.Get<int>() = def;
 	default:
 		break;
 	}
@@ -99,7 +95,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderFloat(
 
 			_name,
-			(float*)&_param->para_data.fdata,
+			&_param->Get<float>(),
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -113,7 +109,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderInt(
 
 			_name,
-			(int*)&_param->para_data.idata,
+			&_param->Get<int>(),
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -127,21 +123,21 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::ColorEdit3(
 
 			_name,
-			(float*)&_param->para_data.v3data
+			(float*)&_param->Get<glm::vec3>()
 
 		);
 	case RGBA_INP:
 		return ImGui::ColorEdit4(
 
 			_name,
-			(float*)&_param->para_data.v4data
+			(float*)&_param->Get<glm::vec4>()
 
 		);
 	case VEC2_INP:
 		return ImGui::SliderFloat2(
 
 			_name,
-			(float*)&_param->para_data.v2data,
+			(float*)&_param->Get<glm::vec2>(),
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -156,7 +152,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderFloat3(
 
 			_name,
-			(float*)&_param->para_data.v3data,
+			(float*)&_param->Get<glm::vec3>(),
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -171,7 +167,7 @@ bool UI::ParaInput::RenderParam(
 		return ImGui::SliderFloat4(
 
 			_name,
-			(float*)&_param->para_data.v4data,
+			(float*)&_param->Get<glm::vec4>(),
 			_param->para_data.data_range[0],
 			_param->para_data.data_range[1],
 			NULL,
@@ -183,7 +179,7 @@ bool UI::ParaInput::RenderParam(
 
 		);
 	case BOOL_INP:
-		_param->para_data.bdata = ImGui::RadioButton(
+		_param->Get<bool>() = ImGui::RadioButton(
 
 			_name,
 			false

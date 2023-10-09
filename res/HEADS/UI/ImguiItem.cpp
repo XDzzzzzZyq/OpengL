@@ -26,9 +26,6 @@ std::string ImguiItem::GetTagName() const
 {
 	switch (uitm_type)
 	{
-	case NONE_INP:
-
-		break;
 	case TEXT_INP:
 
 		return "[TEXT] ";
@@ -53,6 +50,7 @@ std::string ImguiItem::GetTagName() const
 
 		return "[BOOL] ";
 		break;
+	case NONE_INP:
 	default:
 
 		return "[UNKNOWN]";

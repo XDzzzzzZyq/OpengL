@@ -40,7 +40,7 @@ void ImguiManager::DefultViewports() {
 	layer1->PushItem<UI::ParaInput>(RGB_INP  , "test");
 	layer1->PushItem<UI::Button>   ("testB");
 	layer1->PushItem<UI::Text>	   ("test[%.1f]");
-	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "testf")->para_data.fdata);
+	FindImguiItem("test layer", "test[%.1f]")->SetArgsList(1, &GetParaValue("test layer", "testf")->Get<float>());
 	layer1->uly_is_rendered = false;
 
 	auto layer2 = CreateImguiLayer<ParamControl>("__Parameters__");

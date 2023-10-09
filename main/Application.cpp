@@ -114,7 +114,7 @@ int Application::Run()
 		glm::vec3 newpoint2 = xdzm::rand3n(8.65f);
 		//points->PushDebugPoint(newpoint2);
 		//line->PushDebugLine(newpoint2);
-		UI.GetParaValue("test layer", "Roughness")->para_data.fdata = xdzm::rand11();
+		UI.GetParaValue("test layer", "Roughness")->Get<float>() = xdzm::rand11();
 		//go1.o_shader->ShaderLibDebug();
 		//environment->envir_shader->ShaderLibDebug();
 		//environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
@@ -144,21 +144,21 @@ int Application::Run()
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
 		UI.FindImguiItem("__Parameters__", "Frame Rate %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
 
-		scale = UI.GetParaValue("__Parameters__", "SCALE")->para_data.fdata;
-		power = UI.GetParaValue("__Parameters__", "POWER")->para_data.fdata;
-		rotateX = UI.GetParaValue("__Parameters__", "X")->para_data.fdata;
-		rotateY = UI.GetParaValue("__Parameters__", "Y")->para_data.fdata;
-		rotateZ = UI.GetParaValue("__Parameters__", "Z")->para_data.fdata;
-		Radius_W = UI.GetParaValue("__Parameters__", "W")->para_data.fdata;
-		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->para_data.v3data;
-		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->para_data.v3data;
-		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->para_data.v3data;
-		testf = UI.GetParaValue("test layer", "testf")->para_data.fdata;
-		Metalness = UI.GetParaValue("test layer", "Metalness")->para_data.fdata;
-		Roughness = UI.GetParaValue("test layer", "Roughness")->para_data.fdata;
-		Specular = UI.GetParaValue("test layer", "Specular")->para_data.fdata;
-		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
-		renderer.r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->para_data.fdata;
+		scale = UI.GetParaValue("__Parameters__", "SCALE")->Get<float>();
+		power = UI.GetParaValue("__Parameters__", "POWER")->Get<float>();
+		rotateX = UI.GetParaValue("__Parameters__", "X")->Get<float>();
+		rotateY = UI.GetParaValue("__Parameters__", "Y")->Get<float>();
+		rotateZ = UI.GetParaValue("__Parameters__", "Z")->Get<float>();
+		Radius_W = UI.GetParaValue("__Parameters__", "W")->Get<float>();
+		LightColor = UI.GetParaValue("__Parameters__", "Light Color")->Get<glm::vec3>();
+		LightPos = UI.GetParaValue("__Parameters__", "Light Position")->Get<glm::vec3>();
+		LightRot = UI.GetParaValue("__Parameters__", "Light Rotation")->Get<glm::vec3>();
+		testf = UI.GetParaValue("test layer", "testf")->Get<float>();
+		Metalness = UI.GetParaValue("test layer", "Metalness")->Get<float>();
+		Roughness = UI.GetParaValue("test layer", "Roughness")->Get<float>();
+		Specular = UI.GetParaValue("test layer", "Specular")->Get<float>();
+		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
+		renderer.r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
 	};
 	UI.GetCurrentWindow();
 

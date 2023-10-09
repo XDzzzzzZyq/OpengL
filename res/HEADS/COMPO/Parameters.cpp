@@ -10,19 +10,7 @@ Parameters::Parameters(ParaType _type, const std::string& _name)
 {
 }
 
-Parameters::Parameters(const Parameters& para)
-{
-	para_type = para.para_type;
-	para_data = para.para_data;
-	para_name = para.para_name;
-}
-
 Parameters::~Parameters()
 {
 
-}
-
-ParaData::ParaData(const ParaData& copy)
-{
-	
 }
