@@ -1,5 +1,12 @@
 #include "ShaderLib.h"
 
+/*			Build-in shaders			*/		
+
+std::vector<std::string> ShaderLib::SSR_prefix = { "none", "", "_SDF", "_SDF_Resolve" };
+std::vector<std::string> ShaderLib::AA_prefix = { "none", "MS", "FX" };
+std::vector<std::string> ShaderLib::AO_prefix = { "none", "SS", "HB" };
+std::vector<std::string> ShaderLib::Shadow_prefix = { "none", "", "_SDF" };
+
 /*			Build-in functions			*/
 
 const S_func ShaderLib::FilmicF;

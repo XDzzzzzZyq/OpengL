@@ -120,17 +120,19 @@ class ShaderLib
 {
 public:
 
-	ShaderLib();
-	~ShaderLib();
+	ShaderLib() {};
+	~ShaderLib() {};
 
 public:
 
-	static std::string folder_root;
-	static std::vector<std::string> file_type;
+	static std::vector<std::string> SSR_prefix;
+	static std::vector<std::string> AA_prefix;
+	static std::vector<std::string> AO_prefix;
+	static std::vector<std::string> Shadow_prefix;
 
 public:
 	// Function Lib
-	const static S_func gamma;
+	const static S_func Gamma;
 	const static S_func FilmicF;
 	const static S_func FilmicV4;
 public:

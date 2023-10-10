@@ -40,6 +40,9 @@ public:
 	static GLuint CompileShaderCode(ShaderType _type, const std::string& source);
 	static std::string ReadShaderFile(ShaderType _type, const std::string& name);
 
+	static std::string folder_root;
+	static std::vector<std::string> file_type;
+
 protected:
 
 	GLuint program_id;
@@ -209,8 +212,7 @@ private:
 
 public:
 
-	std::string comp_name;
-	GLuint comp_id;
+	ShaderUnit comp_shader;
 	static void ResetComputeLib();
 
 public:
@@ -221,7 +223,7 @@ public:
 	ComputeShader();
 	~ComputeShader();
 
-	void ResetID(GLuint _id) { comp_id = _id; }
+	void ResetID(GLuint _id) { comp_shader.sh_ID = _id; }
 	void CreateShader(const std::string& compShader);
 
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
@@ -229,7 +231,7 @@ public:
 	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
 	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
 
-	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override { return nullptr; };
+	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override;
 
 public:
 
@@ -247,6 +249,11 @@ public:
 	static ComputeShader& ImportShader(std::string _name);
 	template<class... Tuples>
 	static ComputeShader& ImportShader(std::string _name, const Tuples&... args);
+
+	static std::string GetSSRShaderName(char _type);
+	static std::string GetAOShaderName(char _type);
+	static std::string GetAAShaderName(char _type);
+	static std::string GetShadowShaderName(char _type, char _light_type);
 
 };
 

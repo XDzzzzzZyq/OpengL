@@ -2,18 +2,6 @@
 #include "macros.h"
 
 std::vector<std::string> ShaderStruct::type_table = { "float", "int", "bool", "none", "vec2", "vec3", "vec4", "mat3", "mat4", "sampler2D", "samplerCube"};
-std::string ShaderLib::folder_root = "res/shaders/";;
-std::vector<std::string> ShaderLib::file_type = { ".vert", ".frag", ".comp", ".geom"};
-
-ShaderLib::ShaderLib()
-{
-	//InitLib();
-}
-
-ShaderLib::~ShaderLib()
-{
-
-}
 
 std::string ShaderStruct::ParseType(ParaType type)
 {

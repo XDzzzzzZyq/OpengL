@@ -64,6 +64,7 @@ public:
 		None,
 		RayMarching,
 		SDFRayMarching,
+		SDFResolvedRayMarching
 	};
 
 	// Anti Aliasing Algorithms

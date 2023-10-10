@@ -1,6 +1,9 @@
 ﻿#include "Shaders.h"
 #include "operator.h"
 
+std::string Shaders::folder_root = "res/shaders/";
+std::vector<std::string> Shaders::file_type = { ".vert", ".frag", ".comp", ".geom" };
+
 GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 
 	const auto [name, fname, glname] = Shaders::ParseShaderType(_type);
@@ -40,10 +43,10 @@ GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 
 std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
 {
-	std::string file_name = name.find(ShaderLib::folder_root) == std::string::npos ? ShaderLib::folder_root + name : name;
+	std::string file_name = name.find(Shaders::folder_root) == std::string::npos ? Shaders::folder_root + name : name;
 	
 	if (Shaders::ParseFileEXT(file_name) == NONE_SHADER)
-		file_name += ShaderLib::file_type[_type];
+		file_name += Shaders::file_type[_type];
 
 	std::ifstream File(file_name);
 	std::stringstream Stream;
@@ -74,7 +77,7 @@ Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
 
 ShaderType Shaders::ParseFileEXT(std::string path)
 {
-	for (int i = 0; auto & ext : ShaderLib::file_type) {
+	for (int i = 0; auto & ext : Shaders::file_type) {
 		if (path.find(ext) != std::string::npos)
 			return ShaderType(i);
 		i++;
@@ -403,6 +406,9 @@ RenderShader::RenderShader(const std::string& vert, const std::string& frag)
 	shader_data[VERTEX_SHADER].sh_struct = ShaderStruct();
 	shader_data[FRAGMENT_SHADER].sh_struct = ShaderStruct();
 
+	shader_data[VERTEX_SHADER].sh_type = VERTEX_SHADER;
+	shader_data[FRAGMENT_SHADER].sh_type = FRAGMENT_SHADER;
+
 	ParseShaderFile(shader_data[VERTEX_SHADER].sh_name, VERTEX_SHADER);
 	ParseShaderFile(shader_data[FRAGMENT_SHADER].sh_name, FRAGMENT_SHADER);
 
@@ -434,6 +440,27 @@ void RenderShader::ResetID(ShaderType type, GLuint id)
 	default:
 		break;
 	}
+}
+
+void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
+	Timer timer("ParseShader");
+
+	active_shader = _type;
+
+	shader_data[active_shader].sh_struct->is_struct_changed = false;
+
+	if (_name.find(Shaders::folder_root) == std::string::npos)
+		_name = Shaders::folder_root + _name + Shaders::file_type[_type];
+
+	std::ifstream Stream(_name);
+
+	ParseShaderStream(Stream, active_shader);
+
+	shader_data[active_shader].sh_struct->func_list_state.resize(shader_data[active_shader].sh_struct->func_list.size());
+
+
+	std::cout << "shaders are loaded up successfully!" << std::endl;
+	//m_shaders = { shaders[0].str(),shaders[1].str() };
 }
 
 void RenderShader::ParseShaderCode(const std::string& _code, ShaderType _type)
@@ -699,10 +726,14 @@ void ComputeShader::ResetComputeLib()
 }
 
 ComputeShader::ComputeShader(const std::string& name)
-	:comp_name(name)
 {
+	comp_shader.sh_name = name;
+
 	std::string code = Shaders::ReadShaderFile(COMPUTE_SHADER, name);
 	CreateShader(code);
+
+	comp_shader.sh_code = code;
+	comp_shader.sh_type = COMPUTE_SHADER;
 }
 
 ComputeShader::ComputeShader()
@@ -719,11 +750,19 @@ void ComputeShader::CreateShader(const std::string& compShader)
 {
 	program_id = glCreateProgram();
 
-	comp_id = CompileShaderCode(COMPUTE_SHADER, compShader);
+	comp_shader.sh_ID = CompileShaderCode(COMPUTE_SHADER, compShader);
 
-	glAttachShader(program_id, comp_id);
+	glAttachShader(program_id, comp_shader.sh_ID);
 
 	glLinkProgram(program_id);
+}
+
+Shaders::ShaderUnit* ComputeShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)
+{
+	if (tar != COMPUTE_SHADER)
+		return nullptr;
+
+	return &comp_shader;
 }
 
 void ComputeShader::RunComputeShaderSCR(const glm::vec2& _scr_size, GLuint _batch, bool _edge_fix /*= true*/)
@@ -746,7 +785,7 @@ void ComputeShader::RunComputeShader(const glm::vec2& _size)
 
 GLuint ComputeShader::GetShaderID(ShaderType type) const
 {
-	return comp_id;
+	return comp_shader.sh_ID;
 }
 
 void ComputeShader::LocalDebug() const
@@ -763,4 +802,30 @@ ComputeShader& ComputeShader::ImportShader(std::string _name)
 
 	comp_list[_name] = std::make_shared<ComputeShader>(_name);
 	return *comp_list[_name].get();
+}
+
+std::string ComputeShader::GetSSRShaderName(char _type)
+{
+	assert(_type < ShaderLib::SSR_prefix.size());
+	return "SSR" + ShaderLib::SSR_prefix[_type];
+}
+
+std::string ComputeShader::GetAOShaderName(char _type)
+{
+	assert(_type < ShaderLib::AO_prefix.size());
+	return ShaderLib::AO_prefix[_type] + "AO";
+}
+
+std::string ComputeShader::GetAAShaderName(char _type)
+{
+	assert(_type < ShaderLib::AA_prefix.size());
+	return ShaderLib::AA_prefix[_type] + "AA";
+}
+
+std::string ComputeShader::GetShadowShaderName(char _type, char _light_type)
+{
+	static std::string light_prefix[4] = { "_Point", "_Sun", "_Spot", "_Area" };
+
+	assert(_type < ShaderLib::Shadow_prefix.size());
+	return "Shadow" + light_prefix[_light_type] + ShaderLib::Shadow_prefix[_type];
 }

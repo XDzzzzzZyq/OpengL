@@ -2,28 +2,6 @@
 #include "ShaderLib.h"
 #include "structs.h"
 
-void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
-	Timer timer("ParseShader");
-
-	active_shader = _type;
-
-	shader_data[active_shader].sh_struct->is_struct_changed = false;
-
-	if (_name.find(ShaderLib::folder_root) == std::string::npos)
-		_name = ShaderLib::folder_root + _name + ShaderLib::file_type[_type];
-
-	std::ifstream Stream(_name);
-
-	ParseShaderStream(Stream, active_shader);
-
-	shader_data[active_shader].sh_struct->func_list_state.resize(shader_data[active_shader].sh_struct->func_list.size());
-
-
-	std::cout << "shaders are loaded up successfully!" << std::endl;
-	//m_shaders = { shaders[0].str(),shaders[1].str() };
-}
-
-
 void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 {
 	std::string Line;
