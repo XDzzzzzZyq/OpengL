@@ -14,7 +14,7 @@ UI::ImguiMSwitch::ImguiMSwitch(std::string _name)
 
 void UI::ImguiMSwitch::BindSwitch(bool* _switch)
 {
-	mitem_switch = std::shared_ptr<bool>(_switch);
+	mitem_switch = _switch;
 }
 
 void UI::ImguiMSwitch::RenderMenuItem()
@@ -22,7 +22,7 @@ void UI::ImguiMSwitch::RenderMenuItem()
 	if (ImGui::MenuItem(
 		mitem_name.c_str(),
 		mitem_shortcut.c_str(),
-		mitem_switch.get(),
+		mitem_switch,
 		mitem_enable
 	)) {
 		mitem_func(*mitem_switch);

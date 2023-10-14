@@ -22,10 +22,6 @@ void ImguiManager::Init()
 	RegistarMenuEvents();
 }
 
-ImguiManager::~ImguiManager()
-{
-}
-
 void ImguiManager::RegistarMenuEvents()
 {
 	for(auto& menu : menu_list)

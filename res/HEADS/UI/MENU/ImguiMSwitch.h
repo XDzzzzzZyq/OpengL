@@ -7,10 +7,11 @@ namespace UI
 	{
 	private:
 	
-		std::shared_ptr<bool> mitem_switch;
+		bool* mitem_switch;
 	
 	public:
 		ImguiMSwitch();
+		~ImguiMSwitch() {};
 		ImguiMSwitch(std::string _name);
 	
 		void BindSwitch(bool* _switch) override;

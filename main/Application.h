@@ -11,11 +11,11 @@
 class Application
 {
 private:
-	Application();
-	static Application* m_app;
+	Application() =default;
+
 public:
-	static Application* Get();
-	~Application();
+	~Application() =default;
+	static Application& Get();
 
 public:
 	Renderer renderer{};

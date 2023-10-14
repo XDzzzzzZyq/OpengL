@@ -27,7 +27,7 @@ UI::ImguiMOption::ImguiMOption(std::string _name, const std::vector<std::string>
 
 void UI::ImguiMOption::BindOption(char* _tar)
 {
-	mitem_option = std::shared_ptr<char>(_tar);
+	mitem_option = _tar;
 
 	ResetOptions();
 	mitem_options[*_tar].second = true;
@@ -36,6 +36,11 @@ void UI::ImguiMOption::BindOption(char* _tar)
 void UI::ImguiMOption::RenderMenuItem()
 {
 	if (ImGui::BeginMenu(mitem_name.c_str())) {
+
+		if (mitem_option == nullptr) {
+			ImGui::EndMenu();
+			return;
+		}
 
 		char index = 0;
 		for (auto & option : mitem_options) {

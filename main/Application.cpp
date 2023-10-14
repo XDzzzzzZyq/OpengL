@@ -1,24 +1,11 @@
 #include "Application.h"
 #include "xdz_math.h"
 
-Application::Application() {}
-
-
-Application* Application::m_app;
-
-Application* Application::Get()
+Application& Application::Get()
 {
-	if (!m_app) {
-		m_app = new Application();
-	}
-	return m_app;
+	static std::unique_ptr<Application> instance_ptr(new Application());
+	return *instance_ptr.get();
 }
-
-Application::~Application()
-{
-	if (m_app) delete m_app;
-}
-
 
 int Application::Init()
 {

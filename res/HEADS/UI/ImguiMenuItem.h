@@ -35,6 +35,7 @@ public:
 
 public:
 	ImguiMenuItem();
+	~ImguiMenuItem() {};
 	ImguiMenuItem(const std::string& name);
 	ImguiMenuItem(const std::string& name, const std::string& shortcut);
 	ImguiMenuItem(const std::string& name, MenuItemType _type);

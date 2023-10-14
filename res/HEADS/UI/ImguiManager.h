@@ -46,7 +46,6 @@ public:
 	ImguiManager();
 	ImguiManager(GLFWwindow* window);
 	void Init();
-	~ImguiManager();
 
 public:
 	void ManagerInit(GLFWwindow* window);

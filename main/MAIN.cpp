@@ -3,11 +3,11 @@
 
 int main()
 {
-	Application* app = Application::Get();
+	auto& app = Application::Get();
 
-	app->Init();
-	app->Run();
-	app->Terminate();
+	app.Init();
+	app.Run();
+	app.Terminate();
 
 	return 0;
 }
