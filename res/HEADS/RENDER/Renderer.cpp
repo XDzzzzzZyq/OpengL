@@ -397,7 +397,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (r_ssr_algorithm!=SSRAlg::None) {
 			static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-			ComputeShader& ssr = ComputeShader::ImportShader(ComputeShader::GetSSRShaderName((char)r_ssr_algorithm), Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12));
+			ComputeShader& ssr = ComputeShader::ImportShader(ComputeShader::GetSSRShaderName((char)r_ssr_algorithm), Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -410,6 +410,7 @@ void Renderer::Render(bool rend, bool buff) {
 			r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
 			r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
 			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
+			TextureLib::LTC1()->Bind(13);
 			r_sdf_field.Bind();
 			ssr.UseShader();
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);

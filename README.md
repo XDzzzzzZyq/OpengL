@@ -77,7 +77,7 @@
   - [ ] Normal map
   - [ ] Bump map
         
-- - [ ] Signed Distance Field
+- - [x] Signed Distance Field
   
 - - [x] Multi-pass composition (deferred rendering)
   - Blinn-Phong
@@ -103,7 +103,8 @@
 
 - Ray tracing ?
     - [x] Screen Space Reflections
-    - [x] SDF SSR
+    - [x] SDF Screen Space Reflection
+    - [x] Stochastic Screen Space Reflection
 
 - DL style transfer ?
 
@@ -174,16 +175,17 @@
     - [x] Material Layer
 - [x] ImGui parameters flow
 
-- [ ] Gizmos
+- [x] Gizmos
 
 - [ ] files management
 - [ ] node system
 
 #### **Other**
 
-- [x] objects pool (renderer class)
+- [x] objects pool (Scene Manager)
   - [x] pool rendering
-    - [ ] advance speed up
+    - [ ] filter
+    - [ ] acceleration structure
 - [x] model importer
   - [x] build-in mesh data
   - [x] .obj importer

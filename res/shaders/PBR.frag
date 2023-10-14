@@ -496,11 +496,4 @@ void main(){
 	OutIndDiff = vec4(Ind_Diff, 1);
 	OutIndSpec = vec4(Ind_Spec, 1);
 	OutEmission = vec4(Emission * Emission_Color, Emission);
-
-
-	//vec3 dir = normalize(Pos - point_lights[0].pos);
-	//Output = vec4(vec3(area_lights[0].trans*vec4(vec3(0), 1)), 1);
-	//Output = vec4(vec3(area_lights[0].power/30), 1);
-	//Output = texture2D(U_mrse, screen_uv);
-	//Output = vec4(vec3(abs(texture(p_shadow_test, dir).r - distance(Pos, point_lights[0].pos)/25)), 1);
 }
