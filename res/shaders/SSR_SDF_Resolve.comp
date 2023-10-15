@@ -280,21 +280,18 @@ float Luminance(vec3 _in){
 
 vec4 ResolveRays(vec3 Hit_shared, vec3 P, vec3 N, vec3 V, vec3 F, float R, vec3 In_D, vec3 In_S){
 
+	vec3 Indirect_shared = ParseRayHit(Hit_shared.xy, In_D, In_S, F);
+	vec3 Dir_shared = normalize(texture(U_pos, Hit_shared.xy).xyz - P);
 	float resolve_weight;
-	vec3 Indirect_shared;
 
 	if(Hit_shared.x>0){	// there is a hit
-		vec3 Dir_shared = normalize(texture(U_pos, Hit_shared.xy).xyz - P);
-		if(dot(Dir_shared, N)>0){	// above the horizon
+		if(dot(Dir_shared, N)>-0.0001){	// above the horizon
 			resolve_weight = BRDF_Unity_Weight(V, Dir_shared, N, R) / Hit_shared.z;
-			Indirect_shared = ParseRayHit(Hit_shared.xy, In_D, In_S, F);
 		}else{
 			resolve_weight = 0;
-			Indirect_shared = vec3(0);
 		}
 	}else{
-		resolve_weight = 0;
-		Indirect_shared = vec3(0);
+		resolve_weight = 1;
 	}
 	//Indirect_shared /= 1 + Luminance(Indirect_shared);
 	return vec4(Indirect_shared, resolve_weight);
@@ -368,13 +365,13 @@ void main(){
 	vec4 Indirect_shared2 = ResolveRays(Hit_shared2, Pos, Normal, -CamRay, Fresnel, Roughness, Ind_Diff, Ind_Spec);
 	vec4 Indirect_shared3 = ResolveRays(Hit_shared3, Pos, Normal, -CamRay, Fresnel, Roughness, Ind_Diff, Ind_Spec);
 
-	vec3 Indirect = ParseRayHit(Hit.xy, Ind_Diff, Ind_Spec, Fresnel);
+	vec4 Indirect		  = ResolveRays(Hit,		 Pos, Normal, -CamRay, Fresnel, Roughness, Ind_Diff, Ind_Spec);
 	
-	vec3 Indirect_resolved = (	Indirect+
+	vec3 Indirect_resolved = (	Indirect.rgb*Indirect.a+
 								Indirect_shared1.rgb*Indirect_shared1.a+
 								Indirect_shared2.rgb*Indirect_shared2.a+
 								Indirect_shared3.rgb*Indirect_shared3.a
-								)/(1+Indirect_shared1.a+Indirect_shared2.a+Indirect_shared3.a);
+								)/(Indirect.a+Indirect_shared1.a+Indirect_shared2.a+Indirect_shared3.a);
 
 	//Indirect_resolved  /= 1 - Luminance(Indirect_resolved);
 

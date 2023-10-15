@@ -410,7 +410,6 @@ void Renderer::Render(bool rend, bool buff) {
 			r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
 			r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
 			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
-			TextureLib::LTC1()->Bind(13);
 			r_sdf_field.Bind();
 			ssr.UseShader();
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
