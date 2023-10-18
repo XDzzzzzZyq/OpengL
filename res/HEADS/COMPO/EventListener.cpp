@@ -1,7 +1,7 @@
 #include "EventListener.h"
 #include "macros.h"
 
-KeyMouseEvent EventListener::EVT_STATUS;
+EventListener::KeyMouseEvent EventListener::EVT_STATUS;
 GLFWwindow* EventListener::evt_window = (GLFWwindow*)nullptr;
 
 float EventListener::random_float1;
@@ -24,8 +24,7 @@ std::vector<int> EventListener::EVT_NK_LIST = {};
 
 void EventListener::PushNormKey(int _ID)
 {
-	for (auto& i : EVT_NK_LIST)
-		if (i == _ID)
+	if(std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), _ID) != EVT_NK_LIST.end())
 			return;
 
 	EVT_NK_LIST.push_back(_ID);
@@ -33,11 +32,12 @@ void EventListener::PushNormKey(int _ID)
 
 void EventListener::PushNormKey(char _name)
 {
-	for (auto& i : EVT_NK_LIST)
-		if (i == (int)_name)
-			return;
+	int id = (int)_name - 64;
 
-	EVT_NK_LIST.push_back((int)_name);
+	if (std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), id) != EVT_NK_LIST.end())
+		return;
+
+	EVT_NK_LIST.push_back(id);
 }
 
 bool EventListener::is_sprite_selected = false;
@@ -88,39 +88,41 @@ EventListener::~EventListener()
 
 }
 
-int EventListener::ListenMouseEvent(GLFWwindow* window) const
+EventListener::MouseStatus EventListener::ListenMouseEvent(GLFWwindow* window)
 {
 	//update
 	LOOP(3)
 		if (glfwGetMouseButton(window, i) == GLFW_PRESS) 
-			return i + 1;
+			return MouseStatus(i + 1);
 
-	return 0;
+	return MouseStatus::NONE;
 }
 
 
 //https://www.glfw.org/docs/3.3/group__keys.html
-//shift->340
-//ctrl
-//alt
-int EventListener::ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const
+//shift -> 340 -> 1
+//ctrl  -> 341 -> 2
+//alt	-> 342 -> 3
+EventListener::SpecialKeys EventListener::ListenSpecialKeyEvent(GLFWwindow* window, SpecialKeys ignor)
 {
 	LOOP(3)
 		if (glfwGetKey(window, 340 + i) == GLFW_PRESS)
-			if (ignor != i + 1) 
-				return i + 1;
+			if (ignor != SpecialKeys(i + 1))
+				return SpecialKeys(i + 1);
 
-	return 0;//no key is pressed
+	return SpecialKeys::NONE;//no key is pressed
 }
 
 // A -> 1 | Z -> 26
-int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const
+int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist)
 {
 	if (IDlist.size() == 0)
 		return 0;
+
 	LOOP(IDlist.size())
 		if (glfwGetKey(window, IDlist[i] + 64) == GLFW_PRESS)
 			return IDlist[i];
+
 	return 0;
 }
 
@@ -143,13 +145,13 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 
 	is_key_pressed_b = is_key_pressed;
 
-	EVT_STATUS.FirstKey = ListenSpecialKeyEvent(window, 0);
+	EVT_STATUS.FirstKey = ListenSpecialKeyEvent(window, SpecialKeys::NONE);
 	EVT_STATUS.SecondKey = ListenSpecialKeyEvent(window, EVT_STATUS.FirstKey);
 
 	if (!EVT_NK_LIST.empty())
 		EVT_STATUS.NormKey = ListenNormalKeyEvent(window, EVT_NK_LIST);
 
-	EVT_STATUS.Scr = scroll_dir;
+	EVT_STATUS.Scr = ScrollDir(scroll_dir);
 
 	EVT_STATUS.Mouse = ListenMouseEvent(window);
 
@@ -162,11 +164,22 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 
 	is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
 	is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
-	is_mouse_pressed = EVT_STATUS.Mouse != 0;
-	is_key_pressed = EVT_STATUS.FirstKey + EVT_STATUS.SecondKey + EVT_STATUS.NormKey != 0;
+	is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
+	is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
 }
 
-const KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
+EventListener::KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
+{
+	return EventListener::GenIntEvent(
+		SpecialKeys(k1), 
+		SpecialKeys(k2), 
+		k3,
+		MouseStatus(m),
+		ScrollDir(scr)
+	);
+}
+
+EventListener::KeyMouseEvent EventListener::GenIntEvent(SpecialKeys k1, SpecialKeys k2, int k3, MouseStatus m, ScrollDir scr)
 {
 	KeyMouseEvent result;
 	result.FirstKey = k1;
@@ -197,7 +210,7 @@ void EventListener::Reset()
 std::vector<std::string> EventListener::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
 
 #include <sstream>
-const KeyMouseEvent EventListener::ParseShortCut(const std::string& _shortcut)
+EventListener::KeyMouseEvent EventListener::ParseShortCut(const std::string& _shortcut)
 {
 	KeyMouseEvent result;
 	std::istringstream str(_shortcut);
@@ -206,12 +219,12 @@ const KeyMouseEvent EventListener::ParseShortCut(const std::string& _shortcut)
 	str >> word;
 	LOOP(EVT_AVAIL_KEYS.size()) {
 		if (word == EVT_AVAIL_KEYS[i]) {
-			result.FirstKey = i+1;
+			result.FirstKey = SpecialKeys(i+1);
 			str >> word;	// "+"
 			str >> word;
-			LOOP(EVT_AVAIL_KEYS.size()) {
-				if (word == EVT_AVAIL_KEYS[i]) {
-					result.SecondKey = i+1;
+			LOOP_N(EVT_AVAIL_KEYS.size(), j) {
+				if (word == EVT_AVAIL_KEYS[j]) {
+					result.SecondKey = SpecialKeys(j+1);
 					goto parse_next_norm;
 				}
 			}
@@ -253,13 +266,13 @@ void EventListener::ShowEvents()
 #endif // _DEBUG
 }
 
-int KeyMouseEvent::GenStateData() const
+int EventListener::KeyMouseEvent::GenStateData() const
 {
 	int data = 0;
-	data += (FirstKey) * (SecondKey + 2) * 4;
+	data += ((int)FirstKey) * ((int)SecondKey + 2) * 4;
 	data += NormKey * 1;
-	data += Mouse * 1;
-	data += Scr * 3;
+	data += (int)Mouse * 1;
+	data += (int)Scr * 3;
 
 	return data;
 }

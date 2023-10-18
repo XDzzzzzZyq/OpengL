@@ -13,51 +13,76 @@
 #include<unordered_set>
 #include<functional>
 
-
-//whole states including | 2 spe_keys | 1 norm_key | mouse |
-					//   |	 3 + 1    |   1 + 36   | 1 + 3 |			
-
-struct KeyMouseEvent
-{
-
-	int FirstKey{0};
-	int SecondKey{0};
-	int NormKey{0};
-	int Mouse{0};
-	int Scr{0};
-	bool is_update = false;
-	bool is_pressed = false;
-
-	bool operator==(const KeyMouseEvent& p) const {
-		return FirstKey == p.FirstKey && SecondKey == p.SecondKey && NormKey == p.NormKey && Mouse == p.Mouse && Scr == p.Scr;
-	}
-
-	int GenStateData() const;
-	void Debug() const {
-#ifdef _DEBUG
-
-		std::cout << FirstKey << " "
-			<< SecondKey << " "
-			<< NormKey << " "
-			<< Mouse << " "
-			<< Scr << "\n";
-
-#endif // DEBUG
-	}
-
-	struct hash_fn
-	{
-		std::size_t operator() (const KeyMouseEvent& inp) const
-		{
-			return inp.GenStateData();
-		}
-	};
-};
-
 #define REGIST_EVENT(cls_event) std::bind(&cls_event , this); EventListener::REFLRigisterEvent(#cls_event)
+#define REGIST_EVENT_STATIC(sta_event) &sta_event; EventListener::REFLRigisterEvent(#sta_event)
 
 class EventListener
 {
+public:
+
+	enum class SpecialKeys
+	{
+		NONE,
+		SHIFT = 1,
+		CTRL,
+		ALT
+	};
+
+	enum class MouseStatus
+	{
+		NONE,
+		LMB = 1,
+		RMB,
+		MMB
+	};
+
+	enum class ScrollDir
+	{
+		DOWN = -1,
+		NONE,
+		UP
+	};
+
+	//whole states including | 2 spe_keys | 1 norm_key | mouse |
+						//   |	 3 + 1    |   1 + 36   | 1 + 3 |			
+
+	struct KeyMouseEvent
+	{
+
+		SpecialKeys FirstKey{ SpecialKeys::NONE };
+		SpecialKeys SecondKey{ SpecialKeys::NONE };
+		int NormKey{ 0 };
+		MouseStatus Mouse{ MouseStatus::NONE };
+		ScrollDir Scr{ ScrollDir::NONE };
+		bool is_update = false;
+		bool is_pressed = false;
+
+		bool operator==(const KeyMouseEvent& p) const {
+			return FirstKey == p.FirstKey && SecondKey == p.SecondKey && NormKey == p.NormKey && Mouse == p.Mouse && Scr == p.Scr;
+		}
+
+		int GenStateData() const;
+		void Debug() const {
+#ifdef _DEBUG
+
+			std::cout << (int)FirstKey << " "
+				<< (int)SecondKey << " "
+				<< (char)NormKey << " "
+				<< (int)Mouse << " "
+				<< (int)Scr << "\n";
+
+#endif // DEBUG
+		}
+
+		struct hash_fn
+		{
+			std::size_t operator() (const KeyMouseEvent& inp) const
+			{
+				return inp.GenStateData();
+			}
+		};
+	};
+
 public:
 
 	static KeyMouseEvent EVT_STATUS;
@@ -139,19 +164,18 @@ public:
 public:
 
 	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> EventList;
-	int ListenMouseEvent(GLFWwindow* window) const;
-	int ListenSpecialKeyEvent(GLFWwindow* window, int ignor) const;
-	int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist) const;
+	static MouseStatus ListenMouseEvent(GLFWwindow* window);
+	static SpecialKeys ListenSpecialKeyEvent(GLFWwindow* window, SpecialKeys ignor);
+	static int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist);
 
 	static float scroll_dir;
 	static bool is_scr_changed;
-	static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) {
-		scroll_dir = yoffset;
-	}
+	static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) { scroll_dir = yoffset; }
 
 	void UpdateEvent(GLFWwindow* window) const;
 
-	const KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
+	static KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
+	static KeyMouseEvent GenIntEvent(SpecialKeys k1, SpecialKeys k2, int k3, MouseStatus m, ScrollDir scr);
 
 	void EventActivate();
 	void Reset();
@@ -159,7 +183,7 @@ public:
 public:
 
 	static std::vector<std::string> EVT_AVAIL_KEYS;
-	static const KeyMouseEvent ParseShortCut(const std::string& _shortcut);
+	static KeyMouseEvent ParseShortCut(const std::string& _shortcut);
 
 	static std::unordered_map<std::string, std::unordered_set<std::string>> evt_RigisterEvents;
 	static void REFLRigisterEvent(const std::string& _class_event);
