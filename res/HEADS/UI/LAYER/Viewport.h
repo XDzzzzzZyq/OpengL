@@ -2,6 +2,8 @@
 #include "ImguiLayer.h"
 #include "ITEM/TextureViewer.h"
 
+#include "Guizmo/ImGuizmo.h"
+
 #include "Camera.h"
 #include "Transform.h"
 
@@ -12,6 +14,9 @@ public:
 	bool display_axis{ true };
 	bool display_grid{ true };
 	bool display_trans_handle{ true };
+
+	static ImGuizmo::MODE trans_mod;
+	static ImGuizmo::OPERATION handle_mod;
 
 public:
 	Viewport();
@@ -29,5 +34,16 @@ private:
 	void RenderGrids();
 	void RenderAxis();
 	void RenderHandle();
+
+public:
+
+	// Key Input
+	static void MTranslate();
+	static void MRotate();
+	static void MScale();
+	static void XAxis();
+	static void YAxis();
+	static void ZAxis();
+	static void WAxis();
 };
 

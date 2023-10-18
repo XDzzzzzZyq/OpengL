@@ -55,6 +55,7 @@ public:
 	ImGuiStyle* GetStyle()const { return m_style; }
 
 	void DefultViewports();
+	void DefultEvents();
 
 public:
 	void NewFrame() const;

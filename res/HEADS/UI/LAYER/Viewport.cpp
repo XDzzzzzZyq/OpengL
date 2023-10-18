@@ -1,6 +1,8 @@
 #include "Viewport.h"
 #include "xdz_math.h"
-#include "Guizmo/ImGuizmo.h"
+
+ImGuizmo::MODE Viewport::trans_mod = ImGuizmo::WORLD;
+ImGuizmo::OPERATION Viewport::handle_mod = ImGuizmo::TRANSLATE;
 
 Viewport::Viewport()
 {
@@ -111,8 +113,6 @@ void Viewport::RenderHandle()
 	if (active_trans == nullptr)
 		return;
 
-	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 	static bool useSnap = false;
 	static float snap[3] = { 1.f, 1.f, 1.f };
 	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
@@ -124,9 +124,85 @@ void Viewport::RenderHandle()
 	glm::mat4 obj_trans = active_trans->o_Transform;
 
 	bool hover, click;
-	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], mCurrentGizmoOperation, mCurrentGizmoMode, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], Viewport::handle_mod, Viewport::trans_mod, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 	EventListener::ReportGuizmoStatus(hover, click);
 
 	if(click)
 		active_trans->SetTrans(obj_trans);
+}
+
+void Viewport::MTranslate()
+{
+	Viewport::handle_mod = ImGuizmo::TRANSLATE;
+}
+
+void Viewport::MRotate()
+{
+	Viewport::handle_mod = ImGuizmo::ROTATE;
+}
+
+void Viewport::MScale()
+{
+	Viewport::handle_mod = ImGuizmo::SCALE;
+}
+
+void _SwitchHMode(GLuint offset) {
+
+	if (offset > 2 && Viewport::handle_mod & ImGuizmo::TRANSLATE)
+		return;
+
+	ImGuizmo::OPERATION trans = ImGuizmo::OPERATION(ImGuizmo::TRANSLATE_X << offset);
+	ImGuizmo::OPERATION rotat = ImGuizmo::OPERATION(ImGuizmo::ROTATE_X << offset);
+	ImGuizmo::OPERATION scale = ImGuizmo::OPERATION(ImGuizmo::SCALE_X << offset);
+
+	if (Viewport::handle_mod & ImGuizmo::TRANSLATE) {
+		if (Viewport::handle_mod == trans)
+			Viewport::MTranslate();
+		else
+			Viewport::handle_mod = trans;
+	}
+	else if (Viewport::handle_mod & ImGuizmo::ROTATE) {
+		if (Viewport::handle_mod == rotat)
+			Viewport::MRotate();
+		else
+			Viewport::handle_mod = rotat;
+	}
+	else if (Viewport::handle_mod & ImGuizmo::SCALE) {
+		if (Viewport::handle_mod == scale)
+			Viewport::MScale();
+		else
+			Viewport::handle_mod = scale;
+	}
+}
+
+void Viewport::XAxis()
+{
+	if (!EventListener::IsKeyClick())
+		return;
+
+	::_SwitchHMode(0);
+}
+
+void Viewport::YAxis()
+{
+	if (!EventListener::IsKeyClick())
+		return;
+
+	::_SwitchHMode(1);
+}
+
+void Viewport::ZAxis()
+{
+	if (!EventListener::IsKeyClick())
+		return;
+
+	::_SwitchHMode(2);
+}
+
+void Viewport::WAxis()
+{
+	if (!EventListener::IsKeyClick())
+		return;
+
+	::_SwitchHMode(3);
 }

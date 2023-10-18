@@ -19,6 +19,7 @@ void ImguiManager::Init()
 	m_style = &ImGui::GetStyle();
 
 	DefultViewports();
+	DefultEvents();
 	RegistarMenuEvents();
 }
 

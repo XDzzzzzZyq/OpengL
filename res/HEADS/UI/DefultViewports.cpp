@@ -77,3 +77,15 @@ void ImguiManager::DefultViewports() {
 
 	SetActiveImguiLayer("__Parameters__");
 }
+
+void ImguiManager::DefultEvents()
+{
+	EventList[ParseShortCut("G")] = REGIST_EVENT_STATIC(Viewport::MTranslate);
+	EventList[ParseShortCut("R")] = REGIST_EVENT_STATIC(Viewport::MRotate);
+	EventList[ParseShortCut("S")] = REGIST_EVENT_STATIC(Viewport::MScale);
+
+	EventList[ParseShortCut("X")] = REGIST_EVENT_STATIC(Viewport::XAxis);
+	EventList[ParseShortCut("Y")] = REGIST_EVENT_STATIC(Viewport::YAxis);
+	EventList[ParseShortCut("Z")] = REGIST_EVENT_STATIC(Viewport::ZAxis);
+	EventList[ParseShortCut("W")] = REGIST_EVENT_STATIC(Viewport::WAxis);
+}

@@ -27,7 +27,7 @@
 
 - [x] basic transformation
   - [x] parenting
-  - [ ] transform handle
+  - [x] transform handles
 - [x] unique ID generator
 - [x] select operation
 - [x] Mesh
@@ -99,7 +99,7 @@
     - [x] shadow
       - [x] shadow mapping
       - [x] soft shadow
-      - [ ] SDF shadow
+      - [ ] SDF soft shadow
 
 - Ray tracing ?
     - [x] Screen Space Reflections
