@@ -23,6 +23,10 @@ Transform* TransformPanel::GetActiveTransPtr()
 	return (Transform*)(EventListener::active_object->GetTransform());
 }
 
+ImGuiInputTextFlags _SliderFlag(bool _is_locked) {
+	return _is_locked ? ImGuiInputTextFlags_ReadOnly : ImGuiInputTextFlags_AutoSelectAll;
+}
+
 bool TransformPanel::RenderTransfroms(Transform3D& trans)
 {
 	glm::vec3 pos = trans.o_position;
@@ -30,9 +34,13 @@ bool TransformPanel::RenderTransfroms(Transform3D& trans)
 	glm::vec3 scl = trans.o_scale;
 	std::string id = std::to_string((int)trans.GetTransformPtr());
 
-	const bool is_pos_ch = ImGui::InputFloat3M((id + "p").c_str(), "Position", (float*)&pos, "%.1f");
-	const bool is_rot_ch = ImGui::InputFloat3M((id + "r").c_str(), "Rotation", (float*)&rot, "%.1f");
-	const bool is_scl_ch = ImGui::InputFloat3M((id + "s").c_str(), "Scale",	   (float*)&scl, "%.1f");
+	const bool is_pos_ch = ImGui::InputFloat3M((id + "p").c_str(), "Position", (float*)&pos, "%.1f", ::_SliderFlag(!trans.use_position));
+	ImGui::SameLine(); ImGui::Checkbox((id + "pl").c_str(), &trans.use_position, false);
+	const bool is_rot_ch = ImGui::InputFloat3M((id + "r").c_str(), "Rotation", (float*)&rot, "%.1f", ::_SliderFlag(!trans.use_position));
+	ImGui::SameLine(); ImGui::Checkbox((id + "rl").c_str(), &trans.use_rotation, false);
+	const bool is_scl_ch = ImGui::InputFloat3M((id + "s").c_str(), "Scale   ", (float*)&scl, "%.1f", ::_SliderFlag(!trans.use_position));
+	ImGui::SameLine(); ImGui::Checkbox((id + "sl").c_str(), &trans.use_scale, false);
+
 	if (is_pos_ch)
 		trans.SetPos(pos);
 	if (is_rot_ch)

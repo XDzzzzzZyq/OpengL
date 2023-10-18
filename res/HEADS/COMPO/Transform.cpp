@@ -2,6 +2,18 @@
 #include "xdz_math.h"
 #include "glm/gtx/matrix_decompose.hpp"
 
+
+void Transform::UseTranformComp(bool _enable, TransType _type)
+{
+	if (_type & TransType::Position)
+		use_position = _enable;
+	if (_type & TransType::Rotation)
+		use_rotation = _enable;
+	if (_type & TransType::Scale)
+		use_scale = _enable;
+}
+
+
 Transform3D::Transform3D()
 {
 
@@ -15,6 +27,7 @@ Transform3D::~Transform3D()
 bool Transform3D::SetPos(const glm::vec3& pos)
 {
 	if (o_position == pos) return false;
+	if (!use_position) return false;
 
 	is_TransF_changed = true;
 	o_position = pos;
@@ -22,9 +35,16 @@ bool Transform3D::SetPos(const glm::vec3& pos)
 	return true;
 }
 
+bool Transform3D::SetPos1D(float _1d, GLuint _dim)
+{
+	if (!use_position) return false;
+	return Set1D(o_position, _1d, _dim);
+}
+
 bool Transform3D::SetScale(const glm::vec3& scale)
 {
 	if (o_scale == scale) return false;
+	if (!use_scale) return false;
 
 	is_TransF_changed = true;
 	o_scale = scale;
@@ -32,15 +52,33 @@ bool Transform3D::SetScale(const glm::vec3& scale)
 	return true;
 }
 
+bool Transform3D::SetScale1D(float _1d, GLuint _dim)
+{
+	if (!use_scale) return false;
+	return Set1D(o_scale, _1d, _dim);
+}
+
 bool Transform3D::SetRot(const glm::vec3& rot)
 {
 	if (o_rot == rot) return false;
+	if (!use_rotation) return false;
 
 	is_TransF_changed = true;
 	o_rot = rot;
 
 	UpdateDirections();
 
+	return true;
+}
+
+bool Transform3D::SetRot1D(float _1d, GLuint _dim)
+{
+
+	if (!use_rotation) return false;
+	bool res = Set1D(o_rot, _1d, _dim);
+	if (!res) return false;
+
+	UpdateDirections();
 	return true;
 }
 
@@ -58,7 +96,9 @@ bool Transform3D::SetTrans(const glm::mat4& _trans, bool pos /*= true*/, bool ro
 	if (pos) SetPos(position);
 	if (rot) SetRot(glm::degrees(glm::eulerAngles(rotation)));
 	if (scl) SetScale(scale);
-	if (pos && rot && scl) o_Transform = _trans;
+	if (pos && rot && scl) 
+		if(use_position && use_rotation && use_scale) // if there is at least one lock, then let calcluate transform instead
+			o_Transform = _trans;
 
 	return true;
 }
@@ -114,6 +154,17 @@ void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
 {
 
+}
+
+bool Transform3D::Set1D(glm::vec3& _tar, float _1d, GLuint _dim)
+{
+	if (_dim < 0 || _dim > 2) return false;
+	if (_tar[_dim] == _1d) return false;
+
+	_tar[_dim] = _1d;
+
+	is_TransF_changed = true;
+	return true;
 }
 
 void Transform3D::UpdateDirections()

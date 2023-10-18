@@ -16,18 +16,40 @@
 
 // Transform Templates Lib 
 class Transform {
+
 public:
+
+	enum TransType {
+		None,
+		Position = (1 << 0),
+		Rotation = (1 << 1),
+		Scale	 = (1 << 2),
+	};
+
+public:
+
 	mutable bool is_TransF_changed = true;						 // pos / scale / rot changed
 	mutable bool is_invTransF_changed = true;					 //
 	mutable bool is_Uniform_changed = true;						 //
 	mutable bool is_invUniform_changed = true;					 //
+
 public:
+
 	virtual void UnsetParent(bool _keep_offset = true) = 0;
+
 public:
+
+	bool use_position{ true };
+	bool use_rotation{ true };
+	bool use_scale{ true };
+	void UseTranformComp(bool _enable, TransType _type);
+
 	virtual bool ApplyTransform(bool _forced = false) = 0;
 	virtual bool ApplyAllTransform() = 0;
 	virtual bool GetInvTransform() const = 0;
+
 public:
+
 	virtual int Debug() const = 0;
 };
 
@@ -60,14 +82,11 @@ public:
 
 public:
 	bool SetPos(const glm::vec3& pos);
-	template <int _Dim>
-	bool SetPos1D(float _1d);
+	bool SetPos1D(float _1d, GLuint _dim);
 	bool SetScale(const glm::vec3& scale);
-	template <int _Dim>
-	bool SetScale1D(float _1d);
+	bool SetScale1D(float _1d, GLuint _dim);
 	bool SetRot(const glm::vec3& rot);
-	template <int _Dim>
-	bool SetRot1D(float _1d);
+	bool SetRot1D(float _1d, GLuint _dim);
 	bool SetTrans(const glm::mat4& _trans, bool pos = true, bool rot = true, bool scl = true);
 
 	void Trans(const glm::mat4& _trans);
@@ -81,8 +100,7 @@ public:
 	void UnsetParent(bool _keep_offset = true) override;
 
 private:
-	template <int _Dim>
-	bool Set1D(glm::vec3& _tar, float _1d);
+	bool Set1D(glm::vec3& _tar, float _1d, GLuint _dim);
 
 	void UpdateDirections();
 
@@ -108,40 +126,6 @@ inline glm::mat4 OffestTransform(const glm::mat4& in_m, const glm::vec3& in_v) {
 	LOOP(3)
 		result[3][i] += in_v[i];
 	return result;
-}
-
-template <int _Dim>
-bool Transform3D::Set1D(glm::vec3& _tar, float _1d)
-{
-	if constexpr (_Dim < 0 || _Dim > 2) return false;
-	if (_tar[_Dim] == _1d) return false;
-
-	_tar[_Dim] = _1d;
-
-	is_TransF_changed = true;
-	return true;
-}
-
-template <int _Dim>
-bool Transform3D::SetPos1D(float _1d)
-{
-	return Set1D<_Dim>(o_position, _1d);
-}
-
-template <int _Dim>
-bool Transform3D::SetScale1D(float _1d)
-{
-	return Set1D<_Dim>(o_scale, _1d);
-}
-
-template <int _Dim>
-bool Transform3D::SetRot1D(float _1d)
-{
-	bool res = Set1D<_Dim>(o_rot, _1d);
-	if (!res) return false;
-
-	UpdateDirections();
-	return true;
 }
 
 
