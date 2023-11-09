@@ -98,7 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\Guizmo;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\Guizmo;$(ProjectDir)dep\glm;$(ProjectDir)src\GO;$(ProjectDir)src\EXTRA;$(ProjectDir)src\FILEIO;$(ProjectDir)src\RENDER;$(ProjectDir)src\COMPO;$(ProjectDir)src\RENDER\BUFFER;$(ProjectDir)src\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -122,7 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\Guizmo;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\Guizmo;$(ProjectDir)dep\glm;$(ProjectDir)src\GO;$(ProjectDir)src\EXTRA;$(ProjectDir)src\FILEIO;$(ProjectDir)src\RENDER;$(ProjectDir)src\COMPO;$(ProjectDir)src\RENDER\BUFFER;$(ProjectDir)src\UI</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -146,7 +146,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW64\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)res\HEADS\GO;$(ProjectDir)res\HEADS\EXTRA;$(ProjectDir)res\HEADS\FILEIO;$(ProjectDir)res\HEADS\RENDER;$(ProjectDir)res\HEADS;$(ProjectDir)res\HEADS\COMPO;$(ProjectDir)res\HEADS\RENDER\BUFFER;$(ProjectDir)res\HEADS\UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\GLFW64\include;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\glm;$(ProjectDir)src\GO;$(ProjectDir)src\EXTRA;$(ProjectDir)src\FILEIO;$(ProjectDir)src\RENDER;$(ProjectDir)src\COMPO;$(ProjectDir)src\RENDER\BUFFER;$(ProjectDir)src\UI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -199,73 +199,71 @@
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="dep\stb_image\stb_image.cpp" />
-    <ClCompile Include="res\HEADS\UI\MENU\ImguiMButton.cpp" />
-    <ClCompile Include="res\HEADS\UI\MENU\ImguiMOption.cpp" />
-    <ClCompile Include="res\HEADS\UI\MENU\ImguiMSwitch.cpp" />
-    <ClCompile Include="main\Application.cpp" />
-    <ClCompile Include="main\MAIN.cpp" />
-    <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp" />
-    <ClCompile Include="res\HEADS\UI\LAYER\MaterialViewer.cpp" />
-    <ClCompile Include="res\HEADS\GO\Sprite.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\MeshData.cpp" />
-    <ClCompile Include="res\HEADS\GO\PolygonLight.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\ShaderBuildIn.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp" />
-    <ClCompile Include="res\HEADS\UI\ImguiTheme.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\TextEditor.cpp" />
-    <ClCompile Include="res\HEADS\UI\LAYER\ParamControl.cpp" />
-    <ClCompile Include="res\HEADS\UI\LAYER\Outliner.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\ParaInput.cpp" />
-    <ClCompile Include="res\HEADS\UI\DefultViewports.cpp" />
-    <ClCompile Include="res\HEADS\UI\ImguiMenuItem.cpp" />
-    <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp" />
-    <ClCompile Include="res\HEADS\UI\ImguiItem.cpp" />
-    <ClCompile Include="res\HEADS\UI\Nodes.cpp" />
-    <ClCompile Include="res\HEADS\COMPO\Parameters.cpp" />
-    <ClCompile Include="res\HEADS\UI\ImguiLayer.cpp" />
-    <ClCompile Include="res\HEADS\UI\ImguiManager.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\FrameBuffer.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\RenderBuffer.cpp" />
-    <ClCompile Include="res\HEADS\COMPO\Field.cpp" />
-    <ClCompile Include="res\HEADS\COMPO\PostProcessing.cpp" />
-    <ClCompile Include="res\HEADS\GO\Empty.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\Material.cpp" />
-    <ClCompile Include="res\HEADS\GO\DebugMesh.cpp" />
-    <ClCompile Include="res\HEADS\COMPO\Transform.cpp" />
-    <ClCompile Include="res\HEADS\GO\Environment.cpp" />
-    <ClCompile Include="res\HEADS\GO\DebugLine.cpp" />
-    <ClCompile Include="res\HEADS\GO\DebugPoints.cpp" />
-    <ClCompile Include="res\HEADS\COMPO\EventListener.cpp" />
-    <ClCompile Include="res\HEADS\GO\ImagePlane.cpp" />
-    <ClCompile Include="res\HEADS\GO\Camera.cpp" />
-    <ClCompile Include="res\HEADS\GO\Light.cpp" />
-    <ClCompile Include="res\HEADS\GO\GameObject.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\Renderer.cpp" />
-    <ClCompile Include="res\HEADS\GO\Mesh.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BufferLayout.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\IndexBuffer.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\VertexBuffer.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\VertexArray.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\Shaders.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\Texture.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\TextureViewer.cpp" />
-    <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp" />
-    <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp" />
-    <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp" />
-    <ClCompile Include="res\HEADS\UI\NodesColor.cpp" />
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp" />
-    <ClCompile Include="res\HEADS\UI\LAYER\TransformPanel.cpp" />
-    <ClCompile Include="res\HEADS\FILEIO\SceneManager.cpp" />
-    <ClCompile Include="res\HEADS\GO\SDFField.cpp" />
+    <ClCompile Include="src\COMPO\EventListener.cpp" />
+    <ClCompile Include="src\COMPO\Field.cpp" />
+    <ClCompile Include="src\COMPO\Parameters.cpp" />
+    <ClCompile Include="src\COMPO\PostProcessing.cpp" />
+    <ClCompile Include="src\COMPO\Transform.cpp" />
+    <ClCompile Include="src\core\Application.cpp" />
+    <ClCompile Include="src\core\MAIN.cpp" />
+    <ClCompile Include="src\FILEIO\SceneConfigs.cpp" />
+    <ClCompile Include="src\FILEIO\SceneManager.cpp" />
+    <ClCompile Include="src\GO\Camera.cpp" />
+    <ClCompile Include="src\GO\DebugLine.cpp" />
+    <ClCompile Include="src\GO\DebugMesh.cpp" />
+    <ClCompile Include="src\GO\DebugPoints.cpp" />
+    <ClCompile Include="src\GO\Empty.cpp" />
+    <ClCompile Include="src\GO\Environment.cpp" />
+    <ClCompile Include="src\GO\GameObject.cpp" />
+    <ClCompile Include="src\GO\ImagePlane.cpp" />
+    <ClCompile Include="src\GO\Light.cpp" />
+    <ClCompile Include="src\GO\Mesh.cpp" />
+    <ClCompile Include="src\GO\PolygonLight.cpp" />
+    <ClCompile Include="src\GO\SDFField.cpp" />
+    <ClCompile Include="src\GO\Sprite.cpp" />
+    <ClCompile Include="src\RENDER\BufferLayout.cpp" />
+    <ClCompile Include="src\RENDER\BUFFER\FrameBuffer.cpp" />
+    <ClCompile Include="src\RENDER\BUFFER\IndexBuffer.cpp" />
+    <ClCompile Include="src\RENDER\BUFFER\RenderBuffer.cpp" />
+    <ClCompile Include="src\RENDER\BUFFER\StorageBuffer.cpp" />
+    <ClCompile Include="src\RENDER\BUFFER\UniformBuffer.cpp" />
+    <ClCompile Include="src\RENDER\BUFFER\VertexBuffer.cpp" />
+    <ClCompile Include="src\RENDER\Material.cpp" />
+    <ClCompile Include="src\RENDER\MeshData.cpp" />
+    <ClCompile Include="src\RENDER\Renderer.cpp" />
+    <ClCompile Include="src\RENDER\ShaderBuildIn.cpp" />
+    <ClCompile Include="src\RENDER\ShaderLib.cpp" />
+    <ClCompile Include="src\RENDER\ShaderParser.cpp" />
+    <ClCompile Include="src\RENDER\Shaders.cpp" />
+    <ClCompile Include="src\RENDER\Texture.cpp" />
+    <ClCompile Include="src\RENDER\VertexArray.cpp" />
+    <ClCompile Include="src\UI\DefultViewports.cpp" />
+    <ClCompile Include="src\UI\ImguiItem.cpp" />
+    <ClCompile Include="src\UI\ImguiLayer.cpp" />
+    <ClCompile Include="src\UI\ImguiManager.cpp" />
+    <ClCompile Include="src\UI\ImguiMenu.cpp" />
+    <ClCompile Include="src\UI\ImguiMenuItem.cpp" />
+    <ClCompile Include="src\UI\ImguiTheme.cpp" />
+    <ClCompile Include="src\UI\ITEM\Button.cpp" />
+    <ClCompile Include="src\UI\ITEM\NodeEditor.cpp" />
+    <ClCompile Include="src\UI\ITEM\OpaButton.cpp" />
+    <ClCompile Include="src\UI\ITEM\ParaInput.cpp" />
+    <ClCompile Include="src\UI\ITEM\Text.cpp" />
+    <ClCompile Include="src\UI\ITEM\TextEditor.cpp" />
+    <ClCompile Include="src\UI\ITEM\TextureViewer.cpp" />
+    <ClCompile Include="src\UI\LAYER\MaterialViewer.cpp" />
+    <ClCompile Include="src\UI\LAYER\Outliner.cpp" />
+    <ClCompile Include="src\UI\LAYER\ParamControl.cpp" />
+    <ClCompile Include="src\UI\LAYER\ShaderEditor.cpp" />
+    <ClCompile Include="src\UI\LAYER\TransformPanel.cpp" />
+    <ClCompile Include="src\UI\LAYER\Viewport.cpp" />
+    <ClCompile Include="src\UI\MENU\ImguiMButton.cpp" />
+    <ClCompile Include="src\UI\MENU\ImguiMOption.cpp" />
+    <ClCompile Include="src\UI\MENU\ImguiMSwitch.cpp" />
+    <ClCompile Include="src\UI\Nodes.cpp" />
+    <ClCompile Include="src\UI\NodesColor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dep\cubicSpline\CubicSplineHelpers.inl" />
-    <None Include="dep\cubicSpline\CubicSplineSimd.inl" />
     <None Include="dep\GLEW\bin\Release\Win32\glew32.dll" />
     <None Include="dep\GLEW\bin\Release\Win32\glewinfo.exe" />
     <None Include="dep\GLEW\bin\Release\Win32\visualinfo.exe" />
@@ -340,96 +338,6 @@
     <None Include="res\shaders\To_ERect.comp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dep\cubicSpline\CubicSpline.h" />
-    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h" />
-    <ClInclude Include="dep\GLEW\include\GL\eglew.h" />
-    <ClInclude Include="dep\GLEW\include\GL\glew.h" />
-    <ClInclude Include="dep\GLEW\include\GL\glxew.h" />
-    <ClInclude Include="dep\GLEW\include\GL\wglew.h" />
-    <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h" />
-    <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h" />
-    <ClInclude Include="dep\gui\Guizmo\GraphEditor.h" />
-    <ClInclude Include="dep\gui\Guizmo\ImCurveEdit.h" />
-    <ClInclude Include="dep\gui\Guizmo\ImGradient.h" />
-    <ClInclude Include="dep\gui\Guizmo\ImGuizmo.h" />
-    <ClInclude Include="dep\gui\Guizmo\ImSequencer.h" />
-    <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
-    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_glfw.h" />
-    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_opengl3.h" />
-    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="dep\gui\ImGui\imgui.h" />
-    <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
-    <ClInclude Include="dep\gui\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="dep\gui\ImGui\imstb_textedit.h" />
-    <ClInclude Include="dep\gui\ImGui\imstb_truetype.h" />
-    <ClInclude Include="dep\stb_image\stb_image.h" />
-    <ClInclude Include="dep\stb_image\stb_image_write.h" />
-    <ClInclude Include="res\HEADS\UI\MENU\ImguiMButton.h" />
-    <ClInclude Include="res\HEADS\UI\MENU\ImguiMOption.h" />
-    <ClInclude Include="res\HEADS\UI\MENU\ImguiMSwitch.h" />
-    <ClInclude Include="main\Application.h" />
-    <ClInclude Include="res\HEADS\EXTRA\macros.h" />
-    <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h" />
-    <ClInclude Include="res\HEADS\GO\Sprite.h" />
-    <ClInclude Include="res\HEADS\RENDER\MeshData.h" />
-    <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h" />
-    <ClInclude Include="res\HEADS\GO\PolygonLight.h" />
-    <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h" />
-    <ClInclude Include="res\HEADS\UI\ImguiTheme.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\TextEditor.h" />
-    <ClInclude Include="res\HEADS\UI\LAYER\ParamControl.h" />
-    <ClInclude Include="res\HEADS\UI\LAYER\Outliner.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\Button.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\ParaInput.h" />
-    <ClInclude Include="res\HEADS\UI\ImguiMenuItem.h" />
-    <ClInclude Include="res\HEADS\UI\ImguiMenu.h" />
-    <ClInclude Include="res\HEADS\UI\ImguiItem.h" />
-    <ClInclude Include="res\HEADS\UI\Nodes.h" />
-    <ClInclude Include="res\HEADS\COMPO\Parameters.h" />
-    <ClInclude Include="res\HEADS\UI\ImguiLayer.h" />
-    <ClInclude Include="res\HEADS\UI\ImguiManager.h" />
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\FrameBuffer.h" />
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\RenderBuffer.h" />
-    <ClInclude Include="res\HEADS\COMPO\Field.h" />
-    <ClInclude Include="res\HEADS\COMPO\PostProcessing.h" />
-    <ClInclude Include="res\HEADS\GO\Empty.h" />
-    <ClInclude Include="res\HEADS\RENDER\Material.h" />
-    <ClInclude Include="res\HEADS\GO\DebugMesh.h" />
-    <ClInclude Include="res\HEADS\COMPO\Transform.h" />
-    <ClInclude Include="res\HEADS\GO\Environment.h" />
-    <ClInclude Include="res\HEADS\GO\DebugLine.h" />
-    <ClInclude Include="res\HEADS\GO\DebugPoints.h" />
-    <ClInclude Include="res\HEADS\COMPO\EventListener.h" />
-    <ClInclude Include="res\HEADS\EXTRA\operator.h" />
-    <ClInclude Include="res\HEADS\EXTRA\xdz_math.h" />
-    <ClInclude Include="res\HEADS\GO\ImagePlane.h" />
-    <ClInclude Include="res\HEADS\GO\Camera.h" />
-    <ClInclude Include="dep\ImGui\imconfig.h" />
-    <ClInclude Include="res\HEADS\GO\Light.h" />
-    <ClInclude Include="res\HEADS\GO\GameObject.h" />
-    <ClInclude Include="res\HEADS\RENDER\Renderer.h" />
-    <ClInclude Include="res\HEADS\GO\Mesh.h" />
-    <ClInclude Include="res\HEADS\RENDER\BufferLayout.h" />
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h" />
-    <ClInclude Include="res\HEADS\EXTRA\structs.h" />
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h" />
-    <ClInclude Include="res\HEADS\RENDER\VertexArray.h" />
-    <ClInclude Include="res\HEADS\RENDER\Shaders.h" />
-    <ClInclude Include="res\HEADS\RENDER\Texture.h" />
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\TextureViewer.h" />
-    <ClInclude Include="res\HEADS\UI\ITEM\Text.h" />
-    <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h" />
-    <ClInclude Include="res\HEADS\RENDER\ShaderLib.h" />
-    <ClInclude Include="res\HEADS\UI\LAYER\ShaderEditor.h" />
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h" />
-    <ClInclude Include="res\HEADS\UI\LAYER\TransformPanel.h" />
-    <ClInclude Include="res\HEADS\FILEIO\SceneManager.h" />
-    <ClInclude Include="res\HEADS\GO\SDFField.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="dep\GLEW\doc\github.png" />
     <Image Include="dep\GLEW\doc\glew.png" />
     <Image Include="dep\GLEW\doc\new.png" />
@@ -458,6 +366,82 @@
     <Library Include="dep\GLFW\lib-vc2019\glfw3.lib" />
     <Library Include="dep\GLFW\lib-vc2019\glfw3dll.lib" />
     <Library Include="dep\GLFW\lib-vc2019\glfw3_mt.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dep\cubicSpline\CubicSpline.h" />
+    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h" />
+    <ClInclude Include="dep\gui\Guizmo\GraphEditor.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImCurveEdit.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImGradient.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImGuizmo.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImSequencer.h" />
+    <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
+    <ClInclude Include="dep\gui\ImGui\imgui.h" />
+    <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
+    <ClInclude Include="dep\stb_image\stb_image.h" />
+    <ClInclude Include="dep\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\COMPO\EventListener.h" />
+    <ClInclude Include="src\COMPO\Field.h" />
+    <ClInclude Include="src\COMPO\Parameters.h" />
+    <ClInclude Include="src\COMPO\PostProcessing.h" />
+    <ClInclude Include="src\COMPO\Transform.h" />
+    <ClInclude Include="src\core\Application.h" />
+    <ClInclude Include="src\EXTRA\LtcMatrix.h" />
+    <ClInclude Include="src\EXTRA\macros.h" />
+    <ClInclude Include="src\EXTRA\operator.h" />
+    <ClInclude Include="src\EXTRA\structs.h" />
+    <ClInclude Include="src\EXTRA\xdz_math.h" />
+    <ClInclude Include="src\FILEIO\SceneManager.h" />
+    <ClInclude Include="src\GO\Camera.h" />
+    <ClInclude Include="src\GO\DebugLine.h" />
+    <ClInclude Include="src\GO\DebugMesh.h" />
+    <ClInclude Include="src\GO\DebugPoints.h" />
+    <ClInclude Include="src\GO\Empty.h" />
+    <ClInclude Include="src\GO\Environment.h" />
+    <ClInclude Include="src\GO\GameObject.h" />
+    <ClInclude Include="src\GO\ImagePlane.h" />
+    <ClInclude Include="src\GO\Light.h" />
+    <ClInclude Include="src\GO\Mesh.h" />
+    <ClInclude Include="src\GO\PolygonLight.h" />
+    <ClInclude Include="src\GO\SDFField.h" />
+    <ClInclude Include="src\GO\Sprite.h" />
+    <ClInclude Include="src\RENDER\BufferLayout.h" />
+    <ClInclude Include="src\RENDER\BUFFER\FrameBuffer.h" />
+    <ClInclude Include="src\RENDER\BUFFER\IndexBuffer.h" />
+    <ClInclude Include="src\RENDER\BUFFER\RenderBuffer.h" />
+    <ClInclude Include="src\RENDER\BUFFER\StorageBuffer.h" />
+    <ClInclude Include="src\RENDER\BUFFER\UniformBuffer.h" />
+    <ClInclude Include="src\RENDER\BUFFER\VertexBuffer.h" />
+    <ClInclude Include="src\RENDER\Material.h" />
+    <ClInclude Include="src\RENDER\MeshData.h" />
+    <ClInclude Include="src\RENDER\Renderer.h" />
+    <ClInclude Include="src\RENDER\ShaderLib.h" />
+    <ClInclude Include="src\RENDER\Shaders.h" />
+    <ClInclude Include="src\RENDER\Texture.h" />
+    <ClInclude Include="src\RENDER\VertexArray.h" />
+    <ClInclude Include="src\UI\ImguiItem.h" />
+    <ClInclude Include="src\UI\ImguiLayer.h" />
+    <ClInclude Include="src\UI\ImguiManager.h" />
+    <ClInclude Include="src\UI\ImguiMenu.h" />
+    <ClInclude Include="src\UI\ImguiMenuItem.h" />
+    <ClInclude Include="src\UI\ImguiTheme.h" />
+    <ClInclude Include="src\UI\ITEM\Button.h" />
+    <ClInclude Include="src\UI\ITEM\NodeEditor.h" />
+    <ClInclude Include="src\UI\ITEM\OpaButton.h" />
+    <ClInclude Include="src\UI\ITEM\ParaInput.h" />
+    <ClInclude Include="src\UI\ITEM\Text.h" />
+    <ClInclude Include="src\UI\ITEM\TextEditor.h" />
+    <ClInclude Include="src\UI\ITEM\TextureViewer.h" />
+    <ClInclude Include="src\UI\LAYER\MaterialViewer.h" />
+    <ClInclude Include="src\UI\LAYER\Outliner.h" />
+    <ClInclude Include="src\UI\LAYER\ParamControl.h" />
+    <ClInclude Include="src\UI\LAYER\ShaderEditor.h" />
+    <ClInclude Include="src\UI\LAYER\TransformPanel.h" />
+    <ClInclude Include="src\UI\LAYER\Viewport.h" />
+    <ClInclude Include="src\UI\MENU\ImguiMButton.h" />
+    <ClInclude Include="src\UI\MENU\ImguiMOption.h" />
+    <ClInclude Include="src\UI\MENU\ImguiMSwitch.h" />
+    <ClInclude Include="src\UI\Nodes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

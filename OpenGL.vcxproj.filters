@@ -18,171 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\IndexBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\VertexBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\VertexArray.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BufferLayout.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\Shaders.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\Texture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Mesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\Renderer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\GameObject.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Light.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Camera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\ImagePlane.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\COMPO\EventListener.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\DebugLine.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\DebugPoints.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Environment.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\COMPO\Transform.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\DebugMesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\Material.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Empty.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\COMPO\Field.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\COMPO\PostProcessing.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\RenderBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\FrameBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\StorageBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiLayer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\COMPO\Parameters.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\Nodes.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiItem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiMenu.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiMenuItem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\DefultViewports.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\ParaInput.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\TextureViewer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\Text.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\Button.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\Outliner.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\ParamControl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\Viewport.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ImguiTheme.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\OpaButton.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\ShaderLib.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\ShaderParser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\ShaderEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\TextEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\ITEM\NodeEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main\MAIN.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\NodesColor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main\Application.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\BUFFER\UniformBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\PolygonLight.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\MeshData.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\GO\Sprite.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dep\gui\ImGui\imgui.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -196,21 +31,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\RENDER\ShaderBuildIn.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\MaterialViewer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\UI\LAYER\TransformPanel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\FILEIO\SceneManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="res\HEADS\FILEIO\SceneConfigs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dep\stb_image\stb_image.cpp">
@@ -237,16 +57,196 @@
     <ClCompile Include="dep\gui\ImGui\backends\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\GO\SDFField.cpp">
+    <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\MENU\ImguiMSwitch.cpp">
+    <ClCompile Include="src\COMPO\EventListener.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\MENU\ImguiMButton.cpp">
+    <ClCompile Include="src\COMPO\Field.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="res\HEADS\UI\MENU\ImguiMOption.cpp">
+    <ClCompile Include="src\COMPO\Parameters.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\COMPO\PostProcessing.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\COMPO\Transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Application.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\MAIN.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FILEIO\SceneConfigs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FILEIO\SceneManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\Camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\DebugLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\DebugMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\DebugPoints.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\Empty.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\Environment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\GameObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\ImagePlane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\Light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\PolygonLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\SDFField.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GO\Sprite.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BufferLayout.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\MeshData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\Renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\ShaderBuildIn.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\ShaderLib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\ShaderParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\Shaders.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\VertexArray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BUFFER\FrameBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BUFFER\IndexBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BUFFER\RenderBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BUFFER\StorageBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BUFFER\UniformBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RENDER\BUFFER\VertexBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\DefultViewports.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImguiItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImguiLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImguiManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImguiMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImguiMenuItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImguiTheme.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\Nodes.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\NodesColor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\MENU\ImguiMButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\MENU\ImguiMOption.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\MENU\ImguiMSwitch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\LAYER\MaterialViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\LAYER\Outliner.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\LAYER\ParamControl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\LAYER\ShaderEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\LAYER\TransformPanel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\LAYER\Viewport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\Button.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\NodeEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\OpaButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\ParaInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\Text.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\TextEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ITEM\TextureViewer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -279,12 +279,6 @@
     <None Include="dep\GLEW\doc\wglew.html" />
     <None Include="dep\GLEW\doc\glew.css" />
     <None Include="dep\GLFW\lib-vc2019\glfw3.dll" />
-    <None Include="dep\cubicSpline\CubicSplineHelpers.inl">
-      <Filter>头文件</Filter>
-    </None>
-    <None Include="dep\cubicSpline\CubicSplineSimd.inl">
-      <Filter>头文件</Filter>
-    </None>
     <None Include="res\shaders\Irradiance_Conv.comp" />
     <None Include="res\shaders\testS_diff.frag" />
     <None Include="res\shaders\EnvirBG.frag" />
@@ -329,272 +323,6 @@
     <None Include="res\shaders\Reset_Distance.comp" />
     <None Include="res\shaders\SSR_SDF.comp" />
     <None Include="res\shaders\SSR_SDF_Resolve.comp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\IndexBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\EXTRA\structs.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\VertexBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\VertexArray.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\BufferLayout.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\Shaders.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\Texture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\ImGui\imconfig.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Mesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\Renderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\GameObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Camera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\ImagePlane.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\EXTRA\xdz_math.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\EXTRA\operator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\COMPO\EventListener.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\DebugLine.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\DebugPoints.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Environment.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\COMPO\Transform.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\DebugMesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\Material.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Empty.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\COMPO\Field.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\COMPO\PostProcessing.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\RenderBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\FrameBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\StorageBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiLayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\COMPO\Parameters.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\Nodes.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiItem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiMenu.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiMenuItem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\ParaInput.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\TextureViewer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\Text.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\Button.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\Outliner.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\ParamControl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\Viewport.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ImguiTheme.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\OpaButton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\ShaderLib.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\ShaderEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\TextEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\GLEW\include\GL\eglew.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\GLEW\include\GL\glew.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\GLEW\include\GL\glxew.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\GLEW\include\GL\wglew.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\GLFW\include\GLFW\glfw3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\GLFW\include\GLFW\glfw3native.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\cubicSpline\CubicSpline.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\ITEM\NodeEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="main\Application.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\BUFFER\UniformBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\PolygonLight.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\LtcMatrix.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\EXTRA\LtcMatrix.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\RENDER\MeshData.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\Sprite.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imstb_truetype.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imgui.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imgui_internal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imstb_rectpack.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\imstb_textedit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\MaterialViewer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\LAYER\TransformPanel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\FILEIO\SceneManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\stb_image\stb_image.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\stb_image\stb_image_write.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\EXTRA\macros.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\Guizmo\GraphEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\Guizmo\ImCurveEdit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\Guizmo\ImGradient.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\Guizmo\ImGuizmo.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\Guizmo\ImSequencer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_opengl3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_opengl3_loader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\gui\ImGui\backends\imgui_impl_glfw.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\GO\SDFField.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\MENU\ImguiMSwitch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\MENU\ImguiMButton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res\HEADS\UI\MENU\ImguiMOption.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">
@@ -649,5 +377,229 @@
     <Library Include="dep\GLFW\lib-vc2019\glfw3.lib" />
     <Library Include="dep\GLFW\lib-vc2019\glfw3_mt.lib" />
     <Library Include="dep\GLFW\lib-vc2019\glfw3dll.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dep\cubicSpline\CubicSpline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\ImGui\imgui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\ImGui\imgui_internal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImGuizmo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImGradient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImCurveEdit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\GraphEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImSequencer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\stb_image\stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\stb_image\stb_image_write.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\COMPO\EventListener.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\COMPO\Field.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\COMPO\Parameters.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\COMPO\PostProcessing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\COMPO\Transform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Application.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EXTRA\LtcMatrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EXTRA\macros.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EXTRA\operator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EXTRA\structs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EXTRA\xdz_math.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FILEIO\SceneManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\Camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\DebugLine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\DebugMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\DebugPoints.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\Empty.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\Environment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\GameObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\ImagePlane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\Light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\PolygonLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\SDFField.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GO\Sprite.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BufferLayout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\MeshData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\Renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\ShaderLib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\Shaders.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\VertexArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BUFFER\FrameBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BUFFER\IndexBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BUFFER\RenderBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BUFFER\StorageBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BUFFER\UniformBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RENDER\BUFFER\VertexBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImguiItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImguiLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImguiManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImguiMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImguiMenuItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImguiTheme.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\Nodes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\MENU\ImguiMButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\MENU\ImguiMOption.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\MENU\ImguiMSwitch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\MaterialViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\Outliner.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\ParamControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\ShaderEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\TransformPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\Viewport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\Button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\NodeEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\OpaButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\ParaInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\Text.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\TextEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ITEM\TextureViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
