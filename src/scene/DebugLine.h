@@ -6,7 +6,7 @@
 #include "glm/glm.hpp"
 
 #include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "buffer/IndexBuffer.h"
 #include "Shaders.h"
 #include "Camera.h"
 

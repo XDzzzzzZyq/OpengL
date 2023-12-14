@@ -3,7 +3,7 @@
 #include "EventListener.h"
 
 #include "SceneManager.h"
-#include "FrameBuffer.h"
+#include "buffer/FrameBuffer.h"
 #include "SDFField.h"
 
 #include <GL/glew.h>

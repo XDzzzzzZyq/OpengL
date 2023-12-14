@@ -3,7 +3,7 @@
 #include "GL/glew.h"
 
 #include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "buffer/IndexBuffer.h"
 
 #include "GameObject.h"
 #include "Camera.h"

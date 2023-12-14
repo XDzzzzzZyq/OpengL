@@ -4,10 +4,10 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include "PolygonLight.h"
-#include "FrameBuffer.h"
 
-#include "StorageBuffer.h"
-#include "UniformBuffer.h"
+#include "buffer/FrameBuffer.h"
+#include "buffer/StorageBuffer.h"
+#include "buffer/UniformBuffer.h"
 
 #include <array>
 

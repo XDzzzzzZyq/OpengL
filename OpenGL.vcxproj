@@ -98,7 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\render\BUFFER;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -122,7 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\render\BUFFER;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -146,7 +146,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\render\BUFFER;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,7 +165,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\render\BUFFER;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
@@ -208,13 +208,13 @@
     <ClCompile Include="src\core\MAIN.cpp" />
     <ClCompile Include="src\fileIO\SceneConfigs.cpp" />
     <ClCompile Include="src\fileIO\SceneManager.cpp" />
-    <ClCompile Include="src\render\BufferLayout.cpp" />
-    <ClCompile Include="src\render\BUFFER\FrameBuffer.cpp" />
-    <ClCompile Include="src\render\BUFFER\IndexBuffer.cpp" />
-    <ClCompile Include="src\render\BUFFER\RenderBuffer.cpp" />
-    <ClCompile Include="src\render\BUFFER\StorageBuffer.cpp" />
-    <ClCompile Include="src\render\BUFFER\UniformBuffer.cpp" />
-    <ClCompile Include="src\render\BUFFER\VertexBuffer.cpp" />
+    <ClCompile Include="src\render\buffer\BufferLayout.cpp" />
+    <ClCompile Include="src\render\buffer\FrameBuffer.cpp" />
+    <ClCompile Include="src\render\buffer\IndexBuffer.cpp" />
+    <ClCompile Include="src\render\buffer\RenderBuffer.cpp" />
+    <ClCompile Include="src\render\buffer\StorageBuffer.cpp" />
+    <ClCompile Include="src\render\buffer\UniformBuffer.cpp" />
+    <ClCompile Include="src\render\buffer\VertexBuffer.cpp" />
     <ClCompile Include="src\render\Material.cpp" />
     <ClCompile Include="src\render\MeshData.cpp" />
     <ClCompile Include="src\render\Renderer.cpp" />
@@ -392,13 +392,13 @@
     <ClInclude Include="src\extra\structs.h" />
     <ClInclude Include="src\extra\xdz_math.h" />
     <ClInclude Include="src\fileIO\SceneManager.h" />
-    <ClInclude Include="src\render\BufferLayout.h" />
-    <ClInclude Include="src\render\BUFFER\FrameBuffer.h" />
-    <ClInclude Include="src\render\BUFFER\IndexBuffer.h" />
-    <ClInclude Include="src\render\BUFFER\RenderBuffer.h" />
-    <ClInclude Include="src\render\BUFFER\StorageBuffer.h" />
-    <ClInclude Include="src\render\BUFFER\UniformBuffer.h" />
-    <ClInclude Include="src\render\BUFFER\VertexBuffer.h" />
+    <ClInclude Include="src\render\buffer\BufferLayout.h" />
+    <ClInclude Include="src\render\buffer\FrameBuffer.h" />
+    <ClInclude Include="src\render\buffer\IndexBuffer.h" />
+    <ClInclude Include="src\render\buffer\RenderBuffer.h" />
+    <ClInclude Include="src\render\buffer\StorageBuffer.h" />
+    <ClInclude Include="src\render\buffer\UniformBuffer.h" />
+    <ClInclude Include="src\render\buffer\VertexBuffer.h" />
     <ClInclude Include="src\render\Material.h" />
     <ClInclude Include="src\render\MeshData.h" />
     <ClInclude Include="src\render\Renderer.h" />

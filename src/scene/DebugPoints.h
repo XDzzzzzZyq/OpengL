@@ -2,11 +2,11 @@
 
 #include "GameObject.h"
 #include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "buffer/IndexBuffer.h"
 #include "Shaders.h"
 #include "Transform.h"
 
-#include "StorageBuffer.h"
+#include "buffer/StorageBuffer.h"
 
 #include "Camera.h"
 #include <optional>

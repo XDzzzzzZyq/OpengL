@@ -5,7 +5,7 @@
 #include "GL/glew.h"
 
 #include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "buffer/IndexBuffer.h"
 
 #include "Texture.h"
 #include "Shaders.h"

@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Transform.h"
-#include "StorageBuffer.h"
+#include "buffer/StorageBuffer.h"
 #include "Camera.h"
 #include "Shaders.h"
 

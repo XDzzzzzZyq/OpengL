@@ -7,7 +7,7 @@
 #include "Camera.h"
 #include "MeshData.h"
 
-#include "FrameBuffer.h"
+#include "buffer/FrameBuffer.h"
 
 #include "Shaders.h"
 
