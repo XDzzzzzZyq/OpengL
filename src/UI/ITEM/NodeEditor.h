@@ -69,26 +69,26 @@ private:
 	ConnectType editing_cn_type = O_I;
 	ConnectType editing_cn_type_b = O_I;
 	ParaType editing_para_type{};
-	unsigned int active_node_id;
-	Parameters* editing_in_pin;
-	Parameters* editing_out_pin;
-	Parameters* hovered_pin;
-	Parameters* pressed_pin;
-	ImguiNodes* editing_node;
-	ImguiNodes* hovered_node;
+	unsigned int active_node_id{};
+	Parameters* editing_in_pin{};
+	Parameters* editing_out_pin{};
+	Parameters* hovered_pin{};
+	Parameters* pressed_pin{};
+	ImguiNodes* editing_node{};
+	ImguiNodes* hovered_node{};
 
 	ImVec2 tar_pin_pos{};
 private:
 	bool no_node_clicked = true;
-	bool is_editing_pin_in;
-	bool is_editing_pin_out;
-	bool is_hover_on_in;
-	bool is_press_on_in;
-	bool is_hover_on_out;
-	bool is_press_on_out;
+	bool is_editing_pin_in{};
+	bool is_editing_pin_out{};
+	bool is_hover_on_in{};
+	bool is_press_on_in{};
+	bool is_hover_on_out{};
+	bool is_press_on_out{};
 	bool LMB_press = false;
 
-	bool is_node_movable;
+	bool is_node_movable{};
 
 	void ResetState();
 private:
@@ -98,7 +98,7 @@ private:
 public:
 	NodeEditorType _type{NONE_NODE_EDITOR};
 	NodeEditor(NodeEditorType type);
-	NodeEditor();
+	NodeEditor() {};
 
 public:
 	void Render(const char* _lable, const ImVec2& _size = {0,0});

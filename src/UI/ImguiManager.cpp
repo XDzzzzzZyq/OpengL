@@ -21,6 +21,8 @@ void ImguiManager::Init()
 	DefultViewports();
 	DefultEvents();
 	RegistarMenuEvents();
+
+	ShaderEditor::InitEditors();
 }
 
 void ImguiManager::RegistarMenuEvents()

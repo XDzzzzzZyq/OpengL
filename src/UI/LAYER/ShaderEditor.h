@@ -55,6 +55,7 @@ public:
 
 	ShaderEditor();
 	ShaderEditor(const std::string& name);
+	static void InitEditors();
 	~ShaderEditor();
 
 public:

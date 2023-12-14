@@ -4,8 +4,8 @@
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
 std::string const ShaderEditor::shader_type[2] = { "Vertex Shader", "Fragment Shader" };
 
-TextEditor ShaderEditor::SE_CodeEditor = TextEditor();
-NodeEditor ShaderEditor::SE_NodeEditor = NodeEditor(SHADER_NODE_EDITOR);
+TextEditor ShaderEditor::SE_CodeEditor{};
+NodeEditor ShaderEditor::SE_NodeEditor{};
 
 ShaderEditor::ShaderEditor()
 	:ShaderEditor("Shader Editor")
@@ -17,6 +17,12 @@ ShaderEditor::ShaderEditor(const std::string& name)
 {
 	uly_name = name;
 	//Editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
+}
+
+void ShaderEditor::InitEditors()
+{
+	ShaderEditor::SE_CodeEditor.Init();
+	ShaderEditor::SE_NodeEditor = NodeEditor(SHADER_NODE_EDITOR);
 }
 
 ShaderEditor::~ShaderEditor()

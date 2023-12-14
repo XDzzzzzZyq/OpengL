@@ -61,11 +61,6 @@ const ImVec2 ImguiNodes::GetOutPinPos(const ImVec2& _header_size, float _offset,
 	return outp_curs;
 }
 
-NodeEditor::NodeEditor()
-	:NodeEditor(NONE_NODE_EDITOR)
-{
-}
-
 NodeEditor::NodeEditor(NodeEditorType type)
 	: _type(type)
 {

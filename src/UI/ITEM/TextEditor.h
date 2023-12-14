@@ -189,6 +189,7 @@ public:
 
 	TextEditor();
 	~TextEditor();
+	void Init();
 
 	void SetLanguageDefinition(const LanguageDefinition& aLanguageDef);
 	const LanguageDefinition& GetLanguageDefinition() const { return mLanguageDefinition; }
