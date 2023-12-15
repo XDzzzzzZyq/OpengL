@@ -156,7 +156,7 @@ int Application::Run()
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Update here */
-		renderer.r_frame_num++;
+		renderer.r_frame_count++;
 		UI.NewFrame();
 
 		Event.UpdateEvent(window);
@@ -179,6 +179,8 @@ int Application::Run()
 		renderer.Reset();
 		Event.Reset();
 
+		//DEBUG(renderer.r_frame_count);
+		DEBUG(renderer.r_scene->CheckStatus(SceneResource::SceneChanged))
 #if 0
 		DEBUG(renderer.GetActiveCamera()->o_position);
 		DEBUG(renderer.GetActiveCamera()->cam_pers);

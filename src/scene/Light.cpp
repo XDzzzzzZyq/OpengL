@@ -514,15 +514,19 @@ void LightArrayBuffer::UpdateLight(Light* light)
 	}
 }
 
-void LightArrayBuffer::UpdateLightingCache(int frame)
+void LightArrayBuffer::UpdateLightingCache(int frame, bool is_incr_aver)
 {
 	static auto pos_offset = xdzm::rand3nv(16);
-	static float update_rate = 0.05;
 
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
-	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("update_rate", update_rate));
-	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate));
-	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY), Uni("update_rate", update_rate/4));
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+
+	const float point_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
+	const float sun_ud_rate		= is_incr_aver ? 0.05 : 1.0 / frame;
+	const float spot_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
+	const float area_ud_rate	= is_incr_aver ? 0.01 : 1.0 / frame;
 
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;
@@ -538,6 +542,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 			point_shadow.SetValue("light_pos", point_list[loc].pos);
 			point_shadow.SetValue("light_far", Light::point_shaodow_far);
 			point_shadow.SetValue("frame", frame);
+			point_shadow.SetValue("update_rate", point_ud_rate);
 			point_shadow.SetValue("offset", Light::point_blur_range);
 			point_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
 
@@ -551,6 +556,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 			sun_shadow.SetValue("proj_trans", sun_list[loc].proj_trans);
 			sun_shadow.SetValue("frame", frame);
 			sun_shadow.SetValue("offset", Light::point_blur_range);
+			sun_shadow.SetValue("update_rate", sun_ud_rate);
 			sun_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
 
 			break;
@@ -566,6 +572,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 			spot_shadow.SetValue("light_far", Light::spot_shaodow_far);
 			spot_shadow.SetValue("frame", frame);
 			spot_shadow.SetValue("offset", Light::spot_blur_range);
+			spot_shadow.SetValue("update_rate", spot_ud_rate);
 			spot_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
 
 			break;
@@ -581,6 +588,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame)
 			area_shadow.SetValue("light_far", Light::area_shaodow_far);
 			area_shadow.SetValue("frame", frame);
 			area_shadow.SetValue("offset", Light::area_blur_range);
+			area_shadow.SetValue("update_rate", area_ud_rate);
 			area_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
 
 			break;

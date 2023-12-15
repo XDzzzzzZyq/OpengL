@@ -38,7 +38,7 @@ public:
 		SDFChanged			= 1 << 3,
 		CameraChanged		= 1 << 4,
 
-		SceneChanged = ObjectTransChanged | LightChanged | ShaderChanged | SDFChanged | CameraChanged
+		SceneChanged = ObjectTransChanged | LightChanged | ShaderChanged | CameraChanged
 	};
 
 	void UpdateSceneStatus(int tar, bool mask);

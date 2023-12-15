@@ -29,7 +29,7 @@ public:
 	static GLint max_resolution_h;
 
 public:
-	GLuint r_frame_num = 0;
+	GLuint r_frame_count = 0;
 	GLuint r_frame_width = SCREEN_W;
 	GLuint r_frame_height = SCREEN_H;
 
@@ -107,6 +107,7 @@ public:
 
 	bool r_render_icons = true;
 	bool r_is_preview = true;
+	int r_sample_pf = 128;
 
 public:
 

@@ -246,6 +246,6 @@ public:
 
 public:
 	void UpdateLight(Light* light);
-	void UpdateLightingCache(int frame);
+	void UpdateLightingCache(int frame, bool is_incr_aver);
 	void BindShadowMap() const;
 };
