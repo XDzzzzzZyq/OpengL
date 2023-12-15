@@ -155,14 +155,18 @@ void Transform3D::LookAt(const glm::vec3& tar)
 
 void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 {
+	ApplyTransform();
+	_p_trans->ApplyTransform();
+	_p_trans->GetInvTransform();
+
 	o_parent_trans = _p_trans;
 	_p_trans->o_child_trans = this;
 
 	if (!_keep_offset) return;
 
-	SetScale(o_scale / _p_trans->o_scale);
-	SetPos((o_position - _p_trans->o_position) / _p_trans->o_scale);
-	ApplyTransform();
+	// if self.trans = B=DA, parent.trans = A, then D=BA^-1
+	glm::mat4 D = o_Transform * _p_trans->o_InvTransform;
+	SetTrans(D);
 }
 
 void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
@@ -243,9 +247,12 @@ bool Transform3D::GetInvTransform() const
 {
 	if (!is_invTransF_changed) return false;
 
-	glm::mat3 result = glm::mat3(o_Transform);
+	glm::mat3 inv_rot = glm::mat3(o_Transform);
+	LOOP(3) inv_rot[i] = glm::normalize(inv_rot[i]);
+	inv_rot = glm::transpose(inv_rot);
+	glm::mat4 result = glm::mat4(inv_rot) * glm::scale(glm::mat4(1), 1.0f/o_scale);
 	//std::cout << result;
-	o_InvTransform = glm::translate(glm::transpose(glm::mat4(result)), -1.0f * o_position);
+	o_InvTransform = glm::translate(result, -o_position);
 
 	//o_InvTransform[3][3] = 1.0f;
 	is_invTransF_changed = false;
