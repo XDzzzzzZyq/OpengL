@@ -198,6 +198,9 @@ void Renderer::Render(bool rend, bool buff) {
 	////////////  TRANSFORM UDPATE  /////////////
 
 	r_scene->UpdateObjTransforms();
+	if (r_scene->CheckStatus(SceneResource::SceneChanged) || r_sampling_average == SamplingType::Average)
+		r_frame_num = 0;
+	//r_scene->_debugStatus();
 
 
 	////////////     OPTICAL FLOW     ////////////
@@ -215,7 +218,9 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	if((r_ssr_algorithm==SSRAlg::SDFRayMarching || r_shadow_algorithm==Light::ShadowAlg::SDFSoftShadow) && r_scene->is_SDF_changed)
+	const bool requires_sdf = r_ssr_algorithm == SSRAlg::SDFRayMarching || r_shadow_algorithm == Light::ShadowAlg::SDFSoftShadow;
+	const bool realtime_sdf = (!r_scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_sampling_average == SamplingType::Average;
+	if(requires_sdf && r_scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
 		ConstructSDF();
 
 
@@ -492,6 +497,8 @@ void Renderer::ConstructSDF()
 		r_sdf_field.BindTargetTrans(mesh->o_Transform, mesh->is_closure);
 		mesh->RenderObjProxy(false);
 	}
+
+	r_scene->SetSceneStatus(SceneResource::SDFChanged, false);
 
 	r_sdf_field.Unbind();
 	r_sdf_field.UnbindShader();

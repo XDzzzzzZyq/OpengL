@@ -125,6 +125,7 @@ int Application::Run()
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.r_ssr_algorithm);
 	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.r_shadow_algorithm);
 	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.r_ao_algorithm);
+	UI.FindImguiMenuItem("Render", "Sampling")->BindOption(&renderer.r_sampling_average);
 	UI.FindImguiMenuItem("View", "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {

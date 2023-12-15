@@ -10,6 +10,33 @@ SceneResource::~SceneResource()
 
 }
 
+void SceneResource::UpdateSceneStatus(int tar, bool mask)
+{
+	status = (SceneModifStatus)(status | (tar * mask));
+}
+
+void SceneResource::SetSceneStatus(int tar, bool value)
+{
+	status = (SceneModifStatus)(status & (~tar));
+	UpdateSceneStatus(tar, value);
+}
+
+bool SceneResource::CheckStatus(SceneModifStatus tar)
+{
+	return status & tar;
+}
+
+#include <stdlib.h>
+void SceneResource::_debugStatus()
+{
+#ifdef _DEBUG
+	char res[16];
+	_itoa_s(status, res, 2);
+	printf(res);
+	printf("\n");
+#endif // _DEBUG
+}
+
 void SceneResource::UseCamera(Resource<Camera> camera)
 {
 	if (cam_list.find(camera->GetObjectID()) == cam_list.end())
@@ -18,12 +45,13 @@ void SceneResource::UseCamera(Resource<Camera> camera)
 		return;
 	}
 
-	is_scene_changed = true;
 	cam_list[camera->GetObjectID()] = camera;
 	obj_list[camera->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(camera);
 	cam_list[0] = camera;
 	EventListener::outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
 	EventListener::parent_index_list.emplace_back(-1);
+
+	status = SceneModifStatus::SceneChanged;
 }
 
 void SceneResource::UseMesh(Resource<Mesh> mesh)
@@ -31,11 +59,12 @@ void SceneResource::UseMesh(Resource<Mesh> mesh)
 	if (mesh_list.find(mesh->GetObjectID()) != mesh_list.end())
 		return;
 
-	is_scene_changed = true;
 	mesh_list[mesh->GetObjectID()] = mesh;
 	obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(mesh);
 	EventListener::outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
+
+	status = SceneModifStatus::SceneChanged;
 }
 
 void SceneResource::UseLight(Resource<Light> light)
@@ -43,7 +72,6 @@ void SceneResource::UseLight(Resource<Light> light)
 	if (light_list.find(light->GetObjectID()) != light_list.end())
 		return;
 
-	is_scene_changed = true;
 	light_list[light->GetObjectID()] = light;
 	obj_list[light->light_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
 
@@ -51,6 +79,8 @@ void SceneResource::UseLight(Resource<Light> light)
 	EventListener::parent_index_list.push_back(-1);
 
 	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
+
+	status = SceneModifStatus::SceneChanged;
 }
 
 void SceneResource::UsePolygonLight(Resource<PolygonLight> polyLight)
@@ -58,11 +88,12 @@ void SceneResource::UsePolygonLight(Resource<PolygonLight> polyLight)
 	if (poly_light_list.find(polyLight->GetObjectID()) != poly_light_list.end())
 		return;
 
-	is_scene_changed = true;
 	poly_light_list[polyLight->GetObjectID()] = polyLight;
 	obj_list[polyLight->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(polyLight);
 	EventListener::outline_list.push_back(OutlineElement(polyLight->o_type, polyLight->GetObjectID(), polyLight->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
+
+	status = SceneModifStatus::SceneChanged;
 }
 
 void SceneResource::UseEnvironment(Resource<Environment> envir)
@@ -73,7 +104,6 @@ void SceneResource::UseEnvironment(Resource<Environment> envir)
 		return;
 	}
 
-	is_scene_changed = true;
 	envir_list[envir->GetObjectID()] = envir;
 	envir_list[0] = envir;
 	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
@@ -82,6 +112,8 @@ void SceneResource::UseEnvironment(Resource<Environment> envir)
 	EventListener::parent_index_list.push_back(-1);
 
 	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
+
+	status = SceneModifStatus::SceneChanged;
 }
 
 void SceneResource::UseDebugLine(Resource<DebugLine> dline)
@@ -89,11 +121,13 @@ void SceneResource::UseDebugLine(Resource<DebugLine> dline)
 	if (dLine_list.find(dline->GetObjectID()) != dLine_list.end())
 		return;
 
-	is_scene_changed = true;
 	dLine_list[dline->GetObjectID()] = dline;
 	obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dline);
 	EventListener::outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
+
+	status = SceneModifStatus::SceneChanged;
+
 }
 
 void SceneResource::UseDebugPoints(Resource<DebugPoints> dpoints)
@@ -101,11 +135,12 @@ void SceneResource::UseDebugPoints(Resource<DebugPoints> dpoints)
 	if (dPoints_list.find(dpoints->GetObjectID()) != dPoints_list.end())
 		return;
 
-	is_scene_changed = true;
 	dPoints_list[dpoints->GetObjectID()] = dpoints;
 	obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dpoints);
 	EventListener::outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
+
+	status = SceneModifStatus::SceneChanged;
 }
 
 void SceneResource::UsePostProcessing(Resource<PostProcessing> pps)
@@ -143,59 +178,49 @@ void SceneResource::UpdateObjTransforms()
 	GetActiveCamera()->ApplyTransform();
 	GetActiveCamera()->GetInvTransform();
 	GetActiveCamera()->GenFloatData();
-	is_object_trans_changed |= GetActiveCamera()->is_Uniform_changed;
+	UpdateSceneStatus(ObjectTransChanged | CameraChanged, GetActiveCamera()->is_Uniform_changed);
 
 	for (auto& [id, mesh] : mesh_list) 
 	{
 		mesh->ApplyAllTransform();
-		is_object_trans_changed |= mesh->is_Uniform_changed;
-		is_shader_changed |= mesh->o_shader->is_shader_changed;
-		is_SDF_changed |= mesh->is_Uniform_changed && mesh->using_sdf;
+		UpdateSceneStatus(ObjectTransChanged, mesh->is_Uniform_changed);
+		UpdateSceneStatus(ShaderChanged, mesh->is_Uniform_changed);
+		UpdateSceneStatus(SDFChanged, mesh->is_Uniform_changed && mesh->using_sdf);
 	}
 
 	for (auto& [id, light] : light_list) 
 	{
 		light->ApplyAllTransform();
 		/*	    Capture Status		*/
-		is_light_changed |= light->is_light_changed;
-		is_light_changed |= light->is_Uniform_changed;
-		is_object_trans_changed |= light->is_Uniform_changed;
+		UpdateSceneStatus(LightChanged, light->is_Uniform_changed || light->is_light_changed);
+		UpdateSceneStatus(ObjectTransChanged, light->is_Uniform_changed);
 	}
 
 	for (auto& [id, polyLight] : poly_light_list) 
 	{
 		polyLight->ApplyAllTransform();
-		is_object_trans_changed |= polyLight->is_Uniform_changed;
+		UpdateSceneStatus(ObjectTransChanged, polyLight->is_Uniform_changed);
 	}
 
 	for (auto& [id, dLine] : dLine_list)
 	{
 		dLine->ApplyAllTransform();
-		is_object_trans_changed |= dLine->is_Uniform_changed;
+		UpdateSceneStatus(ObjectTransChanged, dLine->is_Uniform_changed);
 	}
 
 	for (auto& [id, dPoint] : dPoints_list)
 	{
 		dPoint->ApplyAllTransform();
-		is_object_trans_changed |= dPoint->is_Uniform_changed;
+		UpdateSceneStatus(ObjectTransChanged, dPoint->is_Uniform_changed);
 	}
-
-	is_scene_changed = 
-		is_light_changed || 
-		is_object_trans_changed || 
-		GetActiveCamera()->is_Uniform_changed ||
-		is_shader_changed ||
-		is_SDF_changed;
 }
 
 
 void SceneResource::ResetStatus()
 {
-	is_scene_changed = false;
-	is_object_trans_changed = false;
-	is_light_changed = false;
-	is_shader_changed = false;
-	is_SDF_changed = false;
+	const bool sdf_changed = status & SDFChanged;
+	status = NoChanges;
+	UpdateSceneStatus(SDFChanged, sdf_changed);
 
 	for (auto& [id, light] : light_list) 
 	{

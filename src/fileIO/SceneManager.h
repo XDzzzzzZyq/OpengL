@@ -28,11 +28,26 @@ public:
 	using ResList = std::vector<Resource<Object>>;
 
 public:
-	bool is_scene_changed = true;
-	bool is_object_trans_changed = true;
-	bool is_light_changed = true;
-	bool is_shader_changed = true;
-	bool is_SDF_changed = true;
+	
+	enum SceneModifStatus
+	{
+		NoChanges			= 0,
+		ObjectTransChanged	= 1 << 0,
+		LightChanged		= 1 << 1,
+		ShaderChanged		= 1 << 2,
+		SDFChanged			= 1 << 3,
+		CameraChanged		= 1 << 4,
+
+		SceneChanged = ObjectTransChanged | LightChanged | ShaderChanged | SDFChanged | CameraChanged
+	};
+
+	void UpdateSceneStatus(int tar, bool mask);
+	void SetSceneStatus(int tar, bool value);
+	bool CheckStatus(SceneModifStatus tar);
+	void _debugStatus();
+
+private:
+	SceneModifStatus status = SceneModifStatus::SceneChanged;
 public:
 
 	ResPool<GameObject>			obj_list;

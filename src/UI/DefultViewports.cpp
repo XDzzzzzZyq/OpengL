@@ -24,6 +24,7 @@ void ImguiManager::DefultViewports() {
 
 	auto menu5 = CreateImguiMenu("Render");
 	menu5->PushSubMenu<UI::ImguiMOption>("Rendering PipeLine",		OPTIONS("Forward", "Deferred", "Custom (future)"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Sampling",				OPTIONS("Average", "Increment Average"));
 	menu5->PushSubMenu<UI::ImguiMOption>("Optical Flow",			OPTIONS("None", "Forward", "Backward"));
 	menu5->PushSubMenu<UI::ImguiMOption>("Anti Aliasing",			OPTIONS("None", "MSAA (future)", "FXAA"));
 	menu5->PushSubMenu<UI::ImguiMOption>("Screen Space Reflection", OPTIONS("None", "Ray Marching", "SDF Ray Marching", "SDF Resolved Ray Marching"));

@@ -50,6 +50,14 @@ public:
 		Custom0
 	};
 
+	// Sampling Average
+	enum class SamplingType : char 
+	{
+		Average,
+		IncrementAverage
+	};
+
+
 	// Optical Flow Algorithms
 	enum class OptFlwAlg : char
 	{
@@ -89,6 +97,7 @@ public:
 	SSRAlg r_ssr_algorithm = SSRAlg::SDFRayMarching;					// Screen Space Reflection
 	AOAlg r_ao_algorithm = AOAlg::SSAO;
 	Light::ShadowAlg r_shadow_algorithm = Light::ShadowAlg::ShadowMap;
+	SamplingType r_sampling_average = SamplingType::IncrementAverage;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;

@@ -17,7 +17,7 @@ SDFField::SDFField(GLuint width, GLuint height, GLuint depth)
 	o_name = "SDF Field";
 
 	sdf_data = StorageBuffer(FLOAT_LIST, 6);
-	sdf_shader = ChainedShader::ImportShader("Empty.vert", "SDF_Construct.geom");
+	sdf_shader = ChainedShader::ImportShader("Empty.vert", "SDF_Construct.geom", "Empty.frag");
 
 	ResetBuffer();
 }
