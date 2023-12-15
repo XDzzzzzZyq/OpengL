@@ -186,6 +186,7 @@ void SceneResource::UpdateObjTransforms()
 		UpdateSceneStatus(ObjectTransChanged, mesh->is_Uniform_changed);
 		UpdateSceneStatus(ShaderChanged, mesh->is_Uniform_changed);
 		UpdateSceneStatus(SDFChanged, mesh->is_Uniform_changed && mesh->using_sdf);
+		UpdateSceneStatus(MaterialChanged, mesh->o_material->is_mat_changed);
 	}
 
 	for (auto& [id, light] : light_list) 
@@ -232,6 +233,7 @@ void SceneResource::ResetStatus()
 	{
 		mesh->is_Uniform_changed = false;
 		mesh->o_shader->is_shader_changed = false;
+		mesh->o_material->is_mat_changed = false;
 		mesh->o_material->is_mat_struct_changed = false;
 	}
 

@@ -34,11 +34,12 @@ public:
 		NoChanges			= 0,
 		ObjectTransChanged	= 1 << 0,
 		LightChanged		= 1 << 1,
-		ShaderChanged		= 1 << 2,
-		SDFChanged			= 1 << 3,
-		CameraChanged		= 1 << 4,
+		CameraChanged		= 1 << 2,
+		ShaderChanged		= 1 << 3,
+		MaterialChanged		= 1 << 4,
 
-		SceneChanged = ObjectTransChanged | LightChanged | ShaderChanged | CameraChanged
+		SceneChanged = ObjectTransChanged | LightChanged | CameraChanged | ShaderChanged | MaterialChanged,
+		SDFChanged			= 1 << 8,
 	};
 
 	void UpdateSceneStatus(int tar, bool mask);
