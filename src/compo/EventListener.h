@@ -90,6 +90,8 @@ public:
 
 public:
 
+	static int frame_count;
+
 	static float random_float1;
 	static float random_float2;
 	static float random_float3;

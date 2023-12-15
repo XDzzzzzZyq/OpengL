@@ -156,7 +156,6 @@ int Application::Run()
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Update here */
-		renderer.r_frame_count++;
 		UI.NewFrame();
 
 		Event.UpdateEvent(window);

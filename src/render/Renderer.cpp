@@ -199,7 +199,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	r_scene->UpdateObjTransforms();
 	if (r_scene->CheckStatus(SceneResource::SceneChanged) && r_sampling_average == SamplingType::Average)
-		r_frame_count = 1;
+		EventListener::frame_count = 1;
 	//r_scene->_debugStatus();
 
 
@@ -354,7 +354,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
 		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName((char)r_ao_algorithm), Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", r_ao_radius), Uni("U_opt_flow", 1));
-		float ao_update_rate = r_sampling_average == SamplingType::IncrementAverage ? 0.05f : 1.0 / r_frame_count;
+		float ao_update_rate = r_sampling_average == SamplingType::IncrementAverage ? 0.05f : 1.0 / EventListener::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
@@ -368,18 +368,18 @@ void Renderer::Render(bool rend, bool buff) {
 			ssao.SetValue("Proj_Trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 		}
 		ssao.SetValue("update_rate", ao_update_rate);
-		ssao.SetValue("noise_level", r_frame_count % 6);
+		ssao.SetValue("noise_level", EventListener::frame_count % 6);
 		ssao.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 
 		//////////// LIGHTING CACHE ////////////
 
 		if (r_shadow_algorithm!=Light::ShadowAlg::None) {
-			const float shadow_update_rate = r_sampling_average == SamplingType::IncrementAverage ? 0 : 1.0 / r_frame_count;
+			const float shadow_update_rate = r_sampling_average == SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
-			r_light_data.UpdateLightingCache(r_frame_count, (bool)r_sampling_average);
+			r_light_data.UpdateLightingCache(EventListener::frame_count, (bool)r_sampling_average);
 		}
 
 
@@ -421,7 +421,7 @@ void Renderer::Render(bool rend, bool buff) {
 			r_sdf_field.Bind();
 			ssr.UseShader();
 			ssr.SetValue("use_incr_aver", (bool)r_sampling_average);
-			ssr.SetValue("std_ud_rate", 1.0f / r_frame_count);
+			ssr.SetValue("std_ud_rate", 1.0f / EventListener::frame_count);
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
 			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 			ssr.SetValue("noise", EventListener::random_float1);

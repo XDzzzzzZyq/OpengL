@@ -4,6 +4,8 @@
 EventListener::KeyMouseEvent EventListener::EVT_STATUS;
 GLFWwindow* EventListener::evt_window = (GLFWwindow*)nullptr;
 
+int EventListener::frame_count = 0;
+
 float EventListener::random_float1;
 float EventListener::random_float2;
 float EventListener::random_float3;
@@ -157,15 +159,20 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 
 	/*		Global Randoms  	*/
 
-	random_float1 = xdzm::rand01();
-	random_float2 = xdzm::rand01();
-	random_float3 = xdzm::rand01();
-	random_float4 = xdzm::rand01();
+	if (EventListener::frame_count != 1) {
+		EventListener::random_float1 = xdzm::rand01();
+		EventListener::random_float2 = xdzm::rand01();
+		EventListener::random_float3 = xdzm::rand01();
+		EventListener::random_float4 = xdzm::rand01();
+	}
 
-	is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
-	is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
-	is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
-	is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
+	EventListener::is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
+	EventListener::is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
+	EventListener::is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
+	EventListener::is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
+
+	
+	EventListener::frame_count++;
 }
 
 EventListener::KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)

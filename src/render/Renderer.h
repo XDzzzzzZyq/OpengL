@@ -29,7 +29,7 @@ public:
 	static GLint max_resolution_h;
 
 public:
-	GLuint r_frame_count = 0;
+
 	GLuint r_frame_width = SCREEN_W;
 	GLuint r_frame_height = SCREEN_H;
 
@@ -91,13 +91,13 @@ public:
 		HBAO
 	};
 
+	SamplingType r_sampling_average = SamplingType::Average;
 	OptFlwAlg r_of_algorithm = OptFlwAlg::Backward;
 	RenderPipeLine r_pipeline = RenderPipeLine::Deferred;	// Multi-passes Deferred Rendering
 	AAAlg r_anti_alias = AAAlg::FXAA;						// Fast Approximate Anti-Aliasing
-	SSRAlg r_ssr_algorithm = SSRAlg::SDFRayMarching;					// Screen Space Reflection
+	SSRAlg r_ssr_algorithm = SSRAlg::SDFResolvedRayMarching;					// Screen Space Reflection
 	AOAlg r_ao_algorithm = AOAlg::SSAO;
 	Light::ShadowAlg r_shadow_algorithm = Light::ShadowAlg::ShadowMap;
-	SamplingType r_sampling_average = SamplingType::IncrementAverage;
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;
