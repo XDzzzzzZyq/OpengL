@@ -151,6 +151,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW64\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\x64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
