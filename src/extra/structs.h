@@ -1,8 +1,5 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <string>
 #include <vector>
 #include <ctime>
@@ -78,19 +75,3 @@ struct OutlineElement
 };
 //			| TYPE | ID | NAME | LEVEL |
 typedef std::vector<OutlineElement> OutlineData;
-
-inline std::string glDebug_xdz() {
-	const GLuint err = glGetError();
-	switch (err)
-	{
-#define GL_ERR(err) case GL_##err: return #err
-		GL_ERR(NO_ERROR);
-		GL_ERR(INVALID_ENUM);
-		GL_ERR(INVALID_VALUE);
-		GL_ERR(INVALID_OPERATION);
-		GL_ERR(INVALID_FRAMEBUFFER_OPERATION);
-		GL_ERR(OUT_OF_MEMORY);
-	default:
-		return "UNKOWN_ERROR" + std::to_string(err);
-	}
-}

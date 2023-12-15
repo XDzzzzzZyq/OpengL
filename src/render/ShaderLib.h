@@ -9,7 +9,6 @@
 #include <algorithm>
 
 #include "Parameters.h"
-#include "macros.h"
 
 typedef std::pair<ParaType, std::string> Arg;
 typedef std::vector<Arg> Args;
@@ -90,7 +89,7 @@ public:
 	static bool IsAvailType(const std::string& type);
 	bool IsIOLinked(std::string_view _name, bool _type = 0);
 	static void ADD_TYPE(const std::string& name);
-	static void Debug() { for (auto& i : type_table) DEBUG("|" + i + "|"); }
+	static void _debug();
 
 public:
 

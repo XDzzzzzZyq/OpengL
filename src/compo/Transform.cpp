@@ -1,7 +1,21 @@
 #include "Transform.h"
 #include "xdz_math.h"
-#include "glm/gtx/matrix_decompose.hpp"
 
+#include "glm/gtx/matrix_decompose.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/quaternion.hpp"
+#include "glm/gtx/euler_angles.hpp"
+#include "glm/gtx/rotate_vector.hpp"
+
+#include "macros.h"
+#include "operator.h"
+
+inline glm::mat4 OffestTransform(const glm::mat4& in_m, const glm::vec3& in_v) {
+	glm::mat4 result(in_m);
+	LOOP(3)
+		result[3][i] += in_v[i];
+	return result;
+}
 
 void Transform::UseTranformComp(bool _enable, TransType _type)
 {
@@ -243,6 +257,17 @@ bool Transform3D::GetInvTransform() const
 	return true;
 }
 
+int Transform3D::_debug() const
+{
+#ifdef _DEBUG
+	std::cout << o_rot << ", ";
+	std::cout << o_dir_up << ", ";
+	std::cout << o_dir_right << ", ";
+	DEBUG("________________")
+#endif // _DEBUG
+		return 0;
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -366,4 +391,13 @@ bool Transform2D::GetInvTransform() const
 	is_invTransF_changed = false;
 
 	return true;
+}
+
+int Transform2D::_debug() const
+{
+#ifdef _DEBUG
+	std::cout << o_rot;
+	DEBUG("________________")
+#endif // _DEBUG
+		return 0;
 }

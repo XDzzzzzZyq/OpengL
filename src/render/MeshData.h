@@ -1,14 +1,10 @@
 #pragma once
 
-#include "GL/glew.h"
-
 #include "VertexArray.h"
 #include "buffer/IndexBuffer.h"
 
-#include "GameObject.h"
 #include "Camera.h"
 
-#include "Transform.h"
 #include <numeric>
 #include <optional>
 

@@ -1,4 +1,5 @@
 #include "DebugPoints.h"
+#include "macros.h"
 
 std::vector<float> DebugPoints::VertData = {
 	-1.0f, 1.0f, 0.0f,

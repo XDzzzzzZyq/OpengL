@@ -1,4 +1,5 @@
 #include "Nodes.h"
+#include "macros.h"
 #include <cstdint>
 
 unsigned int Nodes::id_buff = 1;

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Transform.h"
+
 #include "VertexArray.h"
 #include "buffer/IndexBuffer.h"
 #include "Shaders.h"
-#include "Transform.h"
 
 #include "buffer/StorageBuffer.h"
 

@@ -2,9 +2,6 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-#include "GL/glew.h"
-#include "glm/glm.hpp"
-
 #include "VertexArray.h"
 #include "buffer/IndexBuffer.h"
 #include "Shaders.h"

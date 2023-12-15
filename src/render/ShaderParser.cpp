@@ -1,6 +1,7 @@
 #include "Shaders.h"
 #include "ShaderLib.h"
 #include "structs.h"
+#include "macros.h"
 
 void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 {

@@ -1,4 +1,5 @@
 #include "DebugLine.h"
+#include "macros.h"
 
 DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 	:DebugLine(std::vector<glm::vec3>{start, end})

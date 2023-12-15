@@ -1,16 +1,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/quaternion.hpp"
-#include "glm/gtx/euler_angles.hpp"
-#include "glm/gtx/rotate_vector.hpp"
-
-#include "macros.h"
-#ifdef _DEBUG
-#include "operator.h"
-#include <iostream>
-#endif
+#include <GL/glew.h>
 
 //https://glm.g-truc.net/0.9.9/api/a00356.html
 
@@ -50,7 +41,7 @@ public:
 
 public:
 
-	virtual int Debug() const = 0;
+	virtual int _debug() const = 0;
 };
 
 // For 3D object Transform
@@ -109,27 +100,9 @@ public:
 	[[nodiscard("You could receive the state")]] bool ApplyAllTransform() override;
 	[[nodiscard("You could receive the state")]] bool GetInvTransform() const override;
 
-	[[nodiscard("You could receive the state")]] int Debug() const override {
-#ifdef _DEBUG
-		std::cout << o_rot;
-		std::cout << o_dir_up;
-		std::cout << o_dir_right;
-		DEBUG("________________") 
-#endif // _DEBUG
-		return 0;
-	}
+	[[nodiscard("You could receive the state")]] int _debug() const override;
 
 };
-
-inline glm::mat4 OffestTransform(const glm::mat4& in_m, const glm::vec3& in_v) {
-	glm::mat4 result(in_m);
-	LOOP(3)
-		result[3][i] += in_v[i];
-	return result;
-}
-
-
-
 
 
 
@@ -167,21 +140,15 @@ public:
 	void Spin(float angle);
 	void Zoom(const glm::vec2& scale);
 	void Zoom(float scale);
-	void LookAt(const glm::vec2& tar);\
+	void LookAt(const glm::vec2& tar); \
 
-	void SetParent(Transform2D* _p_trans, bool _keep_offset = true);
+		void SetParent(Transform2D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
 public:
 	[[nodiscard("You can receive the state")]] bool ApplyTransform(bool _forced = false) override;
 	[[nodiscard("You can receive the state")]] bool ApplyAllTransform() override;
 	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
 
-	[[nodiscard("You can receive the state")]] int Debug() const override {
-#ifdef _DEBUG
-		std::cout << o_rot;
-		DEBUG("________________") 
-#endif // _DEBUG
-		return 0;
-	}
+	[[nodiscard("You can receive the state")]] int _debug() const override;
 
 };

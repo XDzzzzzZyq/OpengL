@@ -1,5 +1,7 @@
 ﻿#include "Shaders.h"
 #include "operator.h"
+#include "structs.h"
+#include "macros.h"
 
 std::string Shaders::folder_root = "res/shaders/";
 std::vector<std::string> Shaders::file_type = { ".vert", ".frag", ".comp", ".geom" };

@@ -76,6 +76,14 @@ void ShaderStruct::ADD_TYPE(const std::string& name)
 		type_table.emplace_back(name);
 }
 
+void ShaderStruct::_debug()
+{
+#ifdef _DEBUG
+	for (auto& type : type_table) 
+		DEBUG("|" + type + "|");
+#endif
+}
+
 void ShaderStruct::Reset()
 {
 	AB_list = {};

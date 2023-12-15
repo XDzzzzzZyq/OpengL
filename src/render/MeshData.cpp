@@ -4,6 +4,7 @@ std::string MeshData::obj_file_root = "res/obj/";
 
 #include <fstream>
 #include <sstream>
+#include "macros.h"
 
 inline MeshData::Face Split(std::string_view in) {
 	std::string out[3] = { "","","" };
