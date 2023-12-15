@@ -32,7 +32,7 @@
 - [x] select operation
 - [x] Mesh
   - [x] smooth normal
-  - [ ] dynamic mesh
+  - [ ] mesh editing
   - [x] Material
 - [x] Spirit
   - [ ] batch rendering
@@ -74,6 +74,8 @@
   - [x] FXAA
   - [x] SSAO
 
+  - [ ] Denoising
+
   - [ ] Normal map
   - [ ] Bump map
         
@@ -96,7 +98,7 @@
       - [x] diffuse
       - [x] specular
     - [x] AO
-    - [x] shadow
+    - [x] Shadow
       - [x] shadow mapping
       - [x] soft shadow
       - [ ] SDF soft shadow
@@ -105,6 +107,8 @@
     - [x] Screen Space Reflections
     - [x] SDF Screen Space Reflection
     - [x] Stochastic Screen Space Reflection
+
+    - [ ] Path Tracing
 
 - DL style transfer ?
 
@@ -153,6 +157,7 @@
 - **Advanced**
 
   - render mode switch
+    - [x] Averaging mode 
   - visible switch
   - dynamic exposure  
 

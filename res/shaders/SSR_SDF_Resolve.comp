@@ -21,6 +21,9 @@ uniform mat4 cam_trans;
 
 uniform float noise;
 
+uniform bool use_incr_aver;
+uniform float std_ud_rate;
+
 const float stride = 0.1f;
 const float range = 0.2f;
 const int max_step = 64;
@@ -377,7 +380,7 @@ void main(){
 
 	vec3 Indirect_b = imageLoad(U_cache, uv).gba;
 
-	float update_rate = smoothstep(0.95, 1.0, 1 - Roughness)*0.97 + 0.02;
+	float update_rate = use_incr_aver ? smoothstep(0.95, 1.0, 1 - Roughness)*0.97 + 0.02 : std_ud_rate;
 	Indirect_resolved = max(Indirect_b + update_rate * (Indirect_resolved - Indirect_b), 0);
 
 	vec3 Output = Emission + Dir_Diff + Dir_Spec + Indirect_resolved;
@@ -389,6 +392,8 @@ void main(){
 	imageStore(U_cache  , uv, vec4(Normal_AO.a, Indirect_resolved));
 	imageStore(U_combine, uv, vec4(Output, 1));
 	//return;
+	if(!use_incr_aver)
+		return;
 	// filtering
 
 	float RoughL = imageLoad(U_mrse, uv+ivec2(-1, 0)).g;

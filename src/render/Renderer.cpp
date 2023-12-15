@@ -218,7 +218,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	const bool requires_sdf = r_ssr_algorithm == SSRAlg::SDFRayMarching || r_shadow_algorithm == Light::ShadowAlg::SDFSoftShadow;
+	const bool requires_sdf = r_ssr_algorithm == SSRAlg::SDFRayMarching || r_ssr_algorithm == SSRAlg::SDFResolvedRayMarching || r_shadow_algorithm == Light::ShadowAlg::SDFSoftShadow;
 	const bool realtime_sdf = (!r_scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_sampling_average == SamplingType::Average;
 	if(requires_sdf && r_scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
 		ConstructSDF();
@@ -420,6 +420,8 @@ void Renderer::Render(bool rend, bool buff) {
 			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
 			r_sdf_field.Bind();
 			ssr.UseShader();
+			ssr.SetValue("use_incr_aver", (bool)r_sampling_average);
+			ssr.SetValue("std_ud_rate", 1.0f / r_frame_count);
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
 			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
 			ssr.SetValue("noise", EventListener::random_float1);
