@@ -3,8 +3,9 @@
 layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 layout(rgba16f, binding = 0) uniform image2D U_combine;
-layout(rgba8, binding = 1) uniform image2D U_debug8;
-layout(rgba16f, binding = 2) uniform image2D U_debug16;
+layout(rgba8, binding = 1) uniform image2D U_alpha;
+layout(rgba8, binding = 3) uniform image2D U_debug8;
+layout(rgba16f, binding = 4) uniform image2D U_debug16;
 
 uniform float gamma;
 uniform sampler2D U_debugt;
@@ -34,6 +35,13 @@ void main(){
 
 	vec3 debug = imageLoad(U_debug8, uv).rgb;
 	debug = texture(U_debugt, vec2(uv) / imageSize(U_combine)).rgb;
+
+	vec2 grid_uv = (uv/32)%2;
+	bool grid = grid_uv.x == 0 ^^ grid_uv.y == 0;
+	vec3 grid_color = grid ? vec3(0) : vec3(0.1);
+	float alpha = imageLoad(U_alpha, uv).r;
+
+	color_new = mix(grid_color, color_new, alpha);
 
 	imageStore(U_combine, uv, vec4(color_new, 1));
 }
