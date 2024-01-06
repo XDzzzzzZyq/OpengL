@@ -135,4 +135,17 @@ namespace xdzm {
 		0.f, 1.f, 0.f, 0.f,
 		0.f, 0.f, 1.f, 0.f,
 		0.f, 0.f, 0.f, 1.f };
+
+	template<size_t S, typename T>
+	static float _matrix_sum(const T _m) {
+		float res = 0;
+		LOOP(S)
+			LOOP_N(S, j)
+				res += _m[i][j];
+		return res;
+	}
+
+	static float matrix_diff(const glm::mat4 _m1, const glm::mat4 _m2) {
+		return abs(_matrix_sum<3>(glm::mat3(_m2) - glm::mat3(_m1)));
+	}
 }

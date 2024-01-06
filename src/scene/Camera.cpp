@@ -102,7 +102,7 @@ void Camera::SetTarPos(const glm::vec3& _pos)
 
 void Camera::SetCamTrans(const glm::mat4& _trans, bool pos /*= true*/, bool rot /*= true*/)
 {
-	if (_trans == o_Transform)
+	if (xdzm::matrix_diff(_trans, o_Transform) < 0.000001)
 		return;
 
 	glm::vec3 _s, position, _sk;

@@ -137,6 +137,9 @@ void Transform3D::Spin(const glm::vec3& anch, const glm::vec3& axis, const float
 
 void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle, bool global_up/* = true*/)
 {
+	if(angle == glm::vec2(0))
+		return;
+
 	o_position -= anch;
 
 	o_position = global_up ? glm::rotateZ(o_position, angle.x) : glm::rotate(o_position, angle.y, o_dir_up);
