@@ -3,9 +3,11 @@
 layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 layout(rgba16f, binding = 0) uniform image2D U_combine;
-layout(rgba16f, binding = 2) uniform image2D U_normal;
+layout(rgba8, binding = 1) uniform image2D U_debug8;
+layout(rgba16f, binding = 2) uniform image2D U_debug16;
 
 uniform float gamma;
+uniform sampler2D U_debugt;
 
 vec3 ACESFilm(vec3 x)
 {
@@ -30,7 +32,8 @@ void main(){
 	vec3 color = imageLoad(U_combine, uv).rgb;
 	vec3 color_new = Vec3Film(color, gamma);
 
-	vec3 normal = imageLoad(U_normal, uv).rgb;
+	vec3 debug = imageLoad(U_debug8, uv).rgb;
+	debug = texture(U_debugt, vec2(uv) / imageSize(U_combine)).rgb;
 
 	imageStore(U_combine, uv, vec4(color_new, 1));
 }

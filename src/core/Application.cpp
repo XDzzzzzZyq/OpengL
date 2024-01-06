@@ -17,7 +17,10 @@ int Application::Init()
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	window = glfwCreateWindow(SCREEN_W + 100, SCREEN_H, "TEST_WINDOW", NULL, NULL);
 	if (!window)
 	{
@@ -172,14 +175,13 @@ int Application::Run()
 #if 0
 		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
 #endif
-
+		
 		renderer.Render();
 
 		renderer.Reset();
 		Event.Reset();
 
 		//DEBUG(renderer.r_frame_count);
-		DEBUG(renderer.r_scene->CheckStatus(SceneResource::SceneChanged))
 #if 0
 		DEBUG(renderer.GetActiveCamera()->o_position);
 		DEBUG(renderer.GetActiveCamera()->cam_pers);

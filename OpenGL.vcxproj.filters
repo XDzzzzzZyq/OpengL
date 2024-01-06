@@ -323,6 +323,8 @@
     <None Include="res\shaders\Reset_Distance.comp" />
     <None Include="res\shaders\SSR_SDF.comp" />
     <None Include="res\shaders\SSR_SDF_Resolve.comp" />
+    <None Include="res\shaders\PBR.comp" />
+    <None Include="res\shaders\Empty.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

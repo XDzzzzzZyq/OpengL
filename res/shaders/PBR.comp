@@ -1,11 +1,15 @@
-#version 430 core
+#version 460 core
 
-layout(location = 0) out vec4 Output;
-layout(location = 1) out vec4 OutDirDiff;
-layout(location = 2) out vec4 OutDirSpec;
-layout(location = 3) out vec4 OutIndDiff;
-layout(location = 4) out vec4 OutIndSpec;
-layout(location = 5) out vec4 OutEmission;
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+
+layout(rgba16f, binding = 0) uniform image2D _Output;
+layout(rgba16f, binding = 1) uniform image2D _OutDirDiff;
+layout(rgba16f, binding = 2) uniform image2D _OutDirSpec;
+layout(rgba16f, binding = 3) uniform image2D _OutIndDiff;
+layout(rgba16f, binding = 4) uniform image2D _OutIndSpec;
+layout(rgba16f, binding = 5) uniform image2D _OutEmission;
+layout(rgba8,	binding = 7) uniform image2D U_alpha;
+
 
 struct PointLight{
 	vec3 color;
@@ -96,7 +100,6 @@ uniform sampler2D U_normal;
 uniform sampler2D U_albedo;
 uniform sampler2D U_mrse;
 uniform sampler2D U_color;
-uniform sampler2D U_alpha;
 
 uniform samplerCube Envir_Texture_diff;
 uniform samplerCube Envir_Texture_spec;
@@ -106,7 +109,6 @@ uniform float point_far;
 
 // input
 uniform vec3 Cam_pos;
-in vec2 screen_uv;
 
 const float PI = 3.1415926;
 
@@ -301,13 +303,22 @@ vec3 LTC_Evaluate(vec4 Vec_Irrad)
 
 void main(){
 
-	/* [Block : DATA] */
+	vec4 Output = vec4(0);
+	vec4 OutDirDiff = vec4(0);
+	vec4 OutDirSpec = vec4(0);
+	vec4 OutIndDiff = vec4(0);
+	vec4 OutIndSpec = vec4(0);
+	vec4 OutEmission = vec4(0);
 
-	vec4 Pos_Dep = texture2D(U_pos, screen_uv).rgba;
+	/* [Block : DATA] */
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+	vec2 screen_uv = (vec2(uv)+0.5) / imageSize(_Output);
+
+	vec4 Pos_Dep = texture(U_pos, screen_uv).rgba;
 	vec3 Pos = Pos_Dep.xyz;
-	vec4 Normal_AO = texture2D(U_normal, screen_uv).rgba;
+	vec4 Normal_AO = texture(U_normal, screen_uv).rgba;
 	vec3 Normal = normalize(Normal_AO.xyz);
-	vec3 Albedo = texture2D(U_albedo, screen_uv).rgb;
+	vec3 Albedo = texture(U_albedo, screen_uv).rgb;
 
 	float AO = Normal_AO.a;
 
@@ -317,29 +328,28 @@ void main(){
 	vec3 ReflectRay = reflect(CamRay, Normal);
 	float NdotV = max(dot(Normal, -CamRay), 0);
 
-	vec4 MRSE = texture2D(U_mrse, screen_uv).rgba;
+	vec4 MRSE = texture(U_mrse, screen_uv).rgba;
 	float Metalness = clamp(MRSE.r, 0.001, 0.999);
 	float Roughness = clamp(MRSE.g, 0.001, 0.999);
 	float Specular = MRSE.b;
 	float Emission = MRSE.a;
 
-	vec3 Emission_Color = texture2D(U_emission, screen_uv).rgb;
+	vec3 Emission_Color = texture(U_emission, screen_uv).rgb;
 
-	float Alpha = texture2D(U_alpha, screen_uv).r;
-	float Select = texture2D(U_alpha, screen_uv).g;
+	float Alpha = imageLoad(U_alpha, uv).r;
 
 	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
 	vec3 Fresnel = fresnelSG(NdotV, F0);
 	vec3 ks = Fresnel;
 
 	float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
-	vec2 uv = vec2(Roughness, sqrt(1.0f - dotNV));
-	uv = uv * LUT_SCALE + LUT_BIAS;
+	vec2 ltc_uv = vec2(Roughness, sqrt(1.0f - dotNV));
+	ltc_uv = ltc_uv * LUT_SCALE + LUT_BIAS;
 
 	// Get 4 parameters for inverse M
-	vec4 t1 = texture(LTC1, uv);
+	vec4 t1 = texture(LTC1, ltc_uv);
 	// Get 2 parameters for Fresnel calculation
-	vec4 t2 = texture(LTC2, uv);
+	vec4 t2 = texture(LTC2, ltc_uv);
 
 	mat3 Minv = mat3(
 		vec3(t1.x, 0, t1.y),
@@ -355,8 +365,13 @@ void main(){
 	/* [Block : BG] */
 
 	if(Alpha < 0.05){
-		Output += vec4(Emission * Emission_Color, 1);
-		//Output = texture2D(LUT, screen_uv);
+		imageStore(_Output, uv, Output);
+		imageStore(_OutDirDiff, uv, OutDirDiff);
+		imageStore(_OutDirSpec, uv, OutDirSpec);
+		imageStore(_OutIndDiff, uv, OutIndDiff);
+		imageStore(_OutIndSpec, uv, OutIndSpec);
+		imageStore(_OutEmission, uv, OutEmission);
+		//Output = texture(LUT, screen_uv);
 		return;
 	}
 
@@ -493,4 +508,11 @@ void main(){
 	OutIndDiff = vec4(Ind_Diff, 1);
 	OutIndSpec = vec4(Ind_Spec, 1);
 	OutEmission = vec4(Emission * Emission_Color, Emission);
+
+	imageStore(_Output, uv, Output);
+	imageStore(_OutDirDiff, uv, OutDirDiff);
+	imageStore(_OutDirSpec, uv, OutDirSpec);
+	imageStore(_OutIndDiff, uv, OutIndDiff);
+	imageStore(_OutIndSpec, uv, OutIndSpec);
+	imageStore(_OutEmission, uv, OutEmission);
 }
