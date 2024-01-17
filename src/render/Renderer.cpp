@@ -386,51 +386,21 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  PBR COMPOSE  ////////////
 
 		//r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-		//r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
-		//r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
-		//TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
-		//TextureLib::LTC1()->Bind(13);
-		//TextureLib::LTC2()->Bind(14);
-		//r_light_data.Bind();
-		//if (GetActiveCamera()->is_Uniform_changed)
-		//	r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
-		//r_render_result->BindFrameBuffer();
-		//r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS();
-		//
-		//// store render result
-		//r_render_result->UnbindFrameBuffer();
-
-		static ComputeShader& pbr = ComputeShader::ImportShader("PBR",
-			Uni("U_color", BUFFER_TEXTURE + COMBINE_FB),
-			Uni("U_pos", BUFFER_TEXTURE + POS_FB),
-			Uni("U_normal", BUFFER_TEXTURE + NORMAL_FB),
-			Uni("U_albedo", BUFFER_TEXTURE + ALBEDO_FB),
-			Uni("U_mrse", BUFFER_TEXTURE + MRSE_FB),
-			Uni("U_emission", BUFFER_TEXTURE + EMIS_COL_FB),
-			//Uni("U_alpha", BUFFER_TEXTURE + MASK_FB),
-			Uni("Envir_Texture_diff", IBL_TEXTURE),
-			Uni("Envir_Texture_spec", IBL_TEXTURE + 1),
-			Uni("LUT", PNG_TEXTURE),
-			Uni("LTC1", 13),
-			Uni("LTC2", 14)
-		);
-		pbr.SetValue("point_far", Light::point_shaodow_far); 
-		pbr.SetValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
+		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
+		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-		//TextureLib::IBL_LUT()->Bind(PNG_TEXTURE);
-		TextureLib::LTC1()->Bind(13); 
-		TextureLib::LTC2()->Bind(14); 
-		r_light_data.Bind(); 
-		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0); 
+		TextureLib::LTC1()->Bind(13);
+		TextureLib::LTC2()->Bind(14);
+		r_light_data.Bind();
+		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 1);
 		r_render_result->BindFrameBufferTexR(DIR_SPEC_FB, 2);
 		r_render_result->BindFrameBufferTexR(IND_DIFF_FB, 3);
 		r_render_result->BindFrameBufferTexR(IND_SPEC_FB, 4);
-		r_render_result->BindFrameBufferTexR(DIR_EMIS_FB, 5); 
+		r_render_result->BindFrameBufferTexR(DIR_EMIS_FB, 5);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 7);
-		pbr.SetValue("Cam_pos", GetActiveCamera()->o_position);
-		pbr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
-		
+		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+		r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS(r_render_result->GetSize(), 16);		
 		////////////      SSR     ////////////
 
 		if (r_ssr_algorithm!=SSRAlg::None) {

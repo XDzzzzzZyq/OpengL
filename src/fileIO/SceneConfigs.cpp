@@ -265,7 +265,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	config2->UseEnvironment(environment);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
@@ -276,7 +276,6 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
 	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
-	pps1->AddBinding("LUT", PNG_TEXTURE);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config2->UsePostProcessing(pps1);
@@ -325,7 +324,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	config3->UseEnvironment(environment);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
@@ -336,7 +335,6 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
 	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
-	pps1->AddBinding("LUT", PNG_TEXTURE);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config3->UsePostProcessing(pps1);

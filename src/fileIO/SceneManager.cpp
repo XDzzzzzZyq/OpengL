@@ -214,6 +214,11 @@ void SceneResource::UpdateObjTransforms()
 		dPoint->ApplyAllTransform();
 		UpdateSceneStatus(ObjectTransChanged, dPoint->is_Uniform_changed);
 	}
+
+	for (auto& pps : pps_list)
+	{
+		UpdateSceneStatus(ShaderChanged, pps->pps_shader->is_shader_changed);
+	}
 }
 
 
@@ -251,6 +256,11 @@ void SceneResource::ResetStatus()
 	for (auto& [id, dPoint] : dPoints_list)
 	{
 		dPoint->is_Uniform_changed = false;
+	}
+
+	for (auto& pps : pps_list)
+	{
+		pps->pps_shader->is_shader_changed = false;
 	}
 
 	GetActiveCamera()->is_Uniform_changed = false;

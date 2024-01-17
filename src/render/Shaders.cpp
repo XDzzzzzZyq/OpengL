@@ -799,11 +799,16 @@ void ComputeShader::LocalDebug() const
 
 ComputeShader& ComputeShader::ImportShader(std::string _name)
 {
+	return *ImportShaderSrc(_name).get();
+}
+
+std::shared_ptr<ComputeShader> ComputeShader::ImportShaderSrc(std::string _name)
+{
 	if (comp_list.find(_name) != comp_list.end())
-		return *comp_list[_name].get();
+		return comp_list[_name];
 
 	comp_list[_name] = std::make_shared<ComputeShader>(_name);
-	return *comp_list[_name].get();
+	return comp_list[_name];
 }
 
 std::string ComputeShader::GetSSRShaderName(char _type)

@@ -57,7 +57,7 @@ protected:
 
 public:
 
-	bool is_shader_changed;
+	bool is_shader_changed{ true };
 	inline GLuint GetProgramID() const { return program_id; }
 
 	virtual GLuint GetShaderID(ShaderType type) const = 0;
@@ -249,6 +249,9 @@ public:
 	static ComputeShader& ImportShader(std::string _name);
 	template<class... Tuples>
 	static ComputeShader& ImportShader(std::string _name, const Tuples&... args);
+	static std::shared_ptr<ComputeShader> ImportShaderSrc(std::string _name);
+	template<class... Tuples>
+	static std::shared_ptr<ComputeShader> ImportShaderSrc(std::string _name, const Tuples&... args);
 
 	static std::string GetSSRShaderName(char _type);
 	static std::string GetAOShaderName(char _type);
@@ -266,11 +269,17 @@ ComputeShader::ComputeShader(const std::string& name, const Tuples&... args)
 };
 
 template<class... Tuples>
-ComputeShader& ComputeShader::ImportShader(std::string _name, const Tuples&... args)
+static std::shared_ptr<ComputeShader> ComputeShader::ImportShaderSrc(std::string _name, const Tuples&... args)
 {
 	if (comp_list.find(_name) != comp_list.end())
-		return *comp_list[_name].get();
+		return comp_list[_name];
 
 	comp_list[_name] = std::make_shared<ComputeShader>(_name, args...);
-	return *comp_list[_name].get();
+	return comp_list[_name];
+}
+
+template<class... Tuples>
+ComputeShader& ComputeShader::ImportShader(std::string _name, const Tuples&... args)
+{
+	return *ImportShaderSrc(_name, args...).get();
 }

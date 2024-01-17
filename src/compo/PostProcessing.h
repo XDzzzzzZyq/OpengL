@@ -17,7 +17,8 @@ class PostProcessing : public GameObject
 {
 public:
 	Field pps_field{};
-	Sprite pps_sprite;
+	Sprite pps_sprite{};
+	ShaderType pps_type{};
 
 public:
 	PostProcessing(const std::string& _shader, ShaderType _type = FRAGMENT_SHADER);
@@ -28,18 +29,19 @@ private:
 	void UpdateBindings();
 
 public:
-	std::optional<RenderShader> pps_shader;
+	std::shared_ptr<Shaders> pps_shader;
+
 	FrameBuffer pps_fb;
 	template<typename... T>
 	void SetShaderValue(const std::string& _name, T ..._v);
 	void SetShaderValue(const std::string& _name, GLsizei _count, const float* va0, ArrayType _TYPE);
 	void AddBinding(std::string _pass_name, GLuint _slot);
 
-	void* GetShader()		override { return &pps_shader.value(); };
+	void* GetShader()		override { return pps_shader.get(); };
 	void* GetTransform()	override { return dynamic_cast<Transform*>( pps_field.GetTransformPtr()); }
 
 public:
-	void RenderPPS();
+	void RenderPPS(const glm::vec2& _scr_size = glm::vec2(0), GLuint _batch = 16);
 	void RenderPPSSpr(Camera* cam);
 };
 
@@ -48,6 +50,5 @@ void PostProcessing::SetShaderValue(const std::string& _name, T ..._v)
 {
 	pps_shader->UseShader();
 	pps_shader->SetValue(_name, _v...);
-	pps_shader->UnuseShader();
 }
 
