@@ -25,13 +25,14 @@ public:
 
 private:
 
+	FrameBuffer pps_fb;
 	std::unordered_map<std::string, GLuint> pps_bindings;
 	void UpdateBindings();
 
 public:
+
 	std::shared_ptr<Shaders> pps_shader;
 
-	FrameBuffer pps_fb;
 	template<typename... T>
 	void SetShaderValue(const std::string& _name, T ..._v);
 	void SetShaderValue(const std::string& _name, GLsizei _count, const float* va0, ArrayType _TYPE);

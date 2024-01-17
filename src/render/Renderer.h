@@ -34,7 +34,18 @@ public:
 	GLuint r_frame_height = SCREEN_H;
 
 private:
+
 	std::shared_ptr<FrameBuffer> r_render_result;
+
+public:
+
+	std::vector<FrameBuffer> r_buffer_list;
+	void InitFrameBuffer();
+	void BindFrameBuffer(int slot);
+	void EndFrameBuffer(int slot);
+	void FrameBufferResize(const glm::vec2& size);
+	GLuint GetFrameBufferTexture(int slot);
+
 public:
 	Renderer();
 	void Init();
@@ -120,15 +131,6 @@ public:
 
 	std::string GetObjectName(int ID);
 	int GetSelectID(GLuint x, GLuint y);
-
-public:
-
-	std::vector<FrameBuffer> r_buffer_list;
-	void InitFrameBuffer();
-	void BindFrameBuffer(int slot);
-	void EndFrameBuffer(int slot);
-	void FrameBufferResize(const glm::vec2& size);
-	GLuint GetFrameBufferTexture(int slot);
 
 public:
 

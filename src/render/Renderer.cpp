@@ -400,7 +400,11 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBufferTexR(DIR_EMIS_FB, 5);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 7);
 		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+		r_render_result->BindFrameBuffer();
 		r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS(r_render_result->GetSize(), 16);		
+		r_render_result->UnbindFrameBuffer();
+
+
 		////////////      SSR     ////////////
 
 		if (r_ssr_algorithm!=SSRAlg::None) {
