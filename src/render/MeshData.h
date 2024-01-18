@@ -35,14 +35,16 @@ public:
 		}
 	};
 
+	friend class MeshLib;
+
 private:
 	static std::string obj_file_root;
 private:
 
-	Reading me_read;
-	VertexArray me_vertArry;
-	VertexBuffer me_vertBuffer;
-	IndexBuffer me_index;
+	Reading me_read{};
+	VertexArray me_vertArry{};
+	VertexBuffer me_vertBuffer{};
+	IndexBuffer me_index{};
 
 public:
 
@@ -81,5 +83,9 @@ public:
 public:
 
 	static MeshResource Square;
+
+public:
+
+	static void ToGeoCenter(MeshResource _tar);
 
 };

@@ -167,9 +167,11 @@ void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 
 	if (!_keep_offset) return;
 
+	glm::vec3 pos_off = o_position - _p_trans->o_position;
 	// if self.trans = B=DA, parent.trans = A, then D=BA^-1
 	glm::mat4 D = o_Transform * _p_trans->o_InvTransform;
 	SetTrans(D);
+	SetPos(D*glm::vec4(pos_off, 0));
 }
 
 void Transform3D::UnsetParent(bool _keep_offset /*= true*/)

@@ -10,12 +10,14 @@ VertexArray::~VertexArray()
 	//
 }
 
-void VertexArray::AddBuffer(const VertexBuffer& vb, const BufferLayout& bl)
+void VertexArray::AddBuffer(VertexBuffer& vb, BufferLayout bl)
 {
 	vb.Bind();
 	Bind();
+
 	const auto& eles = bl.GetEles(); //get the list of layout patterns
 	GLuint offset = 0;
+
 	for (GLuint i = 0;i < eles.size();i++)
 	{
 		const auto& ele = eles[i];
@@ -28,6 +30,8 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const BufferLayout& bl)
 	}
 	vb.Unbind();
 	Unbind();
+
+	m_stride = bl.GetStride();
 }
 
 void VertexArray::DelVertArr() const

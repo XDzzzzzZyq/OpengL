@@ -10,7 +10,8 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void AddBuffer(const VertexBuffer& vb, const BufferLayout& bl); //add one buffer with its layout pattern
+	GLuint m_stride{};
+	void AddBuffer(VertexBuffer& vb, BufferLayout bl); //add one buffer with its layout pattern
 
 	void DelVertArr() const;
 

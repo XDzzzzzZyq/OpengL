@@ -6,6 +6,8 @@ Mesh::Mesh(const std::string& path)
 	o_type = GO_MESH;
 
 	o_mesh = MeshLib::LoadMesh(path);
+	SetPos(o_mesh->GetMeshCenter());
+	MeshLib::ToGeoCenter(o_mesh);
 
 	o_name = o_mesh->GetMeshName();
 

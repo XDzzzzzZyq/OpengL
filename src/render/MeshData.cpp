@@ -1,4 +1,6 @@
 #include "MeshData.h"
+#include "macros.h"
+#include "operator.h"
 
 std::string MeshData::obj_file_root = "res/obj/";
 
@@ -251,6 +253,8 @@ std::string MeshData::GetMeshName() const
 
 std::unordered_map<std::string, MeshLib::MeshResource> MeshLib::mesh_list = {};
 
+MeshLib::MeshResource MeshLib::Square = nullptr;
+
 MeshLib::MeshLib()
 {
 
@@ -277,4 +281,21 @@ MeshLib::MeshResource MeshLib::LoadMesh(const std::string path)
 	return mesh;
 }
 
-MeshLib::MeshResource MeshLib::Square = nullptr;
+void MeshLib::ToGeoCenter(MeshResource _tar)
+{
+	_tar->me_vertBuffer.Bind();
+	GLfloat* pData = (GLfloat*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
+
+	if (pData == nullptr)
+		return;
+
+	for (int i = 0; i < _tar->me_read.data_array.size(); i += _tar->me_vertArry.m_stride/sizeof(GLfloat)) {
+		LOOP_N(3, j)
+			pData[i + j] -= _tar->me_read.center[j];
+	}
+
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+
+	_tar->me_read.center = glm::vec3{ 0 };
+	DEBUG("Done")
+}

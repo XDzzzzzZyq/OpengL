@@ -5,9 +5,9 @@
 
 struct BufferElement
 {
-	GLuint type;
-	GLuint count;
-	GLuint is_norm;
+	GLuint type{};
+	GLuint count{};
+	GLuint is_norm{};
 
 	static GLuint getTypeSize(GLuint type) {
 		switch (type)
@@ -24,11 +24,11 @@ struct BufferElement
 class BufferLayout
 {
 private:
-	std::vector<BufferElement> m_ele_list;
-	GLuint m_stride;
+	std::vector<BufferElement> m_ele_list{};
+	GLuint m_stride{};
 public:
 	BufferLayout()
-		:m_stride(0) {};
+		:m_stride(0), m_ele_list(0) {};
 	~BufferLayout();
 
 	template<typename T>
@@ -47,7 +47,7 @@ public:
 		m_stride += sizeof(T) * count; //add up the stride per each Push()
 	}
 
-	inline const std::vector<BufferElement>GetEles() const { return m_ele_list; };
+	inline std::vector<BufferElement> GetEles() const { return m_ele_list; };
 	inline GLuint GetStride() const { return m_stride; };
 };
 
