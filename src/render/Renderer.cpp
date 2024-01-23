@@ -50,7 +50,7 @@ void Renderer::Init()
 	r_sdf_field.ResetBuffer();
 
 	EventInit();
-
+	ComputeShader::InitComputeLib();
 	Light::EnableShadowMap();
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
@@ -198,14 +198,14 @@ void Renderer::Render(bool rend, bool buff) {
 	////////////  TRANSFORM UDPATE  /////////////
 
 	r_scene->UpdateObjTransforms();
-	if (r_scene->CheckStatus(SceneResource::SceneChanged) && r_sampling_average == SamplingType::Average)
+	if (r_scene->CheckStatus(SceneResource::SceneChanged) && r_config.r_sampling_average == RenderConfigs::SamplingType::Average)
 		EventListener::frame_count = 1;
 	//r_scene->_debugStatus();
 
 
 	////////////     OPTICAL FLOW     ////////////
 
-	if (r_of_algorithm == OptFlwAlg::Forward && r_sampling_average == SamplingType::IncrementAverage)
+	if (r_config.RequiresFwdOF())
 	{
 		static ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
@@ -218,8 +218,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 	/////////// Signed Distance Field ///////////
 
-	const bool requires_sdf = r_ssr_algorithm == SSRAlg::SDFRayMarching || r_ssr_algorithm == SSRAlg::SDFResolvedRayMarching || r_shadow_algorithm == Light::ShadowAlg::SDFSoftShadow;
-	const bool realtime_sdf = (!r_scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_sampling_average == SamplingType::Average;
+	const bool requires_sdf = r_config.RequiresSDF();
+	const bool realtime_sdf = (!r_scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_config.r_sampling_average == RenderConfigs::SamplingType::Average;
 	if(requires_sdf && r_scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
 		ConstructSDF();
 
@@ -339,7 +339,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////// BACKWARD OPTICAL FLOW ////////
 
-		if (r_of_algorithm==OptFlwAlg::Backward && r_sampling_average == SamplingType::IncrementAverage)
+		if (r_config.RequiresBwdOF())
 		{
 			static ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
@@ -352,9 +352,9 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////  SSAO + DEPTH  ////////////
 
-		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_ao_ksize);
-		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName((char)r_ao_algorithm), Uni("incre_average", true), Uni("kernel_length", (GLuint)r_ao_ksize), Uni("kernel", (GLuint)r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", r_ao_radius), Uni("U_opt_flow", 1));
-		float ao_update_rate = r_sampling_average == SamplingType::IncrementAverage ? 0.05f : 1.0 / EventListener::frame_count;
+		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_config.r_ao_ksize);
+		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName((char)r_config.r_ao_algorithm), Uni("incre_average", true), Uni("kernel_length", (GLuint)r_config.r_ao_ksize), Uni("kernel", (GLuint)r_config.r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius",r_config.r_ao_radius), Uni("U_opt_flow", 1));
+		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0 / EventListener::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
@@ -374,12 +374,12 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////// LIGHTING CACHE ////////////
 
-		if (r_shadow_algorithm!=Light::ShadowAlg::None) {
-			const float shadow_update_rate = r_sampling_average == SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
+		if (r_config.RequiresShadow()) {
+			const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
-			r_light_data.UpdateLightingCache(EventListener::frame_count, (bool)r_sampling_average);
+			r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
 		}
 
 
@@ -407,9 +407,9 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////      SSR     ////////////
 
-		if (r_ssr_algorithm!=SSRAlg::None) {
+		if (r_config.RequiresSSR()) {
 			static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-			ComputeShader& ssr = ComputeShader::ImportShader(ComputeShader::GetSSRShaderName((char)r_ssr_algorithm), Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
+			ComputeShader& ssr = ComputeShader::ImportShader(ComputeShader::GetSSRShaderName((char)r_config.r_ssr_algorithm), Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -424,7 +424,7 @@ void Renderer::Render(bool rend, bool buff) {
 			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
 			r_sdf_field.Bind();
 			ssr.UseShader();
-			ssr.SetValue("use_incr_aver", (bool)r_sampling_average);
+			ssr.SetValue("use_incr_aver", (bool)r_config.r_sampling_average);
 			ssr.SetValue("std_ud_rate", 1.0f / EventListener::frame_count);
 			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
 			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
@@ -435,8 +435,8 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////     FXAA     ////////////
 
-		if (r_anti_alias!=AAAlg::None) {
-			static ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName((char)r_anti_alias));
+		if (r_config.RequiresFXAA()) {
+			static ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName((char)r_config.r_anti_alias));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -453,7 +453,7 @@ void Renderer::Render(bool rend, bool buff) {
 		//r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 2);
 		//r_buffer_list[_RASTER].BindFrameBufferTex(MASK_FB, 1);
 		tone.UseShader();
-		tone.SetValue("gamma", r_gamma);
+		tone.SetValue("gamma", r_config.r_gamma);
 		tone.RunComputeShaderSCR(r_render_result->GetSize(), 8);
 
 

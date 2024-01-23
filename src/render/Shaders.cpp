@@ -721,6 +721,17 @@ void ChainedShader::LocalDebug() const
 
 std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
 
+#include "xdz_math.h"
+void ComputeShader::InitComputeLib()
+{
+	static auto pos_offset = xdzm::rand3nv(16);
+
+	ComputeShader::ImportShader("Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShader("Shadow_Sun", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	ComputeShader::ImportShader("Shadow_Spot", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShader("Shadow_Area", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+}
+
 void ComputeShader::ResetComputeLib()
 {
 	for (auto& [name, sh] : comp_list)

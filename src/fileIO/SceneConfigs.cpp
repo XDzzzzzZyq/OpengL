@@ -343,3 +343,60 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	return config3;
 }
 
+std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= "shadow test"*/)
+{
+	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
+		return SceneManager::sce_configs[_name];
+
+	std::shared_ptr<SceneResource> config4 = std::make_shared<SceneResource>();
+	SceneManager::sce_configs[_name] = config4;
+
+	DEBUG("\n---------------CAMERA----------------")
+		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	camera->SetPos({ 10, 0, 10 });
+	camera->SetRot({ 45, 0, 90 });
+	camera->ApplyTransform();
+	camera->GetInvTransform();
+	config4->UseCamera(camera);
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	go4->SetObjShader("testS", "Rasterization");
+	go4->SetPos({ 0,0,0 });
+	go4->SetScale({ 8,8,2 });
+	go4->SetRot({ 0,0,90 });
+	config4->UseMesh(go4);	
+	
+	DEBUG("\n---------------LIGHT----------------")
+		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
+	pointLight1->SetPower(20);
+	pointLight1->ApplyTransform();
+	config4->UseLight(pointLight1);
+
+	DEBUG("\n---------------ENVIR----------------")
+		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");
+	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
+	config4->UseEnvironment(environment);
+
+	DEBUG("\n---------------POSTPRCS----------------")
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR", COMPUTE_SHADER);
+	pps1->pps_field.SetPos({ 5, 5, 5 });
+	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
+	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
+	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
+	config4->UsePostProcessing(pps1);
+
+	return config4;
+}
+
+
+

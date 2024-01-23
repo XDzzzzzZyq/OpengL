@@ -201,6 +201,7 @@
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="dep\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\render\RenderConfigs.cpp" />
     <ClCompile Include="src\compo\EventListener.cpp" />
     <ClCompile Include="src\compo\Field.cpp" />
     <ClCompile Include="src\compo\Parameters.cpp" />
@@ -384,6 +385,7 @@
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
     <ClInclude Include="dep\stb_image\stb_image.h" />
     <ClInclude Include="dep\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\render\RenderConfigs.h" />
     <ClInclude Include="src\compo\EventListener.h" />
     <ClInclude Include="src\compo\Field.h" />
     <ClInclude Include="src\compo\Parameters.h" />

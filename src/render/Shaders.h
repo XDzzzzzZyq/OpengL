@@ -213,7 +213,6 @@ private:
 public:
 
 	ShaderUnit comp_shader;
-	static void ResetComputeLib();
 
 public:
 
@@ -258,6 +257,8 @@ public:
 	static std::string GetAAShaderName(char _type);
 	static std::string GetShadowShaderName(char _type, char _light_type);
 
+	static void InitComputeLib();
+	static void ResetComputeLib();
 };
 
 template<class... Tuples>

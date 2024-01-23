@@ -9,6 +9,8 @@
 #include "buffer/StorageBuffer.h"
 #include "buffer/UniformBuffer.h"
 
+#include "RenderConfigs.h"
+
 #include <array>
 
 enum LightType
@@ -85,13 +87,6 @@ private:
 	static std::array<glm::mat4, 6> _point_6side;
 
 public:
-
-	enum class ShadowAlg : char
-	{
-		None,
-		ShadowMap,
-		SDFSoftShadow
-	};
 
 	static void EnableShadowMap();
 
@@ -246,6 +241,6 @@ public:
 
 public:
 	void UpdateLight(Light* light);
-	void UpdateLightingCache(int frame, bool is_incr_aver);
+	void UpdateLightingCache(int frame, RenderConfigs* config);
 	void BindShadowMap() const;
 };

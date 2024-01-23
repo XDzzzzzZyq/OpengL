@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "buffer/FrameBuffer.h"
 #include "SDFField.h"
+#include "RenderConfigs.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -47,78 +48,16 @@ public:
 	GLuint GetFrameBufferTexture(int slot);
 
 public:
+
 	Renderer();
 	void Init();
 
 	~Renderer();
-public:
-
-	// Rendering Pipe-Lines
-	enum class RenderPipeLine : char
-	{
-		Forward,
-		Deferred,
-		Custom0
-	};
-
-	// Sampling Average
-	enum class SamplingType : char 
-	{
-		Average,
-		IncrementAverage
-	};
-
-
-	// Optical Flow Algorithms
-	enum class OptFlwAlg : char
-	{
-		None,
-		Forward,
-		Backward
-	};
-
-	// Screen Space Reflection Algorithms
-	enum class SSRAlg : char
-	{
-		None,
-		RayMarching,
-		SDFRayMarching,
-		SDFResolvedRayMarching
-	};
-
-	// Anti Aliasing Algorithms
-	enum class AAAlg : char
-	{
-		None,
-		MSAA,
-		FXAA
-	};
-
-	// Ambient Occlusion Algorithms
-	enum class AOAlg : char
-	{
-		None,
-		SSAO,
-		HBAO
-	};
-
-	SamplingType r_sampling_average = SamplingType::Average;
-	OptFlwAlg r_of_algorithm = OptFlwAlg::Backward;
-	RenderPipeLine r_pipeline = RenderPipeLine::Deferred;	// Multi-passes Deferred Rendering
-	AAAlg r_anti_alias = AAAlg::FXAA;						// Fast Approximate Anti-Aliasing
-	SSRAlg r_ssr_algorithm = SSRAlg::SDFResolvedRayMarching;					// Screen Space Reflection
-	AOAlg r_ao_algorithm = AOAlg::SSAO;
-	Light::ShadowAlg r_shadow_algorithm = Light::ShadowAlg::ShadowMap;
-
-	float r_gamma = 1.0f;
-	int r_ao_ksize = 16;
-	float r_ao_radius = 0.5;
 
 public:
 
 	bool r_render_icons = true;
 	bool r_is_preview = true;
-	int r_sample_pf = 128;
 
 public:
 
@@ -126,6 +65,8 @@ public:
 
 	LightArrayBuffer r_light_data;
 	SDFField r_sdf_field;
+	RenderConfigs r_config;
+	RenderConfigs* GetConfig() { return &r_config; }
 
 public:
 

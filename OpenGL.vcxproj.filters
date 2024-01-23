@@ -249,6 +249,9 @@
     <ClCompile Include="src\render\buffer\BufferLayout.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\RenderConfigs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -601,6 +604,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\render\buffer\BufferLayout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\RenderConfigs.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

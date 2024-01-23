@@ -59,8 +59,8 @@ int Application::Init()
 	renderer.r_using_ssr = false;
 #else
 	renderer.UseScene(SceneManager::SceneConfig2());
-	renderer.r_ao_radius = 0.8;
-	renderer.r_render_icons = false;
+	renderer.GetConfig()->r_ao_radius = 0.8;
+	//renderer.r_render_icons = false;
 
 	Light::area_blur_range = 0.03;
 #endif
@@ -122,13 +122,13 @@ int Application::Run()
 	};
 
 	dynamic_cast<Viewport*>(UI.FindImguiLayer("Viewport"))->display_grid = false;
-	UI.FindImguiMenuItem("Render", "Rendering PipeLine")->BindOption(&renderer.r_pipeline);
-	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.r_of_algorithm);
-	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.r_anti_alias);
-	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.r_ssr_algorithm);
-	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.r_shadow_algorithm);
-	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.r_ao_algorithm);
-	UI.FindImguiMenuItem("Render", "Sampling")->BindOption(&renderer.r_sampling_average);
+	UI.FindImguiMenuItem("Render", "Rendering PipeLine")->BindOption(&renderer.GetConfig()->r_pipeline);
+	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.GetConfig()->r_of_algorithm);
+	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
+	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.GetConfig()->r_ssr_algorithm);
+	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm);
+	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.GetConfig()->r_ao_algorithm);
+	UI.FindImguiMenuItem("Render", "Sampling")->BindOption(&renderer.GetConfig()->r_sampling_average);
 	UI.FindImguiMenuItem("View", "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {
@@ -149,7 +149,7 @@ int Application::Run()
 		Roughness = UI.GetParaValue("test layer", "Roughness")->Get<float>();
 		Specular = UI.GetParaValue("test layer", "Specular")->Get<float>();
 		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
-		renderer.r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
+		renderer.GetConfig()->r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
 	};
 	UI.GetCurrentWindow();
 

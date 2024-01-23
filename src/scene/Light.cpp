@@ -514,14 +514,14 @@ void LightArrayBuffer::UpdateLight(Light* light)
 	}
 }
 
-void LightArrayBuffer::UpdateLightingCache(int frame, bool is_incr_aver)
+void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 {
-	static auto pos_offset = xdzm::rand3nv(16);
+	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point");
+	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun");
+	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot");
+	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area");
 
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
-	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun",   Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
-	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
-	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
 	const float point_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
 	const float sun_ud_rate		= is_incr_aver ? 0.05 : 1.0 / frame;
