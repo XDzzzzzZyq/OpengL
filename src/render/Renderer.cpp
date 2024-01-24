@@ -50,7 +50,7 @@ void Renderer::Init()
 	r_sdf_field.ResetBuffer();
 
 	EventInit();
-	ComputeShader::InitComputeLib();
+	ComputeShader::InitComputeLib(GetConfig());
 	Light::EnableShadowMap();
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
@@ -352,8 +352,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////  SSAO + DEPTH  ////////////
 
-		static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(r_config.r_ao_ksize);
-		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName((char)r_config.r_ao_algorithm), Uni("incre_average", true), Uni("kernel_length", (GLuint)r_config.r_ao_ksize), Uni("kernel", (GLuint)r_config.r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius",r_config.r_ao_radius), Uni("U_opt_flow", 1));
+		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
 		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0 / EventListener::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
@@ -409,7 +408,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (r_config.RequiresSSR()) {
 			static std::vector<glm::vec3> noise = xdzm::rand3nv(32);
-			ComputeShader& ssr = ComputeShader::ImportShader(ComputeShader::GetSSRShaderName((char)r_config.r_ssr_algorithm), Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
+			ComputeShader& ssr = ComputeShader::ImportShader(ComputeShader::GetSSRShaderName(GetConfig()));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -436,7 +435,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////     FXAA     ////////////
 
 		if (r_config.RequiresFXAA()) {
-			static ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName((char)r_config.r_anti_alias));
+			static ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName(GetConfig()));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);

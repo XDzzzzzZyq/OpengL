@@ -271,6 +271,11 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const GLuint* va0
 	}
 }
 
+void Shaders::SetValue(const std::string& name, ArrayUni arr)
+{
+	SetValue(name, arr.size, arr.data, arr.type);
+}
+
 void Shaders::SetValue(const std::string& name, GLsizei count, const glm::mat4* va0)
 {
 	int id = getVarID(name.c_str());
@@ -720,16 +725,38 @@ void ChainedShader::LocalDebug() const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
+std::unordered_map<std::string, std::vector<ComputeShader::Default>> ComputeShader::config_list = {};
+
+void ComputeShader::PushDefult(std::string name, std::string para_name, AvailUnis def)
+{
+	if (config_list.find(name) == config_list.end())
+		config_list[name] = std::vector<ComputeShader::Default>();
+
+	config_list[name].emplace_back(para_name, def);
+}
+
+void ComputeShader::PushDefult(std::string name, std::string para_name, GLuint _size, float* _data, ArrayType _type)
+{
+	PushDefult(name, para_name, AvailUnis(Shaders::ArrayUni(_size, _data, _type)));
+}
 
 #include "xdz_math.h"
-void ComputeShader::InitComputeLib()
+void ComputeShader::InitComputeLib(RenderConfigs* config)
 {
-	static auto pos_offset = xdzm::rand3nv(16);
+	static auto pos_offset = xdzm::rand3nv(16); // must be static
 
-	ComputeShader::ImportShader("Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
-	ComputeShader::ImportShader("Shadow_Sun", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
-	ComputeShader::ImportShader("Shadow_Spot", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
-	ComputeShader::ImportShader("Shadow_Area", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShaderConfigs("Shadow_Point",Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShaderConfigs("Shadow_Sun",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	ComputeShader::ImportShaderConfigs("Shadow_Spot", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShaderConfigs("Shadow_Area", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+
+	static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(config->r_ao_ksize);
+
+	for (const auto& pref : ShaderLib::AO_prefix)
+		ComputeShader::ImportShaderConfigs(pref+"AO", Uni("incre_average", true), Uni("kernel_length", (GLuint)config->r_ao_ksize), Uni("kernel", (GLuint)config->r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", config->r_ao_radius), Uni("U_opt_flow", 1));
+
+	for(const auto& pref : ShaderLib::SSR_prefix)
+		ComputeShader::ImportShaderConfigs("SSR"+ pref, Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
 }
 
 void ComputeShader::ResetComputeLib()
@@ -747,16 +774,30 @@ ComputeShader::ComputeShader(const std::string& name)
 
 	comp_shader.sh_code = code;
 	comp_shader.sh_type = COMPUTE_SHADER;
+
+	ResetDefult(name);
 }
 
 ComputeShader::ComputeShader()
-{
-
-}
+{}
 
 ComputeShader::~ComputeShader()
 {
 
+}
+
+void ComputeShader::ResetDefult(std::string name)
+{
+
+	if (ComputeShader::config_list.find(name) == ComputeShader::config_list.end()) {
+		DEBUG("no defult configs for: " + name);
+		return;
+	}
+
+	UseShader();
+	for (auto& [p_name, def] : ComputeShader::config_list[name]) {
+		std::visit([this, p_name](auto& p_value) {SetValue(p_name, p_value); }, def);
+	}
 }
 
 void ComputeShader::CreateShader(const std::string& compShader)
@@ -822,22 +863,25 @@ std::shared_ptr<ComputeShader> ComputeShader::ImportShaderSrc(std::string _name)
 	return comp_list[_name];
 }
 
-std::string ComputeShader::GetSSRShaderName(char _type)
+std::string ComputeShader::GetSSRShaderName(RenderConfigs* config)
 {
-	assert(_type < ShaderLib::SSR_prefix.size());
-	return "SSR" + ShaderLib::SSR_prefix[_type];
+	int alg = (int)config->r_ssr_algorithm;
+	assert(alg < ShaderLib::SSR_prefix.size() && "unknown SSR type");
+	return "SSR" + ShaderLib::SSR_prefix[alg];
 }
 
-std::string ComputeShader::GetAOShaderName(char _type)
+std::string ComputeShader::GetAOShaderName(RenderConfigs* config)
 {
-	assert(_type < ShaderLib::AO_prefix.size());
-	return ShaderLib::AO_prefix[_type] + "AO";
+	int alg = (int)config->r_shadow_algorithm;
+	assert(alg < ShaderLib::AO_prefix.size() && "unknown AO type");
+	return ShaderLib::AO_prefix[alg] + "AO";
 }
 
-std::string ComputeShader::GetAAShaderName(char _type)
+std::string ComputeShader::GetAAShaderName(RenderConfigs* config)
 {
-	assert(_type < ShaderLib::AA_prefix.size());
-	return ShaderLib::AA_prefix[_type] + "AA";
+	int alg = (int)config->r_anti_alias;
+	assert(alg < ShaderLib::AA_prefix.size() && "unknown AA type");
+	return ShaderLib::AA_prefix[alg] + "AA";
 }
 
 std::string ComputeShader::GetShadowShaderName(char _type, char _light_type)

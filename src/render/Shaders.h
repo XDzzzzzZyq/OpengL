@@ -1,8 +1,11 @@
 #pragma once
 
 #include "ShaderLib.h"
+#include "RenderConfigs.h"
+
 #include <functional>
 #include <optional>
+#include <variant>
 
 enum ArrayType
 {
@@ -28,6 +31,13 @@ public:
 		GLuint sh_ID{ 0 };
 		std::string sh_code{ "" };
 		std::optional<ShaderStruct> sh_struct{};
+	};
+
+	struct ArrayUni 
+	{
+		GLuint size;
+		float* data;
+		ArrayType type;
 	};
 
 public:
@@ -91,6 +101,7 @@ public:
 	void SetValue(const std::string& name, const GLuint& v0);
 	//void SetValue(const std::string& name, GLsizei count, const GLint* va0);
 	void SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE);
+	void SetValue(const std::string& name, Shaders::ArrayUni arr);
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const GLuint* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const glm::mat4* va0);
@@ -208,7 +219,15 @@ ChainedShader& ChainedShader::ImportShader(_Name ...name)
 class ComputeShader : public Shaders {
 
 private:
+
+	using AvailUnis = std::variant<int, float, GLuint, Shaders::ArrayUni>;
+	using Default = std::pair<std::string, AvailUnis>;
+
 	static std::unordered_map<std::string, std::shared_ptr<ComputeShader>> comp_list;
+	static std::unordered_map<std::string, std::vector<Default>> config_list;
+
+	static void PushDefult(std::string name, std::string para_name, AvailUnis def);
+	static void PushDefult(std::string name, std::string para_name, GLuint _size, float* _data, ArrayType _type);
 
 public:
 
@@ -223,6 +242,7 @@ public:
 	~ComputeShader();
 
 	void ResetID(GLuint _id) { comp_shader.sh_ID = _id; }
+	void ResetDefult(std::string name);
 	void CreateShader(const std::string& compShader);
 
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
@@ -251,13 +271,15 @@ public:
 	static std::shared_ptr<ComputeShader> ImportShaderSrc(std::string _name);
 	template<class... Tuples>
 	static std::shared_ptr<ComputeShader> ImportShaderSrc(std::string _name, const Tuples&... args);
+	template<class... Tuples>
+	static void ImportShaderConfigs(std::string _name, const Tuples&... args);
 
-	static std::string GetSSRShaderName(char _type);
-	static std::string GetAOShaderName(char _type);
-	static std::string GetAAShaderName(char _type);
+	static std::string GetSSRShaderName(RenderConfigs* config);
+	static std::string GetAOShaderName(RenderConfigs* config);
+	static std::string GetAAShaderName(RenderConfigs* config);
 	static std::string GetShadowShaderName(char _type, char _light_type);
 
-	static void InitComputeLib();
+	static void InitComputeLib(RenderConfigs* config);
 	static void ResetComputeLib();
 };
 
@@ -276,7 +298,14 @@ static std::shared_ptr<ComputeShader> ComputeShader::ImportShaderSrc(std::string
 		return comp_list[_name];
 
 	comp_list[_name] = std::make_shared<ComputeShader>(_name, args...);
+	ImportShaderConfigs(_name, args...);
 	return comp_list[_name];
+}
+
+template<class... Tuples>
+void ComputeShader::ImportShaderConfigs(std::string _name, const Tuples&... args)
+{
+	(std::apply([_name](const auto&... def) { ComputeShader::PushDefult(_name, def...); }, args), ...);
 }
 
 template<class... Tuples>
