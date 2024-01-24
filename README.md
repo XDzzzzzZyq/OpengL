@@ -23,7 +23,7 @@
 
 # FEATUREs
 
-#### **Objects**
+### **Objects**
 
 - [x] basic transformation
   - [x] parenting
@@ -59,11 +59,12 @@
 - [x] Post Processing
   - [x] Screen Space PPS
   - [ ] Field PPS
-  - [ ] Compute Shader supports
+  - [x] Compute Shader supports
+- [x] Signed Distance Field   
+  - [ ] outline
+  - [ ] transform
 
-#### **Rendering**
-
-- **Algorithms**
+### **Rendering**
 
   - [x] Z-buffer
   - [x] Dynamic frame buffer
@@ -71,58 +72,63 @@
   - [x] Filmic convert
   - [x] Gamma convert
   - [x] Selection highlight
+ 
+
+#### **Anti Aliasing**
+
+  - [ ] MSAA
   - [x] FXAA
+  - [ ] TAA
+
+#### **Ambient Occlusion**
   - [x] SSAO
+  - [ ] GTAO
+  - [ ] HBAO
 
   - [ ] Denoising
 
+#### **PBR**
+  - [x] Material system
+  - [x] PBR Lighting
+    - [x] point light
+    - [x] sun light
+    - [x] spot light
+    - [x] area light
+  - [x] PBR IBL
+    - [x] diffuse
+    - [x] specular
+       
   - [ ] Normal map
   - [ ] Bump map
-        
-- - [x] Signed Distance Field
-  
-- - [x] Multi-pass composition (deferred rendering)
-  - Blinn-Phong
-
-    - [removed]
-
-  - PBR
-
-    - [x] Material system
-    - [x] PBR Lighting
-      - [x] point light
-      - [x] sun light
-      - [x] spot light
-      - [x] area light
-    - [x] PBR IBL
-      - [x] diffuse
-      - [x] specular
-    - [x] AO
-    - [x] Shadow
-      - [x] shadow mapping
-      - [x] soft shadow
+       
+#### **Shadow**      
+  - [x] Shadow
+    - [x] shadow mapping
+    - [x] soft shadow
       - [ ] SDF soft shadow
+      - [ ] Variance Soft Shadowmapping
+      - [ ] Momenet Soft Shadowmapping
 
-- Ray tracing ?
-    - [x] Screen Space Reflections
-    - [x] SDF Screen Space Reflection
-    - [x] Stochastic Screen Space Reflection
+#### **Ray Tracing**
+  - [x] Screen Space Reflections
+  - [x] SDF Screen Space Reflection
+  - [x] Stochastic Screen Space Reflection
 
-    - [ ] Path Tracing
+  - [ ] Path Tracing
 
 - DL style transfer ?
 
 
 
-- **Shaders**
+### Shaders
 
   - Vertex Shader & Fragment Shader
 
   - Compute Shader
 
   - Geometry Shader
-
-    
+  
+- [x] Multi-pass composition (deferred rendering)
 
   **for Vertex Shader & Fragment Shader**
 
@@ -152,9 +158,12 @@
     - [x] FXAA
     - [x] Shadow mapping
   - [ ] Shader Editor supports
-  
 
-- **Advanced**
+  **for Geometry Shader**
+
+  - [x] SDF construct
+
+## **Advanced**
 
   - render mode switch
     - [x] Averaging mode 
