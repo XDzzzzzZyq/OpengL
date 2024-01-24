@@ -24,9 +24,10 @@ void main() {
 	float alpha = smoothstep(0.5-range, 0.5+range, sprite_color.r);
 	float bound = distance(uv, vec2(0.5)) < 0.5 ? 1 : 0;
 	//color = vec4(uv,0.0f,1.0f);
+	ALBEDOcolor = vec4(0,0,0,alpha);
 	EMIScolor = vec4(L_color, alpha);
 	IDcolor = vec4(ID_color / 256, bound);
-	RANDcolor = vec4(RAND_color, bound);
-	MRSEcolor = vec4(0, 0, 0, alpha);
-	MASKcolor = vec4(sprite_color.r * SpiritOpacity, 0, 0, alpha);
+	//RANDcolor = vec4(RAND_color, bound);
+	MRSEcolor = vec4(0, 1, 0, alpha);
+	MASKcolor = vec4(1, 0, 0, alpha);
 };
