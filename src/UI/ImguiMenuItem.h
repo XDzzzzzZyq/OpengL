@@ -10,6 +10,8 @@
 #include "ImGui/backends/imgui_impl_glfw.h"
 #include "ImGui/backends/imgui_impl_opengl3.h"
 
+#define CallBack(func) [&](bool) -> bool {func(); return true;}
+
 enum MenuItemType
 {
 	NONE_MITEM, BUTTON_MITEM, BOOL_MITEM, OPTION_MITEM
@@ -28,7 +30,7 @@ public:
 	bool mitem_onclick{ false };
 	bool mitem_enable = true;
 
-	std::function<bool(bool)> mitem_func; // pass the target status, return the new status
+	std::function<bool(bool)> mitem_func; // function callback
 
 public:
 	void EnableMenuItem(bool en) { mitem_enable = en; }
@@ -45,15 +47,16 @@ public:
 	virtual void BindSwitch(bool* _switch) { assert(false && "Not a switch item\n"); };
 
 	template<typename T> requires std::is_enum_v<T>
-	void BindOption(T* _option);
+	void BindOption(T* _option, std::function<bool(bool)> _callback=NULL);
 
 	virtual void RenderMenuItem() { assert(false && "no Render function overrided\n"); };
 };
 
 
 template<typename T> requires std::is_enum_v<T>
-void ImguiMenuItem::BindOption(T* _option)
+void ImguiMenuItem::BindOption(T* _option, std::function<bool(bool)> _callback/* = NULL*/)
 {
 	BindOption((char*)_option);
+	mitem_func = _callback;
 }
 

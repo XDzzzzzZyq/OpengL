@@ -54,6 +54,9 @@ void UI::ImguiMOption::RenderMenuItem()
 			)) {
 				if (is_single_selection)
 					*mitem_option = index;
+
+				if(mitem_func)
+					mitem_func(true);
 			}
 		
 			index++;
