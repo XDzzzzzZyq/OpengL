@@ -58,10 +58,7 @@ void Renderer::Init()
 }
 
 Renderer::~Renderer()
-{
-	for (auto& buffer : r_buffer_list)
-		buffer.Del();
-}
+{}
 
 std::string Renderer::GetObjectName(int ID)
 {

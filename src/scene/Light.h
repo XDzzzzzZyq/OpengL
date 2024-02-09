@@ -209,7 +209,7 @@ public:
 	mutable std::unordered_map<int, Texture> shadow_cache;
 	StorageBuffer point_buffer, sun_buffer, spot_buffer, area_buffer, poly_buffer, poly_verts_buffer;
 
-	UniformBuffer<SceneInfo> info;
+	UniformBuffer info;
 
 private:
 

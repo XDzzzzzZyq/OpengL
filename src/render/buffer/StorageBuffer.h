@@ -19,9 +19,13 @@ struct is_not_vector<std::vector<T, C>> : std::false_type {};
 class StorageBuffer  //shader storage buffer object SSBO
 {
 private:
-	GLuint ssbo_id;
+	GLuint ssbo_ID = 0;
 	GLuint ssbo_base = 3;
 	SSBType ssbo_type = NONE_LIST;
+
+	void _cpyInfo(const StorageBuffer& ssbo);
+	void _delSSB();
+	void _resetSSBID(GLuint _ID) { if (ssbo_ID > 0 && ssbo_ID != _ID)_delSSB(); ssbo_ID = _ID; }
 
 public:
 	StorageBuffer();
@@ -29,15 +33,22 @@ public:
 	StorageBuffer(SSBType type, GLuint base);
 	~StorageBuffer();
 
+
+	StorageBuffer(const StorageBuffer& ssbo);
+	StorageBuffer(StorageBuffer&& ssbo) noexcept;
+
+	StorageBuffer& operator=(const StorageBuffer& ssbo);
+	StorageBuffer& operator=(StorageBuffer&& ssbo) noexcept;
+
+public:
+
 	void BindBuffer() const;
 	void BindBufferBase(GLuint _base = -1) const;
 	void UnbindBuffer() const;
 	void SetBufferBase(GLuint base);
 
-	void DeleteBuffer();
-
 public:
-	GLuint GetID() const { return ssbo_id; }
+	GLuint GetID() const { return ssbo_ID; }
 	GLuint GetBase() const { return ssbo_base; }
 	SSBType GetType() const { return ssbo_type; }
 

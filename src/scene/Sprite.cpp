@@ -80,10 +80,6 @@ void Sprite::SetTex()
 
 void Sprite::DeleteSprite()
 {
-	spr_tex->Unbind();
-	spr_shader->UnuseShader();
-
-	spr_tex->DelTexture();
 	spr_shader->DelShad();
 }
 

@@ -278,15 +278,7 @@ void Light::UpdateProjMatrix()
 
 
 LightArrayBuffer::~LightArrayBuffer()
-{
-	point_buffer.DeleteBuffer();
-	sun_buffer.DeleteBuffer();
-	spot_buffer.DeleteBuffer();
-	area_buffer.DeleteBuffer();
-	poly_buffer.DeleteBuffer();
-	poly_verts_buffer.DeleteBuffer();
-	info.DeleteBuffer();
-}
+{}
 
 void LightArrayBuffer::Init()
 {
@@ -296,7 +288,7 @@ void LightArrayBuffer::Init()
 	area_buffer = StorageBuffer(CUSTOM_LIST, 3);
 	poly_buffer = StorageBuffer(CUSTOM_LIST, 4);
 	poly_verts_buffer = StorageBuffer(CUSTOM_LIST, 5);
-	info = UniformBuffer<SceneInfo>(6);
+	info = UniformBuffer(6);
 }
 
 void LightArrayBuffer::Bind() const

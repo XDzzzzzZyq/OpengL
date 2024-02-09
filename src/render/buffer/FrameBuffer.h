@@ -45,6 +45,10 @@ private:
 	mutable std::unordered_map<FBType, int> fb_type_list;      //  tex_type -> tex_index
 	static TextureType PareseTexType(FBType _type);
 
+	void _cpyInfo(const FrameBuffer& fb);
+	void _delFB();
+	void _resetFBID(GLuint _ID) { if (fb_ID > 0 && fb_ID != _ID)_delFB(); fb_ID = _ID; }
+
 public:
 	std::optional<RenderBuffer> renderBuffer;
 
@@ -57,7 +61,14 @@ public:
 	FrameBuffer(FBType type, GLuint attach=0);			// for single framebuffer
 	FrameBuffer(int count, ...);						// for compile-time framebuffer list
 	FrameBuffer(const std::vector<FBType>& _tars);		// for run-time framebuffer list
-	FrameBuffer(const Texture& _depth);					// for depth framebuffer
+	FrameBuffer(Texture&& _depth);						// for depth framebuffer
+	
+	FrameBuffer(const FrameBuffer& fb);
+	FrameBuffer(FrameBuffer&& fb) noexcept;
+
+	FrameBuffer& operator=(const FrameBuffer& fb);
+	FrameBuffer& operator=(FrameBuffer&& fb) noexcept;
+	
 	~FrameBuffer();
 
 	void BindFrameBuffer() const;
@@ -81,10 +92,6 @@ public:
 	void BindFrameBufferTexR(FBType tar, GLuint slot) const;
 	void UnbindFrameBufferTexR(FBType tar, GLuint slot) const;
 	void UnbindFrameBufferTex() const;
-
-public:
-
-	void Del() const;
 
 public:
 

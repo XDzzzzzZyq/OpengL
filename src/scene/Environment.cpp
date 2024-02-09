@@ -10,7 +10,6 @@ Environment::Environment(const std::string& texpath)
 	Texture rough_tex(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_MIRRORED_REPEAT);
 	envir_IBL_diff.GenIBLDiffuseFrom(rough_tex, true);
 	envir_IBL_spec.GenIBLSpecularFrom(rough_tex, true);
-	rough_tex.DelTexture();
 
 	envir_sprite.spr_type = ENVIRN_SPRITE;
 	envir_sprite.SetTex();
@@ -41,8 +40,6 @@ Environment::Environment()
 Environment::~Environment()
 {
 	envir_shader->DelShad();
-	envir_IBL_diff.DelTexture();
-	//envir_frameBuffer->Del();
 }
 
 void Environment::ChangeEnvirTexture(const std::string& texpath) const

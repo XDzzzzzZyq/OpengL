@@ -41,6 +41,10 @@ private:
 	std::string tex_path;
 	GLuint tex_ID = 0;
 
+	void _cpyInfo(const Texture& _tex);
+	void _delTexture();
+	void _resetTexID(GLuint _ID) { if (tex_ID > 0 && tex_ID != _ID)_delTexture(); tex_ID = _ID; }
+
 public:
 
 	TextureType tex_type = TextureType::NONE_TEXTURE;
@@ -54,9 +58,15 @@ public:
 	Texture(int _w, int _h, GLuint _ID, TextureType _type, std::string _name);   // for Copy
 	Texture(int _w, int _h, TextureType _type);									 // for emply texture
 	Texture();
+
+	Texture(const Texture& tex);
+	Texture(Texture&& tex) noexcept;
+
+	Texture& operator=(const Texture& tex);
+	Texture& operator=(Texture&& tex)noexcept;
+
 	~Texture();
 
-	void DelTexture() const;
 	void Resize(const glm::vec2& size);
 	void Resize(float x, float y);
 	void OffsetSlot(GLuint _offset) { tex_slot_offset += _offset; };
@@ -72,11 +82,9 @@ public:
 public:
 	inline int GetW()const { return im_w; }
 	inline int GetH()const { return im_h; }
-	inline int GetDPP()const { return im_bpp; }
+	inline int GetBPP()const { return im_bpp; }
 	GLuint GetTexID() const { return tex_ID; }
 	std::string GetTexName() const { return tex_path; }
-
-	void ResetTexID(GLuint _ID) { if (tex_ID>0 && tex_ID!=_ID)DelTexture(); tex_ID = _ID; }
 
 public:
 	using TexStorageInfo = const std::tuple<GLuint, GLuint, GLuint, GLuint>; // internal_layout | layout | data_type | texture_type

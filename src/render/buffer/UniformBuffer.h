@@ -3,18 +3,28 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-template<class _S>
 class UniformBuffer
 {
-	static constexpr size_t _Size = sizeof(_S);
-	GLuint ubo_id{ 0 };
+	GLuint ubo_ID{ 0 };
 	GLuint ubo_bind{ 0 };
+
+	void _cpyInfo(const UniformBuffer& ubo);
+	void _delUB();
+	void _resetUBID(GLuint _ID) { if (ubo_ID > 0 && ubo_ID != _ID)_delUB(); ubo_ID = _ID; }
 
 public:
 
-	UniformBuffer();
+	UniformBuffer() {};
 	UniformBuffer(GLuint _bind);
+	template<class _S>
 	UniformBuffer(GLuint _bind, _S _tar);
+	~UniformBuffer();
+
+	UniformBuffer(const UniformBuffer& ubo);
+	UniformBuffer(UniformBuffer&& ubo) noexcept;
+
+	UniformBuffer& operator=(const UniformBuffer& ubo);
+	UniformBuffer& operator=(UniformBuffer&& ubo) noexcept;
 
 public:
 
@@ -23,57 +33,22 @@ public:
 
 public:
 
+	template<class _S>
 	void Update(_S _tar);
-
-public:
-
-	void DeleteBuffer() const;
 
 };
 
+
 template<class _S>
-void UniformBuffer<_S>::Update(_S _tar)
+void UniformBuffer::Update(_S _tar)
 {
-	glBindBuffer(GL_UNIFORM_BUFFER, ubo_id);
-	glBufferData(GL_UNIFORM_BUFFER, _Size, &_tar, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo_ID);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(_S), &_tar, GL_DYNAMIC_DRAW);
 }
 
 template<class _S>
-void UniformBuffer<_S>::Unbind() const
+UniformBuffer::UniformBuffer(GLuint _bind, _S _tar)
+	:UniformBuffer(_bind)
 {
-	glBindBufferBase(GL_UNIFORM_BUFFER, ubo_bind, 0);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(_S), &_tar, GL_DYNAMIC_DRAW);
 }
-
-template<class _S>
-void UniformBuffer<_S>::Bind(GLuint _bind /*= -1*/) const
-{
-	if (_bind == -1) _bind = ubo_bind;
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, _bind, ubo_id);
-}
-
-template<class _S>
-UniformBuffer<_S>::UniformBuffer(GLuint _bind, _S _tar)
-	:ubo_bind(_bind)
-{
-	glGenBuffers(1, &ubo_id);
-	glBindBuffer(GL_UNIFORM_BUFFER, ubo_id);
-
-	glBufferData(GL_UNIFORM_BUFFER, _Size, &_tar, GL_DYNAMIC_DRAW);
-}
-
-template<class _S>
-UniformBuffer<_S>::UniformBuffer(GLuint _bind)
-	:UniformBuffer(_bind, _S{})
-{}
-
-template<class _S>
-UniformBuffer<_S>::UniformBuffer()
-{}
-
-template<class _S>
-void UniformBuffer<_S>::DeleteBuffer() const
-{
-	glDeleteBuffers(1, &ubo_id);
-}
-

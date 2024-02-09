@@ -15,9 +15,19 @@ TextureType FrameBuffer::PareseTexType(FBType _type)
 	return textype;
 }
 
-FrameBuffer::FrameBuffer()
+void FrameBuffer::_cpyInfo(const FrameBuffer& fb)
 {
+	fb_ID = fb.GetFrameBufferID(); fb_attach = fb.fb_attach; fb_w = fb.fb_w; fb_h = fb.fb_h; fb_type = fb.fb_type;
 }
+
+void FrameBuffer::_delFB()
+{
+	glDeleteFramebuffers(1, &fb_ID);
+	fb_ID = 0;
+}
+
+FrameBuffer::FrameBuffer()
+{}
 
 
 FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
@@ -93,14 +103,16 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 {
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-	GLDEBUG
+	
 	std::vector<GLenum> attachments(_tars.size());
+	fb_tex_list.reserve(_tars.size());
 
 	int i = 0;
 	for (auto type_inp : _tars) {
 		TextureType textype = FrameBuffer::PareseTexType(type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
+
 		fb_tex_list.emplace_back("", textype, GL_LINEAR);
 		fb_tex_list[i].OffsetSlot(type_inp);
 
@@ -124,7 +136,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 }
 
-FrameBuffer::FrameBuffer(const Texture& _depth)
+FrameBuffer::FrameBuffer(Texture&& _depth)
 {
 	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_depth.tex_type);
 
@@ -142,11 +154,72 @@ FrameBuffer::FrameBuffer(const Texture& _depth)
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	UnbindFrameBuffer();
+
+	fb_tex_list.emplace_back(std::move(_depth));
+}
+
+FrameBuffer::FrameBuffer(const FrameBuffer& fb)
+{
+	_resetFBID(fb.GetFrameBufferID());
+	_cpyInfo(fb);
+	fb_type_list = fb.fb_type_list;
+	fb_tex_list = fb.fb_tex_list;
+
+	if (fb.renderBuffer)
+		renderBuffer = fb.renderBuffer;
+}
+
+FrameBuffer::FrameBuffer(FrameBuffer&& fb) noexcept
+{
+	_cpyInfo(fb);
+	fb_type_list = std::move(fb.fb_type_list);
+	fb_tex_list = std::move(fb.fb_tex_list);
+
+	if (fb.renderBuffer)
+		renderBuffer = std::move(fb.renderBuffer);
+
+	fb.fb_ID = 0;
+}
+
+FrameBuffer& FrameBuffer::operator=(const FrameBuffer& fb)
+{
+	if (this == &fb)
+		return *this;
+
+	_resetFBID(fb.GetFrameBufferID());
+	_cpyInfo(fb);
+
+	fb_type_list = fb.fb_type_list;
+	fb_tex_list = fb.fb_tex_list;
+
+	if (fb.renderBuffer)
+		renderBuffer = fb.renderBuffer;
+
+	return *this;
+}
+
+FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fb) noexcept
+{
+	if (this == &fb)
+		return *this;
+
+	_cpyInfo(fb);
+
+	fb_type_list = std::move(fb.fb_type_list);
+	fb_tex_list = std::move(fb.fb_tex_list);
+
+	if (fb.renderBuffer)
+		renderBuffer = std::move(fb.renderBuffer);
+
+	fb.fb_ID = 0;
+
+	return *this;
 }
 
 FrameBuffer::~FrameBuffer()
 {
-	//DEBUG("FB dele")
+	if (GetFrameBufferID() != 0)
+		_delFB();
 }
 
 void FrameBuffer::BindFrameBuffer() const
@@ -259,11 +332,4 @@ void FrameBuffer::UnbindFrameBufferTex() const
 	for (auto& tar : fb_tex_list) {
 		tar.Unbind();
 	}
-}
-
-void FrameBuffer::Del() const
-{
-	renderBuffer->Del();
-	for (auto& tex : fb_tex_list)
-		tex.DelTexture();
 }

@@ -35,7 +35,6 @@ DebugPoints::DebugPoints(const std::vector<glm::vec3>& pos_list)
 
 DebugPoints::~DebugPoints()
 {
-	dp_pos_buffer.DeleteBuffer();
 	DeleteDebugPoints();
 }
 
