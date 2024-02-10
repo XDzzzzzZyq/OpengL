@@ -17,7 +17,7 @@ TextureType FrameBuffer::PareseTexType(FBType _type)
 
 void FrameBuffer::_cpyInfo(const FrameBuffer& fb)
 {
-	fb_ID = fb.GetFrameBufferID(); fb_attach = fb.fb_attach; fb_w = fb.fb_w; fb_h = fb.fb_h; fb_type = fb.fb_type;
+	fb_ID = fb.GetFrameBufferID(); fb_attach = fb.fb_attach; fb_w = fb.fb_w; fb_h = fb.fb_h;
 }
 
 void FrameBuffer::_delFB()
@@ -31,7 +31,7 @@ FrameBuffer::FrameBuffer()
 
 
 FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
-	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_type(type)
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8))
 {
 	fb_type_list[(FBType)type] = 0;
 	TextureType textype = FrameBuffer::PareseTexType(type);
@@ -44,7 +44,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + fb_type, GL_TEXTURE_2D, fb_tex_list[0].GetTexID(), 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, fb_tex_list[0].GetTexID(), 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 	
 	//glDrawBuffer(fb_type);GLDEBUG
@@ -107,8 +107,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 	std::vector<GLenum> attachments(_tars.size());
 	fb_tex_list.reserve(_tars.size());
 
-	int i = 0;
-	for (auto type_inp : _tars) {
+	for (int i = 0; auto type_inp : _tars) {
 		TextureType textype = FrameBuffer::PareseTexType(type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
@@ -234,23 +233,50 @@ void FrameBuffer::UnbindFrameBuffer()
 
 void FrameBuffer::LinkTexture(const Texture& _tex)
 {
-	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
+	auto [_data, _2, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
+
+	auto attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
 
 	BindFrameBuffer();
 
 	switch (gl_type)
 	{
 	case GL_TEXTURE_2D:
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _tex.GetTexID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, gl_type, _tex.GetTexID(), 0);
 		break;
 	case GL_TEXTURE_CUBE_MAP:
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _tex.GetTexID(), 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _tex.GetTexID(), 0);
 		break;
 	}
 
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	UnbindFrameBuffer();
+}
+
+void FrameBuffer::AppendTexture(const Texture& _tex, FBType _type)
+{
+	std::vector<GLenum> attachments(fb_tex_list.size() + 1);
+	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
+
+	LOOP(attachments.size())
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+
+	fb_type_list[(FBType)_type] = fb_tex_list.size();
+	fb_tex_list.emplace_back(_tex);
+	fb_tex_list[fb_tex_list.size() - 1].OffsetSlot(_type);
+
+	switch (gl_type)
+	{
+	case GL_TEXTURE_2D:
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[attachments.size()-1], gl_type, _tex.GetTexID(), 0);
+		break;
+	case GL_TEXTURE_CUBE_MAP:
+		glFramebufferTexture(GL_FRAMEBUFFER, attachments[attachments.size() - 1], _tex.GetTexID(), 0);
+		break;
+	}
+
+	glDrawBuffers(attachments.size(), attachments.data());
 }
 
 void FrameBuffer::Resize(const glm::vec2& size, bool all)

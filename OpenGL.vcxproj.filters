@@ -328,6 +328,7 @@
     <None Include="res\shaders\SSR_SDF_Resolve.comp" />
     <None Include="res\shaders\PBR.comp" />
     <None Include="res\shaders\Empty.comp" />
+    <None Include="res\shaders\SAT.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

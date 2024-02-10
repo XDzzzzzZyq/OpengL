@@ -66,7 +66,7 @@ public:
 
 	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
-	void InitShadowMap();
+	void InitShadowMap(RenderConfigs* config=nullptr);
 	inline static std::pair<SpriteType, std::string> ParseLightName(LightType _type);
 
 public:
@@ -89,6 +89,7 @@ private:
 public:
 
 	static void EnableShadowMap();
+	void ConstructSAT();
 
 public:
 	void RenderLightSpr(Camera* cam);

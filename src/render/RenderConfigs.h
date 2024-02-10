@@ -84,6 +84,7 @@ public:
 	bool RequiresBwdOF() const;
 	bool RequiresSDF() const;
 	bool RequiresShadow() const;
+	bool RequiresMomentShadow() const;
 	bool RequiresSSR() const;
 	bool RequiresFXAA() const;
 };

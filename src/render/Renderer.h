@@ -88,8 +88,12 @@ public:
 	void RenderShadowMap(Light* light);
 	void ConstructSDF();
 
+public:
+
 	void Reset();
 	void FrameResize(GLuint _w, GLuint _h);
+
+	void UpdateLightInfo();
 
 public:
 

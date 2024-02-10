@@ -71,23 +71,26 @@ Light::Light(LightType type, float power, glm::vec3 color)
 	BindShadowMapShader();
 }
 
-void Light::InitShadowMap()
+void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
 {
 	assert(light_type != LightType::NONELIGHT);
+	
+	bool using_moment_shadow = false;
+	if (config)
+		using_moment_shadow &= config->RequiresMomentShadow();
+
+	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
+	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
 
 	switch (light_type)
 	{
-	case POINTLIGHT:
-		light_shadow_map = Texture(1024, 1024, DEPTH_CUBE_TEXTURE);
-		break;
 	case SUNLIGHT:
-		light_shadow_map = Texture(2048, 2048, DEPTH_TEXTURE);
+		light_shadow_map = Texture(2048, 2048, flat_map);
 		break;
+	case POINTLIGHT:
 	case SPOTLIGHT:
-		light_shadow_map = Texture(1024, 1024, DEPTH_CUBE_TEXTURE);
-		break;
 	case AREALIGHT:
-		light_shadow_map = Texture(1024, 1024, DEPTH_CUBE_TEXTURE);
+		light_shadow_map = Texture(1024, 1024, cube_map);
 		break;
 	default:
 		assert(false && "Unknown Light Type");
@@ -269,7 +272,11 @@ void Light::UpdateProjMatrix()
 }
 
 
-
+void Light::ConstructSAT()
+{
+	static ComputeShader& SAT = ComputeShader::ImportShader("SAT");
+	static ComputeShader& SAT_cube = ComputeShader::ImportShader("SAT_cube");
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////

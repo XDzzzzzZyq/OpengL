@@ -488,6 +488,9 @@ void Renderer::RenderShadowMap(Light* light)
 	}
 
 	FrameBuffer::UnbindFrameBuffer();
+
+	if (r_config.RequiresMomentShadow())
+		light->ConstructSAT();
 }
 
 void Renderer::ConstructSDF()
@@ -547,8 +550,14 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 	r_light_data.Resize(_w, _h);
 }
 
-
-
+void Renderer::UpdateLightInfo()
+{
+	r_scene->SetSceneStatus(SceneResource::LightChanged, true);
+	//DEBUG((int)GetConfig()->r_shadow_algorithm)
+	for (auto& [id, light] : r_scene->light_list) {
+		light->InitShadowMap(GetConfig());
+	}
+}
 
 void Renderer::UseScene(std::shared_ptr<SceneResource> _scene)
 {

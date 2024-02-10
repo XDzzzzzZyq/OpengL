@@ -51,8 +51,6 @@ private:
 
 public:
 	std::optional<RenderBuffer> renderBuffer;
-
-	FBType fb_type = NONE_FB;
 	mutable std::vector<Texture> fb_tex_list;
 
 public:
@@ -75,6 +73,7 @@ public:
 	static void UnbindFrameBuffer();
 
 	void LinkTexture(const Texture& _tex);
+	void AppendTexture(const Texture& _tex, FBType _type);
 
 public:
 

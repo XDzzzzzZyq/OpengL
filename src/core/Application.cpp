@@ -58,7 +58,7 @@ int Application::Init()
 	renderer.r_using_shadow_map = false;
 	renderer.r_using_ssr = false;
 #else
-	renderer.UseScene(SceneManager::SceneConfig2());
+	renderer.UseScene(SceneManager::SceneConfig4());
 	renderer.GetConfig()->r_ao_radius = 0.8;
 	//renderer.r_render_icons = false;
 
@@ -126,7 +126,7 @@ int Application::Run()
 	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.GetConfig()->r_of_algorithm);
 	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.GetConfig()->r_ssr_algorithm);
-	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm);
+	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm, CallBack(renderer.UpdateLightInfo));
 	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.GetConfig()->r_ao_algorithm);
 	UI.FindImguiMenuItem("Render", "Sampling")->BindOption(&renderer.GetConfig()->r_sampling_average);
 	UI.FindImguiMenuItem("View", "Icons")->BindSwitch(&renderer.r_render_icons);

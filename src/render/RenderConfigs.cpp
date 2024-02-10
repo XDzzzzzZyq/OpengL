@@ -20,6 +20,11 @@ bool RenderConfigs::RequiresShadow() const
 	return r_shadow_algorithm != ShadowAlg::None;
 }
 
+bool RenderConfigs::RequiresMomentShadow() const
+{
+	return (char)r_shadow_algorithm > 1;
+}
+
 bool RenderConfigs::RequiresSSR() const
 {
 	return r_ssr_algorithm != SSRAlg::None;
