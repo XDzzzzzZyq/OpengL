@@ -109,7 +109,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>copy "$(ProjectDir)imgui.ini" "$(ProjectDir)build\$(Platform)\$(Configuration)\imgui.ini"
+if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,7 +138,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>copy "$(ProjectDir)imgui.ini" "$(ProjectDir)build\$(Platform)\$(Configuration)\imgui.ini"
+if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,7 +159,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)dep\GLFW64\lib-vc2019;$(ProjectDir)dep\GLEW\lib\Release\x64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>copy "$(ProjectDir)imgui.ini" "$(ProjectDir)build\$(Platform)\$(Configuration)\imgui.ini"
+if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -183,7 +189,9 @@
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J</Command>
+      <Command>copy "$(ProjectDir)imgui.ini" "$(ProjectDir)build\$(Platform)\$(Configuration)\imgui.ini"
+if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
