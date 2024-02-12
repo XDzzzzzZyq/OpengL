@@ -394,6 +394,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
     <ClInclude Include="dep\stb_image\stb_image.h" />
     <ClInclude Include="dep\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\extra\xdz_matrix.h" />
     <ClInclude Include="src\render\RenderConfigs.h" />
     <ClInclude Include="src\compo\EventListener.h" />
     <ClInclude Include="src\compo\Field.h" />

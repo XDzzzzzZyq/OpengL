@@ -610,5 +610,8 @@
     <ClInclude Include="src\render\RenderConfigs.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\extra\xdz_matrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

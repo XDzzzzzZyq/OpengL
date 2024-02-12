@@ -353,24 +353,35 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 
 	DEBUG("\n---------------CAMERA----------------")
 		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
-	camera->SetPos({ 10, 0, 10 });
-	camera->SetRot({ 45, 0, 90 });
+	camera->SetCamPos({ 4, -4, 2 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
 	config4->UseCamera(camera);
 
 	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("shadow/grid1.obj");
+	go1->SetObjShader("testS", "Rasterization");
+	config4->UseMesh(go1);	
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("shadow/grid2.obj");
+	go2->SetObjShader("testS", "Rasterization");
+	config4->UseMesh(go2);
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("shadow/ground.obj");
+	go3->SetObjShader("testS", "Rasterization");
+	config4->UseMesh(go3);
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("shadow/torus.obj");
 	go4->SetObjShader("testS", "Rasterization");
-	go4->SetPos({ 0,0,0 });
-	go4->SetScale({ 8,8,2 });
-	go4->SetRot({ 0,0,90 });
-	config4->UseMesh(go4);	
+	config4->UseMesh(go4);
 	
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
-	pointLight1->SetPower(20);
+	pointLight1->SetPower(40);
 	pointLight1->ApplyTransform();
 	config4->UseLight(pointLight1);
 
