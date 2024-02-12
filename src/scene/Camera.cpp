@@ -1,5 +1,6 @@
 ﻿#include "Camera.h"
 #include "xdz_math.h"
+#include "xdz_matrix.h"
 #include "glm/gtx/matrix_decompose.hpp"
 
 Camera::Camera(float w, float h, float per, float n, float f)
@@ -86,18 +87,26 @@ void Camera::ChangeCamPersp(float persp)
 	is_frustum_changed = true;
 }
 
+void Camera::SetCamPos(const glm::vec3& _pos)
+{
+	if (_pos == o_position)
+		return;
+
+	o_position = _pos;
+	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, o_dir_up);
+	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
+	SetTrans(trans, false, true, false);
+}
+
 void Camera::SetTarPos(const glm::vec3& _pos)
 {
 	if (_pos == cam_tar)
 		return;
 
 	cam_tar = _pos;
-
+	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, o_dir_up);
 	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
-
-
-	//is_rot_changed = true;
-	is_TransF_changed = true;
+	SetTrans(trans, false, true, false);
 }
 
 void Camera::SetCamTrans(const glm::mat4& _trans, bool pos /*= true*/, bool rot /*= true*/)

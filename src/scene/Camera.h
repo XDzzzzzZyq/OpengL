@@ -28,6 +28,7 @@ public:
 	void ChangeCamRatio(const glm::vec2& size);
 	void ChangeCamPersp(float persp);
 
+	void SetCamPos(const glm::vec3& _pos);
 	void SetTarPos(const glm::vec3& _pos);
 	void SetCamTrans(const glm::mat4& _trans, bool pos = true, bool rot = true);
 

@@ -111,41 +111,4 @@ namespace xdzm {
 	inline float dir_float_dist(const float& a, const float& b) {
 		return b > a ? -float_dist(a, b) : float_dist(a, b);
 	}
-
-	inline glm::vec3 Vec3Spin(const glm::vec3& vecInp, const glm::vec3& anch, const glm::vec3& axis, const float& angle)
-	{
-		glm::vec3 result = vecInp;
-		glm::qua rotQua = glm::qua<float>(glm::radians(glm::vec3(0.0f, 0.0f, 0.0f)));
-		rotQua = glm::rotate(rotQua, angle, axis);
-		glm::mat4 rotMat = glm::mat4_cast(rotQua);
-
-		result -= anch;
-		return anch + rotMat * result;
-	}
-
-	inline glm::mat4 transpose(const glm::mat4 _tar) {
-		glm::mat4 result(glm::transpose(glm::mat3(_tar)));
-		result[3][3] = 1;
-		result = glm::translate(result, glm::vec3(_tar[3]));
-		return result;
-	}
-
-	static const glm::mat4 identityMatrix =
-	  { 1.f, 0.f, 0.f, 0.f,
-		0.f, 1.f, 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		0.f, 0.f, 0.f, 1.f };
-
-	template<size_t S, typename T>
-	static float _matrix_sum(const T _m) {
-		float res = 0;
-		LOOP(S)
-			LOOP_N(S, j)
-				res += _m[i][j];
-		return res;
-	}
-
-	static float matrix_diff(const glm::mat4 _m1, const glm::mat4 _m2) {
-		return abs(_matrix_sum<3>(glm::mat3(_m2) - glm::mat3(_m1)));
-	}
 }
