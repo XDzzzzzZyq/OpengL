@@ -46,6 +46,7 @@ public:
 	ImguiManager();
 	ImguiManager(GLFWwindow* window);
 	void Init();
+	void _debug() const;
 
 public:
 	void ManagerInit(GLFWwindow* window);

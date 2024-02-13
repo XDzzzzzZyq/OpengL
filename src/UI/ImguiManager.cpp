@@ -25,6 +25,13 @@ void ImguiManager::Init()
 	ShaderEditor::InitEditors();
 }
 
+void ImguiManager::_debug() const
+{
+	for (auto& [name, id] : layer_name_buffer) {
+		std::cout << name << " " << id << "\n";
+	}
+}
+
 void ImguiManager::RegistarMenuEvents()
 {
 	for(auto& menu : menu_list)

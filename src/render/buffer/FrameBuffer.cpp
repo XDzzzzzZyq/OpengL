@@ -233,7 +233,7 @@ void FrameBuffer::UnbindFrameBuffer()
 
 void FrameBuffer::LinkTexture(const Texture& _tex)
 {
-	auto [_data, _2, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
+	auto [_1, _data, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
 
 	auto attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
 

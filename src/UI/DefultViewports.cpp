@@ -28,7 +28,7 @@ void ImguiManager::DefultViewports() {
 	menu5->PushSubMenu<UI::ImguiMOption>("Optical Flow",			OPTIONS("None", "Forward", "Backward"));
 	menu5->PushSubMenu<UI::ImguiMOption>("Anti Aliasing",			OPTIONS("None", "MSAA (future)", "FXAA"));
 	menu5->PushSubMenu<UI::ImguiMOption>("Screen Space Reflection", OPTIONS("None", "Ray Marching", "SDF Ray Marching", "SDF Resolved Ray Marching"));
-	menu5->PushSubMenu<UI::ImguiMOption>("Shadow",					OPTIONS("None", "Shadow Mapping", "SDF Soft Shadow", "Varianve Soft Shadow", "Moment Soft Shadow"));
+	menu5->PushSubMenu<UI::ImguiMOption>("Shadow",					OPTIONS("None", "Shadow Mapping", "SDF Soft Shadow", "Variance Soft Shadow", "Moment Soft Shadow"));
 	menu5->PushSubMenu<UI::ImguiMOption>("Ambient Occlusion",		OPTIONS("None", "SSAO", "HBAO (future)"));
 
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");

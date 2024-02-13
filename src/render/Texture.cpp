@@ -357,9 +357,9 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 	case LIGHTING_CACHE:
 		return { GL_R16F,				GL_RED,				GL_FLOAT,			GL_TEXTURE_2D };
 	case DEPTH_CUBE_TEXTURE:
-		return { GL_DEPTH_COMPONENT,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
+		return { GL_DEPTH_COMPONENT32F,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
 	case DEPTH_TEXTURE:
-		return { GL_DEPTH_COMPONENT,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_2D };
+		return { GL_DEPTH_COMPONENT32F,	GL_DEPTH_COMPONENT, GL_FLOAT,			GL_TEXTURE_2D };
 	default:
 		//assert(false && "WRONG FORMAT");
 		return { GL_NONE,				GL_NONE ,			GL_NONE,			GL_NONE };
@@ -566,26 +566,26 @@ void Texture::GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar
 {
 	const bool type_correct = (_tar_type == IBL_CUBE_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE);
 	assert(type_correct && "Wrong input texture type");
-
-	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
+	
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(IBL_CUBE_TEXTURE);
 
 	GLuint ID;
 	glGenTextures(1, &ID);		//for storage
-	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
-
+	glBindTexture(GL_TEXTURE_2D, ID);
 	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, _w, _h, 0, layout, type, NULL);
-
+	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
+	
 	ComputeShader& to_cubemap = ComputeShader::ImportShader("To_ERect");
-
-	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
-	Texture::BindM(_tar_ID, 1, _tar_type);
+	
+	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout); 
+	Texture::BindM(_tar_ID, 1, _tar_type); 
 
 	to_cubemap.UseShader();
 	to_cubemap.SetValue("U_Cube", 1);
 	to_cubemap.RunComputeShader(_w / 4, _h / 4);
-
+	
 	_resetTexID(ID);
-
+	
 	tex_type = IBL_TEXTURE;
 	im_w = _w; im_h = _h;
 }
