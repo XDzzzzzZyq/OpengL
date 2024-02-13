@@ -118,7 +118,7 @@ int Application::Run()
 	};
 	Texture temp{};
 	UI.FindImguiLayer("CompShader")->resize_event = [&] {
-		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
+		//UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 	};
 
 	dynamic_cast<Viewport*>(UI.FindImguiLayer("Viewport"))->display_grid = false;
@@ -148,8 +148,13 @@ int Application::Run()
 		Metalness = UI.GetParaValue("test layer", "Metalness")->Get<float>();
 		Roughness = UI.GetParaValue("test layer", "Roughness")->Get<float>();
 		Specular = UI.GetParaValue("test layer", "Specular")->Get<float>();
-		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
+		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->GOet<float>();GLDEBUG
 		renderer.GetConfig()->r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
+
+		temp.GenERectMapFrom(renderer.r_scene->light_list.begin()->second->light_shadow_map);
+		//DEBUG(renderer.r_scene->light_list.begin()->second->light_shadow_map.GetTexID())
+		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
+		//UI._debug();
 	};
 	UI.GetCurrentWindow();
 

@@ -45,8 +45,8 @@ void Renderer::Init()
 	InitFrameBuffer();
 	r_light_data.Init();
 	r_sdf_field = SDFField(64, 64, 64);
-	r_sdf_field.SetScale({ 1.1,1.1,1.1 });
-	r_sdf_field.SetPos({ 0,0,1 });
+	r_sdf_field.SetScale({ 2,2,3 });
+	r_sdf_field.SetPos({ 0,0,2 });
 	r_sdf_field.ResetBuffer();
 
 	EventInit();
@@ -230,7 +230,6 @@ void Renderer::Render(bool rend, bool buff) {
 			r_light_data.UpdateLight(light.get());
 
 		/* Depth Test for Shadow Map */
-
 		if (light->is_Uniform_changed)
 			light->UpdateProjMatrix();
 
@@ -357,7 +356,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 4);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(LIGHT_AO_FB, 6);
-		TextureLib::Noise_2D_16x16()->BindC(7, GL_READ_ONLY, 1);
+		TextureLib::Noise_2D_16x16()->BindC(7);
 		ssao.UseShader();
 		if (GetActiveCamera()->is_Uniform_changed) {
 			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);
@@ -375,6 +374,7 @@ void Renderer::Render(bool rend, bool buff) {
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
+			if (r_config.RequiresSDF()) r_sdf_field.Bind();
 			r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
 		}
 
@@ -556,7 +556,11 @@ void Renderer::UpdateLightInfo()
 	//DEBUG((int)GetConfig()->r_shadow_algorithm)
 	for (auto& [id, light] : r_scene->light_list) {
 		light->InitShadowMap(GetConfig());
+		light->is_light_changed = true;
 	}
+
+	r_light_data.ParseLightData(r_scene->light_list);
+	r_light_data.Resize(r_frame_width, r_frame_height);
 }
 
 void Renderer::UseScene(std::shared_ptr<SceneResource> _scene)

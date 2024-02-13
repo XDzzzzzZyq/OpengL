@@ -16,8 +16,9 @@ namespace xdzm {
 		return (glm::sin(in) + 1) / 2;
 	}
 
-	inline float map01_11(float inp) {
-		return inp * 2 - 1;
+	template<typename _Ele>
+	inline _Ele map01_11(_Ele inp) {
+		return inp * _Ele(2) - _Ele(1);
 	}
 
 	inline float map(float inp, float i_min, float i_max, float o_min, float o_max) {

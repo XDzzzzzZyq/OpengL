@@ -29,7 +29,7 @@ public:
 	glm::vec3 light_color{ 1. }; //3f
 
 	// point light
-	float light_radius{ 5 };
+	float light_radius{ 0.05 };
 
 	// spot light
 	float spot_cutoff{ 0.9 };
@@ -126,7 +126,7 @@ public:
 
 		alignas(4) float power{ 1 };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
-		alignas(4) float radius{ 5 };
+		alignas(4) float radius{ 0.05 };
 	};
 
 	struct SunStruct

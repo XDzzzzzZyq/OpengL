@@ -380,7 +380,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
+	pointLight1->SetPos({ 2.0f, 2.0f, 3.0f });
 	pointLight1->SetPower(40);
 	pointLight1->ApplyTransform();
 	config4->UseLight(pointLight1);

@@ -515,11 +515,6 @@ void LightArrayBuffer::UpdateLight(Light* light)
 
 void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 {
-	static ComputeShader& point_shadow = ComputeShader::ImportShader("Shadow_Point");
-	static ComputeShader& sun_shadow   = ComputeShader::ImportShader("Shadow_Sun");
-	static ComputeShader& spot_shadow  = ComputeShader::ImportShader("Shadow_Spot");
-	static ComputeShader& area_shadow  = ComputeShader::ImportShader("Shadow_Area");
-
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
 	const float point_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
@@ -527,68 +522,64 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 	const float spot_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
 	const float area_ud_rate	= is_incr_aver ? 0.01 : 1.0 / frame;
 
+	const glm::vec3 random = glm::vec3(EventListener::random_float1, EventListener::random_float2, EventListener::random_float3);
+
 	for (const auto& [id, info] : light_info_cache) {
 		auto [loc, type, map_id] = info;
 
+		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName((char)config->r_shadow_algorithm, type));
+
+		shadow_shader.UseShader();
+		shadow_cache[id].BindC(4);
 		switch (type)
 		{
 		case POINTLIGHT:
 
 			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
-			shadow_cache[id].BindC(4);
 
-			point_shadow.UseShader();
-			point_shadow.SetValue("light_pos", point_list[loc].pos);
-			point_shadow.SetValue("light_far", Light::point_shaodow_far);
-			point_shadow.SetValue("frame", frame);
-			point_shadow.SetValue("update_rate", point_ud_rate);
-			point_shadow.SetValue("offset", Light::point_blur_range);
-			point_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+			shadow_shader.SetValue("light_pos", point_list[loc].pos);
+			shadow_shader.SetValue("light_far", Light::point_shaodow_far);
+			shadow_shader.SetValue("frame", frame);
+			shadow_shader.SetValue("update_rate", point_ud_rate);
+			shadow_shader.SetValue("radius", point_list[loc].radius);
+			//shadow_shader.SetValue("offset", Light::point_blur_range);
+			shadow_shader.SetValue("offset", xdzm::map01_11(random));
 
 			break;
 		case SUNLIGHT:
 
 			Texture::BindM(map_id, 31);
-			shadow_cache[id].BindC(4);
 
-			sun_shadow.UseShader();
-			sun_shadow.SetValue("proj_trans", sun_list[loc].proj_trans);
-			sun_shadow.SetValue("frame", frame);
-			sun_shadow.SetValue("offset", Light::point_blur_range);
-			sun_shadow.SetValue("update_rate", sun_ud_rate);
-			sun_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+			shadow_shader.SetValue("proj_trans", sun_list[loc].proj_trans);
+			shadow_shader.SetValue("frame", frame);
+			shadow_shader.SetValue("offset", Light::point_blur_range);
+			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
 			break;
 		case SPOTLIGHT:
 
 			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
-			shadow_cache[id].BindC(4);
 
-			spot_shadow.UseShader();
-			spot_shadow.SetValue("light_pos", spot_list[loc].pos);
-			spot_shadow.SetValue("light_dir", spot_list[loc].dir);
-			spot_shadow.SetValue("outer_cutoff", spot_list[loc].outer_cutoff);
-			spot_shadow.SetValue("light_far", Light::spot_shaodow_far);
-			spot_shadow.SetValue("frame", frame);
-			spot_shadow.SetValue("offset", Light::spot_blur_range);
-			spot_shadow.SetValue("update_rate", spot_ud_rate);
-			spot_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+			shadow_shader.SetValue("light_pos", spot_list[loc].pos);
+			shadow_shader.SetValue("light_dir", spot_list[loc].dir);
+			shadow_shader.SetValue("outer_cutoff", spot_list[loc].outer_cutoff);
+			shadow_shader.SetValue("light_far", Light::spot_shaodow_far);
+			shadow_shader.SetValue("frame", frame);
+			shadow_shader.SetValue("offset", Light::spot_blur_range);
+			shadow_shader.SetValue("update_rate", spot_ud_rate);
 
 			break;
 		case AREALIGHT:
 
 			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
-			shadow_cache[id].BindC(4);
 
-			area_shadow.UseShader();
-			area_shadow.SetValue("light_trans", area_list[loc].trans);
-			area_shadow.SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
-			area_shadow.SetValue("ratio", area_list[loc].ratio);
-			area_shadow.SetValue("light_far", Light::area_shaodow_far);
-			area_shadow.SetValue("frame", frame);
-			area_shadow.SetValue("offset", Light::area_blur_range);
-			area_shadow.SetValue("update_rate", area_ud_rate);
-			area_shadow.RunComputeShader(cache_w / 16, cache_h / 16);
+			shadow_shader.SetValue("light_trans", area_list[loc].trans);
+			shadow_shader.SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
+			shadow_shader.SetValue("ratio", area_list[loc].ratio);
+			shadow_shader.SetValue("light_far", Light::area_shaodow_far);
+			shadow_shader.SetValue("frame", frame);
+			shadow_shader.SetValue("offset", Light::area_blur_range);
+			shadow_shader.SetValue("update_rate", area_ud_rate);
 
 			break;
 		default:
@@ -596,6 +587,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			break;
 		}
 
+		shadow_shader.RunComputeShader(cache_w / 16, cache_h / 16);
 	}
 }
 
