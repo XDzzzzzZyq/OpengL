@@ -9,6 +9,8 @@
 #include "DebugPoints.h"
 #include "PostProcessing.h"
 
+#include "SDFField.h"
+
 class SceneResource
 {
 public:
@@ -63,6 +65,8 @@ public:
 	ResPool<DebugPoints>		dPoints_list;
 	ResList<PostProcessing>		pps_list;
 
+	Resource<SDFField>          sdf_field;
+
 public:
 
 	void UseCamera(Resource<Camera> camera);
@@ -73,6 +77,7 @@ public:
 	void UseDebugLine(Resource<DebugLine> dline);
 	void UseDebugPoints(Resource<DebugPoints> dpoints);
 	void UsePostProcessing(Resource<PostProcessing> pps);
+	void UseSDF(Resource<SDFField> sdf);
 
 	std::shared_ptr<Camera> GetActiveCamera();
 	std::shared_ptr<Environment> GetActiveEnvironment();

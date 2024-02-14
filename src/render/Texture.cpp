@@ -659,15 +659,17 @@ void Texture::SaveTexture(std::string _path) const
 	static std::string root = "result/";
 	stbi_flip_vertically_on_write(1);
 
-	GLbyte* odata = (GLbyte*)malloc(im_w * im_h * 4 * sizeof(GLbyte));
+	auto odata = std::vector<GLbyte>(im_w * im_h * 4);
 
 	glBindTexture(gl_type, tex_ID);
-	glGetTexImage(gl_type, 0, layout, type, odata);
+	glGetTexImage(gl_type, 0, layout, type, odata.data());
 
 	std::string outputPath = root + _path + ".png";
-	stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata, 0);
+	int status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
 
-	delete odata;
+	if (status == 0) {
+		DEBUG("falied")
+	}
 }
 
 

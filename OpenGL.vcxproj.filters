@@ -331,6 +331,7 @@
     <None Include="res\shaders\shadow\Shadow_Point_SDF.comp" />
     <None Include="res\shaders\shadow\Shadow_Spot.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun.comp" />
+    <None Include="res\shaders\shadow\Shadow_Area_SDF.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

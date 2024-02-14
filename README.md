@@ -105,7 +105,8 @@
   - [x] Shadow
     - [x] shadow mapping
     - [x] soft shadow
-      - [ ] SDF soft shadow
+      - [x] SDF soft shadow
+        - [ ] improvement
       - [ ] Variance Soft Shadowmapping
       - [ ] Momenet Soft Shadowmapping
 
@@ -185,7 +186,7 @@
         - [x] Structure Editor
         - [x] Code Editor
         - [ ] Node Editor
-    - [ ] Transform(Property) Layer
+    - [x] Transform(Property) Layer
     - [x] Material Layer
 - [x] ImGui parameters flow
 

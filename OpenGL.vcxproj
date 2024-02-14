@@ -113,6 +113,9 @@
 if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(ProjectDir)build\$(Platform)\$(Configuration)\res" "$(ProjectDir)res" /J
 </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if not exist "result" mkdir result</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -327,6 +330,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\selection_outline.comp" />
     <None Include="res\shaders\ShadowTest.frag" />
     <None Include="res\shaders\shadow\Shadow_Area.comp" />
+    <None Include="res\shaders\shadow\Shadow_Area_SDF.comp" />
     <None Include="res\shaders\shadow\Shadow_Point.comp" />
     <None Include="res\shaders\shadow\Shadow_Point_PCF.comp" />
     <None Include="res\shaders\shadow\Shadow_Point_SDF.comp" />

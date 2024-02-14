@@ -44,10 +44,6 @@ void Renderer::Init()
 
 	InitFrameBuffer();
 	r_light_data.Init();
-	r_sdf_field = SDFField(64, 64, 64);
-	r_sdf_field.SetScale({ 2,2,3 });
-	r_sdf_field.SetPos({ 0,0,2 });
-	r_sdf_field.ResetBuffer();
 
 	EventInit();
 	ComputeShader::InitComputeLib(GetConfig());
@@ -259,7 +255,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////    MESHES    ////////////
 
 		GetActiveEnvironment()->BindEnvironTexture();
-		r_sdf_field.Bind();
+		r_scene->sdf_field->Bind();
 		for (const auto& [id, mesh] : r_scene->mesh_list)
 		{
 			if (!mesh->is_viewport)continue;
@@ -371,10 +367,11 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (r_config.RequiresShadow()) {
 			const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
+			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
-			if (r_config.RequiresSDF()) r_sdf_field.Bind();
+			if (r_config.RequiresSDF()) r_scene->sdf_field->Bind();
 			r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
 		}
 
@@ -418,7 +415,7 @@ void Renderer::Render(bool rend, bool buff) {
 			r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
 			r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
 			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
-			r_sdf_field.Bind();
+			r_scene->sdf_field->Bind();
 			ssr.UseShader();
 			ssr.SetValue("use_incr_aver", (bool)r_config.r_sampling_average);
 			ssr.SetValue("std_ud_rate", 1.0f / EventListener::frame_count);
@@ -495,24 +492,24 @@ void Renderer::RenderShadowMap(Light* light)
 
 void Renderer::ConstructSDF()
 {
-	r_sdf_field.Bind();
-	r_sdf_field.ResetDistance();
+	r_scene->sdf_field->Bind();
+	r_scene->sdf_field->ResetDistance();
 
-	r_sdf_field.BindShader();
+	r_scene->sdf_field->BindShader();
 
 	for (const auto& [id, mesh] : r_scene->mesh_list)
 	{
 		if (!mesh->using_sdf) continue;
 		if (!mesh->is_viewport) continue;
 
-		r_sdf_field.BindTargetTrans(mesh->o_Transform, mesh->is_closure);
+		r_scene->sdf_field->BindTargetTrans(mesh->o_Transform, mesh->is_closure);
 		mesh->RenderObjProxy(false);
 	}
 
 	r_scene->SetSceneStatus(SceneResource::SDFChanged, false);
 
-	r_sdf_field.Unbind();
-	r_sdf_field.UnbindShader();
+	r_scene->sdf_field->Unbind();
+	r_scene->sdf_field->UnbindShader();
 }
 
 /////////////////////////////////////// FINISH RENDERING /////////////////////////////////////////////
@@ -606,5 +603,7 @@ std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
 
 void Renderer::ScreenShot()
 {
-	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture("result""-" + std::to_string(EventListener::random_float1));
+	std::string name = "result""-" + std::to_string(EventListener::random_float1);
+	DEBUG("saving to: " + name)
+	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name);
 }

@@ -64,7 +64,6 @@ public:
 	std::shared_ptr<SceneResource> r_scene;
 
 	LightArrayBuffer r_light_data;
-	SDFField r_sdf_field;
 	RenderConfigs r_config;
 	RenderConfigs* GetConfig() { return &r_config; }
 

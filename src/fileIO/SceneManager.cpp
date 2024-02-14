@@ -153,6 +153,13 @@ void SceneResource::UsePostProcessing(Resource<PostProcessing> pps)
 }
 
 
+void SceneResource::UseSDF(Resource<SDFField> sdf)
+{
+	sdf_field = sdf;
+	sdf_field->ResetBuffer();
+	UpdateSceneStatus(SDFChanged, true);
+}
+
 std::shared_ptr<Camera> SceneResource::GetActiveCamera()
 {
 	assert(cam_list.find(0) != cam_list.end());

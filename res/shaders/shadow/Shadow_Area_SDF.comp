@@ -1,0 +1,169 @@
+#version 460 core
+
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout(rgba16f, binding = 2) uniform image2D U_normal;
+layout(rgba16f, binding = 3) uniform image2D U_pos;
+layout(r16f,    binding = 4) uniform image2D U_Lighting;
+layout(rgba8  , binding = 5) uniform image2D U_alpha;
+uniform sampler2D U_opt_flow;
+uniform samplerCube Shadow_Map;
+
+uniform mat4 light_trans;
+uniform vec2 U_UV;
+uniform float ratio;
+uniform vec3 offset;
+uniform int frame;
+uniform float light_far;
+uniform float update_rate;
+uniform float radius;
+
+layout(std430, binding = 6) readonly buffer SDF {
+	vec3 SDF_pos;
+	vec3 SDF_scale;
+	vec3 SDF_size;
+	int SDF_subdiv;
+	uint SDF_data[];
+};
+
+// This shader partially refered to the Repo: https://github.com/GPUOpen-Effects/TressFX/tree/master
+
+float LinearInterpolate(float a, float b, float t)
+{
+    return a * (1.0f - t) + b * t;
+}
+
+
+//    x = BilinearInterpolate(a, b, c, d, p, q)
+//      = LinearInterpolate(LinearInterpolate(a, b, p), LinearInterpolate(c, d, p), q)
+float BilinearInterpolate(float a, float b, float c, float d, float p, float q)
+{
+    return LinearInterpolate( LinearInterpolate(a, b, p), LinearInterpolate(c, d, p), q );
+}
+
+//		x = TrilinearInterpolate(a, b, c, d, e, f, g, h, p, q, r)
+//		  = LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r)
+float TrilinearInterpolate(float a, float b, float c, float d, float e, float f, float g, float h, float p, float q, float r)
+{
+    return LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r);
+}
+
+uint FloatFlip3(float fl)
+{
+    uint f = floatBitsToUint(fl);
+    return (f << 1) | (f >> 31);		//Rotate sign bit to least significant
+}
+float IFloatFlip3(uint f2)
+{
+    uint u = (f2 >> 1) | (f2 << 31);
+	return uintBitsToFloat(u);
+}
+
+float ReadSDFAt(ivec3 index){
+	int index_linear = int(index.x + index.y * SDF_size.x + index.z * SDF_size.x * SDF_size.y);
+	return IFloatFlip3(SDF_data[index_linear]);
+}
+
+float ReadSDF(vec3 pos){
+	vec3 transf = (pos - SDF_pos) / SDF_scale;  // normalize
+	vec3 over = transf - clamp(transf, -1, 1);  // over the field
+	transf = clamp(transf, -1, 1) + 1;			// [0, 2]
+	transf *= 0.5;								// [0, 1]
+	transf *= (SDF_size - 1);					// [(0,0,0), (W-1,D-1,H-1)]
+
+
+	float distance_000 = ReadSDFAt(ivec3(transf) + ivec3(0,0,0));
+	float distance_001 = ReadSDFAt(ivec3(transf) + ivec3(0,0,1));
+	float distance_010 = ReadSDFAt(ivec3(transf) + ivec3(0,1,0));
+	float distance_011 = ReadSDFAt(ivec3(transf) + ivec3(0,1,1));
+	float distance_100 = ReadSDFAt(ivec3(transf) + ivec3(1,0,0));
+	float distance_101 = ReadSDFAt(ivec3(transf) + ivec3(1,0,1));
+	float distance_110 = ReadSDFAt(ivec3(transf) + ivec3(1,1,0));
+	float distance_111 = ReadSDFAt(ivec3(transf) + ivec3(1,1,1));
+
+	vec3 interp = fract(transf);
+
+	return TrilinearInterpolate(distance_000, distance_100, distance_010, distance_110,
+                                distance_001, distance_101, distance_011, distance_111,
+                                interp.x, interp.y, interp.z) + length(over);
+}
+
+float shadow_at(vec3 pos, vec3 norm, vec3 light_pos){
+	float shadow = 1.0f;
+	vec3 L = pos - light_pos;  // light -> position
+	float len = length(L);
+	vec3 dir = normalize(L);
+
+	float bias = 0.01;
+	float sdf_b = 1e20;
+
+	for(float s = 0; s<len-bias;){
+		float sdf = abs(ReadSDF(light_pos+dir*s));
+
+		if(sdf < bias){
+			float dl = sdf/max(0.001, dot(norm, -dir));
+			return len-s-bias > dl ? 0 : shadow;
+		}
+
+		float y = sdf*sdf/(2.0*sdf_b);
+        float d = sqrt(abs(sdf*sdf-y*y));
+
+		float w = (len-s) / s * radius;
+		float wl = d * len / s;
+
+		//shadow = min(shadow, wl/w);
+		shadow = min( shadow, d/(radius*max(0.0,len-s-y)) );
+
+		s += sdf;
+		sdf_b = sdf;
+	}
+	return shadow;
+}
+
+void UpdateOF(ivec2 uv){
+
+	float Cache_B = imageLoad(U_Lighting, uv).r;
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_Lighting)).rg;
+
+	imageStore(U_Lighting, ivec2(uv + OF*imageSize(U_Lighting)), vec4(vec3(Cache_B), 1));
+	memoryBarrier();
+}
+
+float BOF_sample(ivec2 uv){
+
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_Lighting)).rg;
+	ivec2 uv_b = uv + ivec2(OF * imageSize(U_Lighting));
+	return imageLoad(U_Lighting, uv_b).r;
+
+}
+
+void main(){
+
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+
+	//UpdateOF(uv);  // only for Forward Optical Flow
+
+	float alpha = imageLoad(U_alpha, uv).r;
+	if(alpha < 0.5){
+		imageStore(U_Lighting, uv, vec4(1));
+		return;
+	}
+
+	vec3 Pos = imageLoad(U_pos, uv).xyz;
+	vec3 Norm = imageLoad(U_normal, uv).xyz;
+	vec3 dir = mat3(light_trans) * vec3(0, 0, 1);
+	vec3 area_pos = vec3(light_trans*vec4(0, 0, 0, 1));
+
+	if(dot(dir, Pos - area_pos) < 0){
+		imageStore(U_Lighting, uv, vec4(1));
+		return;
+	}
+	
+	vec3 light_pos = vec3(light_trans*vec4(2 * U_UV * vec2(ratio, 1) - 1, 0, 1));
+
+	float shadow = shadow_at(Pos, Norm, light_pos);
+
+	float shadow_b = BOF_sample(uv);
+	shadow = shadow_b + update_rate * (shadow - shadow_b);
+
+	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));
+}

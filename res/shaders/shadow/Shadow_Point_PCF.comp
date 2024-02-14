@@ -1,0 +1,78 @@
+#version 460 core
+
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout(rgba16f, binding = 3) uniform image2D U_pos;
+layout(r16f,    binding = 4) uniform image2D U_Lighting;
+layout(rgba8  , binding = 5) uniform image2D U_alpha;
+uniform sampler2D U_opt_flow;
+uniform samplerCube Shadow_Map;
+
+uniform vec3 light_pos;
+uniform vec3 U_offset[16];
+uniform int frame;
+uniform float light_far;
+uniform float update_rate;
+uniform float offset;
+uniform float radius;
+
+float evaluateShadow(float c_depth, float min_depth){
+	float bias = 0.015;
+	float range = 0.005;
+	float delta = c_depth - min_depth - bias;  // delta greater/equal than 0
+
+	return 1-smoothstep(0, range, delta);
+}
+
+float shadow_at(ivec2 uv, vec3 offset){
+	vec3 Pos = imageLoad(U_pos, uv).xyz;
+	vec3 L = Pos - light_pos + offset * U_offset[frame%16] * 10;
+	float dist = length(L);
+
+	float closestDepth = texture(Shadow_Map, normalize(L)+offset).r; 
+	float currentDepth = dist/light_far;
+	return evaluateShadow(currentDepth, closestDepth);
+}
+
+void UpdateOF(ivec2 uv){
+
+	float Cache_B = imageLoad(U_Lighting, uv).r;
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_Lighting)).rg;
+
+	imageStore(U_Lighting, ivec2(uv + OF*imageSize(U_Lighting)), vec4(vec3(Cache_B), 1));
+	memoryBarrier();
+}
+
+float BOF_sample(ivec2 uv){
+
+	vec2 OF = texture(U_opt_flow, (vec2(uv)+0.5)/imageSize(U_Lighting)).rg;
+	ivec2 uv_b = uv + ivec2(OF * imageSize(U_Lighting));
+	return imageLoad(U_Lighting, uv_b).r;
+
+}
+
+void main(){
+
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+
+	//UpdateOF(uv);
+
+	float alpha = imageLoad(U_alpha, uv).r;
+		if(alpha < 0.5){
+			imageStore(U_Lighting, uv, vec4(1));
+			return;
+	}
+
+	float shadow = 0.0;
+	float samples = 3.0;
+	for(float x = -offset; x < offset; x += offset / (samples * 0.5))
+	    for(float y = -offset; y < offset; y += offset / (samples * 0.5))
+	        for(float z = -offset; z < offset; z += offset / (samples * 0.5))
+	            shadow += shadow_at(uv, vec3(x, y, z));
+
+	shadow /= (samples * samples * samples);
+
+	float shadow_b = BOF_sample(uv);
+	shadow = shadow_b + update_rate * (shadow - shadow_b);
+
+	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));
+}

@@ -260,6 +260,13 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 
 	Light::point_blur_range = 0.005;
 
+
+	DEBUG("\n-------------SDF Field-------------")
+		std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 64);
+	sdf->SetScale({ 1.1,1.1,1.1 });
+	sdf->SetPos({ 0,0,0.5 });
+	config2->UseSDF(sdf);
+
 	DEBUG("\n---------------ENVIR----------------")
 		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
@@ -319,6 +326,12 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	go2->SetScale(glm::vec3(1.5f));
 	config3->UseMesh(go2);
 
+	DEBUG("\n-------------SDF Field-------------")
+		std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 64);
+	sdf->SetScale({ 1.1,1.1,1.1 });
+	sdf->SetPos({ 0,0,0.5 });
+	config3->UseSDF(sdf);
+
 	DEBUG("\n---------------ENVIR----------------")
 		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
@@ -377,6 +390,17 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("shadow/torus.obj");
 	go4->SetObjShader("testS", "Rasterization");
 	config4->UseMesh(go4);
+
+
+	DEBUG("\n---------------MESH----------------")
+		std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("plane.obj");
+	go5->EnableMaterial(false);
+	go5->EnableSDF(false);
+	go5->SetObjShader("testS", "SDF_Visual");
+	go5->SetPos({ 0,0,0 });
+	go5->SetScale({ 2,2,2 });
+	go5->SetRot({ 0,0,90 });
+	//config4->UseMesh(go5);
 	
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
@@ -394,6 +418,13 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	pointLight2->SetPower(10);
 	pointLight2->ApplyTransform();
 	config4->UseLight(pointLight2);
+
+
+	DEBUG("\n-------------SDF Field-------------")
+		std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 128);
+	sdf->SetScale({ 2,2,3 });
+	sdf->SetPos({ 0,0,2 });
+	config4->UseSDF(sdf);
 
 	DEBUG("\n---------------ENVIR----------------")
 		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");

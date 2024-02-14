@@ -530,6 +530,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName((char)config->r_shadow_algorithm, type));
 
 		shadow_shader.UseShader();
+		shadow_shader.SetValue("offset", xdzm::map01_11(random));
+		shadow_shader.SetValue("frame", frame);
+
 		shadow_cache[id].BindC(4);
 		switch (type)
 		{
@@ -539,11 +542,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 			shadow_shader.SetValue("light_pos", point_list[loc].pos);
 			shadow_shader.SetValue("light_far", Light::point_shaodow_far);
-			shadow_shader.SetValue("frame", frame);
 			shadow_shader.SetValue("update_rate", point_ud_rate);
 			shadow_shader.SetValue("radius", point_list[loc].radius);
 			//shadow_shader.SetValue("offset", Light::point_blur_range);
-			shadow_shader.SetValue("offset", xdzm::map01_11(random));
 
 			break;
 		case SUNLIGHT:
@@ -551,8 +552,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			Texture::BindM(map_id, 31);
 
 			shadow_shader.SetValue("proj_trans", sun_list[loc].proj_trans);
-			shadow_shader.SetValue("frame", frame);
-			shadow_shader.SetValue("offset", Light::point_blur_range);
+			shadow_shader.SetValue("radius", Light::point_blur_range);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
 			break;
@@ -564,8 +564,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			shadow_shader.SetValue("light_dir", spot_list[loc].dir);
 			shadow_shader.SetValue("outer_cutoff", spot_list[loc].outer_cutoff);
 			shadow_shader.SetValue("light_far", Light::spot_shaodow_far);
-			shadow_shader.SetValue("frame", frame);
-			shadow_shader.SetValue("offset", Light::spot_blur_range);
+			shadow_shader.SetValue("radius", Light::spot_blur_range);
 			shadow_shader.SetValue("update_rate", spot_ud_rate);
 
 			break;
@@ -577,8 +576,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			shadow_shader.SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
 			shadow_shader.SetValue("ratio", area_list[loc].ratio);
 			shadow_shader.SetValue("light_far", Light::area_shaodow_far);
-			shadow_shader.SetValue("frame", frame);
-			shadow_shader.SetValue("offset", Light::area_blur_range);
+			shadow_shader.SetValue("radius", Light::area_blur_range);
 			shadow_shader.SetValue("update_rate", area_ud_rate);
 
 			break;
