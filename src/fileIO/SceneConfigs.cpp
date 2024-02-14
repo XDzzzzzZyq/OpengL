@@ -381,9 +381,19 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	DEBUG("\n---------------LIGHT----------------")
 		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 3.0f });
-	pointLight1->SetPower(40);
+	pointLight1->SetColor({ 0.7,0.7, 1 });
+	pointLight1->SetPower(30);
 	pointLight1->ApplyTransform();
 	config4->UseLight(pointLight1);
+
+	DEBUG("\n-------------AREA LIGHT-------------")
+		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(1.0f));
+	pointLight2->SetPos({ -2.0f, -1.5f, 0.7f });
+	pointLight2->SetRot({ 135, 0, 135 });
+	pointLight2->SetColor({ 1,0.7,0.7 });
+	pointLight2->SetPower(10);
+	pointLight2->ApplyTransform();
+	config4->UseLight(pointLight2);
 
 	DEBUG("\n---------------ENVIR----------------")
 		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");

@@ -10,11 +10,11 @@ uniform samplerCube Shadow_Map;
 uniform mat4 light_trans;
 uniform vec2 U_UV;
 uniform float ratio;
-uniform vec3 U_offset[16];
+uniform vec3 offset;
 uniform int frame;
 uniform float light_far;
 uniform float update_rate;
-uniform float offset;
+uniform vec3 radius;
 
 float evaluateShadow(float c_depth, float min_depth){
 	float bias = 0.01;
@@ -24,11 +24,11 @@ float evaluateShadow(float c_depth, float min_depth){
 	return 1-smoothstep(0, range, delta);
 }
 
-float shadow_at(vec3 Pos, ivec2 uv, vec3 offset, vec3 light_pos){
-	vec3 L = Pos - light_pos + offset * U_offset[frame%16];
+float shadow_at(vec3 Pos, vec3 light_pos){
+	vec3 L = Pos - light_pos + radius * offset;
 	float dist = length(L);
 
-	float closestDepth = texture(Shadow_Map, normalize(L)+offset).r; 
+	float closestDepth = texture(Shadow_Map, normalize(L)).r; 
 	float currentDepth = dist/light_far;
 	return evaluateShadow(currentDepth, closestDepth);
 }
@@ -73,14 +73,7 @@ void main(){
 	
 	vec3 light_pos = vec3(light_trans*vec4(2 * U_UV * vec2(ratio, 1) - 1, 0, 1));
 
-	float shadow = 0.0;
-	float samples = 3.0;
-	for(float x = -offset; x < offset; x += offset / (samples * 0.5))
-	    for(float y = -offset; y < offset; y += offset / (samples * 0.5))
-	        for(float z = -offset; z < offset; z += offset / (samples * 0.5))
-	            shadow += shadow_at(Pos, uv, vec3(x, y, z), light_pos);
-
-	shadow /= (samples * samples * samples);
+	float shadow = shadow_at(Pos, light_pos);
 
 	float shadow_b = BOF_sample(uv);
 	shadow = shadow_b + update_rate * (shadow - shadow_b);

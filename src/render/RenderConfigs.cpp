@@ -22,7 +22,7 @@ bool RenderConfigs::RequiresShadow() const
 
 bool RenderConfigs::RequiresMomentShadow() const
 {
-	return (char)r_shadow_algorithm > 1;
+	return (char)r_shadow_algorithm > 2;
 }
 
 bool RenderConfigs::RequiresSSR() const

@@ -93,7 +93,7 @@ void Camera::SetCamPos(const glm::vec3& _pos)
 		return;
 
 	o_position = _pos;
-	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, o_dir_up);
+	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, glm::vec3(0,0,1));
 	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
 	SetTrans(trans, false, true, false);
 }
@@ -104,7 +104,7 @@ void Camera::SetTarPos(const glm::vec3& _pos)
 		return;
 
 	cam_tar = _pos;
-	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, o_dir_up);
+	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, glm::vec3(0, 0, 1));
 	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
 	SetTrans(trans, false, true, false);
 }

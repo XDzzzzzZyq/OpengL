@@ -68,7 +68,7 @@ public:
 	mutable glm::vec3 o_scale{ 1.0f };
 
 	mutable glm::vec3 o_rot{ 0.0f };
-	mutable glm::vec3 o_dir_up{ 0.0f, 0.0f, 1.0f };
+	mutable glm::vec3 o_dir_up{ 0.0f, 1.0f, 0.0f };
 	mutable glm::vec3 o_dir_right{ 1.0f, 0.0f, 0.0f };
 
 public:

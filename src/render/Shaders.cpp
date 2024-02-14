@@ -745,10 +745,12 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 {
 	static auto pos_offset = xdzm::rand3nv(16); // must be static
 
-	ComputeShader::ImportShaderConfigs("Shadow_Point",Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShaderConfigs("Shadow_Point",Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 	ComputeShader::ImportShaderConfigs("Shadow_Sun",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
-	ComputeShader::ImportShaderConfigs("Shadow_Spot", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
-	ComputeShader::ImportShaderConfigs("Shadow_Area", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31), Uni("U_offset", (GLuint)16, (float*)pos_offset.data(), VEC3_ARRAY));
+	ComputeShader::ImportShaderConfigs("Shadow_Spot", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	ComputeShader::ImportShaderConfigs("Shadow_Area", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+
+	ComputeShader::ImportShaderConfigs("Shadow_Point_SDF", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 
 	static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(config->r_ao_ksize);
 
