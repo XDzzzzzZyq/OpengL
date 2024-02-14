@@ -309,11 +309,7 @@
     <None Include="res\shaders\Depth_Linear.frag" />
     <None Include="res\shaders\6sides_trans.geom" />
     <None Include="res\shaders\Depth_Texture_C2E.comp" />
-    <None Include="res\shaders\Shadow_Sun.comp" />
-    <None Include="res\shaders\Shadow_Point.comp" />
-    <None Include="res\shaders\Shadow_Spot.comp" />
     <None Include="res\shaders\Empty_Rand.vert" />
-    <None Include="res\shaders\Shadow_Area.comp" />
     <None Include="res\shaders\SpriteShader.frag" />
     <None Include="res\shaders\SpriteShader.vert" />
     <None Include="res\shaders\Compose.comp" />
@@ -329,6 +325,12 @@
     <None Include="res\shaders\PBR.comp" />
     <None Include="res\shaders\Empty.comp" />
     <None Include="res\shaders\SAT.comp" />
+    <None Include="res\shaders\shadow\Shadow_Area.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point_PCF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point_SDF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Spot.comp" />
+    <None Include="res\shaders\shadow\Shadow_Sun.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

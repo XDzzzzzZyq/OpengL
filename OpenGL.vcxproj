@@ -326,10 +326,12 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\SDF_Visual.frag" />
     <None Include="res\shaders\selection_outline.comp" />
     <None Include="res\shaders\ShadowTest.frag" />
-    <None Include="res\shaders\Shadow_Area.comp" />
-    <None Include="res\shaders\Shadow_Point.comp" />
-    <None Include="res\shaders\Shadow_Spot.comp" />
-    <None Include="res\shaders\Shadow_Sun.comp" />
+    <None Include="res\shaders\shadow\Shadow_Area.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point_PCF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point_SDF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Spot.comp" />
+    <None Include="res\shaders\shadow\Shadow_Sun.comp" />
     <None Include="res\shaders\ShowTexture.frag" />
     <None Include="res\shaders\Screen.vert" />
     <None Include="res\shaders\Irradiance_Conv.comp" />
