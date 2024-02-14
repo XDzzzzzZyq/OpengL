@@ -131,7 +131,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	config1->UseDebugPoints(points);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR");
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR");
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
 	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
@@ -273,7 +273,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	config2->UseEnvironment(environment);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR", COMPUTE_SHADER);
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
@@ -338,7 +338,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	config3->UseEnvironment(environment);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR", COMPUTE_SHADER);
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
@@ -432,7 +432,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	config4->UseEnvironment(environment);
 
 	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("PBR", COMPUTE_SHADER);
+		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);

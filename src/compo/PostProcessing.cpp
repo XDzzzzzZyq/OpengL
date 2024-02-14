@@ -6,7 +6,7 @@ PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type
 	switch (_type)
 	{
 	case FRAGMENT_SHADER:
-		pps_shader = std::dynamic_pointer_cast<Shaders>(std::make_shared<RenderShader>("Screen", _shader_name));
+		pps_shader = std::dynamic_pointer_cast<Shaders>(std::make_shared<RenderShader>("res/Screen", _shader_name));
 		break;
 	case COMPUTE_SHADER:
 		pps_shader = std::dynamic_pointer_cast<Shaders>(ComputeShader::ImportShaderSrc(_shader_name));

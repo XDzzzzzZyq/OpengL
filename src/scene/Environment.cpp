@@ -3,7 +3,7 @@
 Environment::Environment(const std::string& texpath)
 {
 	o_type = GO_ENVIR;
-	envir_shader = RenderShader("Screen", "EnvirBG");	
+	envir_shader = RenderShader("pps/Screen", "pps/EnvirBG");	
 
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 

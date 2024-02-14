@@ -440,7 +440,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////  COLOR ADJUSTMENT  /////////
 
-		static ComputeShader& tone = ComputeShader::ImportShader("Compose", Uni("U_debugt", 3));
+		static ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 		//r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 2);
@@ -454,7 +454,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (r_is_preview)
 		{
-			static ComputeShader& editing = ComputeShader::ImportShader("Editing");
+			static ComputeShader& editing = ComputeShader::ImportShader("pps/Editing");
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 			editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
