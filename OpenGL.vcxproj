@@ -298,19 +298,23 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="dep\GLFW\lib-vc2019\glfw3.dll" />
     <None Include="README.md" />
     <None Include="res\shaders\6sides_trans.geom" />
+    <None Include="res\shaders\convert\C2E.comp" />
+    <None Include="res\shaders\convert\Depth_Texture.comp" />
+    <None Include="res\shaders\convert\Depth_Texture_C2E.comp" />
+    <None Include="res\shaders\convert\E2C.comp" />
+    <None Include="res\shaders\convert\HDR2PNG.comp" />
+    <None Include="res\shaders\convert\Importance_Samp.comp" />
+    <None Include="res\shaders\convert\Importance_Samp_E2C.comp" />
+    <None Include="res\shaders\convert\Irradiance_Conv.comp" />
+    <None Include="res\shaders\convert\Irradiance_Conv_E2C.comp" />
+    <None Include="res\shaders\convert\SAT.comp" />
     <None Include="res\shaders\Depth_Linear.frag" />
     <None Include="res\shaders\Depth_Rast.vert" />
-    <None Include="res\shaders\Depth_Texture.comp" />
-    <None Include="res\shaders\Depth_Texture_C2E.comp" />
     <None Include="res\shaders\Empty.comp" />
     <None Include="res\shaders\Empty.frag" />
     <None Include="res\shaders\Empty.vert" />
     <None Include="res\shaders\Empty_Rand.vert" />
-    <None Include="res\shaders\HDR_2_PNG.comp" />
     <None Include="res\shaders\IBRShader.frag" />
-    <None Include="res\shaders\Importance_Samp.comp" />
-    <None Include="res\shaders\Importance_Samp_E2C.comp" />
-    <None Include="res\shaders\Irradiance_Conv_E2C.comp" />
     <None Include="res\shaders\Optical_Flow.comp" />
     <None Include="res\shaders\Optical_Flow_Back.comp" />
     <None Include="res\shaders\Polygon.frag" />
@@ -329,7 +333,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\pps\SSR_SDF_Resolve.comp" />
     <None Include="res\shaders\Rasterization.frag" />
     <None Include="res\shaders\Reset_Distance.comp" />
-    <None Include="res\shaders\SAT.comp" />
     <None Include="res\shaders\SDF_Construct.geom" />
     <None Include="res\shaders\SDF_Visual.frag" />
     <None Include="res\shaders\selection_outline.comp" />
@@ -342,7 +345,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\shadow\Shadow_Spot.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun.comp" />
     <None Include="res\shaders\ShowTexture.frag" />
-    <None Include="res\shaders\Irradiance_Conv.comp" />
     <None Include="res\shaders\LineShader.frag" />
     <None Include="res\shaders\LineShader.vert" />
     <None Include="res\shaders\PointsShader.frag" />
@@ -354,8 +356,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\testS.frag" />
     <None Include="res\shaders\testS.vert" />
     <None Include="res\shaders\testS_diff.frag" />
-    <None Include="res\shaders\To_Cube.comp" />
-    <None Include="res\shaders\To_ERect.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="dep\GLEW\doc\github.png" />

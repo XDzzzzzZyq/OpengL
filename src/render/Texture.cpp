@@ -470,7 +470,7 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 		}
 	}
 
-	ComputeShader& importance_samp = ComputeShader::ImportShader(to_cubemap ? "Importance_Samp_E2C" : "Importance_Samp");
+	ComputeShader& importance_samp = ComputeShader::ImportShader(to_cubemap ? "convert/Importance_Samp_E2C" : "convert/Importance_Samp");
 	LOOP(8) { // 0 1 2 3 4 5 6 7
 		int lod_w = im_w / pow(2, i);
 		int lod_h = im_h / pow(2, i);
@@ -521,7 +521,7 @@ void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textur
 	Texture::BindM(_tar_ID, _tar_type + 1);
 	glBindImageTexture(tex_type, ID, 0, (GLuint)to_cubemap, 0, GL_WRITE_ONLY, interlayout);
 
-	ComputeShader& irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "Irradiance_Conv_E2C" : "Irradiance_Conv");
+	ComputeShader& irradiance_conv = ComputeShader::ImportShader(to_cubemap ? "convert/Irradiance_Conv_E2C" : "convert/Irradiance_Conv");
 	irradiance_conv.UseShader();
 	irradiance_conv.SetValue("max_step", 64);
 	irradiance_conv.SetValue("source", _tar_type + 1);
@@ -546,7 +546,7 @@ void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type 
 	LOOP(6)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
 
-	ComputeShader& to_cubemap = ComputeShader::ImportShader("To_Cube");
+	ComputeShader& to_cubemap = ComputeShader::ImportShader("convert/E2C");
 
 	glBindImageTexture(0, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
 	Texture::BindM(_tar_ID, 1);
@@ -575,7 +575,7 @@ void Texture::GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar
 	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, _w, _h, 0, layout, type, NULL);
 	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
 	
-	ComputeShader& to_cubemap = ComputeShader::ImportShader("To_ERect");
+	ComputeShader& to_cubemap = ComputeShader::ImportShader("convert/C2E");
 	
 	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout); 
 	Texture::BindM(_tar_ID, 1, _tar_type); 
@@ -604,7 +604,7 @@ void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _ta
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, _w, _h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	ComputeShader& to_texture = ComputeShader::ImportShader(gl_type == GL_TEXTURE_2D ? "Depth_Texture" : "Depth_Texture_C2E");
+	ComputeShader& to_texture = ComputeShader::ImportShader(gl_type == GL_TEXTURE_2D ? "convert/Depth_Texture" : "convert/Depth_Texture_C2E");
 
 	Texture::BindM(_tar_ID, 0, _tar_type);
 	glBindImageTexture(1, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
@@ -629,7 +629,7 @@ void Texture::ConvertPNG(GLuint _tar_ID, size_t _w, size_t _h)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, _w, _h, 0, layout, type, NULL);
 
-	ComputeShader& hdr_to_png = ComputeShader::ImportShader("HDR_2_PNG");
+	ComputeShader& hdr_to_png = ComputeShader::ImportShader("convert/HDR2PNG");
 
 	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
 	glBindImageTexture(1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);;

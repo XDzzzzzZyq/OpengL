@@ -274,8 +274,8 @@ void Light::UpdateProjMatrix()
 
 void Light::ConstructSAT()
 {
-	static ComputeShader& SAT = ComputeShader::ImportShader("SAT");
-	static ComputeShader& SAT_cube = ComputeShader::ImportShader("SAT_cube");
+	static ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
+	static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
 }
 
 
