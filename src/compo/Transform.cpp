@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "xdz_math.h"
+#include "xdz_matrix.h"
 
 #include "glm/gtx/matrix_decompose.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -151,9 +152,11 @@ void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle, bool globa
 	o_position += anch;
 }
 
-void Transform3D::LookAt(const glm::vec3& tar)
+void Transform3D::LookAt(const glm::vec3& tar, const glm::vec3& up)
 {
-	assert(false);
+	glm::mat4 trans = xdzm::lookAt(o_position, tar, up);
+	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
+	SetTrans(trans, false, true, false);
 }
 
 void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)

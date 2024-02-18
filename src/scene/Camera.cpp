@@ -89,13 +89,8 @@ void Camera::ChangeCamPersp(float persp)
 
 void Camera::SetCamPos(const glm::vec3& _pos)
 {
-	if (_pos == o_position)
-		return;
-
-	o_position = _pos;
-	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, glm::vec3(0,0,1));
-	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
-	SetTrans(trans, false, true, false);
+	SetPos(_pos);
+	LookAt(cam_tar, { 0,0,1 });
 }
 
 void Camera::SetTarPos(const glm::vec3& _pos)
@@ -104,9 +99,7 @@ void Camera::SetTarPos(const glm::vec3& _pos)
 		return;
 
 	cam_tar = _pos;
-	glm::mat4 trans = xdzm::lookAt(o_position, cam_tar, glm::vec3(0, 0, 1));
-	//glm::vec3 dir = glm::normalize(cam_tar - o_position);
-	SetTrans(trans, false, true, false);
+	LookAt(cam_tar, { 0,0,1 });
 }
 
 void Camera::SetCamTrans(const glm::mat4& _trans, bool pos /*= true*/, bool rot /*= true*/)
