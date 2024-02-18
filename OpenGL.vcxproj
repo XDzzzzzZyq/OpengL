@@ -114,7 +114,8 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
 </Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>if not exist "result" mkdir result</Command>
+      <Command>if not exist "result" mkdir result
+if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\result" mkdir "$(ProjectDir)build\$(Platform)\$(Configuration)\result"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -346,6 +347,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\shadow\Shadow_Spot.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_PCF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Sun_SDF.comp" />
     <None Include="res\shaders\ShowTexture.frag" />
     <None Include="res\shaders\LineShader.frag" />
     <None Include="res\shaders\LineShader.vert" />
