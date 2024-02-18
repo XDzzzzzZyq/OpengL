@@ -559,13 +559,10 @@ void Renderer::OnRenderCfgUpdate(RenderConfigs::ModifyFlags flag)
 void Renderer::UpdateLightInfo()
 {
 	r_scene->SetSceneStatus(SceneResource::LightChanged, true);
-	//DEBUG((int)GetConfig()->r_shadow_algorithm)
 	for (auto& [id, light] : r_scene->light_list) {
 		light->InitShadowMap(GetConfig());
 		light->is_light_changed = true;
 	}
-	r_light_data.ParseLightData(r_scene->light_list);
-	r_light_data.Resize(r_frame_width, r_frame_height);
 }
 
 void Renderer::UseScene(std::shared_ptr<SceneResource> _scene)

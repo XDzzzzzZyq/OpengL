@@ -214,8 +214,8 @@ public:
 
 private:
 
-	using LightInfo = std::tuple<int, LightType, GLuint>; // id -> loc & type & map_tex_ID
-	std::unordered_map<int, LightInfo> light_info_cache;  // id -> loc & type & map_tex_ID
+	using _LightInfo = std::tuple<int, Light*>; // loc & texPtr
+	std::unordered_map<int, _LightInfo> light_info_cache;  // id -> loc & texPtr
 	GLuint cache_w = SCREEN_W;
 	GLuint cache_h = SCREEN_H;
 

@@ -367,7 +367,6 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 
 	for (auto& [id, light] : light_list)
 	{
-		GLuint map_id = light->light_shadow_map.GetTexID();
 		light->UpdateProjMatrix();
 
 		shadow_cache[id] = Texture((int)cache_w, (int)cache_h, LIGHTING_CACHE);
@@ -377,19 +376,19 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 		case NONELIGHT:
 			break;
 		case POINTLIGHT:
-			light_info_cache[id] = LightInfo(point_list.size(), POINTLIGHT, map_id);
+			light_info_cache[id] = _LightInfo(point_list.size(), light.get());
 			point_list.emplace_back(*light.get());
 			break;
 		case SUNLIGHT:
-			light_info_cache[id] = LightInfo(sun_list.size(), SUNLIGHT, map_id);
+			light_info_cache[id] = _LightInfo(sun_list.size(), light.get());
 			sun_list.emplace_back(*light.get());
 			break;
 		case SPOTLIGHT:
-			light_info_cache[id] = LightInfo(spot_list.size(), SPOTLIGHT, map_id);
+			light_info_cache[id] = _LightInfo(spot_list.size(), light.get());
 			spot_list.emplace_back(*light.get());
 			break;
 		case AREALIGHT:
-			light_info_cache[id] = LightInfo(area_list.size(), AREALIGHT, map_id);
+			light_info_cache[id] = _LightInfo(area_list.size(), light.get());
 			area_list.emplace_back(*light.get());
 			break;
 		default:
@@ -525,7 +524,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 	const glm::vec3 random = glm::vec3(EventListener::random_float1, EventListener::random_float2, EventListener::random_float3);
 
 	for (const auto& [id, info] : light_info_cache) {
-		auto [loc, type, map_id] = info;
+		const auto& [loc, light] = info;
+		const GLuint map_id = light->light_shadow_map.GetTexID();
+		const LightType type = light->light_type;
 
 		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName((char)config->r_shadow_algorithm, type));
 
@@ -540,18 +541,18 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
 
-			shadow_shader.SetValue("light_pos", point_list[loc].pos);
+			shadow_shader.SetValue("light_pos", light->o_position);
 			shadow_shader.SetValue("light_far", Light::point_shaodow_far);
 			shadow_shader.SetValue("update_rate", point_ud_rate);
-			shadow_shader.SetValue("radius", point_list[loc].radius);
+			shadow_shader.SetValue("radius", light->light_radius);
 			//shadow_shader.SetValue("offset", Light::point_blur_range);
 
 			break;
 		case SUNLIGHT:
 
 			Texture::BindM(map_id, 31);
-
-			shadow_shader.SetValue("proj_trans", sun_list[loc].proj_trans);
+			shadow_shader.SetValue("proj_trans", light->light_proj);
+			shadow_shader.SetValue("dir", sun_list[loc].dir);
 			shadow_shader.SetValue("radius", Light::point_blur_range);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
@@ -560,9 +561,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
 
-			shadow_shader.SetValue("light_pos", spot_list[loc].pos);
+			shadow_shader.SetValue("light_pos", light->o_position);
 			shadow_shader.SetValue("light_dir", spot_list[loc].dir);
-			shadow_shader.SetValue("outer_cutoff", spot_list[loc].outer_cutoff);
+			shadow_shader.SetValue("outer_cutoff", light->spot_outer_cutoff);
 			shadow_shader.SetValue("light_far", Light::spot_shaodow_far);
 			shadow_shader.SetValue("radius", Light::spot_blur_range);
 			shadow_shader.SetValue("update_rate", spot_ud_rate);
@@ -572,9 +573,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
 
-			shadow_shader.SetValue("light_trans", area_list[loc].trans);
+			shadow_shader.SetValue("light_trans", light->o_Transform);
 			shadow_shader.SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
-			shadow_shader.SetValue("ratio", area_list[loc].ratio);
+			shadow_shader.SetValue("ratio", light->area_ratio);
 			shadow_shader.SetValue("light_far", Light::area_shaodow_far);
 			shadow_shader.SetValue("radius", Light::area_blur_range);
 			shadow_shader.SetValue("update_rate", area_ud_rate);
@@ -592,8 +593,9 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 void LightArrayBuffer::BindShadowMap() const
 {
 	for (auto& [id, info] : light_info_cache) {
-		auto [loc, type, _] = info;
-		GLuint slot = 31 - (GetSlotOffset(type) + loc);
+		const auto& [loc, light] = info;
+		const LightType type = light->light_type;
+		const GLuint slot = 31 - (GetSlotOffset(type) + loc);
 		shadow_cache[id].Bind(slot);
 	}
 }

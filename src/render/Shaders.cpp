@@ -892,5 +892,6 @@ std::string ComputeShader::GetShadowShaderName(char _type, char _light_type)
 	static std::string light_prefix[4] = { "_Point", "_Sun", "_Spot", "_Area" };
 
 	assert(_type < ShaderLib::Shadow_prefix.size());
+	assert(_type != 0);
 	return "shadow/Shadow" + light_prefix[_light_type] + ShaderLib::Shadow_prefix[_type];
 }
