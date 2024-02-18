@@ -325,6 +325,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\pps\Compose.comp" />
     <None Include="res\shaders\pps\Editing.comp" />
     <None Include="res\shaders\pps\EnvirBG.frag" />
+    <None Include="res\shaders\pps\Fill.comp" />
     <None Include="res\shaders\pps\FXAA.comp" />
     <None Include="res\shaders\pps\PBR.comp" />
     <None Include="res\shaders\pps\PBR.frag" />

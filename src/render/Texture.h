@@ -102,6 +102,8 @@ public: // for texture processing
 	void ConvertDepthFrom(const Texture& _Tar_Tex);
 	void ConvertPNGFrom(const Texture& _Tar_Tex);
 
+	void FillColor(const glm::vec4 col);
+
 private:
 	void GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
 	void GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);

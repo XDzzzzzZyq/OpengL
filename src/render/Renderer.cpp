@@ -368,15 +368,13 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////// LIGHTING CACHE ////////////
 
-		if (r_config.RequiresShadow()) {
-			const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
-			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
-			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
-			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
-			r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
-			if (r_config.RequiresSDF()) r_scene->sdf_field->Bind();
-			r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
-		}
+		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
+		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
+		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
+		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
+		if (r_config.RequiresSDF()) r_scene->sdf_field->Bind();
+		r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
 
 
 		////////////  PBR COMPOSE  ////////////

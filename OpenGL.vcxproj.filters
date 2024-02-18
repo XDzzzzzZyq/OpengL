@@ -337,6 +337,7 @@
     <None Include="res\shaders\convert\SAT.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_PCF.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_SDF.comp" />
+    <None Include="res\shaders\pps\Fill.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

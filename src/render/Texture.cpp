@@ -426,6 +426,27 @@ void Texture::ConvertPNGFrom(const Texture& _Tar_Tex)
 	ConvertPNG(_Tar_Tex.GetTexID(), _Tar_Tex.GetW(), _Tar_Tex.GetH());
 }
 
+void Texture::FillColor(const glm::vec4 col)
+{
+	ComputeShader& fill = ComputeShader::ImportShader("pps/Fill");
+	GLuint slot = -1;
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
+
+	switch (interlayout)
+	{
+	case GL_RGBA16F:	slot = 0; break;
+	case GL_RGBA8:		slot = 1; break;
+	case GL_R16F:		slot = 2; break;
+	default: assert(false && "unknown format");
+	}
+
+	BindC(slot);
+	fill.UseShader();
+	fill.SetValue("color", col);
+	fill.SetValue("slot", slot);
+	fill.RunComputeShaderSCR({ im_w, im_h }, 4);
+}
+
 void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	assert(false && "this function has been abandoned");

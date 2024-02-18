@@ -514,6 +514,13 @@ void LightArrayBuffer::UpdateLight(Light* light)
 
 void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 {
+	if (!config->RequiresShadow()) {
+		for (const auto& [id, _] : light_info_cache) {
+			shadow_cache[id].FillColor({1,1,1,1});
+		}
+		return;
+	}
+
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
 	const float point_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
