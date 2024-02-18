@@ -245,7 +245,7 @@ void Light::UpdateProjMatrix()
 			Light::sun_shaodow_near, 
 			Light::sun_shaodow_far
 		);
-		const glm::mat4 lightView = glm::lookAt(glm::cross(o_dir_up, o_dir_right), glm::vec3(0), glm::vec3(0, 0, 1));
+		const glm::mat4 lightView = glm::lookAt(glm::vec3(0), glm::cross(o_dir_up, o_dir_right), glm::vec3(0, 0, 1));
 
 		light_proj = lightProjection * lightView;
 		break;
@@ -324,7 +324,7 @@ LightArrayBuffer::PointStruct::PointStruct(const Light& light)
 LightArrayBuffer::SunStruct::SunStruct(const Light& light)
 	:color(light.light_color),
 	pos(light.o_position),
-	dir(-glm::cross(light.o_dir_up, light.o_dir_right)),
+	dir(glm::cross(light.o_dir_up, light.o_dir_right)),
 
 	power(light.light_power),
 	use_shadow((int)light.use_shadow),

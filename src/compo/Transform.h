@@ -84,7 +84,7 @@ public:
 	void Move(const glm::vec3& d_pos);
 	void Spin(const glm::vec3& anch, const glm::vec3& axis, const float& angle);
 	void Spin(const glm::vec3& anch, const glm::vec2& angle, bool global_up = true);
-	void LookAt(const glm::vec3& tar, const glm::vec3& up);
+	void LookAt(const glm::vec3& tar, const glm::vec3& up = {0,0,1});
 
 
 	void SetParent(Transform3D* _p_trans, bool _keep_offset = true);
