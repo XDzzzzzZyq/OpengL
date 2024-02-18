@@ -44,6 +44,9 @@ void Renderer::Init()
 
 	InitFrameBuffer();
 	r_light_data.Init();
+	r_config.call_back = [&](RenderConfigs::ModifyFlags flag) {
+		OnRenderCfgUpdate(flag);
+	};
 
 	EventInit();
 	ComputeShader::InitComputeLib(GetConfig());
@@ -547,6 +550,12 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 	r_light_data.Resize(_w, _h);
 }
 
+void Renderer::OnRenderCfgUpdate(RenderConfigs::ModifyFlags flag)
+{
+	if (flag & RenderConfigs::ShadowChanged)
+		UpdateLightInfo();
+}
+
 void Renderer::UpdateLightInfo()
 {
 	r_scene->SetSceneStatus(SceneResource::LightChanged, true);
@@ -555,7 +564,6 @@ void Renderer::UpdateLightInfo()
 		light->InitShadowMap(GetConfig());
 		light->is_light_changed = true;
 	}
-
 	r_light_data.ParseLightData(r_scene->light_list);
 	r_light_data.Resize(r_frame_width, r_frame_height);
 }

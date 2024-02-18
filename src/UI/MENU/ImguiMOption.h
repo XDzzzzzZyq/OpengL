@@ -1,8 +1,6 @@
 #pragma once
 #include "ImguiMenuItem.h"
 
-#define OPTIONS(...) std::vector<std::string>{__VA_ARGS__}
-
 namespace UI
 {
 	class ImguiMOption : public ImguiMenuItem

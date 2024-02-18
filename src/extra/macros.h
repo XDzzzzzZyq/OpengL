@@ -39,3 +39,5 @@ inline std::string glDebug_xdz() {
 #define SCREEN_H 810
 #define LOOP(x) for(int i = 0; i < x; i++)
 #define LOOP_N(x, n) for(int n = 0; n < x; n++)
+
+#define OPTIONS(...) std::vector<std::string>{__VA_ARGS__}

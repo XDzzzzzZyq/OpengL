@@ -252,6 +252,9 @@
     <ClCompile Include="src\render\RenderConfigs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\UI\LAYER\RenderConfigViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -614,6 +617,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\extra\xdz_matrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\LAYER\RenderConfigViewer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

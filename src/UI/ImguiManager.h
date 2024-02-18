@@ -12,6 +12,7 @@
 #include "LAYER/ShaderEditor.h"
 #include "LAYER/MaterialViewer.h"
 #include "LAYER/TransformPanel.h"
+#include "LAYER/RenderConfigViewer.h"
 
 #include "ImguiMenu.h"
 #include "EventListener.h"

@@ -10,9 +10,9 @@ SceneResource::~SceneResource()
 
 }
 
-void SceneResource::UpdateSceneStatus(int tar, bool mask)
+void SceneResource::UpdateSceneStatus(int tar, bool value)
 {
-	status = (SceneModifStatus)(status | (tar * mask));
+	status = (SceneModifStatus)(status | (tar * value));
 }
 
 void SceneResource::SetSceneStatus(int tar, bool value)

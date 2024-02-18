@@ -44,7 +44,7 @@ public:
 		SDFChanged			= 1 << 8,
 	};
 
-	void UpdateSceneStatus(int tar, bool mask);
+	void UpdateSceneStatus(int tar, bool value);
 	void SetSceneStatus(int tar, bool value);
 	bool CheckStatus(SceneModifStatus tar);
 	void _debugStatus();

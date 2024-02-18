@@ -92,6 +92,7 @@ public:
 	void Reset();
 	void FrameResize(GLuint _w, GLuint _h);
 
+	void OnRenderCfgUpdate(RenderConfigs::ModifyFlags flag);
 	void UpdateLightInfo();
 
 public:

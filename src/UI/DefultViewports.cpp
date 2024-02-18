@@ -1,5 +1,5 @@
-
 #include "ImguiManager.h"
+#include "macros.h"
 
 void ImguiManager::DefultViewports() {
 
@@ -58,6 +58,8 @@ void ImguiManager::DefultViewports() {
 	layer2->PushItem<UI::ParaInput>(RGB_INP,   "Light Position");
 	layer2->PushItem<UI::ParaInput>(RGB_INP,   "Light Rotation", glm::vec3{ 0.5,0.5,0.5 });
 	layer2->PushItem<UI::Button>("Debug");
+
+	auto render_config = CreateImguiLayer<RenderConfigViewer>("Renderer");
 
 	auto viewport = CreateImguiLayer<Viewport>("Viewport");
 

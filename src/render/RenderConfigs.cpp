@@ -34,3 +34,20 @@ bool RenderConfigs::RequiresFXAA() const
 {
 	return r_anti_alias != AAAlg::None;
 }
+
+RenderConfigs::RenderConfigs()
+{
+	RenderConfigs::r_active_configs = this;
+}
+
+void RenderConfigs::ActivateConfig(RenderConfigs* config)
+{
+	RenderConfigs::r_active_configs = config;
+}
+
+RenderConfigs* RenderConfigs::GetActiveConfigPtr()
+{
+	return RenderConfigs::r_active_configs;
+}
+
+RenderConfigs* RenderConfigs::r_active_configs{ nullptr };
