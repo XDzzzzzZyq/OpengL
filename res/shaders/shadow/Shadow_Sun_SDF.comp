@@ -6,16 +6,15 @@ layout(rgba16f, binding = 3) uniform image2D U_pos;
 layout(r16f,    binding = 4) uniform image2D U_Lighting;
 layout(rgba8  , binding = 5) uniform image2D U_alpha;
 uniform sampler2D U_opt_flow;
-uniform samplerCube Shadow_Map;
+uniform sampler2D Shadow_Map;
 
-uniform mat4 light_trans;
-uniform vec2 U_UV;
-uniform float ratio;
-uniform vec3 offset;
+uniform vec3 U_offset[16];
 uniform int frame;
 uniform float light_far;
 uniform float update_rate;
+uniform vec3 offset;
 uniform float radius;
+uniform vec3 dir;
 
 layout(std430, binding = 6) readonly buffer SDF {
 	vec3 SDF_pos;
@@ -87,31 +86,43 @@ float ReadSDF(vec3 pos){
                                 interp.x, interp.y, interp.z) + length(over);
 }
 
-float shadow_at(vec3 pos, vec3 norm, vec3 light_pos){
+float evaluateShadow(float c_depth, float min_depth){
+	float bias = 0.01;
+	float delta = c_depth - min_depth - bias;  // delta greater/equal than 0
+
+	return float(delta < 0);
+}
+
+vec3 GetCoord(vec3 pos, mat4 trans){
+
+	vec4 pos_p = trans * vec4(pos, 1);
+	pos_p.xyz = pos_p.xyz/pos_p.w;
+	vec3 coord = vec3(pos_p) * 0.5 + 0.5;
+	
+	return coord;
+}
+
+float shadow_at(vec3 pos, vec3 norm){
+	vec3 dir_L = -normalize(dir);
 	float shadow = 1.0f;
-	vec3 L = pos - light_pos;  // light -> position
-	float len = length(L);
-	vec3 dir = normalize(L);
+	float len = 5;
 
 	float bias = 0.01;
 	float sdf_b = 1e20;
+	float s0 = bias/max(0.001, dot(norm, dir_L));
 
-	for(float s = 0; s<len-bias;){
-		float sdf = abs(ReadSDF(light_pos+dir*s));
+	for(float s = s0; s<len;){
+		float sdf = abs(ReadSDF(pos +dir_L*s));  // Pos -> Light(infin)
 
 		if(sdf < bias){
-			float dl = sdf/max(0.001, dot(norm, -dir));
-			return len-s-bias > dl ? 0 : shadow;
+			return 0;
 		}
 
 		float y = sdf*sdf/(2.0*sdf_b);
-        float d = sqrt(sdf*sdf-y*y);
-
-		float w = (len-s) / s * radius;
-		float wl = d * len / s;
+        float d = sqrt(abs(sdf*sdf-y*y));
 
 		//shadow = min(shadow, wl/w);
-		shadow = min( shadow, d/(radius*max(0.0,len-s-y)) );
+		shadow = min( shadow, d/(s*radius) );
 
 		s += sdf;
 		sdf_b = sdf;
@@ -140,28 +151,18 @@ void main(){
 
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 
-	//UpdateOF(uv);  // only for Forward Optical Flow
+	//UpdateOF(uv);
 
 	float alpha = imageLoad(U_alpha, uv).r;
-	if(alpha < 0.5){
-		imageStore(U_Lighting, uv, vec4(1));
-		return;
+		if(alpha < 0.5){
+			imageStore(U_Lighting, uv, vec4(1));
+			return;
 	}
 
-	vec3 Pos = imageLoad(U_pos, uv).xyz;
-	vec3 Norm = imageLoad(U_normal, uv).xyz;
-	vec3 dir = mat3(light_trans) * vec3(0, 0, 1);
-	vec3 area_pos = vec3(light_trans*vec4(0, 0, 0, 1));
-
-	if(dot(dir, Pos - area_pos) < 0){
-		imageStore(U_Lighting, uv, vec4(1));
-		return;
-	}
 	
-	vec3 light_pos = vec3(light_trans*vec4(2 * U_UV * vec2(ratio, 1) - 1, 0, 1));
-
-	float shadow = shadow_at(Pos, Norm, light_pos);
-
+	vec3 pos = imageLoad(U_pos, uv).xyz;
+	vec3 norm = imageLoad(U_normal, uv).xyz;
+	float shadow = shadow_at(pos, norm);	
 	float shadow_b = BOF_sample(uv);
 	shadow = shadow_b + update_rate * (shadow - shadow_b);
 

@@ -336,6 +336,7 @@
     <None Include="res\shaders\convert\Irradiance_Conv_E2C.comp" />
     <None Include="res\shaders\convert\SAT.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_PCF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Sun_SDF.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

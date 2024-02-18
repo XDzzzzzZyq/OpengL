@@ -101,7 +101,7 @@ float shadow_at(vec3 pos, vec3 norm){
 		}
 
 		float y = sdf*sdf/(2.0*sdf_b);
-        float d = sqrt(abs(sdf*sdf-y*y));
+        float d = sqrt(sdf*sdf-y*y);
 
 		float w = (len-s) / s * radius;
 		float wl = d * len / s;
