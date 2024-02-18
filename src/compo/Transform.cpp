@@ -18,6 +18,9 @@ inline glm::mat4 OffestTransform(const glm::mat4& in_m, const glm::vec3& in_v) {
 	return result;
 }
 
+bool Set1D(glm::vec3& _tar, float _1d, GLuint _dim);
+
+
 void Transform::UseTranformComp(bool _enable, TransType _type)
 {
 	if (_type & TransType::Position)
@@ -53,7 +56,7 @@ bool Transform3D::SetPos(const glm::vec3& pos)
 bool Transform3D::SetPos1D(float _1d, GLuint _dim)
 {
 	if (!use_position) return false;
-	return Set1D(o_position, _1d, _dim);
+	return _set1D(o_position, _1d, _dim);
 }
 
 bool Transform3D::SetScale(const glm::vec3& scale)
@@ -70,7 +73,7 @@ bool Transform3D::SetScale(const glm::vec3& scale)
 bool Transform3D::SetScale1D(float _1d, GLuint _dim)
 {
 	if (!use_scale) return false;
-	return Set1D(o_scale, _1d, _dim);
+	return _set1D(o_scale, _1d, _dim);
 }
 
 bool Transform3D::SetRot(const glm::vec3& rot)
@@ -81,7 +84,7 @@ bool Transform3D::SetRot(const glm::vec3& rot)
 	is_TransF_changed = true;
 	o_rot = rot;
 
-	UpdateDirections();
+	_updateDirections();
 
 	return true;
 }
@@ -90,10 +93,10 @@ bool Transform3D::SetRot1D(float _1d, GLuint _dim)
 {
 
 	if (!use_rotation) return false;
-	bool res = Set1D(o_rot, _1d, _dim);
+	bool res = _set1D(o_rot, _1d, _dim);
 	if (!res) return false;
 
-	UpdateDirections();
+	_updateDirections();
 	return true;
 }
 
@@ -182,7 +185,7 @@ void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
 
 }
 
-bool Transform3D::Set1D(glm::vec3& _tar, float _1d, GLuint _dim)
+bool Transform3D::_set1D(glm::vec3& _tar, float _1d, GLuint _dim)
 {
 	if (_dim < 0 || _dim > 2) return false;
 	if (_tar[_dim] == _1d) return false;
@@ -193,7 +196,7 @@ bool Transform3D::Set1D(glm::vec3& _tar, float _1d, GLuint _dim)
 	return true;
 }
 
-void Transform3D::UpdateDirections()
+void Transform3D::_updateDirections()
 {
 	glm::mat4 rot_mat = glm::mat4_cast(glm::qua(glm::radians(o_rot)));
 

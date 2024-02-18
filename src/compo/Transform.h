@@ -91,9 +91,9 @@ public:
 	void UnsetParent(bool _keep_offset = true) override;
 
 private:
-	bool Set1D(glm::vec3& _tar, float _1d, GLuint _dim);
+	bool _set1D(glm::vec3& _tar, float _1d, GLuint _dim);
 
-	void UpdateDirections();
+	void _updateDirections();
 
 public:
 	[[nodiscard("You could receive the state")]] bool ApplyTransform(bool _forced = false) override;
