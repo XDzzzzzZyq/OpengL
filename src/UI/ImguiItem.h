@@ -73,7 +73,7 @@ public:
 };
 
 #include "operator.h"
-namespace ITEM {
+namespace Item {
 
 	inline const bool is_inside(const ImVec2& size) {
 		return ImGui::GetCursorScreenPos() - EventListener::window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)

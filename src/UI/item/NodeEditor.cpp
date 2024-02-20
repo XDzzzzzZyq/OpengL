@@ -582,20 +582,20 @@ void NodeEditor::LMB()
 
 void NodeEditor::SHIFT_MMB()
 {
-	if (ITEM::is_inside(NE_size))
+	if (Item::is_inside(NE_size))
 		Move({ GetDeltaMouseX() / o_scale[0], GetDeltaMouseY() / o_scale[0] });
 }
 
 #include "xdz_math.h"
 void NodeEditor::CTRL_MMB()
 {
-	if (ITEM::is_inside(NE_size))
+	if (Item::is_inside(NE_size))
 		Zoom(glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(GetDeltaMouseX(), GetDeltaMouseY())));
 }
 
 void NodeEditor::SCRLL()
 {
-	if (ITEM::is_inside(NE_size))
+	if (Item::is_inside(NE_size))
 		Zoom(glm::pow(0.8f, -scroll_dir));
 }
 

@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 
-#include "MENU/ImguiMButton.h"
-#include "MENU/ImguiMOption.h"
-#include "MENU/ImguiMSwitch.h"
+#include "menu/ImguiMButton.h"
+#include "menu/ImguiMOption.h"
+#include "menu/ImguiMSwitch.h"
 
 class ImguiMenu
 {
