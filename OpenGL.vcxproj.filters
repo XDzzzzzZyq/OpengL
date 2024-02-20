@@ -171,54 +171,6 @@
     <ClCompile Include="src\scene\Sprite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\ITEM\Button.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\ITEM\NodeEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\ITEM\OpaButton.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\ITEM\ParaInput.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\ITEM\Text.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\ITEM\TextEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\ITEM\TextureViewer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\LAYER\MaterialViewer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\LAYER\Outliner.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\LAYER\ParamControl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\LAYER\ShaderEditor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\LAYER\TransformPanel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\LAYER\Viewport.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\MENU\ImguiMButton.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\MENU\ImguiMOption.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\MENU\ImguiMSwitch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\UI\DefultViewports.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -252,7 +204,55 @@
     <ClCompile Include="src\render\RenderConfigs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\LAYER\RenderConfigViewer.cpp">
+    <ClCompile Include="src\UI\layer\MaterialViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\layer\Outliner.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\layer\ParamControl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\layer\RenderConfigViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\layer\ShaderEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\layer\TransformPanel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\layer\Viewport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\menu\ImguiMButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\menu\ImguiMOption.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\menu\ImguiMSwitch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\Button.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\NodeEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\OpaButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\ParaInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\Text.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\TextEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\item\TextureViewer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -544,54 +544,6 @@
     <ClInclude Include="src\scene\Sprite.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\ITEM\Button.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ITEM\NodeEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ITEM\OpaButton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ITEM\ParaInput.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ITEM\Text.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ITEM\TextEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ITEM\TextureViewer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\LAYER\MaterialViewer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\LAYER\Outliner.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\LAYER\ParamControl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\LAYER\ShaderEditor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\LAYER\TransformPanel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\LAYER\Viewport.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\MENU\ImguiMButton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\MENU\ImguiMOption.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\MENU\ImguiMSwitch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\UI\ImguiItem.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -622,7 +574,55 @@
     <ClInclude Include="src\extra\xdz_matrix.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\LAYER\RenderConfigViewer.h">
+    <ClInclude Include="src\UI\layer\MaterialViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\layer\Outliner.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\layer\ParamControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\layer\RenderConfigViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\layer\ShaderEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\layer\TransformPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\layer\Viewport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\menu\ImguiMButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\menu\ImguiMOption.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\menu\ImguiMSwitch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\Button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\NodeEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\OpaButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\ParaInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\Text.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\TextEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\item\TextureViewer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
