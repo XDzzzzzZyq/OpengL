@@ -192,9 +192,6 @@
     <ClCompile Include="src\UI\ImguiTheme.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\Nodes.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\UI\NodesColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -253,6 +250,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\UI\ITEM\TextureViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\compo\Nodes.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -562,9 +562,6 @@
     <ClInclude Include="src\UI\ImguiTheme.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\Nodes.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\render\buffer\BufferLayout.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -623,6 +620,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\UI\ITEM\TextureViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compo\Nodes.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

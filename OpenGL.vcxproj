@@ -213,6 +213,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="dep\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\compo\Nodes.cpp" />
     <ClCompile Include="src\render\RenderConfigs.cpp" />
     <ClCompile Include="src\compo\EventListener.cpp" />
     <ClCompile Include="src\compo\Field.cpp" />
@@ -276,7 +277,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\UI\menu\ImguiMButton.cpp" />
     <ClCompile Include="src\UI\menu\ImguiMOption.cpp" />
     <ClCompile Include="src\UI\menu\ImguiMSwitch.cpp" />
-    <ClCompile Include="src\UI\Nodes.cpp" />
     <ClCompile Include="src\UI\NodesColor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +405,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
     <ClInclude Include="dep\stb_image\stb_image.h" />
     <ClInclude Include="dep\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\compo\Nodes.h" />
     <ClInclude Include="src\extra\xdz_matrix.h" />
     <ClInclude Include="src\render\RenderConfigs.h" />
     <ClInclude Include="src\compo\EventListener.h" />
@@ -469,7 +470,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\UI\menu\ImguiMButton.h" />
     <ClInclude Include="src\UI\menu\ImguiMOption.h" />
     <ClInclude Include="src\UI\menu\ImguiMSwitch.h" />
-    <ClInclude Include="src\UI\Nodes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
