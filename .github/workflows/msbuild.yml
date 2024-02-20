@@ -24,17 +24,22 @@ permissions:
   contents: read
 
 jobs:
+  checkout:
+     runs-on: windows-latest
+
+     steps:
+     - uses: actions/checkout@v3
+
+     - name: Update Submodule
+       run: git submodule update --init --recursive
+
+     - name: Show file structure
+       run: tree /f
+  
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Update Submodule
-      run: git submodule update --init --recursive
-
-    - name: Show file structure
-      run: tree /f
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
