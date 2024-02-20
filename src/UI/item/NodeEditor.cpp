@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "operator.h"
+#include "operator.h"=
 
 const ImVec2 ImguiNodes::GetInPinPos(const ImVec2& _header_size, float _offset, int _idx)
 {
@@ -202,7 +202,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 			ImGui::GetWindowDrawList()->AddRectFilled(
 				node.header,
 				ImVec2(node.max.x, node.min.y),
-				Nodes::n_color_list[node->n_type],
+				ImguiNodes::n_color_list[node->n_type],
 				rounding,
 				flags
 			);
@@ -253,7 +253,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					Parameters* tar_o = node.m_states[&i_p].p_tar;								// get the link target ptr
 
 					bool hovered = false;
-					const bool click = ImGui::PinButton(i_p.para_name.c_str(), node.m_states[&i_p].p_ID.c_str(), true, inp_curs, pin_size, false, Nodes::pin_color_list[i_p.para_type], &hovered, is_connected);
+					const bool click = ImGui::PinButton(i_p.para_name.c_str(), node.m_states[&i_p].p_ID.c_str(), true, inp_curs, pin_size, false, ImguiNodes::pin_color_list[i_p.para_type], &hovered, is_connected);
 
 #ifdef _DEBUG
 					if (hovered) {
@@ -307,7 +307,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 								start_p + ImVec2(th_curvity * 10, 0) * o_scale,
 								inp_curs - ImVec2(th_curvity * 10, 0) * o_scale,
 								inp_curs,
-								Nodes::pin_color_list[i_p.para_type],
+								ImguiNodes::pin_color_list[i_p.para_type],
 								0.5 * o_scale[0]
 							);
 						}
@@ -339,7 +339,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					Nodes* tar_n = is_connected ? Nodes::n_out_link[&o_p].first : nullptr;
 
 					bool hovered = false;
-					const bool click = ImGui::PinButton(o_p.para_name.c_str(), node.m_states[&o_p].p_ID.c_str(), true, outp_curs, pin_size, true, Nodes::pin_color_list[o_p.para_type], &hovered, is_connected);
+					const bool click = ImGui::PinButton(o_p.para_name.c_str(), node.m_states[&o_p].p_ID.c_str(), true, outp_curs, pin_size, true, ImguiNodes::pin_color_list[o_p.para_type], &hovered, is_connected);
 
 #ifdef _DEBUG
 					if (hovered) {
@@ -456,7 +456,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					tar_pin_pos + handle_offset,
 					ImGui::GetMousePos() - handle_offset,      // handle merge to cursor: out -> cursor
 					ImGui::GetMousePos(),
-					Nodes::pin_color_list[editing_para_type],
+					ImguiNodes::pin_color_list[editing_para_type],
 					0.5 * o_scale[0]
 				);
 			}
@@ -498,7 +498,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					ImGui::GetMousePos() + handle_offset,
 					tar_pin_pos - handle_offset,
 					tar_pin_pos,
-					Nodes::pin_color_list[editing_para_type],
+					ImguiNodes::pin_color_list[editing_para_type],
 					0.5 * o_scale[0]
 				);
 			}

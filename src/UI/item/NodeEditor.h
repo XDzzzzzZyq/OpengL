@@ -48,6 +48,12 @@ public:
 public:
 	bool is_in_editing{ false };
 	bool is_out_editing{ false };
+
+public:
+
+	static std::vector<ImU32> n_color_list;
+	static std::vector<ImU32> pin_color_list;
+
 };
 
 class NodeEditor : public EventListener, public Transform2D
