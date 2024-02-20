@@ -25,6 +25,7 @@ jobs:
     strategy:
       matrix:
         CONFIG: [Release, Debug]
+        PLATFORM: [x86, x64]
 
     steps:
     - uses: actions/checkout@v3
@@ -46,4 +47,4 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{matrix.CONFIG}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{matrix.CONFIG}};Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
