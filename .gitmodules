@@ -3,8 +3,8 @@
 	url = https://github.com/g-truc/glm.git
 [submodule "dep/Guizmo"]
 	path = dep/gui/Guizmo
-	url = https://github.com/CedricGuillemet/ImGuizmo.git
+	url = https://github.com/XDzzzzzZyq/ImGuizmo.git
 [submodule "dep/gui/ImGui"]
 	path = dep/gui/ImGui
-	url = https://github.com/ocornut/imgui.git
+	url = https://github.com/XDzzzzzZyq/imgui.git
 	branch = docking
