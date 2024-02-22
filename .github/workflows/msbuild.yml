@@ -29,12 +29,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Update Submodule
-      run: git submodule update --init --recursive
-
-    - name: Show file structure
-      run: tree /f
+      with:   
+        submodules: true
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
