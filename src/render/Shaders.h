@@ -42,6 +42,21 @@ public:
 
 public:
 
+	Shaders() {}
+	Shaders(const Shaders& shader);
+	Shaders(Shaders&& shader) noexcept;
+	~Shaders();
+
+	Shaders& operator=(const Shaders& shader);
+	Shaders& operator=(Shaders&& shader) noexcept;
+
+private:
+
+	void _del();
+	void _resetShaderID(GLuint _ID) { if (program_id > 0 && program_id != _ID)_del(); program_id = _ID; }
+
+public:
+
 	using ShaderConstInfo = std::tuple<std::string, std::string, GLuint>; // name | filename | GL_name
 
 	static ShaderConstInfo ParseShaderType(ShaderType _type);
@@ -53,10 +68,10 @@ public:
 	static std::string folder_root;
 	static std::vector<std::string> file_type;
 
-protected:
+public:
 
 	GLuint program_id;
-	ShaderType active_shader;
+	ShaderType active_shader{ NONE_SHADER };
 
 protected:
 
@@ -83,7 +98,6 @@ public:
 
 	void UseShader() const;
 	void UnuseShader() const;
-	void DelShad();
 
 public:
 
@@ -126,6 +140,8 @@ public:
 	RenderShader();
 	~RenderShader();
 
+	RenderShader& operator=(RenderShader&&) = default;
+
 	void ResetID(ShaderType type, GLuint id);
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
 
@@ -165,6 +181,8 @@ public:
 	FastLoadShader();
 	~FastLoadShader();
 
+	FastLoadShader& operator=(FastLoadShader&&) = default;
+
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
 	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
 	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
@@ -192,6 +210,9 @@ public:
 	ChainedShader(const std::vector<std::string>& chain);
 	ChainedShader();
 	~ChainedShader();
+
+	ChainedShader& operator=(ChainedShader&&) = default;
+	ChainedShader& operator=(const ChainedShader&) = default;
 
 	void CreatShader();
 	static ChainedShader& ImportShader(const std::vector<std::string>& chain);
@@ -240,6 +261,9 @@ public:
 	ComputeShader(const std::string& name, const Tuples&... args);
 	ComputeShader();
 	~ComputeShader();
+
+	ComputeShader& operator=(ComputeShader&&) = default;
+	ComputeShader& operator=(const ComputeShader&) = default;
 
 	void ResetID(GLuint _id) { comp_shader.sh_ID = _id; }
 	void ResetDefult(std::string name);

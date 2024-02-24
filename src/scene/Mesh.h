@@ -23,9 +23,8 @@ public:
 
 public:
 
-	Mesh(const std::string& path);
 	Mesh();
-	~Mesh();
+	Mesh(const std::string& path);
 
 public:
 
@@ -54,8 +53,6 @@ public:
 	void* GetShader()		override { return o_shader.get(); }
 	void* GetMaterial()		override { return o_material.get(); }
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
-	
-	void DeleteObj();
 };
 
 template<typename... T>

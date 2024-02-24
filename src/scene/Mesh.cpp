@@ -19,11 +19,6 @@ Mesh::Mesh()
 	DEBUG("mesh c")
 }
 
-Mesh::~Mesh()
-{
-	DeleteObj();
-}
-
 void Mesh::RenderMesh(const Camera* cam)
 {
 	o_shader->UseShader();
@@ -116,11 +111,4 @@ void Mesh::SetCenter()
 void Mesh::SetLowPoly(const std::string& path /*= ""*/)
 {
 	o_mesh_low = path == "" ? nullptr : MeshLib::LoadMesh(path);
-}
-
-void Mesh::DeleteObj()
-{
-	if (o_shader)o_shader->UnuseShader();
-
-	if (o_shader)o_shader->DelShad();
 }

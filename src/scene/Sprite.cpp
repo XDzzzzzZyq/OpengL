@@ -12,31 +12,26 @@ Sprite::Sprite()
 
 }
 
-Sprite::~Sprite()
-{
-	DeleteSprite();
-}
-
 void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* cam)
 {
-	spr_shader->UseShader();
-	spr_tex->Bind(SPIRIT_TEXURE);
+	spr_shader.UseShader();
+	spr_tex.Bind(SPIRIT_TEXURE);
 
 	// transform settings
 
-	spr_shader->SetValue("U_pos", pos);
-	spr_shader->SetValue("U_col", col);
+	spr_shader.SetValue("U_pos", pos);
+	spr_shader.SetValue("U_col", col);
 
 	if(cam->is_invUniform_changed)
-		spr_shader->SetValue("U_cam_trans", cam->o_InvTransform);
+		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 
 	if(cam->is_frustum_changed)
-		spr_shader->SetValue("U_ProjectM", cam->cam_frustum);
+		spr_shader.SetValue("U_ProjectM", cam->cam_frustum);
 
 	// light settings
 
-	spr_shader->SetValue("SpriteOpacity", spr_opacity);
-	spr_shader->SetValue("U_Scale", SPRITE_SIZE);
+	spr_shader.SetValue("SpriteOpacity", spr_opacity);
+	spr_shader.SetValue("U_Scale", SPRITE_SIZE);
 
 	MeshLib::Square->RenderObjProxy();
 }
@@ -44,13 +39,13 @@ void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* ca
 void Sprite::RenderSprite(Camera* cam)
 {
 	if (cam->is_invUniform_changed)
-		spr_shader->SetValue("U_cam_trans", cam->o_InvTransform);
+		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 
 	if (cam->is_frustum_changed)
-		spr_shader->SetValue("U_ProjectM", cam->cam_frustum);
+		spr_shader.SetValue("U_ProjectM", cam->cam_frustum);
 
-	spr_shader->SetValue("SpriteOpacity", spr_opacity);
-	spr_shader->SetValue("U_Scale", SPRITE_SIZE);
+	spr_shader.SetValue("SpriteOpacity", spr_opacity);
+	spr_shader.SetValue("U_Scale", SPRITE_SIZE);
 	//light settings
 
 	MeshLib::Square->RenderObjProxy();
@@ -59,28 +54,21 @@ void Sprite::RenderSprite(Camera* cam)
 void Sprite::SetSpriteShader()
 {
 	spr_shader = RenderShader("SpriteShader");
-	spr_shader->UseShader();
-	spr_shader->SetValue("ID_color", id_color);
-	spr_shader->SetValue("RAND_color", id_color_rand);
-	spr_shader->UnuseShader();
+	spr_shader.UseShader();
+	spr_shader.SetValue("ID_color", id_color);
+	spr_shader.SetValue("RAND_color", id_color_rand);
+	spr_shader.UnuseShader();
 }
 
 void Sprite::SetTex()
 {
 	spr_tex = Texture(ParsePath(), SPIRIT_TEXURE, GL_REPEAT);
 
-	spr_shader->UseShader();
+	spr_shader.UseShader();
 	//o_shader.SetValue("blen", 0.5f);
-	spr_shader->SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-	spr_shader->SetValue("U_Texture", SPIRIT_TEXURE);
-	spr_shader->UnuseShader();
-}
-
-
-
-void Sprite::DeleteSprite()
-{
-	spr_shader->DelShad();
+	spr_shader.SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
+	spr_shader.SetValue("U_Texture", SPIRIT_TEXURE);
+	spr_shader.UnuseShader();
 }
 
 std::string Sprite::ParsePath() const

@@ -191,7 +191,7 @@ void SceneResource::UpdateObjTransforms()
 	{
 		mesh->ApplyAllTransform();
 		UpdateSceneStatus(ObjectTransChanged, mesh->is_Uniform_changed);
-		UpdateSceneStatus(ShaderChanged, mesh->is_Uniform_changed);
+		UpdateSceneStatus(ShaderChanged, mesh->o_shader->is_shader_changed);
 		UpdateSceneStatus(SDFChanged, mesh->is_Uniform_changed && mesh->using_sdf);
 		UpdateSceneStatus(MaterialChanged, mesh->o_material->is_mat_changed);
 	}
@@ -208,18 +208,21 @@ void SceneResource::UpdateObjTransforms()
 	{
 		polyLight->ApplyAllTransform();
 		UpdateSceneStatus(ObjectTransChanged, polyLight->is_Uniform_changed);
+		UpdateSceneStatus(ShaderChanged, polyLight->o_shader.is_shader_changed);
 	}
 
 	for (auto& [id, dLine] : dLine_list)
 	{
 		dLine->ApplyAllTransform();
 		UpdateSceneStatus(ObjectTransChanged, dLine->is_Uniform_changed);
+		UpdateSceneStatus(ShaderChanged, dLine->dLine_shader.is_shader_changed);
 	}
 
 	for (auto& [id, dPoint] : dPoints_list)
 	{
 		dPoint->ApplyAllTransform();
 		UpdateSceneStatus(ObjectTransChanged, dPoint->is_Uniform_changed);
+		UpdateSceneStatus(ShaderChanged, dPoint->dp_shader[dPoint->dp_type].is_shader_changed);
 	}
 
 	for (auto& pps : pps_list)
@@ -252,17 +255,19 @@ void SceneResource::ResetStatus()
 	for (auto& [id, polyLight] : poly_light_list)
 	{
 		polyLight->is_Uniform_changed = false;
-		polyLight->o_shader->is_shader_changed = false;
+		polyLight->o_shader.is_shader_changed = false;
 	}
 
 	for (auto& [id, dLine] : dLine_list)
 	{
 		dLine->is_Uniform_changed = false;
+		dLine->dLine_shader.is_shader_changed = false;
 	}
 
 	for (auto& [id, dPoint] : dPoints_list)
 	{
 		dPoint->is_Uniform_changed = false;
+		dPoint->dp_shader[dPoint->dp_type].is_shader_changed = false;
 	}
 
 	for (auto& pps : pps_list)

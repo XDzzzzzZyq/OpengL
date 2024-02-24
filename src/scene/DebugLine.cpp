@@ -28,11 +28,6 @@ DebugLine::DebugLine()
 	o_name = "Debug Line." + std::to_string(GetObjectID());
 }
 
-DebugLine::~DebugLine()
-{
-	DeleteDLine();
-}
-
 void DebugLine::SetDebugLineParas(bool stipple, bool smooth, float width, float opacity)
 {
 	using_stipple = stipple;
@@ -64,23 +59,23 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 
 	if (dLine_pos_list.size() < 2)return;
 
-	dLine_shader->UseShader();
-	if (dLine_shader->is_shader_changed)
-		dLine_shader->InitShader();
+	dLine_shader.UseShader();
+	if (dLine_shader.is_shader_changed)
+		dLine_shader.InitShader();
 
-	if(camera->is_invUniform_changed || dLine_shader->is_shader_changed)
-		dLine_shader->SetValue("U_cam_trans",camera->o_InvTransform);
+	if(camera->is_invUniform_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_cam_trans",camera->o_InvTransform);
 
-	if(camera->is_frustum_changed || dLine_shader->is_shader_changed)
-		dLine_shader->SetValue("U_ProjectM", camera->cam_frustum);
+	if(camera->is_frustum_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_ProjectM", camera->cam_frustum);
 
-	if(is_Uniform_changed || dLine_shader->is_shader_changed)
-		dLine_shader->SetValue("U_Trans", o_Transform);
+	if(is_Uniform_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_Trans", o_Transform);
 
-	dLine_shader->SetValue("is_selected", (int)is_selected);
+	dLine_shader.SetValue("is_selected", (int)is_selected);
 
-	dLine_shader->SetValue("dlineOpacity", dLine_opacity);
-	dLine_shader->SetValue("U_color", dLine_color);
+	dLine_shader.SetValue("dlineOpacity", dLine_opacity);
+	dLine_shader.SetValue("U_color", dLine_color);
 
 	if (using_smooth)
 		glEnable(GL_LINE_SMOOTH);
@@ -108,25 +103,18 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	if (using_stipple)
 		glDisable(GL_LINE_STIPPLE);
 
-	dLine_shader->UnuseShader();
-	dLine_shader->is_shader_changed = false;
+	dLine_shader.UnuseShader();
 }
 
 void DebugLine::SetDLineShader()
 {
 	dLine_shader = RenderShader("LineShader");
-	dLine_shader->InitShader = [&] {
-		dLine_shader->UseShader();
-		dLine_shader->SetValue("blen", 0.5f);
-		dLine_shader->SetValue("U_color", 1.0f, 1.0f, 1.0f);
-		dLine_shader->SetValue("ID_color", id_color);
-		dLine_shader->SetValue("RAND_color", id_color_rand);
-		dLine_shader->UnuseShader();
+	dLine_shader.InitShader = [&] {
+		dLine_shader.UseShader();
+		dLine_shader.SetValue("blen", 0.5f);
+		dLine_shader.SetValue("U_color", 1.0f, 1.0f, 1.0f);
+		dLine_shader.SetValue("ID_color", id_color);
+		dLine_shader.SetValue("RAND_color", id_color_rand);
+		dLine_shader.UnuseShader();
 	};
-}
-
-void DebugLine::DeleteDLine()
-{
-	dLine_shader->UnuseShader();
-	dLine_shader->DelShad();
 }

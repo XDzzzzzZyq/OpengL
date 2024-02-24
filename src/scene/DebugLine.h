@@ -8,7 +8,6 @@
 #include "Camera.h"
 
 #include "Parameters.h"
-#include <optional>
 
 class DebugLine : public GameObject, public Transform3D
 {
@@ -21,7 +20,7 @@ public:
 	bool using_stipple = false, using_smooth = true, is_multi_lines = false;
 	glm::vec3 dLine_color = glm::vec3{ 1.0f,1.0f,1.0f };
 
-	mutable std::optional<RenderShader> dLine_shader;
+	RenderShader dLine_shader;
 
 	glm::vec3 dLine_start, dLine_end;
 
@@ -29,8 +28,6 @@ public:
 	DebugLine(const glm::vec3& start, const glm::vec3& end);
 	DebugLine(const std::vector<glm::vec3>& vertices);
 	DebugLine();
-
-	~DebugLine();
 
 	void SetDebugLineParas(bool stipple, bool smooth, float width, float opacity);
 
@@ -41,10 +38,8 @@ public:
 	void RenderDdbugLine(Camera* camera);
 
 	void SetDLineShader();
-	void* GetShader()		override { return &dLine_shader.value(); };
+	void* GetShader()		override { return &dLine_shader; };
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
-
-	void DeleteDLine();
 
 };
 

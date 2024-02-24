@@ -11,10 +11,6 @@
 
 #include "Shaders.h"
 
-#include "glm/glm.hpp"
-
-#include <optional>
-
 enum EnvironmentType
 {
 	NONE_ENVIR, TEXTURE_ENVIR, COLOR_ENVIRN, NOISE_ENVIRN
@@ -23,8 +19,13 @@ enum EnvironmentType
 class Environment : public GameObject, public Transform3D
 {
 public:
-	// std::optional<FrameBuffer> envir_frameBuffer;
-	std::optional<RenderShader> envir_shader;
+
+	Environment();
+	Environment(const std::string& texpath);
+
+public:
+
+	RenderShader envir_shader;
 
 	Texture envir_IBL_diff, envir_IBL_spec;
 	EnvironmentType envir_type = EnvironmentType::NONE_ENVIR;
@@ -35,9 +36,7 @@ public:
 	float envir_gamma = 2.2f;
 	glm::vec3 envir_color = glm::vec3(1.0f);
 
-	Environment(const std::string& texpath);
-	Environment();
-	~Environment();
+public:
 
 	void ChangeEnvirTexture(const std::string& texpath) const;
 	void ChangeEnvirType(EnvironmentType type) const;
@@ -49,9 +48,9 @@ public:
 	void BindEnvironTexture() const;
 	void UnbindEnvironTexture() const;
 
-	mutable std::vector<float> envir_floatData;
-	void GenFloatData() const;
-	void* GetShader()		override { return &envir_shader.value(); }
+public:
+
+	void* GetShader()		override { return &envir_shader; }
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
 	void RenderEnvironment(Camera* cam);

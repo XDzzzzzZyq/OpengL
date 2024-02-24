@@ -10,7 +10,6 @@
 #include "buffer/StorageBuffer.h"
 
 #include "Camera.h"
-#include <optional>
 
 enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT
@@ -31,7 +30,7 @@ public:
 	bool is_proj = true;
 	bool is_list_changed = true;
 	bool is_scaled;
-	mutable std::optional<RenderShader> dp_shader[2]; //no proj | using proj
+	std::array<RenderShader, 2> dp_shader; //no proj | using proj
 
 	mutable float dp_scale = 1.0f;
 	float dp_opacity = 1.0f;
@@ -40,7 +39,6 @@ public:
 
 	DebugPoints();
 	DebugPoints(const std::vector<glm::vec3>& pos_list);
-	~DebugPoints();
 
 	void RenderDebugPoint(Camera* camera);
 
@@ -49,9 +47,7 @@ public:
 	void PushDebugPoint(float x, float y, float z);
 	void PushDebugPoints(const std::vector<glm::vec3>& points);
 
-	void* GetShader()		override { return &dp_shader[is_proj].value(); };
+	void* GetShader()		override { return &dp_shader[is_proj]; };
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
-
-	void DeleteDebugPoints() const;
 };
 

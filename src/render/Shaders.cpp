@@ -60,6 +60,47 @@ std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
 	return Stream.str();
 }
 
+Shaders::Shaders(const Shaders& shader)
+{
+	_resetShaderID(shader.GetProgramID());
+	active_shader = shader.active_shader;
+}
+
+Shaders::Shaders(Shaders&& shader) noexcept
+{
+	_resetShaderID(shader.GetProgramID());
+	shader.program_id = 0;
+	active_shader = shader.active_shader;
+}
+
+Shaders::~Shaders()
+{
+
+}
+
+Shaders& Shaders::operator=(Shaders&& shader) noexcept
+{
+	_resetShaderID(shader.GetProgramID());
+	shader.program_id = 0;
+	active_shader = shader.active_shader;
+
+	return *this;
+}
+
+Shaders& Shaders::operator=(const Shaders& shader)
+{
+	_resetShaderID(shader.GetProgramID());
+	active_shader = shader.active_shader;
+
+	return *this;
+}
+
+void Shaders::_del()
+{
+	glDeleteProgram(program_id);
+	program_id = 0;
+}
+
 Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
 {
 	switch (_type)
@@ -102,12 +143,6 @@ void Shaders::UseShader() const
 void Shaders::UnuseShader() const
 {
 	glUseProgram(0);
-}
-
-void Shaders::DelShad()
-{
-	glDeleteProgram(program_id);
-	program_id = 0;
 }
 
 GLuint Shaders::getVarID(const char* name) const
@@ -764,10 +799,7 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 }
 
 void ComputeShader::ResetComputeLib()
-{
-	for (auto& [name, sh] : comp_list)
-		sh->DelShad();
-}
+{}
 
 ComputeShader::ComputeShader(const std::string& name)
 {

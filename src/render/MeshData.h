@@ -6,7 +6,6 @@
 #include "Camera.h"
 
 #include <numeric>
-#include <optional>
 
 class MeshData {
 

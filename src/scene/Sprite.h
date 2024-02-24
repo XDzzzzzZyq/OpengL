@@ -10,8 +10,6 @@
 #include "Shaders.h"
 #include "Camera.h"
 
-#include <optional>
-
 #define SPRITE_SIZE 0.7f
 
 enum SpriteType
@@ -26,16 +24,13 @@ private:
 	static std::string fileroot;
 public:
 
-	std::optional<Texture> spr_tex;
-
-public:
+	Texture spr_tex;
 	float spr_opacity = 0.9f;
 
 	SpriteType spr_type = SpriteType::NONE_SPRITE;
-	mutable std::optional<RenderShader> spr_shader;
+	RenderShader spr_shader;
 
 	Sprite();
-	~Sprite();
 
 	void RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* cam);
 	void RenderSprite(Camera* cam);
@@ -43,8 +38,6 @@ public:
 	void SetSpriteShader();
 	std::string ParsePath() const;
 	void SetTex();
-	void* GetShader() override { return &spr_shader.value(); };
-
-	void DeleteSprite();
+	void* GetShader() override { return &spr_shader; };
 };
 
