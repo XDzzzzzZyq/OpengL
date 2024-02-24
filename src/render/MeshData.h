@@ -51,8 +51,7 @@ public:
 	MeshData();
 	void LoadObj(const std::string& path);
 	void RenderObjProxy() const;
-
-	void Delete();
+	void BindVBO(GLuint slot) const;
 
 public:
 

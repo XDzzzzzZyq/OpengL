@@ -1,25 +1,34 @@
 #pragma once
+
 #include "buffer/VertexBuffer.h"
 #include "buffer/BufferLayout.h"
 
 class VertexArray
 {
 private:
-	GLuint m_renderID;
+	GLuint vao_id;
+	GLuint vao_stride{};
+	void _delVAO();
+	void _resetVAOID(GLuint _ID) { if (vao_id > 0 && vao_id != _ID)_delVAO(); vao_id = _ID; }
 public:
+
 	VertexArray();
 	~VertexArray();
 
-	GLuint m_stride{};
+	VertexArray(const VertexArray& vao);
+	VertexArray(VertexArray&& vao) noexcept;
+
+	VertexArray& operator=(const VertexArray& vao);
+	VertexArray& operator=(VertexArray&& vao) noexcept;
+
 	void AddBuffer(VertexBuffer& vb, BufferLayout bl); //add one buffer with its layout pattern
 
-	void DelVertArr() const;
+public:
 
 	void Bind() const;
 	void Unbind() const;
 
-	unsigned int GetVertArrayID() const {
-		return m_renderID;
-	}
+	unsigned int GetVertArrayID() const { return vao_id; }
+	GLuint GetStride() const { return vao_stride / sizeof(GLfloat); };
 };
 

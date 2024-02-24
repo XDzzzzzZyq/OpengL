@@ -9,7 +9,7 @@ PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &lig
 
 	std::vector<GLuint> indexArray = std::vector<GLuint>{0, 1, 2, 0, 2, 3};
 
-	o_vertBuffer = VertexBuffer(this->verts.data(), this->verts.size() * sizeof(float));
+	o_vertBuffer = VertexBuffer(this->verts);
 
 	BufferLayout layout;
 	layout.Push<float>(2); // 2D position
@@ -49,7 +49,7 @@ void PolygonLight::RenderPolygon(Camera* cam)
 
 	o_shader->SetValue("is_selected", (int)is_selected);
 
-	glDrawElements(GL_TRIANGLES, o_index.count(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, o_index.Count(), GL_UNSIGNED_INT, nullptr);
 
 	o_index.Unbind();
 	o_shader->UnuseShader();
@@ -81,8 +81,4 @@ void PolygonLight::DeletePolygon()
 	o_vertBuffer.Unbind();
 
 	if(o_shader)o_shader->DelShad();
-	o_index.DelIndBuff();
-	o_vertBuffer.DelVertBuff();
-	o_vertArray.DelVertArr();
-
 }

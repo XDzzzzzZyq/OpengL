@@ -194,7 +194,7 @@ void MeshData::LoadObj(const std::string& path)
 	me_read = ReadObj(path_);
 
 	//std::cout << VertData[100] << std::endl;
-	me_vertBuffer = VertexBuffer(me_read.data_array.data(), me_read.data_array.size() * sizeof(float));
+	me_vertBuffer = VertexBuffer(me_read.data_array);
 
 	BufferLayout layout;
 	layout.Push<float>(3); //3D position
@@ -218,21 +218,15 @@ void MeshData::RenderObjProxy() const
 	me_vertArry.Bind();
 	me_index.Bind();
 
-	glDrawElements(GL_TRIANGLES, me_index.count(), GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, me_index.Count(), GL_UNSIGNED_INT, NULL);
 
 	me_index.Unbind();
 	me_vertArry.Unbind();
 }
 
-void MeshData::Delete()
+void MeshData::BindVBO(GLuint slot) const
 {
-	me_index.Unbind();
-	me_vertArry.Unbind();
-	me_vertBuffer.Unbind();
-
-	me_index.DelIndBuff();
-	me_vertBuffer.DelVertBuff();
-	me_vertArry.DelVertArr();
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, slot, me_vertBuffer.GetID());
 }
 
 glm::vec3 MeshData::GetMeshCenter() const
@@ -289,7 +283,7 @@ void MeshLib::ToGeoCenter(MeshResource _tar)
 	if (pData == nullptr)
 		return;
 
-	for (int i = 0; i < _tar->me_read.data_array.size(); i += _tar->me_vertArry.m_stride/sizeof(GLfloat)) {
+	for (int i = 0; i < _tar->me_read.data_array.size(); i += _tar->me_vertArry.GetStride()) {
 		LOOP_N(3, j)
 			pData[i + j] -= _tar->me_read.center[j];
 	}

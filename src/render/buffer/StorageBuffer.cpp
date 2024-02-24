@@ -28,7 +28,8 @@ StorageBuffer::StorageBuffer(SSBType type, GLuint base)
 
 StorageBuffer::~StorageBuffer()
 {
-	
+	if (GetID() != 0)
+		_delSSB();
 }
 
 void StorageBuffer::BindBuffer() const
@@ -65,9 +66,6 @@ StorageBuffer::StorageBuffer(StorageBuffer&& ssbo) noexcept
 
 StorageBuffer& StorageBuffer::operator=(const StorageBuffer& ssbo)
 {
-	if (this == &ssbo)
-		return *this;
-
 	_resetSSBID(ssbo.GetID());
 	_cpyInfo(ssbo);
 
@@ -76,9 +74,6 @@ StorageBuffer& StorageBuffer::operator=(const StorageBuffer& ssbo)
 
 StorageBuffer& StorageBuffer::operator=(StorageBuffer&& ssbo) noexcept
 {
-	if (this == &ssbo)
-		return *this;
-
 	_cpyInfo(ssbo);
 	ssbo.ssbo_ID = 0;
 

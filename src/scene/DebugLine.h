@@ -13,12 +13,7 @@
 class DebugLine : public GameObject, public Transform3D
 {
 private:
-	VertexBuffer dLine_vertBuffer;
-	IndexBuffer dLine_index;
-	VertexArray dLine_vertArry;
 	std::vector<glm::vec3> dLine_pos_list;
-
-	int vert_count = 2;
 
 	float dLine_width = 2;
 	float dLine_opacity = 1.0f;

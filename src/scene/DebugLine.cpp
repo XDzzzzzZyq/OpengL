@@ -15,7 +15,6 @@ DebugLine::DebugLine(const std::vector<glm::vec3>& vertices)
 		dLine_pos_list.push_back(vert);
 
 	is_multi_lines = true;
-	vert_count = vertices.size();
 
 	SetDLineShader();
 
@@ -129,12 +128,5 @@ void DebugLine::SetDLineShader()
 void DebugLine::DeleteDLine()
 {
 	dLine_shader->UnuseShader();
-	dLine_index.Unbind();
-	dLine_vertArry.Unbind();
-	dLine_vertBuffer.Unbind();
-
 	dLine_shader->DelShad();
-	dLine_index.DelIndBuff();
-	dLine_vertBuffer.DelVertBuff();
-	dLine_vertArry.DelVertArr();
 }

@@ -1,46 +1,77 @@
 #include "VertexBuffer.h"
 
+void VertexBuffer::_delVBO()
+{
+	glDeleteBuffers(1, &vbo_id);
+	vbo_id = 0;
+}
+
+/*
 VertexBuffer::VertexBuffer(float* data, GLuint size)
 {
-	Bufferdata = data;
-	Buffersize = size;
-	glGenBuffers(1, &m_ver_id);
-	glBindBuffer(GL_ARRAY_BUFFER, m_ver_id);
+	vbo_size = size;
+	glGenBuffers(1, &vbo_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
+*/
+VertexBuffer::VertexBuffer(const std::vector<float>& data)
+{
+	vbo_size = data.size() * sizeof(float);
+	glGenBuffers(1, &vbo_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+
+	glBufferData(GL_ARRAY_BUFFER, vbo_size, data.data(), GL_STATIC_DRAW);
+}
 
 VertexBuffer::VertexBuffer()
+{}
+
+VertexBuffer::VertexBuffer(const VertexBuffer& vbo)
 {
-	Bufferdata = nullptr;
-	Buffersize = 0;
-	m_ver_id = 0;
+	_resetVBOID(vbo.GetID());
+	vbo_size = vbo.vbo_size;
 }
 
-GLuint VertexBuffer::GetID()
+VertexBuffer::VertexBuffer(VertexBuffer&& vbo) noexcept
 {
-	return m_ver_id;
+	_resetVBOID(vbo.GetID());
+	vbo.vbo_id = 0;
+	vbo_size = vbo.vbo_size;
 }
 
-float* VertexBuffer::GetData()
+VertexBuffer& VertexBuffer::operator=(const VertexBuffer& vbo)
 {
-	return Bufferdata;
+	_resetVBOID(vbo.GetID());
+	vbo_size = vbo.vbo_size;
+
+	return *this;
+}
+
+VertexBuffer& VertexBuffer::operator=(VertexBuffer&& vbo) noexcept
+{
+	_resetVBOID(vbo.GetID());
+	vbo_size = vbo.vbo_size;
+	vbo.vbo_id = 0;
+
+	return *this;
+}
+
+GLuint VertexBuffer::GetID() const
+{
+	return vbo_id;
 }
 
 VertexBuffer::~VertexBuffer()
 {
-
-	//if(Bufferdata)delete Bufferdata;
-}
-
-void VertexBuffer::DelVertBuff() const
-{
-	glDeleteBuffers(1, &m_ver_id);
+	if (GetID() != 0)
+		_delVBO();
 }
 
 void VertexBuffer::Bind() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_ver_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 }
 
 void VertexBuffer::Unbind() const

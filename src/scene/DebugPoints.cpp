@@ -14,7 +14,7 @@ DebugPoints::DebugPoints()
 DebugPoints::DebugPoints(const std::vector<glm::vec3>& pos_list)
 {
 	o_type = GO_DP;
-	dp_vertBuffer = VertexBuffer(VertData.data(), VertData.size() * sizeof(float));
+	dp_vertBuffer = VertexBuffer(VertData);
 
 	BufferLayout layout;
 	layout.Push<float>(3); //3D position
@@ -69,7 +69,7 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	dp_shader[trans_type]->SetValue("U_Opacity", dp_opacity);
 	dp_shader[trans_type]->SetValue("U_Scale", dp_scale);
 
-	glDrawElementsInstanced(GL_TRIANGLES, dp_index.count(), GL_UNSIGNED_INT, nullptr, dp_pos_list.size());
+	glDrawElementsInstanced(GL_TRIANGLES, dp_index.Count(), GL_UNSIGNED_INT, nullptr, dp_pos_list.size());
 
 	//o_Transform = glm::mat4(1.0f);
 	//dp_index.Unbind();
@@ -124,20 +124,13 @@ void DebugPoints::PushDebugPoints(const std::vector<glm::vec3>& points)
 
 void DebugPoints::DeleteDebugPoints() const
 {
-
-
 		dp_shader[0]->UnuseShader();
 		dp_shader[1]->UnuseShader();
 		dp_index.Unbind();
 		dp_vertArry.Unbind();
 		dp_vertBuffer.Unbind();
 
-
 		dp_shader[0]->DelShad();
 		dp_shader[1]->DelShad();
-		dp_index.DelIndBuff();
-		dp_vertBuffer.DelVertBuff();
-		dp_vertArry.DelVertArr();
-
 }
 

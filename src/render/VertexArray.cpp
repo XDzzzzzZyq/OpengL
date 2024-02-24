@@ -1,13 +1,50 @@
 #include "VertexArray.h"
 
+void VertexArray::_delVAO()
+{
+	glDeleteVertexArrays(3, &vao_id);
+	vao_id = 0;
+}
+
 VertexArray::VertexArray()
 {
-	glGenVertexArrays(3, &m_renderID);
+	glGenVertexArrays(3, &vao_id);
+}
+
+VertexArray::VertexArray(const VertexArray& vao)
+{
+	_resetVAOID(vao.GetVertArrayID());
+	vao_stride = vao.vao_stride;
+}
+
+VertexArray::VertexArray(VertexArray&& vao) noexcept
+{
+	_resetVAOID(vao.GetVertArrayID());
+	vao.vao_id = 0;
+	vao_stride = vao.vao_stride;
 }
 
 VertexArray::~VertexArray()
 {
-	//
+	if (GetVertArrayID() != 0)
+		_delVAO();
+}
+
+VertexArray& VertexArray::operator=(const VertexArray& vao)
+{
+	_resetVAOID(vao.GetVertArrayID());
+	vao_stride = vao.vao_stride;
+
+	return *this;
+}
+
+VertexArray& VertexArray::operator=(VertexArray&& vao) noexcept
+{
+	_resetVAOID(vao.GetVertArrayID());
+	vao.vao_id = 0;
+	vao_stride = vao.vao_stride;
+
+	return *this;
 }
 
 void VertexArray::AddBuffer(VertexBuffer& vb, BufferLayout bl)
@@ -31,17 +68,12 @@ void VertexArray::AddBuffer(VertexBuffer& vb, BufferLayout bl)
 	vb.Unbind();
 	Unbind();
 
-	m_stride = bl.GetStride();
-}
-
-void VertexArray::DelVertArr() const
-{
-	glDeleteVertexArrays(3, &m_renderID);
+	vao_stride = bl.GetStride();
 }
 
 void VertexArray::Bind() const
 {
-	glBindVertexArray(m_renderID);
+	glBindVertexArray(vao_id);
 }
 
 void VertexArray::Unbind() const
