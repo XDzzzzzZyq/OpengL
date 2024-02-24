@@ -1,4 +1,5 @@
 #include "MaterialViewer.h"
+#include "Material.h"
 
 MaterialViewer::MaterialViewer()
 	:MaterialViewer("Material")
@@ -15,12 +16,35 @@ MaterialViewer::~MaterialViewer()
 
 }
 
-Material* MaterialViewer::GetActiveMatPtr()
+static Material* GetActiveMatPtr()
 {
 	if (EventListener::active_object == nullptr)
 		return nullptr;
 
 	return (Material*)(EventListener::active_object->GetMaterial());
+}
+
+static bool RenderMatParam(MatParaType _type, Material::MatParamData& _param)
+{
+	auto& [type, val, col, tex] = _param;
+
+	const char* pname = Material::mat_uniform_name[_type].c_str();
+	bool is_changed = false;
+
+	switch (type)
+	{
+	case Material::MPARA_FLT:
+		is_changed = ImGui::SliderFloat(pname, &val, 0, 1);
+		break;
+	case Material::MPARA_COL:
+		is_changed = ImGui::ColorEdit3(pname, (float*)&col);
+		break;
+	case Material::MPARA_TEX:
+		ImGui::InputText(pname, (char*)tex->GetTexName().c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
+		break;
+	}
+
+	return is_changed;
 }
 
 void MaterialViewer::RenderName(std::string& _name, bool read_only /*= false*/)
@@ -38,7 +62,7 @@ void MaterialViewer::RenderName(std::string& _name, bool read_only /*= false*/)
 
 void MaterialViewer::RenderLayer()
 {
-	Material* active_material = MaterialViewer::GetActiveMatPtr();
+	Material* active_material = GetActiveMatPtr();
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
@@ -60,27 +84,4 @@ void MaterialViewer::RenderLayer()
 
 	}
 	ImGui::End();
-}
-
-bool MaterialViewer::RenderMatParam(MatParaType _type, Material::MatParamData& _param)
-{
-	auto& [type, val, col, tex] = _param;
-
-	const char* pname = Material::mat_uniform_name[_type].c_str();
-	bool is_changed = false;
-
-	switch (type)
-	{
-	case Material::MPARA_FLT:
-		is_changed = ImGui::SliderFloat(pname, &val, 0, 1);
-		break;
-	case Material::MPARA_COL:
-		is_changed = ImGui::ColorEdit3(pname, (float*)&col);
-		break;
-	case Material::MPARA_TEX:
-		ImGui::InputText(pname, (char*)tex->GetTexName().c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
-		break;
-	}
-
-	return is_changed;
 }

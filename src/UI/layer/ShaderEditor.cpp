@@ -1,4 +1,5 @@
 #include "ShaderEditor.h"
+#include "Shaders.h"
 #include "operator.h"
 
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
@@ -75,7 +76,7 @@ void ShaderEditor::UpdateKeyword()
 			SE_CodeEditor.InsertKeyword(table[i + CUSTOM_PARA]);
 }
 
-Shaders* ShaderEditor::GetActiveShaderPtr()
+static Shaders* GetActiveShaderPtr()
 {
 	if (EventListener::active_object == nullptr)
 		return nullptr;
@@ -83,7 +84,7 @@ Shaders* ShaderEditor::GetActiveShaderPtr()
 	return (Shaders*)(EventListener::active_object->GetShader());
 }
 
-Shaders::ShaderUnit* ShaderEditor::GetShaderUnitPtr(ShaderType tar)
+static Shaders::ShaderUnit* GetShaderUnitPtr(ShaderType tar)
 {
 	Shaders* shader = GetActiveShaderPtr();
 
@@ -113,7 +114,7 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 void ShaderEditor::RenderShaderStruct()
 {
 
-	Shaders::ShaderUnit* active_unit = ShaderEditor::GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
 
@@ -391,7 +392,7 @@ void ShaderEditor::RenderArgs(Args& args, int _type) const
 
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 
-	Shaders::ShaderUnit* active_unit = ShaderEditor::GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
 
@@ -404,8 +405,8 @@ void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 void ShaderEditor::CompileShader()
 {
 
-	Shaders::ShaderUnit* active_unit = ShaderEditor::GetShaderUnitPtr((ShaderType)current_shad_type);
-	Shaders* active_shader = ShaderEditor::GetActiveShaderPtr();
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders* active_shader = GetActiveShaderPtr();
 
 	if (active_unit == nullptr || active_shader == nullptr) return;
 
@@ -428,7 +429,7 @@ void ShaderEditor::CompileShader()
 void ShaderEditor::RenderLayer()
 {
 
-	Shaders::ShaderUnit* active_unit = ShaderEditor::GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {

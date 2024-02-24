@@ -1,4 +1,5 @@
 #include "TransformPanel.h"
+#include "Transform.h"
 
 TransformPanel::TransformPanel()
 	:TransformPanel("Transform")
@@ -15,7 +16,7 @@ TransformPanel::~TransformPanel()
 
 }
 
-Transform* TransformPanel::GetActiveTransPtr()
+static Transform* GetActiveTransPtr()
 {
 	if (EventListener::active_object == nullptr)
 		return nullptr;
@@ -27,7 +28,7 @@ ImGuiInputTextFlags _SliderFlag(bool _is_locked) {
 	return _is_locked ? ImGuiInputTextFlags_ReadOnly : ImGuiInputTextFlags_AutoSelectAll;
 }
 
-bool TransformPanel::RenderTransfroms(Transform3D& trans)
+static bool RenderTransfroms(Transform3D& trans)
 {
 	glm::vec3 pos = trans.o_position;
 	glm::vec3 rot = trans.o_rot;
@@ -53,7 +54,7 @@ bool TransformPanel::RenderTransfroms(Transform3D& trans)
 
 void TransformPanel::RenderLayer()
 {
-	Transform3D* active_trans = dynamic_cast<Transform3D*>(TransformPanel::GetActiveTransPtr());
+	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr());
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 

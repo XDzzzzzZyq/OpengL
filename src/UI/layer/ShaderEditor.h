@@ -1,7 +1,7 @@
 #pragma once
 #include "ImguiLayer.h"
 #include "EventListener.h"
-#include "Shaders.h"
+#include "ShaderLib.h"
 
 #include "ITEM/TextEditor.h"
 #include "ITEM/NodeEditor.h"
@@ -75,8 +75,6 @@ public:
 	void UpdateShaderEditor(const std::string& _code = "") const;
 	void UpdateLayer() override;
 	static void UpdateKeyword();
-	static Shaders* GetActiveShaderPtr();
-	static Shaders::ShaderUnit* GetShaderUnitPtr(ShaderType tar);
 
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
