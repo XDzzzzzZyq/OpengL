@@ -24,13 +24,32 @@ public:
 		std::string fragShader;
 	};
 
-	struct ShaderUnit
+	class ShaderUnit
 	{
+	private:
+		void _del();
+		void _copyInfo(const ShaderUnit& unit);
+		void _resetID(GLuint ID);
+	public:
 		ShaderType sh_type;
 		std::string sh_name;
 		GLuint sh_ID{ 0 };
 		std::string sh_code{ "" };
 		std::optional<ShaderStruct> sh_struct{};
+
+		ShaderUnit() {}
+		ShaderUnit(ShaderType type, std::string name);
+		ShaderUnit(const ShaderUnit& unit);
+		ShaderUnit(ShaderUnit&& unit) noexcept;
+		~ShaderUnit();
+
+		ShaderUnit& operator=(const ShaderUnit& unit);
+		ShaderUnit& operator=(ShaderUnit&& unit) noexcept;
+
+		struct hash_fn
+		{
+			std::size_t operator()(const ShaderUnit& inp) const;
+		};
 	};
 
 	struct ArrayUni 

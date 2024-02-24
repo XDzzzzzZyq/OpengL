@@ -3,6 +3,85 @@
 #include "structs.h"
 #include "macros.h"
 
+void Shaders::ShaderUnit::_del()
+{
+	glDeleteShader(sh_ID);
+	sh_ID = 0;
+}
+
+void Shaders::ShaderUnit::_copyInfo(const ShaderUnit& unit)
+{
+	sh_type = unit.sh_type;
+	sh_name = unit.sh_name;
+	sh_ID = unit.sh_ID;
+	sh_code = unit.sh_code;
+}
+
+void Shaders::ShaderUnit::_resetID(GLuint ID)
+{
+	if (ID > 0 && ID != sh_ID)
+		_del();
+	sh_ID = ID;
+}
+
+Shaders::ShaderUnit::ShaderUnit(const ShaderUnit& unit)
+{
+	_resetID(unit.sh_ID);
+	_copyInfo(unit);
+
+	if (unit.sh_struct)
+		sh_struct = unit.sh_struct;
+}
+
+Shaders::ShaderUnit::ShaderUnit(ShaderUnit&& unit) noexcept
+{
+	_resetID(unit.sh_ID);
+	_copyInfo(unit);
+	unit.sh_ID = 0;
+
+	if (unit.sh_struct)
+		sh_struct = std::move(unit.sh_struct);
+}
+
+Shaders::ShaderUnit::ShaderUnit(ShaderType type, std::string name)
+	:sh_type(type), sh_name(name)
+{}
+
+Shaders::ShaderUnit::~ShaderUnit()
+{
+	if (sh_ID != 0)
+		_del();
+}
+
+Shaders::ShaderUnit& Shaders::ShaderUnit::operator=(ShaderUnit&& unit) noexcept
+{
+	_resetID(unit.sh_ID);
+	_copyInfo(unit);
+	unit.sh_ID = 0;
+
+	if (unit.sh_struct)
+		sh_struct = std::move(unit.sh_struct);
+
+	return *this;
+}
+
+Shaders::ShaderUnit& Shaders::ShaderUnit::operator=(const ShaderUnit& unit)
+{
+	_resetID(unit.sh_ID);
+	_copyInfo(unit);
+
+	if (unit.sh_struct)
+		sh_struct = unit.sh_struct;
+
+	return *this;
+}
+
+std::size_t Shaders::ShaderUnit::hash_fn::operator()(const ShaderUnit& inp) const
+{
+	static std::hash<std::string> hasher;
+	return hasher(inp.sh_name + std::to_string(inp.sh_type));
+}
+
 std::string Shaders::folder_root = "res/shaders/";
 std::vector<std::string> Shaders::file_type = { ".vert", ".frag", ".comp", ".geom" };
 
