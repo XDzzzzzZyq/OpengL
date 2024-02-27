@@ -59,6 +59,7 @@ jobs:
       with:
         name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
         path: test/renderer/build/${{env.PLATFORM_DIR}}/${{matrix.CONFIG}}/
+        overwrite: true
 
   test:
     needs: build
@@ -80,9 +81,9 @@ jobs:
       run: |
         curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/20.3.2/mesa3d-20.3.2-release-msvc.7z
         mkdir mesa
-        "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -o /mesa
-        copy "\mesa\${{matrix.PLATFORM}}\opengl32.dll" "\test\opengl32.dll"
-        copy "\mesa\${{matrix.PLATFORM}}\libglapi.dll" "\test\libglapi.dll"
+        "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -o mesa
+        copy ".\mesa\${{matrix.PLATFORM}}\opengl32.dll" ".\test\opengl32.dll"
+        copy ".\mesa\${{matrix.PLATFORM}}\libglapi.dll" ".\test\libglapi.dll"
         tree /f
 
     - name: Run tests
