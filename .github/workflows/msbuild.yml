@@ -29,10 +29,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      name: Checkout
       with:   
         submodules: true
-        clean: false
-        # ref: "master"
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -47,10 +46,25 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
 
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
+        path: test/renderer/build/${{matrix.PLATFORM}}/${{matrix.CONFIG}}/
+
   test:
     needs: build
     runs-on: windows-latest
+    strategy:
+      matrix:
+        CONFIG: [Release, Debug]
+        PLATFORM: [x86, x64]
 
     steps:
+    - name: Download test result
+      uses: actions/download-artifact@v2
+      with:
+        name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
+        
     - name: show folder
       run: tree /f
