@@ -75,6 +75,11 @@ jobs:
         name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
         path: test/
 
+    - name: Install OpenGL dependencies
+      run: |
+        choco install -y glew
+        choco install -y glfw
+
     - name: Run tests
       run: |
         cd test
