@@ -84,7 +84,21 @@ jobs:
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
         copy ".\mesa\${{matrix.PLATFORM}}\opengl32.dll" ".\test\opengl32.dll"
         copy ".\mesa\${{matrix.PLATFORM}}\libglapi.dll" ".\test\libglapi.dll"
+
+    - name: Download Dlls
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          test\dll\glew32.dll
+          test\dll\glu32.dll
+        sparse-checkout-cone-mode: false
+
+    - name: Copy Dlls
+      run: |
+        copy ".\test\dll\glew32.dll" ".\test\glew32.dll"
+        copy ".\test\dll\glu32.dll" ".\test\glu32.dll"
         tree /f
+
 
     - name: Run tests
       run: |
