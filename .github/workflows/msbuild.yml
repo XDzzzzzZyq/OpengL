@@ -48,6 +48,7 @@ jobs:
       run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
 
   test:
+    needs: build
     runs-on: windows-latest
 
     steps:
