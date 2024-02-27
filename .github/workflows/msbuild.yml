@@ -31,9 +31,9 @@ jobs:
     - name: Set Platform dir
       run: |
         if ("${{ matrix.PLATFORM }}" -eq "x64") {
-          echo "PLATFORM_DIR=x64" >> $env:GITHUB_ENV
+          echo "PLATFORM_DIR=x64" >> $GITHUB_ENV
         } else {
-          echo "PLATFORM_DIR=Win32" >> $env:GITHUB_ENV
+          echo "PLATFORM_DIR=Win32" >> $GITHUB_ENV
         }
       
     - uses: actions/checkout@v4
