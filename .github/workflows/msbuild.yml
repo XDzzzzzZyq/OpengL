@@ -55,7 +55,7 @@ jobs:
       run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Upload test results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
         path: test/renderer/build/${{env.PLATFORM_DIR}}/${{matrix.CONFIG}}/
@@ -70,10 +70,12 @@ jobs:
 
     steps:
     - name: Download test result
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
         path: test/
-        
-    - name: show folder
-      run: tree /f
+
+    - name: Run tests
+      run: |
+        cd test
+        RendererTest.exe
