@@ -79,4 +79,4 @@ jobs:
       run: |
         cd test
         tree /f
-        RendererTest.exe
+        .\RendererTest.exe
