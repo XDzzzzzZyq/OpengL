@@ -29,7 +29,8 @@ jobs:
 
     steps:
     - name: Set Platform dir
-      run: echo "PLATFORM_DIR=$($(("${{matrix.PLATFORM}}" == "x64")) ? "x64":"Win32")" >> $GITHUB_ENV
+      run: if "${{matrix.PLATFORM}}" is == "x64" set PLATFORM_DIR=x64 else set PLATFORM_DIR=Win32\
+           echo PLATFORM_DIR=!PLATFORM_DIR!>> %GITHUB_ENV%
       
     - uses: actions/checkout@v4
       name: Checkout
