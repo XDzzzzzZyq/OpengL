@@ -89,9 +89,9 @@ jobs:
       uses: actions/checkout@v4
       with:
         sparse-checkout: |
-          test\dll\glew32.dll
-          test\dll\glu32.dll
-        sparse-checkout-cone-mode: false
+          glew32.dll
+          glu32.dll
+        clean: false
 
     - name: Copy Dlls
       run: |
