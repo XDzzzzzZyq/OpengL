@@ -17,4 +17,13 @@ TEST(GLEnvir, Tests) {
 
 	EXPECT_EQ(glewInit(), GLEW_OK) << "glew error" << std::endl;
 	EXPECT_EQ(glGetError(), GL_NO_ERROR) << "OpenGL Error: " << glGetError() << std::endl;
+
+	const GLubyte* version = glGetString(GL_VERSION);
+	std::cout << version << "\n";
+
+	GLint max_resolution_w, max_resolution_h;
+	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
+	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
+
+	std::cout << "fb_size = [" << max_resolution_w << ":" << max_resolution_h << "]\n";
 }
