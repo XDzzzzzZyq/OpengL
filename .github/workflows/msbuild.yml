@@ -86,7 +86,7 @@ jobs:
     - name: Install Mesa
       shell: cmd
       run: |
-        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/21.2.2/mesa3d-21.2.2-release-msvc.7z
+        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/22.2.0/mesa3d-22.2.0-release-msvc.7z
         mkdir mesa
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
         copy ".\mesa\${{matrix.PLATFORM}}\opengl32.dll" ".\test\opengl32.dll"
