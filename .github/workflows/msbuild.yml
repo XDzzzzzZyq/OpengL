@@ -93,7 +93,7 @@ jobs:
         copy ".\mesa\${{matrix.PLATFORM}}\libglapi.dll" ".\test\libglapi.dll"
         tree /f
         cd mesa
-        .\systemwidedeploy.cmd
+        .\systemwidedeploy.cmd 1
 
     - name: Copy Dlls
       run: |
