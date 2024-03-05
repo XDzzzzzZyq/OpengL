@@ -55,13 +55,33 @@ TEST(Mathlib, Tests) {
 
 #include "Texture.h"
 TEST_F(RendererEnvir, Texture) {
-	auto tex = TextureLib::Noise_2D_4x4();
-	GLDEBUG;
-	EXPECT_TRUE(tex->GetTexID() != 0);
-	std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
+	{
+		auto tex = TextureLib::Noise_2D_4x4xN(5);
+		EXPECT_TRUE(tex->GetTexID() != 0);
+		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
+		GLERRTEST;
+	}
+	{
+		auto tex = TextureLib::Noise_2D_4x4();
+		EXPECT_TRUE(tex->GetTexID() != 0);
+		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
+		GLERRTEST;
 
-	auto tex2 = Texture(tex_root+"testImg.png", PNG_TEXTURE, GL_REPEAT);
-	GLDEBUG;
-	EXPECT_TRUE(tex2.GetTexID() != 0);
-	std::cout << tex2.GetTexID() << " : " << tex2.GetTexName() << "\n";
+		std::vector<float> data(4 * 4 * 4 * 6, 0);
+		tex->Bind();
+		auto [_, layout, type, gl_type] = Texture::ParseFormat(tex->tex_type);
+		glGetTexImage(gl_type, 0, layout, type, data.data());
+		LOOP(4) {
+			LOOP_N(4, j)
+				std::cout << data[i * 16 + j * 4] << " ";
+			std::cout << "\n";
+		}
+		GLERRTEST;
+	}
+	{
+		auto tex2 = Texture(tex_root + "testImg.png", PNG_TEXTURE, GL_REPEAT);
+		EXPECT_TRUE(tex2.GetTexID() != 0);
+		std::cout << tex2.GetTexID() << " : " << tex2.GetTexName() << "\n";
+		GLERRTEST;
+	}
 }

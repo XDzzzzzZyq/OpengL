@@ -14,9 +14,6 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
-
-	GLfloat maxAnti;
-	//std::cout << Tex_ID << std::endl;
 	stbi_set_flip_vertically_on_load(1);
 	glGenTextures(1, &tex_ID);
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
@@ -35,16 +32,13 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR, Tile_type, Tile_type, 0, 4);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 4);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
 		glTexStorage2D(GL_TEXTURE_2D, 1, interlayout, im_w, im_h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer);
-
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
-		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
@@ -101,8 +95,6 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnti);
-		glTexParameterf(GL_TEXTURE_2D, GL_MAX_TEXTURE_MAX_ANISOTROPY, maxAnti);
 #else
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
@@ -355,9 +347,11 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D };
 	case IBL_CUBE_TEXTURE:
 		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
-	case RG_TEXTURE:
 	case FLOAT_BUFFER_TEXTURE:
+	case RG_TEXTURE:
 		return { GL_RG16F,				GL_RG,				GL_FLOAT,			GL_TEXTURE_2D };
+	case LAYERED_TEXTURE:
+		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D_ARRAY };
 	case LIGHTING_CACHE:
 		return { GL_R16F,				GL_RED,				GL_FLOAT,			GL_TEXTURE_2D };
 	case DEPTH_CUBE_TEXTURE:
@@ -373,7 +367,7 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 template<GLuint Type>
 inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s /*= 0*/, GLuint _warp_t /*= 0*/, GLuint _lev_min /*= 0*/, GLuint _lev_max /*= 0*/, GLuint _warp_r /*= 0*/)
 {
-	glBindTexture(Type, _id);
+	glBindTexture(Type, _id);		GLDEBUG;
 
 	glTexParameteri(Type, GL_TEXTURE_MIN_FILTER, _fil_min);
 	glTexParameteri(Type, GL_TEXTURE_MAG_FILTER, _fil_max);
@@ -738,7 +732,7 @@ GLuint TextureLib::GetTextureID(const std::string& _name)
 	return TextureLib::GetTexture(_name)->GetTexID();
 }
 
-std::shared_ptr<Texture> TextureLib::Noise_2D_4x4()
+TextureLib::TextureRes TextureLib::Noise_2D_4x4()
 {
 	const std::string _name = "Uni.2D.4.4";
 	auto result = GetTexture(_name);
@@ -751,15 +745,28 @@ std::shared_ptr<Texture> TextureLib::Noise_2D_4x4()
 	return t_tex_list[_name];
 }
 
-std::shared_ptr<Texture> TextureLib::Noise_2D_16x16()
+TextureLib::TextureRes TextureLib::Noise_2D_4x4xN(size_t n/*=6*/)
 {
-	const std::string _name = "Uni.2D.16.16";
+	const std::string _name = "Uni.2D.4.4." + std::to_string(n);
 	auto result = GetTexture(_name);
 
 	if (result != nullptr)
 		return result;
 
-	GenNoiseTexture(UNI_2D_NOISE, 16, 16);
+	GenNoiseTextures(UNI_2D_NOISE, 4, 4, n);
+
+	return t_tex_list[_name];
+}
+
+TextureLib::TextureRes TextureLib::Noise_2D_16x16xN(size_t n/*=6*/)
+{
+	const std::string _name = "Uni.2D.16.16." + std::to_string(n);
+	auto result = GetTexture(_name);
+
+	if (result != nullptr)
+		return result;
+
+	GenNoiseTextures(UNI_2D_NOISE, 16, 16, n);
 
 	return t_tex_list[_name];
 }
@@ -806,13 +813,54 @@ void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 	GLuint id;
 
 	glGenTextures(1, &id);//for storage
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	Texture::SetTexParam<GL_TEXTURE_2D>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT);
+
+	std::vector<glm::vec4> list(_w * _h);
+	LOOP(_w * _h) list[i] = xdzm::rand4();
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _w, _h);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _w, _h, GL_RGBA, GL_FLOAT, list.data());
+
+	std::string type_name;
+	int dimension = 4;
+
+	switch (_type)
+	{
+	case TextureLib::NONE_NOISE:
+		type_name = "Non";
+		break;
+	case TextureLib::UNIFORM_NOISE:
+		type_name = "Uni";
+		break;
+	case TextureLib::GAUSSIAN_NOISE:
+		type_name = "Gau";
+		break;
+	case TextureLib::UNI_2D_NOISE:
+		type_name = "Uni";
+		dimension = 2;
+		break;
+	default:
+		break;
+	}
+
+	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h);
+
+	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, HDR_BUFFER_TEXTURE, noise_name);
+}
+
+void TextureLib::GenNoiseTextures(NoiseType _type, size_t _w, size_t _h, size_t _n)
+{
+	GLuint id;
+
+	glGenTextures(1, &id);//for storage
 	glBindTexture(GL_TEXTURE_2D_ARRAY, id);
 
-	Texture::SetTexParam<GL_TEXTURE_2D_ARRAY>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, 6);
+	Texture::SetTexParam<GL_TEXTURE_2D_ARRAY>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, _n);
 
-	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, 6);
+	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, _n);
 
-	LOOP_N(6, level) {
+	LOOP_N(_n, level) {
 		std::vector<glm::vec4> list(_w * _h);
 		LOOP(_w * _h) list[i] = xdzm::rand4();
 		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, level, _w, _h, 1, GL_RGBA, GL_FLOAT, (float*)list.data());
@@ -840,7 +888,7 @@ void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 		break;
 	}
 
-	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h);
+	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h) + "." + std::to_string(_n);
 
-	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, IBL_TEXTURE, noise_name);
+	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, LAYERED_TEXTURE, noise_name);
 }

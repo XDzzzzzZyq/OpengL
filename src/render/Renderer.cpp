@@ -355,7 +355,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 4);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(LIGHT_AO_FB, 6);
-		TextureLib::Noise_2D_16x16()->BindC(7);
+		TextureLib::Noise_2D_16x16xN()->BindC(7);
 		ssao.UseShader();
 		if (GetActiveCamera()->is_Uniform_changed) {
 			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);

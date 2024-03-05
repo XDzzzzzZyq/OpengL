@@ -20,6 +20,7 @@ enum TextureType
 	HDR_BUFFER_TEXTURE,		// [-inf, +inf]
 	FLOAT_BUFFER_TEXTURE,
 	RG_TEXTURE,
+	LAYERED_TEXTURE,
 	LIGHTING_CACHE = 30,
 	DEPTH_CUBE_TEXTURE = 31,
 	DEPTH_TEXTURE
@@ -146,7 +147,8 @@ public:
 
 public:
 	static TextureRes Noise_2D_4x4();
-	static TextureRes Noise_2D_16x16();
+	static TextureRes Noise_2D_4x4xN(size_t n=6);
+	static TextureRes Noise_2D_16x16xN(size_t n=6);
 
 	static TextureRes IBL_LUT();
 
@@ -155,6 +157,6 @@ public:
 
 private:
 	static void GenNoiseTexture(NoiseType _type, size_t _w, size_t _h);
-
+	static void GenNoiseTextures(NoiseType _type, size_t _w, size_t _h, size_t _n);
 };
 

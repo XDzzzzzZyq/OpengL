@@ -92,9 +92,6 @@ jobs:
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
         cd mesa
         .\systemwidedeploy.cmd 1
-
-    - name: Copy Dlls
-      run: |
         copy ".\test\dll\glew32.dll" ".\test\glew32.dll"
         copy ".\test\dll\glu32.dll" ".\test\glu32.dll"
         tree /f
@@ -102,5 +99,4 @@ jobs:
     - name: Run tests
       run: |
         cd test
-        tree /f
         .\RendererTest.exe

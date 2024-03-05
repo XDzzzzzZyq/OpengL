@@ -24,9 +24,9 @@ inline std::string error_info(GLuint err) {
 	}
 }
 
-#define GLDEBUG do{ const err = glGetError(); EXPECT_EQ(err, GL_NO_ERROR) << error_info(err); }while(0)
+#define GLERRTEST do{ const GLuint err = glGetError(); EXPECT_EQ(err, GL_NO_ERROR) << error_info(err); }while(0)
 
-class RendererEnvir : public testing::Test { // ผฬณะมห testing::Test
+class RendererEnvir : public testing::Test {
 protected:
 
 	static void SetUpTestSuite();
