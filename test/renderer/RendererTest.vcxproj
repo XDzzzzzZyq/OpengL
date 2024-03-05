@@ -52,6 +52,14 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\dep\stb_image\stb_image.cpp" />
+    <ClCompile Include="..\..\src\render\Material.cpp" />
+    <ClCompile Include="..\..\src\render\RenderConfigs.cpp" />
+    <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp" />
+    <ClCompile Include="..\..\src\render\ShaderLib.cpp" />
+    <ClCompile Include="..\..\src\render\ShaderParser.cpp" />
+    <ClCompile Include="..\..\src\render\Shaders.cpp" />
+    <ClCompile Include="..\..\src\render\Texture.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -70,14 +78,14 @@
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extra;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -89,14 +97,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GLEW_STATIC;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extra;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -108,13 +116,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extra;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -128,13 +136,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>GLEW_STATIC;X64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extra;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

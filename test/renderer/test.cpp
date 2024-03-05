@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "macros.h"
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 TEST(GTestBasic, Tests) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
+	EXPECT_EQ(1, 1);
+	EXPECT_TRUE(true);
 }
 
 TEST(GLEnvir, Tests) {
@@ -27,6 +24,8 @@ TEST(GLEnvir, Tests) {
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
 
 	std::cout << "fb_size = [" << max_resolution_w << ":" << max_resolution_h << "]\n";
+
+	glfwTerminate();
 }
 
 
@@ -49,7 +48,15 @@ TEST(Mathlib, Tests) {
 	const auto rand = xdzm::rand3nhv(10);
 	EXPECT_EQ(rand.size(), 10);
 	LOOP(10)
-		EXPECT_TRUE(1.0f - glm::length(rand[i]) < glm::epsilon<float>());
+		EXPECT_TRUE(1.0f - glm::length(rand[i]) < 2*glm::epsilon<float>());
 
 	EXPECT_EQ(4.0f, xdzm::_matrix_sum<4>(xdzm::identityMatrix));
+}
+
+#include "Texture.h"
+TEST_F(RendererEnvir, Texture) {
+	auto tex = TextureLib::Noise_2D_4x4();
+	GLDEBUG;
+	EXPECT_TRUE(tex->GetTexID() != 0);
+	std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
 }

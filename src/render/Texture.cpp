@@ -60,6 +60,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		}
 		else {
 			std::cout << "Image texture FAILED" << std::endl;
+			_delTexture();
 		}
 		break;
 
@@ -85,6 +86,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 		}
 		else {
 			std::cout << "Image texture FAILED" << std::endl;
+			_delTexture();
 		}
 		break;
 
@@ -114,8 +116,10 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 			std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
 #endif
 		}
-		else
+		else {
 			std::cout << "HDR texture FAILED" << std::endl;
+			_delTexture();
+		}
 		break;
 
 	case BUFFER_TEXTURE:
@@ -689,7 +693,7 @@ void Texture::SaveTexture(std::string _path) const
 	int status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
 
 	if (status == 0) {
-		DEBUG("falied")
+		DEBUG("failed")
 	}
 }
 
