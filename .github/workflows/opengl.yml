@@ -1,8 +1,15 @@
-name: openGL
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: MSBuild
 
 on:
   push:
     branches: [ "github-action", "master", "test" ]
+  pull_request:
+    branches: [ "master" ]
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -12,15 +19,90 @@ permissions:
   contents: read
 
 jobs:
-  opengl:
+  build:
     runs-on: windows-latest
 
+    strategy:
+      matrix:
+        CONFIG: [Release, Debug]
+        PLATFORM: [x86, x64]
+
     steps:
+    - name: Set Platform dir
+      run: |
+        if ("${{ matrix.PLATFORM }}" -eq "x64") {
+          echo "PLATFORM_DIR=x64" >> $env:GITHUB_ENV
+        } else {
+          echo "PLATFORM_DIR=Win32" >> $env:GITHUB_ENV
+        }
+      
+    - uses: actions/checkout@v4
+      name: Checkout
+      with:   
+        submodules: true
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
+        path: test/renderer/build/${{env.PLATFORM_DIR}}/${{matrix.CONFIG}}/
+        overwrite: true
+
+  test:
+    needs: build
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        CONFIG: [Release, Debug]
+        PLATFORM: [x86, x64]
+
+    steps:
+
+    - name: Download Dlls
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          test\dll
+    
+    - name: Download test result
+      uses: actions/download-artifact@v4
+      with:
+        name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
+        path: test/
+
     - name: Install Mesa
       shell: cmd
       run: |
         curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/22.0.1/mesa3d-22.0.1-release-msvc.7z
         mkdir mesa
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
+        copy ".\mesa\${{matrix.PLATFORM}}\opengl32.dll" ".\test\opengl32.dll"
+        copy ".\mesa\${{matrix.PLATFORM}}\libglapi.dll" ".\test\libglapi.dll"
+        tree /f
         cd mesa
         .\systemwidedeploy.cmd 1
+
+    - name: Copy Dlls
+      run: |
+        copy ".\test\dll\glew32.dll" ".\test\glew32.dll"
+        copy ".\test\dll\glu32.dll" ".\test\glu32.dll"
+        tree /f
+
+    - name: Run tests
+      run: |
+        cd test
+        tree /f
+        .\RendererTest.exe
