@@ -546,6 +546,8 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 
 	FrameBufferResize({ (float)_w, (float)_h });
 	r_light_data.Resize(_w, _h);
+
+	r_scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
 }
 
 void Renderer::OnRenderCfgUpdate(RenderConfigs::ModifyFlags flag)
