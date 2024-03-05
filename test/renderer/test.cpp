@@ -17,7 +17,11 @@ TEST(GLEnvir, Tests) {
 	EXPECT_EQ(glGetError(), GL_NO_ERROR) << "OpenGL Error: " << glGetError() << std::endl;
 
 	const GLubyte* version = glGetString(GL_VERSION);
-	std::cout << version << "\n";
+	const GLubyte* name = glGetString(GL_VENDOR); 
+	const GLubyte* renderer = glGetString(GL_RENDERER);
+	const GLubyte* glewVersion = glewGetString(GLEW_VERSION);
+	const char* glfwVersion = glfwGetVersionString();
+	std::cout << version << "\n" << name << "\n" << renderer << "\n GLEW:" << glewVersion << "\n GLFW:" << glfwVersion << "\n";
 
 	GLint max_resolution_w, max_resolution_h;
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);

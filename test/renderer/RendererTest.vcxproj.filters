@@ -33,6 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\..\.github\workflows\msbuild.yml">
+      <Filter>workflow</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dep">
@@ -40,6 +43,9 @@
     </Filter>
     <Filter Include="dep\render">
       <UniqueIdentifier>{54a666bb-887d-4a78-bc51-76f8fa59faa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="workflow">
+      <UniqueIdentifier>{8d67ee38-270e-4708-a4e1-49274489a0b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
