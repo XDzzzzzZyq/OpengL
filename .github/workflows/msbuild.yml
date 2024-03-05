@@ -76,6 +76,7 @@ jobs:
       with:
         sparse-checkout: |
           test\dll
+          res
     
     - name: Download test result
       uses: actions/download-artifact@v4
