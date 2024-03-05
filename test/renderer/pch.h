@@ -24,7 +24,7 @@ inline std::string error_info(GLuint err) {
 	}
 }
 
-#define GLERRTEST do{ const GLuint err = glGetError(); EXPECT_EQ(err, GL_NO_ERROR) << error_info(err); }while(0)
+#define GLERRTEST do{ const GLuint err = glGetError(); EXPECT_EQ(err, GL_NO_ERROR) <<__func__<<" : "<<__LINE__<<" : " << error_info(err); }while(0)
 
 class RendererEnvir : public testing::Test {
 protected:
@@ -37,4 +37,5 @@ protected:
 public:
 
 	std::string tex_root = SOL_DIR"res/tex/";
+	float gl_version;
 };

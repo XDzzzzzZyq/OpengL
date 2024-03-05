@@ -15,7 +15,6 @@ void RendererEnvir::TearDownTestSuite()
 
 void RendererEnvir::SetUp()
 {
-
 	EXPECT_TRUE(glfwInit()) << "glfw init error" << std::endl;
 
 	GLFWwindow* window = glfwCreateWindow(100, 100, "TEST_WINDOW", NULL, NULL);
@@ -27,6 +26,10 @@ void RendererEnvir::SetUp()
 
 	const GLubyte* version = glGetString(GL_VERSION);
 	std::cout << version << "\n";
+	gl_version = std::atof((const char*)version);
+
+	if (gl_version < 4.0)
+		return;
 
 	GLint max_resolution_w, max_resolution_h;
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
