@@ -36,5 +36,5 @@ protected:
 
 public:
 
-
+	std::string tex_root = SOL_DIR"res/tex/";
 };

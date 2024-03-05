@@ -59,4 +59,9 @@ TEST_F(RendererEnvir, Texture) {
 	GLDEBUG;
 	EXPECT_TRUE(tex->GetTexID() != 0);
 	std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
+
+	auto tex2 = Texture(tex_root+"testImg.png", PNG_TEXTURE, GL_REPEAT);
+	GLDEBUG;
+	EXPECT_TRUE(tex2.GetTexID() != 0);
+	std::cout << tex2.GetTexID() << " : " << tex2.GetTexName() << "\n";
 }
