@@ -291,5 +291,5 @@ void MeshLib::ToGeoCenter(MeshResource _tar)
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
 	_tar->me_read.center = glm::vec3{ 0 };
-	DEBUG("Done")
+	DEBUG("Done");
 }

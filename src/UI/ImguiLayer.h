@@ -79,11 +79,11 @@ public:
 	std::function<void(void)> pre_RenderLayer = [] {};
 	std::function<void(void)> extra_RenderLayer = [] {};
 	std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer() { DEBUG("no Render function overrided")return; };
+	virtual void RenderLayer() { DEBUG("no Render function overrided"); return; };
 	virtual void UpdateLayer() {};
 
 	//for outline          |  TYPE  |  NAME  |
-	virtual void SetObjectList(OutlineData* data){ DEBUG(uly_name + " is not a Outline") return; }
+	virtual void SetObjectList(OutlineData* data) { DEBUG(uly_name + " is not a Outline"); return; }
 	std::function<void(void)> set_active = [] {};
 
 	void EventInit();

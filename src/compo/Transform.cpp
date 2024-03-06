@@ -66,7 +66,7 @@ bool Transform3D::SetScale(const glm::vec3& scale)
 
 	is_TransF_changed = true;
 	o_scale = scale;
-	
+
 	return true;
 }
 
@@ -114,8 +114,8 @@ bool Transform3D::SetTrans(const glm::mat4& _trans, bool pos /*= true*/, bool ro
 	if (pos) SetPos(position);
 	if (rot) SetRot(glm::degrees(glm::eulerAngles(rotation)));
 	if (scl) SetScale(scale);
-	if (pos && rot && scl) 
-		if(use_position && use_rotation && use_scale) // if there is at least one lock, then let calcluate transform instead
+	if (pos && rot && scl)
+		if (use_position && use_rotation && use_scale) // if there is at least one lock, then let calcluate transform instead
 			o_Transform = _trans;
 
 	return true;
@@ -141,7 +141,7 @@ void Transform3D::Spin(const glm::vec3& anch, const glm::vec3& axis, const float
 
 void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle, bool global_up/* = true*/)
 {
-	if(angle == glm::vec2(0))
+	if (angle == glm::vec2(0))
 		return;
 
 	o_position -= anch;
@@ -151,7 +151,7 @@ void Transform3D::Spin(const glm::vec3& anch, const glm::vec2& angle, bool globa
 
 	o_position = glm::rotate(o_position, angle.y, o_dir_right);
 	SetRot(o_rot + glm::vec3(glm::degrees(angle.y), 0.0f, 0.0f));
-	
+
 	o_position += anch;
 }
 
@@ -177,7 +177,7 @@ void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 	// if self.trans = B=DA, parent.trans = A, then D=BA^-1
 	glm::mat4 D = o_Transform * _p_trans->o_InvTransform;
 	SetTrans(D);
-	SetPos(D*glm::vec4(pos_off, 0));
+	SetPos(D * glm::vec4(pos_off, 0));
 }
 
 void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
@@ -231,7 +231,7 @@ bool Transform3D::ApplyAllTransform()
 
 	glm::mat4 post_trans = glm::mat4(1);
 	bool is_changed = false;
-	
+
 	do {
 		is_changed |= tar_ptr->is_TransF_changed;
 		if (is_changed) {
@@ -241,10 +241,10 @@ bool Transform3D::ApplyAllTransform()
 
 		tar_ptr->is_Uniform_changed = is_changed;
 		post_trans = tar_ptr->o_Transform;
-		
+
 		if (tar_ptr->GetChildTransPtr() == nullptr)
 			break;
-		else 
+		else
 			tar_ptr = tar_ptr->GetChildTransPtr();
 	} while (true);
 
@@ -261,7 +261,7 @@ bool Transform3D::GetInvTransform() const
 	glm::mat3 inv_rot = glm::mat3(o_Transform);
 	LOOP(3) inv_rot[i] = glm::normalize(inv_rot[i]);
 	inv_rot = glm::transpose(inv_rot);
-	glm::mat4 result = glm::mat4(inv_rot) * glm::scale(glm::mat4(1), 1.0f/o_scale);
+	glm::mat4 result = glm::mat4(inv_rot) * glm::scale(glm::mat4(1), 1.0f / o_scale);
 	//std::cout << result;
 	o_InvTransform = glm::translate(result, -o_position);
 
@@ -281,9 +281,9 @@ int Transform3D::_debug() const
 	std::cout << o_rot << ", ";
 	std::cout << o_dir_up << ", ";
 	std::cout << o_dir_right << ", ";
-	DEBUG("________________")
+	DEBUG("________________");
 #endif // _DEBUG
-		return 0;
+	return 0;
 }
 
 
@@ -415,7 +415,7 @@ int Transform2D::_debug() const
 {
 #ifdef _DEBUG
 	std::cout << o_rot;
-	DEBUG("________________")
+	DEBUG("________________");
 #endif // _DEBUG
-		return 0;
+	return 0;
 }

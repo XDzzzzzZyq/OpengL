@@ -28,7 +28,7 @@ ImVec2 ImguiLayer::GetLayerSize()
 void ImguiLayer::UpdateLayerPos()
 {
 	content_pos = ImGui::GetWindowContentRegionMin();
-	content_size = ImGui::GetWindowContentRegionMax()-content_pos;
+	content_size = ImGui::GetWindowContentRegionMax() - content_pos;
 
 }
 
@@ -41,7 +41,7 @@ void ImguiLayer::PushItem(std::shared_ptr<ImguiItem> item)
 	{
 		repeat_count++;
 		name2 = name2 + ("." + std::to_string(repeat_count));
-		
+
 	}
 	item->uitm_id = item_list.size();
 	item_list.push_back(item);
@@ -50,7 +50,7 @@ void ImguiLayer::PushItem(std::shared_ptr<ImguiItem> item)
 
 void ImguiLayer::PushItem(ImItemType type)
 {
-	auto item = std::make_shared<ImguiItem>(type,"123");
+	auto item = std::make_shared<ImguiItem>(type, "123");
 	PushItem(item);
 }
 
@@ -58,7 +58,7 @@ ImguiItem* ImguiLayer::FindImguiItem(const std::string& name) const
 {
 	if (item_name_buffer.find(name) != item_name_buffer.end())
 		return item_list[item_name_buffer[name]].get();
-	DEBUG("[ no item named "+name+" ]")
+	DEBUG("[ no item named " + name + " ]");
 	return nullptr;
 }
 

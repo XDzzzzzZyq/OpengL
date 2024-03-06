@@ -114,7 +114,7 @@ void Renderer::EventInit()
 	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
 
 	EventListener::GetActiveObject = [&](int id) { return r_scene->obj_list[id].get(); };
-	EventListener::GetActiveCamera = [&]()		 { return dynamic_cast<GameObject*>(GetActiveCamera().get()); };
+	EventListener::GetActiveCamera = [&]() { return dynamic_cast<GameObject*>(GetActiveCamera().get()); };
 }
 
 void Renderer::LMB_CLICK()
@@ -216,7 +216,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	const bool requires_sdf = r_config.RequiresSDF();
 	const bool realtime_sdf = (!r_scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_config.r_sampling_average == RenderConfigs::SamplingType::Average;
-	if(requires_sdf && r_scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
+	if (requires_sdf && r_scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
 		ConstructSDF();
 
 
@@ -395,7 +395,7 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 7);
 		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
 		r_render_result->BindFrameBuffer();
-		r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS(r_render_result->GetSize(), 16);		
+		r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS(r_render_result->GetSize(), 16);
 		r_render_result->UnbindFrameBuffer();
 
 
@@ -609,6 +609,6 @@ std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
 void Renderer::ScreenShot()
 {
 	std::string name = "result""-" + std::to_string(EventListener::random_float1);
-	DEBUG("saving to: " + name)
+	DEBUG("saving to: " + name);
 	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name);
 }

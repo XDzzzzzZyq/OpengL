@@ -22,9 +22,9 @@ inline std::string glDebug_xdz() {
 	}
 }
 
-#define DEBUG(x) std::cout<<(x)<<"\n";
-#define DEBUGS(x) std::cout<__func__<<" : "<<__LINE__<<" : "<<(x)<<"\n";
-#define GLDEBUG std::cout<<__func__<<" : "<<__LINE__<<" : "<<glDebug_xdz()<<"\n";
+#define DEBUG(x) std::cout<<(x)<<"\n"
+#define DEBUGS(x) std::cout<__func__<<" : "<<__LINE__<<" : "<<(x)<<"\n"
+#define GLDEBUG std::cout<<__func__<<" : "<<__LINE__<<" : "<<glDebug_xdz()<<"\n"
 
 #else
 
@@ -37,7 +37,7 @@ inline std::string glDebug_xdz() {
 
 #define SCREEN_W 1740
 #define SCREEN_H 810
-#define LOOP(x) for(int i = 0; i < x; i++)
-#define LOOP_N(x, n) for(int n = 0; n < x; n++)
+#define LOOP_N(x, n) for(int n = 0; n < (int)x; n++)
+#define LOOP(x) LOOP_N(x, i)
 
 #define OPTIONS(...) std::vector<std::string>{__VA_ARGS__}

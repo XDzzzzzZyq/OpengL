@@ -125,7 +125,7 @@ GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
 {
 	std::string file_name = name.find(Shaders::folder_root) == std::string::npos ? Shaders::folder_root + name : name;
-	
+
 	if (Shaders::ParseFileEXT(file_name) == NONE_SHADER)
 		file_name += Shaders::file_type[_type];
 
@@ -232,7 +232,7 @@ GLuint Shaders::getVarID(const char* name) const
 
 	this->UseShader();
 	int id = glGetUniformLocation(program_id, name);
-	
+
 #ifdef _DEBUG
 	if (id == -1)std::cout << name << " do not exist!" << std::endl;
 #endif
@@ -414,7 +414,7 @@ void Shaders::SetValue(const std::string& name, GLsizei count, const glm::mat4* 
 void Shaders::SetValue(const Material* mat)
 {
 	for (const auto& [ptype, pdata] : mat->mat_params) {
-	
+
 		const auto& [dtype, dfloat, dcol, _] = pdata;
 		switch (dtype)
 		{
@@ -463,7 +463,7 @@ void RenderShader::UpdateMaterial(Material* mat)
 	for (const auto& [ptype, pdata] : mat->mat_params) {
 		const auto& [dtype, dfloat, dcol, dtex] = pdata;
 
-		if(ptype == MAT_NORMAL || ptype == MAT_BUMP)
+		if (ptype == MAT_NORMAL || ptype == MAT_BUMP)
 			continue;  // skip them currently
 
 		auto loc_const = std::find_if(
@@ -603,7 +603,7 @@ void RenderShader::ParseShaderCode(const std::string& _code, ShaderType _type)
 {
 	shader_data[_type].sh_struct->Reset();
 	_LINK_LOC = {};
-	if (!_code.empty()) 
+	if (!_code.empty())
 		shader_data[_type].sh_code = _code;
 
 	std::stringstream Stream(shader_data[_type].sh_code);
@@ -655,7 +655,7 @@ void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 
 	GLuint shader_id = CompileShader(tar);
 	glAttachShader(program_id, shader_id);
-	glAttachShader(program_id, GetShaderID((ShaderType)(1-tar)));
+	glAttachShader(program_id, GetShaderID((ShaderType)(1 - tar)));
 
 	glLinkProgram(program_id);
 	glValidateProgram(program_id);
@@ -664,7 +664,7 @@ void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
 
 	if (link_state != GL_TRUE)
-		DEBUG("Shader Link Error")
+		DEBUG("Shader Link Error");
 
 	ResetID(tar, shader_id);
 	ResetID(NONE_SHADER, program_id);
@@ -707,7 +707,7 @@ void RenderShader::LocalDebug() const
 {
 #ifdef _DEBUG
 	for (const auto& [name, loc] : _uniforms_cache)
-		DEBUG(name + " : " + std::to_string(loc))
+		DEBUG(name + " : " + std::to_string(loc));
 #endif
 }
 
@@ -876,8 +876,8 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 {
 	static auto pos_offset = xdzm::rand3nv(16); // must be static
 
-	ComputeShader::ImportShaderConfigs("shadow/Shadow_Point",Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
-	ComputeShader::ImportShaderConfigs("shadow/Shadow_Sun",  Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	ComputeShader::ImportShaderConfigs("shadow/Shadow_Point", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	ComputeShader::ImportShaderConfigs("shadow/Shadow_Sun", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 	ComputeShader::ImportShaderConfigs("shadow/Shadow_Spot", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 	ComputeShader::ImportShaderConfigs("shadow/Shadow_Area", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 
@@ -888,10 +888,10 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 	static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(config->r_ao_ksize);
 
 	for (const auto& pref : ShaderLib::AO_prefix)
-		ComputeShader::ImportShaderConfigs("pps/"+pref + "AO", Uni("incre_average", true), Uni("kernel_length", (GLuint)config->r_ao_ksize), Uni("kernel", (GLuint)config->r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", config->r_ao_radius), Uni("U_opt_flow", 1));
+		ComputeShader::ImportShaderConfigs("pps/" + pref + "AO", Uni("incre_average", true), Uni("kernel_length", (GLuint)config->r_ao_ksize), Uni("kernel", (GLuint)config->r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", config->r_ao_radius), Uni("U_opt_flow", 1));
 
-	for(const auto& pref : ShaderLib::SSR_prefix)
-		ComputeShader::ImportShaderConfigs("pps/SSR"+ pref, Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
+	for (const auto& pref : ShaderLib::SSR_prefix)
+		ComputeShader::ImportShaderConfigs("pps/SSR" + pref, Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
 }
 
 void ComputeShader::ResetComputeLib()

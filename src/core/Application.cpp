@@ -71,7 +71,7 @@ int Application::Init()
 
 int Application::Run()
 {
-	DEBUG("-------------------------------")
+	DEBUG("-------------------------------");
 		/////////////////////////////////
 
 		static float scale = 0.3f;

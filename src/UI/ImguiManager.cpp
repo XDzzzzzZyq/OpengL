@@ -34,15 +34,15 @@ void ImguiManager::_debug() const
 
 void ImguiManager::RegistarMenuEvents()
 {
-	for(auto& menu : menu_list)
-		for(auto& submenu : menu->subm_list){
-		
+	for (auto& menu : menu_list)
+		for (auto& submenu : menu->subm_list) {
+
 			if (submenu->mitem_shortcut.empty()) continue;
-		
+
 			EventList[EventListener::ParseShortCut(submenu->mitem_shortcut)] = [submenu] {
-				if(EventListener::is_key_changed)
+				if (EventListener::is_key_changed)
 					submenu->mitem_func(true);
-				};
+			};
 		}
 }
 
@@ -51,29 +51,29 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui::StyleColorsDark();
-	
-	ImGui::GetStyle().Colors[ImGuiCol_Header]			= ImVec4(1, 1, 1, 0);
-	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]		= ImVec4(1, 1, 1, 0.4f);
-	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered]	= ImVec4(1, 1, 1, 0.2f);
-	ImGui::GetStyle().Colors[ImGuiCol_Text]				= ImVec4(1, 1, 1, 1);
-	ImGui::GetStyle().Colors[ImGuiCol_WindowBg]			= ImVec4(0.06f, 0.06f, 0.07f, 1);
-	ImGui::GetStyle().Colors[ImGuiCol_FrameBg]			= ImVec4(0, 0.21f, 0.51f, 0.51f);
-	ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]		= ImVec4(0.71f, 0.84f, 0.96f, 1);
-	ImGui::GetStyle().Colors[ImGuiCol_DockingEmptyBg]	= ImVec4(0.1f, 0.1f, 0.1f, 1);
 
-	ImGui::GetStyle().WindowRounding	= 0.0f;// <- Set this on init or use ImGui::PushStyleVar()
-	ImGui::GetStyle().ChildRounding		= 5.0f;
-	ImGui::GetStyle().FrameRounding		= 3.0f;
-	ImGui::GetStyle().GrabRounding		= 100.0f;
-	ImGui::GetStyle().PopupRounding     = 10.0f;
+	ImGui::GetStyle().Colors[ImGuiCol_Header] = ImVec4(1, 1, 1, 0);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = ImVec4(1, 1, 1, 0.4f);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = ImVec4(1, 1, 1, 0.2f);
+	ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.07f, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_FrameBg] = ImVec4(0, 0.21f, 0.51f, 0.51f);
+	ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = ImVec4(0.71f, 0.84f, 0.96f, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.1f, 0.1f, 0.1f, 1);
+
+	ImGui::GetStyle().WindowRounding = 0.0f;// <- Set this on init or use ImGui::PushStyleVar()
+	ImGui::GetStyle().ChildRounding = 5.0f;
+	ImGui::GetStyle().FrameRounding = 3.0f;
+	ImGui::GetStyle().GrabRounding = 100.0f;
+	ImGui::GetStyle().PopupRounding = 10.0f;
 	ImGui::GetStyle().ScrollbarRounding = 5.0f;
-	ImGui::GetStyle().TabRounding		= 7;
+	ImGui::GetStyle().TabRounding = 7;
 
-	ImGui::GetStyle().FrameBorderSize	= 1;
-	ImGui::GetStyle().FramePadding		= ImVec2(10, 4);
-	ImGui::GetStyle().ItemSpacing		= ImVec2(5, 4);
-	ImGui::GetStyle().ScrollbarSize		= 11;
-	ImGui::GetStyle().GrabMinSize		= 7;
+	ImGui::GetStyle().FrameBorderSize = 1;
+	ImGui::GetStyle().FramePadding = ImVec2(10, 4);
+	ImGui::GetStyle().ItemSpacing = ImVec2(5, 4);
+	ImGui::GetStyle().ScrollbarSize = 11;
+	ImGui::GetStyle().GrabMinSize = 7;
 
 	ImFontConfig config;
 	//config.MergeMode = true;
@@ -122,8 +122,8 @@ ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
 {
 	if (layer_name_buffer.find(name) != layer_name_buffer.end())
 		return layer_list[layer_name_buffer[name]].get();
-	DEBUG("[ no layer named " + name + " ]")
-		return nullptr;
+	DEBUG("[ no layer named " + name + " ]");
+	return nullptr;
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(int id) const
@@ -172,8 +172,8 @@ ImguiMenu* ImguiManager::FindImguiMenu(const std::string& name) const
 {
 	if (menu_name_buffer.find(name) != menu_name_buffer.end())
 		return menu_list[menu_name_buffer[name]].get();
-	DEBUG("[ no menu named " + name + " ]")
-		return nullptr;
+	DEBUG("[ no menu named " + name + " ]");
+	return nullptr;
 }
 
 ImguiMenuItem* ImguiManager::FindImguiMenuItem(const std::string& menu, const std::string& submenu) const
@@ -196,11 +196,11 @@ std::shared_ptr<ImguiMenu> ImguiManager::CreateImguiMenu(std::string name)
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)
 {
 	if (FindImguiItem(ly_name, it_name)) {
-		DEBUG(ly_name + " " + it_name)
-			FindImguiItem(ly_name, it_name)->ButtonFunc = func;
+		DEBUG(ly_name + " " + it_name);
+		FindImguiItem(ly_name, it_name)->ButtonFunc = func;
 	}
 	else {
-		DEBUG("button not found")
+		DEBUG("button not found");
 	}
 
 }

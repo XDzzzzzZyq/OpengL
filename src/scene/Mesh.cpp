@@ -16,7 +16,7 @@ Mesh::Mesh(const std::string& path)
 
 Mesh::Mesh()
 {
-	DEBUG("mesh c")
+	DEBUG("mesh c");
 }
 
 void Mesh::RenderMesh(const Camera* cam)

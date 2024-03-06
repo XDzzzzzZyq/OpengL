@@ -45,29 +45,29 @@ public:
 public:
 	void Rename(const std::string& name) const;
 	std::string GetTagName()const;
-	void EnableTagName() const ;
+	void EnableTagName() const;
 	void DisableTagName() const;
 	const char* GetCharName() const { return uitm_name.c_str(); }
 public:
 	// for all items
-	virtual void RenderItem() const { DEBUG("no render function overrided")return; }
+	virtual void RenderItem() const { DEBUG("no render function overrided"); return; }
 
 	// for all paras
-	virtual Parameters* GetPara() { DEBUG(uitm_name + " is not a paraInp")return nullptr; }
+	virtual Parameters* GetPara() { DEBUG(uitm_name + " is not a paraInp"); return nullptr; }
 
 	// for all buttons
 	mutable std::function<void(void)> ButtonFunc = [] {};
-	virtual void CallButtonFunc() const { DEBUG(uitm_name + " is not a button")return; }
+	virtual void CallButtonFunc() const { DEBUG(uitm_name + " is not a button"); return; }
 	mutable bool is_button_pressed;
 
 	// for all text
-	virtual void SetArgsList(int length, ...) const { DEBUG(uitm_name + " is not a text")	return; }
-	virtual void SetArgsList(int length, float* f1) const { DEBUG(uitm_name + " is not a text")return; }
+	virtual void SetArgsList(int length, ...) const { DEBUG(uitm_name + " is not a text");	return; }
+	virtual void SetArgsList(int length, float* f1) const { DEBUG(uitm_name + " is not a text"); return; }
 
 	// for all viewport
-	virtual void ResetUV(const ImVec2& min, const ImVec2& max) { DEBUG(uitm_name + " is not a viewport")return; }
-	virtual void ResetSize(const ImVec2& size) { DEBUG(uitm_name + " is not a viewport")return; }
-	virtual void ResetBufferID(GLuint id) { DEBUG(uitm_name + " is not a viewport")	return; }
+	virtual void ResetUV(const ImVec2& min, const ImVec2& max) { DEBUG(uitm_name + " is not a viewport"); return; }
+	virtual void ResetSize(const ImVec2& size) { DEBUG(uitm_name + " is not a viewport"); return; }
+	virtual void ResetBufferID(GLuint id) { DEBUG(uitm_name + " is not a viewport");	return; }
 
 
 };
@@ -77,6 +77,6 @@ namespace Item {
 
 	inline const bool is_inside(const ImVec2& size) {
 		return ImGui::GetCursorScreenPos() - EventListener::window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)
-			 && ImVec2(EventListener::mouse_x, EventListener::mouse_y) < ImGui::GetCursorScreenPos() - EventListener::window_pos + size;
+			&& ImVec2(EventListener::mouse_x, EventListener::mouse_y) < ImGui::GetCursorScreenPos() - EventListener::window_pos + size;
 	}
 }

@@ -10,24 +10,24 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	std::shared_ptr<SceneResource> config1 = std::make_shared<SceneResource>();
 	SceneManager::sce_configs[_name] = config1;
 
-	DEBUG("\n---------------CAMERA----------------")
-		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	DEBUG("\n---------------CAMERA----------------");
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera->SetPos({ 0.0f, 20.0f, 0.0f });
 	camera->SetRot({ 90, 0, 180 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
 	config1->UseCamera(camera);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("monkey2.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("monkey2.obj");
 	go1->SetObjShader("testS", "Rasterization");
 	go1->SetTex(MAT_ALBEDO, "avatar2.png");
 	go1->SetCenter();
 	go1->SetScale(glm::vec3(0.3f));
 	config1->UseMesh(go1);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
 	go2->SetTex(MAT_ALBEDO, "avatar1.png");
 	go2->SetCenter();
@@ -36,8 +36,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	go1->SetParent(go2->GetTransformPtr());
 	config1->UseMesh(go2);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("UVsphere.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("UVsphere.obj");
 	go3->SetObjShader("testS", "Rasterization");
 	go3->SetTex(MAT_ROUGH, "avatar1.png");
 	go3->SetMatColor(MAT_ALBEDO, glm::vec3(0.1f));
@@ -46,8 +46,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	go3->SetScale({ 3,3,3 });
 	config1->UseMesh(go3);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->SetObjShader("testS", "Rasterization");
 	go4->SetTex(MAT_ALBEDO, "rough.png");
 	go4->SetMatColor(MAT_ROUGH, 0.9f);
@@ -56,32 +56,32 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	go4->SetRot({ 0,90,90 });
 	config1->UseMesh(go4);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("square.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("square.obj");
 	go5->SetObjShader("testS", "Rasterization");
 	go5->EnableShadow(false);
 	config1->UseMesh(go5);
 
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+	DEBUG("\n---------------LIGHT----------------");
+	std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, 2.0f });
 	pointLight1->ApplyTransform();
 	//config1->UseLight(pointLight1);
 
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+	DEBUG("\n---------------LIGHT----------------");
+	std::shared_ptr<Light> pointLight2 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight2->SetRadius(2);
 	//config1->UseLight(pointLight2);
 
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
+	DEBUG("\n---------------LIGHT----------------");
+	std::shared_ptr<Light> sunLight1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
 	sunLight1->SetRot(glm::vec3(0, 90, 0));
 	sunLight1->SetPos(glm::vec3(2));
 	sunLight1->SetPower(20);
 	//config1->UseLight(sunLight1);
 
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
+	DEBUG("\n---------------LIGHT----------------");
+	std::shared_ptr<Light> spotLight1 = std::make_shared<Light>(SPOTLIGHT, 1.0f, glm::vec3(1.0f));
 	spotLight1->SetRot(glm::vec3(45));
 	spotLight1->SetPos({ 6,-6,0 });
 	spotLight1->SetCutoff(60);
@@ -89,49 +89,49 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	spotLight1->SetPower(50);
 	//config1->UseLight(spotLight1);
 
-	DEBUG("\n-------------AREA LIGHT-------------")
-		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(2));
+	DEBUG("\n-------------AREA LIGHT-------------");
+	std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(2));
 	areaLight1->SetRot({ 0, 90, 45 });
 	areaLight1->SetPower(50);
 	areaLight1->SetRatio(1.5f);
 	go5->SetParent(areaLight1->GetTransformPtr(), false);
 	config1->UseLight(areaLight1);
 
-	DEBUG("\n------------POLYGON LIGHT-------------")
-		std::vector<float> plVertData = {
-			0.0f, 0.0f,
-			1.0f, 0.0f,
-			2.0f, 2.0f,
-			0.0f, 2.0f
+	DEBUG("\n------------POLYGON LIGHT-------------");
+	std::vector<float> plVertData = {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		2.0f, 2.0f,
+		0.0f, 2.0f
 	};
 	std::shared_ptr<PolygonLight> polyLight1 = std::make_shared<PolygonLight>(plVertData, glm::vec3(1.0f, 0.0f, 0.0f), 20.0f);
 	polyLight1->SetPos({ 0.0f, -3.0f, -4.0f });
 	polyLight1->SetRot(glm::vec3(-30.0f, 0.0f, 0.0f));
 	//config1->UsePolygonLight(polyLight1);
 
-	DEBUG("\n---------------LINE----------------")
-		std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
+	DEBUG("\n---------------LINE----------------");
+	std::shared_ptr<DebugLine> line = std::make_shared<DebugLine>();
 	line->PushDebugLine(5, 5, 5);
 	config1->UseDebugLine(line);
 
-	DEBUG("\n---------------LINE----------------")
-		std::shared_ptr<DebugLine> line2 = std::make_shared<DebugLine>();
+	DEBUG("\n---------------LINE----------------");
+	std::shared_ptr<DebugLine> line2 = std::make_shared<DebugLine>();
 	line2->PushDebugLines({ {0,0,0} , {0,0,1} });
 	line2->SetParent(spotLight1->GetTransformPtr(), false);
 	config1->UseDebugLine(line2);
 
-	DEBUG("\n---------------ENVIR----------------")
-		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
+	DEBUG("\n---------------ENVIR----------------");
+	std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	config1->UseEnvironment(environment);
 
-	DEBUG("\n---------------POINT----------------")
-		std::shared_ptr<DebugPoints> points = std::make_shared<DebugPoints>();
+	DEBUG("\n---------------POINT----------------");
+	std::shared_ptr<DebugPoints> points = std::make_shared<DebugPoints>();
 	points->PushDebugPoint(5, 5, 5);
 	config1->UseDebugPoints(points);
 
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR");
+	DEBUG("\n---------------POSTPRCS----------------");
+	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR");
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
 	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
@@ -146,8 +146,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config1->UsePostProcessing(pps1);
 
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
+	DEBUG("\n---------------POSTPRCS----------------");
+	std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
 	pps2->AddBinding("U_combine", BUFFER_TEXTURE + COMBINE_FB);
 	pps2->AddBinding("U_select", BUFFER_TEXTURE + MASK_FB);
 	config1->UsePostProcessing(pps2);
@@ -163,8 +163,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	std::shared_ptr<SceneResource> config2 = std::make_shared<SceneResource>();
 	SceneManager::sce_configs[_name] = config2;
 
-	DEBUG("\n---------------CAMERA----------------")
-		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 39.5978f, 0.1f, 300.0f);
+	DEBUG("\n---------------CAMERA----------------");
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 39.5978f, 0.1f, 300.0f);
 	camera->SetPos({ -3.76f, 0.0f, 1.0f });
 	camera->SetTarPos({ 0, 0, 1 });
 	camera->SetRot({ 90, 0, -90 });
@@ -172,16 +172,16 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	camera->GetInvTransform();
 	config2->UseCamera(camera);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> monkey = std::make_shared<Mesh>("cornellbox/monkey.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> monkey = std::make_shared<Mesh>("cornellbox/monkey.obj");
 	monkey->SetObjShader("testS", "Rasterization");
 	monkey->SetMatColor(MAT_ROUGH, 0.0f);
 	monkey->SetMatColor(MAT_METAL, 1.0f);
 	monkey->SetLowPoly("cornellbox/monkey_low.obj");
 	config2->UseMesh(monkey);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> back_wall = std::make_shared<Mesh>("cornellbox/back_wall.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> back_wall = std::make_shared<Mesh>("cornellbox/back_wall.obj");
 	back_wall->SetObjShader("testS", "Rasterization");
 	back_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
 	back_wall->SetMatColor(MAT_ROUGH, 0.90f);
@@ -189,8 +189,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	back_wall->is_closure = false;
 	config2->UseMesh(back_wall);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> left_wall = std::make_shared<Mesh>("cornellbox/left_wall.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> left_wall = std::make_shared<Mesh>("cornellbox/left_wall.obj");
 	left_wall->SetObjShader("testS", "Rasterization");
 	left_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.8, 0.22, 0.2));
 	left_wall->SetMatColor(MAT_ROUGH, 0.90f);
@@ -198,8 +198,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	left_wall->is_closure = false;
 	config2->UseMesh(left_wall);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> right_wall = std::make_shared<Mesh>("cornellbox/right_wall.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> right_wall = std::make_shared<Mesh>("cornellbox/right_wall.obj");
 	right_wall->SetObjShader("testS", "Rasterization");
 	right_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.26, 0.8, 0.29));
 	right_wall->SetMatColor(MAT_ROUGH, 0.90f);
@@ -207,24 +207,24 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	right_wall->is_closure = false;
 	config2->UseMesh(right_wall);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> left_box = std::make_shared<Mesh>("cornellbox/left_box.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> left_box = std::make_shared<Mesh>("cornellbox/left_box.obj");
 	left_box->SetObjShader("testS", "Rasterization");
 	left_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
 	left_box->SetMatColor(MAT_ROUGH, 0.90f);
 	left_box->SetMatColor(MAT_METAL, 0.05f);
 	config2->UseMesh(left_box);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> right_box = std::make_shared<Mesh>("cornellbox/right_box.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> right_box = std::make_shared<Mesh>("cornellbox/right_box.obj");
 	right_box->SetObjShader("testS", "Rasterization");
 	right_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
 	right_box->SetMatColor(MAT_ROUGH, 0.90f);
 	right_box->SetMatColor(MAT_METAL, 0.05f);
 	config2->UseMesh(right_box);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> light = std::make_shared<Mesh>("cornellbox/light_up.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> light = std::make_shared<Mesh>("cornellbox/light_up.obj");
 	light->SetObjShader("testS", "Rasterization");
 	light->SetMatColor(MAT_ALBEDO, glm::vec3(0));
 	light->SetMatColor(MAT_ROUGH, 1.0);
@@ -235,8 +235,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	light->EnableSDF(false);
 	config2->UseMesh(light);
 
-	DEBUG("\n----- ------SDF VISUAL--------------")
-		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	DEBUG("\n----- ------SDF VISUAL--------------");
+	std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->EnableMaterial(false);
 	go4->EnableSDF(false);
 	go4->EnableShadow(false);
@@ -247,8 +247,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	go4->SetRot({ 0,0,90 });
 	config2->UseMesh(go4);
 
-	DEBUG("\n-------------AREA LIGHT-------------")
-		std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT);
+	DEBUG("\n-------------AREA LIGHT-------------");
+	std::shared_ptr<Light> areaLight1 = std::make_shared<Light>(AREALIGHT);
 	areaLight1->SetColor({ 1, 1, 0.7 });
 	areaLight1->SetPos({ 0, 0, 1.95 });
 	areaLight1->SetScale(glm::vec3(0.25));
@@ -261,19 +261,19 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	Light::point_blur_range = 0.005f;
 
 
-	DEBUG("\n-------------SDF Field-------------")
-		std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 64);
+	DEBUG("\n-------------SDF Field-------------");
+	std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 64);
 	sdf->SetScale({ 1.1,1.1,1.1 });
 	sdf->SetPos({ 0,0,0.5 });
 	config2->UseSDF(sdf);
 
-	DEBUG("\n---------------ENVIR----------------")
-		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");
+	DEBUG("\n---------------ENVIR----------------");
+	std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	config2->UseEnvironment(environment);
 
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
+	DEBUG("\n---------------POSTPRCS----------------");
+	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
@@ -299,16 +299,16 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	std::shared_ptr<SceneResource> config3 = std::make_shared<SceneResource>();
 	SceneManager::sce_configs[_name] = config3;
 
-	DEBUG("\n---------------CAMERA----------------")
-		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	DEBUG("\n---------------CAMERA----------------");
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera->SetPos({ 10, 0, 10 });
 	camera->SetRot({ 45, 0, 90 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
 	config3->UseCamera(camera);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->EnableMaterial(false);
 	go4->EnableSDF(false);
 	go4->SetObjShader("testS", "SDF_Visual");
@@ -317,8 +317,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	go4->SetRot({ 0,0,90 });
 	config3->UseMesh(go4);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
 	go2->SetTex(MAT_ALBEDO, "avatar1.png");
 	go2->SetCenter();
@@ -326,19 +326,19 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	go2->SetScale(glm::vec3(1.5f));
 	config3->UseMesh(go2);
 
-	DEBUG("\n-------------SDF Field-------------")
-		std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 64);
+	DEBUG("\n-------------SDF Field-------------");
+	std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 64);
 	sdf->SetScale({ 1.1,1.1,1.1 });
 	sdf->SetPos({ 0,0,0.5 });
 	config3->UseSDF(sdf);
 
-	DEBUG("\n---------------ENVIR----------------")
-		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
+	DEBUG("\n---------------ENVIR----------------");
+	std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.hdr");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	config3->UseEnvironment(environment);
 
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
+	DEBUG("\n---------------POSTPRCS----------------");
+	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
@@ -364,36 +364,36 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	std::shared_ptr<SceneResource> config4 = std::make_shared<SceneResource>();
 	SceneManager::sce_configs[_name] = config4;
 
-	DEBUG("\n---------------CAMERA----------------")
-		std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	DEBUG("\n---------------CAMERA----------------");
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
 	camera->SetCamPos({ 4, -4, 2 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
 	config4->UseCamera(camera);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("shadow/grid1.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("shadow/grid1.obj");
 	go1->SetObjShader("testS", "Rasterization");
-	config4->UseMesh(go1);	
+	config4->UseMesh(go1);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("shadow/grid2.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("shadow/grid2.obj");
 	go2->SetObjShader("testS", "Rasterization");
 	config4->UseMesh(go2);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("shadow/ground.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("shadow/ground.obj");
 	go3->SetObjShader("testS", "Rasterization");
 	config4->UseMesh(go3);
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("shadow/torus.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("shadow/torus.obj");
 	go4->SetObjShader("testS", "Rasterization");
 	config4->UseMesh(go4);
 
 
-	DEBUG("\n---------------MESH----------------")
-		std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("plane.obj");
+	DEBUG("\n---------------MESH----------------");
+	std::shared_ptr<Mesh> go5 = std::make_shared<Mesh>("plane.obj");
 	go5->EnableMaterial(false);
 	go5->EnableSDF(false);
 	go5->SetObjShader("testS", "SDF_Visual");
@@ -401,17 +401,17 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	go5->SetScale({ 2,2,2 });
 	go5->SetRot({ 0,0,90 });
 	//config4->UseMesh(go5);
-	
-	DEBUG("\n---------------LIGHT----------------")
-		std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
+
+	DEBUG("\n---------------LIGHT----------------");
+	std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
 	pointLight1->SetPos({ 2.0f, 2.0f, -3.0f });
 	pointLight1->SetColor({ 0.7,0.7, 1 });
 	pointLight1->SetPower(30);
 	pointLight1->ApplyTransform();
 	config4->UseLight(pointLight1);
 
-	DEBUG("\n---------------SUN----------------")
-		std::shared_ptr<Light> sun1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
+	DEBUG("\n---------------SUN----------------");
+	std::shared_ptr<Light> sun1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
 	sun1->SetPos({ 2.0f, 2.0f, 3.0f });
 	sun1->LookAt({ 0,0,0 });
 	sun1->SetColor({ 0.7,0.7, 1 });
@@ -419,8 +419,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	sun1->ApplyTransform();
 	config4->UseLight(sun1);
 
-	DEBUG("\n-------------AREA LIGHT-------------")
-		std::shared_ptr<Light> areaLight2 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(1.0f));
+	DEBUG("\n-------------AREA LIGHT-------------");
+	std::shared_ptr<Light> areaLight2 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(1.0f));
 	areaLight2->SetPos({ -2.0f, -1.5f, 0.7f });
 	areaLight2->SetRot({ 135, 0, 135 });
 	areaLight2->SetColor({ 1,0.7,0.7 });
@@ -429,19 +429,19 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	config4->UseLight(areaLight2);
 
 
-	DEBUG("\n-------------SDF Field-------------")
-		std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 128);
+	DEBUG("\n-------------SDF Field-------------");
+	std::shared_ptr<SDFField> sdf = std::make_shared<SDFField>(64, 64, 128);
 	sdf->SetScale({ 2,2,3 });
 	sdf->SetPos({ 0,0,2 });
 	config4->UseSDF(sdf);
 
-	DEBUG("\n---------------ENVIR----------------")
-		std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");
+	DEBUG("\n---------------ENVIR----------------");
+	std::shared_ptr<Environment> environment = std::make_shared<Environment>("hdr/room.png");
 	environment->SetPos(glm::vec3(0.0f, 7.0f, 7.0f));
 	config4->UseEnvironment(environment);
 
-	DEBUG("\n---------------POSTPRCS----------------")
-		std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
+	DEBUG("\n---------------POSTPRCS----------------");
+	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
 	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);

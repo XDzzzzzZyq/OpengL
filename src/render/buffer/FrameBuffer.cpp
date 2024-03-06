@@ -50,7 +50,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	//glDrawBuffer(fb_type);GLDEBUG
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		DEBUG("framebuffer error")
+		DEBUG("framebuffer error");
 	}
 	else
 	{
@@ -66,7 +66,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 {
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-	GLDEBUG
+	GLDEBUG;
 	std::vector<GLenum> attachments(count);
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
@@ -83,12 +83,12 @@ FrameBuffer::FrameBuffer(int count, ...)
 
 	}
 	va_end(arg_ptr);
-	GLDEBUG
+	GLDEBUG;
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		DEBUG("framebuffer error")
+		DEBUG("framebuffer error");
 	}
 	else
 	{
@@ -124,7 +124,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		DEBUG("framebuffer error")
+		DEBUG("framebuffer error");
 	}
 	else
 	{

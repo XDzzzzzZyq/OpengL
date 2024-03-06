@@ -54,7 +54,7 @@ void Nodes::BreakLink(Parameters* _param, bool _type)
 	bool is_linked = map.find(_param) != map.end();
 
 	if (!is_linked) {
-		DEBUG("No link")
+		DEBUG("No link");
 		return;
 	}
 

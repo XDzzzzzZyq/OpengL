@@ -26,8 +26,8 @@ std::vector<int> EventListener::EVT_NK_LIST = {};
 
 void EventListener::PushNormKey(int _ID)
 {
-	if(std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), _ID) != EVT_NK_LIST.end())
-			return;
+	if (std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), _ID) != EVT_NK_LIST.end())
+		return;
 
 	EVT_NK_LIST.push_back(_ID);
 }
@@ -94,7 +94,7 @@ EventListener::MouseStatus EventListener::ListenMouseEvent(GLFWwindow* window)
 {
 	//update
 	LOOP(3)
-		if (glfwGetMouseButton(window, i) == GLFW_PRESS) 
+		if (glfwGetMouseButton(window, i) == GLFW_PRESS)
 			return MouseStatus(i + 1);
 
 	return MouseStatus::NONE;
@@ -135,7 +135,7 @@ bool EventListener::is_scr_changed = false;
 void EventListener::UpdateEvent(GLFWwindow* window) const
 {
 	KeyMouseEvent event_b = EVT_STATUS;
-	/*		Mouse Input 	*/	
+	/*		Mouse Input 	*/
 
 	mouse_b_x = mouse_x;
 	mouse_b_y = mouse_y;
@@ -176,15 +176,15 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 	EventListener::is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
 	EventListener::is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
 
-	
+
 	EventListener::frame_count++;
 }
 
 EventListener::KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
 {
 	return EventListener::GenIntEvent(
-		SpecialKeys(k1), 
-		SpecialKeys(k2), 
+		SpecialKeys(k1),
+		SpecialKeys(k2),
 		k3,
 		MouseStatus(m),
 		ScrollDir(scr)
@@ -231,12 +231,12 @@ EventListener::KeyMouseEvent EventListener::ParseShortCut(const std::string& _sh
 	str >> word;
 	LOOP(EVT_AVAIL_KEYS.size()) {
 		if (word == EVT_AVAIL_KEYS[i]) {
-			result.FirstKey = SpecialKeys(i+1);
+			result.FirstKey = SpecialKeys(i + 1);
 			str >> word;	// "+"
 			str >> word;
 			LOOP_N(EVT_AVAIL_KEYS.size(), j) {
 				if (word == EVT_AVAIL_KEYS[j]) {
-					result.SecondKey = SpecialKeys(j+1);
+					result.SecondKey = SpecialKeys(j + 1);
 					goto parse_next_norm;
 				}
 			}
@@ -269,10 +269,10 @@ void EventListener::ShowEvents()
 #ifdef _DEBUG
 
 	for (auto& cls : evt_RigisterEvents) {
-		DEBUG("[ " + cls.first + " ]")
-			for (auto& evt : cls.second) {
-				std::cout << "\t" << cls.first << " : " << evt << "\n";
-			}
+		DEBUG("[ " + cls.first + " ]");
+		for (auto& evt : cls.second) {
+			std::cout << "\t" << cls.first << " : " << evt << "\n";
+		}
 	}
 
 #endif // _DEBUG

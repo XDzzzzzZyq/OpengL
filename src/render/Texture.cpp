@@ -687,7 +687,7 @@ void Texture::SaveTexture(std::string _path) const
 	int status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
 
 	if (status == 0) {
-		DEBUG("failed")
+		DEBUG("failed");
 	}
 }
 
