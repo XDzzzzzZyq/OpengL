@@ -38,16 +38,15 @@ void RenderBuffer::UnbindRenderBuffer() const
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-void RenderBuffer::Resize(float w, float h)
+void RenderBuffer::Resize(GLuint w, GLuint h)
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, rb_ID);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (GLsizei)w, (GLsizei)h);
 }
 
 void RenderBuffer::Resize(const glm::vec2& size)
 {
-	glBindRenderbuffer(GL_RENDERBUFFER, rb_ID);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
+	Resize((GLuint)size.x, (GLuint)size.y);
 }
 
 RenderBuffer::RenderBuffer(const RenderBuffer& rb)

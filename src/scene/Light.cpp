@@ -468,7 +468,7 @@ GLuint LightArrayBuffer::GetSlotOffset(LightType _type) const
 		return GetSlotOffset(SPOTLIGHT)  + spot_list.size();
 	default:
 		assert(false && "Unknown Light Type");
-		return 0;
+		return 0u;
 	}
 }
 
@@ -523,10 +523,10 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
-	const float point_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
-	const float sun_ud_rate		= is_incr_aver ? 0.05 : 1.0 / frame;
-	const float spot_ud_rate	= is_incr_aver ? 0.05 : 1.0 / frame;
-	const float area_ud_rate	= is_incr_aver ? 0.01 : 1.0 / frame;
+	const float point_ud_rate	= is_incr_aver ? 0.05f : 1.0f / frame;
+	const float sun_ud_rate		= is_incr_aver ? 0.05f : 1.0f / frame;
+	const float spot_ud_rate	= is_incr_aver ? 0.05f : 1.0f / frame;
+	const float area_ud_rate	= is_incr_aver ? 0.01f : 1.0f / frame;
 
 	const glm::vec3 random = glm::vec3(EventListener::random_float1, EventListener::random_float2, EventListener::random_float3);
 

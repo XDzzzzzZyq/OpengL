@@ -25,24 +25,24 @@ public:
 	bool use_shadow{ true };
 
 	LightType light_type{ LightType::NONELIGHT };
-	float light_power{ 1 };
-	glm::vec3 light_color{ 1. }; //3f
+	float light_power{ 1.0f };
+	glm::vec3 light_color{ 1.0f }; //3f
 
 	// point light
-	float light_radius{ 0.05 };
+	float light_radius{ 0.05f };
 
 	// spot light
-	float spot_cutoff{ 0.9 };
-	float spot_outer_cutoff{ 0.8 };
+	float spot_cutoff{ 0.9f };
+	float spot_outer_cutoff{ 0.8f };
 
 	// area light
-	float area_ratio{ 1.0 };
+	float area_ratio{ 1.0f };
 
 public:
 
 	Sprite light_sprite;
 	Texture light_shadow_map;
-	glm::mat4 light_proj{ 1 };
+	glm::mat4 light_proj{ 1.0f };
 
 public:
 
@@ -124,9 +124,9 @@ public:
 		alignas(16) glm::vec3 color{ 1 };
 		alignas(16) glm::vec3 pos{ 0 };
 
-		alignas(4) float power{ 1 };
+		alignas(4) float power{ 1.0f };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
-		alignas(4) float radius{ 0.05 };
+		alignas(4) float radius{ 0.05f };
 	};
 
 	struct SunStruct
@@ -137,7 +137,7 @@ public:
 		alignas(16) glm::vec3 pos{ 0 };
 		alignas(16) glm::vec3 dir{ 1, 0, 0 };
 
-		alignas(4) float power{ 1 };
+		alignas(4) float power{ 1.0f };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
 		alignas(16) glm::mat4 proj_trans;
 	};
@@ -150,10 +150,10 @@ public:
 		alignas(16) glm::vec3 pos{ 0 };
 		alignas(16) glm::vec3 dir{ 1, 0, 0 };
 
-		alignas(4) float power{ 1 };
+		alignas(4) float power{ 1.0f };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
-		alignas(4) float cutoff{ 0.9 };
-		alignas(4) float outer_cutoff{ 0.8 };
+		alignas(4) float cutoff{ 0.9f };
+		alignas(4) float outer_cutoff{ 0.8f };
 	};
 
 	struct AreaStruct
@@ -163,16 +163,16 @@ public:
 		alignas(16) glm::vec3 color{ 1 };
 		alignas(16) glm::mat4 trans{ 1 };
 
-		alignas(4) float power{ 1 };
+		alignas(4) float power{ 1.0f };
 		alignas(4) int use_shadow{ 1 };      // bool -> int
-		alignas(4) float ratio{ 1 };
+		alignas(4) float ratio{ 1.0f };
 	};
 
 	struct PolyStruct
 	{
 		alignas(16) glm::vec3 color{ 1 };
 
-		alignas(4) float power{ 1 };
+		alignas(4) float power{ 1.0f };
 		alignas(4) int use_shadow{ 1 };
 		alignas(4) int n{ 3 };
 	};

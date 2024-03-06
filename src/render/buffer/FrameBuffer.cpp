@@ -284,7 +284,7 @@ void FrameBuffer::Resize(const glm::vec2& size, bool all)
 	Resize(size[0], size[1], all);
 }
 
-void FrameBuffer::Resize(float w, float h, bool all)
+void FrameBuffer::Resize(GLuint w, GLuint h, bool all)
 {
 	fb_w = w;
 	fb_h = h;

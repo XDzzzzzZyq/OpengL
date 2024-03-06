@@ -64,11 +64,11 @@ private:
 private:
 	std::vector<ImguiNodes> _node_pool;
 	std::unordered_map<Nodes*, int> _node_index_cache;
-	void PushNode(Nodes* _node) { _node_pool.emplace_back(_node); _node_index_cache[_node] = _node_pool.size() - 1; }
+	void PushNode(Nodes* _node) { _node_pool.emplace_back(_node); _node_index_cache[_node] = (int)_node_pool.size() - 1; }
 	void PushNodes(const std::vector<Nodes*>& _list) {
 		for (auto& node : _list) { 
 			_node_pool.emplace_back(node);
-			_node_index_cache[node] = _node_pool.size() - 1; 
+			_node_index_cache[node] = (int)_node_pool.size() - 1; 
 		}
 	}
 

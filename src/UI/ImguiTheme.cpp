@@ -54,7 +54,7 @@ void ImguiTheme::SetColorData(const std::string& th_para_name, const ImU32& para
 
 void ImguiTheme::InitParaLoc()
 {
-	PushFloatData("Outline opac", 0.2);
+	PushFloatData("Outline opac", 0.2f);
 }
 
 void ImguiTheme::PushFloatData(const std::string& name, float data /*= 0.0f*/)

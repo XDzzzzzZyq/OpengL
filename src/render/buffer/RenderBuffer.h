@@ -27,7 +27,7 @@ public:
 	void BindRenderBuffer() const;
 	void UnbindRenderBuffer() const;
 
-	void Resize(float w, float h);
+	void Resize(GLuint w, GLuint h);
 	void Resize(const glm::vec2& size);
 
 	GLuint GetRenderBufferID() const { return rb_ID; }

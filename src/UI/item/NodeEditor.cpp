@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "operator.h"=
+#include "operator.h"
 
 const ImVec2 ImguiNodes::GetInPinPos(const ImVec2& _header_size, float _offset, int _idx)
 {
@@ -175,12 +175,12 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 
 		ImFont* font = ImGui::GetIO().Fonts->Fonts[1];
 		ImGui::PushFont(font);
-		ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(0.9, 0.9, 0.9, 1);
+		ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(0.9f, 0.9f, 0.9f, 1);
 
 		///////////////////////// RENDER ///////////////////////////
 		const float rounding = th_rounding * o_scale[0];
 		const float pin_offset = th_offset * o_scale[0];
-		const ImVec2 pin_size = ImVec2(0.1, 0.1) * o_scale;
+		const ImVec2 pin_size = ImVec2(0.1f, 0.1f) * o_scale;
 		const ImVec2 head_size = ImVec2(0, 15) * o_scale;
 		const ImVec2 handle_offset = ImVec2(th_curvity * 10, 0) * o_scale;
 
@@ -207,14 +207,14 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 				flags
 			);
 
-			const ImVec2 arror_up = node.min - ImVec2(-2.5, 4.0) * o_scale - ImVec2(8, 0.2);
-			const ImVec2 arror_dn = node.min - ImVec2(-3.0, 4.2) * o_scale - ImVec2(8, 0.2);
+			const ImVec2 arror_up = node.min - ImVec2(-2.5f, 4.0f) * o_scale - ImVec2(8, 0.2f);
+			const ImVec2 arror_dn = node.min - ImVec2(-3.0f, 4.2f) * o_scale - ImVec2(8, 0.2f);
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
-			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2);
+			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2f);
 
 			if (LMB_press && EventListener::IsMouseClick())
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
-					if (ImGui::GetMousePos() < ImVec2(node.header.x + (node.max.x - node.header.x) * 0.125, node.min.y))
+					if (ImGui::GetMousePos() < ImVec2(node.header.x + ((float)node.max.x - node.header.x) * 0.125f, node.min.y))
 						node->is_open = !node->is_open;
 					else
 						active_node_id = node->n_id;
@@ -308,7 +308,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 								inp_curs - ImVec2(th_curvity * 10, 0) * o_scale,
 								inp_curs,
 								ImguiNodes::pin_color_list[i_p.para_type],
-								0.5 * o_scale[0]
+								0.5f * o_scale[0]
 							);
 						}
 					}
@@ -324,7 +324,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					if (!is_connected) {
 						inp_curs.y += pin_offset;
 						ImGui::SetCursorScreenPos(inp_curs + ImVec2(o_scale[0] * 2, 0));
-						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, node.m_states[&i_p].p_s_ID.c_str(), o_scale[0] / 3, 1.7);
+						is_node_movable &= !UI::ParaInput::RenderParam(&i_p, node.m_states[&i_p].p_s_ID.c_str(), o_scale[0] / 3, 1.7f);
 					}
 
 					inp_curs.y += pin_offset;
@@ -401,7 +401,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 							pin_pos - ImVec2(th_curvity * 10, 0) * o_scale,
 							pin_pos,
 							IM_COL32(255, 255, 255, 255),
-							0.5 * o_scale[0]
+							0.5f * o_scale[0]
 						);
 					}
 				}
@@ -457,7 +457,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					ImGui::GetMousePos() - handle_offset,      // handle merge to cursor: out -> cursor
 					ImGui::GetMousePos(),
 					ImguiNodes::pin_color_list[editing_para_type],
-					0.5 * o_scale[0]
+					0.5f * o_scale[0]
 				);
 			}
 
@@ -499,7 +499,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 					tar_pin_pos - handle_offset,
 					tar_pin_pos,
 					ImguiNodes::pin_color_list[editing_para_type],
-					0.5 * o_scale[0]
+					0.5f * o_scale[0]
 				);
 			}
 			break;
@@ -590,7 +590,7 @@ void NodeEditor::SHIFT_MMB()
 void NodeEditor::CTRL_MMB()
 {
 	if (Item::is_inside(NE_size))
-		Zoom(glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(GetDeltaMouseX(), GetDeltaMouseY())));
+		Zoom((float)glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(GetDeltaMouseX(), GetDeltaMouseY())));
 }
 
 void NodeEditor::SCRLL()

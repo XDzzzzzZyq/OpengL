@@ -33,7 +33,7 @@ static bool RenderTransfroms(Transform3D& trans)
 	glm::vec3 pos = trans.o_position;
 	glm::vec3 rot = trans.o_rot;
 	glm::vec3 scl = trans.o_scale;
-	std::string id = std::to_string((int)trans.GetTransformPtr());
+	std::string id = std::to_string(reinterpret_cast<std::uintptr_t>(trans.GetTransformPtr()));
 
 	const bool is_pos_ch = ImGui::InputFloat3M((id + "p").c_str(), "Position", (float*)&pos, "%.1f", ::_SliderFlag(!trans.use_position));
 	ImGui::SameLine(); ImGui::Checkbox((id + "pl").c_str(), &trans.use_position, false);

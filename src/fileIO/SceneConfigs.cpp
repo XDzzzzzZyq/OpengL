@@ -23,7 +23,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	go1->SetObjShader("testS", "Rasterization");
 	go1->SetTex(MAT_ALBEDO, "avatar2.png");
 	go1->SetCenter();
-	go1->SetScale(glm::vec3(0.3));
+	go1->SetScale(glm::vec3(0.3f));
 	config1->UseMesh(go1);
 
 	DEBUG("\n---------------MESH----------------")
@@ -40,8 +40,8 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 		std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("UVsphere.obj");
 	go3->SetObjShader("testS", "Rasterization");
 	go3->SetTex(MAT_ROUGH, "avatar1.png");
-	go3->SetMatColor(MAT_ALBEDO, glm::vec3(0.1));
-	go3->SetMatColor(MAT_METAL, 0.1);
+	go3->SetMatColor(MAT_ALBEDO, glm::vec3(0.1f));
+	go3->SetMatColor(MAT_METAL, 0.1f);
 	go3->SetPos({ -8,0,0 });
 	go3->SetScale({ 3,3,3 });
 	config1->UseMesh(go3);
@@ -50,7 +50,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 		std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->SetObjShader("testS", "Rasterization");
 	go4->SetTex(MAT_ALBEDO, "rough.png");
-	go4->SetMatColor(MAT_ROUGH, 0.9);
+	go4->SetMatColor(MAT_ROUGH, 0.9f);
 	go4->SetPos({ 0,-7,0 });
 	go4->SetScale({ 2,2,2 });
 	go4->SetRot({ 0,90,90 });
@@ -183,7 +183,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> back_wall = std::make_shared<Mesh>("cornellbox/back_wall.obj");
 	back_wall->SetObjShader("testS", "Rasterization");
-	back_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.9));
+	back_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
 	back_wall->SetMatColor(MAT_ROUGH, 0.90f);
 	back_wall->SetMatColor(MAT_METAL, 0.05f);
 	back_wall->is_closure = false;
@@ -210,7 +210,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> left_box = std::make_shared<Mesh>("cornellbox/left_box.obj");
 	left_box->SetObjShader("testS", "Rasterization");
-	left_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9));
+	left_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
 	left_box->SetMatColor(MAT_ROUGH, 0.90f);
 	left_box->SetMatColor(MAT_METAL, 0.05f);
 	config2->UseMesh(left_box);
@@ -218,7 +218,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	DEBUG("\n---------------MESH----------------")
 		std::shared_ptr<Mesh> right_box = std::make_shared<Mesh>("cornellbox/right_box.obj");
 	right_box->SetObjShader("testS", "Rasterization");
-	right_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9));
+	right_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
 	right_box->SetMatColor(MAT_ROUGH, 0.90f);
 	right_box->SetMatColor(MAT_METAL, 0.05f);
 	config2->UseMesh(right_box);
@@ -258,7 +258,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	light->SetParent(areaLight1->GetTransformPtr(), true);
 	config2->UseLight(areaLight1);
 
-	Light::point_blur_range = 0.005;
+	Light::point_blur_range = 0.005f;
 
 
 	DEBUG("\n-------------SDF Field-------------")

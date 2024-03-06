@@ -111,11 +111,11 @@ public:
 
 public:
 
-	static double mouse_x, mouse_y, mouse_b_x, mouse_b_y;
-	static const double GetDeltaMouseX() { return mouse_x - mouse_b_x; }
-	static const double GetDeltaMouseY() { return mouse_y - mouse_b_y; }
-	static const glm::vec2 GetDeltaMouse()  { return { (float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y) }; }
-	static const glm::vec2 GetMousePos()    { return { (float)mouse_x, (float)mouse_y }; }
+	static float mouse_x, mouse_y, mouse_b_x, mouse_b_y;
+	static const float GetDeltaMouseX() { return mouse_x - mouse_b_x; }
+	static const float GetDeltaMouseY() { return mouse_y - mouse_b_y; }
+	static const glm::vec2 GetDeltaMouse() { return { mouse_x - mouse_b_x, mouse_y - mouse_b_y }; }
+	static const glm::vec2 GetMousePos()   { return { mouse_x, mouse_y }; }
 
 public:
 
@@ -172,7 +172,7 @@ public:
 
 	static float scroll_dir;
 	static bool is_scr_changed;
-	static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) { scroll_dir = yoffset; }
+	static void scrollCall(GLFWwindow* window, double xoffset, double yoffset) { scroll_dir = (float)yoffset; }
 
 	void UpdateEvent(GLFWwindow* window) const;
 

@@ -106,7 +106,7 @@ glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {
 #include "operator.h"
 TEST_F(RendererEnvir, ComputeShader) {
 	if (gl_version < 4.0)
-		GTEST_SKIP("Skipped");
+		GTEST_SKIP();
 
 	auto& sat = ComputeShader::ImportShader(shader_root + "SAT");
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);

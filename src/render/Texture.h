@@ -69,7 +69,7 @@ public:
 	~Texture();
 
 	void Resize(const glm::vec2& size);
-	void Resize(float x, float y);
+	void Resize(GLuint x, GLuint y);
 	void OffsetSlot(GLuint _offset) { tex_slot_offset += _offset; };
 
 public:
@@ -98,21 +98,21 @@ public: // for texture processing
 	void GenIrradiaceConvFrom(const Texture& _Tar_Tex);
 	void GenIBLSpecularFrom(const Texture& _Tar_Tex, bool to_cubemap = false);
 	void GenIBLDiffuseFrom(const Texture& _Tar_Tex, bool to_cubemap = false);
-	void GenCubeMapFrom(const Texture& _Tar_Tex, size_t res = 1024);
-	void GenERectMapFrom(const Texture& _Tar_Tex, size_t _w = 2048, size_t _h = 1024);
+	void GenCubeMapFrom(const Texture& _Tar_Tex, int res = 1024);
+	void GenERectMapFrom(const Texture& _Tar_Tex, int _w = 2048, int _h = 1024);
 	void ConvertDepthFrom(const Texture& _Tar_Tex);
 	void ConvertPNGFrom(const Texture& _Tar_Tex);
 
 	void FillColor(const glm::vec4 col);
 
 private:
-	void GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE);
-	void GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
-	void GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
-	void GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type = IBL_TEXTURE);
-	void GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type = IBL_TEXTURE);
-	void ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type = DEPTH_TEXTURE);
-	void ConvertPNG(GLuint _tar_ID, size_t _w, size_t _h);
+	void GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE);
+	void GenIBLSpecular(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
+	void GenIBLDiffuse(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
+	void GenCubeMap(GLuint _tar_ID, int _tar_res, TextureType _tar_type = IBL_TEXTURE);
+	void GenERectMap(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = IBL_TEXTURE);
+	void ConvertDepth(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = DEPTH_TEXTURE);
+	void ConvertPNG(GLuint _tar_ID, int _w, int _h);
 
 public:
 
@@ -149,8 +149,8 @@ public:
 
 public:
 	static TextureRes Noise_2D_4x4();
-	static TextureRes Noise_2D_4x4xN(size_t n=6);
-	static TextureRes Noise_2D_16x16xN(size_t n=6);
+	static TextureRes Noise_2D_4x4xN(int n=6);
+	static TextureRes Noise_2D_16x16xN(int n=6);
 
 	static TextureRes IBL_LUT();
 
@@ -158,7 +158,7 @@ public:
 	static TextureRes LTC2();
 
 private:
-	static void GenNoiseTexture(NoiseType _type, size_t _w, size_t _h);
-	static void GenNoiseTextures(NoiseType _type, size_t _w, size_t _h, size_t _n);
+	static void GenNoiseTexture(NoiseType _type, int _w, int _h);
+	static void GenNoiseTextures(NoiseType _type, int _w, int _h, int _n);
 };
 

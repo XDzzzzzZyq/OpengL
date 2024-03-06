@@ -26,7 +26,7 @@ void RendererEnvir::SetUp()
 
 	const GLubyte* version = glGetString(GL_VERSION);
 	std::cout << version << "\n";
-	gl_version = std::atof((const char*)version);
+	gl_version = (float)std::atof((const char*)version);
 
 	if (gl_version < 4.0)
 		return;

@@ -241,16 +241,34 @@ GLuint Shaders::getVarID(const char* name) const
 	return glGetUniformLocation(program_id, name);
 }
 
-void Shaders::SetValue(const std::string& name, int v0, int v1, int v2, float v3)
+void Shaders::SetValue(const std::string& name, int v0, int v1, int v2, int v3)
 {
 	int id = getVarID(name.c_str());
-	glUniform4f(id, v0, v1, v2, v3);
+	glUniform4i(id, v0, v1, v2, v3);
 }
 
 void Shaders::SetValue(const std::string& name, int v0, int v1, int v2)
 {
 	int id = getVarID(name.c_str());
+	glUniform3i(id, v0, v1, v2);
+}
+
+void Shaders::SetValue(const std::string& name, float v0, float v1)
+{
+	int id = getVarID(name.c_str());
+	glUniform2f(id, v0, v1);
+}
+
+void Shaders::SetValue(const std::string& name, float v0, float v1, float v2)
+{
+	int id = getVarID(name.c_str());
 	glUniform3f(id, v0, v1, v2);
+}
+
+void Shaders::SetValue(const std::string& name, float v0, float v1, float v2, float v3)
+{
+	int id = getVarID(name.c_str());
+	glUniform4f(id, v0, v1, v2, v3);
 }
 
 void Shaders::SetValue(const std::string& name, const glm::mat4& projection)
@@ -285,20 +303,17 @@ void Shaders::SetValue(const std::string& name, const GLuint& v0)
 
 void Shaders::SetValue(const std::string& name, const glm::vec2& vec2)
 {
-	int id = getVarID(name.c_str());
-	glUniform2f(id, vec2[0], vec2[1]);
+	SetValue(name, vec2[0], vec2[1]);
 }
 
 void Shaders::SetValue(const std::string& name, const glm::vec3& vec3)
 {
-	int id = getVarID(name.c_str());
-	glUniform3f(id, vec3[0], vec3[1], vec3[2]);
+	SetValue(name, vec3[0], vec3[1], vec3[2]);
 }
 
 void Shaders::SetValue(const std::string& name, const glm::vec4& vec4)
 {
-	int id = getVarID(name.c_str());
-	glUniform4f(id, vec4[0], vec4[1], vec4[2], vec4[3]);
+	SetValue(name, vec4[0], vec4[1], vec4[2], vec4[3]);
 }
 
 void Shaders::SetValue(const std::string& name, GLsizei count, const float* va0, ArrayType TYPE)
@@ -950,7 +965,7 @@ void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint wo
 void ComputeShader::RunComputeShader(const glm::vec2& _size)
 {
 	UseShader();
-	RunComputeShader(_size.x, _size.y, 1);
+	RunComputeShader((GLuint)_size.x, (GLuint)_size.y, 1);
 	UnuseShader();
 }
 

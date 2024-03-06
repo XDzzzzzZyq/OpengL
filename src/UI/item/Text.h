@@ -2,7 +2,7 @@
 
 #include "ImguiItem.h"
 namespace UI {
-	
+
 	class Text : public ImguiItem
 	{
 	public:
@@ -17,13 +17,13 @@ namespace UI {
 
 		void RenderItem() const override;
 
-		void  SetArgsList(float length, ...) const override {
+		void SetArgsList(int length, ...) const override {
 			args_count = length;
 			va_list arg_ptr;
 			float data = 0;
 			va_start(arg_ptr, length);
 			LOOP(length) {
-				data = va_arg(arg_ptr, double);
+				data = (float)va_arg(arg_ptr, double);
 				args_list[i] = data;
 			}
 			va_end(arg_ptr);

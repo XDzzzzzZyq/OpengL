@@ -73,8 +73,8 @@ namespace xdzm {
 
 	inline std::vector<glm::vec3> rand3hKernel(size_t s) {
 		std::vector<glm::vec3> res(s);
-		const float r = rand01()*0.7 + 0.3;
-		LOOP(s) res[i] = r*r*rand3nh();
+		const float r = rand01() * 0.7f + 0.3f;
+		LOOP(s) res[i] = r * r * rand3nh();
 		return res;
 	}
 

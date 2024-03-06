@@ -71,7 +71,7 @@ int Renderer::GetSelectID(GLuint x, GLuint y)
 {
 	if (viewport_offset - glm::vec2(5, 5) < glm::vec2(x, y) && glm::vec2(x, y) < viewport_offset + r_buffer_list[_RASTER].GetFrameBufferSize() * glm::vec2(1, 2))
 		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
-		return r_buffer_list[_RASTER].ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
+		return r_buffer_list[_RASTER].ReadPix(x - (GLuint)viewport_offset.x, y - (GLuint)viewport_offset.y, ID_FB).GetID();
 	else
 		return EventListener::active_GO_ID;
 }
@@ -123,7 +123,7 @@ void Renderer::LMB_CLICK()
 	if (!EventListener::is_in_viewport) return;
 	if (EventListener::viewport_status != EventListener::ViewPortStatus::None) return;
 
-	int id = GetSelectID(mouse_x, mouse_y);
+	int id = GetSelectID((GLuint)mouse_x, (GLuint)mouse_y);
 	if (id == EventListener::active_GO_ID) return;
 
 	if (r_scene->obj_list.find(EventListener::active_GO_ID) != r_scene->obj_list.end())
@@ -348,7 +348,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////  SSAO + DEPTH  ////////////
 
 		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
-		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0 / EventListener::frame_count;
+		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / EventListener::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
@@ -368,7 +368,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////// LIGHTING CACHE ////////////
 
-		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0 / EventListener::frame_count;
+		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0f / EventListener::frame_count;
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);

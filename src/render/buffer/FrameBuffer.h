@@ -34,7 +34,7 @@ enum FBType
 struct FBPixel
 {
 	float RGBA[4];
-	int GetID() const { return RGBA[0]; }
+	int GetID() const { return (int)RGBA[0]; }
 };
 
 class FrameBuffer
@@ -78,7 +78,7 @@ public:
 public:
 
 	void Resize(const glm::vec2& size, bool all = false);
-	void Resize(float w, float h, bool all = false);
+	void Resize(GLuint w, GLuint h, bool all = false);
 	glm::vec2 GetSize() const { return { fb_w, fb_h }; }
 
 	FBPixel ReadPix(GLuint x, GLuint y, FBType type);

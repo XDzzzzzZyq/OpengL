@@ -53,13 +53,13 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	ImGui::StyleColorsDark();
 	
 	ImGui::GetStyle().Colors[ImGuiCol_Header]			= ImVec4(1, 1, 1, 0);
-	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]		= ImVec4(1, 1, 1, 0.4);
-	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered]	= ImVec4(1, 1, 1, 0.2);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]		= ImVec4(1, 1, 1, 0.4f);
+	ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered]	= ImVec4(1, 1, 1, 0.2f);
 	ImGui::GetStyle().Colors[ImGuiCol_Text]				= ImVec4(1, 1, 1, 1);
-	ImGui::GetStyle().Colors[ImGuiCol_WindowBg]			= ImVec4(0.06, 0.06, 0.07, 1);
-	ImGui::GetStyle().Colors[ImGuiCol_FrameBg]			= ImVec4(0, 0.21, 0.51, 0.51);
-	ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]		= ImVec4(0.71, 0.84, 0.96, 1);
-	ImGui::GetStyle().Colors[ImGuiCol_DockingEmptyBg]	= ImVec4(0.1, 0.1, 0.1, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_WindowBg]			= ImVec4(0.06f, 0.06f, 0.07f, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_FrameBg]			= ImVec4(0, 0.21f, 0.51f, 0.51f);
+	ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]		= ImVec4(0.71f, 0.84f, 0.96f, 1);
+	ImGui::GetStyle().Colors[ImGuiCol_DockingEmptyBg]	= ImVec4(0.1f, 0.1f, 0.1f, 1);
 
 	ImGui::GetStyle().WindowRounding	= 0.0f;// <- Set this on init or use ImGui::PushStyleVar()
 	ImGui::GetStyle().ChildRounding		= 5.0f;
@@ -96,7 +96,7 @@ void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 {
 	assert(layer_name_buffer.find(layer->uly_name) == layer_name_buffer.end());
 
-	layer->uly_ID = layer_list.size(); //start with 0
+	layer->uly_ID = (int)layer_list.size(); //start with 0
 	layer_list.push_back(layer);
 	active_layer_id = layer->uly_ID;
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
@@ -163,7 +163,7 @@ ImguiItem* ImguiManager::FindImguiItem(int id, int item_id) const
 
 void ImguiManager::PushImguiMenu(std::shared_ptr<ImguiMenu> _menu)
 {
-	_menu->menu_id = menu_list.size();
+	_menu->menu_id = (int)menu_list.size();
 	menu_list.push_back(_menu);
 	menu_name_buffer[_menu->menu_name] = _menu->menu_id;
 }

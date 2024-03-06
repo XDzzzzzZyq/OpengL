@@ -49,11 +49,11 @@ UI::ParaInput::ParaInput(ImItemType type, const std::string& name, float min, fl
 		break;
 	case BOOL_INP:
 		uitm_para = Parameters(BOOL_PARA);
-		uitm_para.Get<bool>() = def;
+		uitm_para.Get<bool>() = (bool)def;
 		break;
 	case INT_INP:
 		uitm_para = Parameters(INT_PARA);
-		uitm_para.Get<int>() = def;
+		uitm_para.Get<int>() = (int)def;
 	default:
 		break;
 	}
@@ -110,8 +110,8 @@ bool UI::ParaInput::RenderParam(
 
 			_name,
 			&_param->Get<int>(),
-			_param->para_data.data_range[0],
-			_param->para_data.data_range[1],
+			(int)_param->para_data.data_range[0],
+			(int)_param->para_data.data_range[1],
 			NULL,
 			0,
 			_ID,

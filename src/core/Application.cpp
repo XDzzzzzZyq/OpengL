@@ -59,10 +59,10 @@ int Application::Init()
 	renderer.r_using_ssr = false;
 #else
 	renderer.UseScene(SceneManager::SceneConfig4());
-	renderer.GetConfig()->r_ao_radius = 0.8;
+	renderer.GetConfig()->r_ao_radius = 0.8f;
 	//renderer.r_render_icons = false;
 
-	Light::area_blur_range = 0.03;
+	Light::area_blur_range = 0.03f;
 #endif
 
 	/* Make the window's context current */
@@ -112,7 +112,7 @@ int Application::Run()
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
 		renderer.GetActiveCamera()->ChangeCamRatio(view_size.x, view_size.y);
-		renderer.FrameResize(view_size.x, view_size.y);
+		renderer.FrameResize((GLuint)view_size.x, (GLuint)view_size.y);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};

@@ -61,7 +61,7 @@ public:
 	mutable bool is_button_pressed;
 
 	// for all text
-	virtual void SetArgsList(float length, ...) const { DEBUG(uitm_name + " is not a text")	return; }
+	virtual void SetArgsList(int length, ...) const { DEBUG(uitm_name + " is not a text")	return; }
 	virtual void SetArgsList(int length, float* f1) const { DEBUG(uitm_name + " is not a text")return; }
 
 	// for all viewport

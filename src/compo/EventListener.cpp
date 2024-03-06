@@ -17,10 +17,10 @@ bool EventListener::is_key_pressed_b;
 bool EventListener::is_mouse_pressed_b;
 bool EventListener::is_key_changed;
 
-double EventListener::mouse_x;
-double EventListener::mouse_y;
-double EventListener::mouse_b_x;
-double EventListener::mouse_b_y;
+float EventListener::mouse_x;
+float EventListener::mouse_y;
+float EventListener::mouse_b_x;
+float EventListener::mouse_b_y;
 
 std::vector<int> EventListener::EVT_NK_LIST = {};
 
@@ -140,8 +140,13 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 	mouse_b_x = mouse_x;
 	mouse_b_y = mouse_y;
 	is_mouse_pressed_b = is_mouse_pressed;
-	glfwGetCursorPos(window, &mouse_x, &mouse_y);
+
+	double _mouse_x, _mouse_y;
+	glfwGetCursorPos(window, &_mouse_x, &_mouse_y);
 	glfwSetScrollCallback(window, EventListener::scrollCall);
+
+	mouse_x = static_cast<float>(_mouse_x);
+	mouse_y = static_cast<float>(_mouse_y);
 
 	/*	  KeyBoard Input 	*/
 

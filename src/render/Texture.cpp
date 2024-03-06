@@ -263,13 +263,13 @@ void Texture::_delTexture()
 
 void Texture::Resize(const glm::vec2& size)
 {
-	Resize(size.x, size.y);
+	Resize((GLuint)size.x, (GLuint)size.y);
 }
 
-void Texture::Resize(float x, float y)
+void Texture::Resize(GLuint x, GLuint y)
 {
-	im_h = y;
 	im_w = x;
+	im_h = y;
 
 	auto [interlayout, layout, type, gl_type] = Texture::ParseFormat(tex_type);
 	glBindTexture(gl_type, tex_ID);
@@ -404,12 +404,12 @@ void Texture::GenIBLSpecularFrom(const Texture& _Tar_Tex, bool to_cubemap /*= fa
 	GenIBLSpecular(_Tar_Tex.GetTexID(), _Tar_Tex.im_w, _Tar_Tex.im_h, _Tar_Tex.tex_type, to_cubemap);
 }
 
-void Texture::GenCubeMapFrom(const Texture& _Tar_Tex, size_t res)
+void Texture::GenCubeMapFrom(const Texture& _Tar_Tex, int res)
 {
 	GenCubeMap(_Tar_Tex.GetTexID(), res, _Tar_Tex.tex_type);
 }
 
-void Texture::GenERectMapFrom(const Texture& _Tar_Tex, size_t _w /*= 2048*/, size_t _h /*= 1024*/)
+void Texture::GenERectMapFrom(const Texture& _Tar_Tex, int _w /*= 2048*/, int _h /*= 1024*/)
 {
 	GenERectMap(_Tar_Tex.GetTexID(), _w, _h, _Tar_Tex.tex_type);
 }
@@ -445,12 +445,12 @@ void Texture::FillColor(const glm::vec4 col)
 	fill.RunComputeShaderSCR({ im_w, im_h }, 4);
 }
 
-void Texture::GenIrradianceConv(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
+void Texture::GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	assert(false && "this function has been abandoned");
 }
 
-void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
+void Texture::GenIBLSpecular(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
 {
 	//////////////////   Specular Importance Sampling   //////////////////
 	//			https://learnopengl.com/PBR/IBL/Specular-IBL			//
@@ -474,8 +474,8 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
 
 	LOOP(8) {
-		int lod_w = im_w / pow(2, i);
-		int lod_h = im_h / pow(2, i);
+		int lod_w = im_w / (int)pow(2, i);
+		int lod_h = im_h / (int)pow(2, i);
 
 		lod_w -= lod_w % 4;
 		lod_h -= lod_h % 4;
@@ -491,8 +491,8 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 
 	ComputeShader& importance_samp = ComputeShader::ImportShader(to_cubemap ? "convert/Importance_Samp_E2C" : "convert/Importance_Samp");
 	LOOP(8) { // 0 1 2 3 4 5 6 7
-		int lod_w = im_w / pow(2, i);
-		int lod_h = im_h / pow(2, i);
+		int lod_w = im_w / (int)pow(2, i);
+		int lod_h = im_h / (int)pow(2, i);
 
 		lod_w -= lod_w % 4;
 		lod_h -= lod_h % 4;
@@ -510,7 +510,7 @@ void Texture::GenIBLSpecular(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textu
 	_resetTexID(ID);
 }
 
-void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
+void Texture::GenIBLDiffuse(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type /*= IBL_TEXTURE*/, bool to_cubemap /*= false*/)
 {
 	//////////////////  Diffuse Irradience Convolution  //////////////////
 	//       https://learnopengl.com/PBR/IBL/Diffuse-irradiance         //
@@ -549,7 +549,7 @@ void Texture::GenIBLDiffuse(GLuint _tar_ID, size_t _tar_w, size_t _tar_h, Textur
 	_resetTexID(ID);
 }
 
-void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type /*= IBL_TEXTURE*/)
+void Texture::GenCubeMap(GLuint _tar_ID, int _tar_res, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	const bool type_correct = !((_tar_type == IBL_CUBE_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE));
 	assert(type_correct && "Wrong input texture type");
@@ -581,7 +581,7 @@ void Texture::GenCubeMap(GLuint _tar_ID, size_t _tar_res, TextureType _tar_type 
 	im_w = im_h = _tar_res;
 }
 
-void Texture::GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type /*= IBL_TEXTURE*/)
+void Texture::GenERectMap(GLuint _tar_ID, int _w, int _h, TextureType _tar_type /*= IBL_TEXTURE*/)
 {
 	const bool type_correct = (_tar_type == IBL_CUBE_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE);
 	assert(type_correct && "Wrong input texture type");
@@ -609,7 +609,7 @@ void Texture::GenERectMap(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar
 	im_w = _w; im_h = _h;
 }
 
-void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _tar_type /*= DEPTH_TEXTURE*/)
+void Texture::ConvertDepth(GLuint _tar_ID, int _w, int _h, TextureType _tar_type /*= DEPTH_TEXTURE*/)
 {
 
 	const bool type_correct = (_tar_type == DEPTH_TEXTURE) || (_tar_type == DEPTH_CUBE_TEXTURE);
@@ -638,7 +638,7 @@ void Texture::ConvertDepth(GLuint _tar_ID, size_t _w, size_t _h, TextureType _ta
 	im_w = _w; im_h = _h;
 }
 
-void Texture::ConvertPNG(GLuint _tar_ID, size_t _w, size_t _h)
+void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 {
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(PNG_TEXTURE);
 
@@ -750,7 +750,7 @@ TextureLib::TextureRes TextureLib::Noise_2D_4x4()
 	return t_tex_list[_name];
 }
 
-TextureLib::TextureRes TextureLib::Noise_2D_4x4xN(size_t n/*=6*/)
+TextureLib::TextureRes TextureLib::Noise_2D_4x4xN(int n/*=6*/)
 {
 	const std::string _name = "Uni.2D.4.4." + std::to_string(n);
 	auto result = GetTexture(_name);
@@ -763,7 +763,7 @@ TextureLib::TextureRes TextureLib::Noise_2D_4x4xN(size_t n/*=6*/)
 	return t_tex_list[_name];
 }
 
-TextureLib::TextureRes TextureLib::Noise_2D_16x16xN(size_t n/*=6*/)
+TextureLib::TextureRes TextureLib::Noise_2D_16x16xN(int n/*=6*/)
 {
 	const std::string _name = "Uni.2D.16.16." + std::to_string(n);
 	auto result = GetTexture(_name);
@@ -813,7 +813,7 @@ TextureLib::TextureRes TextureLib::LTC2()
 	return t_tex_list[_name];
 }
 
-void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
+void TextureLib::GenNoiseTexture(NoiseType _type, int _w, int _h)
 {
 	GLuint id;
 
@@ -854,7 +854,7 @@ void TextureLib::GenNoiseTexture(NoiseType _type, size_t _w, size_t _h)
 	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, HDR_BUFFER_TEXTURE, noise_name);
 }
 
-void TextureLib::GenNoiseTextures(NoiseType _type, size_t _w, size_t _h, size_t _n)
+void TextureLib::GenNoiseTextures(NoiseType _type, int _w, int _h, int _n)
 {
 	GLuint id;
 
