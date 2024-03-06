@@ -33,9 +33,6 @@
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="dep\stb_image\stb_image.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dep\gui\Guizmo\GraphEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -55,9 +52,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dep\gui\ImGui\backends\imgui_impl_glfw.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Application.cpp">
@@ -255,6 +249,9 @@
     <ClCompile Include="src\compo\Nodes.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -395,12 +392,6 @@
     <Library Include="dep\GLFW\lib-vc2019\glfw3dll.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dep\cubicSpline\CubicSpline.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="dep\gui\ImGui\imgui.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -423,12 +414,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\stb_image\stb_image.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dep\stb_image\stb_image_write.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Application.h">
@@ -624,6 +609,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\compo\Nodes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\cubicSpline\CubicSpline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

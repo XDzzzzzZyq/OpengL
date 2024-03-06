@@ -11,3 +11,9 @@
 [submodule "test/gtest"]
 	path = test/gtest
 	url = https://github.com/google/googletest.git
+[submodule "dep/cubicSpline"]
+	path = dep/cubicSpline
+	url = https://github.com/nrtaylor/CubicSplineClosestPoint.git
+[submodule "dep/stb_image"]
+	path = dep/stb_image
+	url = https://github.com/nothings/stb.git

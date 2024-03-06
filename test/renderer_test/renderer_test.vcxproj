@@ -94,10 +94,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;SOL_DIR=R"($(SolutionDir))";WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,10 +113,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;SOL_DIR=R"($(SolutionDir))";WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,10 +132,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;SOL_DIR=R"($(SolutionDir))";_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,10 +151,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;SOL_DIR=R"($(SolutionDir))";NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,7 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\dep\stb_image\stb_image.cpp" />
     <ClCompile Include="..\..\src\render\Material.cpp" />
     <ClCompile Include="..\..\src\render\RenderConfigs.cpp" />
     <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp" />

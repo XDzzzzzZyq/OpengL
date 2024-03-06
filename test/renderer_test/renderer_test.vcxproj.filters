@@ -13,9 +13,6 @@
     <Filter Include="dep\render">
       <UniqueIdentifier>{d6b9d268-b35c-4ae8-aea5-6599682e93bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dep\stb">
-      <UniqueIdentifier>{a88eadcc-477b-4059-adab-3618c08b256b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -47,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\render\Texture.cpp">
       <Filter>dep\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dep\stb_image\stb_image.cpp">
-      <Filter>dep\stb</Filter>
     </ClCompile>
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc">
       <Filter>dep\gtest</Filter>
