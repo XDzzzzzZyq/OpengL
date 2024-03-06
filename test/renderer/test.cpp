@@ -58,6 +58,7 @@ TEST(Mathlib, Tests) {
 }
 
 #include "Texture.h"
+#include "Shaders.h"
 TEST_F(RendererEnvir, Texture) {
 	{
 		auto tex = TextureLib::Noise_2D_4x4xN(5);
@@ -71,21 +72,67 @@ TEST_F(RendererEnvir, Texture) {
 		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
 		GLERRTEST;
 
-		std::vector<float> data(4 * 4 * 4 * 6, 0);
+		std::vector<glm::vec4> data(4 * 4 * 6, glm::vec4(-1));
 		tex->Bind();
 		auto [_, layout, type, gl_type] = Texture::ParseFormat(tex->tex_type);
 		glGetTexImage(gl_type, 0, layout, type, data.data());
-		LOOP(4) {
-			LOOP_N(4, j)
-				std::cout << data[i * 16 + j * 4] << " ";
-			std::cout << "\n";
-		}
 		GLERRTEST;
+
+		glm::vec4 sum{ 0 };
+		LOOP(4 * 4)
+			sum += data[i];
+		EXPECT_TRUE(sum != glm::vec4(-4 * 4));
 	}
 	{
 		auto tex2 = Texture(tex_root + "testImg.png", PNG_TEXTURE, GL_REPEAT);
 		EXPECT_TRUE(tex2.GetTexID() != 0);
 		std::cout << tex2.GetTexID() << " : " << tex2.GetTexName() << "\n";
 		GLERRTEST;
+	}
+}
+
+glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {
+	int x = index % width;
+	int y = index / width;
+	glm::vec4 res = glm::vec4(0.0);
+
+	LOOP(x+1)
+		LOOP_N(y+1, j)
+		res += d[i + j * width];
+
+	return res;
+}
+
+#include "operator.h"
+TEST_F(RendererEnvir, ComputeShader) {
+	auto& sat = ComputeShader::ImportShader(shader_root + "SAT");
+	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
+	GLERRTEST;
+
+	{
+		auto tex = TextureLib::Noise_2D_4x4();
+		EXPECT_TRUE(tex->GetTexID() != 0);
+		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
+		GLERRTEST;
+
+		std::vector<glm::vec4> data(4 * 4, glm::vec4(-1));
+		tex->Bind();
+		auto [_, layout, type, gl_type] = Texture::ParseFormat(tex->tex_type);
+		glGetTexImage(gl_type, 0, layout, type, data.data());
+		GLERRTEST;
+
+		tex->BindC(0);
+		sat.RunComputeShader({ 4,1 });
+		sat.RunComputeShader({ 4,1 });
+
+		tex->Bind();
+		std::vector<glm::vec4> satdata(4 * 4, glm::vec4(-1));
+		glGetTexImage(gl_type, 0, layout, type, satdata.data());
+		GLERRTEST;
+
+		LOOP(16) {
+			glm::vec4 s = SAT(data, i);
+			EXPECT_TRUE(glm::distance(satdata[i], s) < 0.01) <<" at ("<< i/4 <<"," <<i%3<<")\n";
+		}
 	}
 }

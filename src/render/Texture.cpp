@@ -732,6 +732,11 @@ GLuint TextureLib::GetTextureID(const std::string& _name)
 	return TextureLib::GetTexture(_name)->GetTexID();
 }
 
+void TextureLib::ResetTexLib()
+{
+	t_tex_list.clear();
+}
+
 TextureLib::TextureRes TextureLib::Noise_2D_4x4()
 {
 	const std::string _name = "Uni.2D.4.4";

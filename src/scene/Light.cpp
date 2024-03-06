@@ -85,7 +85,7 @@ void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
 	switch (light_type)
 	{
 	case SUNLIGHT:
-		light_shadow_map = Texture(2048, 2048, flat_map);
+		light_shadow_map = Texture(1024, 1024, flat_map);
 		break;
 	case POINTLIGHT:
 	case SPOTLIGHT:

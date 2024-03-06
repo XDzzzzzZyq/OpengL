@@ -38,7 +38,11 @@ void RendererEnvir::SetUp()
 	std::cout << "fb_size = [" << max_resolution_w << ":" << max_resolution_h << "]\n";
 }
 
+#include "Texture.h"
+#include "Shaders.h"
 void RendererEnvir::TearDown()
 {
+	TextureLib::ResetTexLib();
+	ComputeShader::ResetComputeLib();
 	glfwTerminate();
 }

@@ -37,5 +37,6 @@ protected:
 public:
 
 	std::string tex_root = SOL_DIR"res/tex/";
+	std::string shader_root = SOL_DIR"res/shaders/";
 	float gl_version;
 };

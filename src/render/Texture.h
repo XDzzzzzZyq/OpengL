@@ -145,6 +145,8 @@ public:
 	static TextureRes LoadTexture(std::string _name);
 	static GLuint GetTextureID(const std::string& _name);
 
+	static void ResetTexLib();
+
 public:
 	static TextureRes Noise_2D_4x4();
 	static TextureRes Noise_2D_4x4xN(size_t n=6);
