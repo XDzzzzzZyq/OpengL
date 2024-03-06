@@ -367,7 +367,7 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 template<GLuint Type>
 inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s /*= 0*/, GLuint _warp_t /*= 0*/, GLuint _lev_min /*= 0*/, GLuint _lev_max /*= 0*/, GLuint _warp_r /*= 0*/)
 {
-	glBindTexture(Type, _id);		GLDEBUG;
+	glBindTexture(Type, _id);
 
 	glTexParameteri(Type, GL_TEXTURE_MIN_FILTER, _fil_min);
 	glTexParameteri(Type, GL_TEXTURE_MAG_FILTER, _fil_max);

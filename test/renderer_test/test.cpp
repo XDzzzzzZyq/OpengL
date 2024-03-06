@@ -72,7 +72,7 @@ TEST_F(RendererEnvir, Texture) {
 		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
 		GLERRTEST;
 
-		std::vector<glm::vec4> data(4 * 4 * 6, glm::vec4(-1));
+		std::vector<glm::vec4> data(4 * 4, glm::vec4(-1));
 		tex->Bind();
 		auto [_, layout, type, gl_type] = Texture::ParseFormat(tex->tex_type);
 		glGetTexImage(gl_type, 0, layout, type, data.data());
@@ -105,6 +105,9 @@ glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {
 
 #include "operator.h"
 TEST_F(RendererEnvir, ComputeShader) {
+	if (gl_version < 4.0)
+		GTEST_SKIP("Skipped");
+
 	auto& sat = ComputeShader::ImportShader(shader_root + "SAT");
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
 	GLERRTEST;
@@ -120,7 +123,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 		auto [_, layout, type, gl_type] = Texture::ParseFormat(tex->tex_type);
 		glGetTexImage(gl_type, 0, layout, type, data.data());
 		GLERRTEST;
-
+		
 		tex->BindC(0);
 		sat.RunComputeShader({ 4,1 });
 		sat.RunComputeShader({ 4,1 });
@@ -130,9 +133,9 @@ TEST_F(RendererEnvir, ComputeShader) {
 		glGetTexImage(gl_type, 0, layout, type, satdata.data());
 		GLERRTEST;
 
-		LOOP(16) {
+		LOOP(4 * 4) {
 			glm::vec4 s = SAT(data, i);
-			EXPECT_TRUE(glm::distance(satdata[i], s) < 0.01) <<" at ("<< i/4 <<"," <<i%3<<")\n";
+			EXPECT_TRUE(glm::distance(satdata[i], s) < 0.01) << " at (" << i / 4 << "," << i % 4 << ")\n";
 		}
 	}
 }

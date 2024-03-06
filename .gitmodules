@@ -8,3 +8,6 @@
 	path = dep/gui/ImGui
 	url = https://github.com/XDzzzzzZyq/imgui.git
 	branch = docking
+[submodule "test/gtest"]
+	path = test/gtest
+	url = https://github.com/google/googletest.git

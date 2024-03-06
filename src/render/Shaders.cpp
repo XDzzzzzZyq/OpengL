@@ -101,22 +101,22 @@ GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 	int status = 0;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
-	//std::cout << status << std::endl;
-
 	if (!status) {
 		int length;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		std::vector<char> message(length);
+		std::string message;
+		message.resize(length);
 
 		glGetShaderInfoLog(id, length, &length, message.data());
 		std::cout << name + " error\n";
-		std::cout << message.data() << "\n";
+		std::cout << message << "\n";
 		DEBUG(source);
 		glDeleteShader(id);
 		return 0;
 	}
 #ifdef _DEBUG
-	std::cout << name << " is complied successfully!\n";
+	else
+		std::cout << name << " is complied successfully!\n";
 #endif
 	//delete src;
 	return id;
@@ -614,11 +614,12 @@ GLuint RenderShader::CompileShader(ShaderType tar)
 	if (!status) {
 		int length;
 		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
-		std::vector<char> message(length);
+		std::string message;
+		message.resize(length);
 
 		glGetShaderInfoLog(shader_id, length, &length, message.data());
 		std::cout << type + " shader error\n";
-		std::cout << message.data() << "\n";
+		std::cout << message << "\n";
 		glDeleteShader(shader_id);
 		shader_id = 0;
 	}

@@ -58,7 +58,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
-        path: test/renderer/build/${{env.PLATFORM_DIR}}/${{matrix.CONFIG}}/
+        path: test/renderer_test/build/${{env.PLATFORM_DIR}}/${{matrix.CONFIG}}/
         overwrite: true
 
   test:
@@ -100,4 +100,4 @@ jobs:
     - name: Run tests
       run: |
         cd test
-        .\RendererTest.exe
+        .\renderer_test.exe

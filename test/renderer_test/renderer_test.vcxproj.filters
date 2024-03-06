@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dep">
+      <UniqueIdentifier>{9c74b14a-211d-4b74-954e-512ded5e02ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{0195df74-bd76-43eb-be62-6535e2e80736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dep\gtest">
+      <UniqueIdentifier>{b84ec122-dcd0-46ff-98b0-2d697e35f0fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dep\render">
+      <UniqueIdentifier>{d6b9d268-b35c-4ae8-aea5-6599682e93bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dep\stb">
+      <UniqueIdentifier>{a88eadcc-477b-4059-adab-3618c08b256b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gtest\googletest\src\gtest-all.cc">
+      <Filter>dep\gtest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\Material.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\RenderConfigs.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\ShaderLib.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\ShaderParser.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\Shaders.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\Texture.cpp">
+      <Filter>dep\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dep\stb_image\stb_image.cpp">
+      <Filter>dep\stb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gtest\googletest\src\gtest_main.cc">
+      <Filter>dep\gtest</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>test</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
