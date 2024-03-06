@@ -65,6 +65,7 @@ jobs:
     needs: build
     runs-on: windows-latest
     strategy:
+      max-parallel: 1
       matrix:
         CONFIG: [Release, Debug]
         PLATFORM: [x86, x64]
