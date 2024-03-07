@@ -339,7 +339,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\pps\SSR_SDF_Resolve.comp" />
     <None Include="res\shaders\Rasterization.frag" />
     <None Include="res\shaders\Reset_Distance.comp" />
-    <None Include="res\shaders\SAT.comp" />
     <None Include="res\shaders\SDF_Construct.geom" />
     <None Include="res\shaders\SDF_Visual.frag" />
     <None Include="res\shaders\selection_outline.comp" />

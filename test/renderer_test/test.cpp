@@ -108,7 +108,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 
-	auto& sat = ComputeShader::ImportShader(shader_root + "SAT");
+	auto& sat = ComputeShader::ImportShader(shader_root + "convert/SAT");
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
 	GLERRTEST;
 
