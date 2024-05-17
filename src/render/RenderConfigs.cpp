@@ -1,4 +1,5 @@
 #include "RenderConfigs.h"
+#include "macros.h"
 
 bool RenderConfigs::RequiresFwdOF() const
 {
@@ -12,7 +13,7 @@ bool RenderConfigs::RequiresBwdOF() const
 
 bool RenderConfigs::RequiresSDF() const
 {
-	return r_ssr_algorithm == SSRAlg::SDFRayMarching || r_ssr_algorithm == SSRAlg::SDFResolvedRayMarching || r_shadow_algorithm == ShadowAlg::SDFSoftShadow;
+	return ISIN(r_ssr_algorithm, SSRAlg::SDFRayMarching, SSRAlg::SDFResolvedRayMarching) || r_shadow_algorithm == ShadowAlg::SDFSoftShadow;
 }
 
 bool RenderConfigs::RequiresShadow() const
@@ -22,7 +23,7 @@ bool RenderConfigs::RequiresShadow() const
 
 bool RenderConfigs::RequiresMomentShadow() const
 {
-	return (char)r_shadow_algorithm > 2;
+	return ISIN(r_shadow_algorithm, ShadowAlg::VSSM, ShadowAlg::MSSM, ShadowAlg::TMSSM);
 }
 
 bool RenderConfigs::RequiresSSR() const
