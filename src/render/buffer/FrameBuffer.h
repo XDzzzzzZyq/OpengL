@@ -1,7 +1,6 @@
 #pragma once
 
 #include "RenderBuffer.h"
-#include "macros.h"
 
 #include <cstdarg>
 #include <optional>
@@ -41,7 +40,7 @@ class FrameBuffer
 {
 private:
 	GLuint fb_ID = 0, fb_attach = 0;
-	float fb_w = SCREEN_W, fb_h = SCREEN_H;
+	float fb_w{}, fb_h{};
 	mutable std::unordered_map<FBType, int> fb_type_list;      //  tex_type -> tex_index
 	static TextureType PareseTexType(FBType _type);
 

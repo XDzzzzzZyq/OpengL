@@ -31,8 +31,8 @@ public:
 
 public:
 
-	GLuint r_frame_width = SCREEN_W;
-	GLuint r_frame_height = SCREEN_H;
+	GLuint r_frame_width{};
+	GLuint r_frame_height{};
 
 private:
 

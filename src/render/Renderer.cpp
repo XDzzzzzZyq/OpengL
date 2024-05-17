@@ -5,9 +5,8 @@ GLint Renderer::max_resolution_w = 0;
 GLint Renderer::max_resolution_h = 0;
 
 Renderer::Renderer()
-{
-
-}
+	:r_frame_width(SCREEN_W), r_frame_height(SCREEN_H)
+{}
 
 void Renderer::Init()
 {

@@ -31,7 +31,7 @@ FrameBuffer::FrameBuffer()
 
 
 FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
-	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8))
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	fb_type_list[(FBType)type] = 0;
 	TextureType textype = FrameBuffer::PareseTexType(type);
@@ -50,11 +50,12 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	//glDrawBuffer(fb_type);GLDEBUG
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		DEBUG("framebuffer error");
+		std::cout << "framebuffer error\n";
+		_delFB();
 	}
 	else
 	{
-		std::cout << "framebuffer is complete\n";
+		DEBUG("framebuffer is complete\n");
 	}
 	GLenum attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 	glDrawBuffers(2, attachments);
@@ -62,7 +63,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 }
 
 FrameBuffer::FrameBuffer(int count, ...)
-	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8))
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
@@ -88,18 +89,19 @@ FrameBuffer::FrameBuffer(int count, ...)
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		DEBUG("framebuffer error");
+		std::cout << "framebuffer error\n";
+		_delFB();
 	}
 	else
 	{
-		std::cout << "framebuffer is complete\n";
+		DEBUG("framebuffer is complete");
 	}
 	glDrawBuffers(count, attachments.data());
 	UnbindFrameBuffer();
 }
 
 FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
-	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8))
+	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
@@ -124,11 +126,12 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		DEBUG("framebuffer error");
+		std::cout << "framebuffer error\n";
+		_delFB();
 	}
 	else
 	{
-		std::cout << "framebuffer is complete\n";
+		DEBUG("framebuffer is complete");
 	}
 	glDrawBuffers(attachments.size(), attachments.data());
 	UnbindFrameBuffer();
@@ -136,6 +139,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 }
 
 FrameBuffer::FrameBuffer(Texture&& _depth)
+	:fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_depth.tex_type);
 

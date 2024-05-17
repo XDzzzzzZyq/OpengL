@@ -1,5 +1,7 @@
 #include "SceneManager.h"
+
 #include "operator.h"
+#include "macros.h"
 
 std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="scene1"*/)
 {
