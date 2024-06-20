@@ -19,5 +19,5 @@ void main()
     // calculate d^n
     float d = lightDistance;
     float d2 = d*d;
-    shadowmap = vec4(d, d2, d2*d, d2*d2);
+    shadowmap = vec4(d2, d2, d2*d, d2*d2);
 }  

@@ -89,7 +89,7 @@ private:
 public:
 
 	static void EnableShadowMap();
-	void ConstructSAT();
+	void ConstructSAT(RenderConfigs* config);
 
 public:
 	void RenderLightSpr(Camera* cam);

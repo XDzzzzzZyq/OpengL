@@ -272,10 +272,20 @@ void Light::UpdateProjMatrix()
 }
 
 
-void Light::ConstructSAT()
+void Light::ConstructSAT(RenderConfigs* config)
 {
+	return;
+	if (!config->RequiresMomentShadow())
+		return;
+
 	static ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
 	static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
+
+	const int pass_count = config->r_shadow_algorithm == RenderConfigs::ShadowAlg::VSSM ? 2 : 4;
+
+	light_shadow_map.BindC(0);
+	SAT.RunComputeShader(light_shadow_map.GetW(), 1);
+	SAT.RunComputeShader(light_shadow_map.GetW(), 1);
 }
 
 

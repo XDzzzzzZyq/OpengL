@@ -151,9 +151,9 @@ int Application::Run()
 		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->GOet<float>();GLDEBUG
 		renderer.GetConfig()->r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
 
-		temp.GenERectMapFrom(renderer.r_scene->light_list.begin()->second->light_shadow_map);
+		//temp.GenERectMapFrom(renderer.r_scene->light_list.begin()->second->light_shadow_map);
 		//DEBUG(renderer.r_scene->light_list.begin()->second->light_shadow_map.GetTexID())
-		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
+		//UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 		//UI._debug();
 	};
 	UI.GetCurrentWindow();

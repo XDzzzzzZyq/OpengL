@@ -883,8 +883,14 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 
 	ComputeShader::ImportShaderConfigs("shadow/Shadow_Point_SDF", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 	ComputeShader::ImportShaderConfigs("shadow/Shadow_Sun_SDF", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	// #TODO: Shadow_Spot_SDF
 	ComputeShader::ImportShaderConfigs("shadow/Shadow_Area_SDF", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
 
+	// #TODO: Shadow_Area_VSSM
+	// #TODO: Shadow_Point_VSSM
+	// #TODO: Shadow_Spot_VSSM
+	ComputeShader::ImportShaderConfigs("shadow/Shadow_Sun_VSSM", Uni("U_opt_flow", 6), Uni("Shadow_Map", 31));
+	
 	static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(config->r_ao_ksize);
 
 	for (const auto& pref : ShaderLib::AO_prefix)
