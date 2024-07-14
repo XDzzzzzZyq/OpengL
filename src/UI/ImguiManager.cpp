@@ -221,7 +221,7 @@ void ImguiManager::RenderUI(bool rend)
 		if (ParaUpdate)
 			ParaUpdate();
 
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+		ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
 		ImGui::BeginMainMenuBar();
 		EventListener::window_pos = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos());
