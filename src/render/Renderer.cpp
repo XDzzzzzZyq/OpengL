@@ -486,7 +486,7 @@ void Renderer::RenderShadowMap(Light* light)
 
 	FrameBuffer::UnbindFrameBuffer();
 
-	if (r_config.RequiresMomentShadow())
+	if (r_config.RequiresMomentShadow() && false)
 		light->ConstructSAT(&r_config);
 }
 

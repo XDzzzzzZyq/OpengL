@@ -535,6 +535,11 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		return;
 	}
 
+	bool using_moment_shadow = config->RequiresMomentShadow();
+
+	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
+	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
+
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
 	const float point_ud_rate	= is_incr_aver ? 0.05f : 1.0f / frame;
@@ -560,7 +565,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		{
 		case POINTLIGHT:
 
-			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
+			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_pos", light->o_position);
 			shadow_shader.SetValue("light_far", Light::point_shaodow_far);
@@ -571,7 +576,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			break;
 		case SUNLIGHT:
 
-			Texture::BindM(map_id, 31);
+			Texture::BindM(map_id, 31, flat_map);
 			shadow_shader.SetValue("proj_trans", light->light_proj);
 			shadow_shader.SetValue("dir", sun_list[loc].dir);
 			shadow_shader.SetValue("radius", Light::point_blur_range);
@@ -580,7 +585,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			break;
 		case SPOTLIGHT:
 
-			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
+			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_pos", light->o_position);
 			shadow_shader.SetValue("light_dir", spot_list[loc].dir);
@@ -592,7 +597,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			break;
 		case AREALIGHT:
 
-			Texture::BindM(map_id, 31, DEPTH_CUBE_TEXTURE);
+			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_trans", light->o_Transform);
 			shadow_shader.SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
