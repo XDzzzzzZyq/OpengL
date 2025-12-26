@@ -336,6 +336,7 @@
     <None Include="res\shaders\shadow\Shadow_Sun_SDF.comp" />
     <None Include="res\shaders\pps\Fill.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_VSSM.comp" />
+    <None Include="res\shaders\pps\Box_Blur.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

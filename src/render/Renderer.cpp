@@ -465,6 +465,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 void Renderer::RenderShadowMap(Light* light)
 {
+	//TODO: not necessary for every frame update
 	const GLuint map_w = light->light_shadow_map.GetW();
 	const GLuint map_h = light->light_shadow_map.GetH();
 
@@ -486,8 +487,9 @@ void Renderer::RenderShadowMap(Light* light)
 
 	FrameBuffer::UnbindFrameBuffer();
 
-	if (r_config.RequiresMomentShadow() && false)
+	if (r_config.RequiresMomentShadow()) {
 		light->ConstructSAT(&r_config);
+	}
 }
 
 void Renderer::ConstructSDF()

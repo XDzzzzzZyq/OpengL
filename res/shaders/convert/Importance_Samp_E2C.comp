@@ -3,7 +3,7 @@
 // usually 1048 * 1048 * 6 
 layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
 uniform sampler2D source;
-layout(rgba16f, binding = 6) uniform imageCube result;
+layout(rgba32f, binding = 6) uniform imageCube result;
 
 const float pi = 3.1415926535;
 uniform float s;

@@ -96,9 +96,11 @@ glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {
 	int y = index / width;
 	glm::vec4 res = glm::vec4(0.0);
 
-	LOOP(x+1)
-		LOOP_N(y+1, j)
-		res += d[i + j * width];
+	LOOP(x + 1) {
+		LOOP_N(y + 1, j) {
+			res += d[i + j * width];
+		}
+	}
 
 	return res;
 }
@@ -125,6 +127,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 		GLERRTEST;
 		
 		tex->BindC(0);
+		tex->BindC(1);
 		sat.RunComputeShader({ 4,1 });
 		sat.RunComputeShader({ 4,1 });
 
@@ -135,7 +138,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		LOOP(4 * 4) {
 			glm::vec4 s = SAT(data, i);
-			EXPECT_TRUE(glm::distance(satdata[i], s) < 0.01) << " at (" << i / 4 << "," << i % 4 << ")\n";
+			EXPECT_GE(1e-5, glm::distance(satdata[i], s)) << " at (" << i / 4 << "," << i % 4 << ")\n";
 		}
 	}
 }

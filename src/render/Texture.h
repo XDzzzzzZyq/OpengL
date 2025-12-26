@@ -117,7 +117,8 @@ private:
 
 public:
 
-	void SaveTexture(std::string _path) const;
+	void SaveTexture(std::string _path, bool force_png=false) const;
+	void PrintTexture() const;
 };
 
 #include <unordered_map>

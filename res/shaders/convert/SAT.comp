@@ -4,8 +4,9 @@
 
 #version 430 core
 
-layout(local_size_x = 4) in;
-layout(rgba16f, binding = 0) uniform image2D tar;
+layout(local_size_x = 512) in;
+layout(rgba32f, binding = 0) uniform readonly  image2D src;
+layout(rgba32f, binding = 1) uniform writeonly image2D dst;
 
 shared vec4 shared_data[gl_WorkGroupSize.x * 2];
 
@@ -18,11 +19,10 @@ void main(void)
 	ivec2 P = ivec2(id * 2, gl_WorkGroupID.x);
 	const uint steps = uint(log2(gl_WorkGroupSize.x)) + 1;
 	uint step = 0;
-	shared_data[id * 2] = imageLoad(tar, P).rgba;
-	shared_data[id * 2 + 1] = imageLoad(tar, P + ivec2(1, 0)).rgba;
+	shared_data[id * 2] = vec4(imageLoad(src, P).rgba);
+	shared_data[id * 2 + 1] = vec4(imageLoad(src, P + ivec2(1, 0)).rgba);
 
 	barrier();
-	memoryBarrierShared();
 
 	for (step = 0; step < steps; step++)
 	{
@@ -32,9 +32,8 @@ void main(void)
 		shared_data[wr_id] += shared_data[rd_id];
 
 		barrier();
-		memoryBarrierShared();
 	}
 
-	imageStore(tar, P.yx, shared_data[id * 2]);
-	imageStore(tar, P.yx + ivec2(0, 1), shared_data[id * 2 + 1]);
+	imageStore(dst, P.yx, vec4(shared_data[id * 2]));
+	imageStore(dst, P.yx + ivec2(0, 1), vec4(shared_data[id * 2 + 1]));
 }

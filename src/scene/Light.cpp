@@ -33,9 +33,9 @@ void Light::EnableShadowMap()
 	_shadowmap_shader[AREALIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 }
 
-float Light::sun_shaodow_field = 20.0f;
-float Light::sun_shaodow_near = -20.0f;
-float Light::sun_shaodow_far = 20.0f;
+float Light::sun_shaodow_field = 5.0f;
+float Light::sun_shaodow_near = -5.0f;
+float Light::sun_shaodow_far = 5.0f;
 
 float Light::point_shaodow_near = 0.1f;
 float Light::point_shaodow_far = 25.0f;
@@ -77,7 +77,7 @@ void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
 	
 	bool using_moment_shadow = false;
 	if (config)
-		using_moment_shadow &= config->RequiresMomentShadow();
+		using_moment_shadow = config->RequiresMomentShadow();
 
 	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
 	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
@@ -88,7 +88,11 @@ void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
 		light_shadow_map = Texture(1024, 1024, flat_map);
 		break;
 	case POINTLIGHT:
+		// TODO
+		break;
 	case SPOTLIGHT:
+		// TODO
+		break;
 	case AREALIGHT:
 		light_shadow_map = Texture(1024, 1024, cube_map);
 		break;
@@ -274,7 +278,6 @@ void Light::UpdateProjMatrix()
 
 void Light::ConstructSAT(RenderConfigs* config)
 {
-	return;
 	if (!config->RequiresMomentShadow())
 		return;
 
@@ -282,10 +285,15 @@ void Light::ConstructSAT(RenderConfigs* config)
 	static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
 
 	const int pass_count = config->r_shadow_algorithm == RenderConfigs::ShadowAlg::VSSM ? 2 : 4;
+	static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
 
-	light_shadow_map.BindC(0);
-	SAT.RunComputeShader(light_shadow_map.GetW(), 1);
-	SAT.RunComputeShader(light_shadow_map.GetW(), 1);
+	light_shadow_map.BindC(0, GL_READ_ONLY);
+	light_shadow_temp.BindC(1, GL_WRITE_ONLY);
+	SAT.RunComputeShader({ light_shadow_map.GetW(), 1 });
+
+	light_shadow_temp.BindC(0, GL_READ_ONLY);
+	light_shadow_map.BindC(1, GL_WRITE_ONLY);
+	SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
 }
 
 
@@ -559,6 +567,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		shadow_shader.UseShader();
 		shadow_shader.SetValue("offset", xdzm::map01_11(random));
 		shadow_shader.SetValue("frame", frame);
+		shadow_shader.SetValue("map_size", 1024, 1024);
 
 		shadow_cache[id].BindC(4);
 		switch (type)

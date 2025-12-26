@@ -1,0 +1,32 @@
+#version 430 core
+
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+layout(rgba32f, binding = 0) uniform readonly  image2D sat;
+layout(rgba32f, binding = 1) uniform writeonly image2D dst;
+
+void main(void)
+{
+	int r = 1;
+	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
+	vec4 rb = imageLoad(sat, uv).rgba;
+
+	vec4 lt, rt, lb;
+	if (uv.x - r >= 0 && uv.y - r >= 0){
+		lt = imageLoad(sat, uv - ivec2(r, r)).rgba;
+		rt = imageLoad(sat, uv - ivec2(0, r)).rgba;
+		lb = imageLoad(sat, uv - ivec2(r, 0)).rgba;
+	}
+	else if (uv.x - r < 0 && uv.y - r >= 0){
+		lt = lb = vec4(0);
+		rt = imageLoad(sat, uv - ivec2(0, r)).rgba;
+	}else if (uv.x - r >= 0 && uv.y - r < 0){
+		lt = rt = vec4(0);
+		lb = imageLoad(sat, uv - ivec2(r, 0)).rgba;
+	}else{
+		lt = rt = lb = vec4(0);
+	}
+
+	vec4 color = rb + lt - rt - lb;
+	//color /= (uv.x - max(0, uv.x-r) + 1) * (uv.y - max(0, uv.y-r) + 1);
+	imageStore(dst, uv, color);
+}

@@ -89,7 +89,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 8);
 
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
 		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer_f);
 
@@ -181,7 +181,7 @@ Texture::Texture(int _w, int _h, GLuint _layout, const void* _ptr,
 		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, _ptr);
 		tex_type = BUFFER_TEXTURE;
 		break;
-	case GL_RGBA16F:
+	case GL_RGBA32F:
 		glTexImage2D(GL_TEXTURE_2D, 0, _layout, im_w, im_h, 0, GL_RGBA, GL_FLOAT, _ptr);
 		tex_type = HDR_BUFFER_TEXTURE;
 		break;
@@ -344,14 +344,14 @@ inline Texture::TexStorageInfo Texture::ParseFormat(TextureType _type)
 		return { GL_RGB8,				GL_RGB,				GL_UNSIGNED_BYTE,	GL_TEXTURE_2D };
 	case IBL_TEXTURE:
 	case HDR_BUFFER_TEXTURE:
-		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D };
+		return { GL_RGBA32F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D };
 	case IBL_CUBE_TEXTURE:
-		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
+		return { GL_RGBA32F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_CUBE_MAP };
 	case FLOAT_BUFFER_TEXTURE:
 	case RG_TEXTURE:
 		return { GL_RG16F,				GL_RG,				GL_FLOAT,			GL_TEXTURE_2D };
 	case LAYERED_TEXTURE:
-		return { GL_RGBA16F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D_ARRAY };
+		return { GL_RGBA32F,			GL_RGBA,			GL_FLOAT,			GL_TEXTURE_2D_ARRAY };
 	case LIGHTING_CACHE:
 		return { GL_R16F,				GL_RED,				GL_FLOAT,			GL_TEXTURE_2D };
 	case DEPTH_CUBE_TEXTURE:
@@ -432,7 +432,7 @@ void Texture::FillColor(const glm::vec4 col)
 
 	switch (interlayout)
 	{
-	case GL_RGBA16F:	slot = 0; break;
+	case GL_RGBA32F:	slot = 0; break;
 	case GL_RGBA8:		slot = 1; break;
 	case GL_R16F:		slot = 2; break;
 	default: assert(false && "unknown format");
@@ -651,7 +651,7 @@ void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 	ComputeShader& hdr_to_png = ComputeShader::ImportShader("convert/HDR2PNG");
 
 	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
-	glBindImageTexture(1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA16F);;
+	glBindImageTexture(1, _tar_ID, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);;
 
 	hdr_to_png.UseShader();
 	hdr_to_png.SetValue("U_HDR", 1);
@@ -664,31 +664,57 @@ void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 }
 
 #include "stb_image_write.h"
-void Texture::SaveTexture(std::string _path) const
+void Texture::SaveTexture(std::string _path, bool force_png) const
 {
 	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
-
-	if (type != GL_UNSIGNED_BYTE) {
-		static Texture hdr_png;
-		hdr_png.ConvertPNGFrom(*this);
-		hdr_png.SaveTexture(_path);
-		return;
-	}
-
 	static std::string root = "result/";
+	int status = -1;
 	stbi_flip_vertically_on_write(1);
 
-	auto odata = std::vector<GLbyte>(im_w * im_h * 4);
+	if (type != GL_UNSIGNED_BYTE) {
+		if (force_png) {
+			static Texture hdr_png;
+			hdr_png.ConvertPNGFrom(*this);
+			hdr_png.SaveTexture(_path);
+			return;
+		}
+		else {
+			assert(type == GL_FLOAT);
+			auto odata = std::vector<GLfloat>(im_w * im_h * 4);
 
-	glBindTexture(gl_type, tex_ID);
-	glGetTexImage(gl_type, 0, layout, type, odata.data());
+			glBindTexture(gl_type, tex_ID);
+			glGetTexImage(gl_type, 0, layout, type, odata.data());
 
-	std::string outputPath = root + _path + ".png";
-	int status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+			std::string outputPath = root + _path + ".hdr";
+			status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
+		}
+	}
+	else {
+		assert(type == GL_UNSIGNED_BYTE);
+		auto odata = std::vector<GLbyte>(im_w * im_h * 4);
+
+		glBindTexture(gl_type, tex_ID);
+		glGetTexImage(gl_type, 0, layout, type, odata.data());
+
+		std::string outputPath = root + _path + ".png";
+		status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+	}
 
 	if (status == 0) {
 		DEBUG("failed");
 	}
+}
+
+void Texture::PrintTexture() const
+{
+	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
+
+	auto odata = std::vector<float>(im_w * im_h * 4);
+
+	glBindTexture(gl_type, tex_ID);
+	glGetTexImage(gl_type, 0, layout, type, odata.data());
+	
+	int a = 0;
 }
 
 
@@ -796,7 +822,7 @@ TextureLib::TextureRes TextureLib::LTC1()
 
 	if (result != nullptr) return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC1_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA32F, reinterpret_cast<const void*>(LTC1_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 	return t_tex_list[_name];
 }
@@ -808,7 +834,7 @@ TextureLib::TextureRes TextureLib::LTC2()
 
 	if (result != nullptr) return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA16F, reinterpret_cast<const void*>(LTC2_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA32F, reinterpret_cast<const void*>(LTC2_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 	return t_tex_list[_name];
 }
@@ -824,7 +850,7 @@ void TextureLib::GenNoiseTexture(NoiseType _type, int _w, int _h)
 
 	std::vector<glm::vec4> list(_w * _h);
 	LOOP(_w * _h) list[i] = xdzm::rand4();
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, _w, _h);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, _w, _h);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _w, _h, GL_RGBA, GL_FLOAT, list.data());
 
 	std::string type_name;
@@ -863,7 +889,7 @@ void TextureLib::GenNoiseTextures(NoiseType _type, int _w, int _h, int _n)
 
 	Texture::SetTexParam<GL_TEXTURE_2D_ARRAY>(id, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT, 0, _n);
 
-	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA16F, _w, _h, _n);
+	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA32F, _w, _h, _n);
 
 	LOOP_N(_n, level) {
 		std::vector<glm::vec4> list(_w * _h);

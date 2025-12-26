@@ -141,23 +141,23 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 FrameBuffer::FrameBuffer(Texture&& _depth)
 	:fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
-	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(_depth.tex_type);
+	auto [_1, _data, _3, gl_type] = Texture::ParseFormat(_depth.tex_type);
+	GLenum attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
 
 	glGenFramebuffers(1, &fb_ID);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
 	switch (gl_type)
 	{
 	case GL_TEXTURE_2D:
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gl_type, _depth.GetTexID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, gl_type, _depth.GetTexID(), 0);
 		break;
 	case GL_TEXTURE_CUBE_MAP:
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _depth.GetTexID(), 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _depth.GetTexID(), 0);
 		break;
 	}
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	UnbindFrameBuffer();
-
+	
 	fb_tex_list.emplace_back(std::move(_depth));
 }
 
@@ -239,7 +239,7 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 {
 	auto [_1, _data, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
 
-	auto attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
+	GLenum attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
 
 	BindFrameBuffer();
 
@@ -252,9 +252,8 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _tex.GetTexID(), 0);
 		break;
 	}
-
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+	glDrawBuffers(1, &attachment);
+	Resize(_tex.GetW(), _tex.GetH());
 	UnbindFrameBuffer();
 }
 
@@ -292,7 +291,8 @@ void FrameBuffer::Resize(GLuint w, GLuint h, bool all)
 {
 	fb_w = w;
 	fb_h = h;
-	renderBuffer->Resize(w, h);
+	if (renderBuffer.has_value())
+		renderBuffer->Resize(w, h);
 	for (auto& tex : fb_tex_list)
 		tex.Resize(w, h);
 

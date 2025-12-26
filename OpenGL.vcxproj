@@ -326,6 +326,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\Polygon.frag" />
     <None Include="res\shaders\Polygon.vert" />
     <None Include="res\shaders\Post_Visual.frag" />
+    <None Include="res\shaders\pps\Box_Blur.comp" />
     <None Include="res\shaders\pps\Compose.comp" />
     <None Include="res\shaders\pps\Editing.comp" />
     <None Include="res\shaders\pps\EnvirBG.frag" />
