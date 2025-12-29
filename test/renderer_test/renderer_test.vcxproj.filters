@@ -13,6 +13,9 @@
     <Filter Include="dep\render">
       <UniqueIdentifier>{d6b9d268-b35c-4ae8-aea5-6599682e93bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dep\transform">
+      <UniqueIdentifier>{9150834e-16d6-4cdc-a3b3-765cb3b9e2de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -48,14 +51,20 @@
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc">
       <Filter>dep\gtest</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\compo\Transform.cpp" />
-    <ClCompile Include="test_shader.cpp" />
+    <ClCompile Include="test_shader.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\compo\Transform.cpp">
+      <Filter>dep\transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>test</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\compo\Transform.h" />
+    <ClInclude Include="..\..\src\compo\Transform.h">
+      <Filter>dep\transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.github\workflows\msbuild.yml">
