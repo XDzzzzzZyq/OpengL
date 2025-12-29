@@ -10,43 +10,43 @@
     <Filter Include="dep\gtest">
       <UniqueIdentifier>{b84ec122-dcd0-46ff-98b0-2d697e35f0fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dep\render">
-      <UniqueIdentifier>{d6b9d268-b35c-4ae8-aea5-6599682e93bd}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{05c69740-c9ba-4e07-b75c-05fb2e2187b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dep\transform">
+    <Filter Include="src\transform">
       <UniqueIdentifier>{9150834e-16d6-4cdc-a3b3-765cb3b9e2de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render">
+      <UniqueIdentifier>{d6b9d268-b35c-4ae8-aea5-6599682e93bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc">
       <Filter>dep\gtest</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\Material.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\RenderConfigs.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\ShaderLib.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\ShaderParser.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\Shaders.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\Texture.cpp">
-      <Filter>dep\render</Filter>
+      <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc">
       <Filter>dep\gtest</Filter>
@@ -55,7 +55,16 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\compo\Transform.cpp">
-      <Filter>dep\transform</Filter>
+      <Filter>src\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="test_transform.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test_core.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test_texture.cpp">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,7 +72,7 @@
       <Filter>test</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\compo\Transform.h">
-      <Filter>dep\transform</Filter>
+      <Filter>src\transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -182,8 +182,10 @@
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="test_core.cpp" />
     <ClCompile Include="test_shader.cpp" />
+    <ClCompile Include="test_texture.cpp" />
+    <ClCompile Include="test_transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\compo\Transform.h" />

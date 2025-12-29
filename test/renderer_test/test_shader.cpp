@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "macros.h"
+
 #include "Shaders.h"
 #include "Texture.h"
-
 TEST_F(RendererEnvir, RenderShader) {
 	RenderShader shader = RenderShader(shader_root + "testS.vert", shader_root + "Rasterization.frag");
 	GLERRTEST;
