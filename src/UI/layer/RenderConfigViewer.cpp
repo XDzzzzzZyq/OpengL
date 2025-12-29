@@ -1,4 +1,5 @@
 #include "RenderConfigViewer.h"
+#include "RenderConfigs.h"
 #include "macros.h"
 
 RenderConfigViewer::RenderConfigViewer()

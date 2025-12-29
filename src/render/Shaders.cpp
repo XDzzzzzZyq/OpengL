@@ -592,8 +592,6 @@ void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 
 	ParseShaderStream(Stream, active_shader);
 
-	shader_data[active_shader].sh_struct->func_list_state.resize(shader_data[active_shader].sh_struct->func_list.size());
-
 
 	std::cout << "shaders are loaded up successfully!" << std::endl;
 	//m_shaders = { shaders[0].str(),shaders[1].str() };

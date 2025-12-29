@@ -240,6 +240,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			}
 		}
 	}
+
+	shader_data[_type].sh_struct->func_list_state.resize(shader_data[_type].sh_struct->func_list.size());
 }
 
 

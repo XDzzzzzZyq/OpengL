@@ -1,4 +1,8 @@
 #include "Viewport.h"
+
+#include "Camera.h"
+#include "Transform.h"
+
 #include "xdz_matrix.h"
 
 ImGuizmo::MODE Viewport::trans_mod = ImGuizmo::WORLD;

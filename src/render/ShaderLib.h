@@ -10,26 +10,33 @@
 
 #include "Parameters.h"
 
-typedef std::pair<ParaType, std::string> Arg;
-typedef std::vector<Arg> Args;
+using Arg = std::pair<ParaType, std::string>;
+using Args = std::vector<Arg>;
 
-			//|    struct_name    +   name   +   count   |
-typedef std::tuple<std::string, std::string, int> S_Struct, S_var;
+// |    struct_name    +   name   +   count   |
+using S_Struct = std::tuple<std::string, std::string, int>;
+using S_var = S_Struct;
 
-			//|    loc    +    name    +   params(para_type  +  name)   |
-typedef std::tuple<int, std::string, Args> S_SB, S_Struct_DEF; //storage buffer
+// |    loc    +    name    +   params(para_type  +  name)   |
+using S_SB = std::tuple<int, std::string, Args>;
+using S_Struct_DEF = S_SB; // storage buffer
 
-			//|   out_type   +    name    +   content   +   args(in_type  +  name)   |
-typedef std::tuple<ParaType, std::string, std::string, Args> S_func, S_const, S_UBuffer;
+// |   out_type   +    name    +   content   +   args(in_type  +  name)   |
+using S_func = std::tuple<ParaType, std::string, std::string, Args>;
+using S_const = S_func;
+using S_UBuffer = S_func;
 
-			//|    name    +    type    +    count    |
-typedef std::tuple<std::string, ParaType, int> S_U, S_OUT, S_IN;
+// |    name    +    type    +    count    |
+using S_U = std::tuple<std::string, ParaType, int>;
+using S_OUT = S_U;
+using S_IN = S_U;
 
-			//|    name    +     type    +    data    |
-typedef std::tuple<std::string, ParaType, float> S_glob;
+// |    name    +     type    +    data    |
+using S_glob = std::tuple<std::string, ParaType, float>;
 
-			//|    loc    +    name    +   type   |
-typedef std::tuple<int, std::string, ParaType> S_AB, S_REND; //array buffer
+// |    loc    +    name    +   type   |
+using S_AB = std::tuple<int, std::string, ParaType>;
+using S_REND = S_AB; // array buffer
 
 enum ShaderType
 {
