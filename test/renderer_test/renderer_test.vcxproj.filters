@@ -48,11 +48,13 @@
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc">
       <Filter>dep\gtest</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\compo\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>test</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\compo\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.github\workflows\msbuild.yml">

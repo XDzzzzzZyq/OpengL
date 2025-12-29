@@ -171,6 +171,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\compo\Transform.cpp" />
     <ClCompile Include="..\..\src\render\Material.cpp" />
     <ClCompile Include="..\..\src\render\RenderConfigs.cpp" />
     <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\compo\Transform.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
