@@ -123,6 +123,9 @@ bool Transform3D::SetTrans(const glm::mat4& _trans, bool pos /*= true*/, bool ro
 
 		o_Transform = _trans;
 		is_TransF_changed = false;
+		is_invTransF_changed = true;
+		is_Uniform_changed = true;
+		is_invUniform_changed = true;
 	}
 
 	return true;
@@ -244,7 +247,7 @@ bool Transform3D::ApplyAllTransform()
 			tar_ptr->o_Transform = post_trans * tar_ptr->o_Transform;
 		}
 
-		tar_ptr->is_Uniform_changed = is_changed;
+		tar_ptr->is_Uniform_changed |= is_changed;
 		post_trans = tar_ptr->o_Transform;
 
 		if (tar_ptr->GetChildTransPtr() == nullptr)
@@ -254,7 +257,6 @@ bool Transform3D::ApplyAllTransform()
 	} while (true);
 
 	return true;
-
 }
 
 /*std::unordered_map<int, int, float> */

@@ -50,11 +50,13 @@ TEST(Transform, Transform3D) {
 
 		EXPECT_TRUE(t3d.ApplyTransform());
 
+		EXPECT_TRUE(t3d.is_Uniform_changed);
 		EXPECT_TRUE(!t3d.is_TransF_changed);
 		EXPECT_TRUE(t3d.is_invTransF_changed);
 
 		EXPECT_TRUE(t3d.GetInvTransform());
 		EXPECT_TRUE(!t3d.is_invTransF_changed);
+		EXPECT_TRUE(t3d.is_invUniform_changed);
 
 		EXPECT_TRUE(mat4_near(t3d.o_Transform * t3d.o_InvTransform, glm::mat4(1.0f)));
 		EXPECT_TRUE(mat4_near(t3d.o_InvTransform * t3d.o_Transform, glm::mat4(1.0f)));
@@ -97,13 +99,19 @@ TEST(Transform, Transform3D) {
 		Transform3D t2{};
 		t2.SetParent(&t1, true);
 		EXPECT_TRUE(!t1.is_TransF_changed);
+		EXPECT_TRUE(t1.is_Uniform_changed);
 		EXPECT_TRUE(t2.is_TransF_changed);
+		EXPECT_TRUE(t2.is_Uniform_changed);
 
 		EXPECT_TRUE(glm::all(glm::epsilonEqual(t2.o_position, glm::vec3(0.0f, -dz / sy, 0.0f), 1e-5f)));
 		EXPECT_TRUE(glm::all(glm::epsilonEqual(t2.o_rot, glm::vec3(-rx, 0.0f, 0.0f), 1e-5f)));
 		EXPECT_TRUE(glm::all(glm::epsilonEqual(t2.o_scale, glm::vec3(1.0f / sx, 1.0f / sz, 1.0f / sy), 1e-5f)));
 
-		t2.ApplyAllTransform();
+		t1.ApplyAllTransform();
 		EXPECT_TRUE(mat4_near(t2.o_Transform, glm::mat4(1.0f)));
+		EXPECT_TRUE(!t1.is_TransF_changed);
+		EXPECT_TRUE(!t2.is_TransF_changed);
+		EXPECT_TRUE(t2.is_Uniform_changed);
+		EXPECT_TRUE(t2.is_invTransF_changed);
 	}
 }
