@@ -49,6 +49,7 @@
       <Filter>dep\gtest</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\compo\Transform.cpp" />
+    <ClCompile Include="test_shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

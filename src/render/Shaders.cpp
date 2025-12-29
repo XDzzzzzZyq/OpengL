@@ -547,9 +547,9 @@ RenderShader::RenderShader(const std::string& vert, const std::string& frag)
 
 	ParseShaderFile(shader_data[VERTEX_SHADER].sh_name, VERTEX_SHADER);
 	ParseShaderFile(shader_data[FRAGMENT_SHADER].sh_name, FRAGMENT_SHADER);
-
-	GenerateShader(FRAGMENT_SHADER);
+	
 	GenerateShader(VERTEX_SHADER);
+	GenerateShader(FRAGMENT_SHADER);
 
 	CreatShader(shader_data[VERTEX_SHADER].sh_code, shader_data[FRAGMENT_SHADER].sh_code);
 }
