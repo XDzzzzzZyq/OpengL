@@ -274,9 +274,26 @@ void Texture::Resize(GLuint x, GLuint y)
 	auto [interlayout, layout, type, gl_type] = Texture::ParseFormat(tex_type);
 	glBindTexture(gl_type, tex_ID);
 
-	glTexImage2D(gl_type, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
-
-	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR);
+	if (gl_type == GL_TEXTURE_2D) {
+		glTexImage2D(gl_type, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR);
+	}
+	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+		for (int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0,
+				interlayout, // internal format
+				im_w,
+				im_h,
+				0,
+				layout, type,
+				nullptr
+			);
+		}
+		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(tex_ID, GL_LINEAR, GL_LINEAR);
+	}
 }
 
 void Texture::Bind(GLuint slot) const
@@ -368,18 +385,18 @@ template<GLuint Type>
 inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s /*= 0*/, GLuint _warp_t /*= 0*/, GLuint _lev_min /*= 0*/, GLuint _lev_max /*= 0*/, GLuint _warp_r /*= 0*/)
 {
 	glBindTexture(Type, _id);
-
+	
 	glTexParameteri(Type, GL_TEXTURE_MIN_FILTER, _fil_min);
 	glTexParameteri(Type, GL_TEXTURE_MAG_FILTER, _fil_max);
-
+	
 	if (_warp_s * _warp_t != 0) {
 		glTexParameteri(Type, GL_TEXTURE_WRAP_S, _warp_s);
 		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_t);
 	}
-
+	
 	if (_warp_r != 0)
 		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_r);
-
+	
 	if (_lev_min + _lev_max != 0) {
 		glTexParameteri(Type, GL_TEXTURE_BASE_LEVEL, _lev_min);
 		glTexParameteri(Type, GL_TEXTURE_MAX_LEVEL, _lev_max);
