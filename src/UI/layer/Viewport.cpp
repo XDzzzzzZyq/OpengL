@@ -2,6 +2,8 @@
 
 #include "Camera.h"
 #include "Transform.h"
+#include "SceneManager.h"
+#include "buffer/FrameBuffer.h"
 
 #include "xdz_matrix.h"
 
@@ -11,6 +13,7 @@ ImGuizmo::OPERATION Viewport::handle_mod = ImGuizmo::TRANSLATE;
 Viewport::Viewport()
 {
 	uly_name = "";
+	EventInit();
 }
 
 Viewport::Viewport(const std::string& name)
@@ -25,6 +28,7 @@ Viewport::Viewport(const std::string& name, GLuint texID, const ImVec2& vp_size)
 {
 	uly_name = name;
 	PushItem<UI::TextureViewer>("Viewport", texID, vp_size);
+	EventInit();
 }
 
 Viewport::~Viewport()
@@ -32,30 +36,79 @@ Viewport::~Viewport()
 
 }
 
-void Viewport::UpdateLayer()
-
+void Viewport::EventInit()
 {
+	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Viewport::LMB_CLICK);
+	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Viewport::SHIFT);
 }
 
-void Viewport::RenderLayer()
+
+int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
+{
+	if (-glm::vec2(5, 5) < glm::vec2(x, y) && glm::vec2(x, y) < info_fb->GetFrameBufferSize() * glm::vec2(1, 2))
+		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
+		return info_fb->ReadPix(x, y, ID_FB).GetID();
+	else
+		return -1;
+}
+
+void Viewport::UpdateLayer(const SceneContext& ctx)
+{}
+
+void Viewport::LMB_CLICK(const SceneContext& ctx)
+{
+	if (!EventListener::IsMouseClick()) return;
+	if (!is_in_viewport) return;
+	if (viewport_status != ViewPortStatus::OnClick) return;
+
+	const GameObject* selected_obj = ctx.c_selections.GetSelectedObjects();
+
+	const FrameBuffer* info_fb = (FrameBuffer*)(ctx.c_active_fb_channel);
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
+
+	glm::vec2 offset = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
+	int id = GetSelectID(info_fb, GLuint(mouse_x - offset.x), GLuint(mouse_y - offset.y));
+	if (scene->GetGameObject(id) == selected_obj) return;
+
+	// TODO: event system
+	ctx.c_selections.Select(scene->GetGameObject(id), multi_select);
+	EventListener::is_selected_changed = true;
+}
+
+void Viewport::SHIFT(const SceneContext& ctx)
+{
+	multi_select = true;
+}
+
+void Viewport::RenderLayer(const SceneContext& ctx)
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
 		GetLayerSize();
-		if (uly_name == "Viewport")ImGui::GetWindowContentRegionMin(); {
-			EventListener::viewport_status = ViewPortStatus::None;
-			EventListener::viewport_offset = -(EventListener::window_pos - ImGui::GetWindowPos());
-			EventListener::is_in_viewport = Item::is_inside(uly_size);
+		if (uly_name == "Viewport"){
+			viewport_status = ViewPortStatus::None;
+			is_in_viewport = Item::is_inside(uly_size);
 		}
 
 		item_list[0]->RenderItem();
 
+#if _DEBUG
+		ImGui::Text("[ %d ]", is_in_viewport);
+		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowContentRegionMin().x, ImGui::GetWindowContentRegionMin().y);
+		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetMainViewport()->Pos.x, ImGui::GetMainViewport()->Pos.y);
+		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
+		ImGui::Text("[ %.0f , %.0f ]", EventListener::mouse_x, EventListener::mouse_y);
+		ImVec2 window_pos = (ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
+		ImGui::Text("[ %.0f , %.0f ]", EventListener::mouse_x - window_pos.x, EventListener::mouse_y - window_pos.y);
+#endif // _DEBUG
+
 		if (display_grid)
-			RenderGrids();
+			RenderGrids(ctx);
 		if (display_axis)
-			RenderAxis();
+			RenderAxis(ctx);
 		if (display_trans_handle)
-			RenderHandle();
+			RenderHandle(ctx);
 
 		if (IsResizingFin())
 			if (resize_event) {
@@ -65,17 +118,21 @@ void Viewport::RenderLayer()
 
 		is_size_changed_b = is_size_changed;
 		is_size_changed = false;
+
+		// TODO: event system
+		EventActivate(ctx);
+
 		ImGui::End();
 	}
 	else {
-		EventListener::is_in_viewport = false;
+		is_in_viewport = false;
 		ImGui::End();
 	}
 }
 
-void Viewport::RenderGrids()
+void Viewport::RenderGrids(const SceneContext& ctx)
 {
-	Camera* active_cam = dynamic_cast<Camera*>(EventListener::GetActiveCamera());
+	const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
 
 	if (active_cam == nullptr)
 		return;
@@ -83,9 +140,9 @@ void Viewport::RenderGrids()
 	ImGuizmo::DrawGrid(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], &xdzm::identityMatrix[0][0], 30.f, 0.5f);
 }
 
-void Viewport::RenderAxis()
+void Viewport::RenderAxis(const SceneContext& ctx)
 {
-	Camera* active_cam = dynamic_cast<Camera*>(EventListener::GetActiveCamera());
+	Camera* active_cam = (Camera*)dynamic_cast<const Camera*>(ctx.GetActiveCamera());
 
 	ImGuiIO& io = ImGui::GetIO();
 	float viewManipulateRight = io.DisplaySize.x;
@@ -105,14 +162,15 @@ void Viewport::RenderAxis()
 	static glm::mat4 test_trans{1};
 	ImGuizmo::ViewManipulate(&cam_trans[0][0], 5, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
 
+	// TODO: event system
 	active_cam->SetCamTrans(glm::transpose(cam_trans), false, true);
 }
 
-void Viewport::RenderHandle()
+void Viewport::RenderHandle(const SceneContext& ctx)
 {
-
-	Transform3D* active_trans = dynamic_cast<Transform3D*>(EventListener::active_object);
-	Camera* active_cam = dynamic_cast<Camera*>(EventListener::GetActiveCamera());
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
+	Transform3D* active_trans = dynamic_cast<Transform3D*>(scene->GetActiveCamera());
+	Camera* active_cam = dynamic_cast<Camera*>(scene->GetActiveCamera());
 
 	if (active_trans == nullptr)
 		return;
@@ -129,23 +187,27 @@ void Viewport::RenderHandle()
 
 	bool hover, click;
 	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], Viewport::handle_mod, Viewport::trans_mod, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
-	EventListener::ReportGuizmoStatus(hover, click);
+	
+	if (hover)
+		viewport_status = ViewPortStatus::OnHover;
+	if (click)
+		viewport_status = ViewPortStatus::OnClick;
 
 	if(click)
 		active_trans->SetTrans(obj_trans);
 }
 
-void Viewport::MTranslate()
+void Viewport::MTranslate(const SceneContext&)
 {
 	Viewport::handle_mod = ImGuizmo::TRANSLATE;
 }
 
-void Viewport::MRotate()
+void Viewport::MRotate(const SceneContext&)
 {
 	Viewport::handle_mod = ImGuizmo::ROTATE;
 }
 
-void Viewport::MScale()
+void Viewport::MScale(const SceneContext&)
 {
 	Viewport::handle_mod = ImGuizmo::SCALE;
 }
@@ -161,25 +223,25 @@ void _SwitchHMode(GLuint offset) {
 
 	if (Viewport::handle_mod & ImGuizmo::TRANSLATE) {
 		if (Viewport::handle_mod == trans)
-			Viewport::MTranslate();
+			Viewport::MTranslate({});
 		else
 			Viewport::handle_mod = trans;
 	}
 	else if (Viewport::handle_mod & ImGuizmo::ROTATE) {
 		if (Viewport::handle_mod == rotat)
-			Viewport::MRotate();
+			Viewport::MRotate({});
 		else
 			Viewport::handle_mod = rotat;
 	}
 	else if (Viewport::handle_mod & ImGuizmo::SCALE) {
 		if (Viewport::handle_mod == scale)
-			Viewport::MScale();
+			Viewport::MScale({});
 		else
 			Viewport::handle_mod = scale;
 	}
 }
 
-void Viewport::XAxis()
+void Viewport::XAxis(const SceneContext&)
 {
 	if (!EventListener::IsKeyClick())
 		return;
@@ -187,7 +249,7 @@ void Viewport::XAxis()
 	::_SwitchHMode(0);
 }
 
-void Viewport::YAxis()
+void Viewport::YAxis(const SceneContext&)
 {
 	if (!EventListener::IsKeyClick())
 		return;
@@ -195,7 +257,7 @@ void Viewport::YAxis()
 	::_SwitchHMode(1);
 }
 
-void Viewport::ZAxis()
+void Viewport::ZAxis(const SceneContext&)
 {
 	if (!EventListener::IsKeyClick())
 		return;
@@ -203,7 +265,7 @@ void Viewport::ZAxis()
 	::_SwitchHMode(2);
 }
 
-void Viewport::WAxis()
+void Viewport::WAxis(const SceneContext&)
 {
 	if (!EventListener::IsKeyClick())
 		return;

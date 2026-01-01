@@ -43,7 +43,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	//BufferTexture.Bind(BufferTexture.Tex_type);
 
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, fb_tex_list[0].GetTexID(), 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 	
@@ -66,8 +66,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
-	GLDEBUG;
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
 	std::vector<GLenum> attachments(count);
 	va_list arg_ptr;
 	va_start(arg_ptr, count);
@@ -84,7 +83,6 @@ FrameBuffer::FrameBuffer(int count, ...)
 
 	}
 	va_end(arg_ptr);
-	GLDEBUG;
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -104,7 +102,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	glGenFramebuffers(1, &fb_ID);//GLDEBUG
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
 	
 	std::vector<GLenum> attachments(_tars.size());
 	fb_tex_list.reserve(_tars.size());
@@ -238,11 +236,11 @@ void FrameBuffer::UnbindFrameBuffer()
 void FrameBuffer::LinkTexture(const Texture& _tex)
 {
 	auto [_1, _data, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
-
+	
 	GLenum attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
-
+	
 	BindFrameBuffer();
-
+	
 	switch (gl_type)
 	{
 	case GL_TEXTURE_2D:
@@ -252,7 +250,9 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _tex.GetTexID(), 0);
 		break;
 	}
-	glDrawBuffers(1, &attachment);
+	if (_data != GL_DEPTH_COMPONENT)
+		glDrawBuffers(1, &attachment);
+
 	Resize(_tex.GetW(), _tex.GetH());
 	UnbindFrameBuffer();
 }
@@ -295,16 +295,15 @@ void FrameBuffer::Resize(GLuint w, GLuint h, bool all)
 		renderBuffer->Resize(w, h);
 	for (auto& tex : fb_tex_list)
 		tex.Resize(w, h);
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_ID);
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
 }
 
 #include "glm/glm.hpp"
 //https://docs.gl/gl3/glReadPixels
-FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type)
+FBPixel FrameBuffer::ReadPix(GLuint x, GLuint y, FBType type) const
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, fb_ID);
-
 	glReadBuffer(GL_COLOR_ATTACHMENT0 + fb_type_list[type]);
 
 	FBPixel Pixel;

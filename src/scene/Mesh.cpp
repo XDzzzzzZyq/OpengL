@@ -1,4 +1,6 @@
 #include "Mesh.h"
+#include "Camera.h"
+
 #include "macros.h"
 
 Mesh::Mesh(const std::string& path)
@@ -19,8 +21,11 @@ Mesh::Mesh()
 	DEBUG("mesh c");
 }
 
-void Mesh::RenderMesh(const Camera* cam)
+void Mesh::RenderMesh(const SceneContext& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	const bool is_selected = ctx.c_selections.IsSelected(this);
+
 	o_shader->UseShader();
 
 	if (o_material->is_mat_struct_changed && using_material)

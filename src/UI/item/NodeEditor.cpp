@@ -137,7 +137,7 @@ float NodeEditor::th_curvity = 1.6f;
 float NodeEditor::th_offset = 5;
 float NodeEditor::th_rounding = 2;
 
-void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
+void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec2& _size /*= {0,0}*/)
 {
 	ImGui::Separator();
 	if (ImGui::BeginChild(_lable, ImGui::GetContentRegionAvail(), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground)) {
@@ -164,7 +164,7 @@ void NodeEditor::Render(const char* _lable, const ImVec2& _size /*= {0,0}*/)
 		ImGui::Text("P_in: %i | P_out: %i", is_press_on_in, is_press_on_out);
 #endif
 
-		EventActivate();
+		EventActivate(ctx);
 		ApplyTransform();
 		Parameters* pressed_pin_b = pressed_pin;
 		Parameters* hovered_pin_b = hovered_pin;

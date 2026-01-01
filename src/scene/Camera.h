@@ -36,11 +36,11 @@ public:
 
 public:
 
-	void SHIFT_MMB();
-	void CTRL_MMB();
-	void ALT_MMB();
-	void MMB();
-	void SCROLL();
+	void SHIFT_MMB(const SceneContext&);
+	void CTRL_MMB(const SceneContext&);
+	void ALT_MMB(const SceneContext&);
+	void MMB(const SceneContext&);
+	void SCROLL(const SceneContext&);
 
 	void EventInit();
 	

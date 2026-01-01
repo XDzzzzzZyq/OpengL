@@ -1,9 +1,8 @@
 #pragma once
 #include <iostream>
 
-#include "menu/ImguiMButton.h"
-#include "menu/ImguiMOption.h"
-#include "menu/ImguiMSwitch.h"
+#include "ImguiMenuItem.h"
+#include "Context.h"
 
 class ImguiMenu
 {
@@ -27,7 +26,7 @@ public:
 
 	ImguiMenuItem* FindMenuItem(const std::string _name);
 
-	void RenderMenu() const;
+	void RenderMenu(const SceneContext& ctx) const;
 };
 
 

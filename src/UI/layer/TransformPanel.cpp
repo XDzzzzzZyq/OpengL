@@ -16,12 +16,13 @@ TransformPanel::~TransformPanel()
 
 }
 
-static Transform* GetActiveTransPtr()
+static Transform* GetActiveTransPtr(const SceneContext& ctx)
 {
-	if (EventListener::active_object == nullptr)
+	GameObject* active_object = ctx.c_selections.GetSelectedObjects();
+	if (active_object == nullptr)
 		return nullptr;
 
-	return (Transform*)(EventListener::active_object->GetTransform());
+	return (Transform*)(active_object->GetTransform());
 }
 
 ImGuiInputTextFlags _SliderFlag(bool _is_locked) {
@@ -52,9 +53,10 @@ static bool RenderTransfroms(Transform3D& trans)
 	return is_pos_ch || is_rot_ch || is_scl_ch;
 }
 
-void TransformPanel::RenderLayer()
+void TransformPanel::RenderLayer(const SceneContext& ctx)
 {
-	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr());
+	GameObject* active_object = ctx.c_selections.GetSelectedObjects();
+	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr(ctx));
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
@@ -63,7 +65,7 @@ void TransformPanel::RenderLayer()
 			ImGui::End();
 			return;
 		}
-		ImGui::InputText("Name", (char*)EventListener::active_object->o_name.c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputText("Name", (char*)active_object->o_name.c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
 
 		RenderTransfroms(*active_trans);
 

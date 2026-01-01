@@ -3,7 +3,9 @@
 #define NORM_KEY_LEN 36
 
 #include "GameObject.h"
-#include "structs.h"
+#include "Events.h"
+#include "Context.h"
+#include "operator.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -12,10 +14,45 @@
 #include<unordered_map>
 #include<unordered_set>
 #include<functional>
+#include <typeindex>
 
-#define REGIST_EVENT(cls_event) std::bind(&cls_event , this); EventListener::REFLRigisterEvent(#cls_event)
+#define REGIST_EVENT(cls_event) std::bind(&cls_event, this, std::placeholders::_1); EventListener::REFLRigisterEvent(#cls_event)
 #define REGIST_EVENT_STATIC(sta_event) &sta_event; EventListener::REFLRigisterEvent(#sta_event)
 
+class EventPool {
+public:
+	template<typename Event>
+	using Handler = std::function<void(const Event&)>;
+
+	template<typename Event>
+	void subscribe(Handler<Event> handler) {
+		auto& vec = handlers[typeid(Event)];
+		vec.push_back(
+			[h = std::move(handler)](const void* e) {
+				h(*static_cast<const Event*>(e));
+			}
+		);
+	}
+
+	template<typename Event>
+	void emit(const Event& event) {
+		auto it = handlers.find(typeid(Event));
+		if (it == handlers.end()) return;
+
+		for (auto& fn : it->second) {
+			fn(&event);
+		}
+	}
+
+private:
+	std::unordered_map<
+		std::type_index,
+		std::vector<std::function<void(const void*)>>
+	> handlers;
+};
+
+
+// TODO: Move to editor folder
 class EventListener
 {
 public:
@@ -64,7 +101,6 @@ public:
 		int GenStateData() const;
 		void Debug() const {
 #ifdef _DEBUG
-
 			std::cout << (int)FirstKey << " "
 				<< (int)SecondKey << " "
 				<< (char)NormKey << " "
@@ -86,7 +122,6 @@ public:
 public:
 
 	static KeyMouseEvent EVT_STATUS;
-	static GLFWwindow* evt_window;
 
 public:
 
@@ -128,44 +163,17 @@ public:
 	static bool is_sprite_selected;
 	static bool is_GOlist_changed;
 	static bool is_selected_changed;
-	static bool is_outliner_selected;
-	static std::function<GameObject* (int)> GetActiveObject;
-	static std::function<GameObject* (void)> GetActiveCamera;
-	static int active_GO_ID;
-	static std::vector<int> selec_list;
-	static std::vector<int>parent_index_list;
-	static OutlineData outline_list;
-	static OutlineData* GetOutlineData() { return &outline_list; }
+	static std::vector<int> parent_index_list;
 	static std::vector<int> GetParentRelatData() { return parent_index_list; }
-
-	static GameObject* active_object;
-
-public:
-
-	enum ViewPortStatus
-	{
-		None,
-		OnHover,
-		OnClick
-	};
-
-	static glm::vec2 window_pos;
-	static glm::vec2 viewport_offset;
-	static bool is_in_viewport;
-	static ViewPortStatus viewport_status;
-	static void ReportGuizmoStatus(bool hover, bool click);
 
 public:
 
 	EventListener();
-	EventListener(GLFWwindow* window);
-	static void SetWindow(GLFWwindow* window);
-
 	~EventListener();
 
 public:
 
-	std::unordered_map<KeyMouseEvent, std::function<void(void)>, KeyMouseEvent::hash_fn> EventList;
+	std::unordered_map<KeyMouseEvent, std::function<void(const SceneContext&)>, KeyMouseEvent::hash_fn> EventList;
 	static MouseStatus ListenMouseEvent(GLFWwindow* window);
 	static SpecialKeys ListenSpecialKeyEvent(GLFWwindow* window, SpecialKeys ignor);
 	static int ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist);
@@ -179,7 +187,7 @@ public:
 	static KeyMouseEvent GenIntEvent(int k1, int k2, int k3, int m, int scr);
 	static KeyMouseEvent GenIntEvent(SpecialKeys k1, SpecialKeys k2, int k3, MouseStatus m, ScrollDir scr);
 
-	void EventActivate();
+	void EventActivate(const SceneContext& ctx);
 	void Reset();
 
 public:

@@ -33,7 +33,7 @@ void UI::ImguiMOption::BindOption(char* _tar)
 	mitem_options[*_tar].second = true;
 }
 
-void UI::ImguiMOption::RenderMenuItem()
+void UI::ImguiMOption::RenderMenuItem(const SceneContext& ctx)
 {
 	if (ImGui::BeginMenu(mitem_name.c_str())) {
 

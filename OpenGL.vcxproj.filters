@@ -252,6 +252,15 @@
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\editor\SelectionManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\Context.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\Events.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -616,6 +625,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\SelectionManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\Context.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\Events.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

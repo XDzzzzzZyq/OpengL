@@ -1,4 +1,6 @@
 #include "Sprite.h"
+#include "MeshData.h"
+#include "Camera.h"
 
 std::string Sprite::fileroot = "res/tex/sprite/";
 
@@ -12,8 +14,9 @@ Sprite::Sprite()
 
 }
 
-void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* cam)
+void Sprite::RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
 	spr_shader.UseShader();
 	spr_tex.Bind(SPIRIT_TEXURE);
 
@@ -36,8 +39,9 @@ void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* ca
 	MeshLib::Square->RenderObjProxy();
 }
 
-void Sprite::RenderSprite(Camera* cam)
+void Sprite::RenderSprite(const SceneContext& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
 	if (cam->is_invUniform_changed)
 		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 

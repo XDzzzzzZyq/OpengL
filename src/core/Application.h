@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "ImguiManager.h"
 #include "EventListener.h"
+#include "Context.h"
 
 // using singleton
 class Application
@@ -20,6 +21,7 @@ public:
 public:
 	Renderer renderer{};
 	ImguiManager UI{};
+	SceneContext Ctx{};
 	EventListener Event{};
 	GLFWwindow* window{ nullptr };
 

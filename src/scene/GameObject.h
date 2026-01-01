@@ -3,22 +3,33 @@
 #include "glm/glm.hpp"
 #include <string>
 
+class UID {
+private:
+	int id;
+	static int count;
+
+public:
+	UID();
+	virtual ~UID() = default;
+
+	int GetObjectID() const { return id; };
+	static int GetTotalAllocated() { return count; };
+};
+
 enum GOType
 {
 	NONE_GO = -1, GO_CAM, GO_MESH, GO_LIGHT, GO_POLYLIGHT, GO_ENVIR, GO_SPRITE, GO_DL, GO_DP, GO_DM, GO_SDFFIELD
 };
 
-class GameObject
+// TODO: rename it
+class GameObject : public UID
 {
-private:
-	int id;
 public:
+	// TODO: remove it from here
 	mutable glm::vec3 id_color;
 	mutable glm::vec3 id_color_rand;
 
 	std::string o_name;
-	static int count;
-	int GetObjectID() const;
 
 	GOType o_type = NONE_GO;
 
@@ -28,9 +39,6 @@ public:
 		is_viewport = v;
 		is_rendered = r;
 	}
-
-	mutable bool is_selected = false;
-	mutable bool is_activated = false;
 
 	virtual void* GetShader()		{ return nullptr; }
 	virtual void* GetTransform()	{ return nullptr; }

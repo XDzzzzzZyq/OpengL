@@ -29,7 +29,6 @@ void ImguiLayer::UpdateLayerPos()
 {
 	content_pos = ImGui::GetWindowContentRegionMin();
 	content_size = ImGui::GetWindowContentRegionMax() - content_pos;
-
 }
 
 void ImguiLayer::PushItem(std::shared_ptr<ImguiItem> item)
@@ -69,12 +68,4 @@ ImguiItem* ImguiLayer::FindImguiItem(int id) const
 	return item_list[id].get();
 }
 
-void ImguiLayer::EventInit()
-{
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(ImguiLayer::LMB);
-}
-
-void ImguiLayer::LMB()
-{
-	//if (IsClick());
-}
+void ImguiLayer::EventInit() {}

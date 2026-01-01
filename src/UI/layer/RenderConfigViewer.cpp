@@ -15,7 +15,7 @@ RenderConfigViewer::RenderConfigViewer(const std::string& _name)
 RenderConfigViewer::~RenderConfigViewer()
 {}
 
-void RenderConfigViewer::RenderLayer()
+void RenderConfigViewer::RenderLayer(const SceneContext& ctx)
 {
 	RenderConfigs* active_config = RenderConfigs::GetActiveConfigPtr();
 
@@ -38,7 +38,7 @@ void RenderConfigViewer::RenderLayer()
 		modified = RenderOption((char*)&active_config->r_shadow_algorithm,	"Shadow",					OPTIONS("None", "Shadow Mapping", "SDF Soft Shadow", "Variance Soft Shadow", "Moment Soft Shadow"));
 		if (modified) flag |= RenderConfigs::ShadowChanged;
 		modified = RenderOption((char*)&active_config->r_ao_algorithm,		"Ambient Occlusion",		OPTIONS("None", "SSAO", "HBAO (future)"));
-
+		
 		active_config->call_back((RenderConfigs::ModifyFlags)flag);
 	}
 	ImGui::End();

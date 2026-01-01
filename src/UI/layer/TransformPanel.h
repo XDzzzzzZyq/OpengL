@@ -13,6 +13,6 @@ public:
 
 public:
 
-	void RenderLayer() override;
+	void RenderLayer(const SceneContext& ctx) override;
 };
 

@@ -1,4 +1,5 @@
 #include "PolygonLight.h"
+#include "Camera.h"
 #include <numeric>
 
 PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &light_color, float light_power, bool use_shadow)
@@ -21,8 +22,11 @@ PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &lig
 	SetPolygonShader();
 }
 
-void PolygonLight::RenderPolygon(Camera* cam)
+void PolygonLight::RenderPolygon(const SceneContext& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	const bool is_selected = ctx.c_selections.IsSelected(this);
+
 	o_vertArray.Bind();
 	o_index.Bind();
 	o_shader.UseShader();

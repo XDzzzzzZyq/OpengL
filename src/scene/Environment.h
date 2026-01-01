@@ -4,8 +4,8 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Sprite.h"
-#include "Camera.h"
-#include "MeshData.h"
+
+#include "Context.h"
 
 #include "buffer/FrameBuffer.h"
 
@@ -53,8 +53,8 @@ public:
 	void* GetShader()		override { return &envir_shader; }
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
-	void RenderEnvironment(Camera* cam);
-	void RenderEnvirSpr(Camera* cam);
+	void RenderEnvironment(const SceneContext& ctx);
+	void RenderEnvirSpr(const SceneContext& ctx);
 
 };
 

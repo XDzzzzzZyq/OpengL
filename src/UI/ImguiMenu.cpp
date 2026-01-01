@@ -30,13 +30,13 @@ ImguiMenuItem* ImguiMenu::FindMenuItem(const std::string _name)
 	return subm_list[name_order[_name]].get();
 }
 
-void ImguiMenu::RenderMenu() const
+void ImguiMenu::RenderMenu(const SceneContext& ctx) const
 {
 	if (ImGui::BeginMenu(menu_name.c_str()))
 	{
 
 		for (auto& item : subm_list) {
-			item->RenderMenuItem();
+			item->RenderMenuItem(ctx);
 		}
 
 		ImGui::EndMenu();

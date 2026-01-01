@@ -48,7 +48,6 @@ void SceneResource::UseCamera(Resource<Camera> camera)
 	cam_list[camera->GetObjectID()] = camera;
 	obj_list[camera->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(camera);
 	cam_list[0] = camera;
-	EventListener::outline_list.push_back(OutlineElement(camera->o_type, camera->GetObjectID(), camera->o_name, 0));
 	EventListener::parent_index_list.emplace_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
@@ -61,7 +60,6 @@ void SceneResource::UseMesh(Resource<Mesh> mesh)
 
 	mesh_list[mesh->GetObjectID()] = mesh;
 	obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(mesh);
-	EventListener::outline_list.push_back(OutlineElement(mesh->o_type, mesh->GetObjectID(), mesh->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
@@ -75,7 +73,6 @@ void SceneResource::UseLight(Resource<Light> light)
 	light_list[light->GetObjectID()] = light;
 	obj_list[light->light_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(light);
 
-	EventListener::outline_list.push_back(OutlineElement(light->o_type, light->light_sprite.GetObjectID(), light->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 
 	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
@@ -90,7 +87,6 @@ void SceneResource::UsePolygonLight(Resource<PolygonLight> polyLight)
 
 	poly_light_list[polyLight->GetObjectID()] = polyLight;
 	obj_list[polyLight->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(polyLight);
-	EventListener::outline_list.push_back(OutlineElement(polyLight->o_type, polyLight->GetObjectID(), polyLight->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
@@ -108,7 +104,6 @@ void SceneResource::UseEnvironment(Resource<Environment> envir)
 	envir_list[0] = envir;
 	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(envir);
 
-	EventListener::outline_list.push_back(OutlineElement(envir->o_type, envir->envir_sprite.GetObjectID(), envir->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 
 	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
@@ -123,7 +118,6 @@ void SceneResource::UseDebugLine(Resource<DebugLine> dline)
 
 	dLine_list[dline->GetObjectID()] = dline;
 	obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dline);
-	EventListener::outline_list.push_back(OutlineElement(dline->o_type, dline->GetObjectID(), dline->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
@@ -137,7 +131,6 @@ void SceneResource::UseDebugPoints(Resource<DebugPoints> dpoints)
 
 	dPoints_list[dpoints->GetObjectID()] = dpoints;
 	obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<GameObject>(dpoints);
-	EventListener::outline_list.push_back(OutlineElement(dpoints->o_type, dpoints->GetObjectID(), dpoints->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
@@ -148,7 +141,6 @@ void SceneResource::UsePostProcessing(Resource<PostProcessing> pps)
 	pps_list.emplace_back(pps);
 	obj_list[pps->pps_sprite.GetObjectID()] = std::dynamic_pointer_cast<GameObject>(pps);
 
-	EventListener::outline_list.push_back(OutlineElement(pps->o_type, pps->pps_sprite.GetObjectID(), pps->o_name, 0));
 	EventListener::parent_index_list.push_back(-1);
 }
 
@@ -160,22 +152,35 @@ void SceneResource::UseSDF(Resource<SDFField> sdf)
 	UpdateSceneStatus(SDFChanged, true);
 }
 
-std::shared_ptr<Camera> SceneResource::GetActiveCamera()
+
+GameObject* SceneResource::GetGameObject(int _id)
 {
-	assert(cam_list.find(0) != cam_list.end());
-	return cam_list[0];
+	if (obj_list.find(_id) != obj_list.end())
+		return obj_list[_id].get();
+	else
+		return nullptr;
 }
 
-std::shared_ptr<Environment> SceneResource::GetActiveEnvironment()
+Camera* SceneResource::GetActiveCamera()
 {
-	assert(envir_list.find(0) != envir_list.end());
-	return envir_list[0];
+	if (cam_list.find(0) != cam_list.end())
+		return cam_list[0].get();
+	else
+		return nullptr;
 }
 
-std::shared_ptr<PostProcessing> SceneResource::GetPPS(int _tar)
+Environment* SceneResource::GetActiveEnvironment()
+{
+	if (envir_list.find(0) != envir_list.end())
+		return envir_list[0].get();
+	else
+		return nullptr;
+}
+
+PostProcessing* SceneResource::GetPPS(int _tar)
 {
 	assert(_tar >= 0 && _tar < pps_list.size());
-	return pps_list[_tar];
+	return pps_list[_tar].get();
 }
 
 void SceneResource::UpdateObjTransforms()

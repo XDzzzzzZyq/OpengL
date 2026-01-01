@@ -256,10 +256,10 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 	return false;
 }
 
-void ShaderEditor::UpdateLayer()
+void ShaderEditor::UpdateLayer(const SceneContext& ctx)
 {
 	if (EventListener::is_selected_changed || is_shad_type_changed || is_mode_changed) {
-		UpdateShaderEditor();
+		UpdateShaderEditor(ctx);
 		is_shad_type_changed = false;
 		is_mode_changed = false;
 	}
@@ -274,18 +274,17 @@ void ShaderEditor::UpdateKeyword()
 			se_code_editor.InsertKeyword(table[i + CUSTOM_PARA]);
 }
 
-static Shaders* GetActiveShaderPtr()
+static Shaders* GetActiveShaderPtr(SceneContext& ctx)
 {
-	if (EventListener::active_object == nullptr)
+	GameObject* active_obj = ctx.c_selections.GetSelectedObjects();
+	if (active_obj == nullptr)
 		return nullptr;
 
-	return (Shaders*)(EventListener::active_object->GetShader());
+	return (Shaders*)(active_obj->GetShader());
 }
 
-static Shaders::ShaderUnit* GetShaderUnitPtr(ShaderType tar)
+static Shaders::ShaderUnit* GetShaderUnitPtr(Shaders* shader, ShaderType tar)
 {
-	Shaders* shader = GetActiveShaderPtr();
-
 	if (shader == nullptr) return nullptr;
 
 	return shader->GetShaderUnit(tar);
@@ -309,10 +308,10 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 		*_name = std::string(name);
 }
 
-void ShaderEditor::RenderShaderStruct()
+void ShaderEditor::RenderShaderStruct(const SceneContext& ctx)
 {
-
-	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders* shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
 
@@ -522,9 +521,10 @@ void ShaderEditor::RenderShaderStruct()
 	}
 }
 
-void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
+void ShaderEditor::UpdateShaderEditor(const SceneContext& ctx, const std::string& _code) const {
 
-	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders* shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
 
@@ -532,13 +532,13 @@ void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
 		se_code_editor.SetText(active_unit->sh_code);
 	else if (current_edit == STRUCT_EDITOR)
 		se_code_editor.SetText(_code);
+
 }
 
-void ShaderEditor::CompileShader()
+void ShaderEditor::CompileShader(const SceneContext& ctx)
 {
-
-	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
-	Shaders* active_shader = GetActiveShaderPtr();
+	Shaders* active_shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr || active_shader == nullptr) return;
 
@@ -558,10 +558,10 @@ void ShaderEditor::CompileShader()
 	active_shader->RelinkShader((ShaderType)current_shad_type);
 }
 
-void ShaderEditor::RenderLayer()
+void ShaderEditor::RenderLayer(const SceneContext& ctx)
 {
-
-	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
+	Shaders* active_shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
@@ -585,7 +585,7 @@ void ShaderEditor::RenderLayer()
 			ImGui::EndCombo();
 		}
 		if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x / 2, 25))) {
-			CompileShader();
+			CompileShader(ctx);
 		}ImGui::SameLine();
 		if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
 			//active_shader->GenerateShader((ShaderType)current_shad_type);
@@ -604,10 +604,10 @@ void ShaderEditor::RenderLayer()
 
 			break;
 		case STRUCT_EDITOR:
-			RenderShaderStruct();
+			RenderShaderStruct(ctx);
 			break;
 		case NODE_EDITOR:
-			se_node_editor.Render("##Node");
+			se_node_editor.Render(ctx, "##Node");
 			break;
 		}
 		ImGui::End();

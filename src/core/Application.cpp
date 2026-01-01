@@ -1,4 +1,8 @@
 #include "Application.h"
+#include "SceneManager.h"
+
+#include "layer/Viewport.h"
+
 #include "xdz_math.h"
 
 Application& Application::Get()
@@ -35,7 +39,6 @@ int Application::Init()
 
 	renderer.Init();
 	UI.Init();
-	Event.SetWindow(window);
 
 	MeshLib::MeshLibInit();
 
@@ -50,7 +53,7 @@ int Application::Init()
 	// 		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
 	// 	}
 
-	UI.ManagerInit(window);
+	UI.ManagerInit();
 
 
 #if 0
@@ -58,8 +61,23 @@ int Application::Init()
 	renderer.r_using_shadow_map = false;
 	renderer.r_using_ssr = false;
 #else
-	renderer.UseScene(SceneManager::SceneConfig4());
+	// TODO: better binding
+	Ctx.UseScene(SceneManager::SceneConfig4().get());
+	Ctx.c_active_fb_channel = &renderer.r_buffer_list[0];
+	Ctx.c_active_fb_result = renderer.GetFrameBufferPtr();
+
 	renderer.GetConfig()->r_ao_radius = 0.8f;
+	renderer.r_config.call_back = [&](RenderConfigs::ModifyFlags flag) {
+		if (flag & RenderConfigs::ShadowChanged) {
+			SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+			scene->UpdateSceneStatus(SceneResource::LightChanged, true);
+			renderer.UpdateLightInfo(Ctx);
+		}
+		};
+	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+	// TODO: event system
+	renderer.r_light_data.ParseLightData(scene->light_list);
+	renderer.r_light_data.ParsePolygonLightData(scene->poly_light_list);
 	//renderer.r_render_icons = false;
 
 	Light::area_blur_range = 0.03f;
@@ -74,7 +92,7 @@ int Application::Run()
 	DEBUG("-------------------------------");
 		/////////////////////////////////
 
-		static float scale = 0.3f;
+	static float scale = 0.3f;
 	static float power = 0.5f;
 	static float rotateX = 0.0f;
 	static float rotateY = 0.0f;
@@ -93,10 +111,11 @@ int Application::Run()
 
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
+		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
 		tex_type++;
 		if (tex_type >= MAX_FB)tex_type = 0;
-		renderer.GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
-		renderer.GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
+		scene->GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
+		scene->GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
 		//renderer.r_using_fxaa = !renderer.r_using_fxaa;
 		renderer.ScreenShot();
 		});
@@ -110,9 +129,11 @@ int Application::Run()
 		//environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
 		});
 	UI.FindImguiLayer("Viewport")->resize_event = [&] {
+		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
 		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
-		renderer.GetActiveCamera()->ChangeCamRatio(view_size.x, view_size.y);
+		scene->GetActiveCamera()->ChangeCamRatio(view_size.x, view_size.y);
 		renderer.FrameResize((GLuint)view_size.x, (GLuint)view_size.y);
+		scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
 		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
 		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
 	};
@@ -121,15 +142,20 @@ int Application::Run()
 		//UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 	};
 
-	dynamic_cast<Viewport*>(UI.FindImguiLayer("Viewport"))->display_grid = false;
+	UI.FindImguiLayerAs<Viewport>("Viewport")->display_grid = false;
+	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
 	UI.FindImguiMenuItem("Render", "Rendering PipeLine")->BindOption(&renderer.GetConfig()->r_pipeline);
 	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.GetConfig()->r_of_algorithm);
 	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.GetConfig()->r_ssr_algorithm);
-	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm, CallBack(renderer.UpdateLightInfo));
+	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm, [&](bool) -> bool { 
+		scene->UpdateSceneStatus(SceneResource::LightChanged, true); 
+		renderer.UpdateLightInfo(Ctx);  
+		return true; 
+		});
 	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.GetConfig()->r_ao_algorithm);
 	UI.FindImguiMenuItem("Render", "Sampling")->BindOption(&renderer.GetConfig()->r_sampling_average);
-	UI.FindImguiMenuItem("View", "Icons")->BindSwitch(&renderer.r_render_icons);
+	UI.FindImguiMenuItem("View",   "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {
 		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
@@ -156,7 +182,6 @@ int Application::Run()
 		//UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 		//UI._debug();
 	};
-	UI.GetCurrentWindow();
 
 	EventListener::ShowEvents();
 
@@ -169,21 +194,16 @@ int Application::Run()
 		Event.UpdateEvent(window);
 		AvTime.Update(UI.GetIO()->Framerate);
 
-		UI.EventActivate();
-		renderer.EventActivate();
+		UI.EventActivate(Ctx);
+		UI.RenderUI(Ctx);
 
-		UI.RenderUI();
-
-		renderer.GetActiveCamera()->EventActivate();
-		/* Render here */
-
-#if 0
-		renderer.GetActiveCamera()->ChangeCamPersp(70 + rotateX * 3);
-#endif
-		
-		renderer.Render();
+		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+		scene->GetActiveCamera()->EventActivate(Ctx);
+		/* Render here */		
+		renderer.Render(Ctx);
 
 		renderer.Reset();
+		scene->ResetStatus();
 		Event.Reset();
 
 		//DEBUG(renderer.r_frame_count);
@@ -200,7 +220,7 @@ int Application::Run()
 	}
 	DEBUG(std::to_string(1000 / AvTime.result) + "ms");
 	std::cout << std::endl << "[ Finished ]" << std::endl;
-	std::cout << GameObject::count << " object(s)" << std::endl;
+	std::cout << UID::GetTotalAllocated() << " object(s)" << std::endl;
 
 	return 0;
 }

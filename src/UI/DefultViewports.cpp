@@ -1,6 +1,24 @@
 #include "ImguiManager.h"
 #include "macros.h"
 
+#include "menu/ImguiMButton.h"
+#include "menu/ImguiMOption.h"
+#include "menu/ImguiMSwitch.h"
+
+#include "layer/Viewport.h"
+#include "layer/Outliner.h"
+#include "layer/ParamControl.h"
+#include "layer/ShaderEditor.h"
+#include "layer/MaterialViewer.h"
+#include "layer/TransformPanel.h"
+#include "layer/RenderConfigViewer.h"
+
+#include "item/ParaInput.h"
+#include "item/TextureViewer.h"
+#include "item/Text.h"
+#include "item/Button.h"
+#include "item/OpaButton.h"
+
 void ImguiManager::DefultViewports() {
 
 

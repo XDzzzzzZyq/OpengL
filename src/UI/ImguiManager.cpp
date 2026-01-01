@@ -1,14 +1,11 @@
 #include "ImguiManager.h"
+#include "layer/ShaderEditor.h"
 
 #include "Guizmo/ImGuizmo.h"
 
 bool ImguiManager::is_prefW_open = false;
 
 ImguiManager::ImguiManager()
-{}
-
-ImguiManager::ImguiManager(GLFWwindow* window)
-	:window(window)
 {}
 
 void ImguiManager::Init()
@@ -39,15 +36,17 @@ void ImguiManager::RegistarMenuEvents()
 
 			if (submenu->mitem_shortcut.empty()) continue;
 
-			EventList[EventListener::ParseShortCut(submenu->mitem_shortcut)] = [submenu] {
+			EventList[EventListener::ParseShortCut(submenu->mitem_shortcut)] = [submenu] (const SceneContext&) {
 				if (EventListener::is_key_changed)
 					submenu->mitem_func(true);
 			};
 		}
 }
 
-void ImguiManager::ManagerInit(GLFWwindow* window)
+void ImguiManager::ManagerInit()
 {
+	GLFWwindow* window = glfwGetCurrentContext();
+
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui::StyleColorsDark();
@@ -92,6 +91,7 @@ void ImguiManager::NewFrame() const
 	ImGuizmo::BeginFrame();
 }
 
+#include "menu/ImguiMSwitch.h"
 void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 {
 	assert(layer_name_buffer.find(layer->uly_name) == layer_name_buffer.end());
@@ -214,39 +214,39 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return item->GetPara();
 }
 
-void ImguiManager::RenderUI(bool rend)
+void ImguiManager::RenderUI(const SceneContext& ctx, bool rend)
 {
 	if (rend) {
-
+		
 		if (ParaUpdate)
 			ParaUpdate();
 
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-
+		
 		ImGui::BeginMainMenuBar();
-		EventListener::window_pos = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos());
 		/*			ImGui::BeginMenuBar();*/
 		for (const auto& menu : menu_list) {
-			menu->RenderMenu();
+			menu->RenderMenu(ctx);
 		}
 		/*			ImGui::EndMenuBar();*/
 		ImGui::EndMainMenuBar();
-
+		
 		//ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 100.0f);
 		for (const auto& layer : layer_list) {
 			if (layer->uly_ID != active_layer_id) {
 				if (!layer->uly_is_rendered)
 					continue;
-				layer->UpdateLayer();
-				layer->RenderLayer();
+				layer->UpdateLayer(ctx);
+				layer->RenderLayer(ctx);
 			}
 		}
 		if (layer_list[active_layer_id]->uly_is_rendered) {
-			layer_list[active_layer_id]->UpdateLayer();
-			layer_list[active_layer_id]->RenderLayer();
+			layer_list[active_layer_id]->UpdateLayer(ctx);
+			layer_list[active_layer_id]->RenderLayer(ctx);
+
+			//ImGui::PopStyleVar();
+			//ImGui::ShowStyleEditor();
 		}
-		//ImGui::PopStyleVar();
-		//ImGui::ShowStyleEditor();
 	}
 	else {
 		io->ConfigFlags = !ImGuiConfigFlags_DockingEnable;
@@ -254,25 +254,19 @@ void ImguiManager::RenderUI(bool rend)
 
 	if (is_prefW_open)
 		ImGui::ShowStyleEditor();
-
+	
 	ImGui::Render();
-
+	
 	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		if (window) {
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(window);
-		}
-		else
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
-
+		ImGui::UpdatePlatformWindows(); 
+		ImGui::RenderPlatformWindowsDefault(); 
+		glfwSetErrorCallback([](int code, const char* desc) {
+			fprintf(stderr, "GLFW Error %d: %s\n", code, desc);
+			});
 	}
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+	
+	auto draw_data = ImGui::GetDrawData();
+	ImGui_ImplOpenGL3_RenderDrawData(draw_data);
+	
 }

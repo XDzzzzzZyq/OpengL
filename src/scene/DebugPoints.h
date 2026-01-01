@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Context.h"
+
 #include "GameObject.h"
 #include "Transform.h"
 
@@ -8,8 +10,6 @@
 #include "Shaders.h"
 
 #include "buffer/StorageBuffer.h"
-
-#include "Camera.h"
 
 enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT
@@ -40,7 +40,7 @@ public:
 	DebugPoints();
 	DebugPoints(const std::vector<glm::vec3>& pos_list);
 
-	void RenderDebugPoint(Camera* camera);
+	void RenderDebugPoint(const SceneContext& ctx);
 
 	void SetDebugPointsShader(PointType type, bool proj);
 	void PushDebugPoint(const glm::vec3& point);

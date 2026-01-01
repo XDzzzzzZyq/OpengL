@@ -40,7 +40,7 @@ public:
 
 	ShaderEditor();
 	ShaderEditor(const std::string& name);
-	static void InitEditors();
+	static void InitEditors(); // TODO: not necessary
 	~ShaderEditor();
 
 public:
@@ -51,18 +51,18 @@ public:
 	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
 	bool AddStruct(bool def_type = false);
 	bool AddLink();
-	void CompileShader();
+	void CompileShader(const SceneContext& ctx);
 
 public:
 
-	void UpdateShaderEditor(const std::string& _code = "") const;
-	void UpdateLayer() override;
+	void UpdateShaderEditor(const SceneContext& ctx, const std::string& _code = "") const;
+	void UpdateLayer(const SceneContext& ctx) override;
 	static void UpdateKeyword();
 
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
-	void RenderShaderStruct();
+	void RenderShaderStruct(const SceneContext& ctx);
 
-	void RenderLayer() override;
+	void RenderLayer(const SceneContext& ctx) override;
 };

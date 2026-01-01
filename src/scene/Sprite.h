@@ -4,11 +4,10 @@
 #include "glm/glm.hpp"
 
 #include "GameObject.h"
-#include "MeshData.h"
+#include "Context.h"
 
 #include "Texture.h"
 #include "Shaders.h"
-#include "Camera.h"
 
 #define SPRITE_SIZE 0.7f
 
@@ -32,8 +31,8 @@ public:
 
 	Sprite();
 
-	void RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* cam);
-	void RenderSprite(Camera* cam);
+	void RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col);
+	void RenderSprite(const SceneContext& ctx);
 
 	void SetSpriteShader();
 	std::string ParsePath() const;

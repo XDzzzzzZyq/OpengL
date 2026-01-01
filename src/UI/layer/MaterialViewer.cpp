@@ -16,12 +16,13 @@ MaterialViewer::~MaterialViewer()
 
 }
 
-static Material* GetActiveMatPtr()
+static Material* GetActiveMatPtr(const SceneContext& ctx)
 {
-	if (EventListener::active_object == nullptr)
+	GameObject* active_object = ctx.c_selections.GetSelectedObjects();
+	if (active_object == nullptr)
 		return nullptr;
 
-	return (Material*)(EventListener::active_object->GetMaterial());
+	return (Material*)(active_object->GetMaterial());
 }
 
 static bool RenderMatParam(MatParaType _type, Material::MatParamData& _param)
@@ -60,9 +61,9 @@ void MaterialViewer::RenderName(std::string& _name, bool read_only /*= false*/)
 	ImGui::NewLine();
 }
 
-void MaterialViewer::RenderLayer()
+void MaterialViewer::RenderLayer(const SceneContext& ctx)
 {
-	Material* active_material = GetActiveMatPtr();
+	Material* active_material = GetActiveMatPtr(ctx);
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 

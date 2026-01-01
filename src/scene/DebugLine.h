@@ -1,11 +1,12 @@
 #pragma once
+#include "Context.h"
+
 #include "GameObject.h"
 #include "Transform.h"
 
 #include "VertexArray.h"
 #include "buffer/IndexBuffer.h"
 #include "Shaders.h"
-#include "Camera.h"
 
 #include "Parameters.h"
 
@@ -35,7 +36,7 @@ public:
 	void PushDebugLine(float x, float y, float z);
 	void PushDebugLines(const std::vector<glm::vec3>& points);
 
-	void RenderDdbugLine(Camera* camera);
+	void RenderDdbugLine(const SceneContext& ctx);
 
 	void SetDLineShader();
 	void* GetShader()		override { return &dLine_shader; };

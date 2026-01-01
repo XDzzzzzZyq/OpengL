@@ -1,4 +1,5 @@
 #include "DebugPoints.h"
+#include "Camera.h"
 #include "macros.h"
 
 std::vector<float> DebugPoints::VertData = {
@@ -33,9 +34,11 @@ DebugPoints::DebugPoints(const std::vector<glm::vec3>& pos_list)
 	SetDebugPointsShader(SQUARE_POINT, true);
 }
 
-void DebugPoints::RenderDebugPoint(Camera* camera)
+void DebugPoints::RenderDebugPoint(const SceneContext& ctx)
 {
 	const size_t trans_type = (size_t)is_proj;
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	const bool is_selected = ctx.c_selections.IsSelected(this);
 
 	dp_vertArry.Bind();
 	dp_index.Bind();
@@ -55,11 +58,11 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	if (is_list_changed || dp_shader[trans_type].is_shader_changed)
 		dp_pos_buffer.GenStorageBuffer(dp_pos_list);
 
-	if(camera->is_invUniform_changed || dp_shader[trans_type].is_shader_changed)
-		dp_shader[trans_type].SetValue("U_cam_trans", camera->o_InvTransform);
+	if(cam->is_invUniform_changed || dp_shader[trans_type].is_shader_changed)
+		dp_shader[trans_type].SetValue("U_cam_trans", cam->o_InvTransform);
 
-	if(camera->is_frustum_changed || dp_shader[trans_type].is_shader_changed)
-		dp_shader[trans_type].SetValue("U_ProjectM", camera->cam_frustum);
+	if(cam->is_frustum_changed || dp_shader[trans_type].is_shader_changed)
+		dp_shader[trans_type].SetValue("U_ProjectM", cam->cam_frustum);
 
 	dp_shader[trans_type].SetValue("U_Opacity", dp_opacity);
 	dp_shader[trans_type].SetValue("U_Scale", dp_scale);

@@ -17,7 +17,7 @@ void UI::ImguiMSwitch::BindSwitch(bool* _switch)
 	mitem_switch = _switch;
 }
 
-void UI::ImguiMSwitch::RenderMenuItem()
+void UI::ImguiMSwitch::RenderMenuItem(const SceneContext& ctx)
 {
 	if (ImGui::MenuItem(
 		mitem_name.c_str(),

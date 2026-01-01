@@ -6,13 +6,10 @@
 
 
 #include "EventListener.h"
+#include "Context.h"
 #include "ImguiTheme.h"
 
-#include "item/ParaInput.h"
-#include "item/TextureViewer.h"
-#include "item/Text.h"
-#include "item/Button.h"
-#include "item/OpaButton.h"
+#include "ImguiItem.h"
 
 #include <unordered_map>
 #include <map>
@@ -79,15 +76,13 @@ public:
 	std::function<void(void)> pre_RenderLayer = [] {};
 	std::function<void(void)> extra_RenderLayer = [] {};
 	std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer() { DEBUG("no Render function overrided"); return; };
-	virtual void UpdateLayer() {};
-
-	//for outline          |  TYPE  |  NAME  |
-	virtual void SetObjectList(OutlineData* data) { DEBUG(uly_name + " is not a Outline"); return; }
+	virtual void RenderLayer(const SceneContext& ctx) { DEBUG("no Render function overrided"); return; };
+	virtual void UpdateLayer(const SceneContext& ctx) {};
+	
 	std::function<void(void)> set_active = [] {};
 
+	// TODO: better design
 	void EventInit();
-	void LMB();
 };
 
 template<class ItemType, class... Args>
@@ -97,3 +92,7 @@ void ImguiLayer::PushItem(Args... args)
 	PushItem(std::dynamic_pointer_cast<ImguiItem>(item));
 }
 
+#include <type_traits>
+
+template<typename T>
+concept ImguiLayerType = std::is_base_of_v<ImguiLayer, T>;

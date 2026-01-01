@@ -445,13 +445,13 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("U_color",		BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos",		BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal",	BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo",	BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse",		BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission",	BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha",		BUFFER_TEXTURE + MASK_FB);
 	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights

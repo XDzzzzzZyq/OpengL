@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Context.h"
+#include "GameObject.h"
+#include "Transform.h"
+
 #include "MeshData.h"
 
 #include "Texture.h"
@@ -28,7 +32,7 @@ public:
 
 public:
 
-	void RenderMesh(const Camera* cam);
+	void RenderMesh(const SceneContext& ctx);
 	void RenderObjProxy(bool using_original = true) const;
 
 public:

@@ -11,7 +11,9 @@
 
 #include "SDFField.h"
 
-class SceneResource
+#include "SelectionManager.h"
+
+class SceneResource : public UID
 {
 public:
 
@@ -40,7 +42,7 @@ public:
 		ShaderChanged		= 1 << 3,
 		MaterialChanged		= 1 << 4,
 
-		SceneChanged = ObjectTransChanged | LightChanged | CameraChanged | ShaderChanged | MaterialChanged,
+		SceneChanged		= ObjectTransChanged | LightChanged | CameraChanged | ShaderChanged | MaterialChanged,
 		SDFChanged			= 1 << 8,
 	};
 
@@ -67,6 +69,8 @@ public:
 
 	Resource<SDFField>          sdf_field;
 
+	SelectionManager<GameObject>scene_selection;
+
 public:
 
 	void UseCamera(Resource<Camera> camera);
@@ -79,16 +83,15 @@ public:
 	void UsePostProcessing(Resource<PostProcessing> pps);
 	void UseSDF(Resource<SDFField> sdf);
 
-	std::shared_ptr<Camera> GetActiveCamera();
-	std::shared_ptr<Environment> GetActiveEnvironment();
-	std::shared_ptr<PostProcessing> GetPPS(int _tar);
+	GameObject* GetGameObject(int _id);
+	Camera* GetActiveCamera();
+	Environment* GetActiveEnvironment();
+	PostProcessing* GetPPS(int _tar);
 
 public:
 
 	void UpdateObjTransforms();
-
 	void ResetStatus();
-
 };
 
 class SceneManager
@@ -99,9 +102,9 @@ private:
 
 public:                        
 
-	static std::shared_ptr<SceneResource> SceneConfig1(std::string _name="scene1");
-	static std::shared_ptr<SceneResource> SceneConfig2(std::string _name="cornellbox");
-	static std::shared_ptr<SceneResource> SceneConfig3(std::string _name="SDF test");
+	static std::shared_ptr<SceneResource> SceneConfig1(std::string _name = "scene1");
+	static std::shared_ptr<SceneResource> SceneConfig2(std::string _name = "cornellbox");
+	static std::shared_ptr<SceneResource> SceneConfig3(std::string _name = "SDF test");
 	static std::shared_ptr<SceneResource> SceneConfig4(std::string _name = "shadow test");
 
 	static std::shared_ptr<SceneResource> GetSceneConfig(std::string _name);

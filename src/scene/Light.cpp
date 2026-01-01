@@ -1,6 +1,8 @@
 #include "Light.h"
 #include "xdz_math.h"
 
+#include "EventListener.h"
+
 FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
 
 std::array<ChainedShader, 4> Light::_shadowmap_shader = {};
@@ -71,7 +73,7 @@ Light::Light(LightType type, float power, glm::vec3 color)
 	BindShadowMapShader();
 }
 
-void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
+void Light::InitShadowMap(const RenderConfigs* config/*=nullptr*/)
 {
 	assert(light_type != LightType::NONELIGHT);
 	
@@ -180,9 +182,9 @@ void Light::SetRatio(float _ratio)
 	area_ratio = _ratio;
 }
 
-void Light::RenderLightSpr(Camera* cam)
+void Light::RenderLightSpr(const SceneContext& ctx)
 {
-	light_sprite.RenderSprite(o_position, light_color, cam);
+	light_sprite.RenderSprite(ctx, o_position, light_color);
 }
 
 void Light::BindShadowMapBuffer()
@@ -276,7 +278,7 @@ void Light::UpdateProjMatrix()
 }
 
 
-void Light::ConstructSAT(RenderConfigs* config)
+void Light::ConstructSAT(const RenderConfigs* config)
 {
 	if (!config->RequiresMomentShadow())
 		return;
@@ -504,8 +506,9 @@ void LightArrayBuffer::Resize(GLuint _w, GLuint _h){
 
 void LightArrayBuffer::UpdateLight(Light* light)
 {
-	if (light_info_cache.find(light->GetObjectID()) == light_info_cache.end())
+	if (light_info_cache.find(light->GetObjectID()) == light_info_cache.end()) {
 		return;
+	}
 
 	int loc = std::get<0>(light_info_cache[light->GetObjectID()]);
 	light->UpdateProjMatrix();

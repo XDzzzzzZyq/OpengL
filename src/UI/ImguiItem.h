@@ -76,7 +76,13 @@ public:
 namespace Item {
 
 	inline const bool is_inside(const ImVec2& size) {
-		return ImGui::GetCursorScreenPos() - EventListener::window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)
-			&& ImVec2(EventListener::mouse_x, EventListener::mouse_y) < ImGui::GetCursorScreenPos() - EventListener::window_pos + size;
+		ImVec2 window_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
+		return window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)
+			&& ImVec2(EventListener::mouse_x, EventListener::mouse_y) < window_pos + size;
 	}
 }
+
+#include <type_traits>
+
+template<typename T>
+concept ImguiItemType = std::is_base_of_v<ImguiItem, T>;

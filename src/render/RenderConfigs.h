@@ -73,7 +73,7 @@ public:
 	ShadowAlg r_shadow_algorithm = ShadowAlg::ShadowMapping;
 
 public:
-
+	// TODO: should not be here
 	enum ModifyFlags
 	{
 		NoChanges,
@@ -101,6 +101,7 @@ public:
 public:
 
 	RenderConfigs();
+	// TODO: rethink about the callback design
 	std::function<void(ModifyFlags)> call_back{ nullptr };
 
 private:

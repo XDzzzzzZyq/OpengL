@@ -1,18 +1,17 @@
 #pragma once
 
-#include "EventListener.h"
-
-#include "SceneManager.h"
 #include "buffer/FrameBuffer.h"
-#include "SDFField.h"
+#include "Light.h"
+
 #include "RenderConfigs.h"
+#include "Context.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <unordered_map>
 
-class Renderer : public EventListener
+class Renderer
 {
 private:
 	enum _BuildinPPS
@@ -46,6 +45,7 @@ public:
 	void EndFrameBuffer(int slot);
 	void FrameBufferResize(const glm::vec2& size);
 	GLuint GetFrameBufferTexture(int slot);
+	FrameBuffer* GetFrameBufferPtr() { return r_render_result.get(); }
 
 public:
 
@@ -61,50 +61,22 @@ public:
 
 public:
 
-	std::shared_ptr<SceneResource> r_scene;
-
 	LightArrayBuffer r_light_data;
 	RenderConfigs r_config;
 	RenderConfigs* GetConfig() { return &r_config; }
 
 public:
 
-	std::string GetObjectName(int ID);
-	int GetSelectID(GLuint x, GLuint y);
-
-public:
-
-	bool multi_select = false;
-	void EventInit();
-	void LMB_CLICK();
-	void SHIFT();
-
-public:
-
 	void NewFrame();
-
-	void Render(bool rend = true, bool buff = true);
-	void RenderShadowMap(Light* light);
-	void ConstructSDF();
+	void Render(const SceneContext& ctx, bool rend = true, bool buff = true);
 
 public:
 
 	void Reset();
 	void FrameResize(GLuint _w, GLuint _h);
 
-	void OnRenderCfgUpdate(RenderConfigs::ModifyFlags flag);
-	void UpdateLightInfo();
-
-public:
-
-	void UseScene(std::shared_ptr<SceneResource> _scene);
-
-	void ActivateCamera(int cam_id);
-	void ActivateEnvironment(int envir_id);
-
-	std::shared_ptr<Camera> GetActiveCamera();
-	std::shared_ptr<Environment> GetActiveEnvironment();
-	std::shared_ptr<PostProcessing> GetPPS(int _tar);
+	void ConstructSDF(const SceneContext& ctx);
+	void UpdateLightInfo(const SceneContext & ctx);
 
 public:
 

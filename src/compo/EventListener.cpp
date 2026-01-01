@@ -2,7 +2,6 @@
 #include "macros.h"
 
 EventListener::KeyMouseEvent EventListener::EVT_STATUS;
-GLFWwindow* EventListener::evt_window = (GLFWwindow*)nullptr;
 
 int EventListener::frame_count = 0;
 
@@ -45,50 +44,14 @@ void EventListener::PushNormKey(char _name)
 bool EventListener::is_sprite_selected = false;
 bool EventListener::is_GOlist_changed = true;
 bool EventListener::is_selected_changed = true;
-bool EventListener::is_outliner_selected = false;
 
-std::function<GameObject* (int)> EventListener::GetActiveObject = NULL;
-std::function<GameObject* (void)> EventListener::GetActiveCamera = NULL;
-
-int EventListener::active_GO_ID;
-
-std::vector<int> EventListener::selec_list;
 std::vector<int> EventListener::parent_index_list;
-OutlineData EventListener::outline_list;
-
-GameObject* EventListener::active_object = (GameObject*)nullptr;
-
-glm::vec2 EventListener::window_pos = glm::vec2(0);
-glm::vec2 EventListener::viewport_offset = glm::vec2(0);
-bool EventListener::is_in_viewport = false;
-EventListener::ViewPortStatus EventListener::viewport_status = EventListener::ViewPortStatus::None;
-
-void EventListener::ReportGuizmoStatus(bool hover, bool click)
-{
-	if (hover)
-		EventListener::viewport_status = EventListener::ViewPortStatus::OnHover;
-	if (click)
-		EventListener::viewport_status = EventListener::ViewPortStatus::OnClick;
-}
 
 EventListener::EventListener()
-{
-}
-
-EventListener::EventListener(GLFWwindow* window)
-{
-	evt_window = window;
-}
-
-void EventListener::SetWindow(GLFWwindow* window)
-{
-	evt_window = window;
-}
+{}
 
 EventListener::~EventListener()
-{
-
-}
+{}
 
 EventListener::MouseStatus EventListener::ListenMouseEvent(GLFWwindow* window)
 {
@@ -205,11 +168,11 @@ EventListener::KeyMouseEvent EventListener::GenIntEvent(SpecialKeys k1, SpecialK
 	return result;
 }
 
-void EventListener::EventActivate()
+void EventListener::EventActivate(const SceneContext& ctx)
 {
 	if (EVT_STATUS.GenStateData() != 0)
 		if (EventList.find(EVT_STATUS) != EventList.end())
-			EventList[EVT_STATUS]();
+			EventList[EVT_STATUS](ctx);
 }
 
 void EventListener::Reset()

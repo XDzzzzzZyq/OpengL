@@ -1,4 +1,5 @@
 #include "DebugLine.h"
+#include "Camera.h"
 #include "macros.h"
 
 DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
@@ -54,8 +55,10 @@ void DebugLine::PushDebugLines(const std::vector<glm::vec3>& points)
 		dLine_pos_list.emplace_back(points[i]);
 }
 
-void DebugLine::RenderDdbugLine(Camera* camera)
+void DebugLine::RenderDdbugLine(const SceneContext& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	const bool is_selected = ctx.c_selections.IsSelected(this);
 
 	if (dLine_pos_list.size() < 2)return;
 
@@ -63,11 +66,11 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	if (dLine_shader.is_shader_changed)
 		dLine_shader.InitShader();
 
-	if(camera->is_invUniform_changed || dLine_shader.is_shader_changed)
-		dLine_shader.SetValue("U_cam_trans",camera->o_InvTransform);
+	if(cam->is_invUniform_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_cam_trans",cam->o_InvTransform);
 
-	if(camera->is_frustum_changed || dLine_shader.is_shader_changed)
-		dLine_shader.SetValue("U_ProjectM", camera->cam_frustum);
+	if(cam->is_frustum_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_ProjectM", cam->cam_frustum);
 
 	if(is_Uniform_changed || dLine_shader.is_shader_changed)
 		dLine_shader.SetValue("U_Trans", o_Transform);

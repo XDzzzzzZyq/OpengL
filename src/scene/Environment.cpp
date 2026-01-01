@@ -1,4 +1,6 @@
 #include "Environment.h"
+#include "MeshData.h"
+#include "Camera.h"
 
 Environment::Environment(const std::string& texpath)
 {
@@ -75,8 +77,9 @@ void Environment::UnbindEnvironTexture() const
 	envir_IBL_spec.Unbind();
 }
 
-void Environment::RenderEnvironment(Camera* cam)
+void Environment::RenderEnvironment(const SceneContext& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
 	envir_shader.UseShader();
 	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 	envir_IBL_spec.Bind(IBL_TEXTURE);
@@ -98,7 +101,7 @@ void Environment::RenderEnvironment(Camera* cam)
 	envir_shader.is_shader_changed = false;
 }
 
-void Environment::RenderEnvirSpr(Camera* cam)
+void Environment::RenderEnvirSpr(const SceneContext& ctx)
 {
-	envir_sprite.RenderSprite(o_position, envir_color, cam);
+	envir_sprite.RenderSprite(ctx, o_position, envir_color);
 }
