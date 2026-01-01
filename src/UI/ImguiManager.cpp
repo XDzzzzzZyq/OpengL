@@ -221,8 +221,7 @@ void ImguiManager::RenderUI(const SceneContext& ctx, bool rend)
 		if (ParaUpdate)
 			ParaUpdate();
 
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-		
+    ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 		ImGui::BeginMainMenuBar();
 		/*			ImGui::BeginMenuBar();*/
 		for (const auto& menu : menu_list) {

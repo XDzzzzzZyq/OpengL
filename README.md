@@ -2,7 +2,7 @@
 
 ##### OpenGL based renderer development by XDzZyq
 
-
+Renderer Architecture: https://deepwiki.com/XDzzzzzZyq/OpengL
 
 # RECORDs
 
