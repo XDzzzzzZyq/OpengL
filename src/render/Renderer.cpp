@@ -224,14 +224,14 @@ void Renderer::Render(bool rend, bool buff) {
 	for (auto& [id, light] : r_scene->light_list) {
 		if (!light->is_viewport) return;
 
-		if (light->is_light_changed || light->is_Uniform_changed)
+		if (light->is_light_changed || light->is_Uniform_changed) {
 			r_light_data.UpdateLight(light.get());
+			RenderShadowMap(light.get());
+		}
 
 		/* Depth Test for Shadow Map */
 		if (light->is_Uniform_changed)
 			light->UpdateProjMatrix();
-
-		RenderShadowMap(light.get());
 	}
 
 	///////////   Begin buffering    ///////////
@@ -474,7 +474,7 @@ void Renderer::RenderShadowMap(Light* light)
 	light->BindShadowMapBuffer();
 	light->BindShadowMapShader();
 
-	glClear(GL_DEPTH_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	for (const auto& [id, mesh] : r_scene->mesh_list)
 	{
@@ -488,6 +488,7 @@ void Renderer::RenderShadowMap(Light* light)
 	FrameBuffer::UnbindFrameBuffer();
 
 	if (r_config.RequiresMomentShadow()) {
+		DEBUG("Construct Moment Shadow Map");
 		light->ConstructSAT(&r_config);
 	}
 }

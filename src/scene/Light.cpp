@@ -567,7 +567,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		shadow_shader.UseShader();
 		shadow_shader.SetValue("offset", xdzm::map01_11(random));
 		shadow_shader.SetValue("frame", frame);
-		shadow_shader.SetValue("map_size", 1024, 1024);
+		shadow_shader.SetValue("map_size", glm::vec2(light->light_shadow_map.GetW(), light->light_shadow_map.GetH()));
 
 		shadow_cache[id].BindC(4);
 		switch (type)
@@ -586,9 +586,11 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		case SUNLIGHT:
 
 			Texture::BindM(map_id, 31, flat_map);
+
 			shadow_shader.SetValue("proj_trans", light->light_proj);
 			shadow_shader.SetValue("dir", sun_list[loc].dir);
 			shadow_shader.SetValue("radius", Light::point_blur_range);
+			shadow_shader.SetValue("light_size", Light::sun_shaodow_field);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
 			break;

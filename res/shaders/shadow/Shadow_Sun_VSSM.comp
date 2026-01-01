@@ -13,7 +13,10 @@ uniform float light_far;
 uniform float update_rate;
 uniform vec3 offset;
 uniform float radius;
+uniform float light_size;
 uniform mat4 proj_trans;
+
+uniform vec2 map_size;
 
 float evaluateShadow(float c_depth, float min_depth){
 	float bias = 0.015;
@@ -32,13 +35,34 @@ vec3 GetCoord(vec3 pos, mat4 trans){
 	return coord;
 }
 
-float shadow_at(ivec2 uv){
-	vec3 Pos = imageLoad(U_pos, uv).xyz + offset * radius;
+vec2 sample_moment(float w, vec2 coord){
+	const float dx = 0.5 / map_size.x;
+	const vec2 lt = texture(Shadow_Map, coord.xy + w * vec2(-dx, -dx)).rg;
+	const vec2 rt = texture(Shadow_Map, coord.xy + w * vec2( dx, -dx)).rg; 
+	const vec2 lb = texture(Shadow_Map, coord.xy + w * vec2(-dx,  dx)).rg; 
+	const vec2 rb = texture(Shadow_Map, coord.xy + w * vec2( dx,  dx)).rg; 
+	const float z_av = (rb.r + lt.r - lb.r - rt.r) / (w * w);			// E[z]
+	const float z_av_sq = z_av * z_av;									// E[z]^2
+	const float z_sq_av = (rb.g + lt.g - lb.g - rt.g) / (w * w);		// E[z^2]
+	const float z_var = max(z_sq_av - z_av_sq, 0.0001);					// Var(z)
 
-	vec3 coord = GetCoord(Pos, proj_trans);
-	float closestDepth = texture(Shadow_Map, coord.xy).r; 
-	float currentDepth = coord.z;
-	return evaluateShadow(currentDepth, closestDepth);
+	return vec2(z_av, z_var);
+}
+
+float shadow_at(ivec2 uv){
+	const vec3 Pos = imageLoad(U_pos, uv).xyz;
+
+	const vec3 coord = GetCoord(Pos, proj_trans);
+	const float t = coord.z;		// current point's depth
+
+	float w = 2.0f;			// filter kernel
+	vec2 m = sample_moment(w, coord.xy);
+	float z_av = m.r;
+	float z_var = m.g;
+
+	float P = z_var / (z_var + (t - z_av) * (t - z_av));
+
+	return min(max(evaluateShadow(t, z_av), P), 1.0);
 }
 
 void UpdateOF(ivec2 uv){
@@ -73,8 +97,8 @@ void main(){
 	float shadow = 0.0;
 
 	shadow = shadow_at(uv + ivec2( 0, 0));
-	float shadow_b = BOF_sample(uv);
-	shadow = shadow_b + update_rate * (shadow - shadow_b);
+	float shadow_b = imageLoad(U_Lighting, uv).r;
+	//shadow = shadow_b + update_rate * (shadow - shadow_b);
 
 	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));
 }
