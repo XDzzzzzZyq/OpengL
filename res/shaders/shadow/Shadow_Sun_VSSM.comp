@@ -18,14 +18,6 @@ uniform mat4 proj_trans;
 
 uniform vec2 map_size;
 
-float evaluateShadow(float c_depth, float min_depth){
-	float bias = 0.015;
-	float range = 0.005;
-	float delta = c_depth - min_depth - bias;  // delta greater/equal than 0
-
-	return 1-smoothstep(0, range, delta);
-}
-
 vec3 GetCoord(vec3 pos, mat4 trans){
 
 	vec4 pos_p = trans * vec4(pos, 1);
@@ -50,7 +42,7 @@ vec2 sample_moment(float w, vec2 coord){
 }
 
 float shadow_at(ivec2 uv){
-	const vec3 Pos = imageLoad(U_pos, uv).xyz;
+	const vec3 Pos = imageLoad(U_pos, uv).xyz + offset * radius * 0.1; // just smaller jit
 
 	const vec3 coord = GetCoord(Pos, proj_trans);
 	const float t = coord.z;		// current point's depth
@@ -61,8 +53,21 @@ float shadow_at(ivec2 uv){
 	float z_var = m.g;
 
 	float P = z_var / (z_var + (t - z_av) * (t - z_av));
+	const float z_occ = (z_av - P * t)/(1 - P);
+	const float eps = 1e-3;
+	
+	// Update new penumbra w
+	w = (t - z_occ) * light_size / z_occ;
+	if (w <= 0.0) {
+		return 1.0;
+	}
+	m = sample_moment(w, coord.xy);
+	z_av = m.r;
+	z_var = m.g;
+	
+	P = z_var / (z_var + (t - z_av) * (t - z_av));
 
-	return min(max(evaluateShadow(t, z_av), P), 1.0);
+	return min(max(float(t <= z_av), P), 1.0);
 }
 
 void UpdateOF(ivec2 uv){
@@ -98,7 +103,7 @@ void main(){
 
 	shadow = shadow_at(uv + ivec2( 0, 0));
 	float shadow_b = imageLoad(U_Lighting, uv).r;
-	//shadow = shadow_b + update_rate * (shadow - shadow_b);
+	shadow = shadow_b + update_rate * (shadow - shadow_b);
 
 	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));
 }
