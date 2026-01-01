@@ -250,17 +250,9 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _tex.GetTexID(), 0);
 		break;
 	}
-	if (_data == GL_DEPTH_COMPONENT)
-	{
-		// Depth-only framebuffer
-		glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);
-	}
-	else
-	{
-		GLenum drawBuf = GL_COLOR_ATTACHMENT0;
-		glDrawBuffers(1, &drawBuf);
-	}
+	if (_data != GL_DEPTH_COMPONENT)
+		glDrawBuffers(1, &attachment);
+
 	Resize(_tex.GetW(), _tex.GetH());
 	UnbindFrameBuffer();
 }
