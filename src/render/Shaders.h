@@ -307,14 +307,14 @@ public:
 	ComputeShader& operator=(ComputeShader&&) = default;
 	ComputeShader& operator=(const ComputeShader&) = default;
 
-	void ResetID(ShaderType tar, GLuint _id) override { comp_shader.sh_ID = _id; }
+	void ResetID(ShaderType tar, GLuint _id) override;
 	void ResetDefult(std::string name);
 	void CreateShader(const std::string& compShader);
 
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
 
 	void ParseShaderCode(const std::string& _code, ShaderType tar) override;
-	void RelinkShader(ShaderType tar = NONE_SHADER) override { /*TODO*/ };
+	void RelinkShader(ShaderType tar = NONE_SHADER) override;
 	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
 
 	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override;

@@ -957,6 +957,13 @@ ComputeShader::~ComputeShader()
 
 }
 
+void ComputeShader::ResetID(ShaderType tar, GLuint _id)
+{
+	if (comp_shader.sh_ID != _id)
+		glDeleteShader(comp_shader.sh_ID);
+	comp_shader.sh_ID = _id;
+}
+
 void ComputeShader::ResetDefult(std::string name)
 {
 
@@ -978,7 +985,6 @@ void ComputeShader::CreateShader(const std::string& compShader)
 	comp_shader.sh_ID = CompileShaderCode(COMPUTE_SHADER, compShader);
 
 	glAttachShader(program_id, comp_shader.sh_ID);
-
 	glLinkProgram(program_id);
 }
 
@@ -986,6 +992,20 @@ void ComputeShader::ParseShaderCode(const std::string& _code, ShaderType tar)
 {
 	if (tar == COMPUTE_SHADER)
 		comp_shader.sh_code = _code;
+}
+
+void ComputeShader::RelinkShader(ShaderType tar)
+{
+	GLint program_id = glCreateProgram();
+	GLint shader_id = CompileShaderCode(COMPUTE_SHADER, comp_shader.sh_code);
+
+	glAttachShader(program_id, shader_id);
+	glLinkProgram(program_id);
+
+	_resetProgramID(program_id);
+	ResetID(COMPUTE_SHADER, shader_id);
+
+	ResetDefult(comp_shader.sh_name);
 }
 
 Shaders::ShaderUnit* ComputeShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)

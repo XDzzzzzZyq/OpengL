@@ -271,7 +271,9 @@ void Light::UpdateProjMatrix()
 
 void* Light::GetShader()
 {
-	return &_shadowmap_shader[POINTLIGHT];
+	//return &_shadowmap_shader[POINTLIGHT];
+	ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName(char(RenderConfigs::ShadowAlg::ShadowMapping), light_type));
+	return &shadow_shader;
 }
 
 
@@ -561,7 +563,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		const GLuint map_id = light->light_shadow_map.GetTexID();
 		const LightType type = light->light_type;
 
-		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName((char)config->r_shadow_algorithm, type));
+		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName(char(config->r_shadow_algorithm), type));
 
 		shadow_shader.UseShader();
 		shadow_shader.SetValue("offset", xdzm::map01_11(random));
