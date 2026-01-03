@@ -649,23 +649,17 @@ Shaders::ShaderUnit* RenderShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*
 
 GLuint RenderShader::GetShaderID(ShaderType type) const
 {
-	switch (type)
-	{
-	case VERTEX_SHADER:
-	case FRAGMENT_SHADER:
-		return shader_data[type].sh_ID;
-	default:
-		return -1;
-	}
+	assert(type == VERTEX_SHADER || type == FRAGMENT_SHADER);
+	return shader_data[type].sh_ID;
 }
 
 void RenderShader::ResetID(ShaderType type, GLuint id)
 {
-	assert(type == VERTEX_SHADER || type == FRAGMENT_SHADER);
-	if (shader_data[type].sh_ID != id) {
-		glDeleteShader(shader_data[type].sh_ID);
+	ShaderUnit* shader = GetShaderUnit(type);
+	if (shader->sh_ID != id) {
+		glDeleteShader(shader->sh_ID);
 	}
-	shader_data[type].sh_ID = id;
+	shader->sh_ID = id;
 }
 
 void RenderShader::LocalDebug() const
@@ -811,34 +805,33 @@ GLuint ChainedShader::CompileShader(ShaderType type)
 
 void ChainedShader::RelinkShader(ShaderType type)
 {
-	GLDEBUG;
 	GLuint shader_id = CompileShader(type);
 	if (shader_id == -1)
 		return;
-	GLDEBUG;
+
 	GLuint program_id = glCreateProgram();
-	GLDEBUG;
+
 	glAttachShader(program_id, shader_id);
 	for (auto& unit : shader_chain) {
 		if (unit.sh_type != type)
 			glAttachShader(program_id, unit.sh_ID);
 	}
-	GLDEBUG;
+
 	glLinkProgram(program_id);
 	glValidateProgram(program_id);
-	GLDEBUG;
+
 	int link_state = -1;
 	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
-	GLDEBUG;
+
 	if (link_state != GL_TRUE) {
 		DEBUG("Shader Link Error");
 		return;
 	}
-	GLDEBUG;
+
 	ResetID(type, shader_id);
 	_resetProgramID(program_id);
 	ResetCache();
-	GLDEBUG;
+
 	is_shader_changed = true;
 }
 
