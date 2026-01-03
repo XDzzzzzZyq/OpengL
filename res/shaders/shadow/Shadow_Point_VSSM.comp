@@ -14,23 +14,22 @@ uniform float update_rate;
 uniform vec3 offset;
 uniform float radius;
 
-float evaluateShadow(float c_depth, float min_depth){
-	float bias = 0.01;
-	float delta = c_depth - min_depth - bias;  // delta greater/equal than 0
-
-	return float(delta < 0);
-}
-
 float shadow_at(ivec2 uv){
 
-	vec3 light_off = light_pos + offset * radius;
+	vec3 light_off = light_pos + offset * radius * 0.1; // just smaller jit
 	vec3 Pos = imageLoad(U_pos, uv).xyz;
 	vec3 L = Pos - light_off;
 	float dist = length(L);
 
-	float closestDepth = texture(Shadow_Map, normalize(L)).r; 
-	float currentDepth = dist/light_far;
-	return evaluateShadow(currentDepth, closestDepth);
+	vec2 map = texture(Shadow_Map, normalize(L)).rg; 
+	float z_av = map.r;
+	float z2 = map.g;
+	float z_var = max(z2 - z_av * z_av, 0.0);
+	float t = dist/light_far;
+
+	float P = z_var / (z_var + (t - z_av) * (t - z_av));
+
+	return min(max(float(t <= z_av), P), 1.0);
 }
 
 void UpdateOF(ivec2 uv){

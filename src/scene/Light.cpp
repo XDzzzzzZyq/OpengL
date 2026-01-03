@@ -272,7 +272,10 @@ void Light::UpdateProjMatrix()
 void* Light::GetShader()
 {
 	//return &_shadowmap_shader[POINTLIGHT];
-	ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName(char(RenderConfigs::ShadowAlg::ShadowMapping), light_type));
+	ComputeShader& shadow_shader = ComputeShader::ImportShader(
+		ComputeShader::GetShadowShaderName(
+			char(RenderConfigs::ShadowAlg::VSSM),
+			light_type));
 	return &shadow_shader;
 }
 

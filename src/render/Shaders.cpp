@@ -1069,7 +1069,7 @@ std::string ComputeShader::GetSSRShaderName(RenderConfigs* config)
 
 std::string ComputeShader::GetAOShaderName(RenderConfigs* config)
 {
-	int alg = (int)config->r_shadow_algorithm;
+	int alg = (int)config->r_ao_algorithm;
 	assert(alg < ShaderLib::AO_prefix.size() && "unknown AO type");
 	return "pps/" + ShaderLib::AO_prefix[alg] + "AO";
 }
