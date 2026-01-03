@@ -35,8 +35,9 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				str >> word;
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
-				const std::string name = word.erase(word.size() - 1, 1);
-				shader->sh_struct->SetAB(layout, paratype, name);
+
+				std::erase(word, ';'); // var name
+				shader->sh_struct->SetAB(layout, paratype, word);
 			}
 			else if (Line.find("out ") != std::string::npos) {
 				std::istringstream str(Line);
@@ -48,8 +49,9 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				str >> word;
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
-				const std::string name = word.erase(word.size() - 1, 1);
-				shader->sh_struct->SetPass(layout, paratype, name);
+
+				std::erase(word, ';'); // var name
+				shader->sh_struct->SetPass(layout, paratype, word);
 			}
 			else if (Line.find("buffer ") != std::string::npos) {
 				layout = std::atoi(Line.substr(25, 1).c_str());
@@ -69,7 +71,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 
 					ParaType paratype = ShaderStruct::ParseType(word);
 					str >> word;
-					word.erase(word.end() - 1);
+					
+					std::erase(word, ';'); // var name
 					args_cache.emplace_back(paratype, word);
 				};
 
@@ -91,7 +94,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 
 					ParaType paratype = ShaderStruct::ParseType(word);
 					str >> word;
-					word.erase(word.end() - 1);
+					
+					std::erase(word, ';'); // var name
 					args_cache.emplace_back(paratype, word);
 				}
 				start = Line.find("} ") + 2;
@@ -104,8 +108,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("in ") != std::string::npos) {
 			// [in]
-			// shader->sh_struct->SetInp(ShaderStruct::ParseType(Line.substr(3, 4)), 1, Line.substr(8, Line.size() - 9));
-			// it is unnecessary to parese the input
+			// it is unnecessary to parese the input, 
+			// inputs are linked from the output of the vertex shader.
 		}
 		else if (Line.find("out ") != std::string::npos) {
 			// [out]
@@ -118,6 +122,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			assert(!_is_link_repeat(name));
 			ParaType para_type = ShaderStruct::ParseType(type);
 
+			std::erase(name, ';'); // var name
 			shader->sh_struct->SetOut(para_type, 1, name);
 			shader_data[1 - _type].sh_struct->SetInp(para_type, 1, name);
 
@@ -131,7 +136,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			str >> word;
 			ParaType paratype = ShaderStruct::ParseType(word);
 			str >> word;
-			word.erase(word.end() - 1);
+			
+			std::erase(word, ';'); // var name
 			int count = 1;
 			if (word.find("[") != std::string::npos) {
 				count = std::atoi(word.substr(word.find("[") + 1, word.find("]") - word.find("[") - 1).c_str());
@@ -157,7 +163,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				str >> word;
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
-				word.erase(word.end() - 1);
+				
+				std::erase(word, ';'); // var name
 				args_cache.emplace_back(paratype, word);
 			}
 
@@ -173,9 +180,10 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			str >> word;
 			ParaType paratype = ShaderStruct::ParseType(word);
 			str >> word;
-			std::string name = word;
+
+			std::erase(word, ';'); // var name
 			std::string content = Line.substr(Line.find(" = ") + 3, Line.size() - Line.find(" = ") - 4);
-			shader->sh_struct->SetConst(paratype, name, content);
+			shader->sh_struct->SetConst(paratype, word, content);
 		}
 		else if (Line.find("void main") != std::string::npos) {
 			int blanc_count = (Line.find("{") != std::string::npos) ? 1 : 0;
@@ -211,7 +219,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 						if (Line.find("}") != std::string::npos) blanc_count--;
 
 					} while (blanc_count != 0);
-					cache.erase(cache.size() - 1, 1);
+					
+					std::erase(cache, ';'); // var name
 					if (cache.substr(cache.size() - 2, 2).find("}") != std::string::npos)
 						cache.erase(cache.size() - 2, 2);
 					//shader->sh_struct->Main.erase(shader->sh_struct->Main.size() - 3, 3);
@@ -236,7 +245,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 						shader->sh_struct->vari_list.pop_back();
 					}
 					else {
-						word.erase(word.size() - 1, 1);
+						std::erase(word, ';'); // var name
 					}
 					shader->sh_struct->SetVar(type_name, word, count);
 				}

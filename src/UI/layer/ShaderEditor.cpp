@@ -78,7 +78,7 @@ bool RenderPanel(ShaderEditor::MiniPropPanel& panel, const ImVec2& pos, S_U* out
 		if (ImGui::Button("OK", ImGui::GetContentRegionAvail())) {
 			panel.is_open = false;
 			ImGui::End();
-			if (panel.datatype == 0 || prop_name == NULL)
+			if (prop_name == NULL)
 				return false;
 
 			*out = { std::string(&prop_name), ParaType(panel.datatype), panel.prop_count };
@@ -323,8 +323,8 @@ void ShaderEditor::RenderShaderStruct()
 	if (ImGui::TreeNode("Base Information")) {
 		ImGui::Text("========================");
 		ImGui::Text("GLSL version : %i", active_unit->sh_struct->version);
-		ImGui::Text("Shader Type : " + current_shad_type == 0 ? "Vertex Shader" : "Fragment Shader");
-		ImGui::Text(("Shader ID : " + std::to_string(active_unit->sh_ID)).c_str());
+		ImGui::Text("Shader Type : %s", Shaders::shader_type[current_shad_type].c_str());
+		ImGui::Text("Shader ID : %i", active_unit->sh_ID);
 		ImGui::Text(active_unit->sh_struct->is_struct_changed ? "Status : Changed" : "Status : Compiled");
 		ImGui::Text("========================");
 		ImGui::TreePop();
@@ -374,7 +374,7 @@ void ShaderEditor::RenderShaderStruct()
 				}ImGui::PopID();
 			}
 			if (AddParam("Input", "number")) {
-					active_unit->sh_struct->SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+					active_unit->sh_struct->SetInp(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -511,18 +511,15 @@ void ShaderEditor::RenderShaderStruct()
 			}
 			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
 			{
-
+				// TODO
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
 
 	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 5, 20)))
 	{
-
+		// TODO
 	}
-
-	// TODO: better conditioning
-	active_unit->sh_struct->is_struct_changed = true;
 }
 
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
@@ -554,6 +551,7 @@ void ShaderEditor::CompileShader()
 		break;
 	case STRUCT_EDITOR:
 		is_shad_type_changed = true;
+		if (!active_unit->sh_struct->is_struct_changed) return;
 		active_shader->GenerateShader((ShaderType)current_shad_type);
 		break;
 	}
@@ -566,7 +564,7 @@ void ShaderEditor::RenderLayer()
 	Shaders* active_shader = GetActiveShaderPtr();
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
 
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
+	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered) && active_shader != nullptr) {
 		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
 			LOOP(3)
 				if (ImGui::Selectable(edit_mode[i].c_str(), &sel)) {
