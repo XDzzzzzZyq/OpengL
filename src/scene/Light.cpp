@@ -282,19 +282,26 @@ void Light::ConstructSAT(RenderConfigs* config)
 	if (!config->RequiresMomentShadow())
 		return;
 
-	static ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
-	static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
-
+	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(light_shadow_map.tex_type);
 	const int pass_count = config->r_shadow_algorithm == RenderConfigs::ShadowAlg::VSSM ? 2 : 4;
-	static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
 
-	light_shadow_map.BindC(0, GL_READ_ONLY);
-	light_shadow_temp.BindC(1, GL_WRITE_ONLY);
-	SAT.RunComputeShader({ light_shadow_map.GetW(), 1 });
+	if (gl_type == GL_TEXTURE_2D) {
+		static ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
 
-	light_shadow_temp.BindC(0, GL_READ_ONLY);
-	light_shadow_map.BindC(1, GL_WRITE_ONLY);
-	SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
+		static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
+
+		light_shadow_map.BindC(0, GL_READ_ONLY);
+		light_shadow_temp.BindC(1, GL_WRITE_ONLY);
+		SAT.RunComputeShader({ light_shadow_map.GetW(), 1 });
+
+		light_shadow_temp.BindC(0, GL_READ_ONLY);
+		light_shadow_map.BindC(1, GL_WRITE_ONLY);
+		SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
+	}
+	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+		static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
+
+	}
 }
 
 

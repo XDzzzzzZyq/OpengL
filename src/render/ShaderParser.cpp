@@ -220,7 +220,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 
 					} while (blanc_count != 0);
 					
-					std::erase(cache, ';'); // var name
+					cache.erase(cache.size() - 1, 1);
 					if (cache.substr(cache.size() - 2, 2).find("}") != std::string::npos)
 						cache.erase(cache.size() - 2, 2);
 					//shader->sh_struct->Main.erase(shader->sh_struct->Main.size() - 3, 3);

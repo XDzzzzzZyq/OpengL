@@ -4,6 +4,9 @@
 #include "Shaders.h"
 #include "Texture.h"
 TEST_F(RendererEnvir, RenderShader) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
 	RenderShader shader = RenderShader(shader_root + "testS.vert", shader_root + "Rasterization.frag");
 	GLERRTEST;
 
