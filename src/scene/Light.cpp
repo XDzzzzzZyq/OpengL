@@ -21,16 +21,10 @@ void Light::EnableShadowMap()
 	_shadowmap_shader[SUNLIGHT] = ChainedShader::ImportShader("Depth_Rast.vert", "Empty.frag");
 
 	_shadowmap_shader[POINTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
-	_shadowmap_shader[POINTLIGHT].UseShader();
-	_shadowmap_shader[POINTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 
 	_shadowmap_shader[SPOTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
-	_shadowmap_shader[SPOTLIGHT].UseShader();
-	_shadowmap_shader[SPOTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 
 	_shadowmap_shader[AREALIGHT] = ChainedShader::ImportShader("Empty_Rand.vert", "6sides_trans.geom", "Depth_Linear.frag");
-	_shadowmap_shader[AREALIGHT].UseShader();
-	_shadowmap_shader[AREALIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 }
 
 float Light::sun_shaodow_field = 5.0f;
@@ -193,8 +187,8 @@ void Light::BindShadowMapBuffer()
 
 void Light::BindShadowMapShader()
 {
-
 	_shadowmap_shader[light_type].UseShader();
+	_shadowmap_shader[light_type].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 	switch (light_type)
 	{
 	case POINTLIGHT:
@@ -273,6 +267,11 @@ void Light::UpdateProjMatrix()
 		assert(false && "Unknown Light Type");
 		break;
 	}
+}
+
+void* Light::GetShader()
+{
+	return &_shadowmap_shader[POINTLIGHT];
 }
 
 

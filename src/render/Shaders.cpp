@@ -3,6 +3,8 @@
 #include "structs.h"
 #include "macros.h"
 
+std::string const Shaders::shader_type[4] = { "Vertex Shader", "Fragment Shader", "Compute Shader", "Geometry Shader" };
+
 void Shaders::ShaderUnit::_del()
 {
 	glDeleteShader(sh_ID);
@@ -112,7 +114,7 @@ GLuint Shaders::CompileShaderCode(ShaderType _type, const std::string& source) {
 		std::cout << message << "\n";
 		DEBUG(source);
 		glDeleteShader(id);
-		return 0;
+		return -1;
 	}
 #ifdef _DEBUG
 	else
@@ -141,15 +143,13 @@ std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
 
 Shaders::Shaders(const Shaders& shader)
 {
-	_resetShaderID(shader.GetProgramID());
-	active_shader = shader.active_shader;
+	_resetProgramID(shader.GetProgramID());
 }
 
 Shaders::Shaders(Shaders&& shader) noexcept
 {
-	_resetShaderID(shader.GetProgramID());
+	_resetProgramID(shader.GetProgramID());
 	shader.program_id = 0;
-	active_shader = shader.active_shader;
 }
 
 Shaders::~Shaders()
@@ -159,17 +159,15 @@ Shaders::~Shaders()
 
 Shaders& Shaders::operator=(Shaders&& shader) noexcept
 {
-	_resetShaderID(shader.GetProgramID());
+	_resetProgramID(shader.GetProgramID());
 	shader.program_id = 0;
-	active_shader = shader.active_shader;
 
 	return *this;
 }
 
 Shaders& Shaders::operator=(const Shaders& shader)
 {
-	_resetShaderID(shader.GetProgramID());
-	active_shader = shader.active_shader;
+	_resetProgramID(shader.GetProgramID());
 
 	return *this;
 }
@@ -185,13 +183,13 @@ Shaders::ShaderConstInfo Shaders::ParseShaderType(ShaderType _type)
 	switch (_type)
 	{
 	case VERTEX_SHADER:
-		return { "Vertex Shader", ".vert", GL_VERTEX_SHADER };
+		return { Shaders::shader_type[_type], ".vert", GL_VERTEX_SHADER};
 	case FRAGMENT_SHADER:
-		return { "Fragment Shader", ".frag", GL_FRAGMENT_SHADER };
+		return { Shaders::shader_type[_type], ".frag", GL_FRAGMENT_SHADER };
 	case COMPUTE_SHADER:
-		return { "Compute Shader", ".comp", GL_COMPUTE_SHADER };
+		return { Shaders::shader_type[_type], ".comp", GL_COMPUTE_SHADER };
 	case GEOMETRY_SHADER:
-		return { "Geometry Shader", ".geom", GL_GEOMETRY_SHADER };
+		return { Shaders::shader_type[_type], ".geom", GL_GEOMETRY_SHADER };
 	default:
 		return { "/", "/", GL_NONE };
 	}
@@ -562,35 +560,17 @@ RenderShader::~RenderShader()
 {
 }
 
-void RenderShader::ResetID(ShaderType type, GLuint id)
-{
-	switch (type)
-	{
-	case NONE_SHADER:
-		program_id = id;
-		break;
-	case VERTEX_SHADER:
-	case FRAGMENT_SHADER:
-		shader_data[type].sh_ID = id;
-		break;
-	default:
-		break;
-	}
-}
-
 void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 	Timer timer("ParseShader");
 
-	active_shader = _type;
-
-	shader_data[active_shader].sh_struct->is_struct_changed = false;
+	shader_data[_type].sh_struct->is_struct_changed = false;
 
 	if (_name.find(Shaders::folder_root) == std::string::npos)
 		_name = Shaders::folder_root + _name + Shaders::file_type[_type];
 
 	std::ifstream Stream(_name);
 
-	ParseShaderStream(Stream, active_shader);
+	ParseShaderStream(Stream, _type);
 
 
 	std::cout << "shaders are loaded up successfully!" << std::endl;
@@ -599,59 +579,36 @@ void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 
 void RenderShader::ParseShaderCode(const std::string& _code, ShaderType _type)
 {
-	shader_data[_type].sh_struct->Reset();
+	ShaderUnit* shader = GetShaderUnit(_type);
+	shader->sh_struct->Reset();
 	_LINK_LOC = {};
 	if (!_code.empty())
-		shader_data[_type].sh_code = _code;
+		shader->sh_code = _code;
 
-	std::stringstream Stream(shader_data[_type].sh_code);
+	std::stringstream Stream(shader->sh_code);
 	ParseShaderStream(Stream, _type);
 }
 
 GLuint RenderShader::CompileShader(ShaderType tar)
 {
-	const char* src = shader_data[tar].sh_code.c_str(); //传入指针，需要保证指向source（shader代码）的内存一直存在
-	GLuint shader_id = glCreateShader(tar == 0 ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER);
+	ShaderUnit* shader = GetShaderUnit(tar);
+	GLuint shader_id = Shaders::CompileShaderCode(tar, shader->sh_code);
+	if (shader_id == -1)
+		return -1;
 
-	glShaderSource(shader_id, 1, &src, nullptr);
-
-	//std::cout << id << std::endl;
-	glCompileShader(shader_id);
-
-	//delete src;
-	int status = 0;
-	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &status);
-
-	//std::cout << status << std::endl;
-	std::string type = tar == VERTEX_SHADER ? "Vertex" : "Frag";
-	if (!status) {
-		int length;
-		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
-		std::string message;
-		message.resize(length);
-
-		glGetShaderInfoLog(shader_id, length, &length, message.data());
-		std::cout << type + " shader error\n";
-		std::cout << message << "\n";
-		glDeleteShader(shader_id);
-		shader_id = 0;
-	}
-	else {
-		std::cout << type << " is complied successfully!" << std::endl;
-		shader_data[tar].sh_struct->is_struct_changed = false;
-	}
-	shader_data[tar].sh_ID = shader_id;
+	shader->sh_struct->is_struct_changed = false;
+	shader->sh_ID = shader_id;
 	return shader_id;
 }
 
 void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 {
-	glDeleteProgram(GetProgramID());
-	glDeleteShader(GetShaderID(tar));
+	GLuint shader_id = CompileShader(tar);
+	if (shader_id == -1)
+		return;
 
 	GLuint program_id = glCreateProgram();
 
-	GLuint shader_id = CompileShader(tar);
 	glAttachShader(program_id, shader_id);
 	glAttachShader(program_id, GetShaderID((ShaderType)(1 - tar)));
 
@@ -661,11 +618,13 @@ void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 	int link_state = -1;
 	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
 
-	if (link_state != GL_TRUE)
+	if (link_state != GL_TRUE) {
 		DEBUG("Shader Link Error");
+		return;
+	}
 
 	ResetID(tar, shader_id);
-	ResetID(NONE_SHADER, program_id);
+	_resetProgramID(program_id);
 	ResetCache();
 
 	is_shader_changed = true;
@@ -673,19 +632,18 @@ void RenderShader::RelinkShader(ShaderType tar /*= NONE_SHADER*/)
 
 void RenderShader::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 {
-	assert(tar != NONE_SHADER);
+	ShaderUnit* shader = GetShaderUnit(tar);
 
-	if (!shader_data[tar].sh_struct->is_struct_changed)
+	if (!shader->sh_struct->is_struct_changed)
 		return;
 
-	shader_data[tar].sh_struct->is_struct_changed = false;
-	shader_data[tar].sh_code = shader_data[tar].sh_struct->GenerateShader();
+	shader->sh_struct->is_struct_changed = false;
+	shader->sh_code = shader->sh_struct->GenerateShader();
 }
 
 Shaders::ShaderUnit* RenderShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)
 {
-	assert(tar != NONE_SHADER);
-
+	assert(tar == VERTEX_SHADER || tar == FRAGMENT_SHADER);
 	return &shader_data[tar];
 }
 
@@ -697,8 +655,17 @@ GLuint RenderShader::GetShaderID(ShaderType type) const
 	case FRAGMENT_SHADER:
 		return shader_data[type].sh_ID;
 	default:
-		return 0;
+		return -1;
 	}
+}
+
+void RenderShader::ResetID(ShaderType type, GLuint id)
+{
+	assert(type == VERTEX_SHADER || type == FRAGMENT_SHADER);
+	if (shader_data[type].sh_ID != id) {
+		glDeleteShader(shader_data[type].sh_ID);
+	}
+	shader_data[type].sh_ID = id;
 }
 
 void RenderShader::LocalDebug() const
@@ -760,7 +727,7 @@ GLuint FastLoadShader::GetShaderID(ShaderType type) const
 	case FRAGMENT_SHADER:
 		return fs_id;
 	default:
-		return 0;
+		return -1;
 	}
 }
 
@@ -782,8 +749,13 @@ std::unordered_map<std::string, std::shared_ptr<ChainedShader>> ChainedShader::c
 
 ChainedShader::ChainedShader(const std::vector<std::string>& chain)
 {
-	for (auto& path : chain)
-		shader_chain.emplace_back(Shaders::ParseFileEXT(path), path);
+	_idx_to_type.reserve(chain.size());
+	shader_chain.reserve(chain.size());
+	LOOP(chain.size()) {
+		shader_chain.emplace_back(Shaders::ParseFileEXT(chain[i]), chain[i]);
+		_type_to_idx[shader_chain[i].sh_type] = i;
+		_idx_to_type.emplace_back(shader_chain[i].sh_type);
+	}
 
 	CreatShader();
 }
@@ -801,7 +773,6 @@ ChainedShader::~ChainedShader()
 void ChainedShader::CreatShader()
 {
 	program_id = glCreateProgram();
-
 
 	for (auto& node : shader_chain) {
 		std::string code = Shaders::ReadShaderFile(node.sh_type, node.sh_name);
@@ -830,17 +801,86 @@ ChainedShader& ChainedShader::ImportShader(const std::vector<std::string>& chain
 	return *chain_sh_list[_name].get();
 }
 
+GLuint ChainedShader::CompileShader(ShaderType type)
+{
+	ShaderUnit* node = GetShaderUnit(type);
+	if (node == nullptr)
+		return -1;
+	return Shaders::CompileShaderCode(node->sh_type, node->sh_code);
+}
+
+void ChainedShader::RelinkShader(ShaderType type)
+{
+	GLDEBUG;
+	GLuint shader_id = CompileShader(type);
+	if (shader_id == -1)
+		return;
+	GLDEBUG;
+	GLuint program_id = glCreateProgram();
+	GLDEBUG;
+	glAttachShader(program_id, shader_id);
+	for (auto& unit : shader_chain) {
+		if (unit.sh_type != type)
+			glAttachShader(program_id, unit.sh_ID);
+	}
+	GLDEBUG;
+	glLinkProgram(program_id);
+	glValidateProgram(program_id);
+	GLDEBUG;
+	int link_state = -1;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &link_state);
+	GLDEBUG;
+	if (link_state != GL_TRUE) {
+		DEBUG("Shader Link Error");
+		return;
+	}
+	GLDEBUG;
+	ResetID(type, shader_id);
+	_resetProgramID(program_id);
+	ResetCache();
+	GLDEBUG;
+	is_shader_changed = true;
+}
+
+Shaders::ShaderUnit* ChainedShader::GetShaderUnit(ShaderType type)
+{
+	const int idx = _type_to_idx[type];
+	if (idx == -1)
+		return nullptr;
+	else
+		return &shader_chain[idx];
+}
+
+void ChainedShader::ParseShaderCode(const std::string& _code, ShaderType type)
+{
+	ShaderUnit* node = GetShaderUnit(type);
+	if (node == nullptr)
+		return;
+	node->sh_code = _code;
+}
+
 GLuint ChainedShader::GetShaderID(ShaderType type) const
 {
-	for (auto& sh : shader_chain)
-		if (sh.sh_type == type)
-			return sh.sh_ID;
-	return 0;
+	const int idx = _type_to_idx[type];
+	if (idx == -1)
+		return -1;
+	else
+		return shader_chain[idx].sh_ID;
+}
+
+void ChainedShader::ResetID(ShaderType type, GLuint id)
+{
+	ShaderUnit* node = GetShaderUnit(type);
+	if (node != nullptr) {
+		if (node->sh_ID != id)
+			glDeleteShader(node->sh_ID);
+		node->sh_ID = id;
+	}
 }
 
 void ChainedShader::LocalDebug() const
 {
-#ifdef _DEBUG
+#if _DEBUG
 	for (auto& sh : shader_chain)
 		DEBUG(std::get<0>(Shaders::ParseShaderType(sh.sh_type)) + " " + sh.sh_name + " " + std::to_string(sh.sh_ID));
 #endif // _DEBUG
@@ -945,6 +985,12 @@ void ComputeShader::CreateShader(const std::string& compShader)
 	glAttachShader(program_id, comp_shader.sh_ID);
 
 	glLinkProgram(program_id);
+}
+
+void ComputeShader::ParseShaderCode(const std::string& _code, ShaderType tar)
+{
+	assert(tar == COMPUTE_SHADER);
+	comp_shader.sh_code = _code;
 }
 
 Shaders::ShaderUnit* ComputeShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)

@@ -6,7 +6,6 @@
 #include "operator.h"
 
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
-std::string const ShaderEditor::shader_type[2] = { "Vertex Shader", "Fragment Shader" };
 
 TextEditor ShaderEditor::se_code_editor{};
 NodeEditor ShaderEditor::se_node_editor{};
@@ -315,6 +314,7 @@ void ShaderEditor::RenderShaderStruct()
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
+	if (!active_unit->sh_struct.has_value()) return;
 
 	int type_id = 0, vari_id = 0;
 	// [BASE INFO]
@@ -445,7 +445,7 @@ void ShaderEditor::RenderShaderStruct()
 			}
 			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
 			{
-
+				// TODO
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -466,7 +466,7 @@ void ShaderEditor::RenderShaderStruct()
 			}
 			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
 			{
-
+				// TODO
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -520,6 +520,9 @@ void ShaderEditor::RenderShaderStruct()
 	{
 
 	}
+
+	// TODO: better conditioning
+	active_unit->sh_struct->is_struct_changed = true;
 }
 
 void ShaderEditor::UpdateShaderEditor(const std::string& _code) const {
@@ -546,7 +549,7 @@ void ShaderEditor::CompileShader()
 	switch (current_edit) {
 	case CODE_EDITOR:
 		if (se_code_editor.GetText() == active_unit->sh_code) return;
-		dynamic_cast<RenderShader*>(active_shader)->ParseShaderCode(se_code_editor.GetText(), (ShaderType)current_shad_type);
+		active_shader->ParseShaderCode(se_code_editor.GetText(), (ShaderType)current_shad_type);
 		UpdateKeyword();
 		break;
 	case STRUCT_EDITOR:
@@ -560,7 +563,7 @@ void ShaderEditor::CompileShader()
 
 void ShaderEditor::RenderLayer()
 {
-
+	Shaders* active_shader = GetActiveShaderPtr();
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr((ShaderType)current_shad_type);
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
@@ -568,19 +571,20 @@ void ShaderEditor::RenderLayer()
 			LOOP(3)
 				if (ImGui::Selectable(edit_mode[i].c_str(), &sel)) {
 					current_edit = i;
-					if (active_unit)
-						active_unit->sh_struct->is_struct_changed = true;
 					is_mode_changed = true;
 				}
 
 			ImGui::EndCombo();
 		}
-		if (ImGui::BeginCombo("Shader Type", shader_type[current_shad_type].c_str())) {
-			LOOP(2)
-				if (ImGui::Selectable(shader_type[i].c_str(), &sel)) {
-					current_shad_type = i;
+		if (ImGui::BeginCombo("Shader Type", Shaders::shader_type[current_shad_type].c_str())) {
+			const std::vector<ShaderType> all_types = active_shader->GetAllShaderTypes();
+			LOOP(all_types.size()) {
+				const ShaderType type = all_types[i];
+				if (ImGui::Selectable(Shaders::shader_type[type].c_str(), &sel)) {
+					current_shad_type = type;
 					is_shad_type_changed = true;
 				}
+			}
 
 			ImGui::EndCombo();
 		}

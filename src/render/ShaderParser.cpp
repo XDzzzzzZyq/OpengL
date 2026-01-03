@@ -5,6 +5,8 @@
 
 void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 {
+	ShaderUnit* shader = GetShaderUnit(_type);
+
 	std::string Line;
 	std::string cache = "";
 	Args args_cache;
@@ -18,7 +20,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("#version") != std::string::npos) {
 			// [Version]
-			shader_data[_type].sh_struct->version = std::atoi(Line.substr(9, 3).c_str());
+			shader->sh_struct->version = std::atoi(Line.substr(9, 3).c_str());
 		}
 		else if (Line.find("layout") != std::string::npos) {
 			// [layout]
@@ -33,7 +35,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				str >> word;
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
-				shader_data[_type].sh_struct->SetAB(layout, paratype, word.erase(word.size() - 1, 1));
+				const std::string name = word.erase(word.size() - 1, 1);
+				shader->sh_struct->SetAB(layout, paratype, name);
 			}
 			else if (Line.find("out ") != std::string::npos) {
 				std::istringstream str(Line);
@@ -46,7 +49,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				ParaType paratype = ShaderStruct::ParseType(word);
 				str >> word;
 				const std::string name = word.erase(word.size() - 1, 1);
-				shader_data[_type].sh_struct->SetPass(layout, paratype, name);
+				shader->sh_struct->SetPass(layout, paratype, name);
 			}
 			else if (Line.find("buffer ") != std::string::npos) {
 				layout = std::atoi(Line.substr(25, 1).c_str());
@@ -70,7 +73,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 					args_cache.emplace_back(paratype, word);
 				};
 
-				shader_data[_type].sh_struct->SetSB(layout, name, args_cache);
+				shader->sh_struct->SetSB(layout, name, args_cache);
 
 				args_cache = {};
 			}
@@ -94,14 +97,14 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				start = Line.find("} ") + 2;
 				std::string var_name = Line.substr(start, Line.find(";") - start);
 
-				shader_data[_type].sh_struct->SetUB(type_name, var_name, args_cache);
+				shader->sh_struct->SetUB(type_name, var_name, args_cache);
 
 				args_cache = {};
 			}
 		}
 		else if (Line.find("in ") != std::string::npos) {
 			// [in]
-			// shader_data[_type].sh_struct->SetInp(ShaderStruct::ParseType(Line.substr(3, 4)), 1, Line.substr(8, Line.size() - 9));
+			// shader->sh_struct->SetInp(ShaderStruct::ParseType(Line.substr(3, 4)), 1, Line.substr(8, Line.size() - 9));
 			// it is unnecessary to parese the input
 		}
 		else if (Line.find("out ") != std::string::npos) {
@@ -115,7 +118,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			assert(!_is_link_repeat(name));
 			ParaType para_type = ShaderStruct::ParseType(type);
 
-			shader_data[_type].sh_struct->SetOut(para_type, 1, name);
+			shader->sh_struct->SetOut(para_type, 1, name);
 			shader_data[1 - _type].sh_struct->SetInp(para_type, 1, name);
 
 			_LINK_LOC[name] = _LINK_LOC.size();
@@ -135,7 +138,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				word = word.substr(0, word.find("["));
 				//DEBUG(word)
 			}
-			shader_data[_type].sh_struct->SetUni(paratype, count, word);
+			shader->sh_struct->SetUni(paratype, count, word);
 		}
 		else if (Line.find("struct") != std::string::npos) {
 			// [Sturct]
@@ -158,7 +161,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				args_cache.emplace_back(paratype, word);
 			}
 
-			shader_data[_type].sh_struct->DefStruct(name, args_cache);
+			shader->sh_struct->DefStruct(name, args_cache);
 
 			args_cache = {};
 		}
@@ -172,7 +175,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			str >> word;
 			std::string name = word;
 			std::string content = Line.substr(Line.find(" = ") + 3, Line.size() - Line.find(" = ") - 4);
-			shader_data[_type].sh_struct->SetConst(paratype, name, content);
+			shader->sh_struct->SetConst(paratype, name, content);
 		}
 		else if (Line.find("void main") != std::string::npos) {
 			int blanc_count = (Line.find("{") != std::string::npos) ? 1 : 0;
@@ -181,10 +184,10 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				if (Line.find("{") != std::string::npos) blanc_count++;
 				if (Line.find("}") != std::string::npos) blanc_count--;
 				//shaders[type] << Line << "\n";
-				shader_data[_type].sh_struct->Main += Line + "\n";
+				shader->sh_struct->Main += Line + "\n";
 
 			} while (blanc_count != 0);
-			shader_data[_type].sh_struct->Main.erase(shader_data[_type].sh_struct->Main.size() - 3, 3);
+			shader->sh_struct->Main.erase(shader->sh_struct->Main.size() - 3, 3);
 		}
 		else {
 			std::istringstream str(Line);
@@ -211,8 +214,8 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 					cache.erase(cache.size() - 1, 1);
 					if (cache.substr(cache.size() - 2, 2).find("}") != std::string::npos)
 						cache.erase(cache.size() - 2, 2);
-					//shader_data[_type].sh_struct->Main.erase(shader_data[_type].sh_struct->Main.size() - 3, 3);
-					shader_data[_type].sh_struct->DefFunc(paratype, name, cache, ShaderStruct::ParseArgs(args_list));
+					//shader->sh_struct->Main.erase(shader->sh_struct->Main.size() - 3, 3);
+					shader->sh_struct->DefFunc(paratype, name, cache, ShaderStruct::ParseArgs(args_list));
 					cache = "";
 					args_cache = {};
 				}
@@ -228,20 +231,20 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 					}
 					else if (word.find(",") != std::string::npos) {
 						do {
-							shader_data[_type].sh_struct->SetVar(type_name, word.erase(word.size() - 1, 1), count);
+							shader->sh_struct->SetVar(type_name, word.erase(word.size() - 1, 1), count);
 						} while (str >> word);
-						shader_data[_type].sh_struct->vari_list.pop_back();
+						shader->sh_struct->vari_list.pop_back();
 					}
 					else {
 						word.erase(word.size() - 1, 1);
 					}
-					shader_data[_type].sh_struct->SetVar(type_name, word, count);
+					shader->sh_struct->SetVar(type_name, word, count);
 				}
 			}
 		}
 	}
 
-	shader_data[_type].sh_struct->func_list_state.resize(shader_data[_type].sh_struct->func_list.size());
+	shader->sh_struct->func_list_state.resize(shader->sh_struct->func_list.size());
 }
 
 

@@ -9,6 +9,7 @@ TEST_F(RendererEnvir, RenderShader) {
 
 	int v_id = shader.GetShaderID(VERTEX_SHADER);
 	int f_id = shader.GetShaderID(FRAGMENT_SHADER);
+	EXPECT_NE(v_id, f_id);
 
 	auto& sh_struct = shader.GetShaderUnit(VERTEX_SHADER)->sh_struct;
 	Args args = { {FLOAT_PARA,"a"}, {FLOAT_PARA,"b"} };
@@ -23,7 +24,21 @@ TEST_F(RendererEnvir, RenderShader) {
 	GLERRTEST;
 
 	int v_id_new = shader.GetShaderID(VERTEX_SHADER);
-	EXPECT_EQ(v_id, v_id_new);
+	EXPECT_NE(v_id_new, v_id);	// Expect a new shader ID after relinking
+	EXPECT_NE(v_id_new, 0);
+
+	sh_struct->DefFunc(FLOAT_PARA, "testFunc_wrong", "return a + b 123123", args); // Wrong function
+	EXPECT_TRUE(sh_struct->is_struct_changed);
+
+	shader.GenerateShader(VERTEX_SHADER);
+	EXPECT_TRUE(shader.is_shader_changed);
+	EXPECT_NE(shader.GetShaderUnit(VERTEX_SHADER)->sh_code.find("testFunc_wrong"), std::string::npos);
+
+	shader.RelinkShader(VERTEX_SHADER);
+	GLERRTEST;
+
+	int v_id_new_new = shader.GetShaderID(VERTEX_SHADER);
+	EXPECT_EQ(v_id_new, v_id_new_new);	// Expect new shader ID should keep the same
 }
 
 glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {
