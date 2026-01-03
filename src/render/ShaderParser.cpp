@@ -81,7 +81,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 				args_cache = {};
 			}
 			else if (Line.find("uniform ") != std::string::npos) {
-				int start = Line.find("uniform ") + 8;
+				size_t start = Line.find("uniform ") + 8;
 				std::string type_name = Line.substr(start, Line.find(" {") - start);
 				while (Line.find("}") == std::string::npos) {
 					getline(_stream, Line);
@@ -126,7 +126,7 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			shader->sh_struct->SetOut(para_type, 1, name);
 			shader_data[1 - _type].sh_struct->SetInp(para_type, 1, name);
 
-			_LINK_LOC[name] = _LINK_LOC.size();
+			_LINK_LOC[name] = int(_LINK_LOC.size());
 		}
 		else if (Line.find("uniform") != std::string::npos) {
 			// [Uniform]
@@ -204,12 +204,12 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 			if (ShaderStruct::IsAvailType(word)) {
 				if (Line.find("(") != std::string::npos) {
 					// [Functions]
-					int left_b = Line.find("(");
+					size_t left_b = Line.find("(");
 					ParaType paratype = ShaderStruct::ParseType(word);
 					std::string name = Line.substr(word.size() + 1, left_b - word.size() - 1);
 					std::string args_list = Line.substr(left_b + 1, Line.find(")") - left_b - 1) + ", ";
 					//DEBUG(args_list)
-					int blanc_count = Line.find("{") != std::string::npos ? 1 : 0;
+					size_t blanc_count = Line.find("{") != std::string::npos ? 1 : 0;
 					do {
 						getline(_stream, Line);
 						//shaders[type] << Line << "\n";

@@ -643,14 +643,16 @@ void RenderShader::GenerateShader(ShaderType tar /*= NONE_SHADER*/)
 
 Shaders::ShaderUnit* RenderShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)
 {
-	assert(tar == VERTEX_SHADER || tar == FRAGMENT_SHADER);
-	return &shader_data[tar];
+	if (tar == VERTEX_SHADER || tar == FRAGMENT_SHADER)
+		return &shader_data[tar];
+	else return nullptr;
 }
 
 GLuint RenderShader::GetShaderID(ShaderType type) const
 {
-	assert(type == VERTEX_SHADER || type == FRAGMENT_SHADER);
-	return shader_data[type].sh_ID;
+	if (type == VERTEX_SHADER || type == FRAGMENT_SHADER)
+		return shader_data[type].sh_ID;
+	else return -1;
 }
 
 void RenderShader::ResetID(ShaderType type, GLuint id)
@@ -982,8 +984,8 @@ void ComputeShader::CreateShader(const std::string& compShader)
 
 void ComputeShader::ParseShaderCode(const std::string& _code, ShaderType tar)
 {
-	assert(tar == COMPUTE_SHADER);
-	comp_shader.sh_code = _code;
+	if (tar == COMPUTE_SHADER)
+		comp_shader.sh_code = _code;
 }
 
 Shaders::ShaderUnit* ComputeShader::GetShaderUnit(ShaderType tar /*= NONE_SHADER*/)
