@@ -406,11 +406,11 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 
 	DEBUG("\n---------------LIGHT----------------");
 	std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight1->SetPos({ 2.0f, 2.0f, -3.0f });
+	pointLight1->SetPos({ -2.0f, -1.0f, 1.0f });
 	pointLight1->SetColor({ 0.7,0.7, 1 });
 	pointLight1->SetPower(30);
 	pointLight1->ApplyTransform();
-	//config4->UseLight(pointLight1);
+	config4->UseLight(pointLight1);
 
 	DEBUG("\n---------------SUN----------------");
 	std::shared_ptr<Light> sun1 = std::make_shared<Light>(SUNLIGHT, 1.0f, glm::vec3(1.0f));
@@ -419,7 +419,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	sun1->SetColor({ 0.7,0.7, 1 });
 	sun1->SetPower(1);
 	sun1->ApplyTransform();
-	config4->UseLight(sun1);
+	//config4->UseLight(sun1);
 
 	DEBUG("\n-------------AREA LIGHT-------------");
 	std::shared_ptr<Light> areaLight2 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(1.0f));

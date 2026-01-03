@@ -36,7 +36,7 @@ vec2 sample_moment(float w, vec2 coord){
 	const float z_av = (rb.r + lt.r - lb.r - rt.r) / (w * w);			// E[z]
 	const float z_av_sq = z_av * z_av;									// E[z]^2
 	const float z_sq_av = (rb.g + lt.g - lb.g - rt.g) / (w * w);		// E[z^2]
-	const float z_var = max(z_sq_av - z_av_sq, 0.0001);					// Var(z)
+	const float z_var = abs(z_sq_av - z_av_sq);						// Var(z)
 
 	return vec2(z_av, z_var);
 }

@@ -226,6 +226,9 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (light->is_light_changed || light->is_Uniform_changed) {
 			r_light_data.UpdateLight(light.get());
+		}
+
+		if (light->is_light_changed || r_scene->CheckStatus(SceneResource::ObjectTransChanged)) {
 			RenderShadowMap(light.get());
 		}
 

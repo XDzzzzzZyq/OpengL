@@ -88,7 +88,7 @@ void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
 		light_shadow_map = Texture(1024, 1024, flat_map);
 		break;
 	case POINTLIGHT:
-		// TODO
+		light_shadow_map = Texture(1024, 1024, cube_map);
 		break;
 	case SPOTLIGHT:
 		// TODO
