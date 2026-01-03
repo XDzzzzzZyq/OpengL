@@ -986,6 +986,14 @@ void ComputeShader::CreateShader(const std::string& compShader)
 
 	glAttachShader(program_id, comp_shader.sh_ID);
 	glLinkProgram(program_id);
+
+	GLint linked = 0;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &linked);
+	if (!linked) {
+		char log[4096];
+		glGetProgramInfoLog(program_id, sizeof(log), nullptr, log);
+		printf("Link error:\n%s\n", log);
+	}
 }
 
 void ComputeShader::ParseShaderCode(const std::string& _code, ShaderType tar)
@@ -1004,6 +1012,14 @@ void ComputeShader::RelinkShader(ShaderType tar)
 
 	_resetProgramID(program_id);
 	ResetID(COMPUTE_SHADER, shader_id);
+
+	GLint linked = 0;
+	glGetProgramiv(program_id, GL_LINK_STATUS, &linked);
+	if (!linked) {
+		char log[4096];
+		glGetProgramInfoLog(program_id, sizeof(log), nullptr, log);
+		printf("Link error:\n%s\n", log);
+	}
 
 	ResetDefult(comp_shader.sh_name);
 }

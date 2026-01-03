@@ -574,26 +574,23 @@ void Texture::GenCubeMap(GLuint _tar_ID, int _tar_res, TextureType _tar_type /*=
 	// https://learnopengl.com/Advanced-OpenGL/Cubemaps
 
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(_tar_type);
-
+	
 	GLuint ID;
 	glGenTextures(1, &ID);		//for storage
 	Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
-
+	
 	LOOP(6)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, interlayout, _tar_res, _tar_res, 0, layout, type, NULL);
-
-	ComputeShader& to_cubemap = ComputeShader::ImportShader("convert/E2C");
-
+	
+	static ComputeShader& to_cubemap = ComputeShader::ImportShader("convert/E2C", Uni("U_etangular", 1));
+	
 	glBindImageTexture(0, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, interlayout);
 	Texture::BindM(_tar_ID, 1);
-
-	to_cubemap.UseShader();
-	to_cubemap.SetValue("resol", (int)_tar_res);
-	to_cubemap.SetValue("U_etangular", 1);
+	
 	to_cubemap.RunComputeShader(_tar_res / 4, _tar_res / 4, 6);
-
+	
 	_resetTexID(ID);
-
+	
 	tex_type = IBL_CUBE_TEXTURE;
 	im_w = im_h = _tar_res;
 }
@@ -611,17 +608,15 @@ void Texture::GenERectMap(GLuint _tar_ID, int _w, int _h, TextureType _tar_type 
 	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, _w, _h, 0, layout, type, NULL);
 	Texture::SetTexParam<GL_TEXTURE_2D>(ID, GL_LINEAR, GL_LINEAR, GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT);
 	
-	ComputeShader& to_cubemap = ComputeShader::ImportShader("convert/C2E");
+	static ComputeShader& to_cubemap = ComputeShader::ImportShader("convert/C2E", Uni("U_Cube", 1));
 	
-	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout); 
-	Texture::BindM(_tar_ID, 1, _tar_type); 
+	glBindImageTexture(0, ID, 0, GL_FALSE, 0, GL_WRITE_ONLY, interlayout);
+	Texture::BindM(_tar_ID, 1, _tar_type);
 
-	to_cubemap.UseShader();
-	to_cubemap.SetValue("U_Cube", 1);
 	to_cubemap.RunComputeShader(_w / 4, _h / 4);
-	
+
 	_resetTexID(ID);
-	
+
 	tex_type = IBL_TEXTURE;
 	im_w = _w; im_h = _h;
 }
