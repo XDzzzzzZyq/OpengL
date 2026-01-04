@@ -114,27 +114,27 @@ void RenderShadowMap(Light* light, SceneResource::ResPool<Mesh> mesh_list, const
 	//TODO: not necessary for every frame update
 	const GLuint map_w = light->light_shadow_map.GetW();
 	const GLuint map_h = light->light_shadow_map.GetH();
-	
+
 	glViewport(0, 0, map_w, map_h);
-	
-	light->BindShadowMapBuffer(); 
+
+	light->BindShadowMapBuffer();
 	light->BindShadowMapShader();
 
-	glClear(GL_DEPTH_BUFFER_BIT);
-	
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
 	for (const auto& [id, mesh] : mesh_list)
 	{
 		if (!mesh->using_shadow) continue;
 		if (!mesh->is_viewport) continue;
 
-		light->BindTargetTrans(mesh->o_Transform); 
-		mesh->RenderObjProxy(); 
+		light->BindTargetTrans(mesh->o_Transform);
+		mesh->RenderObjProxy();
 	}
-	
+
 	FrameBuffer::UnbindFrameBuffer();
-	
+
 	if (config.RequiresMomentShadow()) {
-		light->ConstructSAT(&config); 
+		light->ConstructSAT(&config);
 	}
 }
 
@@ -168,7 +168,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 	
 	if (r_config.RequiresFwdOF())
 	{
-		static ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
+		ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
 		of.UseShader();
@@ -189,15 +189,18 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 
 	for (auto& [id, light] : scene->light_list) {
 		if (!light->is_viewport) return;
-		
-		if (light->is_light_changed || light->is_Uniform_changed)
+
+		if (light->is_light_changed || light->is_Uniform_changed) {
 			r_light_data.UpdateLight(light.get());
-		
+		}
+
+		if (light->is_light_changed || scene->CheckStatus(SceneResource::ObjectTransChanged)) {
+			RenderShadowMap(light.get(), scene->mesh_list, r_config);
+		}
+
 		/* Depth Test for Shadow Map */
 		if (light->is_Uniform_changed)
 			light->UpdateProjMatrix();
-		
-		RenderShadowMap(light.get(), scene->mesh_list, r_config);
 	}
 	
 	///////////   Begin buffering    ///////////
@@ -292,7 +295,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 		////////////    OUTLINE    ////////////
 
 		if (r_is_preview) {
-			static ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
+			ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 			if (ctx.c_selections.GetSelectedObjects() != nullptr) 
 				outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
@@ -303,7 +306,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 
 		if (r_config.RequiresBwdOF())
 		{
-			static ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
+			ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
 			r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
 			of_b.UseShader();
@@ -314,7 +317,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 
 		////////////  SSAO + DEPTH  ////////////
 
-		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
+		ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
 		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / EventListener::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
@@ -404,7 +407,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 		////////////     FXAA     ////////////
 
 		if (r_config.RequiresFXAA()) {
-			static ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName(GetConfig()));
+			ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName(GetConfig()));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -415,7 +418,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 		
 		//////////  COLOR ADJUSTMENT  /////////
 
-		static ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
+		ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 		//r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 2);
@@ -429,7 +432,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 
 		if (r_is_preview)
 		{
-			static ComputeShader& editing = ComputeShader::ImportShader("pps/Editing");
+			ComputeShader& editing = ComputeShader::ImportShader("pps/Editing");
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 			editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
@@ -504,5 +507,5 @@ void Renderer::ScreenShot()
 {
 	std::string name = "result""-" + std::to_string(EventListener::random_float1);
 	DEBUG("saving to: " + name);
-	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name);
+	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name, true);
 }

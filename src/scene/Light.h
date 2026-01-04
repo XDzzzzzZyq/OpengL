@@ -104,6 +104,7 @@ public:
 
 public:
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
+	void* GetShader()		override;
 };
 
 

@@ -107,7 +107,7 @@ Renderer Architecture: https://deepwiki.com/XDzzzzzZyq/OpengL
     - [x] soft shadow
       - [x] SDF soft shadow
         - [ ] improvement
-      - [ ] Variance Soft Shadowmapping
+      - [x] Variance Soft Shadowmapping
       - [ ] Momenet Soft Shadowmapping
 
 #### **Ray Tracing**
@@ -158,7 +158,8 @@ Renderer Architecture: https://deepwiki.com/XDzzzzzZyq/OpengL
     - [x] SSAO
     - [x] FXAA
     - [x] Shadow mapping
-  - [ ] Shader Editor supports
+  - [x] Shader Editor supports
+    - [ ] Structure Parser
 
   **for Geometry Shader**
 

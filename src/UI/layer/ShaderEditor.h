@@ -29,7 +29,6 @@ private:
 private:
 
 	static const std::string edit_mode[3];
-	static const std::string shader_type[2];
 	int active_func{0};
 
 	int current_edit = 0, current_shad_type = 0;

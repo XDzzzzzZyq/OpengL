@@ -102,10 +102,10 @@ private:
 
 public:                        
 
-	static std::shared_ptr<SceneResource> SceneConfig1(std::string _name = "scene1");
-	static std::shared_ptr<SceneResource> SceneConfig2(std::string _name = "cornellbox");
-	static std::shared_ptr<SceneResource> SceneConfig3(std::string _name = "SDF test");
-	static std::shared_ptr<SceneResource> SceneConfig4(std::string _name = "shadow test");
+	static std::shared_ptr<SceneResource> Main(std::string _name="scene1");
+	static std::shared_ptr<SceneResource> CornellBox(std::string _name="cornellbox");
+	static std::shared_ptr<SceneResource> SDF_Test(std::string _name="SDF test");
+	static std::shared_ptr<SceneResource> Shadow(std::string _name = "shadow test");
 
 	static std::shared_ptr<SceneResource> GetSceneConfig(std::string _name);
 };

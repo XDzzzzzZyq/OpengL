@@ -59,7 +59,7 @@ void Viewport::LMB_CLICK(const SceneContext& ctx)
 {
 	if (!EventListener::IsMouseClick()) return;
 	if (!is_in_viewport) return;
-	if (viewport_status != ViewPortStatus::OnClick) return;
+	if (viewport_status != ViewPortStatus::None) return;
 
 	const GameObject* selected_obj = ctx.c_selections.GetSelectedObjects();
 
@@ -169,10 +169,12 @@ void Viewport::RenderAxis(const SceneContext& ctx)
 void Viewport::RenderHandle(const SceneContext& ctx)
 {
 	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
-	Transform3D* active_trans = dynamic_cast<Transform3D*>(scene->GetActiveCamera());
 	Camera* active_cam = dynamic_cast<Camera*>(scene->GetActiveCamera());
 
-	if (active_trans == nullptr)
+	SelectionManager<GameObject>& sel = ctx.c_selections;
+	Transform3D* active_trans = dynamic_cast<Transform3D*>(sel.GetActiveObject());
+
+	if (active_trans == nullptr || active_cam == nullptr)
 		return;
 
 	static bool useSnap = false;

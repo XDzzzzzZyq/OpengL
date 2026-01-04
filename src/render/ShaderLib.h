@@ -38,11 +38,6 @@ using S_glob = std::tuple<std::string, ParaType, float>;
 using S_AB = std::tuple<int, std::string, ParaType>;
 using S_REND = S_AB; // array buffer
 
-enum ShaderType
-{
-	NONE_SHADER = -1, VERTEX_SHADER, FRAGMENT_SHADER, COMPUTE_SHADER, GEOMETRY_SHADER
-};
-
 enum ShaderPropType
 {
 	NONE_PROP = -1, LAYOUT_IN_PROP, LAYOUT_BUFFER_PROP, LAYOUT_OUT_PROP, IN_PROP, OUT_PROP, UNIFRON_PROP, STURCT_DEF_PROP, STURCT_PROP, UNIFORM_STRUCT_PROP, CONST_PROP, GLOB_PROP, FUNC_DEF_PROP, END_PROP

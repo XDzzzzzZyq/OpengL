@@ -23,16 +23,10 @@ void Light::EnableShadowMap()
 	_shadowmap_shader[SUNLIGHT] = ChainedShader::ImportShader("Depth_Rast.vert", "Empty.frag");
 
 	_shadowmap_shader[POINTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
-	_shadowmap_shader[POINTLIGHT].UseShader();
-	_shadowmap_shader[POINTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 
 	_shadowmap_shader[SPOTLIGHT] = ChainedShader::ImportShader("Empty.vert", "6sides_trans.geom", "Depth_Linear.frag");
-	_shadowmap_shader[SPOTLIGHT].UseShader();
-	_shadowmap_shader[SPOTLIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 
 	_shadowmap_shader[AREALIGHT] = ChainedShader::ImportShader("Empty_Rand.vert", "6sides_trans.geom", "Depth_Linear.frag");
-	_shadowmap_shader[AREALIGHT].UseShader();
-	_shadowmap_shader[AREALIGHT].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 }
 
 float Light::sun_shaodow_field = 5.0f;
@@ -90,7 +84,7 @@ void Light::InitShadowMap(const RenderConfigs* config/*=nullptr*/)
 		light_shadow_map = Texture(1024, 1024, flat_map);
 		break;
 	case POINTLIGHT:
-		// TODO
+		light_shadow_map = Texture(1024, 1024, cube_map);
 		break;
 	case SPOTLIGHT:
 		// TODO
@@ -195,8 +189,8 @@ void Light::BindShadowMapBuffer()
 
 void Light::BindShadowMapShader()
 {
-
 	_shadowmap_shader[light_type].UseShader();
+	_shadowmap_shader[light_type].SetValue("shadowMatrices", 6, Light::_point_6side.data());
 	switch (light_type)
 	{
 	case POINTLIGHT:
@@ -277,25 +271,41 @@ void Light::UpdateProjMatrix()
 	}
 }
 
+void* Light::GetShader()
+{
+	//return &_shadowmap_shader[POINTLIGHT];
+	ComputeShader& shadow_shader = ComputeShader::ImportShader(
+		ComputeShader::GetShadowShaderName(
+			char(RenderConfigs::ShadowAlg::VSSM),
+			light_type));
+	return &shadow_shader;
+}
 
 void Light::ConstructSAT(const RenderConfigs* config)
 {
 	if (!config->RequiresMomentShadow())
 		return;
 
-	static ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
-	static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
-
+	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(light_shadow_map.tex_type);
 	const int pass_count = config->r_shadow_algorithm == RenderConfigs::ShadowAlg::VSSM ? 2 : 4;
-	static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
 
-	light_shadow_map.BindC(0, GL_READ_ONLY);
-	light_shadow_temp.BindC(1, GL_WRITE_ONLY);
-	SAT.RunComputeShader({ light_shadow_map.GetW(), 1 });
+	if (gl_type == GL_TEXTURE_2D) {
+		ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
 
-	light_shadow_temp.BindC(0, GL_READ_ONLY);
-	light_shadow_map.BindC(1, GL_WRITE_ONLY);
-	SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
+		static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
+
+		light_shadow_map.BindC(0, GL_READ_ONLY);
+		light_shadow_temp.BindC(1, GL_WRITE_ONLY);
+		SAT.RunComputeShader({ light_shadow_map.GetW(), 1 });
+
+		light_shadow_temp.BindC(0, GL_READ_ONLY);
+		light_shadow_map.BindC(1, GL_WRITE_ONLY);
+		SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
+	}
+	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+		// ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
+		// Skip for now, not necessary to use SAT filtering
+	}
 }
 
 
@@ -565,12 +575,12 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		const GLuint map_id = light->light_shadow_map.GetTexID();
 		const LightType type = light->light_type;
 
-		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName((char)config->r_shadow_algorithm, type));
+		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName(char(config->r_shadow_algorithm), type));
 
 		shadow_shader.UseShader();
 		shadow_shader.SetValue("offset", xdzm::map01_11(random));
 		shadow_shader.SetValue("frame", frame);
-		shadow_shader.SetValue("map_size", 1024, 1024);
+		shadow_shader.SetValue("map_size", glm::vec2(light->light_shadow_map.GetW(), light->light_shadow_map.GetH()));
 
 		shadow_cache[id].BindC(4);
 		switch (type)
@@ -589,9 +599,11 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		case SUNLIGHT:
 
 			Texture::BindM(map_id, 31, flat_map);
+
 			shadow_shader.SetValue("proj_trans", light->light_proj);
 			shadow_shader.SetValue("dir", sun_list[loc].dir);
 			shadow_shader.SetValue("radius", Light::point_blur_range);
+			shadow_shader.SetValue("light_size", Light::sun_shaodow_field);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
 			break;

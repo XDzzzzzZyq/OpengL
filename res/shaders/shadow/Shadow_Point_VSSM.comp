@@ -4,67 +4,61 @@ layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 layout(rgba32f, binding = 3) uniform image2D U_pos;
 layout(r16f,    binding = 4) uniform image2D U_Lighting;
 layout(rgba8  , binding = 5) uniform image2D U_alpha;
-uniform sampler2D U_opt_flow;
-uniform sampler2D Shadow_Map;
 
-uniform vec3 U_offset[16];
-uniform int frame;
+uniform sampler2D U_opt_flow;
+uniform samplerCube Shadow_Map;
+
+uniform vec3 light_pos;
 uniform float light_far;
 uniform float update_rate;
 uniform vec3 offset;
 uniform float radius;
-uniform float light_size;
-uniform mat4 proj_trans;
 
-uniform vec2 map_size;
+vec2 sample_moment(float w, vec3 L){
+	const vec2 a0 = texture(Shadow_Map, normalize(L)).rg;
+	const vec2 a1 = texture(Shadow_Map, normalize(L + w * offset * vec3( 1, 0, 0))).rg;
+	const vec2 a2 = texture(Shadow_Map, normalize(L + w * offset * vec3(-1, 0, 0))).rg; 
+	const vec2 a3 = texture(Shadow_Map, normalize(L + w * offset * vec3(0,  1, 0))).rg; 
+	const vec2 a4 = texture(Shadow_Map, normalize(L + w * offset * vec3(0, -1, 0))).rg; 
+	const vec2 a5 = texture(Shadow_Map, normalize(L + w * offset * vec3(0, 0,  1))).rg;
+	const vec2 a6 = texture(Shadow_Map, normalize(L + w * offset * vec3(0, 0, -1))).rg;
 
-vec3 GetCoord(vec3 pos, mat4 trans){
-
-	vec4 pos_p = trans * vec4(pos, 1);
-	pos_p.xyz = pos_p.xyz/pos_p.w;
-	vec3 coord = vec3(pos_p) * 0.5 + 0.5;
-
-	return coord;
-}
-
-vec2 sample_moment(float w, vec2 coord){
-	const float dx = 0.5 / map_size.x;
-	const vec2 lt = texture(Shadow_Map, coord.xy + w * vec2(-dx, -dx)).rg;
-	const vec2 rt = texture(Shadow_Map, coord.xy + w * vec2( dx, -dx)).rg; 
-	const vec2 lb = texture(Shadow_Map, coord.xy + w * vec2(-dx,  dx)).rg; 
-	const vec2 rb = texture(Shadow_Map, coord.xy + w * vec2( dx,  dx)).rg; 
-	const float z_av = (rb.r + lt.r - lb.r - rt.r) / (w * w);			// E[z]
-	const float z_av_sq = z_av * z_av;									// E[z]^2
-	const float z_sq_av = (rb.g + lt.g - lb.g - rt.g) / (w * w);		// E[z^2]
+	const vec2 av = (a0 * 2 + a1 + a2 + a3 + a4 + a5 + a6) / 8;		// E[z]
+	const float z_av = av.r;
+	const float z_av_sq = z_av * z_av;								// E[z]^2
+	const float z_sq_av = av.g;										// E[z^2]
 	const float z_var = abs(z_sq_av - z_av_sq);						// Var(z)
 
 	return vec2(z_av, z_var);
 }
 
 float shadow_at(ivec2 uv){
-	const vec3 Pos = imageLoad(U_pos, uv).xyz + offset * radius * 0.1; // just smaller jit
 
-	const vec3 coord = GetCoord(Pos, proj_trans);
-	const float t = coord.z;		// current point's depth
+	vec3 light_off = light_pos + offset * radius * 0.1; // just smaller jit
+	vec3 Pos = imageLoad(U_pos, uv).xyz;
+	vec3 L = Pos - light_off;
+	float dist = length(L);
 
-	float w = 2.0f;			// filter kernel
-	vec2 m = sample_moment(w, coord.xy);
+	float w = 2.0f;
+	vec2 m = sample_moment(w * dist, L); 
 	float z_av = m.r;
-	float z_var = m.g;
+	float z2 = m.g;
+	float z_var = max(z2 - z_av * z_av, 0.0);
+	float t = dist/light_far;
 
 	float P = z_var / (z_var + (t - z_av) * (t - z_av));
 	const float z_occ = (z_av - P * t)/(1 - P);
 	const float eps = 1e-3;
-
+	
 	// Update new penumbra w
-	w = (t - z_occ) * light_size / z_occ;
+	w = 0.2 * (t - z_occ) * radius / z_occ;
 	if (w <= 0.0) {
 		return 1.0;
 	}
-	m = sample_moment(w, coord.xy);
+	m = sample_moment(w * dist, L);
 	z_av = m.r;
 	z_var = m.g;
-
+	
 	P = z_var / (z_var + (t - z_av) * (t - z_av));
 
 	return min(max(float(t <= z_av), P), 1.0);
@@ -99,11 +93,12 @@ void main(){
 			return;
 	}
 
-	float shadow = 0.0;
+	float shadow = shadow_at(uv);
 
-	shadow = shadow_at(uv + ivec2( 0, 0));
-	float shadow_b = imageLoad(U_Lighting, uv).r;
+	float shadow_b = BOF_sample(uv);
 	shadow = shadow_b + update_rate * (shadow - shadow_b);
+
+	//shadow = texture(Shadow_Map, normalize(vec3(uv,0.001)/2048)).r;
 
 	imageStore(U_Lighting, uv, vec4(vec3(shadow), 1));
 }

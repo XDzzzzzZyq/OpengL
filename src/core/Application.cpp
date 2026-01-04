@@ -62,7 +62,7 @@ int Application::Init()
 	renderer.r_using_ssr = false;
 #else
 	// TODO: better binding
-	Ctx.UseScene(SceneManager::SceneConfig4().get());
+	Ctx.UseScene(SceneManager::Shadow().get());
 	Ctx.c_active_fb_channel = &renderer.r_buffer_list[0];
 	Ctx.c_active_fb_result = renderer.GetFrameBufferPtr();
 
@@ -227,6 +227,9 @@ int Application::Run()
 
 int Application::Terminate()
 {
+	TextureLib::ResetTexLib();
+	ComputeShader::ResetComputeLib();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

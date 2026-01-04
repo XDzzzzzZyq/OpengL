@@ -2,7 +2,7 @@
 
 layout(local_size_x = 4, local_size_y = 4, local_size_z = 1) in;
 
-layout(rgba32f, binding = 0) uniform imageCube U_result;
+layout(rgba32f, binding = 0) uniform writeonly imageCube U_result;
 
 uniform int resol;
 uniform sampler2D U_etangular;
@@ -16,7 +16,7 @@ vec2 genHdrUV(vec3 dir) {
 
 vec3 GetDir(ivec3 loc){
 
-	vec2 uv = (loc.xy + 0.5)/float(resol);
+	vec2 uv = (vec2(loc.xy) + 0.5)/vec2(imageSize(U_result));
 
     vec3 dir = normalize(vec3(1, (uv-0.5)*2));
     vec3 X = vec3(1, 0, 0);

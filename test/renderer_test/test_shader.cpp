@@ -4,11 +4,15 @@
 #include "Shaders.h"
 #include "Texture.h"
 TEST_F(RendererEnvir, RenderShader) {
-	RenderShader shader = RenderShader(shader_root + "testS.vert", shader_root + "Rasterization.frag");
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	RenderShader shader = RenderShader("testS.vert", "Rasterization.frag");
 	GLERRTEST;
 
 	int v_id = shader.GetShaderID(VERTEX_SHADER);
 	int f_id = shader.GetShaderID(FRAGMENT_SHADER);
+	EXPECT_NE(v_id, f_id);
 
 	auto& sh_struct = shader.GetShaderUnit(VERTEX_SHADER)->sh_struct;
 	Args args = { {FLOAT_PARA,"a"}, {FLOAT_PARA,"b"} };
@@ -23,7 +27,21 @@ TEST_F(RendererEnvir, RenderShader) {
 	GLERRTEST;
 
 	int v_id_new = shader.GetShaderID(VERTEX_SHADER);
-	EXPECT_EQ(v_id, v_id_new);
+	EXPECT_NE(v_id_new, v_id);	// Expect a new shader ID after relinking
+	EXPECT_NE(v_id_new, 0);
+
+	sh_struct->DefFunc(FLOAT_PARA, "testFunc_wrong", "return a + b 123123", args); // Wrong function
+	EXPECT_TRUE(sh_struct->is_struct_changed);
+
+	shader.GenerateShader(VERTEX_SHADER);
+	EXPECT_TRUE(shader.is_shader_changed);
+	EXPECT_NE(shader.GetShaderUnit(VERTEX_SHADER)->sh_code.find("testFunc_wrong"), std::string::npos);
+
+	shader.RelinkShader(VERTEX_SHADER);
+	GLERRTEST;
+
+	int v_id_new_new = shader.GetShaderID(VERTEX_SHADER);
+	EXPECT_EQ(v_id_new, v_id_new_new);	// Expect new shader ID should keep the same
 }
 
 glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {
@@ -69,7 +87,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 	glGetIntegerv(GL_MAX_COMPUTE_SHARED_MEMORY_SIZE, &maxSharedMem);
 	std::cout << "Max compute shared memory size: " << maxSharedMem << " bytes" << std::endl;
 
-	auto& sat = ComputeShader::ImportShader(shader_root + "convert/SAT");
+	auto& sat = ComputeShader::ImportShader("convert/SAT");
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
 	GLERRTEST;
 
@@ -113,7 +131,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		/* Box Blur with radius 0 */
 
-		auto& blur = ComputeShader::ImportShader(shader_root + "pps/Box_Blur");
+		auto& blur = ComputeShader::ImportShader("pps/Box_Blur");
 		GLERRTEST;
 
 		{
@@ -159,5 +177,39 @@ TEST_F(RendererEnvir, ComputeShader) {
 				EXPECT_GE(1e-5, glm::distance(blurdata[i], s)) << " at (" << i / w << "," << i % w << ")\n";
 			}
 		}
+	}
+}
+
+TEST_F(RendererEnvir, ComputeShader_SAT) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
+	EXPECT_TRUE(tex.GetTexID() != 0);
+	std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
+
+	const int w = 512;
+	auto cube = Texture();
+	cube.GenCubeMapFrom(tex, w);
+	cube.SaveTexture("cube", false);
+	
+	auto& sat = ComputeShader::ImportShader("convert/SAT_Cube");
+	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
+	GLERRTEST;
+	{
+		Texture cube_temp = Texture(w, w, IBL_CUBE_TEXTURE);
+		GLERRTEST;
+		/* SAT construction */
+
+		cube.BindC(0, GL_READ_ONLY); GLERRTEST;
+		cube_temp.BindC(1, GL_WRITE_ONLY); GLERRTEST;
+		sat.RunComputeShader({ w,6 }); GLERRTEST;
+
+		cube_temp.BindC(0, GL_READ_ONLY); GLERRTEST;
+		cube.BindC(1, GL_WRITE_ONLY); GLERRTEST;
+		sat.RunComputeShader({ w,6 }); GLERRTEST;
+
+		cube.SaveTexture("cube_SAT", false);
+		GLERRTEST;
 	}
 }
