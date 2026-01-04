@@ -934,7 +934,10 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 }
 
 void ComputeShader::ResetComputeLib()
-{}
+{
+	comp_list.clear();
+	config_list.clear();
+}
 
 ComputeShader::ComputeShader(const std::string& name)
 {

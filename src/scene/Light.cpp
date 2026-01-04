@@ -289,7 +289,7 @@ void Light::ConstructSAT(RenderConfigs* config)
 	const int pass_count = config->r_shadow_algorithm == RenderConfigs::ShadowAlg::VSSM ? 2 : 4;
 
 	if (gl_type == GL_TEXTURE_2D) {
-		static ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
+		ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
 
 		static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
 
@@ -302,7 +302,7 @@ void Light::ConstructSAT(RenderConfigs* config)
 		SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
 	}
 	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
-		static ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
+		ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
 
 	}
 }

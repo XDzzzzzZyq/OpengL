@@ -34,7 +34,7 @@ TEST_F(RendererEnvir, Texture) {
 	}
 }
 
-TEST_F(RendererEnvir, CubeMap) {
+TEST_F(RendererEnvir, Texture_CubeMap) {
 	{
 		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
 		EXPECT_TRUE(tex.GetTexID() != 0);
@@ -53,13 +53,13 @@ TEST_F(RendererEnvir, CubeMap) {
 		auto cube = Texture();
 		cube.GenCubeMapFrom(tex, 512);
 		std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
-		//GLERRTEST;
+		GLERRTEST;
 		EXPECT_EQ(cube.GetW(), 512);
 
 		auto rec = Texture();
 		rec.GenERectMapFrom(cube, w, h);
 		std::cout << rec.GetTexID() << " : " << rec.GetTexName() << "\n";
-		//GLERRTEST;
+		GLERRTEST;
 
 		EXPECT_EQ(w, rec.GetW());
 		EXPECT_EQ(h, rec.GetH());
@@ -84,6 +84,40 @@ TEST_F(RendererEnvir, CubeMap) {
 
 		EXPECT_GE(1.5, max);
 		EXPECT_GE(0.004, err);
+	}
+}
+
+#include <filesystem>
+TEST_F(RendererEnvir, Texture_Save) {
+	{
+		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
+		EXPECT_TRUE(tex.GetTexID() != 0);
+		std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
+		GLERRTEST;
+
+		int w = tex.GetW();
+		int h = tex.GetH();
+
+		tex.SaveTexture("room_save", false);
+		GLERRTEST;
+		EXPECT_TRUE(std::filesystem::exists("result/room_save.hdr"));
+		
+		tex.SaveTexture("room_save", true);
+		GLERRTEST;
+		EXPECT_TRUE(std::filesystem::exists("result/room_save.png"));
+
+		auto cube = Texture(); GLERRTEST;
+		cube.GenCubeMapFrom(tex, 512); GLERRTEST;
+		std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
+		GLERRTEST;
+		EXPECT_EQ(cube.GetW(), 512);
+
+		cube.SaveTexture("room_cube");
+		GLERRTEST;
+		LOOP(6) {
+			std::string outputPath = "result/room_cube/room_cube_" + std::to_string(i + 1) + ".hdr";
+			EXPECT_TRUE(std::filesystem::exists(outputPath));
+		}
 	}
 }
 

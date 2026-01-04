@@ -202,7 +202,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 	if (r_config.RequiresFwdOF())
 	{
-		static ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
+		ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
 		of.UseShader();
@@ -328,7 +328,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////    OUTLINE    ////////////
 
 		if (r_is_preview) {
-			static ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
+			ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
 			if (active_GO_ID != 0) outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
 		}
@@ -338,7 +338,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (r_config.RequiresBwdOF())
 		{
-			static ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
+			ComputeShader& of_b = ComputeShader::ImportShader("Optical_Flow_Back");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 0);
 			r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
 			of_b.UseShader();
@@ -349,7 +349,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		////////////  SSAO + DEPTH  ////////////
 
-		static ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
+		ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
 		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / EventListener::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
@@ -432,7 +432,7 @@ void Renderer::Render(bool rend, bool buff) {
 		////////////     FXAA     ////////////
 
 		if (r_config.RequiresFXAA()) {
-			static ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName(GetConfig()));
+			ComputeShader& fxaa = ComputeShader::ImportShader(ComputeShader::GetAAShaderName(GetConfig()));
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 1);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
@@ -443,7 +443,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//////////  COLOR ADJUSTMENT  /////////
 
-		static ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
+		ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 		//r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 2);
@@ -457,7 +457,7 @@ void Renderer::Render(bool rend, bool buff) {
 
 		if (r_is_preview)
 		{
-			static ComputeShader& editing = ComputeShader::ImportShader("pps/Editing");
+			ComputeShader& editing = ComputeShader::ImportShader("pps/Editing");
 			r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 			editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
