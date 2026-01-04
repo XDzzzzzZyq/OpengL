@@ -58,7 +58,7 @@ int Application::Init()
 	renderer.r_using_shadow_map = false;
 	renderer.r_using_ssr = false;
 #else
-	renderer.UseScene(SceneManager::SceneConfig4());
+	renderer.UseScene(SceneManager::Shadow());
 	renderer.GetConfig()->r_ao_radius = 0.8f;
 	//renderer.r_render_icons = false;
 
