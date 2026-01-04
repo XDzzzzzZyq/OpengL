@@ -314,6 +314,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\convert\Irradiance_Conv.comp" />
     <None Include="res\shaders\convert\Irradiance_Conv_E2C.comp" />
     <None Include="res\shaders\convert\SAT.comp" />
+    <None Include="res\shaders\convert\SAT_Cube.comp" />
     <None Include="res\shaders\Depth_Linear.frag" />
     <None Include="res\shaders\Depth_Rast.vert" />
     <None Include="res\shaders\Empty.comp" />

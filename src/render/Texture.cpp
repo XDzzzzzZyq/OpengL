@@ -209,7 +209,7 @@ Texture::Texture(int _w, int _h, TextureType _type)
 	{
 	case GL_TEXTURE_2D:
 		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT);
-		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_w, 0, layout, data_type, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, data_type, NULL);
 		break;
 	case GL_TEXTURE_CUBE_MAP:
 		Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(tex_ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
@@ -310,8 +310,8 @@ void Texture::BindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRITE
 	if (slot == -1)
 		slot = tex_type + tex_slot_offset;
 
-	auto [layout, _1, _2, _3] = Texture::ParseFormat(tex_type);
-	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
+	auto [layout, _1, _2, gl_type] = Texture::ParseFormat(tex_type);
+	GLuint is_array = (_level != 0 || gl_type == GL_TEXTURE_CUBE_MAP) ? GL_TRUE : GL_FALSE;
 
 	glBindImageTexture(slot, tex_ID, 0, is_array, 0, read_or_write, layout);
 }
@@ -335,11 +335,9 @@ void Texture::UnbindC(GLuint slot /*= -1*/, GLuint read_or_write /*= GL_READ_WRI
 	if (slot == -1)
 		slot = tex_type + tex_slot_offset;
 
-	auto [layout, _1, _2, _3] = Texture::ParseFormat(tex_type);
 
-	GLuint is_array = _level == 0 ? GL_FALSE : GL_TRUE;
-
-	glBindImageTexture(slot, 0, 0, is_array, 0, GL_READ_ONLY, layout);
+	// other parameters are not necessary.
+	glBindImageTexture(slot, 0, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
 }
 
 void Texture::Unbind() const

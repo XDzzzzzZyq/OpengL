@@ -179,3 +179,37 @@ TEST_F(RendererEnvir, ComputeShader) {
 		}
 	}
 }
+
+TEST_F(RendererEnvir, ComputeShader_SAT) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
+	EXPECT_TRUE(tex.GetTexID() != 0);
+	std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
+
+	const int w = 512;
+	auto cube = Texture();
+	cube.GenCubeMapFrom(tex, w);
+	cube.SaveTexture("cube", false);
+	
+	auto& sat = ComputeShader::ImportShader("convert/SAT_Cube");
+	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
+	GLERRTEST;
+	{
+		Texture cube_temp = Texture(w, w, IBL_CUBE_TEXTURE);
+		GLERRTEST;
+		/* SAT construction */
+
+		cube.BindC(0, GL_READ_ONLY); GLERRTEST;
+		cube_temp.BindC(1, GL_WRITE_ONLY); GLERRTEST;
+		sat.RunComputeShader({ w,6 }); GLERRTEST;
+
+		cube_temp.BindC(0, GL_READ_ONLY); GLERRTEST;
+		cube.BindC(1, GL_WRITE_ONLY); GLERRTEST;
+		sat.RunComputeShader({ w,6 }); GLERRTEST;
+
+		cube.SaveTexture("cube_SAT", false);
+		GLERRTEST;
+	}
+}

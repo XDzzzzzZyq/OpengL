@@ -207,6 +207,9 @@ int Application::Run()
 
 int Application::Terminate()
 {
+	TextureLib::ResetTexLib();
+	ComputeShader::ResetComputeLib();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

@@ -927,7 +927,7 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 	static std::vector<glm::vec3> kernel = xdzm::rand3hKernel(config->r_ao_ksize);
 
 	for (const auto& pref : ShaderLib::AO_prefix)
-		ComputeShader::ImportShaderConfigs("pps/" + pref + "AO", Uni("incre_average", true), Uni("kernel_length", (GLuint)config->r_ao_ksize), Uni("kernel", (GLuint)config->r_ao_ksize, (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", config->r_ao_radius), Uni("U_opt_flow", 1));
+		ComputeShader::ImportShaderConfigs("pps/" + pref + "AO", Uni("incre_average", true), Uni("kernel_length", GLuint(config->r_ao_ksize)), Uni("kernel", GLuint(config->r_ao_ksize), (float*)kernel.data(), VEC3_ARRAY), Uni("noise_size", 16), Uni("radius", config->r_ao_radius), Uni("U_opt_flow", 1));
 
 	for (const auto& pref : ShaderLib::SSR_prefix)
 		ComputeShader::ImportShaderConfigs("pps/SSR" + pref, Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
@@ -1049,7 +1049,7 @@ void ComputeShader::RunComputeShader(GLuint workgroup_count_x /*= 1*/, GLuint wo
 void ComputeShader::RunComputeShader(const glm::vec2& _size)
 {
 	UseShader();
-	RunComputeShader((GLuint)_size.x, (GLuint)_size.y, 1);
+	RunComputeShader(GLuint(_size.x), GLuint(_size.y), 1);
 	UnuseShader();
 }
 
