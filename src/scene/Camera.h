@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "DebugMesh.h"
 #include "EventListener.h"
 /*#include "Sprite.h"*/
 
-class Camera : public GameObject, public Transform3D, public EventListener
+class Camera : public ObjectID, public Transform3D, public EventListener
 {
 public:
 

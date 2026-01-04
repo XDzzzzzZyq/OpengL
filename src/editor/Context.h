@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ID.h"
 #include "SelectionManager.h"
 
 class SceneContext
 {
 public:
 	// TODO: temprary solution
-	mutable SelectionManager<GameObject> c_selections;
+	mutable SelectionManager<ObjectID> c_selections;
 	UID* c_active_scene;
 
 	// TODO: use UID*
@@ -19,10 +19,10 @@ public:
 	void UseChannelFB(void* fb) { c_active_fb_channel = fb; };
 
 	/* Read only */
-	const GameObject* GetActiveCamera() const;
-	const GameObject* GetActiveEnvironment() const;
-	const GameObject* GetPPS(int _tar) const;
+	const ObjectID* GetActiveCamera() const;
+	const ObjectID* GetActiveEnvironment() const;
+	const ObjectID* GetPPS(int _tar) const;
 
-	const std::vector<const GameObject*> GetGameObjects() const;
+	const std::vector<const ObjectID*> GetObjectIDs() const;
 };
 

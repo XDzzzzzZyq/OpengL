@@ -8,10 +8,10 @@
 #include "Texture.h"
 #include "Shaders.h"
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 
-class PolygonLight : public GameObject, public Transform3D
+class PolygonLight : public ObjectID, public Transform3D
 {
 private:
 	VertexArray o_vertArray;

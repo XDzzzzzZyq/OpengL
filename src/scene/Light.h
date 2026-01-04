@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "Sprite.h"
 #include "PolygonLight.h"
@@ -19,7 +19,7 @@ enum LightType
 };
 
 // A basic light, which can be a point light, sun light, or a spot light
-class Light : public GameObject, public Transform3D
+class Light : public ObjectID, public Transform3D
 {
 public:
 	bool use_shadow{ true };

@@ -35,8 +35,8 @@ void Outliner::RenderLayer(const SceneContext& ctx)
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
-		SelectionManager<GameObject>& sel_mgr = ctx.c_selections;
-		const auto obj_list = ctx.GetGameObjects();
+		SelectionManager<ObjectID>& sel_mgr = ctx.c_selections;
+		const auto obj_list = ctx.GetObjectIDs();
 
 		const ImVec2 p = ImGui::GetCursorScreenPos() - ImVec2(0, 2);
 		const ImVec2 size = ImVec2(uly_size.x, ol_width - 4);
@@ -50,8 +50,8 @@ void Outliner::RenderLayer(const SceneContext& ctx)
 		ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.1f, 0.5f));
 		ImGui::PushFont(fontA);
 
-		for (const GameObject* obj : obj_list) {
-			const bool selected = sel_mgr.IsSelected((GameObject*)obj);
+		for (const ObjectID* obj : obj_list) {
+			const bool selected = sel_mgr.IsSelected((ObjectID*)obj);
 
 			if (selected) ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 0.5, 0, 1);
 
@@ -62,7 +62,7 @@ void Outliner::RenderLayer(const SceneContext& ctx)
 			if (is_button_pressed) {
 				// TODO: event system
 				EventListener::is_selected_changed = true;
-				sel_mgr.Select((GameObject*)obj, false);
+				sel_mgr.Select((ObjectID*)obj, false);
 			}
 		}
 

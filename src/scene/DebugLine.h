@@ -1,7 +1,7 @@
 #pragma once
 #include "Context.h"
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 
 #include "VertexArray.h"
@@ -10,7 +10,7 @@
 
 #include "Parameters.h"
 
-class DebugLine : public GameObject, public Transform3D
+class DebugLine : public ObjectID, public Transform3D
 {
 private:
 	std::vector<glm::vec3> dLine_pos_list;

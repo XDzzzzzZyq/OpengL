@@ -18,7 +18,7 @@ TransformPanel::~TransformPanel()
 
 static Transform* GetActiveTransPtr(const SceneContext& ctx)
 {
-	GameObject* active_object = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
 	if (active_object == nullptr)
 		return nullptr;
 
@@ -55,7 +55,7 @@ static bool RenderTransfroms(Transform3D& trans)
 
 void TransformPanel::RenderLayer(const SceneContext& ctx)
 {
-	GameObject* active_object = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr(ctx));
 
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {

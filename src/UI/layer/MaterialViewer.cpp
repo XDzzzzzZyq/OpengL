@@ -18,7 +18,7 @@ MaterialViewer::~MaterialViewer()
 
 static Material* GetActiveMatPtr(const SceneContext& ctx)
 {
-	GameObject* active_object = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
 	if (active_object == nullptr)
 		return nullptr;
 

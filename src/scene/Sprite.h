@@ -3,7 +3,7 @@
 #include "GL/glew.h"
 #include "glm/glm.hpp"
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Context.h"
 
 #include "Texture.h"
@@ -16,7 +16,7 @@ enum SpriteType
 	NONE_SPRITE, POINT_LIGHT_SPRITE, SUN_LIGHT_SPRITE, SPOT_LIGHT_SPRITE, CAM_SPRITE, ENVIRN_SPRITE, PARTIC_SPIRIT
 };
 
-class Sprite : public GameObject
+class Sprite : public ObjectID
 {
 
 private:

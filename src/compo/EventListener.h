@@ -2,7 +2,7 @@
 #define SPE_KEY_LEN 3 // alt ctrl shift
 #define NORM_KEY_LEN 36
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Events.h"
 #include "Context.h"
 #include "operator.h"

@@ -275,7 +275,7 @@ void ShaderEditor::UpdateKeyword()
 
 static Shaders* GetActiveShaderPtr(SceneContext& ctx)
 {
-	GameObject* active_obj = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_obj = ctx.c_selections.GetSelectedObjects();
 	if (active_obj == nullptr)
 		return nullptr;
 

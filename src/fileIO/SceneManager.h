@@ -55,7 +55,7 @@ private:
 	SceneModifStatus status = SceneModifStatus::SceneChanged;
 public:
 
-	ResPool<GameObject>			obj_list;
+	ResPool<ObjectID>			obj_list;
 
 	ResPool<Camera>				cam_list;
 	ResPool<Mesh>				mesh_list;
@@ -69,7 +69,7 @@ public:
 
 	Resource<SDFField>          sdf_field;
 
-	SelectionManager<GameObject>scene_selection;
+	SelectionManager<ObjectID>scene_selection;
 
 public:
 
@@ -83,7 +83,7 @@ public:
 	void UsePostProcessing(Resource<PostProcessing> pps);
 	void UseSDF(Resource<SDFField> sdf);
 
-	GameObject* GetGameObject(int _id);
+	ObjectID* GetObjectID(int _id);
 	Camera* GetActiveCamera();
 	Environment* GetActiveEnvironment();
 	PostProcessing* GetPPS(int _tar);

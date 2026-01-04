@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "ID.h"
 #include "macros.h"
 #include "xdz_math.h"
 
@@ -10,7 +10,7 @@ UID::UID()
 
 }
 
-GameObject::GameObject() {
+ObjectID::ObjectID() {
 	const int id = GetObjectID();
 	const int R = id % 256;
 	const int G = ((id - R) / 256) % 256;
@@ -20,7 +20,7 @@ GameObject::GameObject() {
 	id_color_rand = xdzm::rand3() / 2.0f + glm::vec3(0.5f);
 }
 
-GameObject::~GameObject()
+ObjectID::~ObjectID()
 {
 	DEBUG(" >>[ " + o_name + " (ID=" + std::to_string(GetObjectID()) + ") ]");
 }

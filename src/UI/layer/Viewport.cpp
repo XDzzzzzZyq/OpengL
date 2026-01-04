@@ -61,17 +61,17 @@ void Viewport::LMB_CLICK(const SceneContext& ctx)
 	if (!is_in_viewport) return;
 	if (viewport_status != ViewPortStatus::None) return;
 
-	const GameObject* selected_obj = ctx.c_selections.GetSelectedObjects();
+	const ObjectID* selected_obj = ctx.c_selections.GetSelectedObjects();
 
 	const FrameBuffer* info_fb = (FrameBuffer*)(ctx.c_active_fb_channel);
 	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
 
 	glm::vec2 offset = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
 	int id = GetSelectID(info_fb, GLuint(mouse_x - offset.x), GLuint(mouse_y - offset.y));
-	if (scene->GetGameObject(id) == selected_obj) return;
+	if (scene->GetObjectID(id) == selected_obj) return;
 
 	// TODO: event system
-	ctx.c_selections.Select(scene->GetGameObject(id), multi_select);
+	ctx.c_selections.Select(scene->GetObjectID(id), multi_select);
 	EventListener::is_selected_changed = true;
 }
 
@@ -171,7 +171,7 @@ void Viewport::RenderHandle(const SceneContext& ctx)
 	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
 	Camera* active_cam = dynamic_cast<Camera*>(scene->GetActiveCamera());
 
-	SelectionManager<GameObject>& sel = ctx.c_selections;
+	SelectionManager<ObjectID>& sel = ctx.c_selections;
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(sel.GetActiveObject());
 
 	if (active_trans == nullptr || active_cam == nullptr)

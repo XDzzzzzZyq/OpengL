@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Context.h"
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 
 #include "MeshData.h"
@@ -11,7 +11,7 @@
 
 #include "Material.h"
 
-class Mesh : public GameObject, public Transform3D
+class Mesh : public ObjectID, public Transform3D
 {
 public:
 

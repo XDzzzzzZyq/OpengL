@@ -16,14 +16,14 @@ public:
 	static int GetTotalAllocated() { return count; };
 };
 
-enum GOType
+class ObjectID : public UID
 {
-	NONE_GO = -1, GO_CAM, GO_MESH, GO_LIGHT, GO_POLYLIGHT, GO_ENVIR, GO_SPRITE, GO_DL, GO_DP, GO_DM, GO_SDFFIELD
-};
+public:
+	enum GOType
+	{
+		NONE_GO = -1, GO_CAM, GO_MESH, GO_LIGHT, GO_POLYLIGHT, GO_ENVIR, GO_SPRITE, GO_DL, GO_DP, GO_DM, GO_SDFFIELD
+	};
 
-// TODO: rename it
-class GameObject : public UID
-{
 public:
 	// TODO: remove it from here
 	mutable glm::vec3 id_color;
@@ -44,6 +44,6 @@ public:
 	virtual void* GetTransform()	{ return nullptr; }
 	virtual void* GetMaterial()		{ return nullptr; }
 
-	GameObject();
-	~GameObject();
+	ObjectID();
+	~ObjectID();
 };

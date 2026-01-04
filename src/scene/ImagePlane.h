@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
-class ImagePlane : public GameObject, public Transform3D
+class ImagePlane : public ObjectID, public Transform3D
 {
 };
 

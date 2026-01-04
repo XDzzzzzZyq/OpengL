@@ -2,7 +2,7 @@
 
 #include "Context.h"
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 
 #include "VertexArray.h"
@@ -15,7 +15,7 @@ enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT
 };
 
-class DebugPoints : public GameObject, public Transform3D
+class DebugPoints : public ObjectID, public Transform3D
 {
 private:
 	VertexArray dp_vertArry;

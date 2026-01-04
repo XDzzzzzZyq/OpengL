@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "Texture.h"
 #include "Sprite.h"
@@ -16,7 +16,7 @@ enum EnvironmentType
 	NONE_ENVIR, TEXTURE_ENVIR, COLOR_ENVIRN, NOISE_ENVIRN
 };
 
-class Environment : public GameObject, public Transform3D
+class Environment : public ObjectID, public Transform3D
 {
 public:
 

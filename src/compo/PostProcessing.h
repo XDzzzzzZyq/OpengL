@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 #include "Field.h"
-#include "GameObject.h"
+#include "ID.h"
 
 #include "Shaders.h"
 #include "Texture.h"
@@ -13,7 +13,7 @@
 
 #include "Sprite.h"
 
-class PostProcessing : public GameObject
+class PostProcessing : public ObjectID
 {
 public:
 	Field pps_field{};
