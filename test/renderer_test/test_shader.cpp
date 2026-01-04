@@ -7,7 +7,7 @@ TEST_F(RendererEnvir, RenderShader) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 
-	RenderShader shader = RenderShader(shader_root + "testS.vert", shader_root + "Rasterization.frag");
+	RenderShader shader = RenderShader("testS.vert", "Rasterization.frag");
 	GLERRTEST;
 
 	int v_id = shader.GetShaderID(VERTEX_SHADER);
@@ -87,7 +87,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 	glGetIntegerv(GL_MAX_COMPUTE_SHARED_MEMORY_SIZE, &maxSharedMem);
 	std::cout << "Max compute shared memory size: " << maxSharedMem << " bytes" << std::endl;
 
-	auto& sat = ComputeShader::ImportShader(shader_root + "convert/SAT");
+	auto& sat = ComputeShader::ImportShader("convert/SAT");
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
 	GLERRTEST;
 
@@ -131,7 +131,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		/* Box Blur with radius 0 */
 
-		auto& blur = ComputeShader::ImportShader(shader_root + "pps/Box_Blur");
+		auto& blur = ComputeShader::ImportShader("pps/Box_Blur");
 		GLERRTEST;
 
 		{

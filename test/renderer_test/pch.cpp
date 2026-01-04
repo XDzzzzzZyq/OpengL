@@ -4,6 +4,9 @@
 
 #include "pch.h"
 
+#include "Texture.h"
+#include "Shaders.h"
+
 void RendererEnvir::SetUpTestSuite()
 {
 }
@@ -36,10 +39,10 @@ void RendererEnvir::SetUp()
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
 
 	std::cout << "fb_size = [" << max_resolution_w << ":" << max_resolution_h << "]\n";
-}
 
-#include "Texture.h"
-#include "Shaders.h"
+	Shaders::folder_root = shader_root;
+	TextureLib::root_dir = tex_root;
+}
 void RendererEnvir::TearDown()
 {
 	TextureLib::ResetTexLib();

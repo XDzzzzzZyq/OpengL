@@ -27,17 +27,16 @@ TEST_F(RendererEnvir, Texture) {
 		EXPECT_TRUE(sum != glm::vec4(-4 * 4));
 	}
 	{
-		auto tex2 = Texture(tex_root + "testImg.png", PNG_TEXTURE, GL_REPEAT);
+		auto tex2 = Texture("testImg.png", PNG_TEXTURE, GL_REPEAT);
 		EXPECT_TRUE(tex2.GetTexID() != 0);
 		std::cout << tex2.GetTexID() << " : " << tex2.GetTexName() << "\n";
 		GLERRTEST;
 	}
 }
 
-#include "Shaders.h"
 TEST_F(RendererEnvir, CubeMap) {
 	{
-		auto tex = Texture(tex_root + "hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
+		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
 		EXPECT_TRUE(tex.GetTexID() != 0);
 		std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
 		GLERRTEST;
@@ -50,8 +49,6 @@ TEST_F(RendererEnvir, CubeMap) {
 		auto [_, layout, type, gl_type] = Texture::ParseFormat(tex.tex_type);
 		glGetTexImage(gl_type, 0, layout, type, data.data());
 		GLERRTEST;
-
-		Shaders::folder_root = shader_root;
 
 		auto cube = Texture();
 		cube.GenCubeMapFrom(tex, 512);
@@ -67,8 +64,6 @@ TEST_F(RendererEnvir, CubeMap) {
 		EXPECT_EQ(w, rec.GetW());
 		EXPECT_EQ(h, rec.GetH());
 		EXPECT_TRUE(tex.tex_type == rec.tex_type);
-
-		rec.SaveTexture("rec_hdr", false);
 
 		std::vector<glm::vec4> data_rec(w * h, glm::vec4(-1));
 		rec.Bind();
@@ -91,3 +86,4 @@ TEST_F(RendererEnvir, CubeMap) {
 		EXPECT_GE(0.004, err);
 	}
 }
+
