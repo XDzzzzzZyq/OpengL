@@ -3,6 +3,9 @@
 
 #include "Texture.h"
 TEST_F(RendererEnvir, Texture) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
 	{
 		auto tex = TextureLib::Noise_2D_4x4xN(5);
 		EXPECT_TRUE(tex->GetTexID() != 0);
@@ -35,6 +38,9 @@ TEST_F(RendererEnvir, Texture) {
 }
 
 TEST_F(RendererEnvir, Texture_CubeMap) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
 	{
 		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
 		EXPECT_TRUE(tex.GetTexID() != 0);
@@ -89,6 +95,9 @@ TEST_F(RendererEnvir, Texture_CubeMap) {
 
 #include <filesystem>
 TEST_F(RendererEnvir, Texture_Save) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
 	{
 		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
 		EXPECT_TRUE(tex.GetTexID() != 0);
