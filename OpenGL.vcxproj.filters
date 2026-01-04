@@ -144,9 +144,6 @@
     <ClCompile Include="src\scene\Environment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\GameObject.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\scene\ImagePlane.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -259,6 +256,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\editor\Events.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\ID.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -521,9 +521,6 @@
     <ClInclude Include="src\scene\Environment.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\GameObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\ImagePlane.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -636,6 +633,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\Events.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\ID.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
