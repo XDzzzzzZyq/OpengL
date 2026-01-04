@@ -303,7 +303,7 @@ void Light::ConstructSAT(RenderConfigs* config)
 	}
 	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
 		ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
-
+		// Skip for now, not necessary to use SAT filtering
 	}
 }
 

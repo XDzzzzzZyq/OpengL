@@ -615,5 +615,5 @@ void Renderer::ScreenShot()
 {
 	std::string name = "result""-" + std::to_string(EventListener::random_float1);
 	DEBUG("saving to: " + name);
-	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name);
+	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name, true);
 }

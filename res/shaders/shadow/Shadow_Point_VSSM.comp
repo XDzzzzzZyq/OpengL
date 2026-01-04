@@ -14,6 +14,24 @@ uniform float update_rate;
 uniform vec3 offset;
 uniform float radius;
 
+vec2 sample_moment(float w, vec3 L){
+	const vec2 a0 = texture(Shadow_Map, normalize(L)).rg;
+	const vec2 a1 = texture(Shadow_Map, normalize(L + w * offset * vec3( 1, 0, 0))).rg;
+	const vec2 a2 = texture(Shadow_Map, normalize(L + w * offset * vec3(-1, 0, 0))).rg; 
+	const vec2 a3 = texture(Shadow_Map, normalize(L + w * offset * vec3(0,  1, 0))).rg; 
+	const vec2 a4 = texture(Shadow_Map, normalize(L + w * offset * vec3(0, -1, 0))).rg; 
+	const vec2 a5 = texture(Shadow_Map, normalize(L + w * offset * vec3(0, 0,  1))).rg;
+	const vec2 a6 = texture(Shadow_Map, normalize(L + w * offset * vec3(0, 0, -1))).rg;
+
+	const vec2 av = (a0 * 2 + a1 + a2 + a3 + a4 + a5 + a6) / 8;		// E[z]
+	const float z_av = av.r;
+	const float z_av_sq = z_av * z_av;								// E[z]^2
+	const float z_sq_av = av.g;										// E[z^2]
+	const float z_var = abs(z_sq_av - z_av_sq);						// Var(z)
+
+	return vec2(z_av, z_var);
+}
+
 float shadow_at(ivec2 uv){
 
 	vec3 light_off = light_pos + offset * radius * 0.1; // just smaller jit
@@ -21,13 +39,27 @@ float shadow_at(ivec2 uv){
 	vec3 L = Pos - light_off;
 	float dist = length(L);
 
-	vec2 map = texture(Shadow_Map, normalize(L)).rg; 
-	float z_av = map.r;
-	float z2 = map.g;
+	float w = 2.0f;
+	vec2 m = sample_moment(w * dist, L); 
+	float z_av = m.r;
+	float z2 = m.g;
 	float z_var = max(z2 - z_av * z_av, 0.0);
 	float t = dist/light_far;
 
 	float P = z_var / (z_var + (t - z_av) * (t - z_av));
+	const float z_occ = (z_av - P * t)/(1 - P);
+	const float eps = 1e-3;
+	
+	// Update new penumbra w
+	w = 0.2 * (t - z_occ) * radius / z_occ;
+	if (w <= 0.0) {
+		return 1.0;
+	}
+	m = sample_moment(w * dist, L);
+	z_av = m.r;
+	z_var = m.g;
+	
+	P = z_var / (z_var + (t - z_av) * (t - z_av));
 
 	return min(max(float(t <= z_av), P), 1.0);
 }
