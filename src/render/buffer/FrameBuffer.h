@@ -80,7 +80,7 @@ public:
 	void Resize(GLuint w, GLuint h, bool all = false);
 	glm::vec2 GetSize() const { return { fb_w, fb_h }; }
 
-	FBPixel ReadPix(GLuint x, GLuint y, FBType type);
+	FBPixel ReadPix(GLuint x, GLuint y, FBType type) const;
 
 public:
 

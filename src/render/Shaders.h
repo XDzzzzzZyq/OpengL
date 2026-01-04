@@ -12,12 +12,19 @@ enum ArrayType
 	NULL_ARRAY, VEC1_ARRAY, VEC2_ARRAY, VEC3_ARRAY, VEC4_ARRAY, MAT4_ARRAY
 };
 
+enum ShaderType
+{
+	NONE_SHADER = -1, VERTEX_SHADER, FRAGMENT_SHADER, COMPUTE_SHADER, GEOMETRY_SHADER
+};
+
 #define Uni std::make_tuple
 #include "Material.h"
 
 class Shaders {
 
 public:
+
+	static std::string const shader_type[4];
 
 	struct ShaderPair {
 		std::string verShader;
@@ -69,10 +76,10 @@ public:
 	Shaders& operator=(const Shaders& shader);
 	Shaders& operator=(Shaders&& shader) noexcept;
 
-private:
+protected:
 
 	void _del();
-	void _resetShaderID(GLuint _ID) { if (program_id > 0 && program_id != _ID)_del(); program_id = _ID; }
+	void _resetProgramID(GLuint _ID) { if (program_id > 0 && program_id != _ID)_del(); program_id = _ID; }
 
 public:
 
@@ -90,7 +97,6 @@ public:
 public:
 
 	GLuint program_id{ 0 };
-	ShaderType active_shader{ NONE_SHADER };
 
 protected:
 
@@ -103,9 +109,13 @@ public:
 
 	bool is_shader_changed{ true };
 	inline GLuint GetProgramID() const { return program_id; }
-
 	virtual GLuint GetShaderID(ShaderType type) const = 0;
+	virtual std::vector<ShaderType> GetAllShaderTypes() const = 0;
+
+	virtual void ResetID(ShaderType type, GLuint id) = 0;
 	virtual void RelinkShader(ShaderType tar = NONE_SHADER) = 0;
+
+	virtual void ParseShaderCode(const std::string& _code, ShaderType _type) = 0;
 	virtual void GenerateShader(ShaderType tar = NONE_SHADER) = 0;
 	virtual ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) = 0;
 	virtual GLuint CompileShader(ShaderType tar) = 0;
@@ -164,7 +174,6 @@ public:
 
 	RenderShader& operator=(RenderShader&&) = default;
 
-	void ResetID(ShaderType type, GLuint id);
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
 
 public:
@@ -173,16 +182,18 @@ public:
 
 	void ParseShaderStream(std::istream& _stream, ShaderType _type);
 	void ParseShaderFile(std::string _name, ShaderType _type);
-	void ParseShaderCode(const std::string& _code, ShaderType _type);
-	GLuint CompileShader(ShaderType tar = NONE_SHADER) override;
-
+	
+	void ParseShaderCode(const std::string& _code, ShaderType _type) override;
+	void ResetID(ShaderType type, GLuint id) override;
 	void RelinkShader(ShaderType tar = NONE_SHADER) override;
 	void GenerateShader(ShaderType tar = NONE_SHADER) override;
 	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override;
+	GLuint CompileShader(ShaderType tar = NONE_SHADER) override;
 
 public:
 
 	inline GLuint GetShaderID(ShaderType type) const override;
+	std::vector<ShaderType> GetAllShaderTypes() const override { return { VERTEX_SHADER, FRAGMENT_SHADER }; };
 	void LocalDebug() const override;
 
 };
@@ -206,12 +217,14 @@ public:
 	FastLoadShader& operator=(FastLoadShader&&) = default;
 
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
+	void ResetID(ShaderType type, GLuint id) override {};
 	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
 	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
 
 public:
 
 	inline GLuint GetShaderID(ShaderType type) const override;
+	std::vector<ShaderType> GetAllShaderTypes() const override { return { VERTEX_SHADER, FRAGMENT_SHADER }; };
 	void LocalDebug() const override;
 
 };
@@ -227,6 +240,9 @@ private:
 	using ShaderChain = std::vector<ShaderUnit>;
 	ShaderChain shader_chain;
 
+	std::array<int, 4> _type_to_idx {-1, -1, -1, -1};
+	std::vector<ShaderType> _idx_to_type;
+
 public:
 
 	ChainedShader(const std::vector<std::string>& chain);
@@ -241,14 +257,18 @@ public:
 	template<class... _Name>
 	static ChainedShader& ImportShader(_Name ...name);
 
-	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
-	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
-	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override { return nullptr; };
-	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
+	void ResetID(ShaderType type, GLuint id) override;
+	void RelinkShader(ShaderType type = NONE_SHADER) override;
+
+	void ParseShaderCode(const std::string& _code, ShaderType type) override;
+	void GenerateShader(ShaderType type = NONE_SHADER) override { return; };
+	ShaderUnit* GetShaderUnit(ShaderType type = NONE_SHADER) override;
+	GLuint CompileShader(ShaderType type = NONE_SHADER) override;
 
 public:
 
 	inline GLuint GetShaderID(ShaderType type) const override;
+	std::vector<ShaderType> GetAllShaderTypes() const override { return _idx_to_type; };
 	void LocalDebug() const override;
 };
 
@@ -287,13 +307,14 @@ public:
 	ComputeShader& operator=(ComputeShader&&) = default;
 	ComputeShader& operator=(const ComputeShader&) = default;
 
-	void ResetID(GLuint _id) { comp_shader.sh_ID = _id; }
+	void ResetID(ShaderType tar, GLuint _id) override;
 	void ResetDefult(std::string name);
 	void CreateShader(const std::string& compShader);
 
 	GLuint CompileShader(ShaderType tar = NONE_SHADER) override { return 0; };
 
-	void RelinkShader(ShaderType tar = NONE_SHADER) override {};
+	void ParseShaderCode(const std::string& _code, ShaderType tar) override;
+	void RelinkShader(ShaderType tar = NONE_SHADER) override;
 	void GenerateShader(ShaderType tar = NONE_SHADER) override {};
 
 	ShaderUnit* GetShaderUnit(ShaderType tar = NONE_SHADER) override;
@@ -307,6 +328,7 @@ public:
 public:
 
 	inline GLuint GetShaderID(ShaderType type) const override;
+	std::vector<ShaderType> GetAllShaderTypes() const override { return { COMPUTE_SHADER }; };
 	void LocalDebug() const override;
 
 public:

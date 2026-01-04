@@ -81,9 +81,10 @@ public:
 	void Unbind() const;
 
 public:
-	inline int GetW()const { return im_w; }
-	inline int GetH()const { return im_h; }
-	inline int GetBPP()const { return im_bpp; }
+	inline int GetW() const { return im_w; }
+	inline int GetH() const { return im_h; }
+	inline glm::vec2 GetSize() const { return { im_w, im_h }; };
+	inline int GetBPP() const { return im_bpp; }
 	GLuint GetTexID() const { return tex_ID; }
 	std::string GetTexName() const { return tex_path; }
 
@@ -116,7 +117,8 @@ private:
 
 public:
 
-	void SaveTexture(std::string _path) const;
+	void SaveTexture(std::string _path, bool force_png=false) const;
+	void PrintTexture() const;
 };
 
 #include <unordered_map>

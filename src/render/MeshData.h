@@ -11,7 +11,7 @@ class MeshData {
 
 public:
 
-	struct Reading
+	struct ByteArray
 	{
 		std::vector<float> data_array;
 		glm::vec3 center = { 0,0,0 };
@@ -20,17 +20,13 @@ public:
 		std::string name = "";
 	};
 
-	struct Face
+	struct VertexIdx
 	{
 		int pos, uv, norm, smo_norm;
-		void copy(const Face& inp) {
-			pos = inp.pos;
-			uv = inp.uv;
-			norm = inp.norm;
-			smo_norm = inp.smo_norm;
-		}
-		void print() {
+		void _debug() {
+#ifdef _DEBUG
 			std::cout << pos << " " << uv << " " << norm << "\n";
+#endif
 		}
 	};
 
@@ -40,7 +36,7 @@ private:
 	static std::string obj_file_root;
 private:
 
-	Reading me_read{};
+	ByteArray me_read{};
 	VertexArray me_vertArry{};
 	VertexBuffer me_vertBuffer{};
 	IndexBuffer me_index{};

@@ -114,9 +114,19 @@ bool Transform3D::SetTrans(const glm::mat4& _trans, bool pos /*= true*/, bool ro
 	if (pos) SetPos(position);
 	if (rot) SetRot(glm::degrees(glm::eulerAngles(rotation)));
 	if (scl) SetScale(scale);
-	if (pos && rot && scl)
-		if (use_position && use_rotation && use_scale) // if there is at least one lock, then let calcluate transform instead
-			o_Transform = _trans;
+	if (pos && rot && scl) {
+		if (!(use_position && use_rotation && use_scale))
+			return false; // if there is at least one locked
+
+		if (o_parent_trans != nullptr) // o_Transform is the global transform not local
+			return false;
+
+		o_Transform = _trans;
+		is_TransF_changed = false;
+		is_invTransF_changed = true;
+		is_Uniform_changed = true;
+		is_invUniform_changed = true;
+	}
 
 	return true;
 }
@@ -173,11 +183,9 @@ void Transform3D::SetParent(Transform3D* _p_trans, bool _keep_offset /*= true*/)
 
 	if (!_keep_offset) return;
 
-	glm::vec3 pos_off = o_position - _p_trans->o_position;
-	// if self.trans = B=DA, parent.trans = A, then D=BA^-1
-	glm::mat4 D = o_Transform * _p_trans->o_InvTransform;
+	// if self.trans = B =A * D, parent.trans = A, then D = A^-1 * B
+	glm::mat4 D = _p_trans->o_InvTransform * o_Transform;
 	SetTrans(D);
-	SetPos(D * glm::vec4(pos_off, 0));
 }
 
 void Transform3D::UnsetParent(bool _keep_offset /*= true*/)
@@ -239,7 +247,7 @@ bool Transform3D::ApplyAllTransform()
 			tar_ptr->o_Transform = post_trans * tar_ptr->o_Transform;
 		}
 
-		tar_ptr->is_Uniform_changed = is_changed;
+		tar_ptr->is_Uniform_changed |= is_changed;
 		post_trans = tar_ptr->o_Transform;
 
 		if (tar_ptr->GetChildTransPtr() == nullptr)
@@ -249,7 +257,6 @@ bool Transform3D::ApplyAllTransform()
 	} while (true);
 
 	return true;
-
 }
 
 /*std::unordered_map<int, int, float> */
@@ -258,18 +265,19 @@ bool Transform3D::GetInvTransform() const
 {
 	if (!is_invTransF_changed) return false;
 
-	glm::mat3 inv_rot = glm::mat3(o_Transform);
-	LOOP(3) inv_rot[i] = glm::normalize(inv_rot[i]);
-	inv_rot = glm::transpose(inv_rot);
-	glm::mat4 result = glm::mat4(inv_rot) * glm::scale(glm::mat4(1), 1.0f / o_scale);
-	//std::cout << result;
-	o_InvTransform = glm::translate(result, -o_position);
+	glm::mat3 rot = glm::mat3(o_Transform);
+	glm::vec3 scale;
+	LOOP(3) {
+		scale[i] = glm::length(rot[i]);
+		rot[i] /= scale[i];
+	}
 
-	//o_InvTransform[3][3] = 1.0f;
+	const glm::mat4 inv_loc = glm::translate(glm::mat4(1.0f), -glm::vec3(o_Transform[3]));
+	const glm::mat4 inv_rot = glm::mat4(glm::transpose(rot));
+	const glm::mat4 inv_scl = glm::scale(glm::mat4(1.0f), 1.0f / scale);
+	o_InvTransform = inv_scl * inv_rot * inv_loc;
+
 	is_invTransF_changed = false;
-	//std::cout << o_InvTransform;
-	//std::cout << o_Transform;
-	//DEBUG("+++++++++++++++++++++++++++++++")
 	is_invUniform_changed = true;
 
 	return true;
@@ -402,7 +410,7 @@ bool Transform2D::GetInvTransform() const
 
 	LOOP(2) {
 		o_InvTransform[i][i] = 1 / o_scale[i];
-		o_InvTransform[2][i] = -o_position[i] / o_scale[i];
+		o_InvTransform[2][i] = -o_position[i];
 	}
 	o_InvTransform[2][2] = 1.0f;
 

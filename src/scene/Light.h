@@ -89,7 +89,7 @@ private:
 public:
 
 	static void EnableShadowMap();
-	void ConstructSAT();
+	void ConstructSAT(RenderConfigs* config);
 
 public:
 	void RenderLightSpr(Camera* cam);
@@ -104,6 +104,7 @@ public:
 
 public:
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
+	void* GetShader()		override;
 };
 
 

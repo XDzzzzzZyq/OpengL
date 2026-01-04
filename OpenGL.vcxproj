@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -101,7 +101,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <DisableSpecificWarnings>4996;4267;26451</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,7 +133,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\result" mkdir "$(P
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <DisableSpecificWarnings>4996;4267;26451</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,7 +157,8 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;4267;26451</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -182,7 +183,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <DisableSpecificWarnings>4996;4267;26451</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -313,6 +314,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\convert\Irradiance_Conv.comp" />
     <None Include="res\shaders\convert\Irradiance_Conv_E2C.comp" />
     <None Include="res\shaders\convert\SAT.comp" />
+    <None Include="res\shaders\convert\SAT_Cube.comp" />
     <None Include="res\shaders\Depth_Linear.frag" />
     <None Include="res\shaders\Depth_Rast.vert" />
     <None Include="res\shaders\Empty.comp" />
@@ -325,6 +327,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\Polygon.frag" />
     <None Include="res\shaders\Polygon.vert" />
     <None Include="res\shaders\Post_Visual.frag" />
+    <None Include="res\shaders\pps\Box_Blur.comp" />
     <None Include="res\shaders\pps\Compose.comp" />
     <None Include="res\shaders\pps\Editing.comp" />
     <None Include="res\shaders\pps\EnvirBG.frag" />
@@ -348,10 +351,12 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\shadow\Shadow_Point.comp" />
     <None Include="res\shaders\shadow\Shadow_Point_PCF.comp" />
     <None Include="res\shaders\shadow\Shadow_Point_SDF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Point_VSSM.comp" />
     <None Include="res\shaders\shadow\Shadow_Spot.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_PCF.comp" />
     <None Include="res\shaders\shadow\Shadow_Sun_SDF.comp" />
+    <None Include="res\shaders\shadow\Shadow_Sun_VSSM.comp" />
     <None Include="res\shaders\ShowTexture.frag" />
     <None Include="res\shaders\LineShader.frag" />
     <None Include="res\shaders\LineShader.vert" />

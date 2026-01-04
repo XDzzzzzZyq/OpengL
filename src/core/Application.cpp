@@ -58,7 +58,7 @@ int Application::Init()
 	renderer.r_using_shadow_map = false;
 	renderer.r_using_ssr = false;
 #else
-	renderer.UseScene(SceneManager::SceneConfig4());
+	renderer.UseScene(SceneManager::Shadow());
 	renderer.GetConfig()->r_ao_radius = 0.8f;
 	//renderer.r_render_icons = false;
 
@@ -151,9 +151,9 @@ int Application::Run()
 		//renderer.GetActiveEnvironment()->envir_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->GOet<float>();GLDEBUG
 		renderer.GetConfig()->r_gamma = UI.GetParaValue("__Parameters__", "GAMMA")->Get<float>();
 
-		temp.GenERectMapFrom(renderer.r_scene->light_list.begin()->second->light_shadow_map);
+		//temp.GenERectMapFrom(renderer.r_scene->light_list.begin()->second->light_shadow_map);
 		//DEBUG(renderer.r_scene->light_list.begin()->second->light_shadow_map.GetTexID())
-		UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
+		//UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
 		//UI._debug();
 	};
 	UI.GetCurrentWindow();
@@ -207,6 +207,9 @@ int Application::Run()
 
 int Application::Terminate()
 {
+	TextureLib::ResetTexLib();
+	ComputeShader::ResetComputeLib();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

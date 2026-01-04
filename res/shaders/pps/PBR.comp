@@ -2,12 +2,12 @@
 
 layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
-layout(rgba16f, binding = 0) uniform image2D _Output;
-layout(rgba16f, binding = 1) uniform image2D _OutDirDiff;
-layout(rgba16f, binding = 2) uniform image2D _OutDirSpec;
-layout(rgba16f, binding = 3) uniform image2D _OutIndDiff;
-layout(rgba16f, binding = 4) uniform image2D _OutIndSpec;
-layout(rgba16f, binding = 5) uniform image2D _OutEmission;
+layout(rgba32f, binding = 0) uniform image2D _Output;
+layout(rgba32f, binding = 1) uniform image2D _OutDirDiff;
+layout(rgba32f, binding = 2) uniform image2D _OutDirSpec;
+layout(rgba32f, binding = 3) uniform image2D _OutIndDiff;
+layout(rgba32f, binding = 4) uniform image2D _OutIndSpec;
+layout(rgba32f, binding = 5) uniform image2D _OutEmission;
 layout(rgba8,	binding = 7) uniform image2D U_alpha;
 
 

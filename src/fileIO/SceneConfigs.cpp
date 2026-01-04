@@ -3,7 +3,7 @@
 #include "operator.h"
 #include "macros.h"
 
-std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="scene1"*/)
+std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/)
 {
 
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
@@ -157,7 +157,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig1(std::string _name/*="s
 	return config1;
 }
 
-std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="cornellbox"*/)
+std::shared_ptr<SceneResource> SceneManager::CornellBox(std::string _name/*="cornellbox"*/)
 {
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
@@ -293,7 +293,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig2(std::string _name/*="c
 	return config2;
 }
 
-std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="SDF test"*/)
+std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF test"*/)
 {
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
@@ -358,7 +358,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig3(std::string _name/*="S
 	return config3;
 }
 
-std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= "shadow test"*/)
+std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shadow test"*/)
 {
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
@@ -406,7 +406,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 
 	DEBUG("\n---------------LIGHT----------------");
 	std::shared_ptr<Light> pointLight1 = std::make_shared<Light>(POINTLIGHT, 1.0f, glm::vec3(1.0f));
-	pointLight1->SetPos({ 2.0f, 2.0f, -3.0f });
+	pointLight1->SetPos({ -2.0f, -1.0f, 1.0f });
 	pointLight1->SetColor({ 0.7,0.7, 1 });
 	pointLight1->SetPower(30);
 	pointLight1->ApplyTransform();
@@ -419,7 +419,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	sun1->SetColor({ 0.7,0.7, 1 });
 	sun1->SetPower(1);
 	sun1->ApplyTransform();
-	config4->UseLight(sun1);
+	//config4->UseLight(sun1);
 
 	DEBUG("\n-------------AREA LIGHT-------------");
 	std::shared_ptr<Light> areaLight2 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(1.0f));
@@ -428,7 +428,7 @@ std::shared_ptr<SceneResource> SceneManager::SceneConfig4(std::string _name /*= 
 	areaLight2->SetColor({ 1,0.7,0.7 });
 	areaLight2->SetPower(5);
 	areaLight2->ApplyTransform();
-	config4->UseLight(areaLight2);
+	//config4->UseLight(areaLight2);
 
 
 	DEBUG("\n-------------SDF Field-------------");

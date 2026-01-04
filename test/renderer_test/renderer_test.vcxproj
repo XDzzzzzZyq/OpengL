@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -98,7 +98,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,7 +118,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,7 +138,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,7 +158,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +171,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\compo\Transform.cpp" />
     <ClCompile Include="..\..\src\render\Material.cpp" />
     <ClCompile Include="..\..\src\render\RenderConfigs.cpp" />
     <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp" />
@@ -177,9 +182,13 @@
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="test_core.cpp" />
+    <ClCompile Include="test_shader.cpp" />
+    <ClCompile Include="test_texture.cpp" />
+    <ClCompile Include="test_transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\compo\Transform.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

@@ -70,7 +70,7 @@ public:
 	AAAlg r_anti_alias = AAAlg::FXAA;						// Fast Approximate Anti-Aliasing
 	SSRAlg r_ssr_algorithm = SSRAlg::SDFResolvedRayMarching;					// Screen Space Reflection
 	AOAlg r_ao_algorithm = AOAlg::SSAO;
-	ShadowAlg r_shadow_algorithm = ShadowAlg::ShadowMapping;
+	ShadowAlg r_shadow_algorithm = ShadowAlg::VSSM;
 
 public:
 

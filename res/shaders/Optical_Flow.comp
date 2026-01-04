@@ -1,8 +1,8 @@
 #version 460 core
 
 layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
-layout(rgba16f, binding = 0) uniform image2D U_pos_b;
-layout(rgba16f,	binding = 1) uniform image2D U_opt;
+layout(rgba32f, binding = 0) uniform image2D U_pos_b;
+layout(rgba32f,	binding = 1) uniform image2D U_opt;
 
 uniform mat4 proj_trans;
 

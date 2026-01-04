@@ -4,9 +4,9 @@
 
 #version 430 core
 
-layout(local_size_x = 512) in;
-layout(rgba32f, binding = 0) uniform readonly  image2D src;
-layout(rgba32f, binding = 1) uniform writeonly image2D dst;
+layout(local_size_x = 256) in;
+layout(rgba32f, binding = 0) uniform readonly  imageCube src;
+layout(rgba32f, binding = 1) uniform writeonly imageCube dst;
 
 shared vec4 shared_data[gl_WorkGroupSize.x * 2];
 
@@ -16,11 +16,11 @@ void main(void)
 	uint rd_id;
 	uint wr_id;
 	uint mask;
-	ivec2 P = ivec2(id * 2, gl_WorkGroupID.x);
+	ivec3 P = ivec3(id * 2, gl_WorkGroupID.xy);
 	const uint steps = uint(log2(gl_WorkGroupSize.x)) + 1;
 	uint step = 0;
-	shared_data[id * 2] = vec4(imageLoad(src, P).rgba);
-	shared_data[id * 2 + 1] = vec4(imageLoad(src, P + ivec2(1, 0)).rgba);
+	shared_data[id * 2] =		vec4(imageLoad(src, P).rgba);
+	shared_data[id * 2 + 1] =	vec4(imageLoad(src, P + ivec3(1, 0, 0)).rgba);
 
 	barrier();
 
@@ -30,10 +30,10 @@ void main(void)
 		rd_id = ((id >> step) << (step + 1)) + mask;
 		wr_id = rd_id + 1 + (id & mask);
 		shared_data[wr_id] += shared_data[rd_id];
-
+	
 		barrier();
 	}
 
-	imageStore(dst, P.yx, vec4(shared_data[id * 2]));
-	imageStore(dst, P.yx + ivec2(0, 1), vec4(shared_data[id * 2 + 1]));
+	imageStore(dst, P.yxz,					vec4(shared_data[id * 2]));
+	imageStore(dst, P.yxz + ivec3(0, 1, 0), vec4(shared_data[id * 2 + 1]));
 }

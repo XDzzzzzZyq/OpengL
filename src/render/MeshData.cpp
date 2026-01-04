@@ -6,9 +6,10 @@ std::string MeshData::obj_file_root = "res/obj/";
 
 #include <fstream>
 #include <sstream>
-#include "macros.h"
+#include <algorithm>
+#include <execution>
 
-inline MeshData::Face Split(std::string_view in) {
+inline MeshData::VertexIdx Split(std::string_view in) {
 	std::string out[3] = { "","","" };
 	int count = 0;
 
@@ -22,16 +23,16 @@ inline MeshData::Face Split(std::string_view in) {
 			out[count] += in[i];
 		}
 	}
-	MeshData::Face res;
+	MeshData::VertexIdx res;
 	res.pos = 3 * std::stoi(out[0]) - 3;
 	res.uv = 2 * std::stoi(out[1]) - 2;
 	res.norm = 3 * std::stoi(out[2]) - 3;
 	return res;
 }
 
-inline MeshData::Reading ReadObj(const std::string& path, bool is_smooth = true) {
+inline MeshData::ByteArray ReadObj(const std::string& path, bool is_smooth = true) {
 	Timer timer("Load OBJ");
-	MeshData::Reading result;
+	MeshData::ByteArray result;
 
 	std::vector<std::vector<int>> vertIndex;
 
@@ -42,7 +43,6 @@ inline MeshData::Reading ReadObj(const std::string& path, bool is_smooth = true)
 	std::string a = "";
 	std::string last = "";
 
-	MeshData::Face face;
 	bool is_face = true;
 
 	int vert_count = 0;
@@ -97,7 +97,7 @@ inline MeshData::Reading ReadObj(const std::string& path, bool is_smooth = true)
 			{
 				if (last == "f")continue;
 
-				face.copy(Split(last));
+				MeshData::VertexIdx face = Split(last);
 
 				result.data_array.emplace_back(tempdata[0][face.pos + 0]);
 				result.data_array.emplace_back(tempdata[0][face.pos + 1]);
@@ -131,55 +131,48 @@ inline MeshData::Reading ReadObj(const std::string& path, bool is_smooth = true)
 		}
 	}
 
-
-	//timer.Tick();
-	//Timer timer3;
 	if (is_smooth)
 	{
-		LOOP(vertIndex.size()) {
+		std::for_each(std::execution::par_unseq, vertIndex.begin(), vertIndex.end(), [&](std::vector<int>& indices) {
 
-			if (vertIndex[i] == std::vector<int>{})
-				break;
+			if (indices.empty())
+				return;
 
 			float SMX = 0.0f, SMY = 0.0f, SMZ = 0.0f;
-			for (int j = 0; j < vertIndex[i].size(); j++)
+			for (int j = 0; j < indices.size(); j++)
 			{
-				SMX += result.data_array[vertIndex[i][j] * 11 + 5] / vertIndex[i].size();
-				SMY += result.data_array[vertIndex[i][j] * 11 + 6] / vertIndex[i].size();
-				SMZ += result.data_array[vertIndex[i][j] * 11 + 7] / vertIndex[i].size();
+				SMX += result.data_array[indices[j] * 11 + 5] / indices.size();
+				SMY += result.data_array[indices[j] * 11 + 6] / indices.size();
+				SMZ += result.data_array[indices[j] * 11 + 7] / indices.size();
 			}
-			for (int j = 0; j < vertIndex[i].size(); j++)
+			for (int j = 0; j < indices.size(); j++)
 			{
-				result.data_array[vertIndex[i][j] * 11 + 8] = SMX;
-				result.data_array[vertIndex[i][j] * 11 + 9] = SMY;
-				result.data_array[vertIndex[i][j] * 11 + 10] = SMZ;
-
+				result.data_array[indices[j] * 11 + 8] = SMX;
+				result.data_array[indices[j] * 11 + 9] = SMY;
+				result.data_array[indices[j] * 11 + 10] = SMZ;
 			}
-		}
-
+		});
 	}
 	else {
-		LOOP(vertIndex.size()) {
+		std::for_each(std::execution::par_unseq, vertIndex.begin(), vertIndex.end(), [&](std::vector<int>& indices) {
 
-			if (vertIndex[i] == std::vector<int>{})
-				break;
-			for (int j = 0; j < vertIndex[i].size(); j++)
+			if (indices.empty())
+				return;
+			for (int j = 0; j < indices.size(); j++)
 			{
-				result.data_array[vertIndex[i][j] * 11 + 8] = result.data_array[vertIndex[i][j] * 11 + 5];
-				result.data_array[vertIndex[i][j] * 11 + 9] = result.data_array[vertIndex[i][j] * 11 + 6];
-				result.data_array[vertIndex[i][j] * 11 + 10] = result.data_array[vertIndex[i][j] * 11 + 7];
+				result.data_array[indices[j] * 11 + 8] = result.data_array[indices[j] * 11 + 5];
+				result.data_array[indices[j] * 11 + 9] = result.data_array[indices[j] * 11 + 6];
+				result.data_array[indices[j] * 11 + 10] = result.data_array[indices[j] * 11 + 7];
 			}
-
-
-		}
+		});
 	}
 	//timer.Tick();
 	for (int i = 0; i < result.count[0]; i++)
 	{
-		result.center.x += tempdata[0][3 * i + 0] / (result.count[0] + 1);
-		result.center.y += tempdata[0][3 * i + 1] / (result.count[0] + 1);
-		result.center.z += tempdata[0][3 * i + 2] / (result.count[0] + 1);
+		glm::vec3 pos = { tempdata[0][3 * i + 0] , tempdata[0][3 * i + 1] ,tempdata[0][3 * i + 2] };
+		result.center += pos;
 	}
+	result.center /= result.count[0];
 
 	return result;
 }

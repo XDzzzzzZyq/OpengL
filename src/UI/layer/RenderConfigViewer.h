@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ImguiLayer.h"
-#include "RenderConfigs.h"
 
 class RenderConfigViewer : public ImguiLayer
 {

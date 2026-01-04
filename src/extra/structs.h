@@ -29,7 +29,7 @@ struct Timer
 		temp = tick;
 #ifdef _DEBUG
 		if (is_print)
-			std::cout /*<< "\r"*/ << "\_[ duration = " << __duration * fact << "ms ]\n";
+			std::cout /*<< "\r"*/ << "[ duration = " << __duration * fact << "ms ]\n";
 #endif // _DEBUG
 		return __duration;
 	}
