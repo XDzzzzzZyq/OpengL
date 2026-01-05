@@ -220,11 +220,10 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="dep\gui\ImGui\imgui_draw.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="src\editor\Events.cpp" />
+    <ClCompile Include="src\editor\Event.cpp" />
     <ClCompile Include="src\editor\SelectionManager.cpp" />
     <ClCompile Include="src\compo\Nodes.cpp" />
     <ClCompile Include="src\render\RenderConfigs.cpp" />
-    <ClCompile Include="src\compo\EventListener.cpp" />
     <ClCompile Include="src\compo\Field.cpp" />
     <ClCompile Include="src\compo\Parameters.cpp" />
     <ClCompile Include="src\compo\PostProcessing.cpp" />
@@ -377,12 +376,11 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
     <ClInclude Include="dep\gui\ImGui\imgui.h" />
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
-    <ClInclude Include="src\editor\Events.h" />
+    <ClInclude Include="src\editor\Event.h" />
     <ClInclude Include="src\editor\SelectionManager.h" />
     <ClInclude Include="src\compo\Nodes.h" />
     <ClInclude Include="src\extra\xdz_matrix.h" />
     <ClInclude Include="src\render\RenderConfigs.h" />
-    <ClInclude Include="src\compo\EventListener.h" />
     <ClInclude Include="src\compo\Field.h" />
     <ClInclude Include="src\compo\Parameters.h" />
     <ClInclude Include="src\compo\PostProcessing.h" />

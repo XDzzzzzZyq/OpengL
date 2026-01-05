@@ -54,9 +54,6 @@
     <ClCompile Include="dep\gui\ImGui\backends\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\compo\EventListener.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\compo\Field.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -249,9 +246,6 @@
     <ClCompile Include="src\editor\Context.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\Events.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\ID.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -259,6 +253,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\app\MAIN.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -377,9 +374,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\compo\EventListener.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\compo\Field.h">
@@ -580,13 +574,13 @@
     <ClInclude Include="src\editor\Context.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\editor\Events.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\ID.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\app\Application.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
