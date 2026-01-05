@@ -258,6 +258,9 @@
     <ClCompile Include="src\editor\Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\compo\EventListener.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -581,6 +584,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compo\EventListener.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

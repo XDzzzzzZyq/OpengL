@@ -3,7 +3,6 @@
 #define NORM_KEY_LEN 36
 
 #include "ID.h"
-#include "Events.h"
 #include "Context.h"
 #include "operator.h"
 
@@ -50,13 +49,6 @@ private:
 		std::vector<std::function<void(const void*)>>
 	> handlers;
 };
-
-
-class _ {
-public:
-	virtual void bind(EventPool& bus) = 0;
-};
-
 
 // TODO: Move to editor folder
 class EventCallback
