@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include <numeric>
 
+#include "xdz_math.h"
+
 PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &light_color, float light_power, bool use_shadow)
 	: verts(verts), light_color{light_color}, light_power{light_power}, use_shadow{use_shadow}
 {
@@ -65,8 +67,8 @@ void PolygonLight::SetPolygonShader()
 
 		o_shader.SetValue("light_color", light_color);
 		o_shader.SetValue("blen", 0.5f);
-		o_shader.SetValue("RAND_color", id_color_rand);
-		o_shader.SetValue("ID_color", id_color);
+		o_shader.SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
+		o_shader.SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
 
 		o_shader.UnuseShader();
 	};

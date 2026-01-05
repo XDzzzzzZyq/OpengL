@@ -284,7 +284,7 @@ void FrameBuffer::AppendTexture(const Texture& _tex, FBType _type)
 
 void FrameBuffer::Resize(const glm::vec2& size, bool all)
 {
-	Resize(size[0], size[1], all);
+	Resize(GLuint(size[0]), GLuint(size[1]), all);
 }
 
 void FrameBuffer::Resize(GLuint w, GLuint h, bool all)

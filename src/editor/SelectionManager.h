@@ -9,7 +9,7 @@ class SelectionManager
 {
 private:
 	std::vector<_Base*> selected_objects;
-	_Base* hovered_object;
+	_Base* hovered_object{ nullptr };
 	std::unordered_set<_Base*> _selection_cache;
 public:
 	void Select(_Base* obj, bool increment)

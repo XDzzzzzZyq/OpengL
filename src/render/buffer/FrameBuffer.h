@@ -40,7 +40,7 @@ class FrameBuffer
 {
 private:
 	GLuint fb_ID = 0, fb_attach = 0;
-	float fb_w{}, fb_h{};
+	GLuint fb_w{}, fb_h{};
 	mutable std::unordered_map<FBType, int> fb_type_list;      //  tex_type -> tex_index
 	static TextureType PareseTexType(FBType _type);
 

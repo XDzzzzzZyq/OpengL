@@ -2,6 +2,8 @@
 #include "MeshData.h"
 #include "Camera.h"
 
+#include "xdz_math.h"
+
 std::string Sprite::fileroot = "res/tex/sprite/";
 
 Sprite::Sprite()
@@ -59,8 +61,8 @@ void Sprite::SetSpriteShader()
 {
 	spr_shader = RenderShader("SpriteShader");
 	spr_shader.UseShader();
-	spr_shader.SetValue("ID_color", id_color);
-	spr_shader.SetValue("RAND_color", id_color_rand);
+	spr_shader.SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+	spr_shader.SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 	spr_shader.UnuseShader();
 }
 

@@ -10,15 +10,7 @@ UID::UID()
 
 }
 
-ObjectID::ObjectID() {
-	const int id = GetObjectID();
-	const int R = id % 256;
-	const int G = ((id - R) / 256) % 256;
-	const int B = (id - R - G * 256) / 256 / 256;
-
-	id_color = glm::vec3(R, G, B);
-	id_color_rand = xdzm::rand3() / 2.0f + glm::vec3(0.5f);
-}
+ObjectID::ObjectID() {}
 
 ObjectID::~ObjectID()
 {

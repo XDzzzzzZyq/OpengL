@@ -1,6 +1,5 @@
 #pragma once
 
-#include "glm/glm.hpp"
 #include <string>
 
 class UID {
@@ -12,7 +11,7 @@ public:
 	UID();
 	virtual ~UID() = default;
 
-	int GetObjectID() const { return id; };
+	inline int GetObjectID() const { return id; };
 	static int GetTotalAllocated() { return count; };
 };
 
@@ -25,12 +24,7 @@ public:
 	};
 
 public:
-	// TODO: remove it from here
-	mutable glm::vec3 id_color;
-	mutable glm::vec3 id_color_rand;
-
 	std::string o_name;
-
 	GOType o_type = NONE_GO;
 
 	mutable bool is_viewport = true;

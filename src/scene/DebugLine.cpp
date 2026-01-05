@@ -1,6 +1,8 @@
 #include "DebugLine.h"
 #include "Camera.h"
+
 #include "macros.h"
+#include "xdz_math.h"
 
 DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 	:DebugLine(std::vector<glm::vec3>{start, end})
@@ -116,8 +118,8 @@ void DebugLine::SetDLineShader()
 		dLine_shader.UseShader();
 		dLine_shader.SetValue("blen", 0.5f);
 		dLine_shader.SetValue("U_color", 1.0f, 1.0f, 1.0f);
-		dLine_shader.SetValue("ID_color", id_color);
-		dLine_shader.SetValue("RAND_color", id_color_rand);
+		dLine_shader.SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+		dLine_shader.SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 		dLine_shader.UnuseShader();
 	};
 }

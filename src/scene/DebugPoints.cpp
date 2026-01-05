@@ -1,6 +1,8 @@
 #include "DebugPoints.h"
 #include "Camera.h"
+
 #include "macros.h"
+#include "xdz_math.h"
 
 std::vector<float> DebugPoints::VertData = {
 	-1.0f, 1.0f, 0.0f,
@@ -88,14 +90,14 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 
 	dp_shader[0].InitShader = [&] {
 		dp_shader[0].UseShader();
-		dp_shader[0].SetValue("ID_color", id_color);
-		dp_shader[0].SetValue("RAND_color", id_color_rand);
+		dp_shader[0].SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+		dp_shader[0].SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 	};
 
 	dp_shader[1].InitShader = [&] {
 		dp_shader[1].UseShader();
-		dp_shader[1].SetValue("ID_color", id_color);
-		dp_shader[1].SetValue("RAND_color", id_color_rand);
+		dp_shader[1].SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+		dp_shader[1].SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 	};
 }
 

@@ -421,6 +421,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 		ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
+		//r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 3);
 		//r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 2);
 		//r_buffer_list[_RASTER].BindFrameBufferTex(MASK_FB, 1);
 		tone.UseShader();

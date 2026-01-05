@@ -2,6 +2,7 @@
 #include "Camera.h"
 
 #include "macros.h"
+#include "xdz_math.h"
 
 Mesh::Mesh(const std::string& path)
 {
@@ -78,13 +79,13 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 	o_shader->UseShader();
 	//matrix = glm::translate(matrix, o_position);
 	o_shader->SetValue("U_ProjectM", o_Transform);
-	o_shader->SetValue("ID_color", id_color);
+	o_shader->SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
 
 	o_shader->InitShader = [&] {
 		o_shader->UseShader();
-		o_shader->SetValue("RAND_color", id_color_rand);
+		o_shader->SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 		o_shader->SetValue("U_ProjectM", o_Transform);
-		o_shader->SetValue("ID_color", id_color);
+		o_shader->SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
 
 		o_shader->UnuseShader();
 	};

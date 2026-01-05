@@ -2,6 +2,8 @@
 #include "MeshData.h"
 #include "Camera.h"
 
+#include "xdz_math.h"
+
 Environment::Environment(const std::string& texpath)
 {
 	o_type = GO_ENVIR;
@@ -22,12 +24,12 @@ Environment::Environment(const std::string& texpath)
 
 	envir_shader.InitShader = [&] {
 		envir_shader.UseShader();
-		envir_shader.SetValue("hdr_texture",		IBL_TEXTURE);
+		envir_shader.SetValue("hdr_texture",	IBL_TEXTURE);
 		envir_shader.SetValue("buffer_texture",	BUFFER_TEXTURE + COMBINE_FB);
 		envir_shader.SetValue("id_texture",		BUFFER_TEXTURE + ID_FB);
 		envir_shader.SetValue("select_texture",	BUFFER_TEXTURE + MASK_FB);
-		envir_shader.SetValue("ID_color",			id_color);
-		envir_shader.SetValue("RAND_color",		id_color_rand);
+		envir_shader.SetValue("ID_color",		xdzm::get_id_color(GetObjectID()));
+		envir_shader.SetValue("RAND_color",		xdzm::get_random_color(GetObjectID()));
 		envir_shader.UnuseShader();
 	};
 

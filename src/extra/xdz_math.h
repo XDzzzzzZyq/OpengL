@@ -112,4 +112,24 @@ namespace xdzm {
 	inline float dir_float_dist(const float& a, const float& b) {
 		return b > a ? -float_dist(a, b) : float_dist(a, b);
 	}
+
+	inline glm::vec3 get_id_color(const int id){
+		const int R = id % 256;
+		const int G = ((id - R) / 256) % 256;
+		const int B = (id - R - G * 256) / 256 / 256;
+
+		return glm::vec3(R, G, B);
+	}
+
+	inline glm::vec3 get_random_color(const int id) {
+		glm::vec3 id_color = get_id_color(id);
+		glm::vec3 q = glm::fract(id_color * glm::vec3(0.1031f, 0.11369f, 0.13787f));
+		q += glm::dot(q, glm::vec3(q.y, q.z, q.x) + 19.19f);
+
+		return glm::fract(glm::vec3(
+			(q.x + q.y) * q.z,
+			(q.x + q.z) * q.y,
+			(q.y + q.z) * q.x
+		));
+	}
 }
