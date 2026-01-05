@@ -61,7 +61,7 @@ void Outliner::RenderLayer(const SceneContext& ctx)
 
 			if (is_button_pressed) {
 				// TODO: event system
-				EventListener::is_selected_changed = true;
+				EventCallback::is_selected_changed = true;
 				sel_mgr.Select((ObjectID*)obj, false);
 			}
 		}

@@ -160,7 +160,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 	
 	scene->UpdateObjTransforms();
 	if (scene->CheckStatus(SceneResource::SceneChanged) && r_config.r_sampling_average == RenderConfigs::SamplingType::Average)
-		EventListener::frame_count = 1;
+		EventCallback::frame_count = 1;
 	//scene->_debugStatus();
 	
 
@@ -318,7 +318,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 		////////////  SSAO + DEPTH  ////////////
 
 		ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
-		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / EventListener::frame_count;
+		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / EventCallback::frame_count;
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
@@ -332,19 +332,19 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 			ssao.SetValue("Proj_Trans", cam->cam_frustum * cam->o_InvTransform);
 		}
 		ssao.SetValue("update_rate", ao_update_rate);
-		ssao.SetValue("noise_level", EventListener::frame_count % 6);
+		ssao.SetValue("noise_level", EventCallback::frame_count % 6);
 		ssao.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
 		
 		//////////// LIGHTING CACHE ////////////
 
-		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0f / EventListener::frame_count;
+		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0f / EventCallback::frame_count;
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
 		if (r_config.RequiresSDF()) scene->sdf_field->Bind();
-		r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
+		r_light_data.UpdateLightingCache(EventCallback::frame_count, GetConfig());
 		
 
 		////////////  PBR COMPOSE  ////////////
@@ -396,10 +396,10 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 			scene->sdf_field->Bind();
 			ssr.UseShader();
 			ssr.SetValue("use_incr_aver", (bool)r_config.r_sampling_average);
-			ssr.SetValue("std_ud_rate", 1.0f / EventListener::frame_count);
+			ssr.SetValue("std_ud_rate", 1.0f / EventCallback::frame_count);
 			ssr.SetValue("cam_pos", cam->o_position);
 			ssr.SetValue("cam_trans", cam->cam_frustum * cam->o_InvTransform);
-			ssr.SetValue("noise", EventListener::random_float1);
+			ssr.SetValue("noise", EventCallback::random_float1);
 			ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
 
@@ -506,7 +506,7 @@ void Renderer::UpdateLightInfo(const SceneContext& ctx)
 
 void Renderer::ScreenShot()
 {
-	std::string name = "result""-" + std::to_string(EventListener::random_float1);
+	std::string name = "result""-" + std::to_string(EventCallback::random_float1);
 	DEBUG("saving to: " + name);
 	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name, true);
 }

@@ -130,7 +130,7 @@ void Camera::SetCamTrans(const glm::mat4& _trans, bool pos /*= true*/, bool rot 
 
 void Camera::SHIFT_MMB(const SceneContext&)
 {
-	//if (!EventListener::is_in_viewport) return;
+	//if (!EventCallback::is_in_viewport) return;
 
 	const glm::vec3 delta = -(float)(mouse_x - mouse_b_x) * 0.03f * o_dir_right + (float)(mouse_y - mouse_b_y) * 0.03f * o_dir_up;
 	SetPos(o_position + delta);
@@ -140,7 +140,7 @@ void Camera::SHIFT_MMB(const SceneContext&)
 
 void Camera::CTRL_MMB(const SceneContext&)
 {
-	//if (!EventListener::is_in_viewport) return;
+	//if (!EventCallback::is_in_viewport) return;
 
 	o_position += glm::cross(o_dir_up, o_dir_right) * xdzm::dir_float_dist((float)(mouse_x - mouse_b_x), (float)(mouse_y - mouse_b_y)) * 0.05f;
 	is_TransF_changed = true;
@@ -148,9 +148,9 @@ void Camera::CTRL_MMB(const SceneContext&)
 
 void Camera::ALT_MMB(const SceneContext&)
 {
-	//if (!EventListener::is_in_viewport) return;
+	//if (!EventCallback::is_in_viewport) return;
 
-	glm::vec3 Delt_angle = glm::vec3(EventListener::GetDeltaMouseY(), 0.0f, EventListener::GetDeltaMouseX()) * 0.05f;
+	glm::vec3 Delt_angle = glm::vec3(EventCallback::GetDeltaMouseY(), 0.0f, EventCallback::GetDeltaMouseX()) * 0.05f;
 
 	SetRot(o_rot + Delt_angle);
 
@@ -161,18 +161,18 @@ void Camera::ALT_MMB(const SceneContext&)
 
 void Camera::MMB(const SceneContext&)
 {
-	//if (!EventListener::is_in_viewport) return;
+	//if (!EventCallback::is_in_viewport) return;
 
-	const glm::vec2 angle =	EventListener::GetDeltaMouse() * -0.01f;
+	const glm::vec2 angle =	EventCallback::GetDeltaMouse() * -0.01f;
 
 	Spin(cam_tar, angle);
 }
 
 void Camera::SCROLL(const SceneContext&)
 {
-	//if (!EventListener::is_in_viewport)return;
+	//if (!EventCallback::is_in_viewport)return;
 
 	const glm::vec3 delta = o_position - cam_tar;
-	SetPos(cam_tar + delta * glm::pow(0.8f, EventListener::scroll_dir));
+	SetPos(cam_tar + delta * glm::pow(0.8f, EventCallback::scroll_dir));
 }
 

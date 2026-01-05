@@ -16,8 +16,8 @@
 #include<functional>
 #include <typeindex>
 
-#define REGIST_EVENT(cls_event) std::bind(&cls_event, this, std::placeholders::_1); EventListener::REFLRigisterEvent(#cls_event)
-#define REGIST_EVENT_STATIC(sta_event) &sta_event; EventListener::REFLRigisterEvent(#sta_event)
+#define REGIST_EVENT(cls_event) std::bind(&cls_event, this, std::placeholders::_1); EventCallback::REFLRigisterEvent(#cls_event)
+#define REGIST_EVENT_STATIC(sta_event) &sta_event; EventCallback::REFLRigisterEvent(#sta_event)
 
 class EventPool {
 public:
@@ -52,8 +52,14 @@ private:
 };
 
 
+class _ {
+public:
+	virtual void bind(EventPool& bus) = 0;
+};
+
+
 // TODO: Move to editor folder
-class EventListener
+class EventCallback
 {
 public:
 
@@ -168,8 +174,8 @@ public:
 
 public:
 
-	EventListener();
-	~EventListener();
+	EventCallback();
+	~EventCallback();
 
 public:
 

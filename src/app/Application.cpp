@@ -183,7 +183,7 @@ int Application::Run()
 		//UI._debug();
 	};
 
-	EventListener::ShowEvents();
+	EventCallback::ShowEvents();
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))

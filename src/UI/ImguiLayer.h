@@ -28,7 +28,7 @@ enum ImLayerType
 	RENDER_CONFIG_ULATER
 };
 
-class ImguiLayer : public EventListener
+class ImguiLayer : public EventCallback
 {
 public:
 	ImVec2 content_pos;

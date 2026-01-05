@@ -22,7 +22,8 @@ public:
 	Renderer renderer{};
 	ImguiManager UI{};
 	SceneContext Ctx{};
-	EventListener Event{};
+	EventCallback Event{};
+	EventPool EventPool{};
 	GLFWwindow* window{ nullptr };
 
 public:

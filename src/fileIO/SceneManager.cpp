@@ -48,7 +48,7 @@ void SceneResource::UseCamera(Resource<Camera> camera)
 	cam_list[camera->GetObjectID()] = camera;
 	obj_list[camera->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(camera);
 	cam_list[0] = camera;
-	EventListener::parent_index_list.emplace_back(-1);
+	EventCallback::parent_index_list.emplace_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
 }
@@ -60,7 +60,7 @@ void SceneResource::UseMesh(Resource<Mesh> mesh)
 
 	mesh_list[mesh->GetObjectID()] = mesh;
 	obj_list[mesh->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(mesh);
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
 }
@@ -73,7 +73,7 @@ void SceneResource::UseLight(Resource<Light> light)
 	light_list[light->GetObjectID()] = light;
 	obj_list[light->light_sprite.GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(light);
 
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 
 	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
 
@@ -87,7 +87,7 @@ void SceneResource::UsePolygonLight(Resource<PolygonLight> polyLight)
 
 	poly_light_list[polyLight->GetObjectID()] = polyLight;
 	obj_list[polyLight->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(polyLight);
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
 }
@@ -104,7 +104,7 @@ void SceneResource::UseEnvironment(Resource<Environment> envir)
 	envir_list[0] = envir;
 	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(envir);
 
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 
 	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
 
@@ -118,7 +118,7 @@ void SceneResource::UseDebugLine(Resource<DebugLine> dline)
 
 	dLine_list[dline->GetObjectID()] = dline;
 	obj_list[dline->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(dline);
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
 
@@ -131,7 +131,7 @@ void SceneResource::UseDebugPoints(Resource<DebugPoints> dpoints)
 
 	dPoints_list[dpoints->GetObjectID()] = dpoints;
 	obj_list[dpoints->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(dpoints);
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 
 	status = SceneModifStatus::SceneChanged;
 }
@@ -141,7 +141,7 @@ void SceneResource::UsePostProcessing(Resource<PostProcessing> pps)
 	pps_list.emplace_back(pps);
 	obj_list[pps->pps_sprite.GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(pps);
 
-	EventListener::parent_index_list.push_back(-1);
+	EventCallback::parent_index_list.push_back(-1);
 }
 
 

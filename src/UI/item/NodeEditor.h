@@ -56,7 +56,7 @@ public:
 
 };
 
-class NodeEditor : public EventListener, public Transform2D
+class NodeEditor : public EventCallback, public Transform2D
 {
 private:
 	enum ConnectType { O_I, O_M, M_I };

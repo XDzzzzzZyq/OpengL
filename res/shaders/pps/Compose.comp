@@ -40,7 +40,7 @@ void main(){
 	vec3 grid_color = grid ? vec3(0) : vec3(0.1);
 	float alpha = imageLoad(U_alpha, uv).r;
 
-	color_new = mix(grid_color, debug, alpha);
+	color_new = mix(grid_color, color_new, alpha);
 
 	imageStore(U_combine, uv, vec4(color_new, 1));
 }

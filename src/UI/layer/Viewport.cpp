@@ -57,7 +57,7 @@ void Viewport::UpdateLayer(const SceneContext& ctx)
 
 void Viewport::LMB_CLICK(const SceneContext& ctx)
 {
-	if (!EventListener::IsMouseClick()) return;
+	if (!EventCallback::IsMouseClick()) return;
 	if (!is_in_viewport) return;
 	if (viewport_status != ViewPortStatus::None) return;
 
@@ -72,7 +72,7 @@ void Viewport::LMB_CLICK(const SceneContext& ctx)
 
 	// TODO: event system
 	ctx.c_selections.Select(scene->GetObjectID(id), multi_select);
-	EventListener::is_selected_changed = true;
+	EventCallback::is_selected_changed = true;
 }
 
 void Viewport::SHIFT(const SceneContext& ctx)
@@ -98,9 +98,9 @@ void Viewport::RenderLayer(const SceneContext& ctx)
 		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowContentRegionMin().x, ImGui::GetWindowContentRegionMin().y);
 		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetMainViewport()->Pos.x, ImGui::GetMainViewport()->Pos.y);
 		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
-		ImGui::Text("[ %.0f , %.0f ]", EventListener::mouse_x, EventListener::mouse_y);
+		ImGui::Text("[ %.0f , %.0f ]", EventCallback::mouse_x, EventCallback::mouse_y);
 		ImVec2 window_pos = (ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
-		ImGui::Text("[ %.0f , %.0f ]", EventListener::mouse_x - window_pos.x, EventListener::mouse_y - window_pos.y);
+		ImGui::Text("[ %.0f , %.0f ]", EventCallback::mouse_x - window_pos.x, EventCallback::mouse_y - window_pos.y);
 #endif // _DEBUG
 
 		if (display_grid)
@@ -245,7 +245,7 @@ void _SwitchHMode(GLuint offset) {
 
 void Viewport::XAxis(const SceneContext&)
 {
-	if (!EventListener::IsKeyClick())
+	if (!EventCallback::IsKeyClick())
 		return;
 
 	::_SwitchHMode(0);
@@ -253,7 +253,7 @@ void Viewport::XAxis(const SceneContext&)
 
 void Viewport::YAxis(const SceneContext&)
 {
-	if (!EventListener::IsKeyClick())
+	if (!EventCallback::IsKeyClick())
 		return;
 
 	::_SwitchHMode(1);
@@ -261,7 +261,7 @@ void Viewport::YAxis(const SceneContext&)
 
 void Viewport::ZAxis(const SceneContext&)
 {
-	if (!EventListener::IsKeyClick())
+	if (!EventCallback::IsKeyClick())
 		return;
 
 	::_SwitchHMode(2);
@@ -269,7 +269,7 @@ void Viewport::ZAxis(const SceneContext&)
 
 void Viewport::WAxis(const SceneContext&)
 {
-	if (!EventListener::IsKeyClick())
+	if (!EventCallback::IsKeyClick())
 		return;
 
 	::_SwitchHMode(3);

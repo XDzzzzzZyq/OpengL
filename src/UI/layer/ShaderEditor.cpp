@@ -257,7 +257,7 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 
 void ShaderEditor::UpdateLayer(const SceneContext& ctx)
 {
-	if (EventListener::is_selected_changed || is_shad_type_changed || is_mode_changed) {
+	if (EventCallback::is_selected_changed || is_shad_type_changed || is_mode_changed) {
 		UpdateShaderEditor(ctx);
 		is_shad_type_changed = false;
 		is_mode_changed = false;

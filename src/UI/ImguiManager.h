@@ -20,7 +20,7 @@
 
 /*#define ParaUpdate ParaUpdate*/
 
-class ImguiManager : public EventListener
+class ImguiManager : public EventCallback
 {
 private:
 	std::vector<std::shared_ptr<ImguiLayer>> layer_list;

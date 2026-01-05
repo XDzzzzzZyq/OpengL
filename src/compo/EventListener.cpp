@@ -1,29 +1,29 @@
 #include "EventListener.h"
 #include "macros.h"
 
-EventListener::KeyMouseEvent EventListener::EVT_STATUS;
+EventCallback::KeyMouseEvent EventCallback::EVT_STATUS;
 
-int EventListener::frame_count = 0;
+int EventCallback::frame_count = 0;
 
-float EventListener::random_float1;
-float EventListener::random_float2;
-float EventListener::random_float3;
-float EventListener::random_float4;
+float EventCallback::random_float1;
+float EventCallback::random_float2;
+float EventCallback::random_float3;
+float EventCallback::random_float4;
 
-bool EventListener::is_key_pressed;
-bool EventListener::is_mouse_pressed;
-bool EventListener::is_key_pressed_b;
-bool EventListener::is_mouse_pressed_b;
-bool EventListener::is_key_changed;
+bool EventCallback::is_key_pressed;
+bool EventCallback::is_mouse_pressed;
+bool EventCallback::is_key_pressed_b;
+bool EventCallback::is_mouse_pressed_b;
+bool EventCallback::is_key_changed;
 
-float EventListener::mouse_x;
-float EventListener::mouse_y;
-float EventListener::mouse_b_x;
-float EventListener::mouse_b_y;
+float EventCallback::mouse_x;
+float EventCallback::mouse_y;
+float EventCallback::mouse_b_x;
+float EventCallback::mouse_b_y;
 
-std::vector<int> EventListener::EVT_NK_LIST = {};
+std::vector<int> EventCallback::EVT_NK_LIST = {};
 
-void EventListener::PushNormKey(int _ID)
+void EventCallback::PushNormKey(int _ID)
 {
 	if (std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), _ID) != EVT_NK_LIST.end())
 		return;
@@ -31,7 +31,7 @@ void EventListener::PushNormKey(int _ID)
 	EVT_NK_LIST.push_back(_ID);
 }
 
-void EventListener::PushNormKey(char _name)
+void EventCallback::PushNormKey(char _name)
 {
 	int id = (int)_name - 64;
 
@@ -41,19 +41,19 @@ void EventListener::PushNormKey(char _name)
 	EVT_NK_LIST.push_back(id);
 }
 
-bool EventListener::is_sprite_selected = false;
-bool EventListener::is_GOlist_changed = true;
-bool EventListener::is_selected_changed = true;
+bool EventCallback::is_sprite_selected = false;
+bool EventCallback::is_GOlist_changed = true;
+bool EventCallback::is_selected_changed = true;
 
-std::vector<int> EventListener::parent_index_list;
+std::vector<int> EventCallback::parent_index_list;
 
-EventListener::EventListener()
+EventCallback::EventCallback()
 {}
 
-EventListener::~EventListener()
+EventCallback::~EventCallback()
 {}
 
-EventListener::MouseStatus EventListener::ListenMouseEvent(GLFWwindow* window)
+EventCallback::MouseStatus EventCallback::ListenMouseEvent(GLFWwindow* window)
 {
 	//update
 	LOOP(3)
@@ -68,7 +68,7 @@ EventListener::MouseStatus EventListener::ListenMouseEvent(GLFWwindow* window)
 //shift -> 340 -> 1
 //ctrl  -> 341 -> 2
 //alt	-> 342 -> 3
-EventListener::SpecialKeys EventListener::ListenSpecialKeyEvent(GLFWwindow* window, SpecialKeys ignor)
+EventCallback::SpecialKeys EventCallback::ListenSpecialKeyEvent(GLFWwindow* window, SpecialKeys ignor)
 {
 	LOOP(3)
 		if (glfwGetKey(window, 340 + i) == GLFW_PRESS)
@@ -79,7 +79,7 @@ EventListener::SpecialKeys EventListener::ListenSpecialKeyEvent(GLFWwindow* wind
 }
 
 // A -> 1 | Z -> 26
-int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist)
+int EventCallback::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist)
 {
 	if (IDlist.size() == 0)
 		return 0;
@@ -91,11 +91,11 @@ int EventListener::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<in
 	return 0;
 }
 
-float EventListener::scroll_dir = 0;
-bool EventListener::is_scr_changed = false;
+float EventCallback::scroll_dir = 0;
+bool EventCallback::is_scr_changed = false;
 
 #include "xdz_math.h"
-void EventListener::UpdateEvent(GLFWwindow* window) const
+void EventCallback::UpdateEvent(GLFWwindow* window) const
 {
 	KeyMouseEvent event_b = EVT_STATUS;
 	/*		Mouse Input 	*/
@@ -106,7 +106,7 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 
 	double _mouse_x, _mouse_y;
 	glfwGetCursorPos(window, &_mouse_x, &_mouse_y);
-	glfwSetScrollCallback(window, EventListener::scrollCall);
+	glfwSetScrollCallback(window, EventCallback::scrollCall);
 
 	mouse_x = static_cast<float>(_mouse_x);
 	mouse_y = static_cast<float>(_mouse_y);
@@ -127,25 +127,25 @@ void EventListener::UpdateEvent(GLFWwindow* window) const
 
 	/*		Global Randoms  	*/
 
-	if (EventListener::frame_count != 1) {
-		EventListener::random_float1 = xdzm::rand01();
-		EventListener::random_float2 = xdzm::rand01();
-		EventListener::random_float3 = xdzm::rand01();
-		EventListener::random_float4 = xdzm::rand01();
+	if (EventCallback::frame_count != 1) {
+		EventCallback::random_float1 = xdzm::rand01();
+		EventCallback::random_float2 = xdzm::rand01();
+		EventCallback::random_float3 = xdzm::rand01();
+		EventCallback::random_float4 = xdzm::rand01();
 	}
 
-	EventListener::is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
-	EventListener::is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
-	EventListener::is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
-	EventListener::is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
+	EventCallback::is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
+	EventCallback::is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
+	EventCallback::is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
+	EventCallback::is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
 
 
-	EventListener::frame_count++;
+	EventCallback::frame_count++;
 }
 
-EventListener::KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, int m, int scr)
+EventCallback::KeyMouseEvent EventCallback::GenIntEvent(int k1, int k2, int k3, int m, int scr)
 {
-	return EventListener::GenIntEvent(
+	return EventCallback::GenIntEvent(
 		SpecialKeys(k1),
 		SpecialKeys(k2),
 		k3,
@@ -154,7 +154,7 @@ EventListener::KeyMouseEvent EventListener::GenIntEvent(int k1, int k2, int k3, 
 	);
 }
 
-EventListener::KeyMouseEvent EventListener::GenIntEvent(SpecialKeys k1, SpecialKeys k2, int k3, MouseStatus m, ScrollDir scr)
+EventCallback::KeyMouseEvent EventCallback::GenIntEvent(SpecialKeys k1, SpecialKeys k2, int k3, MouseStatus m, ScrollDir scr)
 {
 	KeyMouseEvent result;
 	result.FirstKey = k1;
@@ -168,24 +168,24 @@ EventListener::KeyMouseEvent EventListener::GenIntEvent(SpecialKeys k1, SpecialK
 	return result;
 }
 
-void EventListener::EventActivate(const SceneContext& ctx)
+void EventCallback::EventActivate(const SceneContext& ctx)
 {
 	if (EVT_STATUS.GenStateData() != 0)
 		if (EventList.find(EVT_STATUS) != EventList.end())
 			EventList[EVT_STATUS](ctx);
 }
 
-void EventListener::Reset()
+void EventCallback::Reset()
 {
 	is_GOlist_changed = false;
 	is_selected_changed = false;
 	scroll_dir = 0;
 }
 
-std::vector<std::string> EventListener::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
+std::vector<std::string> EventCallback::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
 
 #include <sstream>
-EventListener::KeyMouseEvent EventListener::ParseShortCut(const std::string& _shortcut)
+EventCallback::KeyMouseEvent EventCallback::ParseShortCut(const std::string& _shortcut)
 {
 	KeyMouseEvent result;
 	std::istringstream str(_shortcut);
@@ -217,9 +217,9 @@ parse_norm:
 	return result;
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>> EventListener::evt_RigisterEvents = {};
+std::unordered_map<std::string, std::unordered_set<std::string>> EventCallback::evt_RigisterEvents = {};
 
-void EventListener::REFLRigisterEvent(const std::string& _class_event)
+void EventCallback::REFLRigisterEvent(const std::string& _class_event)
 {
 	const std::string class_name = _class_event.substr(0, _class_event.find(":"));
 	const std::string event_name = _class_event.substr(_class_event.find_last_of(":") + 1, _class_event.size() - 1);
@@ -227,7 +227,7 @@ void EventListener::REFLRigisterEvent(const std::string& _class_event)
 	evt_RigisterEvents[class_name].insert(event_name);
 }
 
-void EventListener::ShowEvents()
+void EventCallback::ShowEvents()
 {
 #ifdef _DEBUG
 
@@ -241,7 +241,7 @@ void EventListener::ShowEvents()
 #endif // _DEBUG
 }
 
-int EventListener::KeyMouseEvent::GenStateData() const
+int EventCallback::KeyMouseEvent::GenStateData() const
 {
 	int data = 0;
 	data += ((int)FirstKey) * ((int)SecondKey + 2) * 4;

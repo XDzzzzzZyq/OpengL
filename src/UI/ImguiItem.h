@@ -77,8 +77,8 @@ namespace Item {
 
 	inline const bool is_inside(const ImVec2& size) {
 		ImVec2 window_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
-		return window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)
-			&& ImVec2(EventListener::mouse_x, EventListener::mouse_y) < window_pos + size;
+		return window_pos < ImVec2(EventCallback::mouse_x, EventCallback::mouse_y)
+			&& ImVec2(EventCallback::mouse_x, EventCallback::mouse_y) < window_pos + size;
 	}
 }
 

@@ -5,7 +5,7 @@
 #include "EventListener.h"
 /*#include "Sprite.h"*/
 
-class Camera : public ObjectID, public Transform3D, public EventListener
+class Camera : public ObjectID, public Transform3D, public EventCallback
 {
 public:
 

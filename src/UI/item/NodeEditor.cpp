@@ -212,7 +212,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
 			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2f);
 
-			if (LMB_press && EventListener::IsMouseClick())
+			if (LMB_press && EventCallback::IsMouseClick())
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
 					if (ImGui::GetMousePos() < ImVec2(node.header.x + ((float)node.max.x - node.header.x) * 0.125f, node.min.y))
 						node->is_open = !node->is_open;
@@ -314,7 +314,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 					}
 
 					//      create connection     |           break connection through output
-					if (EventListener::is_mouse_pressed && (editing_in_pin == &i_p)) {
+					if (EventCallback::is_mouse_pressed && (editing_in_pin == &i_p)) {
 						tar_pin_pos = inp_curs;
 						editing_node = &node;
 						editing_para_type = i_p.para_type;
@@ -370,7 +370,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 						is_hover_on_out = true;
 					}
 
-					if (EventListener::is_mouse_pressed && editing_out_pin == &o_p) {
+					if (EventCallback::is_mouse_pressed && editing_out_pin == &o_p) {
 						tar_pin_pos = outp_curs;
 						editing_node = &node;
 						editing_para_type = o_p.para_type;
@@ -411,7 +411,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 			//[  Move  ]
 			if (node->n_id == active_node_id && is_node_movable && LMB_press)
 				if (!is_editing_pin_in && !is_editing_pin_out)
-					node->Move((glm::vec2(-1, 1) / o_scale) * EventListener::GetDeltaMouse());
+					node->Move((glm::vec2(-1, 1) / o_scale) * EventCallback::GetDeltaMouse());
 
 		}
 
@@ -422,7 +422,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 
 			break;
 		case NodeEditor::O_M:
-			if (EventListener::IsMouseLeft()) {
+			if (EventCallback::IsMouseLeft()) {
 				if (hovered_pin_b == nullptr) {							// connect to nothing
 					Nodes::BreakLink(pressed_pin_b, Nodes::IN);
 					goto skip_O_M;
@@ -463,7 +463,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 
 			break;
 		case NodeEditor::M_I:
-			if (EventListener::IsMouseLeft()) {
+			if (EventCallback::IsMouseLeft()) {
 				if (hovered_pin_b == nullptr) {							//connect to nothing
 					Nodes::BreakLink(editing_in_pin_b, Nodes::IN);
 					goto skip_M_I;

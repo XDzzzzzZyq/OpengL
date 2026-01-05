@@ -86,7 +86,7 @@ void ImguiManager::DefultViewports() {
 
 	auto outline = CreateImguiLayer<Outliner>("Outliner");
 
-	auto shaderedit = CreateImguiLayer<ShaderEditor>("Shader Editor");     //ShaderEditor must after Outliner since the order of "EventListener::is_selected_changed"
+	auto shaderedit = CreateImguiLayer<ShaderEditor>("Shader Editor");     //ShaderEditor must after Outliner since the order of "EventCallback::is_selected_changed"
 
 	auto material = CreateImguiLayer<MaterialViewer>("Material");
 
