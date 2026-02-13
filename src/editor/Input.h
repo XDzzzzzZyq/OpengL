@@ -20,15 +20,15 @@ class Input{
 public:
 
 	// TODO: use flag
-	enum class SpecialKeys
+	enum SpecialKeys
 	{
-		NONE,
-		SHIFT = 1,
-		CTRL,
-		ALT
+		NONE = 0,
+		SHIFT = 1 << 0,
+		CTRL = 1 << 1,
+		ALT = 1 << 2
 	};
 
-	enum class MouseButtons
+	enum class MouseButtons : int
 	{
 		NONE,
 		LMB = 1,
@@ -42,9 +42,8 @@ public:
 	struct KeyState
 	{
 		// TODO: use flag to capture all special keys
-		SpecialKeys FirstKey{ SpecialKeys::NONE };
-		SpecialKeys SecondKey{ SpecialKeys::NONE };
-		int NormKey{ 0 };
+		SpecialKeys special{ SpecialKeys::NONE };
+		int normal{ 0 };
 	};
 
 	struct MouseState

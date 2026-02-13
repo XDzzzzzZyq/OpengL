@@ -19,17 +19,20 @@ Input::MouseButtons ListenMouseEvent(GLFWwindow* window)
 
 
 //https://www.glfw.org/docs/3.3/group__keys.html
-//shift -> 340 -> 1
-//ctrl  -> 341 -> 2
-//alt	-> 342 -> 3
-Input::SpecialKeys ListenSpecialKeyEvent(GLFWwindow* window, Input::SpecialKeys ignor)
+//shift -> 340
+//ctrl  -> 341
+//alt	-> 342
+Input::SpecialKeys ListenSpecialKeyEvent(GLFWwindow* window)
 {
-	LOOP(3)
-		if (glfwGetKey(window, 340 + i) == GLFW_PRESS)
-			if (ignor != Input::SpecialKeys(i + 1))
-				return Input::SpecialKeys(i + 1);
+	Input::SpecialKeys keys = Input::NONE;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+		keys = static_cast<Input::SpecialKeys>(keys | Input::SHIFT);
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)
+		keys = static_cast<Input::SpecialKeys>(keys | Input::CTRL);
+	if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_ALT) == GLFW_PRESS)
+		keys = static_cast<Input::SpecialKeys>(keys | Input::ALT);
 
-	return Input::SpecialKeys::NONE;//no key is pressed
+	return keys;
 }
 
 // A -> 1 | Z -> 26
@@ -73,10 +76,9 @@ void Input::UpdateState(GLFWwindow* window) const
 
 	/*	  KeyBoard Input 	*/
 
-	input_state.key.FirstKey = ListenSpecialKeyEvent(window, Input::SpecialKeys::NONE);
-	input_state.key.SecondKey = ListenSpecialKeyEvent(window, input_state.key.FirstKey);
+	input_state.key.special = ListenSpecialKeyEvent(window);
 
-	input_state.key.NormKey = ListenNormalKeyEvent(window);
+	input_state.key.normal = ListenNormalKeyEvent(window);
 
 	/*		Global Randoms  	*/
 
@@ -105,20 +107,20 @@ bool Input::IsMouseLeft()
 
 bool Input::IsKeyClicked()
 {
-	const bool pressed_now = input_state.key.FirstKey != SpecialKeys::NONE || input_state.key.SecondKey != SpecialKeys::NONE || input_state.key.NormKey != 0;
-	const bool pressed_before = input_state_b.key.FirstKey != SpecialKeys::NONE || input_state_b.key.SecondKey != SpecialKeys::NONE || input_state_b.key.NormKey != 0;
+	const bool pressed_now = input_state.key.special != NONE || input_state.key.normal != 0;
+	const bool pressed_before = input_state_b.key.special != NONE || input_state_b.key.normal != 0;
 	return pressed_now && !pressed_before;
 }
 
 bool Input::IsKeyPressed()
 {
-	return input_state.key.FirstKey != SpecialKeys::NONE || input_state.key.SecondKey != SpecialKeys::NONE || input_state.key.NormKey != 0;
+	return input_state.key.special != NONE || input_state.key.normal != 0;
 }
 
 bool Input::IsKeyLeft()
 {
-	const bool pressed_now = input_state.key.FirstKey != SpecialKeys::NONE || input_state.key.SecondKey != SpecialKeys::NONE || input_state.key.NormKey != 0;
-	const bool pressed_before = input_state_b.key.FirstKey != SpecialKeys::NONE || input_state_b.key.SecondKey != SpecialKeys::NONE || input_state_b.key.NormKey != 0;
+	const bool pressed_now = input_state.key.special != NONE || input_state.key.normal != 0;
+	const bool pressed_before = input_state_b.key.special != NONE || input_state_b.key.normal != 0;
 	return !pressed_now && pressed_before;
 }
 
