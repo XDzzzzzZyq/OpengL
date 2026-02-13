@@ -3,7 +3,6 @@
 
 #include "Parameters.h"
 
-
 #include <iostream>
 #include <optional>
 #include <functional>
@@ -67,7 +66,7 @@ public:
 	// for all viewport
 	virtual void ResetUV(const ImVec2& min, const ImVec2& max) { DEBUG(uitm_name + " is not a viewport"); return; }
 	virtual void ResetSize(const ImVec2& size) { DEBUG(uitm_name + " is not a viewport"); return; }
-	virtual void ResetBufferID(GLuint id) { DEBUG(uitm_name + " is not a viewport");	return; }
+	virtual void ResetBufferID(int id) { DEBUG(uitm_name + " is not a viewport");	return; }
 
 
 };

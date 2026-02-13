@@ -13,15 +13,15 @@ namespace UI {
 		ImVec2 vp_size;
 
 		TextureViewer();
-		TextureViewer(const std::string& name, GLuint texID);
-		TextureViewer(const std::string& name, GLuint texID, const ImVec2& vp_size);
+		TextureViewer(const std::string& name, int texID);
+		TextureViewer(const std::string& name, int texID, const ImVec2& vp_size);
 		~TextureViewer();
 
 		bool show_size;
 
 		void ResetUV(const ImVec2& min, const ImVec2& max) override;
 		void ResetSize(const ImVec2& size) override;
-		void ResetBufferID(GLuint id) override;
+		void ResetBufferID(int id) override;
 		void RenderItem() const override;
 	};
 }

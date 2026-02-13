@@ -22,7 +22,7 @@ void UI::TextureViewer::ResetSize(const ImVec2& size)
 	vp_size = size;
 }
 
-void UI::TextureViewer::ResetBufferID(GLuint id)
+void UI::TextureViewer::ResetBufferID(int id)
 {
 	vp_fboTex_ID = id;
 }
@@ -42,14 +42,14 @@ void UI::TextureViewer::RenderItem() const
 	ImGui::Text("[ %.1f , %.1f ]", vp_size.x, vp_size.y);
 }
 
-UI::TextureViewer::TextureViewer(const std::string& name, GLuint texID, const ImVec2& vp_size)
+UI::TextureViewer::TextureViewer(const std::string& name, int texID, const ImVec2& vp_size)
 	:vp_fboTex_ID(texID), vp_size(vp_size)
 {
 	uitm_name = name;
 	uitm_type = IMAGE_OUTP;
 }
 
-UI::TextureViewer::TextureViewer(const std::string& name, GLuint texID)
+UI::TextureViewer::TextureViewer(const std::string& name, int texID)
 	: vp_fboTex_ID(texID)
 {
 	uitm_name = name;
