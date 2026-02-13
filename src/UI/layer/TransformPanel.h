@@ -13,6 +13,6 @@ public:
 
 public:
 
-	void RenderLayer(const SceneContext& ctx) override;
+	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
 };
 

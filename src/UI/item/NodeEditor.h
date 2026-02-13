@@ -1,10 +1,9 @@
 #pragma once
 #include "Nodes.h"
+#include "Context.h"
 
 #include "ImguiItem.h"
 #include "ParaInput.h"
-#include "ImGui/imgui_internal.h"
-#include "Event.h"
 
 enum NodeEditorType
 {
@@ -56,7 +55,7 @@ public:
 
 };
 
-class NodeEditor : public EventCallback, public Transform2D
+class NodeEditor : public Transform2D
 {
 private:
 	enum ConnectType { O_I, O_M, M_I };

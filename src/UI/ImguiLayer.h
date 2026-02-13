@@ -4,15 +4,13 @@
 #include "ImGui/backends/imgui_impl_glfw.h"
 #include "ImGui/backends/imgui_impl_opengl3.h"
 
-
-#include "Event.h"
 #include "Context.h"
-#include "ImguiTheme.h"
+#include "Events.h"
 
+#include "ImguiTheme.h"
 #include "ImguiItem.h"
 
 #include <unordered_map>
-#include <map>
 #define ACTIVE "ACTIVE LAYER"
 
 enum ImLayerType
@@ -28,7 +26,7 @@ enum ImLayerType
 	RENDER_CONFIG_ULATER
 };
 
-class ImguiLayer : public EventCallback
+class ImguiLayer
 {
 public:
 	ImVec2 content_pos;
@@ -76,7 +74,7 @@ public:
 	std::function<void(void)> pre_RenderLayer = [] {};
 	std::function<void(void)> extra_RenderLayer = [] {};
 	std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer(const SceneContext& ctx) { DEBUG("no Render function overrided"); return; };
+	virtual void RenderLayer(const SceneContext& ctx, const EventPool& evt) { DEBUG("no Render function overrided"); return; };
 	virtual void UpdateLayer(const SceneContext& ctx) {};
 	
 	std::function<void(void)> set_active = [] {};

@@ -1,7 +1,6 @@
 #include "ShaderEditor.h"
-
 #include "Shaders.h"
-#include "Event.h"
+#include "Input.h"
 
 #include "operator.h"
 
@@ -235,7 +234,8 @@ bool ShaderEditor::AddParam(const char* c_name /*= ""*/, const char* c_sld_name 
 {
 
 	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)) || se_panel.is_open) {
-		if (RenderPanel(se_panel, ImVec2(mouse_x, mouse_y), &add_prop, c_name, c_sld_name)) {
+		const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+		if (RenderPanel(se_panel, mouse_pos, &add_prop, c_name, c_sld_name)) {
 			return true;
 		}
 	}
@@ -247,7 +247,8 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 {
 	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)) || se_panel.is_open)
 	{
-		if (RenderDefPanel(se_panel, def_type, ImVec2(mouse_x, mouse_y), &add_args)) {
+		const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+		if (RenderDefPanel(se_panel, def_type, mouse_pos, &add_args)) {
 			return true;
 		}
 
@@ -257,7 +258,7 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 
 void ShaderEditor::UpdateLayer(const SceneContext& ctx)
 {
-	if (EventCallback::is_selected_changed || is_shad_type_changed || is_mode_changed) {
+	if (Input::IsSelectedChanged() || is_shad_type_changed || is_mode_changed) {
 		UpdateShaderEditor(ctx);
 		is_shad_type_changed = false;
 		is_mode_changed = false;
@@ -558,7 +559,7 @@ void ShaderEditor::CompileShader(const SceneContext& ctx)
 	active_shader->RelinkShader((ShaderType)current_shad_type);
 }
 
-void ShaderEditor::RenderLayer(const SceneContext& ctx)
+void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	Shaders* active_shader = GetActiveShaderPtr((SceneContext&)ctx);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);

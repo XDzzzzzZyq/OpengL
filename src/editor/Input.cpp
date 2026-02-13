@@ -1,66 +1,20 @@
-#include "Event.h"
+#include "Input.h"
 #include "macros.h"
 
-EventCallback::KeyMouseEvent EventCallback::EVT_STATUS;
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
-int EventCallback::frame_count = 0;
+Input::InputState Input::input_state = Input::InputState{};
+Input::InputState Input::input_state_b = Input::InputState{};
 
-float EventCallback::random_float1;
-float EventCallback::random_float2;
-float EventCallback::random_float3;
-float EventCallback::random_float4;
-
-bool EventCallback::is_key_pressed;
-bool EventCallback::is_mouse_pressed;
-bool EventCallback::is_key_pressed_b;
-bool EventCallback::is_mouse_pressed_b;
-bool EventCallback::is_key_changed;
-
-float EventCallback::mouse_x;
-float EventCallback::mouse_y;
-float EventCallback::mouse_b_x;
-float EventCallback::mouse_b_y;
-
-std::vector<int> EventCallback::EVT_NK_LIST = {};
-
-void EventCallback::PushNormKey(int _ID)
-{
-	if (std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), _ID) != EVT_NK_LIST.end())
-		return;
-
-	EVT_NK_LIST.push_back(_ID);
-}
-
-void EventCallback::PushNormKey(char _name)
-{
-	int id = (int)_name - 64;
-
-	if (std::find(EVT_NK_LIST.begin(), EVT_NK_LIST.end(), id) != EVT_NK_LIST.end())
-		return;
-
-	EVT_NK_LIST.push_back(id);
-}
-
-bool EventCallback::is_sprite_selected = false;
-bool EventCallback::is_GOlist_changed = true;
-bool EventCallback::is_selected_changed = true;
-
-std::vector<int> EventCallback::parent_index_list;
-
-EventCallback::EventCallback()
-{}
-
-EventCallback::~EventCallback()
-{}
-
-EventCallback::MouseStatus EventCallback::ListenMouseEvent(GLFWwindow* window)
+Input::MouseStatus ListenMouseEvent(GLFWwindow* window)
 {
 	//update
 	LOOP(3)
 		if (glfwGetMouseButton(window, i) == GLFW_PRESS)
-			return MouseStatus(i + 1);
+			return Input::MouseStatus(i + 1);
 
-	return MouseStatus::NONE;
+	return Input::MouseStatus::NONE;
 }
 
 
@@ -68,186 +22,158 @@ EventCallback::MouseStatus EventCallback::ListenMouseEvent(GLFWwindow* window)
 //shift -> 340 -> 1
 //ctrl  -> 341 -> 2
 //alt	-> 342 -> 3
-EventCallback::SpecialKeys EventCallback::ListenSpecialKeyEvent(GLFWwindow* window, SpecialKeys ignor)
+Input::SpecialKeys ListenSpecialKeyEvent(GLFWwindow* window, Input::SpecialKeys ignor)
 {
 	LOOP(3)
 		if (glfwGetKey(window, 340 + i) == GLFW_PRESS)
-			if (ignor != SpecialKeys(i + 1))
-				return SpecialKeys(i + 1);
+			if (ignor != Input::SpecialKeys(i + 1))
+				return Input::SpecialKeys(i + 1);
 
-	return SpecialKeys::NONE;//no key is pressed
+	return Input::SpecialKeys::NONE;//no key is pressed
 }
 
 // A -> 1 | Z -> 26
-int EventCallback::ListenNormalKeyEvent(GLFWwindow* window, const std::vector<int>& IDlist)
+int ListenNormalKeyEvent(GLFWwindow* window)
 {
-	if (IDlist.size() == 0)
-		return 0;
+	LOOP(26)
+		if (glfwGetKey(window, GLFW_KEY_A + i) == GLFW_PRESS)
+			return i + 1;
 
-	LOOP(IDlist.size())
-		if (glfwGetKey(window, IDlist[i] + 64) == GLFW_PRESS)
-			return IDlist[i];
+	for (int i = 0; i < 10 && (26 + i) < NORM_KEY_LEN; ++i)
+		if (glfwGetKey(window, GLFW_KEY_0 + i) == GLFW_PRESS)
+			return 26 + i + 1;
 
 	return 0;
 }
 
-float EventCallback::scroll_dir = 0;
-bool EventCallback::is_scr_changed = false;
+static void ScrollCallback(GLFWwindow* /*window*/, double xoffset, double yoffset)
+{
+	Input::input_state.mouse.scroll_x = static_cast<float>(xoffset);
+	Input::input_state.mouse.scroll_y = static_cast<float>(yoffset);
+}
 
 #include "xdz_math.h"
-void EventCallback::UpdateEvent(GLFWwindow* window) const
+void Input::UpdateState(GLFWwindow* window) const
 {
-	KeyMouseEvent event_b = EVT_STATUS;
+	input_state_b = input_state;
 	/*		Mouse Input 	*/
 
-	mouse_b_x = mouse_x;
-	mouse_b_y = mouse_y;
-	is_mouse_pressed_b = is_mouse_pressed;
+	input_state.mouse.button = ListenMouseEvent(window);
 
 	double _mouse_x, _mouse_y;
 	glfwGetCursorPos(window, &_mouse_x, &_mouse_y);
-	glfwSetScrollCallback(window, EventCallback::scrollCall);
+	input_state.mouse.mouse_x = static_cast<float>(_mouse_x);
+	input_state.mouse.mouse_y = static_cast<float>(_mouse_y);
 
-	mouse_x = static_cast<float>(_mouse_x);
-	mouse_y = static_cast<float>(_mouse_y);
+	glfwSetScrollCallback(window, ScrollCallback);
 
 	/*	  KeyBoard Input 	*/
 
-	is_key_pressed_b = is_key_pressed;
+	input_state.key.FirstKey = ListenSpecialKeyEvent(window, Input::SpecialKeys::NONE);
+	input_state.key.SecondKey = ListenSpecialKeyEvent(window, input_state.key.FirstKey);
 
-	EVT_STATUS.FirstKey = ListenSpecialKeyEvent(window, SpecialKeys::NONE);
-	EVT_STATUS.SecondKey = ListenSpecialKeyEvent(window, EVT_STATUS.FirstKey);
-
-	if (!EVT_NK_LIST.empty())
-		EVT_STATUS.NormKey = ListenNormalKeyEvent(window, EVT_NK_LIST);
-
-	EVT_STATUS.Scr = ScrollDir(scroll_dir);
-
-	EVT_STATUS.Mouse = ListenMouseEvent(window);
+	input_state.key.NormKey = ListenNormalKeyEvent(window);
 
 	/*		Global Randoms  	*/
 
-	if (EventCallback::frame_count != 1) {
-		EventCallback::random_float1 = xdzm::rand01();
-		EventCallback::random_float2 = xdzm::rand01();
-		EventCallback::random_float3 = xdzm::rand01();
-		EventCallback::random_float4 = xdzm::rand01();
-	}
+	input_state.random.random_float1 = xdzm::rand01();
+	input_state.random.random_float2 = xdzm::rand01();
+	input_state.random.random_float3 = xdzm::rand01();
+	input_state.random.random_float4 = xdzm::rand01();
 
-	EventCallback::is_key_changed = (event_b.FirstKey != EVT_STATUS.FirstKey) || (event_b.SecondKey != EVT_STATUS.SecondKey) || (event_b.NormKey != EVT_STATUS.NormKey);
-	EventCallback::is_scr_changed = event_b.Scr != EVT_STATUS.Scr;
-	EventCallback::is_mouse_pressed = EVT_STATUS.Mouse != MouseStatus::NONE;
-	EventCallback::is_key_pressed = (int)EVT_STATUS.FirstKey + (int)EVT_STATUS.SecondKey + (int)EVT_STATUS.NormKey != 0;
-
-
-	EventCallback::frame_count++;
+	input_state.viewport.frame_count++;
 }
 
-EventCallback::KeyMouseEvent EventCallback::GenIntEvent(int k1, int k2, int k3, int m, int scr)
+bool Input::IsMouseClicked()
 {
-	return EventCallback::GenIntEvent(
-		SpecialKeys(k1),
-		SpecialKeys(k2),
-		k3,
-		MouseStatus(m),
-		ScrollDir(scr)
-	);
+	return input_state.mouse.button != MouseStatus::NONE && input_state_b.mouse.button == MouseStatus::NONE;
 }
 
-EventCallback::KeyMouseEvent EventCallback::GenIntEvent(SpecialKeys k1, SpecialKeys k2, int k3, MouseStatus m, ScrollDir scr)
+bool Input::IsMousePressed()
 {
-	KeyMouseEvent result;
-	result.FirstKey = k1;
-	result.SecondKey = k2;
-	result.NormKey = k3;
-	result.Mouse = m;
-	result.Scr = scr;
-	result.is_update = false;
-	result.is_pressed = false;
-
-	return result;
+	return input_state.mouse.button != MouseStatus::NONE;
 }
 
-void EventCallback::EventActivate(const SceneContext& ctx)
+bool Input::IsMouseLeft()
 {
-	if (EVT_STATUS.GenStateData() != 0)
-		if (EventList.find(EVT_STATUS) != EventList.end())
-			EventList[EVT_STATUS](ctx);
+	return input_state.mouse.button == MouseStatus::NONE && input_state_b.mouse.button != MouseStatus::NONE;
 }
 
-void EventCallback::Reset()
+bool Input::IsKeyClicked()
 {
-	is_GOlist_changed = false;
-	is_selected_changed = false;
-	scroll_dir = 0;
+	const bool pressed_now = input_state.key.FirstKey != SpecialKeys::NONE || input_state.key.SecondKey != SpecialKeys::NONE || input_state.key.NormKey != 0;
+	const bool pressed_before = input_state_b.key.FirstKey != SpecialKeys::NONE || input_state_b.key.SecondKey != SpecialKeys::NONE || input_state_b.key.NormKey != 0;
+	return pressed_now && !pressed_before;
 }
 
-std::vector<std::string> EventCallback::EVT_AVAIL_KEYS = { "shift", "ctrl", "alt" };
-
-#include <sstream>
-EventCallback::KeyMouseEvent EventCallback::ParseShortCut(const std::string& _shortcut)
+bool Input::IsKeyPressed()
 {
-	KeyMouseEvent result;
-	std::istringstream str(_shortcut);
-	std::string word;
-
-	str >> word;
-	LOOP(EVT_AVAIL_KEYS.size()) {
-		if (word == EVT_AVAIL_KEYS[i]) {
-			result.FirstKey = SpecialKeys(i + 1);
-			str >> word;	// "+"
-			str >> word;
-			LOOP_N(EVT_AVAIL_KEYS.size(), j) {
-				if (word == EVT_AVAIL_KEYS[j]) {
-					result.SecondKey = SpecialKeys(j + 1);
-					goto parse_next_norm;
-				}
-			}
-			goto parse_norm;
-		}
-	}
-	goto parse_norm;
-parse_next_norm:
-	str >> word;	// "+"
-	str >> word;
-parse_norm:
-	result.NormKey = (int)word.data()[0] - 64;
-	PushNormKey(result.NormKey);
-
-	return result;
+	return input_state.key.FirstKey != SpecialKeys::NONE || input_state.key.SecondKey != SpecialKeys::NONE || input_state.key.NormKey != 0;
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>> EventCallback::evt_RigisterEvents = {};
-
-void EventCallback::REFLRigisterEvent(const std::string& _class_event)
+bool Input::IsKeyLeft()
 {
-	const std::string class_name = _class_event.substr(0, _class_event.find(":"));
-	const std::string event_name = _class_event.substr(_class_event.find_last_of(":") + 1, _class_event.size() - 1);
-
-	evt_RigisterEvents[class_name].insert(event_name);
+	const bool pressed_now = input_state.key.FirstKey != SpecialKeys::NONE || input_state.key.SecondKey != SpecialKeys::NONE || input_state.key.NormKey != 0;
+	const bool pressed_before = input_state_b.key.FirstKey != SpecialKeys::NONE || input_state_b.key.SecondKey != SpecialKeys::NONE || input_state_b.key.NormKey != 0;
+	return !pressed_now && pressed_before;
 }
 
-void EventCallback::ShowEvents()
+bool Input::IsMouseScrolled()
 {
-#ifdef _DEBUG
-
-	for (auto& cls : evt_RigisterEvents) {
-		DEBUG("[ " + cls.first + " ]");
-		for (auto& evt : cls.second) {
-			std::cout << "\t" << cls.first << " : " << evt << "\n";
-		}
-	}
-
-#endif // _DEBUG
+	return input_state.mouse.scroll_x != 0 || input_state.mouse.scroll_y != 0;
 }
 
-int EventCallback::KeyMouseEvent::GenStateData() const
+float Input::GetMousePosX()
 {
-	int data = 0;
-	data += ((int)FirstKey) * ((int)SecondKey + 2) * 4;
-	data += NormKey * 1;
-	data += (int)Mouse * 1;
-	data += (int)Scr * 3;
+	return input_state.mouse.mouse_x;
+}
 
-	return data;
+float Input::GetMousePosY()
+{
+	return input_state.mouse.mouse_y;
+}
+
+float Input::GetDeltaMouseX()
+{
+	return input_state.mouse.mouse_x - input_state_b.mouse.mouse_x;
+}
+
+float Input::GetDeltaMouseY()
+{
+	return input_state.mouse.mouse_y - input_state_b.mouse.mouse_y;
+}
+
+float Input::GetScrollX()
+{
+	return input_state.mouse.scroll_x;
+}
+
+float Input::GetScrollY()
+{
+	return input_state.mouse.scroll_y;
+}
+
+bool Input::IsSelectedChanged()
+{
+	return input_state.viewport.is_selected_changed;
+}
+
+bool Input::IsGOListChanged()
+{
+	return input_state.viewport.is_GOlist_changed;
+}
+
+bool Input::IsSpriteSelected()
+{
+	return input_state.viewport.is_sprite_selected;
+}
+
+void Input::ResetFrameCount(int count)
+{
+	input_state.viewport.frame_count = count;
+}
+
+int Input::GetFrameCount()
+{
+	return input_state.viewport.frame_count;
 }

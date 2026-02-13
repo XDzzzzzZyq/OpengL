@@ -21,7 +21,7 @@ public:
 		ImVec2 panel_pos{ ImVec2(0,0) };
 	};
 
-private:
+public: // TODO: use private
 
 	static TextEditor se_code_editor;
 	static NodeEditor se_node_editor;
@@ -63,5 +63,5 @@ public:
 	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderShaderStruct(const SceneContext& ctx);
 
-	void RenderLayer(const SceneContext& ctx) override;
+	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
 };

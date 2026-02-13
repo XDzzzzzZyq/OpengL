@@ -53,7 +53,7 @@ static bool RenderTransfroms(Transform3D& trans)
 	return is_pos_ch || is_rot_ch || is_scl_ch;
 }
 
-void TransformPanel::RenderLayer(const SceneContext& ctx)
+void TransformPanel::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr(ctx));

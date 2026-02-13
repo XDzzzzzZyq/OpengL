@@ -2,7 +2,7 @@
 #include "ImGui/imgui.h"
 
 #include "Parameters.h"
-#include "Event.h"
+
 
 #include <iostream>
 #include <optional>
@@ -75,10 +75,9 @@ public:
 #include "operator.h"
 namespace Item {
 
-	inline const bool is_inside(const ImVec2& size) {
-		ImVec2 window_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
-		return window_pos < ImVec2(EventCallback::mouse_x, EventCallback::mouse_y)
-			&& ImVec2(EventCallback::mouse_x, EventCallback::mouse_y) < window_pos + size;
+	inline bool is_inside(const ImVec2 size, const ImVec2 mouse_pos) {
+		const ImVec2 window_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
+		return window_pos < mouse_pos && mouse_pos < window_pos + size;
 	}
 }
 

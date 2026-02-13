@@ -1,4 +1,5 @@
 #include "Viewport.h"
+#include "Input.h"
 
 #include "Camera.h"
 #include "Transform.h"
@@ -13,7 +14,6 @@ ImGuizmo::OPERATION Viewport::handle_mod = ImGuizmo::TRANSLATE;
 Viewport::Viewport()
 {
 	uly_name = "";
-	EventInit();
 }
 
 Viewport::Viewport(const std::string& name)
@@ -28,18 +28,11 @@ Viewport::Viewport(const std::string& name, GLuint texID, const ImVec2& vp_size)
 {
 	uly_name = name;
 	PushItem<UI::TextureViewer>("Viewport", texID, vp_size);
-	EventInit();
 }
 
 Viewport::~Viewport()
 {
 
-}
-
-void Viewport::EventInit()
-{
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Viewport::LMB_CLICK);
-	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Viewport::SHIFT);
 }
 
 
@@ -54,7 +47,7 @@ int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
 
 void Viewport::LMB_CLICK(const SceneContext& ctx)
 {
-	if (!EventCallback::IsMouseClick()) return;
+	if (!Input::IsMouseClicked()) return;
 	if (!is_in_viewport) return;
 	if (viewport_status != ViewPortStatus::None) return;
 
@@ -64,12 +57,12 @@ void Viewport::LMB_CLICK(const SceneContext& ctx)
 	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
 
 	glm::vec2 offset = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
-	int id = GetSelectID(info_fb, GLuint(mouse_x - offset.x), GLuint(mouse_y - offset.y));
+	int id = GetSelectID(info_fb, GLuint(Input::GetMousePosX() - offset.x), GLuint(Input::GetMousePosY() - offset.y));
 	if (scene->GetObjectID(id) == selected_obj) return;
 
 	// TODO: event system
 	ctx.c_selections.Select(scene->GetObjectID(id), multi_select);
-	EventCallback::is_selected_changed = true;
+	Input::input_state.viewport.is_selected_changed = true;
 }
 
 void Viewport::SHIFT(const SceneContext& ctx)
@@ -77,14 +70,15 @@ void Viewport::SHIFT(const SceneContext& ctx)
 	multi_select = true;
 }
 
-void Viewport::RenderLayer(const SceneContext& ctx)
+void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
 		GetLayerSize();
 		if (uly_name == "Viewport"){
 			viewport_status = ViewPortStatus::None;
-			is_in_viewport = Item::is_inside(uly_size);
+			const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+			is_in_viewport = Item::is_inside(uly_size, mouse_pos);
 		}
 
 		item_list[0]->RenderItem();
@@ -95,9 +89,9 @@ void Viewport::RenderLayer(const SceneContext& ctx)
 		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowContentRegionMin().x, ImGui::GetWindowContentRegionMin().y);
 		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetMainViewport()->Pos.x, ImGui::GetMainViewport()->Pos.y);
 		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
-		ImGui::Text("[ %.0f , %.0f ]", EventCallback::mouse_x, EventCallback::mouse_y);
+		ImGui::Text("[ %.0f , %.0f ]", Input::GetMousePosX(), Input::GetMousePosY());
 		ImVec2 window_pos = (ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
-		ImGui::Text("[ %.0f , %.0f ]", EventCallback::mouse_x - window_pos.x, EventCallback::mouse_y - window_pos.y);
+		ImGui::Text("[ %.0f , %.0f ]", Input::GetMousePosX() - window_pos.x, Input::GetMousePosY() - window_pos.y);
 #endif // _DEBUG
 
 		if (display_grid)
@@ -115,9 +109,6 @@ void Viewport::RenderLayer(const SceneContext& ctx)
 
 		is_size_changed_b = is_size_changed;
 		is_size_changed = false;
-
-		// TODO: event system
-		EventActivate(ctx);
 
 		ImGui::End();
 	}
@@ -196,17 +187,17 @@ void Viewport::RenderHandle(const SceneContext& ctx)
 		active_trans->SetTrans(obj_trans);
 }
 
-void Viewport::MTranslate(const SceneContext&)
+void Viewport::MTranslate()
 {
 	Viewport::handle_mod = ImGuizmo::TRANSLATE;
 }
 
-void Viewport::MRotate(const SceneContext&)
+void Viewport::MRotate()
 {
 	Viewport::handle_mod = ImGuizmo::ROTATE;
 }
 
-void Viewport::MScale(const SceneContext&)
+void Viewport::MScale()
 {
 	Viewport::handle_mod = ImGuizmo::SCALE;
 }
@@ -222,51 +213,51 @@ void _SwitchHMode(GLuint offset) {
 
 	if (Viewport::handle_mod & ImGuizmo::TRANSLATE) {
 		if (Viewport::handle_mod == trans)
-			Viewport::MTranslate({});
+			Viewport::MTranslate();
 		else
 			Viewport::handle_mod = trans;
 	}
 	else if (Viewport::handle_mod & ImGuizmo::ROTATE) {
 		if (Viewport::handle_mod == rotat)
-			Viewport::MRotate({});
+			Viewport::MRotate();
 		else
 			Viewport::handle_mod = rotat;
 	}
 	else if (Viewport::handle_mod & ImGuizmo::SCALE) {
 		if (Viewport::handle_mod == scale)
-			Viewport::MScale({});
+			Viewport::MScale();
 		else
 			Viewport::handle_mod = scale;
 	}
 }
 
-void Viewport::XAxis(const SceneContext&)
+void Viewport::XAxis()
 {
-	if (!EventCallback::IsKeyClick())
+	if (!Input::IsKeyClicked())
 		return;
 
 	::_SwitchHMode(0);
 }
 
-void Viewport::YAxis(const SceneContext&)
+void Viewport::YAxis()
 {
-	if (!EventCallback::IsKeyClick())
+	if (!Input::IsKeyClicked())
 		return;
 
 	::_SwitchHMode(1);
 }
 
-void Viewport::ZAxis(const SceneContext&)
+void Viewport::ZAxis()
 {
-	if (!EventCallback::IsKeyClick())
+	if (!Input::IsKeyClicked())
 		return;
 
 	::_SwitchHMode(2);
 }
 
-void Viewport::WAxis(const SceneContext&)
+void Viewport::WAxis()
 {
-	if (!EventCallback::IsKeyClick())
+	if (!Input::IsKeyClicked())
 		return;
 
 	::_SwitchHMode(3);

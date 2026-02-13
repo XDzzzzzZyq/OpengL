@@ -1,14 +1,16 @@
 #include "ImguiManager.h"
+#include "Input.h"
 #include "layer/ShaderEditor.h"
-
 #include "Guizmo/ImGuizmo.h"
+
+#include "events/KeyMouseEvents.h"
 
 bool ImguiManager::is_prefW_open = false;
 
 ImguiManager::ImguiManager()
 {}
 
-void ImguiManager::Init()
+void ImguiManager::Init(EventPool& evt)
 {
 	active_layer_id = 0;
 
@@ -16,8 +18,8 @@ void ImguiManager::Init()
 	m_style = &ImGui::GetStyle();
 
 	DefultViewports();
-	DefultEvents();
-	RegistarMenuEvents();
+	RegistarMenuEvents(evt);
+	RegisterDefultEvents(evt);
 
 	ShaderEditor::InitEditors();
 }
@@ -29,17 +31,16 @@ void ImguiManager::_debug() const
 	}
 }
 
-void ImguiManager::RegistarMenuEvents()
+void ImguiManager::RegistarMenuEvents(EventPool& evt)
 {
 	for (auto& menu : menu_list)
 		for (auto& submenu : menu->subm_list) {
 
 			if (submenu->mitem_shortcut.empty()) continue;
-
-			EventList[EventCallback::ParseShortCut(submenu->mitem_shortcut)] = [submenu] (const SceneContext&) {
-				if (EventCallback::is_key_changed)
-					submenu->mitem_func(true);
-			};
+			evt.subscribe<KeyClickEvent>([submenu](KeyClickEvent e) {
+				// TODO: match the hotkey
+				submenu->mitem_func(true);
+				});
 		}
 }
 
@@ -80,7 +81,7 @@ void ImguiManager::ManagerInit()
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
 
-	//EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(EventCallback::EVT_NK_LIST)};
+	//EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(Input::EVT_NK_LIST)};
 }
 
 void ImguiManager::NewFrame() const
@@ -214,7 +215,7 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return item->GetPara();
 }
 
-void ImguiManager::RenderUI(const SceneContext& ctx, bool rend)
+void ImguiManager::RenderUI(const SceneContext& ctx, const EventPool& evt, bool rend)
 {
 	if (rend) {
 		
@@ -236,12 +237,12 @@ void ImguiManager::RenderUI(const SceneContext& ctx, bool rend)
 				if (!layer->uly_is_rendered)
 					continue;
 				layer->UpdateLayer(ctx);
-				layer->RenderLayer(ctx);
+				layer->RenderLayer(ctx, evt);
 			}
 		}
 		if (layer_list[active_layer_id]->uly_is_rendered) {
 			layer_list[active_layer_id]->UpdateLayer(ctx);
-			layer_list[active_layer_id]->RenderLayer(ctx);
+			layer_list[active_layer_id]->RenderLayer(ctx, evt);
 
 			//ImGui::PopStyleVar();
 			//ImGui::ShowStyleEditor();

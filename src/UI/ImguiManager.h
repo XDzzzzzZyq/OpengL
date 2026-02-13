@@ -6,9 +6,8 @@
 #include "ImGui/backends/imgui_impl_glfw.h"
 #include "ImGui/backends/imgui_impl_opengl3.h"
 
-#include "Event.h"
 #include "Context.h"
-
+#include "Events.h"
 #include "ImguiTheme.h"
 
 #include "ImguiMenu.h"
@@ -20,7 +19,7 @@
 
 /*#define ParaUpdate ParaUpdate*/
 
-class ImguiManager : public EventCallback
+class ImguiManager
 {
 private:
 	std::vector<std::shared_ptr<ImguiLayer>> layer_list;
@@ -33,15 +32,13 @@ private:
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
 	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID
 
-	void RegistarMenuEvents();
-
 public:
 	static bool is_prefW_open;
 
 public:
 
 	ImguiManager();
-	void Init();
+	void Init(EventPool& evt);
 	void _debug() const;
 
 public:
@@ -52,11 +49,12 @@ public:
 	ImGuiStyle* GetStyle()const { return m_style; }
 
 	void DefultViewports();
-	void DefultEvents();
+	void RegisterDefultEvents(EventPool& evt);
+	void RegistarMenuEvents(EventPool& evt);
 
 public:
 	void NewFrame() const;
-	void RenderUI(const SceneContext& ctx, bool rend = true);
+	void RenderUI(const SceneContext& ctx, const EventPool& evt, bool rend = true);
 
 public:
 	void PushImguiMenu(std::shared_ptr<ImguiMenu> _menu);

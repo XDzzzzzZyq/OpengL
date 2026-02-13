@@ -2,10 +2,12 @@
 #include "ID.h"
 #include "Transform.h"
 #include "DebugMesh.h"
-#include "Event.h"
+
+#include <vector>
+
 /*#include "Sprite.h"*/
 
-class Camera : public ObjectID, public Transform3D, public EventCallback
+class Camera : public ObjectID, public Transform3D
 {
 public:
 
@@ -21,7 +23,7 @@ public:
 	Camera();
 
 public:
-
+	// TODO: use std::array
 	std::vector<float> cam_floatData;
 	void GenFloatData(); // 6f(trans) + 1f(ratio) + 1f(angle)
 	void ChangeCamRatio(float w, float h);
@@ -35,15 +37,6 @@ public:
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
 public:
-
-	void SHIFT_MMB(const SceneContext&);
-	void CTRL_MMB(const SceneContext&);
-	void ALT_MMB(const SceneContext&);
-	void MMB(const SceneContext&);
-	void SCROLL(const SceneContext&);
-
-	void EventInit();
-	
 
 	~Camera();
 };

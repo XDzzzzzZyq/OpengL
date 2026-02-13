@@ -15,7 +15,7 @@ RenderConfigViewer::RenderConfigViewer(const std::string& _name)
 RenderConfigViewer::~RenderConfigViewer()
 {}
 
-void RenderConfigViewer::RenderLayer(const SceneContext& ctx)
+void RenderConfigViewer::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	RenderConfigs* active_config = RenderConfigs::GetActiveConfigPtr();
 

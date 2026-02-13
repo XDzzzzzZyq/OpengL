@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "SceneManager.h"
 
+#include "controllers/CameraController.h"
+
 #include "layer/Viewport.h"
 
 #include "xdz_math.h"
@@ -38,7 +40,7 @@ int Application::Init()
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 
 	renderer.Init();
-	UI.Init();
+	UI.Init(EventPool);
 
 	MeshLib::MeshLibInit();
 
@@ -54,6 +56,9 @@ int Application::Init()
 	// 	}
 
 	UI.ManagerInit();
+
+	// Controllers
+	Controllers.RegisterController<CameraController>(EventPool);
 
 
 #if 0
@@ -158,7 +163,7 @@ int Application::Run()
 	UI.FindImguiMenuItem("View",   "Icons")->BindSwitch(&renderer.r_render_icons);
 
 	UI.ParaUpdate = [&] {
-		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Event.mouse_x, Event.mouse_y);
+		UI.FindImguiItem("__Parameters__", "MOUSE_POS : [%.1f : %.1f]")->SetArgsList(2, Input::GetMousePosX(), Input::GetMousePosY());
 		UI.FindImguiItem("__Parameters__", "Frame Rate %.3f ms/frame (%.1f FPS)")->SetArgsList(2, 1000.0f / AvTime.result, AvTime.result);
 
 		scale = UI.GetParaValue("__Parameters__", "SCALE")->Get<float>();
@@ -183,28 +188,24 @@ int Application::Run()
 		//UI._debug();
 	};
 
-	EventCallback::ShowEvents();
-
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Update here */
 		UI.NewFrame();
 
-		Event.UpdateEvent(window);
 		AvTime.Update(UI.GetIO()->Framerate);
+		InputManager.UpdateState(window);
+		EventPool.EmitGlobalEvent();
 
-		UI.EventActivate(Ctx);
-		UI.RenderUI(Ctx);
+		UI.RenderUI(Ctx, EventPool);
 
 		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
-		scene->GetActiveCamera()->EventActivate(Ctx);
 		/* Render here */		
 		renderer.Render(Ctx);
 
 		renderer.Reset();
 		scene->ResetStatus();
-		Event.Reset();
 
 		//DEBUG(renderer.r_frame_count);
 #if 0

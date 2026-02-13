@@ -27,7 +27,7 @@ void Outliner::UpdateStyle()
 
 }
 
-void Outliner::RenderLayer(const SceneContext& ctx)
+void Outliner::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
 
@@ -57,7 +57,6 @@ void Outliner::RenderLayer(const SceneContext& ctx)
 
 			if (is_button_pressed) {
 				// TODO: event system
-				EventCallback::is_selected_changed = true;
 				sel_mgr.Select((ObjectID*)obj, false);
 			}
 		}

@@ -3,10 +3,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "Input.h"
+#include "Context.h"
+#include "Controllers.h"
 #include "Renderer.h"
 #include "ImguiManager.h"
-#include "Event.h"
-#include "Context.h"
 
 // using singleton
 class Application
@@ -19,11 +20,13 @@ public:
 	static Application& Get();
 
 public:
+	// TODO: separate Editor
+	Input InputManager{};
+	EventPool EventPool{};
+	ControllerManager Controllers{};
+	SceneContext Ctx{};
 	Renderer renderer{};
 	ImguiManager UI{};
-	SceneContext Ctx{};
-	EventCallback Event{};
-	EventPool EventPool{};
 	GLFWwindow* window{ nullptr };
 
 public:

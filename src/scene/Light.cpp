@@ -1,7 +1,7 @@
 #include "Light.h"
 #include "xdz_math.h"
+#include "Input.h"
 
-#include "Event.h"
 
 FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
 
@@ -208,7 +208,7 @@ void Light::BindShadowMapShader()
 		break;
 	case AREALIGHT:
 		_shadowmap_shader[light_type].SetValue("U_trans", o_Transform);
-		_shadowmap_shader[light_type].SetValue("U_UV", glm::vec2(EventCallback::random_float1, EventCallback::random_float2));
+		_shadowmap_shader[light_type].SetValue("U_UV", glm::vec2(Input::input_state.random.random_float1, Input::input_state.random.random_float2));
 		_shadowmap_shader[light_type].SetValue("ratio", area_ratio);
 		_shadowmap_shader[light_type].SetValue("U_lightproj", light_proj);
 		_shadowmap_shader[light_type].SetValue("far_plane", Light::area_shaodow_far);
@@ -568,7 +568,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 	const float spot_ud_rate	= is_incr_aver ? 0.05f : 1.0f / frame;
 	const float area_ud_rate	= is_incr_aver ? 0.01f : 1.0f / frame;
 
-	const glm::vec3 random = glm::vec3(EventCallback::random_float1, EventCallback::random_float2, EventCallback::random_float3);
+	const glm::vec3 random = glm::vec3(Input::input_state.random.random_float1, Input::input_state.random.random_float2, Input::input_state.random.random_float3);
 
 	for (const auto& [id, info] : light_info_cache) {
 		const auto& [loc, light] = info;
@@ -624,7 +624,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_trans", light->o_Transform);
-			shadow_shader.SetValue("U_UV", glm::vec2(EventCallback::random_float1, EventCallback::random_float2));
+			shadow_shader.SetValue("U_UV", glm::vec2(Input::input_state.random.random_float1, Input::input_state.random.random_float2));
 			shadow_shader.SetValue("ratio", light->area_ratio);
 			shadow_shader.SetValue("light_far", Light::area_shaodow_far);
 			shadow_shader.SetValue("radius", Light::area_blur_range);

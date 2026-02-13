@@ -61,7 +61,7 @@ void MaterialViewer::RenderName(std::string& _name, bool read_only /*= false*/)
 	ImGui::NewLine();
 }
 
-void MaterialViewer::RenderLayer(const SceneContext& ctx)
+void MaterialViewer::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	Material* active_material = GetActiveMatPtr(ctx);
 

@@ -1,9 +1,11 @@
 #include "NodeEditor.h"
+#include "Input.h"
 
 #include <cstdint>
 #include <string>
 
 #include "operator.h"
+#include "ImGui/imgui_internal.h"
 
 const ImVec2 ImguiNodes::GetInPinPos(const ImVec2& _header_size, float _offset, int _idx)
 {
@@ -64,15 +66,6 @@ const ImVec2 ImguiNodes::GetOutPinPos(const ImVec2& _header_size, float _offset,
 NodeEditor::NodeEditor(NodeEditorType type)
 	: _type(type)
 {
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = std::bind(&NodeEditor::LMB, this);
-	EventList[GenIntEvent(0, 0, 0, 3, 0)] = std::bind(&NodeEditor::SHIFT_MMB, this);
-	EventList[GenIntEvent(1, 0, 0, 3, 0)] = std::bind(&NodeEditor::SHIFT_MMB, this);
-	EventList[GenIntEvent(2, 0, 0, 3, 0)] = std::bind(&NodeEditor::CTRL_MMB, this);
-	EventList[GenIntEvent(0, 0, 0, 0, 1)] = std::bind(&NodeEditor::SCRLL, this);
-	EventList[GenIntEvent(0, 0, 0, 0, -1)] = std::bind(&NodeEditor::SCRLL, this);
-	EventList[GenIntEvent(1, 0, 0, 0, 1)] = std::bind(&NodeEditor::SCRLL, this);
-	EventList[GenIntEvent(1, 0, 0, 0, -1)] = std::bind(&NodeEditor::SCRLL, this);
-
 	Zoom(3.0f);
 
 	Nodes* add = new Nodes{ "Add", SCL_MATH_NODE };
@@ -164,7 +157,6 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 		ImGui::Text("P_in: %i | P_out: %i", is_press_on_in, is_press_on_out);
 #endif
 
-		EventActivate(ctx);
 		ApplyTransform();
 		Parameters* pressed_pin_b = pressed_pin;
 		Parameters* hovered_pin_b = hovered_pin;
@@ -212,7 +204,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
 			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2f);
 
-			if (LMB_press && EventCallback::IsMouseClick())
+			if (LMB_press && Input::IsMouseClicked())
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
 					if (ImGui::GetMousePos() < ImVec2(node.header.x + ((float)node.max.x - node.header.x) * 0.125f, node.min.y))
 						node->is_open = !node->is_open;
@@ -314,7 +306,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 					}
 
 					//      create connection     |           break connection through output
-					if (EventCallback::is_mouse_pressed && (editing_in_pin == &i_p)) {
+					if (Input::IsMousePressed() && (editing_in_pin == &i_p)) {
 						tar_pin_pos = inp_curs;
 						editing_node = &node;
 						editing_para_type = i_p.para_type;
@@ -370,7 +362,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 						is_hover_on_out = true;
 					}
 
-					if (EventCallback::is_mouse_pressed && editing_out_pin == &o_p) {
+					if (Input::IsMousePressed() && editing_out_pin == &o_p) {
 						tar_pin_pos = outp_curs;
 						editing_node = &node;
 						editing_para_type = o_p.para_type;
@@ -410,8 +402,10 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 
 			//[  Move  ]
 			if (node->n_id == active_node_id && is_node_movable && LMB_press)
-				if (!is_editing_pin_in && !is_editing_pin_out)
-					node->Move((glm::vec2(-1, 1) / o_scale) * EventCallback::GetDeltaMouse());
+				if (!is_editing_pin_in && !is_editing_pin_out) {
+					const glm::vec2 mouse_delta = glm::vec2(Input::GetDeltaMouseX(), Input::GetDeltaMouseY());
+					node->Move((glm::vec2(-1, 1) / o_scale) * mouse_delta);
+				}
 
 		}
 
@@ -422,7 +416,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 
 			break;
 		case NodeEditor::O_M:
-			if (EventCallback::IsMouseLeft()) {
+			if (Input::IsMouseLeft()) {
 				if (hovered_pin_b == nullptr) {							// connect to nothing
 					Nodes::BreakLink(pressed_pin_b, Nodes::IN);
 					goto skip_O_M;
@@ -463,7 +457,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 
 			break;
 		case NodeEditor::M_I:
-			if (EventCallback::IsMouseLeft()) {
+			if (Input::IsMouseLeft()) {
 				if (hovered_pin_b == nullptr) {							//connect to nothing
 					Nodes::BreakLink(editing_in_pin_b, Nodes::IN);
 					goto skip_M_I;
@@ -565,7 +559,7 @@ void NodeEditor::Resize()
 
 void NodeEditor::Reset()
 {
-	if (IsMouseClick()) {
+	if (Input::IsMouseClicked()) {
 		if (no_node_clicked)
 			active_node_id = 0;
 
@@ -582,21 +576,24 @@ void NodeEditor::LMB()
 
 void NodeEditor::SHIFT_MMB()
 {
-	if (Item::is_inside(NE_size))
-		Move({ GetDeltaMouseX() / o_scale[0], GetDeltaMouseY() / o_scale[0] });
+	const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+	if (Item::is_inside(NE_size, mouse_pos))
+		Move({ Input::GetDeltaMouseX() / o_scale[0], Input::GetDeltaMouseY() / o_scale[0] });
 }
 
 #include "xdz_math.h"
 void NodeEditor::CTRL_MMB()
 {
-	if (Item::is_inside(NE_size))
-		Zoom((float)glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(GetDeltaMouseX(), GetDeltaMouseY())));
+	const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+	if (Item::is_inside(NE_size, mouse_pos))
+		Zoom((float)glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(Input::GetDeltaMouseX(), Input::GetDeltaMouseY())));
 }
 
 void NodeEditor::SCRLL()
 {
-	if (Item::is_inside(NE_size))
-		Zoom(glm::pow(0.8f, -scroll_dir));
+	const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+	if (Item::is_inside(NE_size, mouse_pos))
+		Zoom(glm::pow(0.8f, -Input::GetScrollY()));
 }
 
 

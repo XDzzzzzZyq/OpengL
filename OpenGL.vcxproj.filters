@@ -255,10 +255,22 @@
     <ClCompile Include="src\app\MAIN.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\Event.cpp">
+    <ClCompile Include="src\compo\EventListener.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\compo\EventListener.cpp">
+    <ClCompile Include="src\editor\controllers\CameraController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\Controllers.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\Input.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\Events.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\events\CameraEvents.h">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -583,10 +595,22 @@
     <ClInclude Include="src\app\Application.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\editor\Event.h">
+    <ClInclude Include="src\compo\EventListener.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\compo\EventListener.h">
+    <ClInclude Include="src\editor\controllers\CameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\Controllers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\events\KeyMouseEvents.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\Input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\Events.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

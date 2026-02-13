@@ -35,7 +35,7 @@ public:
 	~Viewport();
 public:
 
-	void RenderLayer(const SceneContext& ctx) override;
+	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
 
 private:
 
@@ -44,19 +44,18 @@ private:
 	void RenderHandle(const SceneContext& ctx);
 
 	bool multi_select = false;
-	void EventInit();
 	void LMB_CLICK(const SceneContext& ctx);
 	void SHIFT(const SceneContext& ctx);
 
 public:
 
 	// Key Input
-	static void MTranslate(const SceneContext&);
-	static void MRotate(const SceneContext&);
-	static void MScale(const SceneContext&);
-	static void XAxis(const SceneContext&);
-	static void YAxis(const SceneContext&);
-	static void ZAxis(const SceneContext&);
-	static void WAxis(const SceneContext&);
+	static void MTranslate();
+	static void MRotate();
+	static void MScale();
+	static void XAxis();
+	static void YAxis();
+	static void ZAxis();
+	static void WAxis();
 };
 
