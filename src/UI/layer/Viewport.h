@@ -35,7 +35,6 @@ public:
 	~Viewport();
 public:
 
-	void UpdateLayer(const SceneContext& ctx) override;
 	void RenderLayer(const SceneContext& ctx) override;
 
 private:

@@ -16,7 +16,6 @@ public:
 public:
 	void UpdateStyle();
 
-	void UpdateLayer(const SceneContext& ctx) override;
 	void RenderLayer(const SceneContext& ctx) override;
 };
 

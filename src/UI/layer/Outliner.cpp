@@ -27,10 +27,6 @@ void Outliner::UpdateStyle()
 
 }
 
-void Outliner::UpdateLayer(const SceneContext& ctx)
-{
-}
-
 void Outliner::RenderLayer(const SceneContext& ctx)
 {
 	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {

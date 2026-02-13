@@ -52,9 +52,6 @@ int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
 		return -1;
 }
 
-void Viewport::UpdateLayer(const SceneContext& ctx)
-{}
-
 void Viewport::LMB_CLICK(const SceneContext& ctx)
 {
 	if (!EventCallback::IsMouseClick()) return;
