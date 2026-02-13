@@ -4,6 +4,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <sstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
 Input::InputState Input::input_state = Input::InputState{};
 Input::InputState Input::input_state_b = Input::InputState{};
 
@@ -47,6 +52,39 @@ int ListenNormalKeyEvent(GLFWwindow* window)
 			return 26 + i + 1;
 
 	return 0;
+}
+
+static std::string trim(const std::string& s) {
+	size_t start = s.find_first_not_of(" \t");
+	size_t end = s.find_last_not_of(" \t");
+	if (start == std::string::npos) return "";
+	return s.substr(start, end - start + 1);
+}
+
+Input::KeyState Input::ParseKeyState(const std::string& hotkey)
+{
+	Input::KeyState state;
+	std::stringstream ss(hotkey);
+	std::string token;
+	bool keyFound = false;
+
+	while (std::getline(ss, token, '+')) {
+		token = trim(token);
+
+		if (token == "ctrl") {
+			state.special = Input::SpecialKeys(state.special | Input::CTRL);
+		}
+		else if (token == "shift") {
+			state.special = Input::SpecialKeys(state.special | Input::SHIFT);
+		}
+		else if (token == "alt") {
+			state.special = Input::SpecialKeys(state.special | Input::ALT);
+		}
+		else {
+			state.normal = token[0] - 'a' + 1;
+		}
+	}
+	return state;
 }
 
 static void ScrollCallback(GLFWwindow* /*window*/, double xoffset, double yoffset)

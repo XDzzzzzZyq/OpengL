@@ -6,9 +6,10 @@
 #include "Context.h"
 #include "operator.h"
 
-#include<unordered_map>
-#include<functional>
+#include <unordered_map>
+#include <functional>
 #include <typeindex>
+#include <string>
 
 #define REGIST_EVENT(cls_event) std::bind(&cls_event, this, std::placeholders::_1); Input::REFLRigisterEvent(#cls_event)
 #define REGIST_EVENT_STATIC(sta_event) &sta_event; Input::REFLRigisterEvent(#sta_event)
@@ -55,6 +56,8 @@ public:
 		float scroll_x{ 0.0f };
 		float scroll_y{ 0.0f };
 	};
+
+	static KeyState ParseKeyState(const std::string& hotkey);
 
 // RandomState
 public:
