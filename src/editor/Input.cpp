@@ -7,14 +7,14 @@
 Input::InputState Input::input_state = Input::InputState{};
 Input::InputState Input::input_state_b = Input::InputState{};
 
-Input::MouseStatus ListenMouseEvent(GLFWwindow* window)
+Input::MouseButtons ListenMouseEvent(GLFWwindow* window)
 {
 	//update
 	LOOP(3)
 		if (glfwGetMouseButton(window, i) == GLFW_PRESS)
-			return Input::MouseStatus(i + 1);
+			return Input::MouseButtons(i + 1);
 
-	return Input::MouseStatus::NONE;
+	return Input::MouseButtons::NONE;
 }
 
 
@@ -56,6 +56,10 @@ static void ScrollCallback(GLFWwindow* /*window*/, double xoffset, double yoffse
 void Input::UpdateState(GLFWwindow* window) const
 {
 	input_state_b = input_state;
+	input_state.mouse.scroll_x = 0;
+	input_state.mouse.scroll_y = 0;
+	glfwPollEvents();
+
 	/*		Mouse Input 	*/
 
 	input_state.mouse.button = ListenMouseEvent(window);
@@ -86,17 +90,17 @@ void Input::UpdateState(GLFWwindow* window) const
 
 bool Input::IsMouseClicked()
 {
-	return input_state.mouse.button != MouseStatus::NONE && input_state_b.mouse.button == MouseStatus::NONE;
+	return input_state.mouse.button != MouseButtons::NONE && input_state_b.mouse.button == MouseButtons::NONE;
 }
 
 bool Input::IsMousePressed()
 {
-	return input_state.mouse.button != MouseStatus::NONE;
+	return input_state.mouse.button != MouseButtons::NONE;
 }
 
 bool Input::IsMouseLeft()
 {
-	return input_state.mouse.button == MouseStatus::NONE && input_state_b.mouse.button != MouseStatus::NONE;
+	return input_state.mouse.button == MouseButtons::NONE && input_state_b.mouse.button != MouseButtons::NONE;
 }
 
 bool Input::IsKeyClicked()

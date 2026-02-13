@@ -4,21 +4,21 @@
 struct MouseClickEvent
 {
 	Input::SpecialKeys key;
-	Input::MouseStatus mouse;
+	Input::MouseButtons mouse;
 	float x, y;
 };
 
 struct MouseLeaveEvent
 {
 	Input::SpecialKeys key;
-	Input::MouseStatus mouse;
+	Input::MouseButtons mouse;
 	float x, y;
 };
 
 struct MouseDragEvent
 {
 	Input::SpecialKeys key;
-	Input::MouseStatus mouse;
+	Input::MouseButtons mouse;
 	float x, y;
 	float delta_x, delta_y;
 };

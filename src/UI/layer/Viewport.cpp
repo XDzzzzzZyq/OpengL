@@ -6,6 +6,8 @@
 #include "SceneManager.h"
 #include "buffer/FrameBuffer.h"
 
+#include "events/CameraEvents.h"
+
 #include "xdz_matrix.h"
 
 ImGuizmo::MODE Viewport::trans_mod = ImGuizmo::WORLD;
@@ -109,6 +111,29 @@ void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 
 		is_size_changed_b = is_size_changed;
 		is_size_changed = false;
+
+		if (is_in_viewport) {
+			if (Input::IsMousePressed() && Input::input_state.mouse.button == Input::MouseButtons::MMB) {
+				const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+				if (Input::input_state.key.FirstKey == Input::SpecialKeys::CTRL) {
+					evt.emit(CameraPushEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY()});
+				}
+				else if (Input::input_state.key.FirstKey == Input::SpecialKeys::SHIFT) {
+					evt.emit(CameraSlideEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
+				}
+				else if (Input::input_state.key.FirstKey == Input::SpecialKeys::ALT) {
+					evt.emit(CameraSpinEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
+				}
+				else if (Input::input_state.key.FirstKey == Input::SpecialKeys::NONE) {
+					evt.emit(CameraRotateEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
+				}
+			}
+
+			if (Input::IsMouseScrolled()) {
+				const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+				evt.emit(CameraZoomEvent{ (Camera*)active_cam, Input::GetScrollY() });
+			}
+		}
 
 		ImGui::End();
 	}

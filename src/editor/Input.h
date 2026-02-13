@@ -28,7 +28,7 @@ public:
 		ALT
 	};
 
-	enum class MouseStatus
+	enum class MouseButtons
 	{
 		NONE,
 		LMB = 1,
@@ -49,7 +49,7 @@ public:
 
 	struct MouseState
 	{
-		MouseStatus button{ MouseStatus::NONE };
+		MouseButtons button{ MouseButtons::NONE };
 
 		float mouse_x{ 0.0f };
 		float mouse_y{ 0.0f };

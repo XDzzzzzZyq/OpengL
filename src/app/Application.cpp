@@ -215,9 +215,6 @@ int Application::Run()
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
-
-		/* Poll for and process events */
-		glfwPollEvents();
 	}
 	DEBUG(std::to_string(1000 / AvTime.result) + "ms");
 	std::cout << std::endl << "[ Finished ]" << std::endl;

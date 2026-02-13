@@ -131,10 +131,10 @@ void ImguiManager::RegisterDefultEvents(EventPool& evt)
 		});
 
 	evt.subscribe<MouseClickEvent>([](MouseClickEvent e) {
-		if (e.mouse == Input::MouseStatus::LMB) { // LMB
+		if (e.mouse == Input::MouseButtons::LMB) { // LMB
 			ShaderEditor::se_node_editor.LMB();
 		}
-		else if(e.mouse == Input::MouseStatus::MMB) { // MMB
+		else if(e.mouse == Input::MouseButtons::MMB) { // MMB
 			if (e.key == Input::SpecialKeys::SHIFT)
 				ShaderEditor::se_node_editor.SHIFT_MMB();
 			else if (e.key == Input::SpecialKeys::CTRL)

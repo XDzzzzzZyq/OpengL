@@ -35,7 +35,7 @@ void CameraSpin(CameraSpinEvent e)
 
 void CameraSlide(CameraSlideEvent e)
 {
-	const glm::vec3 delta = -e.mouse_delta_x * 0.03f * e.cam->o_dir_right + e.mouse_delta_x * 0.03f * e.cam->o_dir_up;
+	const glm::vec3 delta = -e.mouse_delta_x * 0.03f * e.cam->o_dir_right + e.mouse_delta_y * 0.03f * e.cam->o_dir_up;
 	e.cam->SetPos(e.cam->o_position + delta);
 
 	e.cam->cam_tar += delta;

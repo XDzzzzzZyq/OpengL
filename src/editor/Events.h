@@ -25,7 +25,7 @@ public:
 	}
 
 	template<typename Event>
-	void emit(const Event& event) {
+	void emit(const Event& event) const {
 		auto it = handlers.find(typeid(Event));
 		if (it == handlers.end()) return;
 
