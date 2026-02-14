@@ -10,6 +10,7 @@
 
 #include "events/CameraEvents.h"
 #include "events/KeyMouseEvents.h"
+#include "events/ViewportEvents.h"
 
 #include "xdz_matrix.h"
 
@@ -105,41 +106,6 @@ void WAxis()
 	::_SpecifyAxis(3);
 }
 
-int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
-{
-	if (-glm::vec2(5, 5) < glm::vec2(x, y) && glm::vec2(x, y) < info_fb->GetFrameBufferSize() * glm::vec2(1, 2))
-		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
-		return info_fb->ReadPix(x, y, ID_FB).GetID();
-	else
-		return -1;
-}
-
-void Viewport::LMB_CLICK(const SceneContext& ctx)
-{
-	// TODO: event system
-	if (!Input::IsMouseClicked()) return;
-	if (!is_mouse_hovered) return;
-	if (viewport_status != HoverStatus::OnViewport) return;
-
-	const ObjectID* selected_obj = ctx.c_selections.GetSelectedObjects();
-
-	const FrameBuffer* info_fb = (FrameBuffer*)(ctx.c_active_fb_channel);
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
-
-	glm::vec2 offset = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
-	int id = GetSelectID(info_fb, GLuint(Input::GetMousePosX() - offset.x), GLuint(Input::GetMousePosY() - offset.y));
-	if (scene->GetObjectID(id) == selected_obj) return;
-
-	// TODO: event system
-	ctx.c_selections.Select(scene->GetObjectID(id), multi_select);
-	Input::input_state.viewport.is_selected_changed = true;
-}
-
-void Viewport::SHIFT(const SceneContext& ctx)
-{
-	multi_select = true;
-}
-
 void Viewport::RegisterEvents(EventPool& evt)
 {
 	evt.subscribe<KeyClickEvent>([this](KeyClickEvent e) {
@@ -160,6 +126,24 @@ void Viewport::RegisterEvents(EventPool& evt)
 			::ZAxis(); break;
 		case Input::NormalKeyFromChar('W'): // W
 			::WAxis(); break;
+		}
+		});
+
+	evt.subscribe<MouseClickEvent>([this, &evt](MouseClickEvent e) {
+		if (!is_mouse_hovered) return;
+		if (viewport_status != HoverStatus::OnViewport) return;
+
+		if (e.mouse == Input::MouseButtons::LMB) {
+			int mouse_x = Input::GetMousePosX() - uly_pos.x;
+			int mouse_y = Input::GetMousePosY() - uly_pos.y;
+			evt.emit(ViewportSelectedEvent{ mouse_x, mouse_y, e.key == Input::SHIFT });
+		}
+		});
+
+	evt.subscribe<ViewportImageResetEvent>([this](ViewportImageResetEvent e) {
+		ImguiItem* item = FindImguiItem(0);
+		if (item != nullptr) {
+			item->ResetBufferID(e.tex_id);
 		}
 		});
 }
@@ -187,11 +171,10 @@ void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		RenderHandle(ctx);
 
 	// TODO: event system
-	if (IsResizingFin())
-		if (resize_event) {
-			item_list[0]->ResetSize(uly_size + ImVec2(10, 10));
-			resize_event();
-		}
+	if (IsResizingFin()) {
+		item_list[0]->ResetSize(uly_size + ImVec2(10, 10));
+		evt.emit(ViewportResizeEvent{ int(uly_size.x), int(uly_size.y) });
+	}
 
 	if (is_mouse_hovered) {
 		if (Input::IsMousePressed() && Input::input_state.mouse.button == Input::MouseButtons::MMB) {

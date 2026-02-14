@@ -25,10 +25,10 @@ ImVec2 ImguiLayer::GetLayerSize()
 	return uly_size;
 }
 
-void ImguiLayer::UpdateLayerPos()
+ImVec2 ImguiLayer::GetLayerPos()
 {
-	content_pos = ImGui::GetWindowContentRegionMin();
-	content_size = ImGui::GetWindowContentRegionMax() - content_pos;
+	uly_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
+	return uly_pos;
 }
 
 void ImguiLayer::PushItem(std::shared_ptr<ImguiItem> item)

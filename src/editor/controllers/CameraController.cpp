@@ -41,6 +41,11 @@ void CameraSlide(CameraSlideEvent e)
 	e.cam->cam_tar += delta;
 }
 
+void CameraResize(CameraResizeEvent e)
+{
+	e.cam->ChangeCamRatio(e.width, e.height);
+}
+
 void CameraController::bind(EventPool& pool)
 {
 	pool.subscribe<CameraZoomEvent>(CameraZoom);
@@ -48,4 +53,5 @@ void CameraController::bind(EventPool& pool)
 	pool.subscribe<CameraSlideEvent>(CameraSlide);
 	pool.subscribe<CameraPushEvent>(CameraPush);
 	pool.subscribe<CameraSpinEvent>(CameraSpin);
+	pool.subscribe<CameraResizeEvent>(CameraResize);
 }

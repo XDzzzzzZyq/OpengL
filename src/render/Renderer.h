@@ -36,6 +36,8 @@ public:
 private:
 
 	std::shared_ptr<FrameBuffer> r_render_result;
+	void FrameResize(GLuint _w, GLuint _h);
+	void FrameBufferResize(const glm::vec2& size);
 
 public:
 
@@ -43,14 +45,12 @@ public:
 	void InitFrameBuffer();
 	void BindFrameBuffer(int slot);
 	void EndFrameBuffer(int slot);
-	void FrameBufferResize(const glm::vec2& size);
-	GLuint GetFrameBufferTexture(int slot);
 	FrameBuffer* GetFrameBufferPtr() { return r_render_result.get(); }
 
 public:
 
 	Renderer();
-	void Init();
+	void Init(EventPool& evt);
 
 	~Renderer();
 
@@ -73,7 +73,6 @@ public:
 public:
 
 	void Reset();
-	void FrameResize(GLuint _w, GLuint _h);
 
 	void ConstructSDF(const SceneContext& ctx);
 	void UpdateLightInfo(const SceneContext & ctx);

@@ -273,6 +273,9 @@
     <ClCompile Include="src\editor\events\CameraEvents.h">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\editor\controllers\ViewportController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -611,6 +614,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\Events.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\events\ViewportEvents.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\controllers\ViewportController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\events\EditorEvents.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

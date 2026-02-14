@@ -5,6 +5,8 @@
 
 #include "xdz_math.h"
 
+#include "events/EditorEvents.h"
+
 GLint Renderer::max_resolution_w = 0;
 GLint Renderer::max_resolution_h = 0;
 
@@ -12,7 +14,7 @@ Renderer::Renderer()
 	:r_frame_width(SCREEN_W), r_frame_height(SCREEN_H)
 {}
 
-void Renderer::Init()
+void Renderer::Init(EventPool& evt)
 {
 	if (glewInit() != GLEW_OK)
 		std::cout << "glew error" << std::endl;
@@ -53,6 +55,10 @@ void Renderer::Init()
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
+
+	evt.subscribe<RenderSurfaceResizedEvent>([this](const RenderSurfaceResizedEvent& e) {
+		this->FrameResize(e.width, e.height );
+		});
 }
 
 Renderer::~Renderer()
@@ -80,12 +86,6 @@ void Renderer::FrameBufferResize(const glm::vec2& size)
 	for (auto& buffer : r_buffer_list)
 		buffer.Resize(size);
 	r_render_result->Resize(size);
-}
-
-GLuint Renderer::GetFrameBufferTexture(int slot)
-{
-	//return r_buffer_list[0].GetFBTextureID(RAND_FB);
-	return r_render_result->GetFBTextureID(COMBINE_FB);
 }
 
 //////////////////////////////////////////////

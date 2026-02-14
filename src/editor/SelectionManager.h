@@ -5,12 +5,6 @@
 #include <unordered_set>
 
 template<class _Base>
-struct SelectEvent {
-	const _Base* _tar{ nullptr };
-	bool increment{ false };
-};
-
-template<class _Base>
 class SelectionManager
 {
 private:

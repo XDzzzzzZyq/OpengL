@@ -27,10 +27,6 @@ enum ImLayerType
 class ImguiLayer
 {
 public:
-	ImVec2 content_pos;
-	ImVec2 content_size;
-	
-public:
 	ImguiLayer();
 	ImguiLayer(const std::string& name);
 	virtual ~ImguiLayer();
@@ -49,10 +45,13 @@ public:
 	mutable bool is_size_changed = false; // TODO: better design
 	mutable bool is_size_changed_b = true;
 	bool IsResizingFin() const { return (is_size_changed == false) && (is_size_changed_b == true); }
+
 	ImVec2 uly_size;
 	ImVec2 uly_size_b;
 	ImVec2 GetLayerSize();
-	void UpdateLayerPos();
+
+	ImVec2 uly_pos;
+	ImVec2 GetLayerPos();
 
 public:
 	bool is_docking = true;
@@ -73,7 +72,6 @@ public:
 
 public:
 	bool uly_show_type = false;
-	std::function<void(void)> resize_event = [] {}; // TODO: Event system
 	virtual void RegisterEvents(EventPool& evt) {};
 	virtual void RenderLayer(const SceneContext& ctx, const EventPool& evt) {};
 	virtual void UpdateLayer(const SceneContext& ctx) {};

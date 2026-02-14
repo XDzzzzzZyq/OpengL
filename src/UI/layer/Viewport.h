@@ -41,9 +41,5 @@ private:
 	void RenderGrids(const SceneContext& ctx);
 	void RenderAxis(const SceneContext& ctx);
 	void RenderHandle(const SceneContext& ctx);
-
-	bool multi_select = false;
-	void LMB_CLICK(const SceneContext& ctx);
-	void SHIFT(const SceneContext& ctx);
 };
 

@@ -2,6 +2,9 @@
 #include "SceneManager.h"
 
 #include "controllers/CameraController.h"
+#include "controllers/ViewportController.h"
+
+#include "events/EditorEvents.h"
 
 #include "layer/Viewport.h"
 
@@ -37,8 +40,9 @@ int Application::Init()
 	ImGui::CreateContext();
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 
-	renderer.Init();
+	renderer.Init(EventPool);
 	UI.Init(EventPool);
+	Ctx.Init(EventPool);
 
 	MeshLib::MeshLibInit();
 
@@ -57,7 +61,8 @@ int Application::Init()
 
 	// Controllers
 	Controllers.RegisterController<CameraController>(EventPool);
-
+	Controllers.RegisterController<ViewportController>(EventPool);
+	EventPool.emit<FrameBufferResetEvent>({ renderer.GetFrameBufferPtr() });
 
 #if 0
 	renderer.UseScene(SceneManager::SceneConfig3());
@@ -66,8 +71,6 @@ int Application::Init()
 #else
 	// TODO: better binding
 	Ctx.UseScene(SceneManager::Shadow().get());
-	Ctx.c_active_fb_channel = &renderer.r_buffer_list[0];
-	Ctx.c_active_fb_result = renderer.GetFrameBufferPtr();
 
 	renderer.GetConfig()->r_ao_radius = 0.8f;
 	renderer.r_config.call_back = [&](RenderConfigs::ModifyFlags flag) {
@@ -131,19 +134,6 @@ int Application::Run()
 		//environment->envir_shader->ShaderLibDebug();
 		//environment->envir_IBL_diff.GenIrradiaceConvFrom(environment->envir_IBL_spec);
 		});
-	UI.FindImguiLayer("Viewport")->resize_event = [&] {
-		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
-		ImVec2 view_size = UI.FindImguiLayer("Viewport")->uly_size + ImVec2(10, 10);
-		scene->GetActiveCamera()->ChangeCamRatio(view_size.x, view_size.y);
-		renderer.FrameResize((GLuint)view_size.x, (GLuint)view_size.y);
-		scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
-		UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetFrameBufferTexture(0));
-		//UI.FindImguiItem("Viewport", "Viewport")->ResetBufferID(renderer.GetActiveEnvironment()->envir_frameBuffer->GetFBTextureID(ID_FB));
-	};
-	Texture temp{};
-	UI.FindImguiLayer("CompShader")->resize_event = [&] {
-		//UI.FindImguiItem("CompShader", "Viewport")->ResetBufferID(temp.GetTexID());
-	};
 
 	UI.FindImguiLayerAs<Viewport>("Viewport")->display_grid = false;
 	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);

@@ -288,6 +288,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\UI\menu\ImguiMOption.cpp" />
     <ClCompile Include="src\UI\menu\ImguiMSwitch.cpp" />
     <ClCompile Include="src\UI\NodesColor.cpp" />
+    <ClCompile Include="src\editor\controllers\ViewportController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -369,6 +370,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\editor\Events.h" />
+    <ClInclude Include="src\editor\events\EditorEvents.h" />
     <ClInclude Include="src\editor\events\KeyMouseEvents.h" />
     <ClInclude Include="src\editor\Controllers.h" />
     <ClInclude Include="src\editor\controllers\CameraController.h" />
@@ -386,6 +388,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
     <ClInclude Include="dep\gui\ImGui\imgui.h" />
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
+    <ClInclude Include="src\editor\events\ViewportEvents.h" />
     <ClInclude Include="src\editor\Input.h" />
     <ClInclude Include="src\editor\SelectionManager.h" />
     <ClInclude Include="src\compo\Nodes.h" />
@@ -450,6 +453,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\UI\menu\ImguiMButton.h" />
     <ClInclude Include="src\UI\menu\ImguiMOption.h" />
     <ClInclude Include="src\UI\menu\ImguiMSwitch.h" />
+    <ClInclude Include="src\editor\controllers\ViewportController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

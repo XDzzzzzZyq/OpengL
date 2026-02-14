@@ -24,3 +24,8 @@ struct CameraSpinEvent {
 	Camera* cam;
 	float mouse_delta_x, mouse_delta_y;
 };
+
+struct CameraResizeEvent {
+	Camera* cam;
+	int width, height;
+};
