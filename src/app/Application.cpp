@@ -45,7 +45,7 @@ int Application::Init()
 	MeshLib::MeshLibInit();
 
 	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
-	UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
+	//UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 

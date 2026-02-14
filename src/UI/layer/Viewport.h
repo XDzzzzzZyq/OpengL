@@ -17,15 +17,14 @@ public:
 
 public:
 
-	enum ViewPortStatus
+	enum HoverStatus
 	{
-		None,
-		OnHover,
-		OnClick
+		OnViewport,
+		OnHandle,
+		OnCameraAxis
 	};
 
-	bool is_in_viewport{ false };
-	ViewPortStatus viewport_status{ None };
+	HoverStatus viewport_status{ OnViewport };
 
 public:
 	Viewport();

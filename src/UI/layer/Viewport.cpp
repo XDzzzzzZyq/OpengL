@@ -114,9 +114,10 @@ int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
 
 void Viewport::LMB_CLICK(const SceneContext& ctx)
 {
+	// TODO: event system
 	if (!Input::IsMouseClicked()) return;
-	if (!is_in_viewport) return;
-	if (viewport_status != ViewPortStatus::None) return;
+	if (!is_mouse_hovered) return;
+	if (viewport_status != HoverStatus::OnViewport) return;
 
 	const ObjectID* selected_obj = ctx.c_selections.GetSelectedObjects();
 
@@ -140,7 +141,7 @@ void Viewport::SHIFT(const SceneContext& ctx)
 void Viewport::RegisterEvents(EventPool& evt)
 {
 	evt.subscribe<KeyClickEvent>([this](KeyClickEvent e) {
-		if (!is_in_viewport) return;
+		if (!is_mouse_hovered) return;
 
 		switch (e.key.normal) {
 		case Input::NormalKeyFromChar('G'): // G
@@ -163,72 +164,54 @@ void Viewport::RegisterEvents(EventPool& evt)
 
 void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
-
-		GetLayerSize();
-		if (uly_name == "Viewport"){
-			viewport_status = ViewPortStatus::None;
-			const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
-			is_in_viewport = Item::is_inside(uly_size, mouse_pos);
-		}
-
-		item_list[0]->RenderItem();
+	item_list[0]->RenderItem();
 
 #if _DEBUG
-		ImGui::Text("[ %d ]", is_in_viewport);
-		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowContentRegionMin().x, ImGui::GetWindowContentRegionMin().y);
-		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetMainViewport()->Pos.x, ImGui::GetMainViewport()->Pos.y);
-		ImGui::Text("[ %.0f , %.0f ]", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
-		ImGui::Text("[ %.0f , %.0f ]", Input::GetMousePosX(), Input::GetMousePosY());
-		ImVec2 window_pos = (ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
-		ImGui::Text("[ %.0f , %.0f ]", Input::GetMousePosX() - window_pos.x, Input::GetMousePosY() - window_pos.y);
+	ImGui::Text("[ %d ]", is_mouse_hovered);
+	ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+	ImGui::Text("[ %.0f , %.0f ]", ImGui::GetWindowContentRegionMin().x, ImGui::GetWindowContentRegionMin().y);
+	ImGui::Text("[ %.0f , %.0f ]", ImGui::GetMainViewport()->Pos.x, ImGui::GetMainViewport()->Pos.y);
+	ImGui::Text("[ %.0f , %.0f ]", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
+	ImGui::Text("[ %.0f , %.0f ]", Input::GetMousePosX(), Input::GetMousePosY());
+	ImVec2 window_pos = (ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos);
+	ImGui::Text("[ %.0f , %.0f ]", Input::GetMousePosX() - window_pos.x, Input::GetMousePosY() - window_pos.y);
 #endif // _DEBUG
 
-		if (display_grid)
-			RenderGrids(ctx);
-		if (display_axis)
-			RenderAxis(ctx);
-		if (display_trans_handle)
-			RenderHandle(ctx);
+	if (display_grid)
+		RenderGrids(ctx);
+	if (display_axis)
+		RenderAxis(ctx);
+	if (display_trans_handle)
+		RenderHandle(ctx);
 
-		if (IsResizingFin())
-			if (resize_event) {
-				item_list[0]->ResetSize(uly_size + ImVec2(10, 10));
-				resize_event();
+	// TODO: event system
+	if (IsResizingFin())
+		if (resize_event) {
+			item_list[0]->ResetSize(uly_size + ImVec2(10, 10));
+			resize_event();
+		}
+
+	if (is_mouse_hovered) {
+		if (Input::IsMousePressed() && Input::input_state.mouse.button == Input::MouseButtons::MMB) {
+			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+			if (Input::input_state.key.special & Input::CTRL) {
+				evt.emit(CameraPushEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY()});
 			}
-
-		is_size_changed_b = is_size_changed;
-		is_size_changed = false;
-
-		if (is_in_viewport) {
-			if (Input::IsMousePressed() && Input::input_state.mouse.button == Input::MouseButtons::MMB) {
-				const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-				if (Input::input_state.key.special & Input::CTRL) {
-					evt.emit(CameraPushEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY()});
-				}
-				else if (Input::input_state.key.special & Input::SHIFT) {
-					evt.emit(CameraSlideEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
-				}
-				else if (Input::input_state.key.special & Input::ALT) {
-					evt.emit(CameraSpinEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
-				}
-				else if (Input::input_state.key.special == Input::NONE) {
-					evt.emit(CameraRotateEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
-				}
+			else if (Input::input_state.key.special & Input::SHIFT) {
+				evt.emit(CameraSlideEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
 			}
-
-			if (Input::IsMouseScrolled()) {
-				const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-				evt.emit(CameraZoomEvent{ (Camera*)active_cam, Input::GetScrollY() });
+			else if (Input::input_state.key.special & Input::ALT) {
+				evt.emit(CameraSpinEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
+			}
+			else if (Input::input_state.key.special == Input::NONE) {
+				evt.emit(CameraRotateEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
 			}
 		}
 
-		ImGui::End();
-	}
-	else {
-		is_in_viewport = false;
-		ImGui::End();
+		if (Input::IsMouseScrolled()) {
+			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+			evt.emit(CameraZoomEvent{ (Camera*)active_cam, Input::GetScrollY() });
+		}
 	}
 }
 
@@ -293,9 +276,7 @@ void Viewport::RenderHandle(const SceneContext& ctx)
 	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], Viewport::handle_mod, Viewport::trans_mod, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 	
 	if (hover)
-		viewport_status = ViewPortStatus::OnHover;
-	if (click)
-		viewport_status = ViewPortStatus::OnClick;
+		viewport_status = HoverStatus::OnHandle;
 
 	if(click)
 		active_trans->SetTrans(obj_trans);

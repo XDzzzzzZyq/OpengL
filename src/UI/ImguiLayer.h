@@ -48,7 +48,7 @@ private:
 public:
 	bool using_size = false;
 	bool fixed_size = false;
-	mutable bool is_size_changed = false;
+	mutable bool is_size_changed = false; // TODO: better design
 	mutable bool is_size_changed_b = true;
 	bool IsResizingFin() const { return (is_size_changed == false) && (is_size_changed_b == true); }
 	ImVec2 uly_size;
@@ -68,6 +68,10 @@ public:
 
 	bool uly_activate = true;
 	bool uly_is_rendered = true;
+
+public:
+
+	bool is_mouse_hovered = false;
 
 public:
 	bool uly_show_type = false;

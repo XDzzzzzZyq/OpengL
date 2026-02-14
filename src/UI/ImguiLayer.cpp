@@ -19,7 +19,7 @@ ImguiLayer::~ImguiLayer()
 ImVec2 ImguiLayer::GetLayerSize()
 {
 	const ImVec2 size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
-	is_size_changed = !(size == uly_size);
+	is_size_changed = size != uly_size;
 	uly_size = size;
 
 	return uly_size;

@@ -97,6 +97,4 @@ void ImguiManager::DefultViewports() {
 	FindImguiMenuItem("View", "Axis")->BindSwitch(&viewport->display_axis);
 	FindImguiMenuItem("View", "Grid")->BindSwitch(&viewport->display_grid);
 	FindImguiMenuItem("View", "Transform")->BindSwitch(&viewport->display_trans_handle);
-
-	SetActiveImguiLayer("__Parameters__");
 }

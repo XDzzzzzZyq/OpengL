@@ -64,25 +64,18 @@ void MaterialViewer::RenderName(std::string& _name, bool read_only /*= false*/)
 void MaterialViewer::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	Material* active_material = GetActiveMatPtr(ctx);
-
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
-
-		if (active_material == nullptr) {
-			ImGui::Text("No selected material");
-			ImGui::End();
-			return;
-		}
-
-		//  Material Preview
-
-		//  Material Name
-		RenderName(active_material->mat_name);
-
-		//  Material Parameters
-		for (auto & [type, param] : active_material->mat_params) {
-			active_material->is_mat_changed |= RenderMatParam(type, param);
-		}
-
+	if (active_material == nullptr) {
+		ImGui::Text("No selected material");
+		return;
 	}
-	ImGui::End();
+
+	//  Material Preview
+
+	//  Material Name
+	RenderName(active_material->mat_name);
+
+	//  Material Parameters
+	for (auto & [type, param] : active_material->mat_params) {
+		active_material->is_mat_changed |= RenderMatParam(type, param);
+	}
 }

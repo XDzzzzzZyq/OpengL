@@ -12,9 +12,7 @@ ImguiManager::ImguiManager()
 
 void ImguiManager::Init(EventPool& evt)
 {
-	active_layer_id = 0;
-
-	io = &ImGui::GetIO(); (void)io;
+	io = &ImGui::GetIO();
 	m_style = &ImGui::GetStyle();
 
 	DefultViewports();
@@ -108,24 +106,11 @@ void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 
 	layer->uly_ID = (int)layer_list.size(); //start with 0
 	layer_list.push_back(layer);
-	active_layer_id = layer->uly_ID;
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
 
 	auto window = std::make_shared<UI::ImguiMSwitch>(layer->uly_name);
 	window->BindSwitch(&layer->uly_is_rendered);
 	FindImguiMenu("Window")->PushSubMenu(window);
-}
-
-void ImguiManager::SetActiveImguiLayer(const std::string& name) const
-{
-	if (layer_name_buffer.find(name) == layer_name_buffer.end())
-		return;
-	active_layer_id = layer_name_buffer[name];
-}
-
-ImguiLayer* ImguiManager::GetActiveImguiLayer() const
-{
-	return layer_list[active_layer_id].get();
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
@@ -224,6 +209,29 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return item->GetPara();
 }
 
+void RenderLayer(ImguiLayer* layer, const SceneContext& ctx, const EventPool& evt)
+{
+	if (layer->uly_is_rendered) {
+		if (ImGui::Begin(layer->uly_name.c_str(), &layer->uly_is_rendered)) {
+			const ImVec2 layer_size = layer->GetLayerSize();
+			const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+			layer->is_mouse_hovered = Item::is_inside(layer_size, mouse_pos);
+
+			layer->UpdateLayer(ctx);
+			layer->RenderLayer(ctx, evt);
+
+			layer->is_size_changed_b = layer->is_size_changed;
+		}
+		else {
+			layer->is_mouse_hovered = false;
+		}
+		ImGui::End();
+	}
+	else {
+		layer->is_mouse_hovered = false;
+	}
+}
+
 void ImguiManager::RenderUI(const SceneContext& ctx, const EventPool& evt, bool rend)
 {
 	if (rend) {
@@ -240,21 +248,8 @@ void ImguiManager::RenderUI(const SceneContext& ctx, const EventPool& evt, bool 
 		/*			ImGui::EndMenuBar();*/
 		ImGui::EndMainMenuBar();
 		
-		//ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 100.0f);
 		for (const auto& layer : layer_list) {
-			if (layer->uly_ID != active_layer_id) {
-				if (!layer->uly_is_rendered)
-					continue;
-				layer->UpdateLayer(ctx);
-				layer->RenderLayer(ctx, evt);
-			}
-		}
-		if (layer_list[active_layer_id]->uly_is_rendered) {
-			layer_list[active_layer_id]->UpdateLayer(ctx);
-			layer_list[active_layer_id]->RenderLayer(ctx, evt);
-
-			//ImGui::PopStyleVar();
-			//ImGui::ShowStyleEditor();
+			::RenderLayer(layer.get(), ctx, evt);
 		}
 	}
 	else {

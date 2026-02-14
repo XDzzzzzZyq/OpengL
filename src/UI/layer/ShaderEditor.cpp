@@ -584,59 +584,57 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	Shaders* active_shader = GetActiveShaderPtr((SceneContext&)ctx);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
-
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered) && active_shader != nullptr) {
-		if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
-			LOOP(3)
-				if (ImGui::Selectable(edit_mode[i].c_str(), &sel)) {
-					current_edit = i;
-					is_mode_changed = true;
-				}
-
-			ImGui::EndCombo();
-		}
-		if (ImGui::BeginCombo("Shader Type", Shaders::shader_type[current_shad_type].c_str())) {
-			const std::vector<ShaderType> all_types = active_shader->GetAllShaderTypes();
-			LOOP(all_types.size()) {
-				const ShaderType type = all_types[i];
-				if (ImGui::Selectable(Shaders::shader_type[type].c_str(), &sel)) {
-					current_shad_type = type;
-					is_shad_type_changed = true;
-				}
-			}
-
-			ImGui::EndCombo();
-		}
-		if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x / 2, 25))) {
-			CompileShader(ctx);
-		}ImGui::SameLine();
-		if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
-			//active_shader->GenerateShader((ShaderType)current_shad_type);
-			//DEBUG(active_shader->getID())
-		}
-		//editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
-
-		switch (current_edit)
-		{
-		case CODE_EDITOR:
-			UpdateKeyword();
-			if (active_unit) {
-				//DEBUG(SE_CodeEditor.IsTextChanged())
-				se_code_editor.Render("##Editor", ImGui::GetContentRegionAvail());
-			}
-
-			break;
-		case STRUCT_EDITOR:
-			RenderShaderStruct(ctx);
-			break;
-		case NODE_EDITOR:
-			se_node_editor.Render(ctx, "##Node");
-			break;
-		}
-		ImGui::End();
+	if (active_shader == nullptr) {
+		ImGui::Text("No active shader");
+		return;
 	}
-	else {
-		ImGui::End();
+
+	if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
+		LOOP(3)
+			if (ImGui::Selectable(edit_mode[i].c_str(), &sel)) {
+				current_edit = i;
+				is_mode_changed = true;
+			}
+
+		ImGui::EndCombo();
+	}
+	if (ImGui::BeginCombo("Shader Type", Shaders::shader_type[current_shad_type].c_str())) {
+		const std::vector<ShaderType> all_types = active_shader->GetAllShaderTypes();
+		LOOP(all_types.size()) {
+			const ShaderType type = all_types[i];
+			if (ImGui::Selectable(Shaders::shader_type[type].c_str(), &sel)) {
+				current_shad_type = type;
+				is_shad_type_changed = true;
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x / 2, 25))) {
+		CompileShader(ctx);
+	}ImGui::SameLine();
+	if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
+		//active_shader->GenerateShader((ShaderType)current_shad_type);
+		//DEBUG(active_shader->getID())
+	}
+	//editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
+
+	switch (current_edit)
+	{
+	case CODE_EDITOR:
+		UpdateKeyword();
+		if (active_unit) {
+			//DEBUG(SE_CodeEditor.IsTextChanged())
+			se_code_editor.Render("##Editor", ImGui::GetContentRegionAvail());
+		}
+
+		break;
+	case STRUCT_EDITOR:
+		RenderShaderStruct(ctx);
+		break;
+	case NODE_EDITOR:
+		se_node_editor.Render(ctx, "##Node");
+		break;
 	}
 }
 

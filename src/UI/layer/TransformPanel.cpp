@@ -57,18 +57,11 @@ void TransformPanel::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
 	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr(ctx));
-
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
-
-		if (active_trans == nullptr) {
-			ImGui::Text("No selected transform component");
-			ImGui::End();
-			return;
-		}
-		ImGui::InputText("Name", (char*)active_object->o_name.c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
-
-		RenderTransfroms(*active_trans);
-
+	if (active_trans == nullptr) {
+		ImGui::Text("No selected transform component");
+		return;
 	}
-	ImGui::End();
+	ImGui::InputText("Name", (char*)active_object->o_name.c_str(), CHAR_MAX, ImGuiInputTextFlags_ReadOnly);
+
+	RenderTransfroms(*active_trans);
 }

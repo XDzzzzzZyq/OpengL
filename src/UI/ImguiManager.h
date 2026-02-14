@@ -28,7 +28,6 @@ private:
 	ImGuiIO* io = nullptr;
 	ImGuiStyle* m_style= nullptr;
 
-	mutable int active_layer_id;
 	mutable std::unordered_map<std::string, int> layer_name_buffer;  //name | ID
 	mutable std::unordered_map<std::string, int> menu_name_buffer;   //name | ID
 
@@ -68,8 +67,6 @@ public:
 	template<class LayerType>
 	std::shared_ptr<LayerType> CreateImguiLayer(std::string name);
 
-	void SetActiveImguiLayer(const std::string& name)const;
-	ImguiLayer* GetActiveImguiLayer()const;
 	ImguiLayer* FindImguiLayer(const std::string& name)const;
 	ImguiLayer* FindImguiLayer(int id)const;
 	template<ImguiLayerType T, typename... Args>
