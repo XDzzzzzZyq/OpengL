@@ -87,6 +87,9 @@ public:
 	}
 
 public:
+	void ActivateLayer(const std::string& name);
+
+public:
 	void SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func);
 	Parameters* GetParaValue(const std::string& ly_name, const std::string& it_name);
 

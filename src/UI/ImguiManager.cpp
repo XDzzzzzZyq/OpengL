@@ -1,4 +1,4 @@
-#include "ImguiManager.h"
+﻿#include "ImguiManager.h"
 #include "Input.h"
 #include "layer/ShaderEditor.h"
 #include "Guizmo/ImGuizmo.h"
@@ -186,6 +186,29 @@ std::shared_ptr<ImguiMenu> ImguiManager::CreateImguiMenu(std::string name)
 	PushImguiMenu(menu);
 
 	return menu;
+}
+
+void ImguiManager::ActivateLayer(const std::string& name)
+{
+	auto it = layer_name_buffer.find(name);
+	if (it == layer_name_buffer.end())
+		return;
+
+	int idx = it->second;
+
+	if (idx == layer_list.size() - 1)
+		return; // already active
+
+	auto layer = layer_list[idx];
+	layer_list.erase(layer_list.begin() + idx);
+
+	// update name mapping
+	for (auto& [n, i] : layer_name_buffer)
+		if (i > idx)
+			--i;
+
+	layer_list.push_back(layer);
+	layer_name_buffer[name] = layer_list.size() - 1;
 }
 
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)
