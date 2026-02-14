@@ -1,4 +1,8 @@
-﻿#include "ImguiManager.h"
+﻿#include "ImGui/backends/imgui_impl_glfw.h"
+#include "ImGui/backends/imgui_impl_opengl3.h"
+
+#include "ImguiManager.h"
+#include "ImguiTheme.h"
 #include "Input.h"
 #include "layer/ShaderEditor.h"
 #include "Guizmo/ImGuizmo.h"
@@ -296,4 +300,11 @@ void ImguiManager::RenderUI(const SceneContext& ctx, const EventPool& evt, bool 
 	auto draw_data = ImGui::GetDrawData();
 	ImGui_ImplOpenGL3_RenderDrawData(draw_data);
 	
+}
+
+void ImguiManager::Terminate() const
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }

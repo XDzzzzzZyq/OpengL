@@ -31,8 +31,6 @@ int Application::Init()
 	if (!window)
 	{
 		glfwTerminate();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
@@ -227,10 +225,7 @@ int Application::Terminate()
 {
 	TextureLib::ResetTexLib();
 	ComputeShader::ResetComputeLib();
-
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+	UI.Terminate();
 	glfwTerminate();
 
 	return 0;

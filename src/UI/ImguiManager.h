@@ -1,21 +1,16 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include "ImGui/imgui.h"
-#include "ImGui/backends/imgui_impl_glfw.h"
-#include "ImGui/backends/imgui_impl_opengl3.h"
 
 #include "Context.h"
 #include "Events.h"
-#include "ImguiTheme.h"
 
 #include "ImguiMenu.h"
 #include "ImguiLayer.h"
 #include "ImguiItem.h"
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 /*#define ParaUpdate ParaUpdate*/
 
@@ -54,6 +49,7 @@ public:
 public:
 	void NewFrame() const;
 	void RenderUI(const SceneContext& ctx, const EventPool& evt, bool rend = true);
+	void Terminate() const;
 
 public:
 	void PushImguiMenu(std::shared_ptr<ImguiMenu> _menu);

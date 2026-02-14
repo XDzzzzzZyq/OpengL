@@ -6,10 +6,7 @@
 
 
 #include "Context.h"
-
 #include "ImGui/imgui.h"
-#include "ImGui/backends/imgui_impl_glfw.h"
-#include "ImGui/backends/imgui_impl_opengl3.h"
 
 #define CallBack(func) [&](bool) -> bool {func(); return true;}
 
