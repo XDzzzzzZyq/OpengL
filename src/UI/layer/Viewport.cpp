@@ -7,6 +7,7 @@
 #include "buffer/FrameBuffer.h"
 
 #include "events/CameraEvents.h"
+#include "events/KeyMouseEvents.h"
 
 #include "xdz_matrix.h"
 
@@ -37,6 +38,70 @@ Viewport::~Viewport()
 
 }
 
+
+void MTranslate()
+{
+	Viewport::handle_mod = ImGuizmo::TRANSLATE;
+}
+
+void MRotate()
+{
+	Viewport::handle_mod = ImGuizmo::ROTATE;
+}
+
+void MScale()
+{
+	Viewport::handle_mod = ImGuizmo::SCALE;
+}
+
+void _SpecifyAxis(GLuint offset) {
+	// offset: 0, 1, 2, 3 -> X, Y, Z, W
+
+	if (Viewport::handle_mod & ImGuizmo::TRANSLATE) {
+		const ImGuizmo::OPERATION trans = ImGuizmo::OPERATION(ImGuizmo::TRANSLATE_X << offset);
+		if (Viewport::handle_mod == trans)
+			::MTranslate();			// Reset to full translate
+		else
+			Viewport::handle_mod = trans;	// Or specify axis
+	}
+	else if (Viewport::handle_mod & ImGuizmo::ROTATE) {
+		const ImGuizmo::OPERATION rotate = ImGuizmo::OPERATION(ImGuizmo::ROTATE_X << offset);
+		if (Viewport::handle_mod == rotate)
+			::MRotate();
+		else
+			Viewport::handle_mod = rotate;
+	}
+	else if (Viewport::handle_mod & ImGuizmo::SCALE) {
+		const ImGuizmo::OPERATION scale = ImGuizmo::OPERATION(ImGuizmo::SCALE_X << offset);
+		if (Viewport::handle_mod == scale)
+			::MScale();
+		else
+			Viewport::handle_mod = scale;
+	}
+}
+
+void XAxis()
+{
+	::_SpecifyAxis(0);
+}
+
+void YAxis()
+{
+	::_SpecifyAxis(1);
+}
+
+void ZAxis()
+{
+	::_SpecifyAxis(2);
+}
+
+void WAxis()
+{
+	if (Viewport::handle_mod & (ImGuizmo::OPERATION::TRANSLATE | ImGuizmo::OPERATION::SCALE))
+		return; // W axis is only for rotation
+
+	::_SpecifyAxis(3);
+}
 
 int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
 {
@@ -70,6 +135,30 @@ void Viewport::LMB_CLICK(const SceneContext& ctx)
 void Viewport::SHIFT(const SceneContext& ctx)
 {
 	multi_select = true;
+}
+
+void Viewport::RegisterEvents(EventPool& evt)
+{
+	evt.subscribe<KeyClickEvent>([this](KeyClickEvent e) {
+		if (!is_in_viewport) return;
+
+		switch (e.key.normal) {
+		case Input::NormalKeyFromChar('G'): // G
+			::MTranslate();	break;
+		case Input::NormalKeyFromChar('R'): // R
+			::MRotate(); break;
+		case Input::NormalKeyFromChar('S'): // S
+			::MScale();	break;
+		case Input::NormalKeyFromChar('X'): // X
+			::XAxis(); break;
+		case Input::NormalKeyFromChar('Y'): // Y
+			::YAxis(); break;
+		case Input::NormalKeyFromChar('Z'): // Z
+			::ZAxis(); break;
+		case Input::NormalKeyFromChar('W'): // W
+			::WAxis(); break;
+		}
+		});
 }
 
 void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
@@ -210,80 +299,4 @@ void Viewport::RenderHandle(const SceneContext& ctx)
 
 	if(click)
 		active_trans->SetTrans(obj_trans);
-}
-
-void Viewport::MTranslate()
-{
-	Viewport::handle_mod = ImGuizmo::TRANSLATE;
-}
-
-void Viewport::MRotate()
-{
-	Viewport::handle_mod = ImGuizmo::ROTATE;
-}
-
-void Viewport::MScale()
-{
-	Viewport::handle_mod = ImGuizmo::SCALE;
-}
-
-void _SwitchHMode(GLuint offset) {
-
-	if (offset > 2 && Viewport::handle_mod & ImGuizmo::TRANSLATE)
-		return;
-
-	ImGuizmo::OPERATION trans = ImGuizmo::OPERATION(ImGuizmo::TRANSLATE_X << offset);
-	ImGuizmo::OPERATION rotat = ImGuizmo::OPERATION(ImGuizmo::ROTATE_X << offset);
-	ImGuizmo::OPERATION scale = ImGuizmo::OPERATION(ImGuizmo::SCALE_X << offset);
-
-	if (Viewport::handle_mod & ImGuizmo::TRANSLATE) {
-		if (Viewport::handle_mod == trans)
-			Viewport::MTranslate();
-		else
-			Viewport::handle_mod = trans;
-	}
-	else if (Viewport::handle_mod & ImGuizmo::ROTATE) {
-		if (Viewport::handle_mod == rotat)
-			Viewport::MRotate();
-		else
-			Viewport::handle_mod = rotat;
-	}
-	else if (Viewport::handle_mod & ImGuizmo::SCALE) {
-		if (Viewport::handle_mod == scale)
-			Viewport::MScale();
-		else
-			Viewport::handle_mod = scale;
-	}
-}
-
-void Viewport::XAxis()
-{
-	if (!Input::IsKeyClicked())
-		return;
-
-	::_SwitchHMode(0);
-}
-
-void Viewport::YAxis()
-{
-	if (!Input::IsKeyClicked())
-		return;
-
-	::_SwitchHMode(1);
-}
-
-void Viewport::ZAxis()
-{
-	if (!Input::IsKeyClicked())
-		return;
-
-	::_SwitchHMode(2);
-}
-
-void Viewport::WAxis()
-{
-	if (!Input::IsKeyClicked())
-		return;
-
-	::_SwitchHMode(3);
 }

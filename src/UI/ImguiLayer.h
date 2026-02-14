@@ -71,13 +71,10 @@ public:
 
 public:
 	bool uly_show_type = false;
-	std::function<void(void)> pre_RenderLayer = [] {};
-	std::function<void(void)> extra_RenderLayer = [] {};
-	std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer(const SceneContext& ctx, const EventPool& evt) { DEBUG("no Render function overrided"); return; };
+	std::function<void(void)> resize_event = [] {}; // TODO: Event system
+	virtual void RegisterEvents(EventPool& evt) {};
+	virtual void RenderLayer(const SceneContext& ctx, const EventPool& evt) {};
 	virtual void UpdateLayer(const SceneContext& ctx) {};
-	
-	std::function<void(void)> set_active = [] {};
 
 	// TODO: better design
 	void EventInit();

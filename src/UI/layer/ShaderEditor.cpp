@@ -4,6 +4,8 @@
 
 #include "operator.h"
 
+#include "events/KeyMouseEvents.h"
+
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
 
 TextEditor ShaderEditor::se_code_editor{};
@@ -264,6 +266,25 @@ void ShaderEditor::UpdateLayer(const SceneContext& ctx)
 		is_mode_changed = false;
 	}
 
+}
+
+void ShaderEditor::RegisterEvents(EventPool& evt)
+{
+	evt.subscribe<MouseClickEvent>([](MouseClickEvent e) {
+		if (e.mouse == Input::MouseButtons::LMB) { // LMB
+			ShaderEditor::se_node_editor.LMB();
+		}
+		else if (e.mouse == Input::MouseButtons::MMB) { // MMB
+			if (e.key & Input::SpecialKeys::SHIFT)
+				ShaderEditor::se_node_editor.SHIFT_MMB();
+			else if (e.key & Input::SpecialKeys::CTRL)
+				ShaderEditor::se_node_editor.CTRL_MMB();
+		}
+		});
+
+	evt.subscribe<MouseScrolledEvent>([](MouseScrolledEvent e) {
+		ShaderEditor::se_node_editor.SCRLL();
+		});
 }
 
 void ShaderEditor::UpdateKeyword()

@@ -56,6 +56,7 @@ public:
 
 	void UpdateShaderEditor(const SceneContext& ctx, const std::string& _code = "") const;
 	void UpdateLayer(const SceneContext& ctx) override;
+	void RegisterEvents(EventPool& evt) override;
 	static void UpdateKeyword();
 
 public:

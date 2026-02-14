@@ -49,7 +49,7 @@ public:
 	ImGuiStyle* GetStyle()const { return m_style; }
 
 	void DefultViewports();
-	void RegisterDefultEvents(EventPool& evt);
+	void RegisterLayerEvents(EventPool& evt);
 	void RegistarMenuEvents(EventPool& evt);
 
 public:

@@ -24,8 +24,8 @@ public:
 		OnClick
 	};
 
-	bool is_in_viewport;
-	ViewPortStatus viewport_status;
+	bool is_in_viewport{ false };
+	ViewPortStatus viewport_status{ None };
 
 public:
 	Viewport();
@@ -35,6 +35,7 @@ public:
 	~Viewport();
 public:
 
+	void RegisterEvents(EventPool& evt) override;
 	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
 
 private:
@@ -46,16 +47,5 @@ private:
 	bool multi_select = false;
 	void LMB_CLICK(const SceneContext& ctx);
 	void SHIFT(const SceneContext& ctx);
-
-public:
-
-	// Key Input
-	static void MTranslate();
-	static void MRotate();
-	static void MScale();
-	static void XAxis();
-	static void YAxis();
-	static void ZAxis();
-	static void WAxis();
 };
 
