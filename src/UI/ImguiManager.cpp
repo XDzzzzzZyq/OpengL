@@ -24,39 +24,7 @@ void ImguiManager::Init(EventPool& evt)
 	RegisterLayerEvents(evt);
 
 	ShaderEditor::InitEditors();
-}
 
-void ImguiManager::_debug() const
-{
-	for (auto& [name, id] : layer_name_buffer) {
-		std::cout << name << " " << id << "\n";
-	}
-}
-
-void ImguiManager::RegistarMenuEvents(EventPool& evt)
-{
-	for (auto& menu : menu_list)
-		for (auto& submenu : menu->subm_list) {
-			if (submenu->mitem_shortcut.empty()) continue;
-
-			Input::KeyState key_state = Input::ParseKeyState(submenu->mitem_shortcut);
-			evt.subscribe<KeyClickEvent>([submenu, key_state](KeyClickEvent e) {
-				if (e.key == key_state)	submenu->mitem_func(true);
-				});
-		}
-}
-
-
-
-void ImguiManager::RegisterLayerEvents(EventPool& evt)
-{
-	for (auto& layer : layer_list) {
-		layer->RegisterEvents(evt);
-	}
-}
-
-void ImguiManager::ManagerInit()
-{
 	GLFWwindow* window = glfwGetCurrentContext();
 
 	ImGui_ImplOpenGL3_Init();
@@ -91,8 +59,35 @@ void ImguiManager::ManagerInit()
 	//config.GlyphMinAdvanceX = 13.0f;// Use if you want to make the icon monospaced
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
+}
 
-	//EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(Input::EVT_NK_LIST)};
+void ImguiManager::_debug() const
+{
+	for (auto& [name, id] : layer_name_buffer) {
+		std::cout << name << " " << id << "\n";
+	}
+}
+
+void ImguiManager::RegistarMenuEvents(EventPool& evt)
+{
+	for (auto& menu : menu_list)
+		for (auto& submenu : menu->subm_list) {
+			if (submenu->mitem_shortcut.empty()) continue;
+
+			Input::KeyState key_state = Input::ParseKeyState(submenu->mitem_shortcut);
+			evt.subscribe<KeyClickEvent>([submenu, key_state](KeyClickEvent e) {
+				if (e.key == key_state)	submenu->mitem_func(true);
+				});
+		}
+}
+
+
+
+void ImguiManager::RegisterLayerEvents(EventPool& evt)
+{
+	for (auto& layer : layer_list) {
+		layer->RegisterEvents(evt);
+	}
 }
 
 void ImguiManager::NewFrame() const

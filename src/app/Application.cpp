@@ -40,11 +40,19 @@ int Application::Init()
 	ImGui::CreateContext();
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 
+	// Editor Layer
 	renderer.Init(EventPool);
-	UI.Init(EventPool);
+	MeshLib::MeshLibInit();
+
+	// Controllers
+	Controllers.RegisterController<CameraController>(EventPool);
+	Controllers.RegisterController<ViewportController>(EventPool);
+
+	// Context
 	Ctx.Init(EventPool);
 
-	MeshLib::MeshLibInit();
+	// UI Layer
+	UI.Init(EventPool);
 
 	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	//UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
@@ -57,12 +65,7 @@ int Application::Init()
 	// 		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
 	// 	}
 
-	UI.ManagerInit();
-
-	// Controllers
-	Controllers.RegisterController<CameraController>(EventPool);
-	Controllers.RegisterController<ViewportController>(EventPool);
-	EventPool.emit<FrameBufferResetEvent>({ renderer.GetFrameBufferPtr() });
+	EventPool.emit<FrameBufferResetEvent>({ &renderer.r_buffer_list[0], renderer.GetFrameBufferPtr() });
 
 #if 0
 	renderer.UseScene(SceneManager::SceneConfig3());

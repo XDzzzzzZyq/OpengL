@@ -36,7 +36,6 @@ public:
 	void _debug() const;
 
 public:
-	void ManagerInit();
 	void SetConfigFlag(ImGuiConfigFlags_ flag) const { io->ConfigFlags |= flag; };
 	void SetBackendFlag(ImGuiBackendFlags_ flag) const { io->BackendFlags |= flag; };
 	ImGuiIO* GetIO()const { return io; }

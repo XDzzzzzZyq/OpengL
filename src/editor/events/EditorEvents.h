@@ -11,7 +11,8 @@ struct SelectionChangedEvent {
 };
 
 struct FrameBufferResetEvent {
-	void* buffer_obj; // TODO: buffer ID
+	void* pass;   // TODO: buffer ID
+	void* result; // TODO: buffer ID
 };
 
 struct RenderSurfaceResizedEvent {

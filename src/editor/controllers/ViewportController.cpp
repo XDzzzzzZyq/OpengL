@@ -17,7 +17,7 @@ int GetSelectID(const FrameBuffer* info_fb, GLuint x, GLuint y)
 void ViewportController::bind(EventPool& pool)
 {
 	pool.subscribe<ViewportSelectedEvent>([this, &pool](ViewportSelectedEvent e) {
-		const int id = GetSelectID(viewport_fb, e.pix_x, e.pix_y);
+		const int id = GetSelectID(id_fb, e.pix_x, e.pix_y);
 		pool.emit(ObjectSelectedEvent{ id, e.increament });
 		});
 
@@ -27,10 +27,10 @@ void ViewportController::bind(EventPool& pool)
 		});
 
 	pool.subscribe<FrameBufferResetEvent>([this, &pool](const FrameBufferResetEvent& e) {
-		FrameBuffer* fb_ptr = static_cast<FrameBuffer*>(e.buffer_obj);
-		viewport_fb = fb_ptr;
+		id_fb = static_cast<FrameBuffer*>(e.pass);
+		viewport_fb = static_cast<FrameBuffer*>(e.result);
 
-		const GLuint tex_id = fb_ptr->GetFBTextureID(COMBINE_FB);
+		const GLuint tex_id = viewport_fb->GetFBTextureID(COMBINE_FB);
 		pool.emit(ViewportImageResetEvent{ tex_id });
 		});
 }
