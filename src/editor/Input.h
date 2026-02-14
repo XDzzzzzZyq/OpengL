@@ -45,6 +45,10 @@ public:
 		// TODO: use flag to capture all special keys
 		SpecialKeys special{ SpecialKeys::NONE };
 		int normal{ 0 };
+		bool operator==(const KeyState& other) const
+		{
+			return special == other.special && normal == other.normal;
+		}
 	};
 
 	struct MouseState
@@ -58,6 +62,11 @@ public:
 	};
 
 	static KeyState ParseKeyState(const std::string& hotkey);
+	static constexpr int NormalKeyFromChar(char key)
+	{
+		const char lower = (key >= 'A' && key <= 'Z') ? static_cast<char>(key - 'A' + 'a') : key;
+		return lower - 'a' + 1;
+	}
 
 // RandomState
 public:

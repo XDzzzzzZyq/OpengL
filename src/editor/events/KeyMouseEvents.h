@@ -31,14 +31,12 @@ struct MouseScrolledEvent
 
 struct KeyClickEvent
 {
-	Input::SpecialKeys key;
-	int norm_key;
+	Input::KeyState key;
 };
 
 struct KeyLeaveEvent
 {
-	Input::SpecialKeys key;
-	int norm_key;
+	Input::KeyState key;
 };
 
 

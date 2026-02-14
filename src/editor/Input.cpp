@@ -81,7 +81,7 @@ Input::KeyState Input::ParseKeyState(const std::string& hotkey)
 			state.special = Input::SpecialKeys(state.special | Input::ALT);
 		}
 		else {
-			state.normal = token[0] - 'a' + 1;
+			state.normal = NormalKeyFromChar(token[0]);
 		}
 	}
 	return state;

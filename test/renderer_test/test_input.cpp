@@ -1,6 +1,16 @@
 #include "pch.h"
 #include "Input.h"
 
+TEST(InputParseKeyState, ParsesNormalKey)
+{
+	EXPECT_EQ(Input::NormalKeyFromChar('a'), 1);
+	EXPECT_EQ(Input::NormalKeyFromChar('z'), 26);
+	EXPECT_EQ(Input::NormalKeyFromChar('s'), 19);
+	EXPECT_EQ(Input::NormalKeyFromChar('A'), 1);
+	EXPECT_EQ(Input::NormalKeyFromChar('Z'), 26);
+	EXPECT_EQ(Input::NormalKeyFromChar('S'), 19);
+}
+
 TEST(InputParseKeyState, ParsesSingleKey)
 {
 	const Input::KeyState state = Input::ParseKeyState("a");

@@ -103,28 +103,27 @@ void ImguiManager::DefultViewports() {
 
 void ImguiManager::RegisterDefultEvents(EventPool& evt)
 {
-	// TODO: match the hotkey input
 	evt.subscribe<KeyClickEvent>([](KeyClickEvent e) {
-		switch (e.norm_key) {
-		case 1: // G
+		switch (e.key.normal) {
+		case Input::NormalKeyFromChar('G'): // G
 			Viewport::MTranslate();
 			break;
-		case 2: // R
+		case Input::NormalKeyFromChar('R'): // R
 			Viewport::MRotate();
 			break;
-		case 3: // S
+		case Input::NormalKeyFromChar('S'): // S
 			Viewport::MScale();
 			break;
-		case 4: // X
+		case Input::NormalKeyFromChar('X'): // X
 			Viewport::XAxis();
 			break;
-		case 5: // Y
+		case Input::NormalKeyFromChar('Y'): // Y
 			Viewport::YAxis();
 			break;
-		case 6: // Z
+		case Input::NormalKeyFromChar('Z'): // Z
 			Viewport::ZAxis();
 			break;
-		case 7: // W
+		case Input::NormalKeyFromChar('W'): // W
 			Viewport::WAxis();
 			break;
 		}
@@ -135,9 +134,9 @@ void ImguiManager::RegisterDefultEvents(EventPool& evt)
 			ShaderEditor::se_node_editor.LMB();
 		}
 		else if(e.mouse == Input::MouseButtons::MMB) { // MMB
-			if (e.key == Input::SpecialKeys::SHIFT)
+			if (e.key & Input::SpecialKeys::SHIFT)
 				ShaderEditor::se_node_editor.SHIFT_MMB();
-			else if (e.key == Input::SpecialKeys::CTRL)
+			else if (e.key & Input::SpecialKeys::CTRL)
 				ShaderEditor::se_node_editor.CTRL_MMB();
 		}
 		});

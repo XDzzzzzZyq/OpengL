@@ -23,14 +23,10 @@ void EventPool::EmitGlobalEvent()
 	}
 
 	if (Input::IsKeyClicked()) {
-		emit(KeyClickEvent{
-			state.key.special,
-			state.key.normal });
+		emit(KeyClickEvent{ state.key });
 	}
 
 	if (Input::IsKeyLeft()) {
-		emit(KeyLeaveEvent{
-			state.key.special,
-			state.key.normal });
+		emit(KeyLeaveEvent{ state.key });
 	}
 }
