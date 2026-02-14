@@ -37,9 +37,12 @@ void ImguiManager::RegistarMenuEvents(EventPool& evt)
 		for (auto& submenu : menu->subm_list) {
 
 			if (submenu->mitem_shortcut.empty()) continue;
-			evt.subscribe<KeyClickEvent>([submenu](KeyClickEvent e) {
-				// TODO: match the hotkey
-				submenu->mitem_func(true);
+
+			Input::KeyState key_state = Input::ParseKeyState(submenu->mitem_shortcut);
+			DEBUG(submenu->mitem_shortcut);
+			DEBUG("shortcut: " + std::to_string(key_state.special) + " + " + std::to_string(key_state.normal));
+			evt.subscribe<KeyClickEvent>([submenu, key_state](KeyClickEvent e) {
+				if (e.key == key_state)	submenu->mitem_func(true);
 				});
 		}
 }

@@ -145,9 +145,9 @@ bool Input::IsMouseLeft()
 
 bool Input::IsKeyClicked()
 {
-	const bool pressed_now = input_state.key.special != NONE || input_state.key.normal != 0;
-	const bool pressed_before = input_state_b.key.special != NONE || input_state_b.key.normal != 0;
-	return pressed_now && !pressed_before;
+	const bool special_clicked = input_state.key.special != NONE && input_state_b.key.special == NONE;
+	const bool normal_clicked = input_state.key.normal != 0 && input_state_b.key.normal == 0;
+	return special_clicked || normal_clicked;
 }
 
 bool Input::IsKeyPressed()
@@ -157,9 +157,9 @@ bool Input::IsKeyPressed()
 
 bool Input::IsKeyLeft()
 {
-	const bool pressed_now = input_state.key.special != NONE || input_state.key.normal != 0;
-	const bool pressed_before = input_state_b.key.special != NONE || input_state_b.key.normal != 0;
-	return !pressed_now && pressed_before;
+	const bool special_left = input_state.key.special == NONE && input_state_b.key.special != NONE;
+	const bool normal_left = input_state.key.normal == 0 && input_state_b.key.normal != 0;
+	return special_left || normal_left;
 }
 
 bool Input::IsMouseScrolled()
