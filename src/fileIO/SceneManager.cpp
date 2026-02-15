@@ -70,7 +70,7 @@ void SceneResource::UseLight(Resource<Light> light)
 		return;
 
 	light_list[light->GetObjectID()] = light;
-	obj_list[light->light_sprite.GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(light);
+	obj_list[light->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(light);
 
 	sprite_list[light->light_sprite.GetObjectID()] = std::shared_ptr<Sprite>(light, &light->light_sprite);
 
@@ -98,7 +98,7 @@ void SceneResource::UseEnvironment(Resource<Environment> envir)
 
 	envir_list[envir->GetObjectID()] = envir;
 	envir_list[0] = envir;
-	obj_list[envir->envir_sprite.GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(envir);
+	obj_list[envir->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(envir);
 
 	sprite_list[envir->envir_sprite.GetObjectID()] = std::shared_ptr<Sprite>(envir, &envir->envir_sprite);
 
@@ -130,7 +130,7 @@ void SceneResource::UseDebugPoints(Resource<DebugPoints> dpoints)
 void SceneResource::UsePostProcessing(Resource<PostProcessing> pps)
 {
 	pps_list.emplace_back(pps);
-	obj_list[pps->pps_sprite.GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(pps);	
+	obj_list[pps->GetObjectID()] = std::dynamic_pointer_cast<ObjectID>(pps);
 }
 
 

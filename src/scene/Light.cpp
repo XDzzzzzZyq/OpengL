@@ -178,7 +178,7 @@ void Light::SetRatio(float _ratio)
 
 void Light::RenderLightSpr(const SceneContext& ctx)
 {
-	light_sprite.RenderSprite(ctx, o_position, light_color);
+	light_sprite.RenderSprite(ctx, o_position, light_color, GetObjectID());
 }
 
 void Light::BindShadowMapBuffer()

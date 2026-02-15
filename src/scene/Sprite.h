@@ -31,7 +31,7 @@ public:
 
 	Sprite();
 
-	void RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col);
+	void RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col, int id);
 	void RenderSprite(const SceneContext& ctx);
 
 	void SetSpriteShader();

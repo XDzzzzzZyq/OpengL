@@ -16,7 +16,7 @@ Sprite::Sprite()
 
 }
 
-void Sprite::RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col)
+void Sprite::RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col, int id)
 {
 	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
 	spr_shader.UseShader();
@@ -26,6 +26,8 @@ void Sprite::RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const g
 
 	spr_shader.SetValue("U_pos", pos);
 	spr_shader.SetValue("U_col", col);
+	spr_shader.SetValue("ID_color", xdzm::get_id_color(id));
+	spr_shader.SetValue("RAND_color", xdzm::get_random_color(id));
 
 	if(cam->is_invUniform_changed)
 		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);

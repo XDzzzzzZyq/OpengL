@@ -105,5 +105,5 @@ void Environment::RenderEnvironment(const SceneContext& ctx)
 
 void Environment::RenderEnvirSpr(const SceneContext& ctx)
 {
-	envir_sprite.RenderSprite(ctx, o_position, envir_color);
+	envir_sprite.RenderSprite(ctx, o_position, envir_color, GetObjectID());
 }
