@@ -85,7 +85,6 @@ public:
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;
 	float r_ao_radius = 0.5;
-
 	int r_sample_pf = 128;
 
 public:
@@ -101,8 +100,6 @@ public:
 public:
 
 	RenderConfigs();
-	// TODO: rethink about the callback design
-	std::function<void(ModifyFlags)> call_back{ nullptr };
 
 private:
 	static RenderConfigs* r_active_configs;

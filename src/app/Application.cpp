@@ -56,8 +56,6 @@ int Application::Init()
 
 	UI.SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	//UI.SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
-	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
-	UI.SetBackendFlag(ImGuiBackendFlags_PlatformHasViewports);
 
 	// 	if (UI.GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	// 	{
@@ -76,13 +74,6 @@ int Application::Init()
 	Ctx.UseScene(SceneManager::Shadow().get());
 
 	renderer.GetConfig()->r_ao_radius = 0.8f;
-	renderer.r_config.call_back = [&](RenderConfigs::ModifyFlags flag) {
-		if (flag & RenderConfigs::ShadowChanged) {
-			SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
-			scene->UpdateSceneStatus(SceneResource::LightChanged, true);
-			renderer.UpdateLightInfo(Ctx);
-		}
-		};
 	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
 	// TODO: event system
 	renderer.r_light_data.ParseLightData(scene->light_list);
@@ -145,8 +136,7 @@ int Application::Run()
 	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.GetConfig()->r_ssr_algorithm);
 	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm, [&](bool) -> bool { 
-		scene->UpdateSceneStatus(SceneResource::LightChanged, true); 
-		renderer.UpdateLightInfo(Ctx);  
+		EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), RenderConfigs::ShadowChanged});
 		return true; 
 		});
 	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.GetConfig()->r_ao_algorithm);

@@ -62,18 +62,14 @@ Light::Light(LightType type, float power, glm::vec3 color)
 
 	o_name = _name + std::to_string(GetObjectID());
 
-	InitShadowMap();
+	InitShadowMap(false);
 	UpdateProjMatrix();
 	BindShadowMapShader();
 }
 
-void Light::InitShadowMap(const RenderConfigs* config/*=nullptr*/)
+void Light::InitShadowMap(bool using_moment_shadow)
 {
 	assert(light_type != LightType::NONELIGHT);
-	
-	bool using_moment_shadow = false;
-	if (config)
-		using_moment_shadow = config->RequiresMomentShadow();
 
 	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
 	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;

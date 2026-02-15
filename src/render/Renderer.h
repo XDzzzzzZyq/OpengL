@@ -75,7 +75,6 @@ public:
 	void Reset();
 
 	void ConstructSDF(const SceneContext& ctx);
-	void UpdateLightInfo(const SceneContext & ctx);
 
 public:
 

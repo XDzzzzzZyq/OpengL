@@ -41,7 +41,7 @@ public:
 public:
 
 	Sprite light_sprite;
-	Texture light_shadow_map;
+	Texture light_shadow_map; // TODO: Light should not contains runtime properties like shadow map
 	glm::mat4 light_proj{ 1.0f };
 
 public:
@@ -66,7 +66,7 @@ public:
 
 	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
-	void InitShadowMap(const RenderConfigs* config=nullptr);
+	void InitShadowMap(bool using_moment_shadow);
 	inline static std::pair<SpriteType, std::string> ParseLightName(LightType _type);
 
 public:
@@ -88,6 +88,7 @@ private:
 
 public:
 
+	// TODO: remove runtime construction
 	static void EnableShadowMap();
 	void ConstructSAT(const RenderConfigs* config);
 

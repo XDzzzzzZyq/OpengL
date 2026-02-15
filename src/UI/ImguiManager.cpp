@@ -280,19 +280,16 @@ void ImguiManager::RenderUI(const SceneContext& ctx, const EventPool& evt, bool 
 		ImGui::ShowStyleEditor();
 	
 	ImGui::Render();
-	
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		ImGui::UpdatePlatformWindows(); 
-		ImGui::RenderPlatformWindowsDefault(); 
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
 		glfwSetErrorCallback([](int code, const char* desc) {
 			fprintf(stderr, "GLFW Error %d: %s\n", code, desc);
 			});
+		//glfwMakeContextCurrent(window);
 	}
-	
-	auto draw_data = ImGui::GetDrawData();
-	ImGui_ImplOpenGL3_RenderDrawData(draw_data);
-	
 }
 
 void ImguiManager::Terminate() const

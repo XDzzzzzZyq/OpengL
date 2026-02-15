@@ -1,5 +1,6 @@
 #pragma once
 #include "ID.h"
+#include "RenderConfigs.h"
 
 struct ObjectSelectedEvent{
 	int UID;
@@ -17,4 +18,9 @@ struct FrameBufferResetEvent {
 
 struct RenderSurfaceResizedEvent {
 	int width, height;
+};
+
+struct RenderConfigChangedEvent {
+	const RenderConfigs* config;
+	int flag;
 };

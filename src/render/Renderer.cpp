@@ -59,6 +59,7 @@ void Renderer::Init(EventPool& evt)
 	evt.subscribe<RenderSurfaceResizedEvent>([this](const RenderSurfaceResizedEvent& e) {
 		this->FrameResize(e.width, e.height );
 		});
+
 }
 
 Renderer::~Renderer()
@@ -491,18 +492,6 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 	FrameBufferResize({ (float)_w, (float)_h });
 
 	r_light_data.Resize(_w, _h);
-}
-
-
-void Renderer::UpdateLightInfo(const SceneContext& ctx)
-{
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
-
-	scene->SetSceneStatus(SceneResource::LightChanged, true);
-	for (auto& [id, light] : scene->light_list) {
-		light->InitShadowMap(&r_config);
-		light->is_light_changed = true;
-	}
 }
 
 void Renderer::ScreenShot()

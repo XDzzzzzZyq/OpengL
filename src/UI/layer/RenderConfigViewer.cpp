@@ -2,6 +2,8 @@
 #include "RenderConfigs.h"
 #include "macros.h"
 
+#include "events/EditorEvents.h"
+
 RenderConfigViewer::RenderConfigViewer()
 	:RenderConfigViewer("Renderer")
 {}
@@ -35,7 +37,9 @@ void RenderConfigViewer::RenderLayer(const SceneContext& ctx, const EventPool& e
 	if (modified) flag |= RenderConfigs::ShadowChanged;
 	modified = RenderOption((char*)&active_config->r_ao_algorithm,		"Ambient Occlusion",		OPTIONS("None", "SSAO", "HBAO (future)"));
 	
-	active_config->call_back((RenderConfigs::ModifyFlags)flag);
+	if (flag != RenderConfigs::NoChanges) {
+		evt.emit<RenderConfigChangedEvent>({ active_config, flag });
+	}
 }
 
 bool RenderConfigViewer::RenderOption(

@@ -61,4 +61,14 @@ void SceneContext::Init(EventPool& pool)
 		SceneResource* scene = dynamic_cast<SceneResource*>(c_active_scene);
 		scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
 		});
+
+	pool.subscribe<RenderConfigChangedEvent>([this, &pool](RenderConfigChangedEvent e) {
+		SceneResource* scene = dynamic_cast<SceneResource*>(c_active_scene);
+
+		scene->SetSceneStatus(SceneResource::LightChanged, true);
+		for (auto& [id, light] : scene->light_list) {
+			light->InitShadowMap(e.config->RequiresMomentShadow());
+			light->is_light_changed = true;
+		}
+		});
 }
