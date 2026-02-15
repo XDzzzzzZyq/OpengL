@@ -4,11 +4,18 @@
 
 #include "pch.h"
 
+#include <filesystem>
+
 #include "Texture.h"
 #include "Shaders.h"
 
 void RendererEnvir::SetUpTestSuite()
 {
+	const auto result_root = std::filesystem::path("result");
+	std::filesystem::remove_all(result_root);
+	std::filesystem::create_directories(result_root);
+	std::filesystem::create_directories(result_root / "room_cube_faces");
+	std::filesystem::create_directories(result_root / "depth_cube_faces");
 }
 
 void RendererEnvir::TearDownTestSuite()
@@ -18,6 +25,7 @@ void RendererEnvir::TearDownTestSuite()
 
 void RendererEnvir::SetUp()
 {
+
 	EXPECT_TRUE(glfwInit()) << "glfw init error" << std::endl;
 
 	GLFWwindow* window = glfwCreateWindow(100, 100, "TEST_WINDOW", NULL, NULL);

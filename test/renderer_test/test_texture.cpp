@@ -123,8 +123,12 @@ TEST_F(RendererEnvir, Texture_Save) {
 
 		cube.SaveTexture("room_cube");
 		GLERRTEST;
+		EXPECT_TRUE(std::filesystem::exists("result/room_cube.hdr"));
+
+		cube.SaveTexture("room_cube_faces", false, true);
+		GLERRTEST;
 		LOOP(6) {
-			std::string outputPath = "result/room_cube/room_cube_" + std::to_string(i + 1) + ".hdr";
+			std::string outputPath = "result/room_cube_faces/room_cube_faces_" + std::to_string(i + 1) + ".hdr";
 			EXPECT_TRUE(std::filesystem::exists(outputPath));
 		}
 	}
@@ -151,11 +155,14 @@ TEST_F(RendererEnvir, Depth_Texture_Save) {
 		glClearTexImage(depth_cube.GetTexID(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth_val);
 		GLERRTEST;
 
-		std::filesystem::create_directories("result/depth_cube_hdr");
 		depth_cube.SaveTexture("depth_cube_hdr", false);
 		GLERRTEST;
+		EXPECT_TRUE(std::filesystem::exists("result/depth_cube_hdr.hdr"));
+
+		depth_cube.SaveTexture("depth_cube_faces", false, true);
+		GLERRTEST;
 		LOOP(6) {
-			std::string outputPath = "result/depth_cube_hdr/depth_cube_hdr_" + std::to_string(i + 1) + ".hdr";
+			std::string outputPath = "result/depth_cube_faces/depth_cube_faces_" + std::to_string(i + 1) + ".hdr";
 			EXPECT_TRUE(std::filesystem::exists(outputPath));
 		}
 
