@@ -1,15 +1,14 @@
 #pragma once
-
-#include "EventListener.h"
+#include "Events.h"
 
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
 
-class Controllers : EventListener
+class Controllers
 {
 public:
-	virtual void bind(EventPool& pool) override = 0;
+	virtual void bind(EventPool& pool) = 0;
 };
 
 class ControllerManager 

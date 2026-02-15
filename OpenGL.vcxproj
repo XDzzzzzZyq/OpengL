@@ -206,7 +206,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\editor\Events.cpp" />
     <ClCompile Include="src\editor\Controllers.cpp" />
     <ClCompile Include="src\editor\controllers\CameraController.cpp" />
-    <ClCompile Include="src\compo\EventListener.cpp" />
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\MAIN.cpp" />
     <ClCompile Include="src\core\ID.cpp" />
@@ -374,7 +373,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\editor\events\KeyMouseEvents.h" />
     <ClInclude Include="src\editor\Controllers.h" />
     <ClInclude Include="src\editor\controllers\CameraController.h" />
-    <ClInclude Include="src\compo\EventListener.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\core\ID.h" />
     <ClInclude Include="src\editor\Context.h" />
