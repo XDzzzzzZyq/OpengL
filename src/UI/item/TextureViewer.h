@@ -17,7 +17,7 @@ namespace UI {
 		TextureViewer(const std::string& name, int texID, const ImVec2& vp_size);
 		~TextureViewer();
 
-		bool show_size;
+		bool show_size{ false };
 
 		void ResetUV(const ImVec2& min, const ImVec2& max) override;
 		void ResetSize(const ImVec2& size) override;

@@ -1,6 +1,9 @@
 #include "Outliner.h"
+#include "Input.h"
 
 #include "item/OpaButton.h"
+
+#include "events/EditorEvents.h"
 
 Outliner::Outliner()
 {
@@ -33,12 +36,12 @@ void Outliner::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 	const auto obj_list = ctx.GetObjectIDs();
 
 	const ImVec2 p = ImGui::GetCursorScreenPos() - ImVec2(0, 2);
-	const ImVec2 size = ImVec2(uly_size.x, ol_width - 4);
+	const ImVec2 size = ImVec2(uly_size.x, float(ol_width - 4));
 
 	LOOP(round(uly_size.y / (ol_width * 2)) + 1) {
 		float frac = i == round(uly_size.y / (ol_width * 2)) ? uly_size.y - (2 * i + 1) * ol_width : 0;
 		frac = frac < -ol_width ? -ol_width : frac;
-		ImGui::GetForegroundDrawList()->AddRectFilled(p + ImVec2(0, i * ol_width * 2), p + ImVec2(uly_size.x, (2 * i + 1) * ol_width + frac), IM_COL32(255, 255, 255, 20));
+		ImGui::GetForegroundDrawList()->AddRectFilled(p + ImVec2(0.0, float(i * ol_width * 2)), p + ImVec2(uly_size.x, (2 * i + 1) * ol_width + frac), IM_COL32(255, 255, 255, 20));
 	}
 
 	ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.1f, 0.5f));
@@ -54,8 +57,7 @@ void Outliner::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		if (selected) ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
 
 		if (is_button_pressed) {
-			// TODO: event system
-			sel_mgr.Select((ObjectID*)obj, false);
+			evt.emit(ObjectSelectedEvent(obj->GetObjectID(), Input::input_state.key.special == Input::SHIFT));
 		}
 	}
 

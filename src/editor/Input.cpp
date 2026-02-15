@@ -197,11 +197,6 @@ float Input::GetScrollY()
 	return input_state.mouse.scroll_y;
 }
 
-bool Input::IsSelectedChanged()
-{
-	return input_state.viewport.is_selected_changed;
-}
-
 bool Input::IsGOListChanged()
 {
 	return input_state.viewport.is_GOlist_changed;

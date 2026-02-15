@@ -4,6 +4,8 @@
 #include "events/EditorEvents.h"
 #include "events/CameraEvents.h"
 
+#include "macros.h"
+
 const ObjectID* SceneContext::GetActiveCamera() const {
 	SceneResource* scene = dynamic_cast<SceneResource*>(c_active_scene);
 	if (scene == nullptr) {

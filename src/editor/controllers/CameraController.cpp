@@ -43,7 +43,7 @@ void CameraSlide(CameraSlideEvent e)
 
 void CameraResize(CameraResizeEvent e)
 {
-	e.cam->ChangeCamRatio(e.width, e.height);
+	e.cam->ChangeCamRatio(float(e.width), float(e.height));
 }
 
 void CameraController::bind(EventPool& pool)

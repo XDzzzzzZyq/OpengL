@@ -86,7 +86,6 @@ public:
 		int frame_count{ 0 };
 		bool is_sprite_selected{ false };
 		bool is_GOlist_changed{ false };
-		bool is_selected_changed{ false };
 	};
 
 // AllState
@@ -130,7 +129,6 @@ public:
 	static float GetScrollY();
 
 	// TODO: better design
-	static bool IsSelectedChanged();
 	static bool IsGOListChanged();
 	static bool IsSpriteSelected();
 	static void ResetFrameCount(int count);

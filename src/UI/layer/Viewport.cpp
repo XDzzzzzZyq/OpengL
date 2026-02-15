@@ -134,8 +134,8 @@ void Viewport::RegisterEvents(EventPool& evt)
 		if (viewport_status != HoverStatus::OnViewport) return;
 
 		if (e.mouse == Input::MouseButtons::LMB) {
-			int mouse_x = Input::GetMousePosX() - uly_pos.x;
-			int mouse_y = Input::GetMousePosY() - uly_pos.y;
+			int mouse_x = int(Input::GetMousePosX() - uly_pos.x);
+			int mouse_y = int(Input::GetMousePosY() - uly_pos.y);
 			evt.emit(ViewportSelectedEvent{ mouse_x, mouse_y, e.key == Input::SHIFT });
 		}
 		});
@@ -260,9 +260,13 @@ void Viewport::RenderHandle(const SceneContext& ctx)
 	bool hover, click;
 	ImGuizmo::Manipulate(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], Viewport::handle_mod, Viewport::trans_mod, &obj_trans[0][0], &hover, &click, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 	
-	if (hover)
-		viewport_status = HoverStatus::OnHandle;
+	if (hover) {
+		viewport_status = HoverStatus(viewport_status | HoverStatus::OnHandle);
+	}
+	else {
+		viewport_status = HoverStatus(viewport_status & ~HoverStatus::OnHandle);
+	}
 
-	if(click)
+	if(click) // TODO: event system
 		active_trans->SetTrans(obj_trans);
 }

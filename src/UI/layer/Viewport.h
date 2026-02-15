@@ -18,9 +18,9 @@ public:
 
 	enum HoverStatus
 	{
-		OnViewport,
-		OnHandle,
-		OnCameraAxis
+		OnViewport = 0,
+		OnHandle = 1 << 1,
+		OnCameraAxis = 1 << 2,
 	};
 
 	HoverStatus viewport_status{ OnViewport };

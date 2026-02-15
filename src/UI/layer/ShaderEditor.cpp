@@ -5,6 +5,7 @@
 #include "operator.h"
 
 #include "events/KeyMouseEvents.h"
+#include "events/EditorEvents.h"
 
 std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
 
@@ -260,8 +261,9 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 
 void ShaderEditor::UpdateLayer(const SceneContext& ctx)
 {
-	if (Input::IsSelectedChanged() || is_shad_type_changed || is_mode_changed) {
-		UpdateShaderEditor(ctx);
+	if (is_shad_type_changed || is_mode_changed) {
+		ObjectID* active_obj = ctx.c_selections.GetSelectedObjects();
+		UpdateShaderEditor(active_obj);
 		is_shad_type_changed = false;
 		is_mode_changed = false;
 	}
@@ -285,6 +287,10 @@ void ShaderEditor::RegisterEvents(EventPool& evt)
 	evt.subscribe<MouseScrolledEvent>([](MouseScrolledEvent e) {
 		ShaderEditor::se_node_editor.SCRLL();
 		});
+
+	evt.subscribe<SelectionChangedEvent>([this](SelectionChangedEvent e) {
+		this->UpdateShaderEditor(e.obj);
+		});
 }
 
 void ShaderEditor::UpdateKeyword()
@@ -295,9 +301,8 @@ void ShaderEditor::UpdateKeyword()
 			se_code_editor.InsertKeyword(table[i + CUSTOM_PARA]);
 }
 
-static Shaders* GetActiveShaderPtr(SceneContext& ctx)
+static Shaders* GetActiveShaderPtr(ObjectID* active_obj)
 {
-	ObjectID* active_obj = ctx.c_selections.GetSelectedObjects();
 	if (active_obj == nullptr)
 		return nullptr;
 
@@ -329,9 +334,9 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 		*_name = std::string(name);
 }
 
-void ShaderEditor::RenderShaderStruct(const SceneContext& ctx)
+void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 {
-	Shaders* shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders* shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
@@ -543,9 +548,9 @@ void ShaderEditor::RenderShaderStruct(const SceneContext& ctx)
 	}
 }
 
-void ShaderEditor::UpdateShaderEditor(const SceneContext& ctx, const std::string& _code) const {
+void ShaderEditor::UpdateShaderEditor(ObjectID* obj, const std::string& _code) const {
 
-	Shaders* shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders* shader = GetActiveShaderPtr(obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
@@ -556,9 +561,9 @@ void ShaderEditor::UpdateShaderEditor(const SceneContext& ctx, const std::string
 		se_code_editor.SetText(_code);
 }
 
-void ShaderEditor::CompileShader(const SceneContext& ctx)
+void ShaderEditor::CompileShader(ObjectID* active_obj)
 {
-	Shaders* active_shader = GetActiveShaderPtr((SceneContext&)ctx);
+	Shaders* active_shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr || active_shader == nullptr) return;
@@ -582,7 +587,8 @@ void ShaderEditor::CompileShader(const SceneContext& ctx)
 
 void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 {
-	Shaders* active_shader = GetActiveShaderPtr((SceneContext&)ctx);
+	ObjectID* active_obj = ctx.c_selections.GetSelectedObjects();
+	Shaders* active_shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
 	if (active_shader == nullptr) {
 		ImGui::Text("No active shader");
@@ -611,7 +617,7 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		ImGui::EndCombo();
 	}
 	if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x / 2, 25))) {
-		CompileShader(ctx);
+		CompileShader(active_obj);
 	}ImGui::SameLine();
 	if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
 		//active_shader->GenerateShader((ShaderType)current_shad_type);
@@ -630,7 +636,7 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 
 		break;
 	case STRUCT_EDITOR:
-		RenderShaderStruct(ctx);
+		RenderShaderStruct(active_obj);
 		break;
 	case NODE_EDITOR:
 		se_node_editor.Render(ctx, "##Node");
