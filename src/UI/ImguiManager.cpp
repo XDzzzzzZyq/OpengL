@@ -240,7 +240,6 @@ void RenderLayer(ImguiLayer* layer, const SceneContext& ctx, const EventPool& ev
 			const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
 			layer->is_mouse_hovered = Item::is_inside(layer_size, mouse_pos);
 
-			layer->UpdateLayer(ctx);
 			layer->RenderLayer(ctx, evt);
 
 			layer->is_size_changed_b = layer->is_size_changed;

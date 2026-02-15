@@ -44,7 +44,7 @@ public:
 	bool fixed_size = false;
 	mutable bool is_size_changed = false; // TODO: better design
 	mutable bool is_size_changed_b = true;
-	bool IsResizingFin() const { return (is_size_changed == false) && (is_size_changed_b == true); }
+	bool IsResized() const { return (is_size_changed == false) && (is_size_changed_b == true); }
 
 	ImVec2 uly_size;
 	ImVec2 uly_size_b;
@@ -74,10 +74,6 @@ public:
 	bool uly_show_type = false;
 	virtual void RegisterEvents(EventPool& evt) {};
 	virtual void RenderLayer(const SceneContext& ctx, const EventPool& evt) {};
-	virtual void UpdateLayer(const SceneContext& ctx) {};
-
-	// TODO: better design
-	void EventInit();
 };
 
 template<class ItemType, class... Args>

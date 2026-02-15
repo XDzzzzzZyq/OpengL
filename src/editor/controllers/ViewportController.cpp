@@ -18,7 +18,6 @@ void ViewportController::bind(EventPool& pool)
 {
 	pool.subscribe<ViewportSelectedEvent>([this, &pool](ViewportSelectedEvent e) {
 		const int id = GetSelectID(id_fb, e.pix_x, e.pix_y);
-		DEBUG(id);
 		pool.emit(ObjectSelectedEvent{ id, e.increament });
 		});
 

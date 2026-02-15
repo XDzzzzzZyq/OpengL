@@ -3,13 +3,11 @@
 ImguiLayer::ImguiLayer()
 {
 	uly_name = "";
-	EventInit();
 }
 
 ImguiLayer::ImguiLayer(const std::string& name)
 {
 	uly_name = name;
-	EventInit();
 }
 
 ImguiLayer::~ImguiLayer()
@@ -67,5 +65,3 @@ ImguiItem* ImguiLayer::FindImguiItem(int id) const
 		return nullptr;
 	return item_list[id].get();
 }
-
-void ImguiLayer::EventInit() {}

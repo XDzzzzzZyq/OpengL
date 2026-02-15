@@ -171,7 +171,7 @@ void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		RenderHandle(ctx);
 
 	// TODO: event system
-	if (IsResizingFin()) {
+	if (IsResized()) {
 		item_list[0]->ResetSize(uly_size + ImVec2(10, 10));
 		evt.emit(ViewportResizeEvent{ int(uly_size.x), int(uly_size.y) });
 	}

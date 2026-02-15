@@ -80,7 +80,7 @@ bool RenderPanel(ShaderEditor::MiniPropPanel& panel, const ImVec2& pos, S_U* out
 		if (ImGui::Button("OK", ImGui::GetContentRegionAvail())) {
 			panel.is_open = false;
 			ImGui::End();
-			if (panel.datatype == 0 || prop_name == NULL)
+			if (prop_name == NULL)
 				return false;
 
 			*out = { std::string(&prop_name), ParaType(panel.datatype), panel.prop_count };
@@ -259,16 +259,7 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 	return false;
 }
 
-void ShaderEditor::UpdateLayer(const SceneContext& ctx)
-{
-	if (is_shad_type_changed || is_mode_changed) {
-		ObjectID* active_obj = ctx.c_selections.GetSelectedObjects();
-		UpdateShaderEditor(active_obj);
-		is_shad_type_changed = false;
-		is_mode_changed = false;
-	}
-
-}
+////////////////////////////////////////////////////////////////////////////////////
 
 void ShaderEditor::RegisterEvents(EventPool& evt)
 {
@@ -400,7 +391,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddParam("Input", "number")) {
-					active_unit->sh_struct->SetInp(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+				active_unit->sh_struct->SetInp(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -416,7 +407,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddParam("Output", "number")) {
-					active_unit->sh_struct->SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+				active_unit->sh_struct->SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -548,41 +539,40 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 	}
 }
 
-void ShaderEditor::UpdateShaderEditor(ObjectID* obj, const std::string& _code) const {
+void ShaderEditor::UpdateShaderEditor(ObjectID* obj) const {
 
 	Shaders* shader = GetActiveShaderPtr(obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
 
 	if (active_unit == nullptr) return;
 
-	if (current_edit == CODE_EDITOR)
+	if (current_edit == ShaderEditor::CODE_EDITOR) {
 		se_code_editor.SetText(active_unit->sh_code);
-	else if (current_edit == STRUCT_EDITOR)
-		se_code_editor.SetText(_code);
+	}
+	UpdateKeyword();
 }
 
-void ShaderEditor::CompileShader(ObjectID* active_obj)
+bool ShaderEditor::CompileShader(ObjectID* active_obj)
 {
 	Shaders* active_shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
 
-	if (active_unit == nullptr || active_shader == nullptr) return;
+	if (active_unit == nullptr || active_shader == nullptr) return false;
 
 	Timer timer;
 	switch (current_edit) {
 	case CODE_EDITOR:
-		if (se_code_editor.GetText() == active_unit->sh_code) return;
+		if (se_code_editor.GetText() == active_unit->sh_code) return false;
 		active_shader->ParseShaderCode(se_code_editor.GetText(), (ShaderType)current_shad_type);
-		UpdateKeyword();
 		break;
 	case STRUCT_EDITOR:
-		is_shad_type_changed = true;
-		if (!active_unit->sh_struct->is_struct_changed) return;
+		if (!active_unit->sh_struct->is_struct_changed) return false;
 		active_shader->GenerateShader((ShaderType)current_shad_type);
 		break;
 	}
 
 	active_shader->RelinkShader((ShaderType)current_shad_type);
+	return true;
 }
 
 void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
@@ -594,12 +584,13 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		ImGui::Text("No active shader");
 		return;
 	}
+	bool is_mode_changed = false, is_shad_type_changed = false, is_shader_changed = false;
 
 	if (ImGui::BeginCombo("Edit Mode", edit_mode[current_edit].c_str())) {
 		LOOP(3)
 			if (ImGui::Selectable(edit_mode[i].c_str(), &sel)) {
-				current_edit = i;
-				is_mode_changed = true;
+				is_mode_changed |= current_edit != i;
+				current_edit = ShaderEditMode(i);
 			}
 
 		ImGui::EndCombo();
@@ -609,15 +600,15 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		LOOP(all_types.size()) {
 			const ShaderType type = all_types[i];
 			if (ImGui::Selectable(Shaders::shader_type[type].c_str(), &sel)) {
+				is_shad_type_changed |= current_shad_type != type;
 				current_shad_type = type;
-				is_shad_type_changed = true;
 			}
 		}
 
 		ImGui::EndCombo();
 	}
 	if (ImGui::Button("Compile", ImVec2(ImGui::GetContentRegionAvail().x / 2, 25))) {
-		CompileShader(active_obj);
+		is_shader_changed = CompileShader(active_obj);
 	}ImGui::SameLine();
 	if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
 		//active_shader->GenerateShader((ShaderType)current_shad_type);
@@ -628,9 +619,7 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 	switch (current_edit)
 	{
 	case CODE_EDITOR:
-		UpdateKeyword();
 		if (active_unit) {
-			//DEBUG(SE_CodeEditor.IsTextChanged())
 			se_code_editor.Render("##Editor", ImGui::GetContentRegionAvail());
 		}
 
@@ -641,6 +630,10 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 	case NODE_EDITOR:
 		se_node_editor.Render(ctx, "##Node");
 		break;
+	}
+
+	if (is_shad_type_changed || is_mode_changed || (is_shader_changed && current_edit != ShaderEditor::CODE_EDITOR)) {
+		UpdateShaderEditor(active_obj);
 	}
 }
 

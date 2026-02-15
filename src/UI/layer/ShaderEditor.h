@@ -6,10 +6,6 @@
 
 #include <string>
 
-enum ShEditMode {
-	CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
-};
-
 class ShaderEditor : public ImguiLayer
 {
 public:
@@ -28,11 +24,15 @@ public: // TODO: use private
 
 private:
 
+	enum ShaderEditMode {
+		CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
+	};
+
 	static const std::string edit_mode[3];
 	int active_func{0};
 
-	int current_edit = 0, current_shad_type = 0;
-	bool is_mode_changed = true, is_shad_type_changed = true;
+	ShaderEditMode current_edit = CODE_EDITOR;
+	int current_shad_type = 0;
 	bool sel;
 
 public:
@@ -50,12 +50,11 @@ public:
 	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
 	bool AddStruct(bool def_type = false);
 	bool AddLink();
-	void CompileShader(ObjectID* active_obj);
+	bool CompileShader(ObjectID* active_obj);
 
 public:
 
-	void UpdateShaderEditor(ObjectID* active_obj, const std::string& _code = "") const;
-	void UpdateLayer(const SceneContext& ctx) override;
+	void UpdateShaderEditor(ObjectID* active_obj) const;
 	void RegisterEvents(EventPool& evt) override;
 	static void UpdateKeyword();
 
