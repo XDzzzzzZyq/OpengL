@@ -57,7 +57,7 @@ void Outliner::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		if (selected) ImGui::GetStyle().Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
 
 		if (is_button_pressed) {
-			evt.emit(ObjectSelectedEvent(obj->GetObjectID(), Input::input_state.key.special == Input::SHIFT));
+			evt.emit(ObjectSelectedEvent(obj->GetObjectID(), Input::IsKeyPressed(Input::SHIFT)));
 		}
 	}
 

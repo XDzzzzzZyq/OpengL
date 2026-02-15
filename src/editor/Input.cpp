@@ -138,6 +138,11 @@ bool Input::IsMousePressed()
 	return input_state.mouse.button != MouseButtons::NONE;
 }
 
+bool Input::IsMousePressed(MouseButtons button)
+{
+	return input_state.mouse.button == button;
+}
+
 bool Input::IsMouseLeft()
 {
 	return input_state.mouse.button == MouseButtons::NONE && input_state_b.mouse.button != MouseButtons::NONE;
@@ -153,6 +158,11 @@ bool Input::IsKeyClicked()
 bool Input::IsKeyPressed()
 {
 	return input_state.key.special != NONE || input_state.key.normal != 0;
+}
+
+bool Input::IsKeyPressed(SpecialKeys spe_key)
+{
+	return input_state.key.special == spe_key;
 }
 
 bool Input::IsKeyLeft()

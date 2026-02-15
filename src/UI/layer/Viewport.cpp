@@ -176,18 +176,18 @@ void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 	}
 
 	if (is_mouse_hovered) {
-		if (Input::IsMousePressed() && Input::input_state.mouse.button == Input::MouseButtons::MMB) {
+		if (Input::IsMousePressed(Input::MouseButtons::MMB)) {
 			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-			if (Input::input_state.key.special & Input::CTRL) {
+			if (Input::IsKeyPressed(Input::CTRL)) {
 				evt.emit(CameraPushEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY()});
 			}
-			else if (Input::input_state.key.special & Input::SHIFT) {
+			else if (Input::IsKeyPressed(Input::SHIFT)) {
 				evt.emit(CameraSlideEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
 			}
-			else if (Input::input_state.key.special & Input::ALT) {
+			else if (Input::IsKeyPressed(Input::ALT)) {
 				evt.emit(CameraSpinEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
 			}
-			else if (Input::input_state.key.special == Input::NONE) {
+			else if (Input::IsKeyPressed(Input::NONE)) {
 				evt.emit(CameraRotateEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY() });
 			}
 		}

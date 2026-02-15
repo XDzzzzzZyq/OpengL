@@ -112,12 +112,14 @@ public:
 public:
 	static bool IsKeyClicked();
 	static bool IsKeyPressed();
+	static bool IsKeyPressed(SpecialKeys spe_key);
 	static bool IsKeyLeft();
 
 	static bool IsMouseScrolled();
 
 	static bool IsMouseClicked();
 	static bool IsMousePressed();
+	static bool IsMousePressed(MouseButtons button);
 	static bool IsMouseLeft();
 
 	static float GetMousePosX();
