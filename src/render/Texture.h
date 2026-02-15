@@ -102,6 +102,7 @@ public: // for texture processing
 	void GenCubeMapFrom(const Texture& _Tar_Tex, int res = 1024);
 	void GenERectMapFrom(const Texture& _Tar_Tex, int _w = 2048, int _h = 1024);
 	void ConvertDepthFrom(const Texture& _Tar_Tex);
+	void ConvertDepthCubeFrom(const Texture& _Tar_Tex);
 	void ConvertPNGFrom(const Texture& _Tar_Tex);
 
 	void FillColor(const glm::vec4 col);
@@ -113,6 +114,7 @@ private:
 	void GenCubeMap(GLuint _tar_ID, int _tar_res, TextureType _tar_type = IBL_TEXTURE);
 	void GenERectMap(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = IBL_TEXTURE);
 	void ConvertDepth(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = DEPTH_TEXTURE);
+	void ConvertDepthCube(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = DEPTH_CUBE_TEXTURE);
 	void ConvertPNG(GLuint _tar_ID, int _w, int _h);
 
 public:

@@ -342,6 +342,7 @@
     <None Include="res\shaders\pps\Box_Blur.comp" />
     <None Include="res\shaders\shadow\Shadow_Point_VSSM.comp" />
     <None Include="res\shaders\convert\SAT_Cube.comp" />
+    <None Include="res\shaders\convert\Depth_Texture_C2C.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\tex\testImg.jpg">

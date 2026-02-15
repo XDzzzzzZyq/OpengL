@@ -294,6 +294,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\6sides_trans.geom" />
     <None Include="res\shaders\convert\C2E.comp" />
     <None Include="res\shaders\convert\Depth_Texture.comp" />
+    <None Include="res\shaders\convert\Depth_Texture_C2C.comp" />
     <None Include="res\shaders\convert\Depth_Texture_C2E.comp" />
     <None Include="res\shaders\convert\E2C.comp" />
     <None Include="res\shaders\convert\HDR2PNG.comp" />
