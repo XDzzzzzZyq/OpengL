@@ -42,7 +42,7 @@ public:
 	ShaderEditor(const std::string& name);
 	~ShaderEditor();
 
-public:
+private:
 
 	
 	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
@@ -53,13 +53,13 @@ public:
 public:
 
 	void RegisterEvents(EventPool& evt) override;
+	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
+
+private:
 	void UpdateShaderEditor(ObjectID* active_obj);
 	void UpdateKeyword();
 
-public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderShaderStruct(ObjectID* active_obj);
-
-	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
 };
