@@ -23,8 +23,6 @@ void ImguiManager::Init(EventPool& evt)
 	RegistarMenuEvents(evt);
 	RegisterLayerEvents(evt);
 
-	ShaderEditor::InitEditors();
-
 	GLFWwindow* window = glfwGetCurrentContext();
 
 	ImGui_ImplOpenGL3_Init();

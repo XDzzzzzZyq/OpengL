@@ -7,27 +7,18 @@
 #include "events/KeyMouseEvents.h"
 #include "events/EditorEvents.h"
 
-std::string const ShaderEditor::edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
-
-TextEditor ShaderEditor::se_code_editor{};
-NodeEditor ShaderEditor::se_node_editor{};
+const std::string edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
 
 ShaderEditor::ShaderEditor()
 	:ShaderEditor("Shader Editor")
-{
-
-}
+{}
 
 ShaderEditor::ShaderEditor(const std::string& name)
 {
 	uly_name = name;
-	//Editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
-}
 
-void ShaderEditor::InitEditors()
-{
-	ShaderEditor::se_code_editor.Init();
-	ShaderEditor::se_node_editor = NodeEditor(SHADER_NODE_EDITOR);
+	se_code_editor.Init();
+	se_node_editor = NodeEditor(SHADER_NODE_EDITOR);
 }
 
 ShaderEditor::~ShaderEditor()
@@ -263,20 +254,20 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 
 void ShaderEditor::RegisterEvents(EventPool& evt)
 {
-	evt.subscribe<MouseClickEvent>([](MouseClickEvent e) {
+	evt.subscribe<MouseClickEvent>([this](MouseClickEvent e) {
 		if (e.mouse == Input::MouseButtons::LMB) { // LMB
-			ShaderEditor::se_node_editor.LMB();
+			se_node_editor.LMB();
 		}
 		else if (e.mouse == Input::MouseButtons::MMB) { // MMB
 			if (e.key & Input::SpecialKeys::SHIFT)
-				ShaderEditor::se_node_editor.SHIFT_MMB();
+				se_node_editor.SHIFT_MMB();
 			else if (e.key & Input::SpecialKeys::CTRL)
-				ShaderEditor::se_node_editor.CTRL_MMB();
+				se_node_editor.CTRL_MMB();
 		}
 		});
 
-	evt.subscribe<MouseScrolledEvent>([](MouseScrolledEvent e) {
-		ShaderEditor::se_node_editor.SCRLL();
+	evt.subscribe<MouseScrolledEvent>([this](MouseScrolledEvent e) {
+		se_node_editor.SCRLL();
 		});
 
 	evt.subscribe<SelectionChangedEvent>([this](SelectionChangedEvent e) {
@@ -539,7 +530,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 	}
 }
 
-void ShaderEditor::UpdateShaderEditor(ObjectID* obj) const {
+void ShaderEditor::UpdateShaderEditor(ObjectID* obj) {
 
 	Shaders* shader = GetActiveShaderPtr(obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);

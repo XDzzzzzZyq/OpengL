@@ -17,10 +17,11 @@ public:
 		ImVec2 panel_pos{ ImVec2(0,0) };
 	};
 
-public: // TODO: use private
+private:
 
-	static TextEditor se_code_editor;
-	static NodeEditor se_node_editor;
+	TextEditor se_code_editor{};
+	NodeEditor se_node_editor{};
+	MiniPropPanel se_panel;
 
 private:
 
@@ -28,24 +29,21 @@ private:
 		CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
 	};
 
-	static const std::string edit_mode[3];
 	int active_func{0};
 
 	ShaderEditMode current_edit = CODE_EDITOR;
 	int current_shad_type = 0;
 	bool sel;
+	char add_name[CHAR_MAX];
 
 public:
 
 	ShaderEditor();
 	ShaderEditor(const std::string& name);
-	static void InitEditors(); // TODO: not necessary
 	~ShaderEditor();
 
 public:
 
-	mutable MiniPropPanel se_panel;
-	mutable char add_name[CHAR_MAX];
 	
 	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
 	bool AddStruct(bool def_type = false);
@@ -54,9 +52,9 @@ public:
 
 public:
 
-	void UpdateShaderEditor(ObjectID* active_obj) const;
 	void RegisterEvents(EventPool& evt) override;
-	static void UpdateKeyword();
+	void UpdateShaderEditor(ObjectID* active_obj);
+	void UpdateKeyword();
 
 public:
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
