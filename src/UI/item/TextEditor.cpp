@@ -1507,7 +1507,7 @@ void TextEditor::InsertKeyword(std::string _kw)
 	mLanguageDefinition.mKeywords.insert(_kw);
 }
 
-bool TextEditor::ChechKeyword(std::string _kw) const
+bool TextEditor::CheckKeyword(std::string _kw) const
 {
 	return mLanguageDefinition.mKeywords.find(_kw) != mLanguageDefinition.mKeywords.end();
 }

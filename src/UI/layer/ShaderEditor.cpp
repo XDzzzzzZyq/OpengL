@@ -263,7 +263,7 @@ void ShaderEditor::UpdateKeyword()
 {
 	auto& table = ShaderStruct::type_table;
 	LOOP(table.size() - CUSTOM_PARA)
-		if (!se_code_editor.ChechKeyword(table[i + CUSTOM_PARA]))
+		if (!se_code_editor.CheckKeyword(table[i + CUSTOM_PARA]))
 			se_code_editor.InsertKeyword(table[i + CUSTOM_PARA]);
 }
 
