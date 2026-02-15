@@ -22,6 +22,13 @@ void EventPool::EmitGlobalEvent()
 			state.mouse.mouse_y });
 	}
 
+	if (Input::IsMouseScrolled()) {
+		emit(MouseScrolledEvent{
+			state.key.special,
+			state.mouse.scroll_x,
+			state.mouse.scroll_y });
+	}
+
 	if (Input::IsKeyClicked()) {
 		emit(KeyClickEvent{ state.key });
 	}

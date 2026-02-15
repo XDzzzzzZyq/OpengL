@@ -31,7 +31,7 @@ private:
 
 	int active_func{0};
 
-	ShaderEditMode current_edit = CODE_EDITOR;
+	ShaderEditMode current_edit = NODE_EDITOR;
 	int current_shad_type = 0;
 	bool sel;
 	char add_name[CHAR_MAX];

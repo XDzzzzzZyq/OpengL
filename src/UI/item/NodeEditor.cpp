@@ -122,7 +122,7 @@ void NodeEditor::ResetState()
 	editing_cn_type = O_I;
 	tar_pin_pos = { 0,0 };
 
-	if (!LMB_press)
+	if (Input::input_state.key.special != Input::SHIFT)
 		is_node_movable = true;
 }
 
@@ -204,7 +204,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 			ImGui::GetWindowDrawList()->AddText(font, 4 * o_scale[0], node.min - ImVec2(-6, 4.5) * o_scale, IM_COL32(255, 255, 255, 255), node->n_name.c_str());
 			ImGui::RenderArrow(ImGui::GetWindowDrawList(), node->is_open ? arror_up : arror_dn, IM_COL32(255, 255, 255, 255), node->is_open ? ImGuiDir_Down : ImGuiDir_Right, o_scale[0] * 0.2f);
 
-			if (LMB_press && Input::IsMouseClicked())
+			if (Input::IsMouseClicked() && Input::IsMousePressed(Input::MouseButtons::LMB))
 				if (node.header < ImGui::GetMousePos() && ImGui::GetMousePos() < node.max) {
 					if (ImGui::GetMousePos() < ImVec2(node.header.x + ((float)node.max.x - node.header.x) * 0.125f, node.min.y))
 						node->is_open = !node->is_open;
@@ -401,7 +401,7 @@ void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec
 
 
 			//[  Move  ]
-			if (node->n_id == active_node_id && is_node_movable && LMB_press)
+			if (node->n_id == active_node_id && is_node_movable && Input::IsMousePressed(Input::MouseButtons::LMB))
 				if (!is_editing_pin_in && !is_editing_pin_out) {
 					const glm::vec2 mouse_delta = glm::vec2(Input::GetDeltaMouseX(), Input::GetDeltaMouseY());
 					node->Move((glm::vec2(-1, 1) / o_scale) * mouse_delta);
@@ -565,35 +565,25 @@ void NodeEditor::Reset()
 
 		no_node_clicked = true;
 	}
-
-	LMB_press = false;
 }
 
-void NodeEditor::LMB()
-{
-	LMB_press = true;
-}
-
-void NodeEditor::SHIFT_MMB()
+void NodeEditor::MoveView()
 {
 	const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
-	if (Item::is_inside(NE_size, mouse_pos))
-		Move({ Input::GetDeltaMouseX() / o_scale[0], Input::GetDeltaMouseY() / o_scale[0] });
+	Move({ Input::GetDeltaMouseX() / o_scale[0], Input::GetDeltaMouseY() / o_scale[0] });
 }
 
 #include "xdz_math.h"
-void NodeEditor::CTRL_MMB()
+void NodeEditor::PushView()
 {
 	const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
-	if (Item::is_inside(NE_size, mouse_pos))
-		Zoom((float)glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(Input::GetDeltaMouseX(), Input::GetDeltaMouseY())));
+	Zoom((float)glm::pow(0.8f, -0.05 * xdzm::dir_float_dist(Input::GetDeltaMouseX(), Input::GetDeltaMouseY())));
 }
 
-void NodeEditor::SCRLL()
+void NodeEditor::ZoomView()
 {
 	const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
-	if (Item::is_inside(NE_size, mouse_pos))
-		Zoom(glm::pow(0.8f, -Input::GetScrollY()));
+	Zoom(glm::pow(0.8f, -Input::GetScrollY()));
 }
 
 

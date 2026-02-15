@@ -254,22 +254,6 @@ bool ShaderEditor::AddStruct(bool def_type /*= false*/)
 
 void ShaderEditor::RegisterEvents(EventPool& evt)
 {
-	evt.subscribe<MouseClickEvent>([this](MouseClickEvent e) {
-		if (e.mouse == Input::MouseButtons::LMB) { // LMB
-			se_node_editor.LMB();
-		}
-		else if (e.mouse == Input::MouseButtons::MMB) { // MMB
-			if (e.key & Input::SpecialKeys::SHIFT)
-				se_node_editor.SHIFT_MMB();
-			else if (e.key & Input::SpecialKeys::CTRL)
-				se_node_editor.CTRL_MMB();
-		}
-		});
-
-	evt.subscribe<MouseScrolledEvent>([this](MouseScrolledEvent e) {
-		se_node_editor.SCRLL();
-		});
-
 	evt.subscribe<SelectionChangedEvent>([this](SelectionChangedEvent e) {
 		this->UpdateShaderEditor(e.obj);
 		});
@@ -625,6 +609,19 @@ void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 
 	if (is_shad_type_changed || is_mode_changed || (is_shader_changed && current_edit != ShaderEditor::CODE_EDITOR)) {
 		UpdateShaderEditor(active_obj);
+	}
+
+	if (is_mouse_hovered && current_edit == NODE_EDITOR) {
+		if (Input::IsMousePressed(Input::MouseButtons::MMB)) { // MMB
+			if (Input::IsKeyPressed(Input::SHIFT) || Input::IsKeyPressed(Input::NONE))
+				se_node_editor.MoveView();
+			else if (Input::IsKeyPressed(Input::CTRL))
+				se_node_editor.PushView();
+		}
+
+		if (Input::IsMouseScrolled()) {
+			se_node_editor.ZoomView();
+		}
 	}
 }
 

@@ -58,6 +58,7 @@ public:
 class NodeEditor : public Transform2D
 {
 private:
+	// Out -> In | Out -> Mouse | Mouse -> In
 	enum ConnectType { O_I, O_M, M_I };
 	enum MarkType { NONE_MARK, ADD_MARK, MINUS_MARK, SELECT_MARK, MOVE_MARK, CUT_MARK };
 private:
@@ -91,7 +92,6 @@ private:
 	bool is_press_on_in{};
 	bool is_hover_on_out{};
 	bool is_press_on_out{};
-	bool LMB_press = false;
 
 	bool is_node_movable{};
 
@@ -116,9 +116,8 @@ public:
 	void Resize();
 	void Reset();
 
-	void LMB();
-	void SHIFT_MMB();
-	void CTRL_MMB();
-	void SCRLL();
+	void MoveView();
+	void PushView();
+	void ZoomView();
 };
 
