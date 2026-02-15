@@ -2,6 +2,12 @@
 #include "ID.h"
 #include "RenderConfigs.h"
 
+enum ModifyFlags
+{
+	NoChanges,
+	ShadowChanged = 1 << 0
+};
+
 struct ObjectSelectedEvent{
 	int UID;
 	bool increament;
@@ -22,5 +28,5 @@ struct RenderSurfaceResizedEvent {
 
 struct RenderConfigChangedEvent {
 	const RenderConfigs* config;
-	int flag;
+	ModifyFlags flag;
 };

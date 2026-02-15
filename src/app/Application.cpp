@@ -63,8 +63,6 @@ int Application::Init()
 	// 		UI.GetStyle().Colors[ImGuiCol_WindowBg].w = 1.0f;
 	// 	}
 
-	EventPool.emit<FrameBufferResetEvent>({ &renderer.r_buffer_list[0], renderer.GetFrameBufferPtr() });
-
 #if 0
 	renderer.UseScene(SceneManager::SceneConfig3());
 	renderer.r_using_shadow_map = false;
@@ -74,13 +72,19 @@ int Application::Init()
 	Ctx.UseScene(SceneManager::Shadow().get());
 
 	renderer.GetConfig()->r_ao_radius = 0.8f;
+	Light::area_blur_range = 0.03f;
+
+	EventPool.emit<FrameBufferResetEvent>({ &renderer.r_buffer_list[0], renderer.GetFrameBufferPtr() });
+	EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), ModifyFlags::ShadowChanged});
+
 	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
 	// TODO: event system
 	renderer.r_light_data.ParseLightData(scene->light_list);
 	renderer.r_light_data.ParsePolygonLightData(scene->poly_light_list);
 	//renderer.r_render_icons = false;
 
-	Light::area_blur_range = 0.03f;
+
+	
 #endif
 
 	/* Make the window's context current */
@@ -136,7 +140,7 @@ int Application::Run()
 	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
 	UI.FindImguiMenuItem("Render", "Screen Space Reflection")->BindOption(&renderer.GetConfig()->r_ssr_algorithm);
 	UI.FindImguiMenuItem("Render", "Shadow")->BindOption(&renderer.GetConfig()->r_shadow_algorithm, [&](bool) -> bool { 
-		EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), RenderConfigs::ShadowChanged});
+		EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), ModifyFlags::ShadowChanged});
 		return true; 
 		});
 	UI.FindImguiMenuItem("Render", "Ambient Occlusion")->BindOption(&renderer.GetConfig()->r_ao_algorithm);

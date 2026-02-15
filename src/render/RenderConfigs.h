@@ -73,14 +73,6 @@ public:
 	ShadowAlg r_shadow_algorithm = ShadowAlg::ShadowMapping;
 
 public:
-	// TODO: should not be here
-	enum ModifyFlags
-	{
-		NoChanges,
-		ShadowChanged = 1 << 0
-	};
-
-public:
 
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;

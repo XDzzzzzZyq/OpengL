@@ -26,7 +26,7 @@ void RenderConfigViewer::RenderLayer(const SceneContext& ctx, const EventPool& e
 	}
 
 	bool modified = false;
-	int flag = 0;
+	ModifyFlags flag = ModifyFlags::NoChanges;
 
 	modified = RenderOption((char*)&active_config->r_pipeline,			"Rendering PipeLine",		OPTIONS("Forward", "Deferred", "Custom (future)"));
 	modified = RenderOption((char*)&active_config->r_sampling_average,	"Sampling",					OPTIONS("Average", "Increment Average"));
@@ -34,10 +34,10 @@ void RenderConfigViewer::RenderLayer(const SceneContext& ctx, const EventPool& e
 	modified = RenderOption((char*)&active_config->r_anti_alias,		"Anti Aliasing",			OPTIONS("None", "MSAA (future)", "FXAA"));
 	modified = RenderOption((char*)&active_config->r_ssr_algorithm,		"Screen Space Reflection",	OPTIONS("None", "Ray Marching", "SDF Ray Marching", "SDF Resolved Ray Marching"));
 	modified = RenderOption((char*)&active_config->r_shadow_algorithm,	"Shadow",					OPTIONS("None", "Shadow Mapping", "SDF Soft Shadow", "Variance Soft Shadow", "Moment Soft Shadow"));
-	if (modified) flag |= RenderConfigs::ShadowChanged;
+	if (modified) flag = ModifyFlags(flag | ModifyFlags::ShadowChanged);
 	modified = RenderOption((char*)&active_config->r_ao_algorithm,		"Ambient Occlusion",		OPTIONS("None", "SSAO", "HBAO (future)"));
 	
-	if (flag != RenderConfigs::NoChanges) {
+	if (flag != ModifyFlags::NoChanges) {
 		evt.emit<RenderConfigChangedEvent>({ active_config, flag });
 	}
 }
