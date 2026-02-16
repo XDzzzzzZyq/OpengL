@@ -107,11 +107,11 @@ TEST_F(RendererEnvir, Texture_Save) {
 		int w = tex.GetW();
 		int h = tex.GetH();
 
-		tex.SaveTexture("room_save", false);
+		tex.SaveTexture("room_save", false, false);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/room_save.hdr"));
 
-		tex.SaveTexture("room_save", true);
+		tex.SaveTexture("room_save", true, false);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/room_save.png"));
 
@@ -121,7 +121,7 @@ TEST_F(RendererEnvir, Texture_Save) {
 		GLERRTEST;
 		EXPECT_EQ(cube.GetW(), 512);
 
-		cube.SaveTexture("room_cube");
+		cube.SaveTexture("room_cube", true, true);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/room_cube.hdr"));
 
@@ -141,11 +141,11 @@ TEST_F(RendererEnvir, Depth_Texture_Save) {
 		glClearTexImage(depth2d.GetTexID(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth_val);
 		GLERRTEST;
 
-		depth2d.SaveTexture("depth2d_hdr", false);
+		depth2d.SaveTexture("depth2d_hdr", false, false);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/depth2d_hdr.hdr"));
 		DEBUG("PASS");
-		depth2d.SaveTexture("depth2d_png", true);
+		depth2d.SaveTexture("depth2d_png", true, false);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/depth2d_png.png"));
 	}
@@ -155,7 +155,7 @@ TEST_F(RendererEnvir, Depth_Texture_Save) {
 		glClearTexImage(depth_cube.GetTexID(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth_val);
 		GLERRTEST;
 
-		depth_cube.SaveTexture("depth_cube_hdr", false);
+		depth_cube.SaveTexture("depth_cube_hdr", false, false);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/depth_cube_hdr.hdr"));
 
@@ -166,7 +166,7 @@ TEST_F(RendererEnvir, Depth_Texture_Save) {
 			EXPECT_TRUE(std::filesystem::exists(outputPath));
 		}
 
-		depth_cube.SaveTexture("depth_cube_png", true);
+		depth_cube.SaveTexture("depth_cube_png", true, true);
 		GLERRTEST;
 		EXPECT_TRUE(std::filesystem::exists("result/depth_cube_png.png"));
 	}

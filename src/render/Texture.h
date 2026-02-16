@@ -119,7 +119,7 @@ private:
 
 public:
 
-	void SaveTexture(std::string _path, bool force_png=false) const;
+	void SaveTexture(std::string _path, bool force_png=false, bool force_cube=false) const;
 	void PrintTexture() const;
 };
 

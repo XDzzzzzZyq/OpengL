@@ -269,6 +269,9 @@ void Texture::Resize(const glm::vec2& size)
 
 void Texture::Resize(GLuint x, GLuint y)
 {
+	if(im_w == (int)x && im_h == (int)y)
+		return;
+
 	im_w = x;
 	im_h = y;
 
@@ -706,13 +709,25 @@ void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 }
 
 #include "stb_image_write.h"
-void Texture::SaveTexture(std::string _path, bool force_png) const
+void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) const
 {
 	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
 	static std::string root = "result/";
 	int status = -1;
 	stbi_flip_vertically_on_write(1);
 	glBindTexture(gl_type, tex_ID);
+	if (gl_type == GL_TEXTURE_CUBE_MAP && !force_cube) {
+		Texture rect_map;
+		if (layout == GL_DEPTH_COMPONENT) {
+			Texture depth_cube;
+			depth_cube.ConvertDepthCubeFrom(*this);
+			rect_map.GenERectMapFrom(depth_cube, depth_cube.GetW() * 2, depth_cube.GetH());
+		} else {
+			rect_map.GenERectMapFrom(*this, im_w * 2, im_h);
+		}
+		rect_map.SaveTexture(_path, force_png, true);
+		return;
+	}
 	if (layout == GL_DEPTH_COMPONENT) {		// Depth Texture
 		if (force_png) {
 			static Texture depth_png;
@@ -739,7 +754,7 @@ void Texture::SaveTexture(std::string _path, bool force_png) const
 		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
 			Texture depth_cube;
 			depth_cube.ConvertDepthCubeFrom(*this);
-			depth_cube.SaveTexture(_path, false);
+			depth_cube.SaveTexture(_path, false, true);
 		}
 		else {
 			assert(false && "No depth map format matched");
