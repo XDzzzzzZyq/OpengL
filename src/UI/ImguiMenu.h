@@ -26,7 +26,7 @@ public:
 
 	ImguiMenuItem* FindMenuItem(const std::string _name);
 
-	void RenderMenu(const SceneContext& ctx) const;
+	void RenderMenu(const Context& ctx) const;
 };
 
 

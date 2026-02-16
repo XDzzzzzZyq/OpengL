@@ -130,7 +130,7 @@ float NodeEditor::th_curvity = 1.6f;
 float NodeEditor::th_offset = 5;
 float NodeEditor::th_rounding = 2;
 
-void NodeEditor::Render(const SceneContext& ctx, const char* _lable, const ImVec2& _size /*= {0,0}*/)
+void NodeEditor::Render(const Context& ctx, const char* _lable, const ImVec2& _size /*= {0,0}*/)
 {
 	ImGui::Separator();
 	if (ImGui::BeginChild(_lable, ImGui::GetContentRegionAvail(), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground)) {

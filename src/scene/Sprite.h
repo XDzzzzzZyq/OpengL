@@ -31,8 +31,8 @@ public:
 
 	Sprite();
 
-	void RenderSprite(const SceneContext& ctx, const glm::vec3& pos, const glm::vec3& col, int id);
-	void RenderSprite(const SceneContext& ctx);
+	void RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::vec3& col, int id);
+	void RenderSprite(const Context& ctx);
 
 	void SetSpriteShader();
 	std::string ParsePath() const;

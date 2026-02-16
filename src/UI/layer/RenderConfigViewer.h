@@ -11,7 +11,7 @@ public:
 	~RenderConfigViewer();
 
 public:
-	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 
 	bool RenderOption(char* option, std::string name, const std::vector<std::string>& option_names);
 	bool RenderSlider(char);

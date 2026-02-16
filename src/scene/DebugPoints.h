@@ -40,7 +40,7 @@ public:
 	DebugPoints();
 	DebugPoints(const std::vector<glm::vec3>& pos_list);
 
-	void RenderDebugPoint(const SceneContext& ctx);
+	void RenderDebugPoint(const Context& ctx);
 
 	void SetDebugPointsShader(PointType type, bool proj);
 	void PushDebugPoint(const glm::vec3& point);

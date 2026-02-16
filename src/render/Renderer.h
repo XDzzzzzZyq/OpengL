@@ -68,13 +68,13 @@ public:
 public:
 
 	void NewFrame();
-	void Render(const SceneContext& ctx, bool rend = true, bool buff = true);
+	void Render(const Context& ctx, bool rend = true, bool buff = true);
 
 public:
 
 	void Reset();
 
-	void ConstructSDF(const SceneContext& ctx);
+	void ConstructSDF(const Context& ctx);
 
 public:
 

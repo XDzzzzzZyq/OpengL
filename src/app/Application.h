@@ -24,7 +24,7 @@ public:
 	Input InputManager{};
 	EventPool EventPool{};
 	ControllerManager Controllers{};
-	SceneContext Ctx{};
+	Context Ctx{};
 	Renderer renderer{};
 	ImguiManager UI{};
 	GLFWwindow* window{ nullptr };

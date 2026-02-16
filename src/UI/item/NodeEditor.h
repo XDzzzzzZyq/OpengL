@@ -106,7 +106,7 @@ public:
 	NodeEditor() {};
 
 public:
-	void Render(const SceneContext& ctx, const char* _lable, const ImVec2& _size = {0,0});
+	void Render(const Context& ctx, const char* _lable, const ImVec2& _size = {0,0});
 
 	static void RenderNode(Nodes& _node);
 	static void RenderMark(MarkType _type, bool _is_left = true);

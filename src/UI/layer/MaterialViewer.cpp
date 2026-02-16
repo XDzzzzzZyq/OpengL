@@ -16,9 +16,9 @@ MaterialViewer::~MaterialViewer()
 
 }
 
-static Material* GetActiveMatPtr(const SceneContext& ctx)
+static Material* GetActiveMatPtr(const Context& ctx)
 {
-	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_object = ctx.editor.selections.GetSelectedObjects();
 	if (active_object == nullptr)
 		return nullptr;
 
@@ -61,7 +61,7 @@ void MaterialViewer::RenderName(std::string& _name, bool read_only /*= false*/)
 	ImGui::NewLine();
 }
 
-void MaterialViewer::RenderLayer(const SceneContext& ctx, const EventPool& evt)
+void MaterialViewer::RenderLayer(const Context& ctx, const EventPool& evt)
 {
 	Material* active_material = GetActiveMatPtr(ctx);
 	if (active_material == nullptr) {

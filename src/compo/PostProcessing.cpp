@@ -59,7 +59,7 @@ void PostProcessing::RenderPPS(const glm::vec2& _scr_size /*= glm::vec2(0)*/, GL
 	}
 }
 
-void PostProcessing::RenderPPSSpr(const SceneContext& ctx)
+void PostProcessing::RenderPPSSpr(const Context& ctx)
 {
 	pps_sprite.RenderSprite(ctx, pps_field.o_position, glm::vec3(1), GetObjectID());
 }

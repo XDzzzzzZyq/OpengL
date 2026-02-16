@@ -69,7 +69,7 @@ int Application::Init()
 	renderer.r_using_ssr = false;
 #else
 	// TODO: better binding
-	Ctx.UseScene(SceneManager::Shadow().get());
+	Ctx.scene.UseScene(SceneManager::Shadow().get());
 
 	renderer.GetConfig()->r_ao_radius = 0.8f;
 	Light::area_blur_range = 0.03f;
@@ -77,10 +77,11 @@ int Application::Init()
 	EventPool.emit<FrameBufferResetEvent>({ &renderer.r_buffer_list[0], renderer.GetFrameBufferPtr() });
 	EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), ModifyFlags::ShadowChanged});
 
-	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
 	// TODO: event system
 	renderer.r_light_data.ParseLightData(scene->light_list);
 	renderer.r_light_data.ParsePolygonLightData(scene->poly_light_list);
+	Ctx.render.config = renderer.GetConfig();
 	//renderer.r_render_icons = false;
 
 
@@ -115,7 +116,7 @@ int Application::Run()
 
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
-		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
 		tex_type++;
 		if (tex_type >= MAX_FB)tex_type = 0;
 		scene->GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
@@ -134,7 +135,7 @@ int Application::Run()
 		});
 
 	UI.FindImguiLayerAs<Viewport>("Viewport")->display_grid = false;
-	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
 	UI.FindImguiMenuItem("Render", "Rendering PipeLine")->BindOption(&renderer.GetConfig()->r_pipeline);
 	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.GetConfig()->r_of_algorithm);
 	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
@@ -185,7 +186,7 @@ int Application::Run()
 
 		UI.RenderUI(Ctx, EventPool);
 
-		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.c_active_scene);
+		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
 		/* Render here */		
 		renderer.Render(Ctx);
 

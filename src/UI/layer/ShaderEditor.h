@@ -31,7 +31,7 @@ private:
 
 	int active_func{0};
 
-	ShaderEditMode current_edit = NODE_EDITOR;
+	ShaderEditMode current_edit = CODE_EDITOR;
 	int current_shad_type = 0;
 	bool sel;
 	char add_name[CHAR_MAX];
@@ -53,7 +53,7 @@ private:
 public:
 
 	void RegisterEvents(EventPool& evt) override;
-	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 
 private:
 	void UpdateShaderEditor(ObjectID* active_obj);

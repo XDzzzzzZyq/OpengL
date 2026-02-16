@@ -10,7 +10,7 @@ namespace UI
 		~ImguiMButton() {};
 		ImguiMButton(std::string _name, std::string _shortcut);
 	
-		void RenderMenuItem(const SceneContext& ctx) override;
+		void RenderMenuItem(const Context& ctx) override;
 	};
 }
 

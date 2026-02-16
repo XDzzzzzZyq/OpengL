@@ -93,7 +93,7 @@ public:
 	void ConstructSAT(const RenderConfigs* config);
 
 public:
-	void RenderLightSpr(const SceneContext& ctx);
+	void RenderLightSpr(const Context& ctx);
 
 public:
 

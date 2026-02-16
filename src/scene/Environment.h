@@ -53,8 +53,8 @@ public:
 	void* GetShader()		override { return &envir_shader; }
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
-	void RenderEnvironment(const SceneContext& ctx);
-	void RenderEnvirSpr(const SceneContext& ctx);
+	void RenderEnvironment(const Context& ctx);
+	void RenderEnvirSpr(const Context& ctx);
 
 };
 

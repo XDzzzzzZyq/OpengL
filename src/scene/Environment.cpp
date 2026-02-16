@@ -79,9 +79,9 @@ void Environment::UnbindEnvironTexture() const
 	envir_IBL_spec.Unbind();
 }
 
-void Environment::RenderEnvironment(const SceneContext& ctx)
+void Environment::RenderEnvironment(const Context& ctx)
 {
-	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 	envir_shader.UseShader();
 	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 	envir_IBL_spec.Bind(IBL_TEXTURE);
@@ -103,7 +103,7 @@ void Environment::RenderEnvironment(const SceneContext& ctx)
 	envir_shader.is_shader_changed = false;
 }
 
-void Environment::RenderEnvirSpr(const SceneContext& ctx)
+void Environment::RenderEnvirSpr(const Context& ctx)
 {
 	envir_sprite.RenderSprite(ctx, o_position, envir_color, GetObjectID());
 }

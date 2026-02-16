@@ -140,11 +140,11 @@ void RenderShadowMap(Light* light, SceneResource::ResPool<Mesh> mesh_list, const
 	}
 }
 
-void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
+void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 
 
 	/* Check at least one camera and environment */
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
 	if (scene->cam_list.find(0) == scene->cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
 	if (scene->envir_list.find(0) == scene->envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
@@ -299,7 +299,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 		if (r_is_preview) {
 			ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-			if (ctx.c_selections.GetSelectedObjects() != nullptr) 
+			if (ctx.editor.selections.GetSelectedObjects() != nullptr) 
 				outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
 		}
 		
@@ -443,9 +443,9 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 	}
 }
 
-void Renderer::ConstructSDF(const SceneContext& ctx)
+void Renderer::ConstructSDF(const Context& ctx)
 {
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
 	scene->sdf_field->Bind();
 	scene->sdf_field->ResetDistance();
 

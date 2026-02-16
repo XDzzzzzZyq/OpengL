@@ -57,10 +57,10 @@ void DebugLine::PushDebugLines(const std::vector<glm::vec3>& points)
 		dLine_pos_list.emplace_back(points[i]);
 }
 
-void DebugLine::RenderDdbugLine(const SceneContext& ctx)
+void DebugLine::RenderDdbugLine(const Context& ctx)
 {
-	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-	const bool is_selected = ctx.c_selections.IsSelected(this);
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
 
 	if (dLine_pos_list.size() < 2)return;
 

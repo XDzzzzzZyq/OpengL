@@ -36,7 +36,7 @@ public:
 	void PushDebugLine(float x, float y, float z);
 	void PushDebugLines(const std::vector<glm::vec3>& points);
 
-	void RenderDdbugLine(const SceneContext& ctx);
+	void RenderDdbugLine(const Context& ctx);
 
 	void SetDLineShader();
 	void* GetShader()		override { return &dLine_shader; };

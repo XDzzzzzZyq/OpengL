@@ -171,7 +171,7 @@ void Light::SetRatio(float _ratio)
 	area_ratio = _ratio;
 }
 
-void Light::RenderLightSpr(const SceneContext& ctx)
+void Light::RenderLightSpr(const Context& ctx)
 {
 	light_sprite.RenderSprite(ctx, o_position, light_color, GetObjectID());
 }

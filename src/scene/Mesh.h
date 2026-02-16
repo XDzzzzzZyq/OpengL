@@ -32,7 +32,7 @@ public:
 
 public:
 
-	void RenderMesh(const SceneContext& ctx);
+	void RenderMesh(const Context& ctx);
 	void RenderObjProxy(bool using_original = true) const;
 
 public:

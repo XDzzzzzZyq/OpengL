@@ -22,7 +22,7 @@ namespace UI
 	
 		void BindOption(char* _tar) override;
 	
-		void RenderMenuItem(const SceneContext& ctx) override;
+		void RenderMenuItem(const Context& ctx) override;
 	};
 }
 

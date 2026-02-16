@@ -17,7 +17,7 @@ ParamControl::~ParamControl()
 
 }
 
-void ParamControl::RenderLayer(const SceneContext& ctx, const EventPool& evt)
+void ParamControl::RenderLayer(const Context& ctx, const EventPool& evt)
 {
 	for (const auto& item : item_list) {
 		uly_show_type ? item->EnableTagName() : item->DisableTagName();

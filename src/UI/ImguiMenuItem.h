@@ -47,7 +47,7 @@ public:
 	template<typename T> requires std::is_enum_v<T>
 	void BindOption(T* _option, std::function<bool(bool)> _callback=NULL);
 
-	virtual void RenderMenuItem(const SceneContext& ctx) { assert(false && "no Render function overrided\n"); };
+	virtual void RenderMenuItem(const Context& ctx) { assert(false && "no Render function overrided\n"); };
 };
 
 

@@ -14,6 +14,6 @@ public:
 
 	void RenderName(std::string& _name, bool read_only = false);
 
-	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 };
 

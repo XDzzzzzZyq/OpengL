@@ -16,9 +16,9 @@ TransformPanel::~TransformPanel()
 
 }
 
-static Transform* GetActiveTransPtr(const SceneContext& ctx)
+static Transform* GetActiveTransPtr(const Context& ctx)
 {
-	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_object = ctx.editor.selections.GetSelectedObjects();
 	if (active_object == nullptr)
 		return nullptr;
 
@@ -53,9 +53,9 @@ static bool RenderTransfroms(Transform3D& trans)
 	return is_pos_ch || is_rot_ch || is_scl_ch;
 }
 
-void TransformPanel::RenderLayer(const SceneContext& ctx, const EventPool& evt)
+void TransformPanel::RenderLayer(const Context& ctx, const EventPool& evt)
 {
-	ObjectID* active_object = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_object = ctx.editor.selections.GetSelectedObjects();
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(GetActiveTransPtr(ctx));
 	if (active_trans == nullptr) {
 		ImGui::Text("No selected transform component");

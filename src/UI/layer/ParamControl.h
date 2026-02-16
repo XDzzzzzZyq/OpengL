@@ -9,6 +9,6 @@ public:
 	~ParamControl();
 
 public:
-	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 };
 

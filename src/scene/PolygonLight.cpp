@@ -24,10 +24,10 @@ PolygonLight::PolygonLight(const std::vector<float> &verts, const glm::vec3 &lig
 	SetPolygonShader();
 }
 
-void PolygonLight::RenderPolygon(const SceneContext& ctx)
+void PolygonLight::RenderPolygon(const Context& ctx)
 {
-	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-	const bool is_selected = ctx.c_selections.IsSelected(this);
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
 
 	o_vertArray.Bind();
 	o_index.Bind();

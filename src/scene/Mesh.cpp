@@ -22,10 +22,10 @@ Mesh::Mesh()
 	DEBUG("mesh c");
 }
 
-void Mesh::RenderMesh(const SceneContext& ctx)
+void Mesh::RenderMesh(const Context& ctx)
 {
-	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-	const bool is_selected = ctx.c_selections.IsSelected(this);
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
 
 	o_shader->UseShader();
 

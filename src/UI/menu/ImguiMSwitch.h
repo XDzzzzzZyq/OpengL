@@ -16,7 +16,7 @@ namespace UI
 	
 		void BindSwitch(bool* _switch) override;
 	
-		void RenderMenuItem(const SceneContext& ctx) override;
+		void RenderMenuItem(const Context& ctx) override;
 	};
 }
 

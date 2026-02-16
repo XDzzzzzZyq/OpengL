@@ -30,10 +30,10 @@ void Outliner::UpdateStyle()
 
 }
 
-void Outliner::RenderLayer(const SceneContext& ctx, const EventPool& evt)
+void Outliner::RenderLayer(const Context& ctx, const EventPool& evt)
 {
-	SelectionManager<ObjectID>& sel_mgr = ctx.c_selections;
-	const auto obj_list = ctx.GetObjectIDs();
+	const SelectionManager<ObjectID>& sel_mgr = ctx.editor.selections;
+	const auto obj_list = ctx.scene.GetObjectIDs();
 
 	const ImVec2 p = ImGui::GetCursorScreenPos() - ImVec2(0, 2);
 	const ImVec2 size = ImVec2(uly_size.x, float(ol_width - 4));

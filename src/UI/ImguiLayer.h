@@ -73,7 +73,7 @@ public:
 public:
 	bool uly_show_type = false;
 	virtual void RegisterEvents(EventPool& evt) {};
-	virtual void RenderLayer(const SceneContext& ctx, const EventPool& evt) {};
+	virtual void RenderLayer(const Context& ctx, const EventPool& evt) {};
 };
 
 template<class ItemType, class... Args>

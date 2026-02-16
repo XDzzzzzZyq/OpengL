@@ -27,7 +27,7 @@ public:
 	RenderShader o_shader;
 	PolygonLight(const std::vector<float> &verts, const glm::vec3 &light_color = {1.0f, 1.0f, 1.0f}, float light_power = 1.0f, bool useShadow = true);
 
-	void RenderPolygon(const SceneContext& ctx);
+	void RenderPolygon(const Context& ctx);
 	void SetPolygonShader();
 
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }

@@ -47,7 +47,7 @@ public:
 
 public:
 	void NewFrame() const;
-	void RenderUI(const SceneContext& ctx, const EventPool& evt, bool rend = true);
+	void RenderUI(const Context& ctx, const EventPool& evt, bool rend = true);
 	void Terminate() const;
 
 public:

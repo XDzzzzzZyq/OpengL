@@ -550,9 +550,9 @@ bool ShaderEditor::CompileShader(ObjectID* active_obj)
 	return true;
 }
 
-void ShaderEditor::RenderLayer(const SceneContext& ctx, const EventPool& evt)
+void ShaderEditor::RenderLayer(const Context& ctx, const EventPool& evt)
 {
-	ObjectID* active_obj = ctx.c_selections.GetSelectedObjects();
+	ObjectID* active_obj = ctx.editor.selections.GetSelectedObjects();
 	Shaders* active_shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(active_shader, (ShaderType)current_shad_type);
 	if (active_shader == nullptr) {

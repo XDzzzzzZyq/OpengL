@@ -148,7 +148,7 @@ void Viewport::RegisterEvents(EventPool& evt)
 		});
 }
 
-void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
+void Viewport::RenderLayer(const Context& ctx, const EventPool& evt)
 {
 	item_list[0]->RenderItem();
 
@@ -177,7 +177,7 @@ void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 
 	if (is_mouse_hovered) {
 		if (Input::IsMousePressed(Input::MouseButtons::MMB)) {
-			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 			if (Input::IsKeyPressed(Input::CTRL)) {
 				evt.emit(CameraPushEvent{ (Camera*)active_cam, Input::GetDeltaMouseX(), Input::GetDeltaMouseY()});
 			}
@@ -193,15 +193,15 @@ void Viewport::RenderLayer(const SceneContext& ctx, const EventPool& evt)
 		}
 
 		if (Input::IsMouseScrolled()) {
-			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+			const Camera* active_cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 			evt.emit(CameraZoomEvent{ (Camera*)active_cam, Input::GetScrollY() });
 		}
 	}
 }
 
-void Viewport::RenderGrids(const SceneContext& ctx)
+void Viewport::RenderGrids(const Context& ctx)
 {
-	const Camera* active_cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	const Camera* active_cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 
 	if (active_cam == nullptr)
 		return;
@@ -209,9 +209,9 @@ void Viewport::RenderGrids(const SceneContext& ctx)
 	ImGuizmo::DrawGrid(&active_cam->o_InvTransform[0][0], &active_cam->cam_frustum[0][0], &xdzm::identityMatrix[0][0], 30.f, 0.5f);
 }
 
-void Viewport::RenderAxis(const SceneContext& ctx)
+void Viewport::RenderAxis(const Context& ctx)
 {
-	Camera* active_cam = (Camera*)dynamic_cast<const Camera*>(ctx.GetActiveCamera());
+	Camera* active_cam = (Camera*)dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 
 	ImGuiIO& io = ImGui::GetIO();
 	float viewManipulateRight = io.DisplaySize.x;
@@ -235,12 +235,12 @@ void Viewport::RenderAxis(const SceneContext& ctx)
 	active_cam->SetCamTrans(glm::transpose(cam_trans), false, true);
 }
 
-void Viewport::RenderHandle(const SceneContext& ctx)
+void Viewport::RenderHandle(const Context& ctx)
 {
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.c_active_scene);
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
 	Camera* active_cam = dynamic_cast<Camera*>(scene->GetActiveCamera());
 
-	SelectionManager<ObjectID>& sel = ctx.c_selections;
+	const SelectionManager<ObjectID>& sel = ctx.editor.selections;
 	Transform3D* active_trans = dynamic_cast<Transform3D*>(sel.GetActiveObject());
 
 	if (active_trans == nullptr || active_cam == nullptr)

@@ -36,11 +36,11 @@ DebugPoints::DebugPoints(const std::vector<glm::vec3>& pos_list)
 	SetDebugPointsShader(SQUARE_POINT, true);
 }
 
-void DebugPoints::RenderDebugPoint(const SceneContext& ctx)
+void DebugPoints::RenderDebugPoint(const Context& ctx)
 {
 	const size_t trans_type = (size_t)is_proj;
-	const Camera* cam = dynamic_cast<const Camera*>(ctx.GetActiveCamera());
-	const bool is_selected = ctx.c_selections.IsSelected(this);
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
 
 	dp_vertArry.Bind();
 	dp_index.Bind();

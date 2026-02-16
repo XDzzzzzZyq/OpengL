@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 
 class RenderConfigs
 {
@@ -91,13 +90,6 @@ public:
 
 public:
 
-	RenderConfigs();
-
-private:
-	static RenderConfigs* r_active_configs;
-
-public:
-	static void ActivateConfig(RenderConfigs* config);
-	static RenderConfigs* GetActiveConfigPtr();
+	RenderConfigs() {};
 };
 

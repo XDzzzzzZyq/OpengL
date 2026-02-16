@@ -34,12 +34,12 @@ public:
 public:
 
 	void RegisterEvents(EventPool& evt) override;
-	void RenderLayer(const SceneContext& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 
 private:
 
-	void RenderGrids(const SceneContext& ctx);
-	void RenderAxis(const SceneContext& ctx);
-	void RenderHandle(const SceneContext& ctx);
+	void RenderGrids(const Context& ctx);
+	void RenderAxis(const Context& ctx);
+	void RenderHandle(const Context& ctx);
 };
 

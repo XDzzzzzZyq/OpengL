@@ -43,7 +43,7 @@ public:
 
 public:
 	void RenderPPS(const glm::vec2& _scr_size = glm::vec2(0), GLuint _batch = 16);
-	void RenderPPSSpr(const SceneContext& ctx);
+	void RenderPPSSpr(const Context& ctx);
 };
 
 template<typename... T>
