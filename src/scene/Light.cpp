@@ -3,7 +3,7 @@
 #include "Input.h"
 
 
-FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
+std::array <FrameBuffer, 4> Light::_shadowmap_buffer = {};
 
 std::array<ChainedShader, 4> Light::_shadowmap_shader = {};
 
@@ -18,7 +18,8 @@ std::array<glm::mat4, 6> Light::_point_6side = {
 
 void Light::EnableShadowMap()
 {
-	_shadowmap_buffer = FrameBuffer(Texture(1024, 1024, DEPTH_CUBE_TEXTURE));
+	_shadowmap_buffer[0] = FrameBuffer(Texture(1024, 1024, DEPTH_CUBE_TEXTURE));
+	_shadowmap_buffer[1] = FrameBuffer(Texture(1024, 1024, DEPTH_TEXTURE));
 
 	_shadowmap_shader[SUNLIGHT] = ChainedShader::ImportShader("Depth_Rast.vert", "Empty.frag");
 
@@ -62,9 +63,7 @@ Light::Light(LightType type, float power, glm::vec3 color)
 
 	o_name = _name + std::to_string(GetObjectID());
 
-	InitShadowMap(false);
 	UpdateProjMatrix();
-	BindShadowMapShader();
 }
 
 void Light::InitShadowMap(bool using_moment_shadow)
@@ -179,8 +178,8 @@ void Light::RenderLightSpr(const SceneContext& ctx)
 
 void Light::BindShadowMapBuffer()
 {
-	_shadowmap_buffer.LinkTexture(light_shadow_map);
-	_shadowmap_buffer.BindFrameBuffer();
+	_shadowmap_buffer[light_type].LinkTexture(light_shadow_map);
+	_shadowmap_buffer[light_type].BindFrameBuffer();
 }
 
 void Light::BindShadowMapShader()
@@ -543,6 +542,7 @@ void LightArrayBuffer::UpdateLight(Light* light)
 	}
 }
 
+static bool using_moment_shadow_b = false;
 void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 {
 	if (!config->RequiresShadow()) {
@@ -556,6 +556,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
 	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
+
 
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
@@ -583,6 +584,11 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		{
 		case POINTLIGHT:
 
+
+			if (using_moment_shadow != using_moment_shadow_b) {
+				light->light_shadow_map.SaveTexture(using_moment_shadow ? "depth_vssm" : "depth_shadow", false);
+			}
+
 			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_pos", light->o_position);
@@ -601,6 +607,10 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			shadow_shader.SetValue("radius", Light::point_blur_range);
 			shadow_shader.SetValue("light_size", Light::sun_shaodow_field);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
+
+			if (using_moment_shadow != using_moment_shadow_b) {
+				light->light_shadow_map.SaveTexture(using_moment_shadow ? "depth_sun_vssm" : "depth_sun_shadow", false);
+			}
 
 			break;
 		case SPOTLIGHT:
@@ -634,6 +644,8 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 		shadow_shader.RunComputeShader(cache_w / 16, cache_h / 16);
 	}
+
+	using_moment_shadow_b = using_moment_shadow;
 }
 
 void LightArrayBuffer::BindShadowMap() const

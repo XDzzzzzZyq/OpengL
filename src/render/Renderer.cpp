@@ -190,7 +190,7 @@ void Renderer::Render(const SceneContext& ctx, bool rend, bool buff) {
 	///////////  Lights Data PreCalc  ///////////
 
 	for (auto& [id, light] : scene->light_list) {
-		if (!light->is_viewport) return;
+		if (!light->is_viewport) continue;
 
 		if (light->is_light_changed || light->is_Uniform_changed) {
 			r_light_data.UpdateLight(light.get());

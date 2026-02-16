@@ -41,12 +41,12 @@ public:
 public:
 
 	Sprite light_sprite;
-	Texture light_shadow_map; // TODO: Light should not contains runtime properties like shadow map
-	glm::mat4 light_proj{ 1.0f };
+	Texture light_shadow_map;		// TODO: Light should not contains runtime properties like shadow map
+	glm::mat4 light_proj{ 1.0f };	// TODO: Light should not contains runtime properties like shadow map
 
 public:
 
-	static float sun_shaodow_field;
+	static float sun_shaodow_field;	// TODO: Move this to RenderConfigs
 	static float sun_shaodow_near;
 	static float sun_shaodow_far;
 
@@ -82,7 +82,7 @@ public:
 
 private:
 
-	static FrameBuffer _shadowmap_buffer;
+	static std::array <FrameBuffer, 4> _shadowmap_buffer;
 	static std::array<ChainedShader, 4> _shadowmap_shader;
 	static std::array<glm::mat4, 6> _point_6side;
 
