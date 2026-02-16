@@ -136,6 +136,8 @@ TEST_F(RendererEnvir, Texture_Save) {
 }
 
 TEST_F(RendererEnvir, Depth_Texture_Save) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
 	{
 		auto depth2d = Texture(32, 32, DEPTH_TEXTURE);
 		float depth_val = 0.5f;
