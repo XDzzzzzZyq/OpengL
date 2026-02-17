@@ -1,4 +1,9 @@
 # OpenGL_Test
+![C++](https://img.shields.io/badge/C++-20-blue)
+![OpenGL](https://img.shields.io/badge/OpenGL-4.6-red)
+![Build](https://github.com/XDzzzzzZyq/OpengL/actions/workflows/msbuild.yml/badge.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/XDzzzzzZyq/OpengL)
 
 ##### OpenGL based renderer development by XDzZyq
 
