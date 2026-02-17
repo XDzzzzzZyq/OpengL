@@ -30,8 +30,8 @@ ShaderEditor::~ShaderEditor()
 static Args prop_args;
 static S_U add_prop;
 static S_func add_args;
-static char prop_name = NULL;
-static char prop_content = NULL;
+static char prop_name[CHAR_MAX] = {};
+static char prop_content[CHAR_MAX] = {};
 
 
 /* Rendering Utils */
@@ -65,18 +65,18 @@ bool RenderPanel(ShaderEditor::MiniPropPanel& panel, const ImVec2& pos, S_U* out
 			return false;
 		}
 
-		ImGui::InputTextMultiline(c_name, &prop_name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
+		ImGui::InputTextMultiline(c_name, prop_name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
 
 		ImGui::InputInt(c_sld_name, &panel.prop_count);
 
 		if (ImGui::Button("OK", ImGui::GetContentRegionAvail())) {
 			panel.is_open = false;
 			ImGui::End();
-			if (prop_name == NULL)
+			if (prop_name[0] == '\0')
 				return false;
 
-			*out = { std::string(&prop_name), ParaType(panel.datatype), panel.prop_count };
-			prop_name = NULL;
+			*out = { std::string(prop_name), ParaType(panel.datatype), panel.prop_count };
+			prop_name[0] = '\0';
 			return true;
 		}
 		ImGui::End();
@@ -132,7 +132,7 @@ bool RenderDefPanel(ShaderEditor::MiniPropPanel& panel, bool type, const ImVec2&
 			}ImGui::SameLine();
 		}
 
-		ImGui::InputTextMultiline("name", &prop_name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
+		ImGui::InputTextMultiline("name", prop_name, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 20));
 
 		RenderArguPanel(&b);
 
@@ -143,13 +143,13 @@ bool RenderDefPanel(ShaderEditor::MiniPropPanel& panel, bool type, const ImVec2&
 		}
 
 		if (type) {
-			ImGui::InputTextMultiline("content", &prop_content, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 40));
+			ImGui::InputTextMultiline("content", prop_content, CHAR_MAX, ImVec2(ImGui::GetContentRegionAvail().x, 40));
 		}
 
 		if (ImGui::Button("OK", ImVec2(ImGui::GetContentRegionAvail().x, 50))) {
 			panel.is_open = false;
 			ImGui::End();
-			if (panel.datatype == 0 || prop_name == NULL)
+			if (panel.datatype == 0 || prop_name[0] == '\0')
 				return false;
 
 			return true;
