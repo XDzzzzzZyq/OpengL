@@ -20,13 +20,12 @@ MaterialViewer::~MaterialViewer()
 
 }
 
-Material* GetActiveMatPtr(const Context& ctx)
+Material* GetActiveMatPtr(ObjectID* obj)
 {
-	ObjectID* active_object = ctx.editor.selections.GetSelectedObjects();
-	if (active_object == nullptr)
+	if (obj == nullptr)
 		return nullptr;
 
-	return (Material*)(active_object->GetMaterial());
+	return (Material*)(obj->GetMaterial());
 }
 
 Material::MatDataType SelectType(Material::MatParaType tar, Material::MatDataType type) {
@@ -89,7 +88,8 @@ bool EditName(std::string& name)
 
 void MaterialViewer::RenderLayer(const Context& ctx, const EventPool& evt)
 {
-	Material* active_material = GetActiveMatPtr(ctx);
+	ObjectID* active_object = ctx.editor.selections.GetSelectedObjects();
+	Material* active_material = GetActiveMatPtr(active_object);
 	if (active_material == nullptr) {
 		ImGui::Text("No selected material");
 		return;
@@ -110,7 +110,7 @@ void MaterialViewer::RenderLayer(const Context& ctx, const EventPool& evt)
 
 		const Material::MatDataType new_type = SelectType(prop, data_type);
 		if (new_type != -1 && new_type != data_type) {
-			evt.emit<MaterialTypeChangedEvent>({ active_material, prop, new_type });
+			evt.emit<MaterialTypeChangedEvent>({ active_object, active_material, prop, new_type });
 		}
 
 		std::optional<MaterialParamEdit> edit;

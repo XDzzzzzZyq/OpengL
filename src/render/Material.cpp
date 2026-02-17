@@ -47,6 +47,15 @@ void Material::ParseConfig(const std::string& _config)
 
 }
 
+void Material::SetMatParam(MatParaType _tar, MatDataType _type)
+{
+	auto& [type, flt, _col, _tex] = mat_params[_tar];
+	if (type != _type)
+		is_mat_changed = is_mat_struct_changed = true;
+
+	type = _type;
+}
+
 void Material::SetMatParam(MatParaType _tar, float _var)
 {
 	auto& [type, flt, _col, _tex] = mat_params[_tar];

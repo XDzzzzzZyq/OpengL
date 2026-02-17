@@ -6,6 +6,7 @@
 #include "controllers/ShaderController.h"
 
 #include "events/EditorEvents.h"
+#include "events/MaterialEvents.h"
 
 #include "layer/Viewport.h"
 
@@ -70,16 +71,20 @@ int Application::Init()
 	renderer.r_using_shadow_map = false;
 	renderer.r_using_ssr = false;
 #else
-	// TODO: better binding
 	Ctx.scene.UseScene(SceneManager::Shadow().get());
 
 	renderer.GetConfig()->r_ao_radius = 0.8f;
 	Light::area_blur_range = 0.03f;
 
+	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
 	EventPool.emit<FrameBufferResetEvent>({ &renderer.r_buffer_list[0], renderer.GetFrameBufferPtr() });
 	EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), ModifyFlags::ShadowChanged});
+	for (const auto& [id, mesh] : scene->mesh_list)
+	{
+		if(mesh->using_material)
+			EventPool.emit<MaterialStructChangedEvent>({ dynamic_cast<ObjectID*>(mesh.get()), mesh->o_material.get() });
+	}
 
-	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
 	// TODO: event system
 	renderer.r_light_data.ParseLightData(scene->light_list);
 	renderer.r_light_data.ParsePolygonLightData(scene->poly_light_list);

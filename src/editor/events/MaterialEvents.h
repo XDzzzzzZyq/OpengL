@@ -1,5 +1,6 @@
 #pragma once
 #include "Material.h"
+#include "ID.h"
 
 #include <string>
 
@@ -30,7 +31,14 @@ struct MaterialTextureNameChangedEvent {
 };
 
 struct MaterialTypeChangedEvent {
+	ObjectID* obj;
 	Material* material;
 	Material::MatParaType param_type{ Material::MAT_NONE };
 	Material::MatDataType data_type{ Material::MPARA_FLT };
-};;
+};
+
+struct MaterialStructChangedEvent
+{
+	ObjectID* obj;
+	Material* material;
+};

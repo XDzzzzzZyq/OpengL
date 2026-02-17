@@ -43,6 +43,7 @@ public:
 
 	bool is_mat_changed{ true };
 	bool is_mat_struct_changed{ true };
+	void SetMatParam(MatParaType _tar, MatDataType _type);
 	void SetMatParam(MatParaType _tar, float _var);
 	void SetMatParam(MatParaType _tar, glm::vec3 _col);
 	void SetMatParam(MatParaType _tar, TextureLib::TextureRes _tex);
