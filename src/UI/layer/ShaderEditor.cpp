@@ -301,7 +301,7 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 		*_name = std::string(name);
 }
 
-void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
+void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, const EventPool& evt)
 {
 	Shaders* shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
@@ -335,7 +335,8 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddParam("Array Buffer", "layout")) {
-					active_unit->sh_struct->SetAB(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
+				const S_AB layout{ std::get<2>(add_prop), std::get<0>(add_prop), std::get<1>(add_prop) };
+				evt.emit<ShaderStructAddArrayBufferEvent>({ shader, ShaderType(current_shad_type), layout });
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -351,7 +352,8 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddParam("Render Pass", "layout")) {
-					active_unit->sh_struct->SetPass(std::get<2>(add_prop), std::get<1>(add_prop), std::get<0>(add_prop));
+				const S_REND layout{ std::get<2>(add_prop), std::get<0>(add_prop), std::get<1>(add_prop) };
+				evt.emit<ShaderStructAddPassEvent>({ shader, ShaderType(current_shad_type), layout });
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -367,7 +369,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddParam("Input", "number")) {
-				active_unit->sh_struct->SetInp(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+				evt.emit<ShaderStructAddInputEvent>({ shader, ShaderType(current_shad_type), add_prop });
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -383,7 +385,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddParam("Output", "number")) {
-				active_unit->sh_struct->SetOut(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+				evt.emit<ShaderStructAddOutputEvent>({ shader, ShaderType(current_shad_type), add_prop });
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -402,7 +404,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 			}
 			//ImGui::PushFont(ImguiTheme::th_data.font_data[0]);
 			if (AddParam("Uniforms", "number")) {
-					active_unit->sh_struct->SetUni(std::get<1>(add_prop), std::get<2>(add_prop), std::get<0>(add_prop));
+				evt.emit<ShaderStructAddUniformEvent>({ shader, ShaderType(current_shad_type), add_prop });
 			}ImGui::TreePop();
 			//ImGui::PopFont();
 		}ImGui::PopID(); vari_id = 0;
@@ -421,7 +423,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 				}ImGui::PopID();
 			}
 			if (AddStruct()) {
-					active_unit->sh_struct->DefStruct(std::get<1>(add_args), std::get<3>(add_args));
+				evt.emit<ShaderStructAddStructEvent>({ shader, ShaderType(current_shad_type), std::get<1>(add_args), std::get<3>(add_args) });
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -500,6 +502,7 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj)
 					if (se_code_editor.IsTextChanged())
 						std::get<2>(i) = se_code_editor.GetText();
 					active_unit->sh_struct->is_struct_changed = true;
+					// TODO: emit event to update shader code
 				}
 			}
 			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
@@ -570,8 +573,7 @@ void ShaderEditor::RenderLayer(const Context& ctx, const EventPool& evt)
 		}
 	}ImGui::SameLine();
 	if (ImGui::Button("Save", ImVec2(ImGui::GetContentRegionAvail().x, 25))) {
-		//active_shader->GenerateShader((ShaderType)current_shad_type);
-		//DEBUG(active_shader->getID())
+		evt.emit<ShaderSaveEvent>({ active_shader, ShaderType(current_shad_type) });
 	}
 	//editor.SetLanguageDefinition(TextEditor::LanguageDefinition().GLSL());
 
@@ -581,7 +583,7 @@ void ShaderEditor::RenderLayer(const Context& ctx, const EventPool& evt)
 		se_code_editor.Render("##Editor", ImGui::GetContentRegionAvail());
 		break;
 	case STRUCT_EDITOR:
-		RenderShaderStruct(active_obj);
+		RenderShaderStruct(active_obj, evt);
 		break;
 	case NODE_EDITOR:
 		se_node_editor.Render(ctx, "##Node");
