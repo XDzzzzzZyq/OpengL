@@ -33,14 +33,14 @@ Material::MatDataType SelectType(Material::MatParaType tar, Material::MatDataTyp
 	bool sel;
 	int new_type = -1;
 
-	ImGui::SetNextItemWidth(50);
+	ImGui::SetNextItemWidth(75);
 	if (ImGui::BeginCombo(("m_tar" + std::to_string(tar)).c_str(), type_name[type].c_str(), ImGuiComboFlags_NoName)) {
 		LOOP(3)
 			if (ImGui::Selectable(type_name[i].c_str(), &sel))
 				new_type = i;
 		ImGui::EndCombo();
 	}
-	ImGui::SameLine();
+	ImGui::SameLine(100.0f, 0.0);
 
 	return Material::MatDataType(new_type);
 }
