@@ -203,6 +203,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor\controllers\ShaderController.cpp" />
     <ClCompile Include="src\editor\Events.cpp" />
     <ClCompile Include="src\editor\Controllers.cpp" />
     <ClCompile Include="src\editor\controllers\CameraController.cpp" />
@@ -369,6 +370,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <Image Include="res\tex\testImg.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\editor\controllers\ShaderController.h" />
     <ClInclude Include="src\editor\Events.h" />
     <ClInclude Include="src\editor\events\EditorEvents.h" />
     <ClInclude Include="src\editor\events\KeyMouseEvents.h" />
@@ -387,6 +389,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
     <ClInclude Include="dep\gui\ImGui\imgui.h" />
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
+    <ClInclude Include="src\editor\events\ShaderEvents.h" />
     <ClInclude Include="src\editor\events\ViewportEvents.h" />
     <ClInclude Include="src\editor\Input.h" />
     <ClInclude Include="src\editor\SelectionManager.h" />

@@ -56,6 +56,7 @@ void Renderer::Init(EventPool& evt)
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
 
+	// TODO: move this to editor layer
 	evt.subscribe<RenderSurfaceResizedEvent>([this](const RenderSurfaceResizedEvent& e) {
 		this->FrameResize(e.width, e.height );
 		});

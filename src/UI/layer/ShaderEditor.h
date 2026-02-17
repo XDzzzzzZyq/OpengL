@@ -48,7 +48,6 @@ private:
 	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
 	bool AddStruct(bool def_type = false);
 	bool AddLink();
-	bool CompileShader(ObjectID* active_obj);
 
 public:
 

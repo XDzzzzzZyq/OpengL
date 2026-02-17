@@ -3,6 +3,7 @@
 
 #include "controllers/CameraController.h"
 #include "controllers/ViewportController.h"
+#include "controllers/ShaderController.h"
 
 #include "events/EditorEvents.h"
 
@@ -47,6 +48,7 @@ int Application::Init()
 	// Controllers
 	Controllers.RegisterController<CameraController>(EventPool);
 	Controllers.RegisterController<ViewportController>(EventPool);
+	Controllers.RegisterController<ShaderController>(EventPool);
 
 	// Context
 	Ctx.Init(EventPool);

@@ -30,17 +30,20 @@ public:
 
 public:
 
+	// TODO: remove for stateless renderer
 	GLuint r_frame_width{};
 	GLuint r_frame_height{};
 
 private:
 
+	// TODO: remove for stateless renderer
 	std::shared_ptr<FrameBuffer> r_render_result;
 	void FrameResize(GLuint _w, GLuint _h);
 	void FrameBufferResize(const glm::vec2& size);
 
 public:
 
+	// TODO: remove for stateless renderer
 	std::vector<FrameBuffer> r_buffer_list;
 	void InitFrameBuffer();
 	void BindFrameBuffer(int slot);
@@ -56,11 +59,13 @@ public:
 
 public:
 
+	// TODO: move to editor layer / RenderContext
 	bool r_render_icons = true;
 	bool r_is_preview = true;
 
 public:
 
+	// TODO: remove for stateless renderer
 	LightArrayBuffer r_light_data;
 	RenderConfigs r_config;
 	RenderConfigs* GetConfig() { return &r_config; }
