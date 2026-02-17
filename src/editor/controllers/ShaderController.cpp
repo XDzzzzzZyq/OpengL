@@ -59,7 +59,32 @@ void ShaderController::bind(EventPool& pool)
 
 	// Material Edit
 
-	pool.subscribe<MaterialChangedEvent>([this](MaterialChangedEvent e) {
-		e.material->is_mat_changed = true;
+	pool.subscribe<MaterialNameChangedEvent>([this](MaterialNameChangedEvent e) {
+		if (!e.material)
+			return;
+
+		if (e.material->mat_name != e.name) {
+			e.material->mat_name = e.name;
+			e.material->is_mat_changed = true;
+		}
+		});
+
+	pool.subscribe<MaterialFloatChangedEvent>([this](MaterialFloatChangedEvent e) {
+		if (!e.material)
+			return;
+		if (e.data_type == Material::MPARA_FLT)
+			e.material->SetMatParam(e.param_type, e.value);
+		});
+
+	pool.subscribe<MaterialColorChangedEvent>([this](MaterialColorChangedEvent e) {
+		if (!e.material)
+			return;
+		if (e.data_type == Material::MPARA_COL)
+			e.material->SetMatParam(e.param_type, e.color);
+		});
+
+	pool.subscribe<MaterialTextureNameChangedEvent>([this](MaterialTextureNameChangedEvent e) {
+		if (!e.material)
+			return;
 		});
 }
