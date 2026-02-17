@@ -629,5 +629,8 @@
     <ClInclude Include="src\editor\events\ShaderEvents.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\editor\events\MaterialEvents.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

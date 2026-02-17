@@ -1,8 +1,11 @@
 #include "ShaderController.h"
 #include "events/ShaderEvents.h"
+#include "events/MaterialEvents.h"
 
 void ShaderController::bind(EventPool& pool)
 {
+	// Shader Edit
+
 	pool.subscribe<ShaderCodeCompileEvent>([this](ShaderCodeCompileEvent e) {
 		e.shader->ParseShaderCode(e.code, e.type);
 		e.shader->RelinkShader(e.type);
@@ -52,5 +55,11 @@ void ShaderController::bind(EventPool& pool)
 		auto* unit = e.shader->GetShaderUnit(e.type);
 		if (!unit || !unit->sh_struct.has_value()) return;
 		unit->sh_struct->DefStruct(e.name, e.args);
+		});
+
+	// Material Edit
+
+	pool.subscribe<MaterialChangedEvent>([this](MaterialChangedEvent e) {
+		e.material->is_mat_changed = true;
 		});
 }

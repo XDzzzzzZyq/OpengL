@@ -1,6 +1,8 @@
 #include "MaterialViewer.h"
 #include "Material.h"
 
+#include "events/MaterialEvents.h"
+
 MaterialViewer::MaterialViewer()
 	:MaterialViewer("Material")
 {}
@@ -27,6 +29,7 @@ static Material* GetActiveMatPtr(const Context& ctx)
 
 static bool RenderMatParam(MatParaType _type, Material::MatParamData& _param)
 {
+	// TODO: change the type of variable
 	auto& [type, val, col, tex] = _param;
 
 	const char* pname = Material::mat_uniform_name[_type].c_str();
@@ -75,7 +78,12 @@ void MaterialViewer::RenderLayer(const Context& ctx, const EventPool& evt)
 	RenderName(active_material->mat_name);
 
 	//  Material Parameters
+	bool is_material_changed = false;
 	for (auto & [type, param] : active_material->mat_params) {
-		active_material->is_mat_changed |= RenderMatParam(type, param);
+		is_material_changed |= RenderMatParam(type, param);
+	}
+
+	if (is_material_changed) {
+		evt.emit<MaterialChangedEvent>({ active_material });
 	}
 }
