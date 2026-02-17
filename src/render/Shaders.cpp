@@ -456,19 +456,20 @@ void RenderShader::CreatShader(const std::string& verShader, const std::string& 
 void RenderShader::UpdateMaterial(Material* mat)
 {
 	assert(shader_data[FRAGMENT_SHADER].sh_struct.has_value());
+	DEBUG("Updating material: " + mat->mat_name);
 
 	ShaderStruct& sh_struct = *shader_data[FRAGMENT_SHADER].sh_struct;
 	for (const auto& [ptype, pdata] : mat->mat_params) {
 		const auto& [dtype, dfloat, dcol, dtex] = pdata;
 
-		if (ptype == MAT_NORMAL || ptype == MAT_BUMP)
-			continue;  // skip them currently
+		if (ptype == Material::MAT_NORMAL || ptype == Material::MAT_BUMP)
+			continue;  // TODO: implement in the future
 
 		auto loc_const = std::find_if(
 			sh_struct.const_list.begin(),
 			sh_struct.const_list.end(),
 			[ptype](const S_const& con) ->bool {
-				return std::get<1>(con) == "m_" + Material::mat_uniform_name[ptype];     // e.g. MAT_ALBEDO -> m_albedo
+				return std::get<1>(con) == "m_" + Material::mat_uniform_name[ptype];     // e.g. Material::MAT_ALBEDO -> m_albedo
 			}
 		);
 
@@ -476,7 +477,7 @@ void RenderShader::UpdateMaterial(Material* mat)
 			sh_struct.uniform_list.begin(),
 			sh_struct.uniform_list.end(),
 			[ptype](const S_U& uni) ->bool {
-				return std::get<0>(uni) == "U_" + Material::mat_uniform_name[ptype];     // e.g. MAT_ALBEDO -> m_albedo
+				return std::get<0>(uni) == "U_" + Material::mat_uniform_name[ptype];     // e.g. Material::MAT_ALBEDO -> m_albedo
 			}
 		);
 

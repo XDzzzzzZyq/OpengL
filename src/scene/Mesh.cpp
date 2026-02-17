@@ -94,17 +94,17 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 		o_shader->UpdateMaterial(o_material.get());
 }
 
-void Mesh::SetTex(MatParaType _type, std::string _name)
+void Mesh::SetTex(Material::MatParaType _type, std::string _name)
 {
 	o_material->SetMatParam(_type, TextureLib::LoadTexture(_name));
 }
 
-void Mesh::SetMatColor(MatParaType _type, float _val)
+void Mesh::SetMatColor(Material::MatParaType _type, float _val)
 {
 	o_material->SetMatParam(_type, _val);
 }
 
-void Mesh::SetMatColor(MatParaType _type, glm::vec3 _col)
+void Mesh::SetMatColor(Material::MatParaType _type, glm::vec3 _col)
 {
 	o_material->SetMatParam(_type, _col);
 }

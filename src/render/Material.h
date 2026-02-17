@@ -5,14 +5,15 @@
 
 #include <array>
 
-enum MatParaType
-{
-	MAT_NONE = -1, MAT_ALBEDO, MAT_METAL, MAT_ROUGH, MAT_SPEC, MAT_EMIS_COL, MAT_EMIS_STR, MAT_ALPHA, MAT_NORMAL, MAT_BUMP, MAT_END
-};
-
 class Material
 {
 public:
+	
+	// material parameters
+	enum MatParaType
+	{
+		MAT_NONE = -1, MAT_ALBEDO, MAT_METAL, MAT_ROUGH, MAT_SPEC, MAT_EMIS_COL, MAT_EMIS_STR, MAT_ALPHA, MAT_NORMAL, MAT_BUMP, MAT_END
+	};
 
 	// data types for each materal parameter
 	enum MatDataType

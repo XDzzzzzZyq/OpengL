@@ -38,9 +38,9 @@ public:
 public:
 
 	void SetObjShader(std::string vert, std::string frag = "");
-	void SetTex(MatParaType _type, std::string _name);
-	void SetMatColor(MatParaType _type, float _val);
-	void SetMatColor(MatParaType _type, glm::vec3 _col);
+	void SetTex(Material::MatParaType _type, std::string _name);
+	void SetMatColor(Material::MatParaType _type, float _val);
+	void SetMatColor(Material::MatParaType _type, glm::vec3 _col);
 	void SetCenter();
 
 	void SetLowPoly(const std::string& path = "");

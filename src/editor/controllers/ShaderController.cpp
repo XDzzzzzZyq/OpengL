@@ -87,4 +87,22 @@ void ShaderController::bind(EventPool& pool)
 		if (!e.material)
 			return;
 		});
+
+	pool.subscribe<MaterialTypeChangedEvent>([this](MaterialTypeChangedEvent e) {
+		if (!e.material)
+			return;
+		switch (e.data_type)
+		{
+		case Material::MPARA_FLT:
+			e.material->SetMatParam(e.param_type, 0.0f);
+			break;
+		case Material::MPARA_COL:
+			e.material->SetMatParam(e.param_type, glm::vec3(0.0f));
+			break;
+		case Material::MPARA_TEX:
+			e.material->SetMatParam(e.param_type, TextureLib::TextureRes{});
+			break;
+		default:
+			break;
+		}});
 }

@@ -12,8 +12,6 @@ public:
 
 public:
 
-	bool RenderName(const std::string& name, std::string& out_name, bool read_only = false);
-
 	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 };
 
