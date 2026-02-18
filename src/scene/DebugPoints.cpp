@@ -1,5 +1,8 @@
 #include "DebugPoints.h"
+#include "Camera.h"
+
 #include "macros.h"
+#include "xdz_math.h"
 
 std::vector<float> DebugPoints::VertData = {
 	-1.0f, 1.0f, 0.0f,
@@ -33,9 +36,11 @@ DebugPoints::DebugPoints(const std::vector<glm::vec3>& pos_list)
 	SetDebugPointsShader(SQUARE_POINT, true);
 }
 
-void DebugPoints::RenderDebugPoint(Camera* camera)
+void DebugPoints::RenderDebugPoint(const Context& ctx)
 {
 	const size_t trans_type = (size_t)is_proj;
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
 
 	dp_vertArry.Bind();
 	dp_index.Bind();
@@ -55,11 +60,11 @@ void DebugPoints::RenderDebugPoint(Camera* camera)
 	if (is_list_changed || dp_shader[trans_type].is_shader_changed)
 		dp_pos_buffer.GenStorageBuffer(dp_pos_list);
 
-	if(camera->is_invUniform_changed || dp_shader[trans_type].is_shader_changed)
-		dp_shader[trans_type].SetValue("U_cam_trans", camera->o_InvTransform);
+	if(cam->is_invUniform_changed || dp_shader[trans_type].is_shader_changed)
+		dp_shader[trans_type].SetValue("U_cam_trans", cam->o_InvTransform);
 
-	if(camera->is_frustum_changed || dp_shader[trans_type].is_shader_changed)
-		dp_shader[trans_type].SetValue("U_ProjectM", camera->cam_frustum);
+	if(cam->is_frustum_changed || dp_shader[trans_type].is_shader_changed)
+		dp_shader[trans_type].SetValue("U_ProjectM", cam->cam_frustum);
 
 	dp_shader[trans_type].SetValue("U_Opacity", dp_opacity);
 	dp_shader[trans_type].SetValue("U_Scale", dp_scale);
@@ -85,14 +90,14 @@ void DebugPoints::SetDebugPointsShader(PointType type, bool proj)
 
 	dp_shader[0].InitShader = [&] {
 		dp_shader[0].UseShader();
-		dp_shader[0].SetValue("ID_color", id_color);
-		dp_shader[0].SetValue("RAND_color", id_color_rand);
+		dp_shader[0].SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+		dp_shader[0].SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 	};
 
 	dp_shader[1].InitShader = [&] {
 		dp_shader[1].UseShader();
-		dp_shader[1].SetValue("ID_color", id_color);
-		dp_shader[1].SetValue("RAND_color", id_color_rand);
+		dp_shader[1].SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+		dp_shader[1].SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 	};
 }
 

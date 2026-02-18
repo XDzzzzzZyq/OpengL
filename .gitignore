@@ -29,6 +29,7 @@ build/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+.vscode/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -383,3 +384,6 @@ _deps
 
 # Output executable
 OpenGL
+
+# CodeQL artifacts
+_codeql_detected_source_root

@@ -1,7 +1,9 @@
 #include "Light.h"
 #include "xdz_math.h"
+#include "Input.h"
 
-FrameBuffer Light::_shadowmap_buffer = FrameBuffer();
+
+std::array <FrameBuffer, 4> Light::_shadowmap_buffer = {};
 
 std::array<ChainedShader, 4> Light::_shadowmap_shader = {};
 
@@ -16,7 +18,8 @@ std::array<glm::mat4, 6> Light::_point_6side = {
 
 void Light::EnableShadowMap()
 {
-	_shadowmap_buffer = FrameBuffer(Texture(1024, 1024, DEPTH_CUBE_TEXTURE));
+	_shadowmap_buffer[0] = FrameBuffer(Texture(1024, 1024, DEPTH_CUBE_TEXTURE));
+	_shadowmap_buffer[1] = FrameBuffer(Texture(1024, 1024, DEPTH_TEXTURE));
 
 	_shadowmap_shader[SUNLIGHT] = ChainedShader::ImportShader("Depth_Rast.vert", "Empty.frag");
 
@@ -60,18 +63,12 @@ Light::Light(LightType type, float power, glm::vec3 color)
 
 	o_name = _name + std::to_string(GetObjectID());
 
-	InitShadowMap();
 	UpdateProjMatrix();
-	BindShadowMapShader();
 }
 
-void Light::InitShadowMap(RenderConfigs* config/*=nullptr*/)
+void Light::InitShadowMap(bool using_moment_shadow)
 {
 	assert(light_type != LightType::NONELIGHT);
-	
-	bool using_moment_shadow = false;
-	if (config)
-		using_moment_shadow = config->RequiresMomentShadow();
 
 	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
 	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
@@ -174,15 +171,15 @@ void Light::SetRatio(float _ratio)
 	area_ratio = _ratio;
 }
 
-void Light::RenderLightSpr(Camera* cam)
+void Light::RenderLightSpr(const Context& ctx)
 {
-	light_sprite.RenderSprite(o_position, light_color, cam);
+	light_sprite.RenderSprite(ctx, o_position, light_color, GetObjectID());
 }
 
 void Light::BindShadowMapBuffer()
 {
-	_shadowmap_buffer.LinkTexture(light_shadow_map);
-	_shadowmap_buffer.BindFrameBuffer();
+	_shadowmap_buffer[light_type].LinkTexture(light_shadow_map);
+	_shadowmap_buffer[light_type].BindFrameBuffer();
 }
 
 void Light::BindShadowMapShader()
@@ -206,7 +203,7 @@ void Light::BindShadowMapShader()
 		break;
 	case AREALIGHT:
 		_shadowmap_shader[light_type].SetValue("U_trans", o_Transform);
-		_shadowmap_shader[light_type].SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
+		_shadowmap_shader[light_type].SetValue("U_UV", glm::vec2(Input::input_state.random.random_float1, Input::input_state.random.random_float2));
 		_shadowmap_shader[light_type].SetValue("ratio", area_ratio);
 		_shadowmap_shader[light_type].SetValue("U_lightproj", light_proj);
 		_shadowmap_shader[light_type].SetValue("far_plane", Light::area_shaodow_far);
@@ -279,8 +276,7 @@ void* Light::GetShader()
 	return &shadow_shader;
 }
 
-
-void Light::ConstructSAT(RenderConfigs* config)
+void Light::ConstructSAT(const RenderConfigs* config)
 {
 	if (!config->RequiresMomentShadow())
 		return;
@@ -302,7 +298,7 @@ void Light::ConstructSAT(RenderConfigs* config)
 		SAT.RunComputeShader({ light_shadow_map.GetH(), 1 });
 	}
 	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
-		ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
+		// ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
 		// Skip for now, not necessary to use SAT filtering
 	}
 }
@@ -515,8 +511,9 @@ void LightArrayBuffer::Resize(GLuint _w, GLuint _h){
 
 void LightArrayBuffer::UpdateLight(Light* light)
 {
-	if (light_info_cache.find(light->GetObjectID()) == light_info_cache.end())
+	if (light_info_cache.find(light->GetObjectID()) == light_info_cache.end()) {
 		return;
+	}
 
 	int loc = std::get<0>(light_info_cache[light->GetObjectID()]);
 	light->UpdateProjMatrix();
@@ -545,6 +542,7 @@ void LightArrayBuffer::UpdateLight(Light* light)
 	}
 }
 
+static bool using_moment_shadow_b = false;
 void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 {
 	if (!config->RequiresShadow()) {
@@ -559,6 +557,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
 	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
 
+
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;
 
 	const float point_ud_rate	= is_incr_aver ? 0.05f : 1.0f / frame;
@@ -566,7 +565,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 	const float spot_ud_rate	= is_incr_aver ? 0.05f : 1.0f / frame;
 	const float area_ud_rate	= is_incr_aver ? 0.01f : 1.0f / frame;
 
-	const glm::vec3 random = glm::vec3(EventListener::random_float1, EventListener::random_float2, EventListener::random_float3);
+	const glm::vec3 random = glm::vec3(Input::input_state.random.random_float1, Input::input_state.random.random_float2, Input::input_state.random.random_float3);
 
 	for (const auto& [id, info] : light_info_cache) {
 		const auto& [loc, light] = info;
@@ -584,6 +583,11 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 		switch (type)
 		{
 		case POINTLIGHT:
+
+
+			if (using_moment_shadow != using_moment_shadow_b) {
+				light->light_shadow_map.SaveTexture(using_moment_shadow ? "depth_vssm" : "depth_shadow", false);
+			}
 
 			Texture::BindM(map_id, 31, cube_map);
 
@@ -604,6 +608,10 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			shadow_shader.SetValue("light_size", Light::sun_shaodow_field);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
+			if (using_moment_shadow != using_moment_shadow_b) {
+				light->light_shadow_map.SaveTexture(using_moment_shadow ? "depth_sun_vssm" : "depth_sun_shadow", false);
+			}
+
 			break;
 		case SPOTLIGHT:
 
@@ -622,7 +630,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_trans", light->o_Transform);
-			shadow_shader.SetValue("U_UV", glm::vec2(EventListener::random_float1, EventListener::random_float2));
+			shadow_shader.SetValue("U_UV", glm::vec2(Input::input_state.random.random_float1, Input::input_state.random.random_float2));
 			shadow_shader.SetValue("ratio", light->area_ratio);
 			shadow_shader.SetValue("light_far", Light::area_shaodow_far);
 			shadow_shader.SetValue("radius", Light::area_blur_range);
@@ -636,6 +644,8 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 		shadow_shader.RunComputeShader(cache_w / 16, cache_h / 16);
 	}
+
+	using_moment_shadow_b = using_moment_shadow;
 }
 
 void LightArrayBuffer::BindShadowMap() const

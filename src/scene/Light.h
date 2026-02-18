@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "Sprite.h"
 #include "PolygonLight.h"
@@ -19,7 +19,7 @@ enum LightType
 };
 
 // A basic light, which can be a point light, sun light, or a spot light
-class Light : public GameObject, public Transform3D
+class Light : public ObjectID, public Transform3D
 {
 public:
 	bool use_shadow{ true };
@@ -41,12 +41,12 @@ public:
 public:
 
 	Sprite light_sprite;
-	Texture light_shadow_map;
-	glm::mat4 light_proj{ 1.0f };
+	Texture light_shadow_map;		// TODO: Light should not contains runtime properties like shadow map
+	glm::mat4 light_proj{ 1.0f };	// TODO: Light should not contains runtime properties like shadow map
 
 public:
 
-	static float sun_shaodow_field;
+	static float sun_shaodow_field;	// TODO: Move this to RenderConfigs
 	static float sun_shaodow_near;
 	static float sun_shaodow_far;
 
@@ -66,7 +66,7 @@ public:
 
 	Light();
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
-	void InitShadowMap(RenderConfigs* config=nullptr);
+	void InitShadowMap(bool using_moment_shadow);
 	inline static std::pair<SpriteType, std::string> ParseLightName(LightType _type);
 
 public:
@@ -82,17 +82,18 @@ public:
 
 private:
 
-	static FrameBuffer _shadowmap_buffer;
+	static std::array <FrameBuffer, 4> _shadowmap_buffer;
 	static std::array<ChainedShader, 4> _shadowmap_shader;
 	static std::array<glm::mat4, 6> _point_6side;
 
 public:
 
+	// TODO: remove runtime construction
 	static void EnableShadowMap();
-	void ConstructSAT(RenderConfigs* config);
+	void ConstructSAT(const RenderConfigs* config);
 
 public:
-	void RenderLightSpr(Camera* cam);
+	void RenderLightSpr(const Context& ctx);
 
 public:
 

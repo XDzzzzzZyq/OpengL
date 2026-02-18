@@ -1,6 +1,5 @@
 #pragma once
 #include "ImguiLayer.h"
-#include "ITEM/TextureViewer.h"
 
 #include "Guizmo/ImGuizmo.h"
 
@@ -16,6 +15,17 @@ public:
 	static ImGuizmo::OPERATION handle_mod;
 
 public:
+
+	enum HoverStatus
+	{
+		OnViewport = 0,
+		OnHandle = 1 << 1,
+		OnCameraAxis = 1 << 2,
+	};
+
+	HoverStatus viewport_status{ OnViewport };
+
+public:
 	Viewport();
 	Viewport(const std::string& name);
 	Viewport(const std::string& name, GLuint texID);
@@ -23,24 +33,13 @@ public:
 	~Viewport();
 public:
 
-	void UpdateLayer() override;
-	void RenderLayer() override;
+	void RegisterEvents(EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 
 private:
 
-	void RenderGrids();
-	void RenderAxis();
-	void RenderHandle();
-
-public:
-
-	// Key Input
-	static void MTranslate();
-	static void MRotate();
-	static void MScale();
-	static void XAxis();
-	static void YAxis();
-	static void ZAxis();
-	static void WAxis();
+	void RenderGrids(const Context& ctx);
+	void RenderAxis(const Context& ctx);
+	void RenderHandle(const Context& ctx);
 };
 

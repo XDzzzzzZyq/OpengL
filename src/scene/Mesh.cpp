@@ -1,5 +1,8 @@
 #include "Mesh.h"
+#include "Camera.h"
+
 #include "macros.h"
+#include "xdz_math.h"
 
 Mesh::Mesh(const std::string& path)
 {
@@ -19,12 +22,32 @@ Mesh::Mesh()
 	DEBUG("mesh c");
 }
 
-void Mesh::RenderMesh(const Camera* cam)
+void BindMatertial(const Material* mat, RenderShader* shader)
 {
-	o_shader->UseShader();
+	for (const auto& [ptype, pdata] : mat->mat_params) {
 
-	if (o_material->is_mat_struct_changed && using_material)
-		o_shader->UpdateMaterial(o_material.get());
+		const auto& [dtype, dfloat, dcol, _] = pdata;
+		switch (dtype)
+		{
+		case Material::MPARA_FLT:
+			shader->SetValue("U_" + Material::mat_uniform_name[ptype], dfloat);
+			break;
+		case Material::MPARA_COL:
+			shader->SetValue("U_" + Material::mat_uniform_name[ptype], dcol);
+			break;
+		case Material::MPARA_TEX:
+			shader->SetValue("U_" + Material::mat_uniform_name[ptype], ptype);
+			break;
+		}
+	}
+}
+
+void Mesh::RenderMesh(const Context& ctx)
+{
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
+
+	o_shader->UseShader();
 
 	if (o_shader->is_shader_changed)
 		o_shader->InitShader();
@@ -44,7 +67,7 @@ void Mesh::RenderMesh(const Camera* cam)
 	o_shader->SetValue("is_selected", (int)is_selected);
 
 	if (using_material)
-		o_shader->SetValue(o_material.get());
+		BindMatertial(o_material.get(), o_shader.get());
 
 	if (using_material)
 		o_material->BindMatTexture();
@@ -73,32 +96,29 @@ void Mesh::SetObjShader(std::string vert, std::string frag)
 	o_shader->UseShader();
 	//matrix = glm::translate(matrix, o_position);
 	o_shader->SetValue("U_ProjectM", o_Transform);
-	o_shader->SetValue("ID_color", id_color);
+	o_shader->SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
 
 	o_shader->InitShader = [&] {
 		o_shader->UseShader();
-		o_shader->SetValue("RAND_color", id_color_rand);
+		o_shader->SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 		o_shader->SetValue("U_ProjectM", o_Transform);
-		o_shader->SetValue("ID_color", id_color);
+		o_shader->SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
 
 		o_shader->UnuseShader();
 	};
-
-	if (using_material)
-		o_shader->UpdateMaterial(o_material.get());
 }
 
-void Mesh::SetTex(MatParaType _type, std::string _name)
+void Mesh::SetTex(Material::MatParaType _type, std::string _name)
 {
 	o_material->SetMatParam(_type, TextureLib::LoadTexture(_name));
 }
 
-void Mesh::SetMatColor(MatParaType _type, float _val)
+void Mesh::SetMatColor(Material::MatParaType _type, float _val)
 {
 	o_material->SetMatParam(_type, _val);
 }
 
-void Mesh::SetMatColor(MatParaType _type, glm::vec3 _col)
+void Mesh::SetMatColor(Material::MatParaType _type, glm::vec3 _col)
 {
 	o_material->SetMatParam(_type, _col);
 }

@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Context.h"
+#include "ID.h"
+#include "Transform.h"
+
 #include "MeshData.h"
 
 #include "Texture.h"
@@ -7,7 +11,7 @@
 
 #include "Material.h"
 
-class Mesh : public GameObject, public Transform3D
+class Mesh : public ObjectID, public Transform3D
 {
 public:
 
@@ -28,15 +32,15 @@ public:
 
 public:
 
-	void RenderMesh(const Camera* cam);
+	void RenderMesh(const Context& ctx);
 	void RenderObjProxy(bool using_original = true) const;
 
 public:
 
 	void SetObjShader(std::string vert, std::string frag = "");
-	void SetTex(MatParaType _type, std::string _name);
-	void SetMatColor(MatParaType _type, float _val);
-	void SetMatColor(MatParaType _type, glm::vec3 _col);
+	void SetTex(Material::MatParaType _type, std::string _name);
+	void SetMatColor(Material::MatParaType _type, float _val);
+	void SetMatColor(Material::MatParaType _type, glm::vec3 _col);
 	void SetCenter();
 
 	void SetLowPoly(const std::string& path = "");

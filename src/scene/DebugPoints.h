@@ -1,6 +1,8 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Context.h"
+
+#include "ID.h"
 #include "Transform.h"
 
 #include "VertexArray.h"
@@ -9,13 +11,11 @@
 
 #include "buffer/StorageBuffer.h"
 
-#include "Camera.h"
-
 enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT
 };
 
-class DebugPoints : public GameObject, public Transform3D
+class DebugPoints : public ObjectID, public Transform3D
 {
 private:
 	VertexArray dp_vertArry;
@@ -40,7 +40,7 @@ public:
 	DebugPoints();
 	DebugPoints(const std::vector<glm::vec3>& pos_list);
 
-	void RenderDebugPoint(Camera* camera);
+	void RenderDebugPoint(const Context& ctx);
 
 	void SetDebugPointsShader(PointType type, bool proj);
 	void PushDebugPoint(const glm::vec3& point);

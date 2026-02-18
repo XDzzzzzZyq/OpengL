@@ -1,53 +1,30 @@
-#include "ImguiManager.h"
+﻿#include "ImGui/backends/imgui_impl_glfw.h"
+#include "ImGui/backends/imgui_impl_opengl3.h"
 
+#include "ImguiManager.h"
+#include "ImguiTheme.h"
+#include "Input.h"
+#include "layer/ShaderEditor.h"
 #include "Guizmo/ImGuizmo.h"
+
+#include "events/KeyMouseEvents.h"
 
 bool ImguiManager::is_prefW_open = false;
 
 ImguiManager::ImguiManager()
 {}
 
-ImguiManager::ImguiManager(GLFWwindow* window)
-	:window(window)
-{}
-
-void ImguiManager::Init()
+void ImguiManager::Init(EventPool& evt)
 {
-	active_layer_id = 0;
-
-	io = &ImGui::GetIO(); (void)io;
+	io = &ImGui::GetIO();
 	m_style = &ImGui::GetStyle();
 
 	DefultViewports();
-	DefultEvents();
-	RegistarMenuEvents();
+	RegistarMenuEvents(evt);
+	RegisterLayerEvents(evt);
 
-	ShaderEditor::InitEditors();
-}
+	GLFWwindow* window = glfwGetCurrentContext();
 
-void ImguiManager::_debug() const
-{
-	for (auto& [name, id] : layer_name_buffer) {
-		std::cout << name << " " << id << "\n";
-	}
-}
-
-void ImguiManager::RegistarMenuEvents()
-{
-	for (auto& menu : menu_list)
-		for (auto& submenu : menu->subm_list) {
-
-			if (submenu->mitem_shortcut.empty()) continue;
-
-			EventList[EventListener::ParseShortCut(submenu->mitem_shortcut)] = [submenu] {
-				if (EventListener::is_key_changed)
-					submenu->mitem_func(true);
-			};
-		}
-}
-
-void ImguiManager::ManagerInit(GLFWwindow* window)
-{
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui::StyleColorsDark();
@@ -80,8 +57,35 @@ void ImguiManager::ManagerInit(GLFWwindow* window)
 	//config.GlyphMinAdvanceX = 13.0f;// Use if you want to make the icon monospaced
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
+}
 
-	//EventList[GenIntEvent(0, 0, 0, 3, 0)] = [] {DEBUG(EventListener::EVT_NK_LIST)};
+void ImguiManager::_debug() const
+{
+	for (auto& [name, id] : layer_name_buffer) {
+		std::cout << name << " " << id << "\n";
+	}
+}
+
+void ImguiManager::RegistarMenuEvents(EventPool& evt)
+{
+	for (auto& menu : menu_list)
+		for (auto& submenu : menu->subm_list) {
+			if (submenu->mitem_shortcut.empty()) continue;
+
+			Input::KeyState key_state = Input::ParseKeyState(submenu->mitem_shortcut);
+			evt.subscribe<KeyClickEvent>([submenu, key_state](KeyClickEvent e) {
+				if (e.key == key_state)	submenu->mitem_func(true);
+				});
+		}
+}
+
+
+
+void ImguiManager::RegisterLayerEvents(EventPool& evt)
+{
+	for (auto& layer : layer_list) {
+		layer->RegisterEvents(evt);
+	}
 }
 
 void ImguiManager::NewFrame() const
@@ -92,30 +96,18 @@ void ImguiManager::NewFrame() const
 	ImGuizmo::BeginFrame();
 }
 
+#include "menu/ImguiMSwitch.h"
 void ImguiManager::PushImguiLayer(std::shared_ptr<ImguiLayer> layer)
 {
 	assert(layer_name_buffer.find(layer->uly_name) == layer_name_buffer.end());
 
 	layer->uly_ID = (int)layer_list.size(); //start with 0
 	layer_list.push_back(layer);
-	active_layer_id = layer->uly_ID;
 	layer_name_buffer[layer->uly_name] = layer->uly_ID;
 
 	auto window = std::make_shared<UI::ImguiMSwitch>(layer->uly_name);
 	window->BindSwitch(&layer->uly_is_rendered);
 	FindImguiMenu("Window")->PushSubMenu(window);
-}
-
-void ImguiManager::SetActiveImguiLayer(const std::string& name) const
-{
-	if (layer_name_buffer.find(name) == layer_name_buffer.end())
-		return;
-	active_layer_id = layer_name_buffer[name];
-}
-
-ImguiLayer* ImguiManager::GetActiveImguiLayer() const
-{
-	return layer_list[active_layer_id].get();
 }
 
 ImguiLayer* ImguiManager::FindImguiLayer(const std::string& name) const
@@ -193,6 +185,29 @@ std::shared_ptr<ImguiMenu> ImguiManager::CreateImguiMenu(std::string name)
 	return menu;
 }
 
+void ImguiManager::ActivateLayer(const std::string& name)
+{
+	auto it = layer_name_buffer.find(name);
+	if (it == layer_name_buffer.end())
+		return;
+
+	int idx = it->second;
+
+	if (idx == layer_list.size() - 1)
+		return; // already active
+
+	auto layer = layer_list[idx];
+	layer_list.erase(layer_list.begin() + idx);
+
+	// update name mapping
+	for (auto& [n, i] : layer_name_buffer)
+		if (i > idx)
+			--i;
+
+	layer_list.push_back(layer);
+	layer_name_buffer[name] = layer_list.size() - 1;
+}
+
 void ImguiManager::SetButtonFunc(const std::string& ly_name, const std::string& it_name, const std::function<void(void)>& func)
 {
 	if (FindImguiItem(ly_name, it_name)) {
@@ -214,39 +229,48 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return item->GetPara();
 }
 
-void ImguiManager::RenderUI(bool rend)
+void RenderLayer(ImguiLayer* layer, const Context& ctx, const EventPool& evt)
+{
+	if (layer->uly_is_rendered) {
+		if (ImGui::Begin(layer->uly_name.c_str(), &layer->uly_is_rendered)) {
+			const ImVec2 layer_size = layer->GetLayerSize();
+			const ImVec2 layer_pos = layer->GetLayerPos();
+			const ImVec2 mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+			layer->is_mouse_hovered = Item::is_inside(layer_size, mouse_pos);
+
+			layer->RenderLayer(ctx, evt);
+
+			layer->is_size_changed_b = layer->is_size_changed;
+		}
+		else {
+			layer->is_mouse_hovered = false;
+		}
+		ImGui::End();
+	}
+	else {
+		layer->is_mouse_hovered = false;
+	}
+}
+
+void ImguiManager::RenderUI(const Context& ctx, const EventPool& evt, bool rend)
 {
 	if (rend) {
-
+		
 		if (ParaUpdate)
 			ParaUpdate();
 
-		ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
-
+    ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 		ImGui::BeginMainMenuBar();
-		EventListener::window_pos = VecConvert<ImVec2, glm::vec2>(ImGui::GetWindowPos());
 		/*			ImGui::BeginMenuBar();*/
 		for (const auto& menu : menu_list) {
-			menu->RenderMenu();
+			menu->RenderMenu(ctx);
 		}
 		/*			ImGui::EndMenuBar();*/
 		ImGui::EndMainMenuBar();
-
-		//ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 100.0f);
+		
 		for (const auto& layer : layer_list) {
-			if (layer->uly_ID != active_layer_id) {
-				if (!layer->uly_is_rendered)
-					continue;
-				layer->UpdateLayer();
-				layer->RenderLayer();
-			}
+			::RenderLayer(layer.get(), ctx, evt);
 		}
-		if (layer_list[active_layer_id]->uly_is_rendered) {
-			layer_list[active_layer_id]->UpdateLayer();
-			layer_list[active_layer_id]->RenderLayer();
-		}
-		//ImGui::PopStyleVar();
-		//ImGui::ShowStyleEditor();
 	}
 	else {
 		io->ConfigFlags = !ImGuiConfigFlags_DockingEnable;
@@ -254,25 +278,23 @@ void ImguiManager::RenderUI(bool rend)
 
 	if (is_prefW_open)
 		ImGui::ShowStyleEditor();
-
+	
 	ImGui::Render();
-
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		if (window) {
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(window);
-		}
-		else
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
-
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwSetErrorCallback([](int code, const char* desc) {
+			fprintf(stderr, "GLFW Error %d: %s\n", code, desc);
+			});
+		//glfwMakeContextCurrent(window);
 	}
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
 
+void ImguiManager::Terminate() const
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }

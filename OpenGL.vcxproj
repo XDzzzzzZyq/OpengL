@@ -98,7 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\core;$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\editor;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
@@ -129,7 +129,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\result" mkdir "$(P
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\core;$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\editor;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -156,9 +156,8 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
       <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\core;$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\editor;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
-      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -181,7 +180,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
       <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\core;$(ProjectDir)src\compo;$(ProjectDir)src\scene;$(ProjectDir)src\extra;$(ProjectDir)src\fileIO;$(ProjectDir)src\editor;$(ProjectDir)src\render;$(ProjectDir)src\UI;$(ProjectDir)dep\glm;$(ProjectDir)dep\gui;$(ProjectDir)dep\stb_image;$(ProjectDir)dep\GLEW\include;$(ProjectDir)dep\GLFW64\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <DisableSpecificWarnings>4996;4267;26451;4305</DisableSpecificWarnings>
     </ClCompile>
@@ -204,6 +203,14 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor\controllers\ShaderController.cpp" />
+    <ClCompile Include="src\editor\Events.cpp" />
+    <ClCompile Include="src\editor\Controllers.cpp" />
+    <ClCompile Include="src\editor\controllers\CameraController.cpp" />
+    <ClCompile Include="src\app\Application.cpp" />
+    <ClCompile Include="src\app\MAIN.cpp" />
+    <ClCompile Include="src\core\ID.cpp" />
+    <ClCompile Include="src\editor\Context.cpp" />
     <ClCompile Include="dep\cubicSpline\CubicSpline.cpp" />
     <ClCompile Include="dep\gui\Guizmo\GraphEditor.cpp" />
     <ClCompile Include="dep\gui\Guizmo\ImCurveEdit.cpp" />
@@ -217,15 +224,15 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="dep\gui\ImGui\imgui_draw.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dep\gui\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\editor\events\CameraEvents.h" />
+    <ClCompile Include="src\editor\Input.cpp" />
+    <ClCompile Include="src\editor\SelectionManager.cpp" />
     <ClCompile Include="src\compo\Nodes.cpp" />
     <ClCompile Include="src\render\RenderConfigs.cpp" />
-    <ClCompile Include="src\compo\EventListener.cpp" />
     <ClCompile Include="src\compo\Field.cpp" />
     <ClCompile Include="src\compo\Parameters.cpp" />
     <ClCompile Include="src\compo\PostProcessing.cpp" />
     <ClCompile Include="src\compo\Transform.cpp" />
-    <ClCompile Include="src\core\Application.cpp" />
-    <ClCompile Include="src\core\MAIN.cpp" />
     <ClCompile Include="src\fileIO\SceneConfigs.cpp" />
     <ClCompile Include="src\fileIO\SceneManager.cpp" />
     <ClCompile Include="src\render\buffer\BufferLayout.cpp" />
@@ -250,7 +257,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\scene\DebugPoints.cpp" />
     <ClCompile Include="src\scene\Empty.cpp" />
     <ClCompile Include="src\scene\Environment.cpp" />
-    <ClCompile Include="src\scene\GameObject.cpp" />
     <ClCompile Include="src\scene\ImagePlane.cpp" />
     <ClCompile Include="src\scene\Light.cpp" />
     <ClCompile Include="src\scene\Mesh.cpp" />
@@ -282,30 +288,14 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\UI\menu\ImguiMOption.cpp" />
     <ClCompile Include="src\UI\menu\ImguiMSwitch.cpp" />
     <ClCompile Include="src\UI\NodesColor.cpp" />
+    <ClCompile Include="src\editor\controllers\ViewportController.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dep\GLEW\bin\Release\Win32\glew32.dll" />
-    <None Include="dep\GLEW\bin\Release\Win32\glewinfo.exe" />
-    <None Include="dep\GLEW\bin\Release\Win32\visualinfo.exe" />
-    <None Include="dep\GLEW\bin\Release\x64\glew32.dll" />
-    <None Include="dep\GLEW\bin\Release\x64\glewinfo.exe" />
-    <None Include="dep\GLEW\bin\Release\x64\visualinfo.exe" />
-    <None Include="dep\GLEW\doc\advanced.html" />
-    <None Include="dep\GLEW\doc\basic.html" />
-    <None Include="dep\GLEW\doc\build.html" />
-    <None Include="dep\GLEW\doc\credits.html" />
-    <None Include="dep\GLEW\doc\glew.css" />
-    <None Include="dep\GLEW\doc\glew.html" />
-    <None Include="dep\GLEW\doc\glxew.html" />
-    <None Include="dep\GLEW\doc\index.html" />
-    <None Include="dep\GLEW\doc\install.html" />
-    <None Include="dep\GLEW\doc\log.html" />
-    <None Include="dep\GLEW\doc\wglew.html" />
-    <None Include="dep\GLFW\lib-vc2019\glfw3.dll" />
     <None Include="README.md" />
     <None Include="res\shaders\6sides_trans.geom" />
     <None Include="res\shaders\convert\C2E.comp" />
     <None Include="res\shaders\convert\Depth_Texture.comp" />
+    <None Include="res\shaders\convert\Depth_Texture_C2C.comp" />
     <None Include="res\shaders\convert\Depth_Texture_C2E.comp" />
     <None Include="res\shaders\convert\E2C.comp" />
     <None Include="res\shaders\convert\HDR2PNG.comp" />
@@ -371,11 +361,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <None Include="res\shaders\testS_diff.frag" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="dep\GLEW\doc\github.png" />
-    <Image Include="dep\GLEW\doc\glew.png" />
-    <Image Include="dep\GLEW\doc\new.png" />
-    <Image Include="dep\GLEW\doc\ogl_sm.jpg" />
-    <Image Include="dep\GLEW\doc\travis.png" />
     <Image Include="res\tex\avatar1.png" />
     <Image Include="res\tex\avatar2.png" />
     <Image Include="res\tex\BAKED.png" />
@@ -385,22 +370,15 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <Image Include="res\tex\testImg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="dep\GLEW\doc\glew.txt" />
-    <Text Include="dep\GLEW\doc\gpl.txt" />
-    <Text Include="dep\GLEW\doc\khronos.txt" />
-    <Text Include="dep\GLEW\doc\mesa.txt" />
-    <Text Include="dep\GLEW\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="dep\GLEW\lib\Release\Win32\glew32.lib" />
-    <Library Include="dep\GLEW\lib\Release\Win32\glew32s.lib" />
-    <Library Include="dep\GLEW\lib\Release\x64\glew32.lib" />
-    <Library Include="dep\GLEW\lib\Release\x64\glew32s.lib" />
-    <Library Include="dep\GLFW\lib-vc2019\glfw3.lib" />
-    <Library Include="dep\GLFW\lib-vc2019\glfw3dll.lib" />
-    <Library Include="dep\GLFW\lib-vc2019\glfw3_mt.lib" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="src\editor\controllers\ShaderController.h" />
+    <ClInclude Include="src\editor\Events.h" />
+    <ClInclude Include="src\editor\events\EditorEvents.h" />
+    <ClInclude Include="src\editor\events\KeyMouseEvents.h" />
+    <ClInclude Include="src\editor\Controllers.h" />
+    <ClInclude Include="src\editor\controllers\CameraController.h" />
+    <ClInclude Include="src\app\Application.h" />
+    <ClInclude Include="src\core\ID.h" />
+    <ClInclude Include="src\editor\Context.h" />
     <ClInclude Include="dep\cubicSpline\CubicSpline.h" />
     <ClInclude Include="dep\cubicSpline\CubicSplineHelpers.h" />
     <ClInclude Include="dep\gui\Guizmo\GraphEditor.h" />
@@ -411,15 +389,18 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="dep\gui\Guizmo\ImZoomSlider.h" />
     <ClInclude Include="dep\gui\ImGui\imgui.h" />
     <ClInclude Include="dep\gui\ImGui\imgui_internal.h" />
+    <ClInclude Include="src\editor\events\MaterialEvents.h" />
+    <ClInclude Include="src\editor\events\ShaderEvents.h" />
+    <ClInclude Include="src\editor\events\ViewportEvents.h" />
+    <ClInclude Include="src\editor\Input.h" />
+    <ClInclude Include="src\editor\SelectionManager.h" />
     <ClInclude Include="src\compo\Nodes.h" />
     <ClInclude Include="src\extra\xdz_matrix.h" />
     <ClInclude Include="src\render\RenderConfigs.h" />
-    <ClInclude Include="src\compo\EventListener.h" />
     <ClInclude Include="src\compo\Field.h" />
     <ClInclude Include="src\compo\Parameters.h" />
     <ClInclude Include="src\compo\PostProcessing.h" />
     <ClInclude Include="src\compo\Transform.h" />
-    <ClInclude Include="src\core\Application.h" />
     <ClInclude Include="src\extra\LtcMatrix.h" />
     <ClInclude Include="src\extra\macros.h" />
     <ClInclude Include="src\extra\operator.h" />
@@ -446,7 +427,6 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\scene\DebugPoints.h" />
     <ClInclude Include="src\scene\Empty.h" />
     <ClInclude Include="src\scene\Environment.h" />
-    <ClInclude Include="src\scene\GameObject.h" />
     <ClInclude Include="src\scene\ImagePlane.h" />
     <ClInclude Include="src\scene\Light.h" />
     <ClInclude Include="src\scene\Mesh.h" />
@@ -476,6 +456,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\UI\menu\ImguiMButton.h" />
     <ClInclude Include="src\UI\menu\ImguiMOption.h" />
     <ClInclude Include="src\UI\menu\ImguiMSwitch.h" />
+    <ClInclude Include="src\editor\controllers\ViewportController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

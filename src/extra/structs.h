@@ -61,17 +61,3 @@ struct AverageTime
 		result += (_rate - result) / _L;
 	}
 };
-
-struct OutlineElement
-{
-	int TYPE;
-	int ID;
-	std::string NAME;
-	int LEVEL;
-
-	OutlineElement(int a, int id, const std::string& b, int c) 
-		:TYPE(a), ID(id), NAME(b), LEVEL(c)
-	{}
-};
-//			| TYPE | ID | NAME | LEVEL |
-typedef std::vector<OutlineElement> OutlineData;

@@ -3,12 +3,11 @@
 #include "GL/glew.h"
 #include "glm/glm.hpp"
 
-#include "GameObject.h"
-#include "MeshData.h"
+#include "ID.h"
+#include "Context.h"
 
 #include "Texture.h"
 #include "Shaders.h"
-#include "Camera.h"
 
 #define SPRITE_SIZE 0.7f
 
@@ -17,7 +16,7 @@ enum SpriteType
 	NONE_SPRITE, POINT_LIGHT_SPRITE, SUN_LIGHT_SPRITE, SPOT_LIGHT_SPRITE, CAM_SPRITE, ENVIRN_SPRITE, PARTIC_SPIRIT
 };
 
-class Sprite : public GameObject
+class Sprite : public ObjectID
 {
 
 private:
@@ -32,8 +31,8 @@ public:
 
 	Sprite();
 
-	void RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* cam);
-	void RenderSprite(Camera* cam);
+	void RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::vec3& col, int id);
+	void RenderSprite(const Context& ctx);
 
 	void SetSpriteShader();
 	std::string ParsePath() const;

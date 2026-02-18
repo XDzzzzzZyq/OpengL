@@ -8,7 +8,7 @@ layout(rgba32f, binding = 2) uniform image2D _OutDirSpec;
 layout(rgba32f, binding = 3) uniform image2D _OutIndDiff;
 layout(rgba32f, binding = 4) uniform image2D _OutIndSpec;
 layout(rgba32f, binding = 5) uniform image2D _OutEmission;
-layout(rgba8,	binding = 7) uniform image2D U_alpha;
+layout(rgba8,	binding = 7) uniform image2D _Alpha;
 
 
 struct PointLight{
@@ -100,6 +100,7 @@ uniform sampler2D U_normal;
 uniform sampler2D U_albedo;
 uniform sampler2D U_mrse;
 uniform sampler2D U_color;
+uniform sampler2D U_alpha;
 
 uniform samplerCube Envir_Texture_diff;
 uniform samplerCube Envir_Texture_spec;
@@ -336,14 +337,13 @@ void main(){
 
 	vec3 Emission_Color = texture(U_emission, screen_uv).rgb;
 
-	float Alpha = imageLoad(U_alpha, uv).r;
+	float Alpha = imageLoad(_Alpha, uv).r;
 
 	vec3 F0 = mix(vec3(0.1), Albedo, Metalness);
 	vec3 Fresnel = fresnelSG(NdotV, F0);
 	vec3 ks = Fresnel;
 
-	float dotNV = clamp(dot(Normal, normalize(-CamRay)), 0.0f, 1.0f);
-	vec2 ltc_uv = vec2(Roughness, sqrt(1.0f - dotNV));
+	vec2 ltc_uv = vec2(Roughness, sqrt(1.0f - NdotV));
 	ltc_uv = ltc_uv * LUT_SCALE + LUT_BIAS;
 
 	// Get 4 parameters for inverse M

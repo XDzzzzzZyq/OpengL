@@ -5,14 +5,15 @@
 
 #include <array>
 
-enum MatParaType
-{
-	MAT_NONE = -1, MAT_ALBEDO, MAT_METAL, MAT_ROUGH, MAT_SPEC, MAT_EMIS_COL, MAT_EMIS_STR, MAT_ALPHA, MAT_NORMAL, MAT_BUMP, MAT_END
-};
-
 class Material
 {
 public:
+	
+	// material parameters
+	enum MatParaType
+	{
+		MAT_NONE = -1, MAT_ALBEDO, MAT_METAL, MAT_ROUGH, MAT_SPEC, MAT_EMIS_COL, MAT_EMIS_STR, MAT_ALPHA, MAT_NORMAL, MAT_BUMP, MAT_END
+	};
 
 	// data types for each materal parameter
 	enum MatDataType
@@ -42,6 +43,7 @@ public:
 
 	bool is_mat_changed{ true };
 	bool is_mat_struct_changed{ true };
+	void SetMatParam(MatParaType _tar, MatDataType _type);
 	void SetMatParam(MatParaType _tar, float _var);
 	void SetMatParam(MatParaType _tar, glm::vec3 _col);
 	void SetMatParam(MatParaType _tar, TextureLib::TextureRes _tex);

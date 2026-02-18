@@ -60,7 +60,7 @@ inline MeshData::ByteArray ReadObj(const std::string& path, bool is_smooth = tru
 			while (str >> last)
 			{
 				if (last == "v")continue;
-				tempdata[0].emplace_back(atof(last.c_str()));
+				tempdata[0].emplace_back(float(atof(last.c_str())));
 			}
 			result.count[0]++;
 
@@ -70,7 +70,7 @@ inline MeshData::ByteArray ReadObj(const std::string& path, bool is_smooth = tru
 			while (str >> last)
 			{
 				if (last == "vt")continue;
-				tempdata[1].emplace_back(atof(last.c_str()));
+				tempdata[1].emplace_back(float(atof(last.c_str())));
 
 			}
 			result.count[1]++;
@@ -80,7 +80,7 @@ inline MeshData::ByteArray ReadObj(const std::string& path, bool is_smooth = tru
 			while (str >> last)
 			{
 				if (last == "vn")continue;
-				tempdata[2].emplace_back(atof(last.c_str()));
+				tempdata[2].emplace_back(float(atof(last.c_str())));
 
 			}
 			result.count[2]++;

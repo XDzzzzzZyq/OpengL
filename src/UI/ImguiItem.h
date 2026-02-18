@@ -2,7 +2,6 @@
 #include "ImGui/imgui.h"
 
 #include "Parameters.h"
-#include "EventListener.h"
 
 #include <iostream>
 #include <optional>
@@ -67,7 +66,7 @@ public:
 	// for all viewport
 	virtual void ResetUV(const ImVec2& min, const ImVec2& max) { DEBUG(uitm_name + " is not a viewport"); return; }
 	virtual void ResetSize(const ImVec2& size) { DEBUG(uitm_name + " is not a viewport"); return; }
-	virtual void ResetBufferID(GLuint id) { DEBUG(uitm_name + " is not a viewport");	return; }
+	virtual void ResetBufferID(int id) { DEBUG(uitm_name + " is not a viewport");	return; }
 
 
 };
@@ -75,8 +74,13 @@ public:
 #include "operator.h"
 namespace Item {
 
-	inline const bool is_inside(const ImVec2& size) {
-		return ImGui::GetCursorScreenPos() - EventListener::window_pos < ImVec2(EventListener::mouse_x, EventListener::mouse_y)
-			&& ImVec2(EventListener::mouse_x, EventListener::mouse_y) < ImGui::GetCursorScreenPos() - EventListener::window_pos + size;
+	inline bool is_inside(const ImVec2 size, const ImVec2 mouse_pos) {
+		const ImVec2 window_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
+		return window_pos < mouse_pos && mouse_pos < window_pos + size;
 	}
 }
+
+#include <type_traits>
+
+template<typename T>
+concept ImguiItemType = std::is_base_of_v<ImguiItem, T>;

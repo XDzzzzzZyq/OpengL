@@ -1,4 +1,8 @@
 #include "Sprite.h"
+#include "MeshData.h"
+#include "Camera.h"
+
+#include "xdz_math.h"
 
 std::string Sprite::fileroot = "res/tex/sprite/";
 
@@ -12,8 +16,11 @@ Sprite::Sprite()
 
 }
 
-void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* cam)
+void Sprite::RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::vec3& col, int id)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	if (!cam) return;
+	
 	spr_shader.UseShader();
 	spr_tex.Bind(SPIRIT_TEXURE);
 
@@ -21,6 +28,8 @@ void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* ca
 
 	spr_shader.SetValue("U_pos", pos);
 	spr_shader.SetValue("U_col", col);
+	spr_shader.SetValue("ID_color", xdzm::get_id_color(id));
+	spr_shader.SetValue("RAND_color", xdzm::get_random_color(id));
 
 	if(cam->is_invUniform_changed)
 		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);
@@ -36,8 +45,11 @@ void Sprite::RenderSprite(const glm::vec3& pos, const glm::vec3& col, Camera* ca
 	MeshLib::Square->RenderObjProxy();
 }
 
-void Sprite::RenderSprite(Camera* cam)
+void Sprite::RenderSprite(const Context& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	if (!cam) return;
+	
 	if (cam->is_invUniform_changed)
 		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 
@@ -55,8 +67,8 @@ void Sprite::SetSpriteShader()
 {
 	spr_shader = RenderShader("SpriteShader");
 	spr_shader.UseShader();
-	spr_shader.SetValue("ID_color", id_color);
-	spr_shader.SetValue("RAND_color", id_color_rand);
+	spr_shader.SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+	spr_shader.SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 	spr_shader.UnuseShader();
 }
 

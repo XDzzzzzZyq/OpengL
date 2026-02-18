@@ -3,13 +3,11 @@
 ImguiLayer::ImguiLayer()
 {
 	uly_name = "";
-	EventInit();
 }
 
 ImguiLayer::ImguiLayer(const std::string& name)
 {
 	uly_name = name;
-	EventInit();
 }
 
 ImguiLayer::~ImguiLayer()
@@ -19,17 +17,16 @@ ImguiLayer::~ImguiLayer()
 ImVec2 ImguiLayer::GetLayerSize()
 {
 	const ImVec2 size = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
-	is_size_changed = !(size == uly_size);
+	is_size_changed = size != uly_size;
 	uly_size = size;
 
 	return uly_size;
 }
 
-void ImguiLayer::UpdateLayerPos()
+ImVec2 ImguiLayer::GetLayerPos()
 {
-	content_pos = ImGui::GetWindowContentRegionMin();
-	content_size = ImGui::GetWindowContentRegionMax() - content_pos;
-
+	uly_pos = ImGui::GetWindowPos() - ImGui::GetMainViewport()->Pos;
+	return uly_pos;
 }
 
 void ImguiLayer::PushItem(std::shared_ptr<ImguiItem> item)
@@ -67,14 +64,4 @@ ImguiItem* ImguiLayer::FindImguiItem(int id) const
 	if (id > item_list.size() - 1)
 		return nullptr;
 	return item_list[id].get();
-}
-
-void ImguiLayer::EventInit()
-{
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(ImguiLayer::LMB);
-}
-
-void ImguiLayer::LMB()
-{
-	//if (IsClick());
 }

@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 #include "Field.h"
-#include "GameObject.h"
+#include "ID.h"
 
 #include "Shaders.h"
 #include "Texture.h"
@@ -13,7 +13,7 @@
 
 #include "Sprite.h"
 
-class PostProcessing : public GameObject
+class PostProcessing : public ObjectID
 {
 public:
 	Field pps_field{};
@@ -43,7 +43,7 @@ public:
 
 public:
 	void RenderPPS(const glm::vec2& _scr_size = glm::vec2(0), GLuint _batch = 16);
-	void RenderPPSSpr(Camera* cam);
+	void RenderPPSSpr(const Context& ctx);
 };
 
 template<typename... T>

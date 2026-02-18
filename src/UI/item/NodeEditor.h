@@ -1,10 +1,9 @@
 #pragma once
 #include "Nodes.h"
+#include "Context.h"
 
 #include "ImguiItem.h"
 #include "ParaInput.h"
-#include "ImGui/imgui_internal.h"
-#include "EventListener.h"
 
 enum NodeEditorType
 {
@@ -56,9 +55,10 @@ public:
 
 };
 
-class NodeEditor : public EventListener, public Transform2D
+class NodeEditor : public Transform2D
 {
 private:
+	// Out -> In | Out -> Mouse | Mouse -> In
 	enum ConnectType { O_I, O_M, M_I };
 	enum MarkType { NONE_MARK, ADD_MARK, MINUS_MARK, SELECT_MARK, MOVE_MARK, CUT_MARK };
 private:
@@ -92,7 +92,6 @@ private:
 	bool is_press_on_in{};
 	bool is_hover_on_out{};
 	bool is_press_on_out{};
-	bool LMB_press = false;
 
 	bool is_node_movable{};
 
@@ -107,7 +106,7 @@ public:
 	NodeEditor() {};
 
 public:
-	void Render(const char* _lable, const ImVec2& _size = {0,0});
+	void Render(const Context& ctx, const char* _lable, const ImVec2& _size = {0,0});
 
 	static void RenderNode(Nodes& _node);
 	static void RenderMark(MarkType _type, bool _is_left = true);
@@ -117,9 +116,8 @@ public:
 	void Resize();
 	void Reset();
 
-	void LMB();
-	void SHIFT_MMB();
-	void CTRL_MMB();
-	void SCRLL();
+	void MoveView();
+	void PushView();
+	void ZoomView();
 };
 

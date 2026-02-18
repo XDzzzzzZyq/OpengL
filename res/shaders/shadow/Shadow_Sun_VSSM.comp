@@ -23,7 +23,7 @@ vec3 GetCoord(vec3 pos, mat4 trans){
 	vec4 pos_p = trans * vec4(pos, 1);
 	pos_p.xyz = pos_p.xyz/pos_p.w;
 	vec3 coord = vec3(pos_p) * 0.5 + 0.5;
-	
+
 	return coord;
 }
 
@@ -55,7 +55,7 @@ float shadow_at(ivec2 uv){
 	float P = z_var / (z_var + (t - z_av) * (t - z_av));
 	const float z_occ = (z_av - P * t)/(1 - P);
 	const float eps = 1e-3;
-	
+
 	// Update new penumbra w
 	w = (t - z_occ) * light_size / z_occ;
 	if (w <= 0.0) {
@@ -64,7 +64,7 @@ float shadow_at(ivec2 uv){
 	m = sample_moment(w, coord.xy);
 	z_av = m.r;
 	z_var = m.g;
-	
+
 	P = z_var / (z_var + (t - z_av) * (t - z_av));
 
 	return min(max(float(t <= z_av), P), 1.0);

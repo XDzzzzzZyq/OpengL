@@ -17,25 +17,10 @@ ParamControl::~ParamControl()
 
 }
 
-void ParamControl::RenderLayer()
+void ParamControl::RenderLayer(const Context& ctx, const EventPool& evt)
 {
-	if (ImGui::Begin(uly_name.c_str(), &uly_is_rendered)) {
-		if (pre_RenderLayer)
-			pre_RenderLayer();
-
-		for (const auto& item : item_list) {
-			uly_show_type ? item->EnableTagName() : item->DisableTagName();
-			item->RenderItem();
-		}
-
-		if (extra_RenderLayer)
-			extra_RenderLayer();
-
-		ImGui::End();
+	for (const auto& item : item_list) {
+		uly_show_type ? item->EnableTagName() : item->DisableTagName();
+		item->RenderItem();
 	}
-	else {
-		uly_is_rendered = false;
-		ImGui::End();
-	}
-
 }

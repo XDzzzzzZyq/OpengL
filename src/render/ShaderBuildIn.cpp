@@ -19,13 +19,13 @@ const S_const ShaderLib::Pix_UV_ratio = { FLOAT_PARA, "B_PIX_UV_RATIO", "1.0 / t
 
 /*		Build-in constexpressions		*/
 
-const S_const ShaderLib::v_albedo = { VEC3_PARA,  "m_albedo", "U_albedo", {} };
-const S_const ShaderLib::v_metal  = { FLOAT_PARA, "m_metal",  "U_metal", {} };
-const S_const ShaderLib::v_rough  = { FLOAT_PARA, "m_rough",  "U_rough", {} };
-const S_const ShaderLib::v_specu  = { FLOAT_PARA, "m_specu",  "U_specu", {} };
-const S_const ShaderLib::v_emis_c = { VEC3_PARA,  "m_emis_c", "U_emis_c", {} };
-const S_const ShaderLib::v_emis_s = { FLOAT_PARA, "m_emis_s", "U_emis_s", {} };
-const S_const ShaderLib::v_alpha  = { FLOAT_PARA, "m_alpha",  "U_alpha", {} };
+const S_const ShaderLib::v_albedo = { VEC3_PARA,  "m_albedo", "vec3(U_albedo)", {} };
+const S_const ShaderLib::v_metal  = { FLOAT_PARA, "m_metal",  "vec3(U_metal).r", {} };
+const S_const ShaderLib::v_rough  = { FLOAT_PARA, "m_rough",  "vec3(U_rough).r", {} };
+const S_const ShaderLib::v_specu  = { FLOAT_PARA, "m_specu",  "vec3(U_specu).r", {} };
+const S_const ShaderLib::v_emis_c = { VEC3_PARA,  "m_emis_c", "vec3(U_emis_c)", {} };
+const S_const ShaderLib::v_emis_s = { FLOAT_PARA, "m_emis_s", "vec3(U_emis_s).r", {} };
+const S_const ShaderLib::v_alpha  = { FLOAT_PARA, "m_alpha",  "vec3(U_alpha).r", {} };
 
 const S_const ShaderLib::t_albedo = { VEC3_PARA,  "m_albedo", "texture2D(U_albedo, uv).rgb", {} };
 const S_const ShaderLib::t_metal  = { FLOAT_PARA, "m_metal",  "texture2D(U_metal, uv).r", {} };

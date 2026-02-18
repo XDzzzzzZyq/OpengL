@@ -3,9 +3,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "Input.h"
+#include "Context.h"
+#include "Controllers.h"
 #include "Renderer.h"
 #include "ImguiManager.h"
-#include "EventListener.h"
 
 // using singleton
 class Application
@@ -18,9 +20,13 @@ public:
 	static Application& Get();
 
 public:
+	// TODO: separate Editor
+	Input InputManager{};
+	EventPool EventPool{};
+	ControllerManager Controllers{};
+	Context Ctx{};
 	Renderer renderer{};
 	ImguiManager UI{};
-	EventListener Event{};
 	GLFWwindow* window{ nullptr };
 
 public:

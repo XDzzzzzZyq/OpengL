@@ -1,4 +1,5 @@
 #include "PostProcessing.h"
+#include "MeshData.h"
 
 PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type)
 	:pps_type(_type)
@@ -41,8 +42,7 @@ void PostProcessing::AddBinding(std::string _pass_name, GLuint _slot)
 
 void PostProcessing::RenderPPS(const glm::vec2& _scr_size /*= glm::vec2(0)*/, GLuint _batch /*= 16*/)
 {
-	if (pps_shader->is_shader_changed)
-		UpdateBindings();
+	UpdateBindings();
 	
 	pps_shader->UseShader();
 
@@ -59,7 +59,7 @@ void PostProcessing::RenderPPS(const glm::vec2& _scr_size /*= glm::vec2(0)*/, GL
 	}
 }
 
-void PostProcessing::RenderPPSSpr(Camera* cam)
+void PostProcessing::RenderPPSSpr(const Context& ctx)
 {
-	pps_sprite.RenderSprite(pps_field.o_position, glm::vec3(1), cam);
+	pps_sprite.RenderSprite(ctx, pps_field.o_position, glm::vec3(1), GetObjectID());
 }

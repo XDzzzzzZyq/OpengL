@@ -19,6 +19,9 @@
     <Filter Include="src\render">
       <UniqueIdentifier>{d6b9d268-b35c-4ae8-aea5-6599682e93bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\editor">
+      <UniqueIdentifier>{8d624631-f57c-4414-a77b-64c26e6abac2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -66,13 +69,16 @@
     <ClCompile Include="test_texture.cpp">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="test_input.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\editor\Input.cpp">
+      <Filter>src\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\compo\Transform.h">
-      <Filter>src\transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

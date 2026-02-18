@@ -6,6 +6,7 @@
 #include <functional>
 #include <optional>
 #include <variant>
+#include <array>
 
 enum ArrayType
 {
@@ -18,7 +19,6 @@ enum ShaderType
 };
 
 #define Uni std::make_tuple
-#include "Material.h"
 
 class Shaders {
 
@@ -151,7 +151,6 @@ public:
 	void SetValue(const std::string& name, GLsizei count, const int* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const GLuint* va0, ArrayType TYPE);
 	void SetValue(const std::string& name, GLsizei count, const glm::mat4* va0);
-	void SetValue(const Material* mat);
 
 public:
 
@@ -177,8 +176,6 @@ public:
 	void CreatShader(const std::string& verShader, const std::string& fragShader);
 
 public:
-
-	void UpdateMaterial(Material* mat);
 
 	void ParseShaderStream(std::istream& _stream, ShaderType _type);
 	void ParseShaderFile(std::string _name, ShaderType _type);

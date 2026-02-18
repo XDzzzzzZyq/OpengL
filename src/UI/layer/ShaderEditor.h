@@ -6,10 +6,6 @@
 
 #include <string>
 
-enum ShEditMode {
-	CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
-};
-
 class ShaderEditor : public ImguiLayer
 {
 public:
@@ -23,45 +19,46 @@ public:
 
 private:
 
-	static TextEditor se_code_editor;
-	static NodeEditor se_node_editor;
+	TextEditor se_code_editor{};
+	NodeEditor se_node_editor{};
+	MiniPropPanel se_panel;
 
 private:
 
-	static const std::string edit_mode[3];
+	enum ShaderEditMode {
+		CODE_EDITOR, STRUCT_EDITOR, NODE_EDITOR
+	};
+
 	int active_func{0};
 
-	int current_edit = 0, current_shad_type = 0;
-	bool is_mode_changed = true, is_shad_type_changed = true;
+	ShaderEditMode current_edit = CODE_EDITOR;
+	int current_shad_type = 0;
 	bool sel;
+	char add_name[CHAR_MAX];
 
 public:
 
 	ShaderEditor();
 	ShaderEditor(const std::string& name);
-	static void InitEditors();
 	~ShaderEditor();
 
-public:
+private:
 
-	mutable MiniPropPanel se_panel;
-	mutable char add_name[CHAR_MAX];
 	
 	bool AddParam(const char* c_name = "", const char* c_sld_name = "");
 	bool AddStruct(bool def_type = false);
 	bool AddLink();
-	void CompileShader();
 
 public:
 
-	void UpdateShaderEditor(const std::string& _code = "") const;
-	void UpdateLayer() override;
-	static void UpdateKeyword();
+	void RegisterEvents(EventPool& evt) override;
+	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 
-public:
+private:
+	void UpdateCoderEditor(ObjectID* active_obj);
+	void UpdateKeyword();
+
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
-	void RenderShaderStruct();
-
-	void RenderLayer() override;
+	void RenderShaderStruct(ObjectID* active_obj, const EventPool& evt);
 };

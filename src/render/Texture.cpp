@@ -269,6 +269,9 @@ void Texture::Resize(const glm::vec2& size)
 
 void Texture::Resize(GLuint x, GLuint y)
 {
+	if(im_w == (int)x && im_h == (int)y)
+		return;
+
 	im_w = x;
 	im_h = y;
 
@@ -384,18 +387,18 @@ template<GLuint Type>
 inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, GLuint _warp_s /*= 0*/, GLuint _warp_t /*= 0*/, GLuint _lev_min /*= 0*/, GLuint _lev_max /*= 0*/, GLuint _warp_r /*= 0*/)
 {
 	glBindTexture(Type, _id);
-
+	
 	glTexParameteri(Type, GL_TEXTURE_MIN_FILTER, _fil_min);
 	glTexParameteri(Type, GL_TEXTURE_MAG_FILTER, _fil_max);
-
+	
 	if (_warp_s * _warp_t != 0) {
 		glTexParameteri(Type, GL_TEXTURE_WRAP_S, _warp_s);
 		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_t);
 	}
-
+	
 	if (_warp_r != 0)
 		glTexParameteri(Type, GL_TEXTURE_WRAP_T, _warp_r);
-
+	
 	if (_lev_min + _lev_max != 0) {
 		glTexParameteri(Type, GL_TEXTURE_BASE_LEVEL, _lev_min);
 		glTexParameteri(Type, GL_TEXTURE_MAX_LEVEL, _lev_max);
@@ -433,6 +436,11 @@ void Texture::GenERectMapFrom(const Texture& _Tar_Tex, int _w /*= 2048*/, int _h
 void Texture::ConvertDepthFrom(const Texture& _Tar_Tex)
 {
 	ConvertDepth(_Tar_Tex.GetTexID(), _Tar_Tex.GetW(), _Tar_Tex.GetH(), _Tar_Tex.tex_type);
+}
+
+void Texture::ConvertDepthCubeFrom(const Texture& _Tar_Tex)
+{
+	ConvertDepthCube(_Tar_Tex.GetTexID(), _Tar_Tex.GetW(), _Tar_Tex.GetH(), _Tar_Tex.tex_type);
 }
 
 void Texture::ConvertPNGFrom(const Texture& _Tar_Tex)
@@ -648,6 +656,33 @@ void Texture::ConvertDepth(GLuint _tar_ID, int _w, int _h, TextureType _tar_type
 	im_w = _w; im_h = _h;
 }
 
+void Texture::ConvertDepthCube(GLuint _tar_ID, int _w, int _h, TextureType _tar_type /*= DEPTH_CUBE_TEXTURE*/)
+{
+	if (_tar_type != DEPTH_CUBE_TEXTURE) return;
+
+	GLuint ID;
+	glGenTextures(1, &ID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+	Texture::SetTexParam<GL_TEXTURE_CUBE_MAP>(ID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, 0, 0, GL_CLAMP_TO_EDGE);
+
+	LOOP(6)
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA32F, _w, _h, 0, GL_RGBA, GL_FLOAT, nullptr);
+
+	ComputeShader& to_texture = ComputeShader::ImportShader("convert/Depth_Texture_C2C");
+
+	Texture::BindM(_tar_ID, 0, _tar_type);
+	glBindImageTexture(1, ID, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+
+	to_texture.UseShader();
+	to_texture.SetValue("U_depth", 0);
+	to_texture.RunComputeShader((_w + 3) / 4, (_h + 3) / 4, 6);
+
+	_resetTexID(ID);
+
+	tex_type = IBL_CUBE_TEXTURE;
+	im_w = _w; im_h = _h;
+}
+
 void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 {
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(PNG_TEXTURE);
@@ -674,15 +709,57 @@ void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 }
 
 #include "stb_image_write.h"
-void Texture::SaveTexture(std::string _path, bool force_png) const
+void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) const
 {
 	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
 	static std::string root = "result/";
 	int status = -1;
 	stbi_flip_vertically_on_write(1);
 	glBindTexture(gl_type, tex_ID);
+	if (gl_type == GL_TEXTURE_CUBE_MAP && !force_cube) {
+		Texture rect_map;
+		if (layout == GL_DEPTH_COMPONENT) {
+			Texture depth_cube;
+			depth_cube.ConvertDepthCubeFrom(*this);
+			rect_map.GenERectMapFrom(depth_cube, depth_cube.GetW() * 2, depth_cube.GetH());
+		} else {
+			rect_map.GenERectMapFrom(*this, im_w * 2, im_h);
+		}
+		rect_map.SaveTexture(_path, force_png, true);
+		return;
+	}
+	if (layout == GL_DEPTH_COMPONENT) {		// Depth Texture
+		if (force_png) {
+			static Texture depth_png;
+			depth_png.ConvertDepthFrom(*this);
+			depth_png.SaveTexture(_path, true);
+			return;
+		}
 
-	if (type != GL_UNSIGNED_BYTE) {
+		if (gl_type == GL_TEXTURE_2D) {
+			auto depth = std::vector<GLfloat>(im_w * im_h);
+			auto odata = std::vector<GLfloat>(im_w * im_h * 4);
+			glGetTexImage(gl_type, 0, layout, type, depth.data());
+			for (size_t i = 0; i < depth.size(); ++i) {
+				const size_t base = i * 4;
+				odata[base] = depth[i];
+				odata[base + 1] = depth[i];
+				odata[base + 2] = depth[i];
+				odata[base + 3] = 1.0f;
+			}
+
+			std::string outputPath = root + _path + ".hdr";
+			status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
+		}
+		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+			Texture depth_cube;
+			depth_cube.ConvertDepthCubeFrom(*this);
+			depth_cube.SaveTexture(_path, false, true);
+		}
+		else {
+			assert(false && "No depth map format matched");
+		}
+	}else if (type == GL_FLOAT) {
 		if (force_png) {
 			static Texture hdr_png;
 			hdr_png.ConvertPNGFrom(*this);
@@ -690,7 +767,6 @@ void Texture::SaveTexture(std::string _path, bool force_png) const
 			return;
 		}
 		else if (gl_type == GL_TEXTURE_2D) {
-			assert(type == GL_FLOAT);
 			auto odata = std::vector<GLfloat>(im_w * im_h * 4);
 
 			glGetTexImage(gl_type, 0, layout, type, odata.data());
@@ -699,8 +775,6 @@ void Texture::SaveTexture(std::string _path, bool force_png) const
 			status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
 		}
 		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
-			assert(type == GL_FLOAT);
-
 			auto odata = std::vector<GLfloat>(im_w * im_h * 4);
 			LOOP(6) {
 				glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, layout, type, odata.data());
@@ -710,15 +784,37 @@ void Texture::SaveTexture(std::string _path, bool force_png) const
 				status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
 			}
 		}
+		else {
+			assert(false && "No HDR map format matched");
+		}
 	}
-	else if (gl_type == GL_TEXTURE_2D) {
-		assert(type == GL_UNSIGNED_BYTE);
-		auto odata = std::vector<GLbyte>(im_w * im_h * 4);
+	else if (type == GL_UNSIGNED_BYTE) {
+		if (gl_type == GL_TEXTURE_2D) {
+			assert(type == GL_UNSIGNED_BYTE);
+			auto odata = std::vector<GLbyte>(im_w * im_h * 4);
 
-		glGetTexImage(gl_type, 0, layout, type, odata.data());
+			glGetTexImage(gl_type, 0, layout, type, odata.data());
 
-		std::string outputPath = root + _path + ".png";
-		status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+			std::string outputPath = root + _path + ".png";
+			status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+		}
+		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+			assert(type == GL_UNSIGNED_BYTE);
+			auto odata = std::vector<GLbyte>(im_w * im_h * 4);
+
+			LOOP(6) {
+				glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, layout, type, odata.data());
+
+				std::string outputPath = root + _path + "/" + _path + "_" + std::to_string(i + 1) + ".png";
+				status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+			}
+		}
+		else {
+			assert(false && "No bit map format matched");
+		}
+	}
+	else {
+		assert(false && "No texture type matched");
 	}
 
 	if (status == 0) {

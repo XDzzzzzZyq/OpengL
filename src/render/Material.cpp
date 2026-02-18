@@ -15,15 +15,15 @@ std::vector<std::string> Material::mat_uniform_name = {
 void Material::InitParamData()
 {
 	mat_params = {
-		{MAT_ALBEDO,	{MPARA_COL, 0.0, glm::vec3(1), nullptr}},
-		{MAT_METAL,		{MPARA_FLT, 0.0, glm::vec3(0), nullptr}},
-		{MAT_SPEC,		{MPARA_FLT, 0.5, glm::vec3(0), nullptr}},
-		{MAT_ROUGH,		{MPARA_FLT, 0.5, glm::vec3(0), nullptr}},
-		{MAT_EMIS_COL,	{MPARA_COL, 0.0, glm::vec3(0), nullptr}},
-		{MAT_EMIS_STR,	{MPARA_FLT, 0.0, glm::vec3(0), nullptr}},
-		{MAT_ALPHA,		{MPARA_FLT, 1.0, glm::vec3(0), nullptr}},
-		{MAT_NORMAL,	{MPARA_COL, 0.0, glm::vec3(0), nullptr}},
-		{MAT_BUMP,		{MPARA_FLT, 0.0, glm::vec3(0), nullptr}}
+		{MAT_ALBEDO,	{MPARA_COL, 1.0f, glm::vec3(1), nullptr}},
+		{MAT_METAL,		{MPARA_FLT, 0.0f, glm::vec3(0), nullptr}},
+		{MAT_SPEC,		{MPARA_FLT, 0.5f, glm::vec3(0.5), nullptr}},
+		{MAT_ROUGH,		{MPARA_FLT, 0.5f, glm::vec3(0.5), nullptr}},
+		{MAT_EMIS_COL,	{MPARA_COL, 0.0f, glm::vec3(0), nullptr}},
+		{MAT_EMIS_STR,	{MPARA_FLT, 0.0f, glm::vec3(0), nullptr}},
+		{MAT_ALPHA,		{MPARA_FLT, 1.0f, glm::vec3(1), nullptr}},
+		{MAT_NORMAL,	{MPARA_COL, 0.0f, glm::vec3(0), nullptr}},
+		{MAT_BUMP,		{MPARA_FLT, 0.0f, glm::vec3(0), nullptr}}
 	};
 }
 
@@ -45,6 +45,15 @@ Material::MaterialRes Material::LoadMaterial(std::string _path /*= ""*/)
 void Material::ParseConfig(const std::string& _config)
 {
 
+}
+
+void Material::SetMatParam(MatParaType _tar, MatDataType _type)
+{
+	auto& [type, flt, _col, _tex] = mat_params[_tar];
+	if (type != _type)
+		is_mat_changed = is_mat_struct_changed = true;
+
+	type = _type;
 }
 
 void Material::SetMatParam(MatParaType _tar, float _var)

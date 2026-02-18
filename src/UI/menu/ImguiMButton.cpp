@@ -13,7 +13,7 @@ UI::ImguiMButton::ImguiMButton(std::string _name, std::string _shortcut)
 	mitem_func = [this](bool) {std::cout << mitem_shortcut << "\n"; return true; };
 }
 
-void UI::ImguiMButton::RenderMenuItem()
+void UI::ImguiMButton::RenderMenuItem(const Context& ctx)
 {
 	if (ImGui::MenuItem(
 		mitem_name.c_str(),

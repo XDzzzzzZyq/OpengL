@@ -1,4 +1,8 @@
 #include "Environment.h"
+#include "MeshData.h"
+#include "Camera.h"
+
+#include "xdz_math.h"
 
 Environment::Environment(const std::string& texpath)
 {
@@ -20,12 +24,12 @@ Environment::Environment(const std::string& texpath)
 
 	envir_shader.InitShader = [&] {
 		envir_shader.UseShader();
-		envir_shader.SetValue("hdr_texture",		IBL_TEXTURE);
+		envir_shader.SetValue("hdr_texture",	IBL_TEXTURE);
 		envir_shader.SetValue("buffer_texture",	BUFFER_TEXTURE + COMBINE_FB);
 		envir_shader.SetValue("id_texture",		BUFFER_TEXTURE + ID_FB);
 		envir_shader.SetValue("select_texture",	BUFFER_TEXTURE + MASK_FB);
-		envir_shader.SetValue("ID_color",			id_color);
-		envir_shader.SetValue("RAND_color",		id_color_rand);
+		envir_shader.SetValue("ID_color",		xdzm::get_id_color(GetObjectID()));
+		envir_shader.SetValue("RAND_color",		xdzm::get_random_color(GetObjectID()));
 		envir_shader.UnuseShader();
 	};
 
@@ -75,8 +79,9 @@ void Environment::UnbindEnvironTexture() const
 	envir_IBL_spec.Unbind();
 }
 
-void Environment::RenderEnvironment(Camera* cam)
+void Environment::RenderEnvironment(const Context& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 	envir_shader.UseShader();
 	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 	envir_IBL_spec.Bind(IBL_TEXTURE);
@@ -98,7 +103,7 @@ void Environment::RenderEnvironment(Camera* cam)
 	envir_shader.is_shader_changed = false;
 }
 
-void Environment::RenderEnvirSpr(Camera* cam)
+void Environment::RenderEnvirSpr(const Context& ctx)
 {
-	envir_sprite.RenderSprite(o_position, envir_color, cam);
+	envir_sprite.RenderSprite(ctx, o_position, envir_color, GetObjectID());
 }

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "Texture.h"
 #include "Sprite.h"
-#include "Camera.h"
-#include "MeshData.h"
+
+#include "Context.h"
 
 #include "buffer/FrameBuffer.h"
 
@@ -16,7 +16,7 @@ enum EnvironmentType
 	NONE_ENVIR, TEXTURE_ENVIR, COLOR_ENVIRN, NOISE_ENVIRN
 };
 
-class Environment : public GameObject, public Transform3D
+class Environment : public ObjectID, public Transform3D
 {
 public:
 
@@ -53,8 +53,8 @@ public:
 	void* GetShader()		override { return &envir_shader; }
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
-	void RenderEnvironment(Camera* cam);
-	void RenderEnvirSpr(Camera* cam);
+	void RenderEnvironment(const Context& ctx);
+	void RenderEnvirSpr(const Context& ctx);
 
 };
 

@@ -3,9 +3,10 @@
 #include "VertexArray.h"
 #include "buffer/IndexBuffer.h"
 
-#include "Camera.h"
-
 #include <numeric>
+#include <unordered_map>
+
+#include "glm/glm.hpp"
 
 class MeshData {
 

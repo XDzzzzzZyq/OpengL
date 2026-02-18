@@ -13,7 +13,7 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	SceneManager::sce_configs[_name] = config1;
 
 	DEBUG("\n---------------CAMERA----------------");
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70.0f, 0.1f, 300.0f);
 	camera->SetPos({ 0.0f, 20.0f, 0.0f });
 	camera->SetRot({ 90, 0, 180 });
 	camera->ApplyTransform();
@@ -23,7 +23,7 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> go1 = std::make_shared<Mesh>("monkey2.obj");
 	go1->SetObjShader("testS", "Rasterization");
-	go1->SetTex(MAT_ALBEDO, "avatar2.png");
+	go1->SetTex(Material::MAT_ALBEDO, "avatar2.png");
 	go1->SetCenter();
 	go1->SetScale(glm::vec3(0.3f));
 	config1->UseMesh(go1);
@@ -31,7 +31,7 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
-	go2->SetTex(MAT_ALBEDO, "avatar1.png");
+	go2->SetTex(Material::MAT_ALBEDO, "avatar1.png");
 	go2->SetCenter();
 	go2->SetPos({ 8, 0, 0 });
 	go2->SetScale(glm::vec3(1.5f));
@@ -41,9 +41,9 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> go3 = std::make_shared<Mesh>("UVsphere.obj");
 	go3->SetObjShader("testS", "Rasterization");
-	go3->SetTex(MAT_ROUGH, "avatar1.png");
-	go3->SetMatColor(MAT_ALBEDO, glm::vec3(0.1f));
-	go3->SetMatColor(MAT_METAL, 0.1f);
+	go3->SetTex(Material::MAT_ROUGH, "avatar1.png");
+	go3->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0.1f));
+	go3->SetMatColor(Material::MAT_METAL, 0.1f);
 	go3->SetPos({ -8,0,0 });
 	go3->SetScale({ 3,3,3 });
 	config1->UseMesh(go3);
@@ -51,8 +51,8 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> go4 = std::make_shared<Mesh>("plane.obj");
 	go4->SetObjShader("testS", "Rasterization");
-	go4->SetTex(MAT_ALBEDO, "rough.png");
-	go4->SetMatColor(MAT_ROUGH, 0.9f);
+	go4->SetTex(Material::MAT_ALBEDO, "rough.png");
+	go4->SetMatColor(Material::MAT_ROUGH, 0.9f);
 	go4->SetPos({ 0,-7,0 });
 	go4->SetScale({ 2,2,2 });
 	go4->SetRot({ 0,90,90 });
@@ -177,62 +177,62 @@ std::shared_ptr<SceneResource> SceneManager::CornellBox(std::string _name/*="cor
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> monkey = std::make_shared<Mesh>("cornellbox/monkey.obj");
 	monkey->SetObjShader("testS", "Rasterization");
-	monkey->SetMatColor(MAT_ROUGH, 0.0f);
-	monkey->SetMatColor(MAT_METAL, 1.0f);
+	monkey->SetMatColor(Material::MAT_ROUGH, 0.0f);
+	monkey->SetMatColor(Material::MAT_METAL, 1.0f);
 	monkey->SetLowPoly("cornellbox/monkey_low.obj");
 	config2->UseMesh(monkey);
 
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> back_wall = std::make_shared<Mesh>("cornellbox/back_wall.obj");
 	back_wall->SetObjShader("testS", "Rasterization");
-	back_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
-	back_wall->SetMatColor(MAT_ROUGH, 0.90f);
-	back_wall->SetMatColor(MAT_METAL, 0.05f);
+	back_wall->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0.9f));
+	back_wall->SetMatColor(Material::MAT_ROUGH, 0.90f);
+	back_wall->SetMatColor(Material::MAT_METAL, 0.05f);
 	back_wall->is_closure = false;
 	config2->UseMesh(back_wall);
 
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> left_wall = std::make_shared<Mesh>("cornellbox/left_wall.obj");
 	left_wall->SetObjShader("testS", "Rasterization");
-	left_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.8, 0.22, 0.2));
-	left_wall->SetMatColor(MAT_ROUGH, 0.90f);
-	left_wall->SetMatColor(MAT_METAL, 0.05f);
+	left_wall->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0.8, 0.22, 0.2));
+	left_wall->SetMatColor(Material::MAT_ROUGH, 0.90f);
+	left_wall->SetMatColor(Material::MAT_METAL, 0.05f);
 	left_wall->is_closure = false;
 	config2->UseMesh(left_wall);
 
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> right_wall = std::make_shared<Mesh>("cornellbox/right_wall.obj");
 	right_wall->SetObjShader("testS", "Rasterization");
-	right_wall->SetMatColor(MAT_ALBEDO, glm::vec3(0.26, 0.8, 0.29));
-	right_wall->SetMatColor(MAT_ROUGH, 0.90f);
-	right_wall->SetMatColor(MAT_METAL, 0.05f);
+	right_wall->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0.26, 0.8, 0.29));
+	right_wall->SetMatColor(Material::MAT_ROUGH, 0.90f);
+	right_wall->SetMatColor(Material::MAT_METAL, 0.05f);
 	right_wall->is_closure = false;
 	config2->UseMesh(right_wall);
 
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> left_box = std::make_shared<Mesh>("cornellbox/left_box.obj");
 	left_box->SetObjShader("testS", "Rasterization");
-	left_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
-	left_box->SetMatColor(MAT_ROUGH, 0.90f);
-	left_box->SetMatColor(MAT_METAL, 0.05f);
+	left_box->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0.9f));
+	left_box->SetMatColor(Material::MAT_ROUGH, 0.90f);
+	left_box->SetMatColor(Material::MAT_METAL, 0.05f);
 	config2->UseMesh(left_box);
 
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> right_box = std::make_shared<Mesh>("cornellbox/right_box.obj");
 	right_box->SetObjShader("testS", "Rasterization");
-	right_box->SetMatColor(MAT_ALBEDO, glm::vec3(0.9f));
-	right_box->SetMatColor(MAT_ROUGH, 0.90f);
-	right_box->SetMatColor(MAT_METAL, 0.05f);
+	right_box->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0.9f));
+	right_box->SetMatColor(Material::MAT_ROUGH, 0.90f);
+	right_box->SetMatColor(Material::MAT_METAL, 0.05f);
 	config2->UseMesh(right_box);
 
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> light = std::make_shared<Mesh>("cornellbox/light_up.obj");
 	light->SetObjShader("testS", "Rasterization");
-	light->SetMatColor(MAT_ALBEDO, glm::vec3(0));
-	light->SetMatColor(MAT_ROUGH, 1.0);
-	light->SetMatColor(MAT_METAL, 1.0);
-	light->SetMatColor(MAT_EMIS_COL, glm::vec3(1));
-	light->SetMatColor(MAT_EMIS_STR, 1.0);
+	light->SetMatColor(Material::MAT_ALBEDO, glm::vec3(0));
+	light->SetMatColor(Material::MAT_ROUGH, 1.0);
+	light->SetMatColor(Material::MAT_METAL, 1.0);
+	light->SetMatColor(Material::MAT_EMIS_COL, glm::vec3(1));
+	light->SetMatColor(Material::MAT_EMIS_STR, 1.0);
 	light->is_closure = false;
 	light->EnableSDF(false);
 	config2->UseMesh(light);
@@ -302,7 +302,7 @@ std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF t
 	SceneManager::sce_configs[_name] = config3;
 
 	DEBUG("\n---------------CAMERA----------------");
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70.0f, 0.1f, 300.0f);
 	camera->SetPos({ 10, 0, 10 });
 	camera->SetRot({ 45, 0, 90 });
 	camera->ApplyTransform();
@@ -322,7 +322,7 @@ std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF t
 	DEBUG("\n---------------MESH----------------");
 	std::shared_ptr<Mesh> go2 = std::make_shared<Mesh>("torus.obj");
 	go2->SetObjShader("testS", "Rasterization");
-	go2->SetTex(MAT_ALBEDO, "avatar1.png");
+	go2->SetTex(Material::MAT_ALBEDO, "avatar1.png");
 	go2->SetCenter();
 	go2->SetPos({ 0, 0, 0 });
 	go2->SetScale(glm::vec3(1.5f));
@@ -367,7 +367,7 @@ std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shado
 	SceneManager::sce_configs[_name] = config4;
 
 	DEBUG("\n---------------CAMERA----------------");
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70.0f, 0.1f, 300.0f);
 	camera->SetCamPos({ 4, -4, 2 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
@@ -419,7 +419,7 @@ std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shado
 	sun1->SetColor({ 0.7,0.7, 1 });
 	sun1->SetPower(1);
 	sun1->ApplyTransform();
-	//config4->UseLight(sun1);
+	config4->UseLight(sun1);
 
 	DEBUG("\n-------------AREA LIGHT-------------");
 	std::shared_ptr<Light> areaLight2 = std::make_shared<Light>(AREALIGHT, 1.0f, glm::vec3(1.0f));
@@ -445,13 +445,13 @@ std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shado
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("U_color",		BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos",		BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal",	BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo",	BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse",		BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission",	BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha",		BUFFER_TEXTURE + MASK_FB);
 	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
 	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights

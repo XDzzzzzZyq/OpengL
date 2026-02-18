@@ -1,5 +1,8 @@
 #include "DebugLine.h"
+#include "Camera.h"
+
 #include "macros.h"
+#include "xdz_math.h"
 
 DebugLine::DebugLine(const glm::vec3& start, const glm::vec3& end)
 	:DebugLine(std::vector<glm::vec3>{start, end})
@@ -54,8 +57,10 @@ void DebugLine::PushDebugLines(const std::vector<glm::vec3>& points)
 		dLine_pos_list.emplace_back(points[i]);
 }
 
-void DebugLine::RenderDdbugLine(Camera* camera)
+void DebugLine::RenderDdbugLine(const Context& ctx)
 {
+	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	const bool is_selected = ctx.editor.selections.IsSelected(this);
 
 	if (dLine_pos_list.size() < 2)return;
 
@@ -63,11 +68,11 @@ void DebugLine::RenderDdbugLine(Camera* camera)
 	if (dLine_shader.is_shader_changed)
 		dLine_shader.InitShader();
 
-	if(camera->is_invUniform_changed || dLine_shader.is_shader_changed)
-		dLine_shader.SetValue("U_cam_trans",camera->o_InvTransform);
+	if(cam->is_invUniform_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_cam_trans",cam->o_InvTransform);
 
-	if(camera->is_frustum_changed || dLine_shader.is_shader_changed)
-		dLine_shader.SetValue("U_ProjectM", camera->cam_frustum);
+	if(cam->is_frustum_changed || dLine_shader.is_shader_changed)
+		dLine_shader.SetValue("U_ProjectM", cam->cam_frustum);
 
 	if(is_Uniform_changed || dLine_shader.is_shader_changed)
 		dLine_shader.SetValue("U_Trans", o_Transform);
@@ -113,8 +118,8 @@ void DebugLine::SetDLineShader()
 		dLine_shader.UseShader();
 		dLine_shader.SetValue("blen", 0.5f);
 		dLine_shader.SetValue("U_color", 1.0f, 1.0f, 1.0f);
-		dLine_shader.SetValue("ID_color", id_color);
-		dLine_shader.SetValue("RAND_color", id_color_rand);
+		dLine_shader.SetValue("ID_color", xdzm::get_id_color(GetObjectID()));
+		dLine_shader.SetValue("RAND_color", xdzm::get_random_color(GetObjectID()));
 		dLine_shader.UnuseShader();
 	};
 }

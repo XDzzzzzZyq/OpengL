@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 
 class RenderConfigs
 {
@@ -74,18 +73,9 @@ public:
 
 public:
 
-	enum ModifyFlags
-	{
-		NoChanges,
-		ShadowChanged = 1 << 0
-	};
-
-public:
-
 	float r_gamma = 1.0f;
 	int r_ao_ksize = 16;
 	float r_ao_radius = 0.5;
-
 	int r_sample_pf = 128;
 
 public:
@@ -100,14 +90,6 @@ public:
 
 public:
 
-	RenderConfigs();
-	std::function<void(ModifyFlags)> call_back{ nullptr };
-
-private:
-	static RenderConfigs* r_active_configs;
-
-public:
-	static void ActivateConfig(RenderConfigs* config);
-	static RenderConfigs* GetActiveConfigPtr();
+	RenderConfigs() {};
 };
 

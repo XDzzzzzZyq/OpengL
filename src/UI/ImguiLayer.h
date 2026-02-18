@@ -1,21 +1,14 @@
 #pragma once
 
 #include "ImGui/imgui.h"
-#include "ImGui/backends/imgui_impl_glfw.h"
-#include "ImGui/backends/imgui_impl_opengl3.h"
 
+#include "Context.h"
+#include "Events.h"
 
-#include "EventListener.h"
 #include "ImguiTheme.h"
-
-#include "item/ParaInput.h"
-#include "item/TextureViewer.h"
-#include "item/Text.h"
-#include "item/Button.h"
-#include "item/OpaButton.h"
+#include "ImguiItem.h"
 
 #include <unordered_map>
-#include <map>
 #define ACTIVE "ACTIVE LAYER"
 
 enum ImLayerType
@@ -31,12 +24,8 @@ enum ImLayerType
 	RENDER_CONFIG_ULATER
 };
 
-class ImguiLayer : public EventListener
+class ImguiLayer
 {
-public:
-	ImVec2 content_pos;
-	ImVec2 content_size;
-	
 public:
 	ImguiLayer();
 	ImguiLayer(const std::string& name);
@@ -53,13 +42,16 @@ private:
 public:
 	bool using_size = false;
 	bool fixed_size = false;
-	mutable bool is_size_changed = false;
+	mutable bool is_size_changed = false; // TODO: better design
 	mutable bool is_size_changed_b = true;
-	bool IsResizingFin() const { return (is_size_changed == false) && (is_size_changed_b == true); }
+	bool IsResized() const { return (is_size_changed == false) && (is_size_changed_b == true); }
+
 	ImVec2 uly_size;
 	ImVec2 uly_size_b;
 	ImVec2 GetLayerSize();
-	void UpdateLayerPos();
+
+	ImVec2 uly_pos;
+	ImVec2 GetLayerPos();
 
 public:
 	bool is_docking = true;
@@ -75,19 +67,13 @@ public:
 	bool uly_is_rendered = true;
 
 public:
+
+	bool is_mouse_hovered = false;
+
+public:
 	bool uly_show_type = false;
-	std::function<void(void)> pre_RenderLayer = [] {};
-	std::function<void(void)> extra_RenderLayer = [] {};
-	std::function<void(void)> resize_event = [] {};
-	virtual void RenderLayer() { DEBUG("no Render function overrided"); return; };
-	virtual void UpdateLayer() {};
-
-	//for outline          |  TYPE  |  NAME  |
-	virtual void SetObjectList(OutlineData* data) { DEBUG(uly_name + " is not a Outline"); return; }
-	std::function<void(void)> set_active = [] {};
-
-	void EventInit();
-	void LMB();
+	virtual void RegisterEvents(EventPool& evt) {};
+	virtual void RenderLayer(const Context& ctx, const EventPool& evt) {};
 };
 
 template<class ItemType, class... Args>
@@ -97,3 +83,7 @@ void ImguiLayer::PushItem(Args... args)
 	PushItem(std::dynamic_pointer_cast<ImguiItem>(item));
 }
 
+#include <type_traits>
+
+template<typename T>
+concept ImguiLayerType = std::is_base_of_v<ImguiLayer, T>;

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "buffer/StorageBuffer.h"
 #include "Camera.h"
 #include "Shaders.h"
 
-class SDFField :  public GameObject, public Transform3D
+class SDFField :  public ObjectID, public Transform3D
 {
 
 public:

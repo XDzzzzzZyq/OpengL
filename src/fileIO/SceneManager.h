@@ -11,7 +11,7 @@
 
 #include "SDFField.h"
 
-class SceneResource
+class SceneResource : public UID
 {
 public:
 
@@ -40,7 +40,7 @@ public:
 		ShaderChanged		= 1 << 3,
 		MaterialChanged		= 1 << 4,
 
-		SceneChanged = ObjectTransChanged | LightChanged | CameraChanged | ShaderChanged | MaterialChanged,
+		SceneChanged		= ObjectTransChanged | LightChanged | CameraChanged | ShaderChanged | MaterialChanged,
 		SDFChanged			= 1 << 8,
 	};
 
@@ -53,7 +53,7 @@ private:
 	SceneModifStatus status = SceneModifStatus::SceneChanged;
 public:
 
-	ResPool<GameObject>			obj_list;
+	ResPool<ObjectID>			obj_list;
 
 	ResPool<Camera>				cam_list;
 	ResPool<Mesh>				mesh_list;
@@ -79,16 +79,15 @@ public:
 	void UsePostProcessing(Resource<PostProcessing> pps);
 	void UseSDF(Resource<SDFField> sdf);
 
-	std::shared_ptr<Camera> GetActiveCamera();
-	std::shared_ptr<Environment> GetActiveEnvironment();
-	std::shared_ptr<PostProcessing> GetPPS(int _tar);
+	ObjectID* GetObjectID(int _id);
+	Camera* GetActiveCamera();
+	Environment* GetActiveEnvironment();
+	PostProcessing* GetPPS(int _tar);
 
 public:
 
 	void UpdateObjTransforms();
-
 	void ResetStatus();
-
 };
 
 class SceneManager

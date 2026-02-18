@@ -1,15 +1,16 @@
 #pragma once
-#include "GameObject.h"
+#include "Context.h"
+
+#include "ID.h"
 #include "Transform.h"
 
 #include "VertexArray.h"
 #include "buffer/IndexBuffer.h"
 #include "Shaders.h"
-#include "Camera.h"
 
 #include "Parameters.h"
 
-class DebugLine : public GameObject, public Transform3D
+class DebugLine : public ObjectID, public Transform3D
 {
 private:
 	std::vector<glm::vec3> dLine_pos_list;
@@ -35,7 +36,7 @@ public:
 	void PushDebugLine(float x, float y, float z);
 	void PushDebugLines(const std::vector<glm::vec3>& points);
 
-	void RenderDdbugLine(Camera* camera);
+	void RenderDdbugLine(const Context& ctx);
 
 	void SetDLineShader();
 	void* GetShader()		override { return &dLine_shader; };

@@ -1,5 +1,11 @@
 #include "Renderer.h"
+#include "SDFField.h"
+#include "SceneManager.h"
+#include "Input.h"
+
 #include "xdz_math.h"
+
+#include "events/EditorEvents.h"
 
 GLint Renderer::max_resolution_w = 0;
 GLint Renderer::max_resolution_h = 0;
@@ -8,7 +14,7 @@ Renderer::Renderer()
 	:r_frame_width(SCREEN_W), r_frame_height(SCREEN_H)
 {}
 
-void Renderer::Init()
+void Renderer::Init(EventPool& evt)
 {
 	if (glewInit() != GLEW_OK)
 		std::cout << "glew error" << std::endl;
@@ -43,37 +49,22 @@ void Renderer::Init()
 
 	InitFrameBuffer();
 	r_light_data.Init();
-	r_config.call_back = [&](RenderConfigs::ModifyFlags flag) {
-		OnRenderCfgUpdate(flag);
-	};
 
-	EventInit();
 	ComputeShader::InitComputeLib(GetConfig());
 	Light::EnableShadowMap();
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
+
+	// TODO: move this to editor layer
+	evt.subscribe<RenderSurfaceResizedEvent>([this](const RenderSurfaceResizedEvent& e) {
+		this->FrameResize(e.width, e.height );
+		});
+
 }
 
 Renderer::~Renderer()
 {}
-
-std::string Renderer::GetObjectName(int ID)
-{
-	if (r_scene->obj_list.find(ID) == r_scene->obj_list.end())
-		return "None";
-
-	return r_scene->obj_list[ID]->o_name;
-}
-
-int Renderer::GetSelectID(GLuint x, GLuint y)
-{
-	if (viewport_offset - glm::vec2(5, 5) < glm::vec2(x, y) && glm::vec2(x, y) < viewport_offset + r_buffer_list[_RASTER].GetFrameBufferSize() * glm::vec2(1, 2))
-		//return GetActiveEnvironment()->envir_frameBuffer->ReadPix(x - viewport_offset.x, y - viewport_offset.y, ID_FB).GetID();
-		return r_buffer_list[_RASTER].ReadPix(x - (GLuint)viewport_offset.x, y - (GLuint)viewport_offset.y, ID_FB).GetID();
-	else
-		return EventListener::active_GO_ID;
-}
 
 void Renderer::InitFrameBuffer()
 {
@@ -99,58 +90,6 @@ void Renderer::FrameBufferResize(const glm::vec2& size)
 	r_render_result->Resize(size);
 }
 
-GLuint Renderer::GetFrameBufferTexture(int slot)
-{
-	//return framebuffer_list[slot].BufferTexture.GetTexID();
-	//return r_buffer_list[_RASTER].GetFBTextureID(RAND_FB);
-	return r_render_result->GetFBTextureID(COMBINE_FB);
-}
-
-
-void Renderer::EventInit()
-{
-	EventList[GenIntEvent(0, 0, 0, 1, 0)] = REGIST_EVENT(Renderer::LMB_CLICK);
-	EventList[GenIntEvent(1, 0, 0, 0, 0)] = REGIST_EVENT(Renderer::SHIFT);
-
-	EventListener::GetActiveObject = [&](int id) { return r_scene->obj_list[id].get(); };
-	EventListener::GetActiveCamera = [&]() { return dynamic_cast<GameObject*>(GetActiveCamera().get()); };
-}
-
-void Renderer::LMB_CLICK()
-{
-	if (!EventListener::IsMouseClick()) return;
-	if (!EventListener::is_in_viewport) return;
-	if (EventListener::viewport_status != EventListener::ViewPortStatus::None) return;
-
-	int id = GetSelectID((GLuint)mouse_x, (GLuint)mouse_y);
-	if (id == EventListener::active_GO_ID) return;
-
-	if (r_scene->obj_list.find(EventListener::active_GO_ID) != r_scene->obj_list.end())
-		r_scene->obj_list[EventListener::active_GO_ID]->is_selected = false;
-
-	EventListener::active_GO_ID = id;
-
-	if (r_scene->obj_list.find(EventListener::active_GO_ID) != r_scene->obj_list.end()) {
-		r_scene->obj_list[EventListener::active_GO_ID]->is_selected = true;
-		EventListener::active_object = EventListener::GetActiveObject(EventListener::active_GO_ID);
-	}
-	else {
-		EventListener::active_GO_ID = 0;
-		EventListener::active_object = nullptr;
-	}
-
-
-	EventListener::is_selected_changed = true;
-
-	for (auto [id, _] : r_scene->sprite_list)
-		is_sprite_selected |= id == active_GO_ID;
-}
-
-void Renderer::SHIFT()
-{
-	multi_select = true;
-}
-
 //////////////////////////////////////////////
 
 void Renderer::NewFrame()
@@ -173,70 +112,100 @@ void Renderer::NewFrame()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// START RENDERING //////////////////////////////////////////////
 
-void Renderer::Render(bool rend, bool buff) {
+void RenderShadowMap(Light* light, SceneResource::ResPool<Mesh> mesh_list, const RenderConfigs& config)
+{
+	//TODO: not necessary for every frame update
+	const GLuint map_w = light->light_shadow_map.GetW();
+	const GLuint map_h = light->light_shadow_map.GetH();
+
+	glViewport(0, 0, map_w, map_h);
+
+	light->BindShadowMapBuffer();
+	light->BindShadowMapShader();
+
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	for (const auto& [id, mesh] : mesh_list)
+	{
+		if (!mesh->using_shadow) continue;
+		if (!mesh->is_viewport) continue;
+
+		light->BindTargetTrans(mesh->o_Transform);
+		mesh->RenderObjProxy();
+	}
+
+	FrameBuffer::UnbindFrameBuffer();
+
+	if (config.RequiresMomentShadow()) {
+		light->ConstructSAT(&config);
+	}
+}
+
+void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 
 
 	/* Check at least one camera and environment */
-
-	if (r_scene->cam_list.find(0) == r_scene->cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
-	if (r_scene->envir_list.find(0) == r_scene->envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
+	if (scene->cam_list.find(0) == scene->cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
+	if (scene->envir_list.find(0) == scene->envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
 	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-
+	
 	////////////    CAM CACHED    /////////////
 
-	glm::mat4 proj_trans_b = GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform;
+	const Camera* cam = scene->GetActiveCamera();
+	glm::mat4 proj_trans_b = cam->cam_frustum * cam->o_InvTransform;
 
 
 	////////////  TRANSFORM UDPATE  /////////////
-
-	r_scene->UpdateObjTransforms();
-	if (r_scene->CheckStatus(SceneResource::SceneChanged) && r_config.r_sampling_average == RenderConfigs::SamplingType::Average)
-		EventListener::frame_count = 1;
-	//r_scene->_debugStatus();
-
+	
+	scene->UpdateObjTransforms();
+	if (scene->CheckStatus(SceneResource::SceneChanged) && r_config.r_sampling_average == RenderConfigs::SamplingType::Average)
+		Input::ResetFrameCount(1);
+	//scene->_debugStatus();
+	
 
 	////////////     OPTICAL FLOW     ////////////
-
+	
 	if (r_config.RequiresFwdOF())
 	{
 		ComputeShader& of = ComputeShader::ImportShader("Optical_Flow");
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 0);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(OPT_FLW_FB, 1);
 		of.UseShader();
-		of.SetValue("proj_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+		of.SetValue("proj_trans", cam->cam_frustum * cam->o_InvTransform);
 		of.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 	}
 
-
+	
 	/////////// Signed Distance Field ///////////
 
 	const bool requires_sdf = r_config.RequiresSDF();
-	const bool realtime_sdf = (!r_scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_config.r_sampling_average == RenderConfigs::SamplingType::Average;
-	if (requires_sdf && r_scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
-		ConstructSDF();
+	const bool realtime_sdf = (!scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_config.r_sampling_average == RenderConfigs::SamplingType::Average;
+	if (requires_sdf && scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
+		ConstructSDF(ctx);
 
-
+	
 	///////////  Lights Data PreCalc  ///////////
 
-	for (auto& [id, light] : r_scene->light_list) {
-		if (!light->is_viewport) return;
+	for (auto& [id, light] : scene->light_list) {
+		if (!light->is_viewport) continue;
 
 		if (light->is_light_changed || light->is_Uniform_changed) {
 			r_light_data.UpdateLight(light.get());
 		}
 
-		if (light->is_light_changed || r_scene->CheckStatus(SceneResource::ObjectTransChanged)) {
-			RenderShadowMap(light.get());
+		if (light->is_light_changed || scene->CheckStatus(SceneResource::ObjectTransChanged)) {
+			RenderShadowMap(light.get(), scene->mesh_list, r_config);
 		}
 
 		/* Depth Test for Shadow Map */
 		if (light->is_Uniform_changed)
 			light->UpdateProjMatrix();
 	}
-
+	
 	///////////   Begin buffering    ///////////
 
 	if (buff) {
@@ -245,7 +214,7 @@ void Renderer::Render(bool rend, bool buff) {
 	}
 
 	NewFrame();
-
+	
 	if (rend) {
 		//glEnable(GL_STENCIL_TEST);
 		;
@@ -253,61 +222,62 @@ void Renderer::Render(bool rend, bool buff) {
 		glDisable(GL_BLEND);
 
 		glDisable(GL_DEPTH_TEST);
-		GetActiveEnvironment()->RenderEnvironment(GetActiveCamera().get());
+		Environment* env = scene->GetActiveEnvironment();
+		env->RenderEnvironment(ctx);
 		glEnable(GL_DEPTH_TEST);
 
-
+		
 		////////////    MESHES    ////////////
 
-		GetActiveEnvironment()->BindEnvironTexture();
-		r_scene->sdf_field->Bind();
-		for (const auto& [id, mesh] : r_scene->mesh_list)
+		env->BindEnvironTexture();
+		scene->sdf_field->Bind();
+		for (const auto& [id, mesh] : scene->mesh_list)
 		{
 			if (!mesh->is_viewport)continue;
-			mesh->RenderMesh(GetActiveCamera().get());
+			mesh->RenderMesh(ctx);
 		}
-
+		
 		/////////  POLYGONAL LIGHTS POLYGON    /////////
 
-		for (const auto& [id, polyLight] : r_scene->poly_light_list)
+		for (const auto& [id, polyLight] : scene->poly_light_list)
 		{
 			if (!polyLight->is_viewport)continue;
-			polyLight->RenderPolygon(GetActiveCamera().get());
+			polyLight->RenderPolygon(ctx);
 			if (polyLight->is_Uniform_changed)
-				r_light_data.ParsePolygonLightData(r_scene->poly_light_list);
+				r_light_data.ParsePolygonLightData(scene->poly_light_list);
 		}
-
+		
 		/////////    DEBUG MESHES    /////////
 
-		for (const auto& [id, dLine] : r_scene->dLine_list)
+		for (const auto& [id, dLine] : scene->dLine_list)
 		{
 			if (!dLine->is_viewport)continue;
-			dLine->RenderDdbugLine(GetActiveCamera().get());
+			dLine->RenderDdbugLine(ctx);
 		}
-
-		for (const auto& [id, dPoints] : r_scene->dPoints_list)
+		
+		for (const auto& [id, dPoints] : scene->dPoints_list)
 		{
 			if (!dPoints->is_viewport)continue;
-			dPoints->RenderDebugPoint(GetActiveCamera().get());;
+			dPoints->RenderDebugPoint(ctx);
 		}
-
+		
 
 		////////////    ICONS    ////////////
 
 		if (r_render_icons) {
 			glEnable(GL_BLEND);
-			for (const auto& [id, light] : r_scene->light_list)
+			for (const auto& [id, light] : scene->light_list)
 			{
 				if (!light->light_sprite.is_viewport)continue;
-				light->RenderLightSpr(GetActiveCamera().get());
+				light->RenderLightSpr(ctx);
 			}
-			for (const auto& [id, envir] : r_scene->envir_list) {
+			for (const auto& [id, envir] : scene->envir_list) {
 				if (!envir->envir_sprite.is_viewport)continue;
-				envir->RenderEnvirSpr(GetActiveCamera().get());
+				envir->RenderEnvirSpr(ctx);
 			}
-			for (const auto& pps : r_scene->pps_list) {
+			for (const auto& pps : scene->pps_list) {
 				if (!pps->pps_sprite.is_viewport)continue;
-				pps->RenderPPSSpr(GetActiveCamera().get());
+				pps->RenderPPSSpr(ctx);
 			}
 		}
 	}
@@ -315,7 +285,7 @@ void Renderer::Render(bool rend, bool buff) {
 		//GetActiveEnvironment()->UnbindFrameBuffer();
 		r_buffer_list[_RASTER].UnbindFrameBuffer();
 
-
+		
 		///////     BEGIN PROCESSING    ///////
 
 		glDisable(GL_DEPTH_TEST);
@@ -324,15 +294,16 @@ void Renderer::Render(bool rend, bool buff) {
 
 		//GetActiveEnvironment()->envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
 
-
+		
 		////////////    OUTLINE    ////////////
 
 		if (r_is_preview) {
 			ComputeShader& outline = ComputeShader::ImportShader("selection_outline");
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 0);
-			if (active_GO_ID != 0) outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
+			if (ctx.editor.selections.GetSelectedObjects() != nullptr) 
+				outline.RunComputeShaderSCR(r_buffer_list[_RASTER].GetSize(), 16);
 		}
-
+		
 
 		//////// BACKWARD OPTICAL FLOW ////////
 
@@ -345,12 +316,12 @@ void Renderer::Render(bool rend, bool buff) {
 			of_b.SetValue("proj_trans_b", proj_trans_b);
 			of_b.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
-
+		
 
 		////////////  SSAO + DEPTH  ////////////
 
 		ComputeShader& ssao = ComputeShader::ImportShader(ComputeShader::GetAOShaderName(GetConfig()));
-		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / EventListener::frame_count;
+		float ao_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0.05f : 1.0f / Input::GetFrameCount();
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 1);
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(POS_B_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
@@ -359,35 +330,42 @@ void Renderer::Render(bool rend, bool buff) {
 		r_buffer_list[_AO_ELS].BindFrameBufferTexR(LIGHT_AO_FB, 6);
 		TextureLib::Noise_2D_16x16xN()->BindC(7);
 		ssao.UseShader();
-		if (GetActiveCamera()->is_Uniform_changed) {
-			ssao.SetValue("Cam_pos", GetActiveCamera()->o_position);
-			ssao.SetValue("Proj_Trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
+		if (cam->is_Uniform_changed) {
+			ssao.SetValue("Cam_pos", cam->o_position);
+			ssao.SetValue("Proj_Trans", cam->cam_frustum * cam->o_InvTransform);
 		}
 		ssao.SetValue("update_rate", ao_update_rate);
-		ssao.SetValue("noise_level", EventListener::frame_count % 6);
+		ssao.SetValue("noise_level", Input::GetFrameCount() % 6);
 		ssao.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 
-
+		
 		//////////// LIGHTING CACHE ////////////
 
-		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0f / EventListener::frame_count;
+		const float shadow_update_rate = r_config.r_sampling_average == RenderConfigs::SamplingType::IncrementAverage ? 0 : 1.0f / Input::GetFrameCount();
 		r_buffer_list[_RASTER].BindFrameBufferTexR(NORMAL_FB, 2);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(POS_FB, 3);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
-		if (r_config.RequiresSDF()) r_scene->sdf_field->Bind();
-		r_light_data.UpdateLightingCache(EventListener::frame_count, GetConfig());
-
+		if (r_config.RequiresSDF()) scene->sdf_field->Bind();
+		r_light_data.UpdateLightingCache(Input::GetFrameCount(), GetConfig());
+		
 
 		////////////  PBR COMPOSE  ////////////
 
 		//r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
-		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
-		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
+		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
+		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		TextureLib::LTC1()->Bind(13);
 		TextureLib::LTC2()->Bind(14);
 		r_light_data.Bind();
+		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB,		BUFFER_TEXTURE + POS_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(NORMAL_FB,	BUFFER_TEXTURE + NORMAL_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(ALBEDO_FB,	BUFFER_TEXTURE + ALBEDO_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(MRSE_FB,		BUFFER_TEXTURE + MRSE_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(MASK_FB,		BUFFER_TEXTURE + MASK_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(EMIS_COL_FB,	BUFFER_TEXTURE + EMIS_COL_FB);
+
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 1);
 		r_render_result->BindFrameBufferTexR(DIR_SPEC_FB, 2);
@@ -395,12 +373,12 @@ void Renderer::Render(bool rend, bool buff) {
 		r_render_result->BindFrameBufferTexR(IND_SPEC_FB, 4);
 		r_render_result->BindFrameBufferTexR(DIR_EMIS_FB, 5);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 7);
-		r_scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", GetActiveCamera()->o_position);
+		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("Cam_pos", cam->o_position);
 		r_render_result->BindFrameBuffer();
-		r_scene->pps_list[_PBR_COMP_PPS]->RenderPPS(r_render_result->GetSize(), 16);
+		scene->pps_list[_PBR_COMP_PPS]->RenderPPS(r_render_result->GetSize(), 16);
 		r_render_result->UnbindFrameBuffer();
 
-
+		
 		////////////      SSR     ////////////
 
 		if (r_config.RequiresSSR()) {
@@ -418,17 +396,17 @@ void Renderer::Render(bool rend, bool buff) {
 			r_render_result->BindFrameBufferTex(IND_DIFF_FB, 9);
 			r_render_result->BindFrameBufferTex(IND_SPEC_FB, 10);
 			r_render_result->BindFrameBufferTex(DIR_EMIS_FB, 11);
-			r_scene->sdf_field->Bind();
+			scene->sdf_field->Bind();
 			ssr.UseShader();
 			ssr.SetValue("use_incr_aver", (bool)r_config.r_sampling_average);
-			ssr.SetValue("std_ud_rate", 1.0f / EventListener::frame_count);
-			ssr.SetValue("cam_pos", GetActiveCamera()->o_position);
-			ssr.SetValue("cam_trans", GetActiveCamera()->cam_frustum * GetActiveCamera()->o_InvTransform);
-			ssr.SetValue("noise", EventListener::random_float1);
+			ssr.SetValue("std_ud_rate", 1.0f / Input::GetFrameCount());
+			ssr.SetValue("cam_pos", cam->o_position);
+			ssr.SetValue("cam_trans", cam->cam_frustum * cam->o_InvTransform);
+			ssr.SetValue("noise", Input::input_state.random.random_float1);
 			ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
 
-
+		
 		////////////     FXAA     ////////////
 
 		if (r_config.RequiresFXAA()) {
@@ -440,18 +418,19 @@ void Renderer::Render(bool rend, bool buff) {
 			fxaa.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
 
-
+		
 		//////////  COLOR ADJUSTMENT  /////////
 
 		ComputeShader& tone = ComputeShader::ImportShader("pps/Compose", Uni("U_debugt", 3));
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
+		//r_buffer_list[_RASTER].BindFrameBufferTexR(RAND_FB, 3);
 		//r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 2);
 		//r_buffer_list[_RASTER].BindFrameBufferTex(MASK_FB, 1);
 		tone.UseShader();
 		tone.SetValue("gamma", r_config.r_gamma);
 		tone.RunComputeShaderSCR(r_render_result->GetSize(), 8);
-
+		
 
 		//////////   EDITING ELEM   //////////
 
@@ -462,60 +441,30 @@ void Renderer::Render(bool rend, bool buff) {
 			r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 1);
 			editing.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
-
 	}
 }
 
-void Renderer::RenderShadowMap(Light* light)
+void Renderer::ConstructSDF(const Context& ctx)
 {
-	//TODO: not necessary for every frame update
-	const GLuint map_w = light->light_shadow_map.GetW();
-	const GLuint map_h = light->light_shadow_map.GetH();
+	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
+	scene->sdf_field->Bind();
+	scene->sdf_field->ResetDistance();
 
-	glViewport(0, 0, map_w, map_h);
+	scene->sdf_field->BindShader();
 
-	light->BindShadowMapBuffer();
-	light->BindShadowMapShader();
-
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-	for (const auto& [id, mesh] : r_scene->mesh_list)
-	{
-		if (!mesh->using_shadow) continue;
-		if (!mesh->is_viewport) continue;
-
-		light->BindTargetTrans(mesh->o_Transform);
-		mesh->RenderObjProxy();
-	}
-
-	FrameBuffer::UnbindFrameBuffer();
-
-	if (r_config.RequiresMomentShadow()) {
-		DEBUG("Construct Moment Shadow Map");
-		light->ConstructSAT(&r_config);
-	}
-}
-
-void Renderer::ConstructSDF()
-{
-	r_scene->sdf_field->Bind();
-	r_scene->sdf_field->ResetDistance();
-
-	r_scene->sdf_field->BindShader();
-
-	for (const auto& [id, mesh] : r_scene->mesh_list)
+	for (const auto& [id, mesh] : scene->mesh_list)
 	{
 		if (!mesh->using_sdf) continue;
 		if (!mesh->is_viewport) continue;
 
-		r_scene->sdf_field->BindTargetTrans(mesh->o_Transform, mesh->is_closure);
+		scene->sdf_field->BindTargetTrans(mesh->o_Transform, mesh->is_closure);
 		mesh->RenderObjProxy(false);
 	}
 
-	r_scene->SetSceneStatus(SceneResource::SDFChanged, false);
+	scene->SetSceneStatus(SceneResource::SDFChanged, false);
 
-	r_scene->sdf_field->Unbind();
-	r_scene->sdf_field->UnbindShader();
+	scene->sdf_field->Unbind();
+	scene->sdf_field->UnbindShader();
 }
 
 /////////////////////////////////////// FINISH RENDERING /////////////////////////////////////////////
@@ -534,14 +483,6 @@ void Renderer::ConstructSDF()
 void Renderer::Reset()
 {
 	////////////  RESET  ///////////
-
-	if (multi_select) {
-		multi_select = false;
-		if (selec_list.size())
-			selec_list.clear();
-	}
-
-	r_scene->ResetStatus();
 }
 
 void Renderer::FrameResize(GLuint _w, GLuint _h)
@@ -550,70 +491,13 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 	r_frame_height = _h;
 
 	FrameBufferResize({ (float)_w, (float)_h });
+
 	r_light_data.Resize(_w, _h);
-
-	r_scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
-}
-
-void Renderer::OnRenderCfgUpdate(RenderConfigs::ModifyFlags flag)
-{
-	if (flag & RenderConfigs::ShadowChanged)
-		UpdateLightInfo();
-}
-
-void Renderer::UpdateLightInfo()
-{
-	r_scene->SetSceneStatus(SceneResource::LightChanged, true);
-	for (auto& [id, light] : r_scene->light_list) {
-		light->InitShadowMap(GetConfig());
-		light->is_light_changed = true;
-	}
-}
-
-void Renderer::UseScene(std::shared_ptr<SceneResource> _scene)
-{
-	r_scene = _scene;
-
-	r_light_data.ParseLightData(_scene->light_list);
-	r_light_data.ParsePolygonLightData(_scene->poly_light_list);
-}
-
-void Renderer::ActivateCamera(int cam_id)
-{
-	if (r_scene->cam_list.find(cam_id) == r_scene->cam_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	r_scene->cam_list[0] = r_scene->cam_list[cam_id];
-}
-
-std::shared_ptr<Camera> Renderer::GetActiveCamera()
-{
-	return r_scene->GetActiveCamera();
-}
-
-void Renderer::ActivateEnvironment(int envir_id)
-{
-	if (r_scene->envir_list.find(envir_id) == r_scene->envir_list.end())
-		return;
-
-	is_GOlist_changed = true;
-	r_scene->envir_list[0] = r_scene->envir_list[envir_id];
-}
-
-std::shared_ptr<Environment> Renderer::GetActiveEnvironment()
-{
-	return r_scene->GetActiveEnvironment();
-}
-
-std::shared_ptr<PostProcessing> Renderer::GetPPS(int _tar)
-{
-	return r_scene->GetPPS(_tar);
 }
 
 void Renderer::ScreenShot()
 {
-	std::string name = "result""-" + std::to_string(EventListener::random_float1);
+	std::string name = "result""-" + std::to_string(Input::input_state.random.random_float1);
 	DEBUG("saving to: " + name);
 	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name, true);
 }

@@ -1,11 +1,13 @@
 ﻿#pragma once
-#include "GameObject.h"
+#include "ID.h"
 #include "Transform.h"
 #include "DebugMesh.h"
-#include "EventListener.h"
+
+#include <vector>
+
 /*#include "Sprite.h"*/
 
-class Camera : public GameObject, public Transform3D, public EventListener
+class Camera : public ObjectID, public Transform3D
 {
 public:
 
@@ -17,11 +19,11 @@ public:
 
 public:
 
-	Camera(float w,float h,float per,float n,float f);
+	Camera(float w, float h, float per, float n, float f);
 	Camera();
 
 public:
-
+	// TODO: use std::array
 	std::vector<float> cam_floatData;
 	void GenFloatData(); // 6f(trans) + 1f(ratio) + 1f(angle)
 	void ChangeCamRatio(float w, float h);
@@ -35,15 +37,6 @@ public:
 	void* GetTransform()	override { return dynamic_cast<Transform*>(GetTransformPtr()); }
 
 public:
-
-	void SHIFT_MMB();
-	void CTRL_MMB();
-	void ALT_MMB();
-	void MMB();
-	void SCROLL();
-
-	void EventInit();
-	
 
 	~Camera();
 };

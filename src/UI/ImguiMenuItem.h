@@ -4,11 +4,9 @@
 #include <vector>
 #include <functional>
 
-#include "EventListener.h"
 
+#include "Context.h"
 #include "ImGui/imgui.h"
-#include "ImGui/backends/imgui_impl_glfw.h"
-#include "ImGui/backends/imgui_impl_opengl3.h"
 
 #define CallBack(func) [&](bool) -> bool {func(); return true;}
 
@@ -49,7 +47,7 @@ public:
 	template<typename T> requires std::is_enum_v<T>
 	void BindOption(T* _option, std::function<bool(bool)> _callback=NULL);
 
-	virtual void RenderMenuItem() { assert(false && "no Render function overrided\n"); };
+	virtual void RenderMenuItem(const Context& ctx) { assert(false && "no Render function overrided\n"); };
 };
 
 

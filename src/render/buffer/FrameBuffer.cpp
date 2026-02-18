@@ -136,27 +136,51 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 }
 
-FrameBuffer::FrameBuffer(Texture&& _depth)
-	:fb_w(SCREEN_W), fb_h(SCREEN_H)
+FrameBuffer::FrameBuffer(Texture&& tex)
+	: fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
-	auto [_1, _data, _3, gl_type] = Texture::ParseFormat(_depth.tex_type);
-	GLenum attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
+	auto [_1, format, _3, gl_type] = Texture::ParseFormat(tex.tex_type);
 
+	const bool is_depth = (format == GL_DEPTH_COMPONENT);
+
+	GLenum attachment = is_depth ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
 	glGenFramebuffers(1, &fb_ID);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
+
+	// Attach texture
 	switch (gl_type)
 	{
 	case GL_TEXTURE_2D:
-		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, gl_type, _depth.GetTexID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, tex.GetTexID(), 0);
 		break;
+
 	case GL_TEXTURE_CUBE_MAP:
-		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _depth.GetTexID(), 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, attachment, tex.GetTexID(), 0);
 		break;
 	}
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-	UnbindFrameBuffer();
-	
-	fb_tex_list.emplace_back(std::move(_depth));
+
+	if (is_depth)
+	{
+		// Depth-only FBO
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+	}
+	else
+	{
+		// Color attachment FBO
+		GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		glDrawBuffers(1, drawBuffers);
+	}
+
+	// Validate framebuffer
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		std::cerr << "Framebuffer not complete!" << std::endl;
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	fb_tex_list.emplace_back(std::move(tex));
 }
 
 FrameBuffer::FrameBuffer(const FrameBuffer& fb)
@@ -237,7 +261,8 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 {
 	auto [_1, _data, _3, gl_type] = Texture::ParseFormat(_tex.tex_type);
 	
-	GLenum attachment = _data == GL_DEPTH_COMPONENT ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
+	const bool is_depth = _data == GL_DEPTH_COMPONENT;
+	GLenum attachment = is_depth ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
 	
 	BindFrameBuffer();
 	
@@ -250,8 +275,18 @@ void FrameBuffer::LinkTexture(const Texture& _tex)
 		glFramebufferTexture(GL_FRAMEBUFFER, attachment, _tex.GetTexID(), 0);
 		break;
 	}
-	if (_data != GL_DEPTH_COMPONENT)
-		glDrawBuffers(1, &attachment);
+	if (is_depth)
+	{
+		// Depth-only FBO
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+	}
+	else
+	{
+		// Color attachment FBO
+		GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		glDrawBuffers(1, drawBuffers);
+	}
 
 	Resize(_tex.GetW(), _tex.GetH());
 	UnbindFrameBuffer();
@@ -284,11 +319,13 @@ void FrameBuffer::AppendTexture(const Texture& _tex, FBType _type)
 
 void FrameBuffer::Resize(const glm::vec2& size, bool all)
 {
-	Resize(size[0], size[1], all);
+	Resize(GLuint(size[0]), GLuint(size[1]), all);
 }
 
 void FrameBuffer::Resize(GLuint w, GLuint h, bool all)
 {
+	if (fb_w == w and fb_h == h) return;
+
 	fb_w = w;
 	fb_h = h;
 	if (renderBuffer.has_value())
