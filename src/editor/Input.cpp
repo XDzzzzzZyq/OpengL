@@ -162,7 +162,9 @@ bool Input::IsKeyPressed()
 
 bool Input::IsKeyPressed(SpecialKeys spe_key)
 {
-	return input_state.key.special == spe_key;
+	if (spe_key == NONE)
+		return input_state.key.special == NONE;
+	return (input_state.key.special & spe_key) == spe_key;
 }
 
 bool Input::IsKeyLeft()
