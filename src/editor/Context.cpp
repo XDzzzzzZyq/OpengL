@@ -33,6 +33,9 @@ const ObjectID* SceneContext::GetPPS(int _tar) const {
 const std::vector<const ObjectID*> SceneContext::GetObjectIDs() const
 {
 	SceneResource* scene = dynamic_cast<SceneResource*>(active_scene);
+	if (scene == nullptr) {
+		return {};
+	}
 	std::vector<const ObjectID*> obj_list{};
 	obj_list.reserve(scene->obj_list.size());
 	for(const auto& [id, obj] : scene->obj_list) {
