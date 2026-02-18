@@ -8,6 +8,8 @@
 #include "ID.h"
 
 #include "Shaders.h"
+#include "shaders/RenderShader.h"
+#include "shaders/ComputeShader.h"
 #include "Texture.h"
 #include "BUFFER/FrameBuffer.h"
 

@@ -10,6 +10,7 @@
 #include "buffer/FrameBuffer.h"
 
 #include "Shaders.h"
+#include "shaders/RenderShader.h"
 
 enum EnvironmentType
 {

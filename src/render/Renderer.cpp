@@ -6,6 +6,7 @@
 #include "xdz_math.h"
 
 #include "events/EditorEvents.h"
+#include "shaders/ComputeShader.h"
 
 GLint Renderer::max_resolution_w = 0;
 GLint Renderer::max_resolution_h = 0;

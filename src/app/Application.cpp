@@ -11,6 +11,7 @@
 #include "layer/Viewport.h"
 
 #include "xdz_math.h"
+#include "shaders/ComputeShader.h"
 
 Application& Application::Get()
 {

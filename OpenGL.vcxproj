@@ -249,6 +249,8 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\render\ShaderLib.cpp" />
     <ClCompile Include="src\render\ShaderParser.cpp" />
     <ClCompile Include="src\render\Shaders.cpp" />
+    <ClCompile Include="src\render\shaders\ComputeShader.cpp" />
+    <ClCompile Include="src\render\shaders\RenderShader.cpp" />
     <ClCompile Include="src\render\Texture.cpp" />
     <ClCompile Include="src\render\VertexArray.cpp" />
     <ClCompile Include="src\scene\Camera.cpp" />
@@ -419,6 +421,8 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\render\Renderer.h" />
     <ClInclude Include="src\render\ShaderLib.h" />
     <ClInclude Include="src\render\Shaders.h" />
+    <ClInclude Include="src\render\shaders\ComputeShader.h" />
+    <ClInclude Include="src\render\shaders\RenderShader.h" />
     <ClInclude Include="src\render\Texture.h" />
     <ClInclude Include="src\render\VertexArray.h" />
     <ClInclude Include="src\scene\Camera.h" />

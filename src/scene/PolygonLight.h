@@ -7,6 +7,7 @@
 
 #include "Texture.h"
 #include "Shaders.h"
+#include "shaders/RenderShader.h"
 
 #include "ID.h"
 #include "Transform.h"

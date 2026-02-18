@@ -1,6 +1,7 @@
 #include "SDFField.h"
 #include "xdz_math.h"
 #include "macros.h"
+#include "shaders/ComputeShader.h"
 
 ChainedShader SDFField::sdf_shader = {};
 

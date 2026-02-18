@@ -1,6 +1,7 @@
 #include "Light.h"
 #include "xdz_math.h"
 #include "Input.h"
+#include "shaders/ComputeShader.h"
 
 
 std::array <FrameBuffer, 4> Light::_shadowmap_buffer = {};
