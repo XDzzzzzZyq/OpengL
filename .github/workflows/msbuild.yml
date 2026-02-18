@@ -97,6 +97,4 @@ jobs:
         tree /f
 
     - name: Run tests
-      run: |
-        cd test
-        .\renderer_test.exe
+      run: .\test\renderer_test.exe
