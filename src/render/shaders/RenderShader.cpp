@@ -1,8 +1,8 @@
 #include "RenderShader.h"
-#include "../operator.h"
-#include "../structs.h"
-#include "../macros.h"
-#include "../ShaderLib.h"
+#include "operator.h"
+#include "structs.h"
+#include "macros.h"
+#include "ShaderLib.h"
 
 void RenderShader::CreatShader(const std::string& verShader, const std::string& fragShader) {
 	program_id = glCreateProgram();

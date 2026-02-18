@@ -1,9 +1,9 @@
 #include "ComputeShader.h"
-#include "../operator.h"
-#include "../structs.h"
-#include "../macros.h"
-#include "../ShaderLib.h"
-#include "../../core/xdz_math.h"
+#include "operator.h"
+#include "structs.h"
+#include "macros.h"
+#include "ShaderLib.h"
+#include "xdz_math.h"
 
 std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
 std::unordered_map<std::string, std::vector<ComputeShader::Default>> ComputeShader::config_list = {};

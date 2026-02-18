@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Shaders.h"
-#include "../RenderConfigs.h"
+#include "Shaders.h"
+#include "RenderConfigs.h"
 
 class ComputeShader : public Shaders {
 
