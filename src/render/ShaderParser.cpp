@@ -187,11 +187,17 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 		}
 		else if (Line.find("void main") != std::string::npos) {
 			int blanc_count = (Line.find("{") != std::string::npos) ? 1 : 0;
+			bool skip_first_brace = (blanc_count == 0);  // Need to skip standalone { on next line
 			do {
 				getline(_stream, Line);
 				if (Line.find("{") != std::string::npos) blanc_count++;
 				if (Line.find("}") != std::string::npos) blanc_count--;
 				//shaders[type] << Line << "\n";
+				// Skip the opening brace line if it's standalone
+				if (skip_first_brace && Line.find("{") != std::string::npos && Line.find("}") == std::string::npos) {
+					skip_first_brace = false;
+					continue;
+				}
 				shader->sh_struct->Main += Line + "\n";
 
 			} while (blanc_count != 0);
@@ -391,7 +397,7 @@ std::string ShaderStruct::GenerateShader()
 
 	code_result += "\nvoid main(){\n";
 	code_result += Main;
-	code_result += "\n};\n";
+	code_result += "\n}\n";
 
 	return code_result;
 }

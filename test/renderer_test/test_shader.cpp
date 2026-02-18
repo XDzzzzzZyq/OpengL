@@ -7,7 +7,7 @@ TEST_F(RendererEnvir, RenderShader) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 
-	RenderShader shader = RenderShader("testS", "Rasterization");
+	RenderShader shader = RenderShader("Empty", "Empty");
 	GLERRTEST;
 
 	int v_id = shader.GetShaderID(VERTEX_SHADER);

@@ -25,14 +25,15 @@ uniform vec3 ID_color;
 uniform vec3 RAND_color;
 uniform int is_selected;
 
+const vec3 m_albedo = texture2D(U_albedo, uv).rgb;
+const float m_metal = U_metal;
+const float m_rough = U_rough;
+const float m_specu = U_specu;
+const vec3 m_emis_c = U_emis_c;
+const float m_emis_s = U_emis_s;
+const float m_alpha = 1;
+
 void main() {
-	const vec3 m_albedo = texture(U_albedo, uv).rgb;
-	const float m_metal = U_metal;
-	const float m_rough = U_rough;
-	const float m_specu = U_specu;
-	const vec3 m_emis_c = U_emis_c;
-	const float m_emis_s = U_emis_s;
-	const float m_alpha = 1;
 
 	EMIScolor = vec4(m_emis_c, 1);
 	IDcolor = vec4(ID_color / 256, 1.0f);
