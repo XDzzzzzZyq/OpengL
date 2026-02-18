@@ -50,7 +50,7 @@ TEST_F(RendererEnvir, RenderShader_MixedExtensions) {
 
 	// Test that shader loading works with mixed extension usage
 	// This should work: one with extension, one without
-	RenderShader shader = RenderShader("testS", "Rasterization.frag");
+	RenderShader shader = RenderShader("Empty", "Empty.frag");
 	GLERRTEST;
 
 	int v_id = shader.GetShaderID(VERTEX_SHADER);
