@@ -119,7 +119,7 @@ void main(){
 	AO = mix(AO, imageLoad(U_AO, uv+ivec2(0, 1)).r, 0.2);
 	AO = mix(AO, imageLoad(U_AO, uv+ivec2(1, 0)).r, 0.2);
 	
-	// increament average
+	// increment average
 
 	AO = LIGHT_AO.r + update_rate * (AO - LIGHT_AO.r);
 

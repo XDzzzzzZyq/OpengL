@@ -3,7 +3,7 @@
 struct ViewportSelectedEvent
 {
 	int pix_x, pix_y; // converted by UI layer
-	bool increament;
+	bool increment;
 };
 
 struct ViewportResizeEvent

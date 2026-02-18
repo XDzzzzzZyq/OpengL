@@ -10,7 +10,7 @@ enum ModifyFlags
 
 struct ObjectSelectedEvent{
 	int UID;
-	bool increament;
+	bool increment;
 };
 
 struct SelectionChangedEvent {

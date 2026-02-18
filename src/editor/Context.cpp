@@ -50,7 +50,7 @@ void Context::Init(EventPool& pool)
 		ObjectID* obj = active_scene->GetObjectID(e.UID);
 		if (obj == selected_obj) return;
 
-		editor.selections.Select(active_scene->GetObjectID(e.UID), e.increament);
+		editor.selections.Select(active_scene->GetObjectID(e.UID), e.increment);
 		pool.emit(SelectionChangedEvent{ obj });
 		});
 
