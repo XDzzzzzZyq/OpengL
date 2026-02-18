@@ -89,14 +89,18 @@ void ShaderController::bind(EventPool& pool)
 {
 	// Shader Edit
 
-	pool.subscribe<ShaderCodeCompileEvent>([this](ShaderCodeCompileEvent e) {
+	pool.subscribe<ShaderCodeCompileEvent>([this, &pool](ShaderCodeCompileEvent e) {
 		e.shader->ParseShaderCode(e.code, e.type);
 		e.shader->RelinkShader(e.type);
+
+		pool.emit<ShaderChangedEvent>({ e.shader, e.type });
 		});
 
-	pool.subscribe<ShaderStructCompileEvent>([this](ShaderStructCompileEvent e) {
+	pool.subscribe<ShaderStructCompileEvent>([this, &pool](ShaderStructCompileEvent e) {
 		e.shader->GenerateShader(e.type);
 		e.shader->RelinkShader(e.type);
+
+		pool.emit<ShaderChangedEvent>({ e.shader, e.type });
 		});
 
 	pool.subscribe<ShaderStructAddArrayBufferEvent>([this](ShaderStructAddArrayBufferEvent e) {
@@ -178,9 +182,11 @@ void ShaderController::bind(EventPool& pool)
 		pool.emit<MaterialStructChangedEvent>({e.obj, e.material});
 		});
 
-	pool.subscribe<MaterialStructChangedEvent>([this](MaterialStructChangedEvent e) {
+	pool.subscribe<MaterialStructChangedEvent>([this, &pool ](MaterialStructChangedEvent e) {
 		if (!e.material)
 			return;
 		UpdateMaterial((Shaders*)(e.obj->GetShader()), e.material);
+
+		pool.emit<ShaderChangedEvent>({ (Shaders*)(e.obj->GetShader()), FRAGMENT_SHADER });
 		});
 }

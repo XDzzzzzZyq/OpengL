@@ -55,7 +55,7 @@ public:
 	void RenderLayer(const Context& ctx, const EventPool& evt) override;
 
 private:
-	void UpdateShaderEditor(ObjectID* active_obj);
+	void UpdateCoderEditor(ObjectID* active_obj);
 	void UpdateKeyword();
 
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;

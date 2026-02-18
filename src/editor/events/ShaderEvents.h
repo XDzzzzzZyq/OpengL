@@ -78,3 +78,9 @@ struct ShaderSaveEvent
 	Shaders* shader;
 	ShaderType type;
 };
+
+// Shader changed event for Editor update
+struct ShaderChangedEvent {
+	Shaders* shader;
+	ShaderType type;
+};
