@@ -7,7 +7,7 @@ TEST_F(RendererEnvir, RenderShader) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 
-	RenderShader shader = RenderShader("testS.vert", "Rasterization.frag");
+	RenderShader shader = RenderShader("Empty", "Empty");
 	GLERRTEST;
 
 	int v_id = shader.GetShaderID(VERTEX_SHADER);
@@ -42,6 +42,22 @@ TEST_F(RendererEnvir, RenderShader) {
 
 	int v_id_new_new = shader.GetShaderID(VERTEX_SHADER);
 	EXPECT_EQ(v_id_new, v_id_new_new);	// Expect new shader ID should keep the same
+}
+
+TEST_F(RendererEnvir, RenderShader_MixedExtensions) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	// Test that shader loading works with mixed extension usage
+	// This should work: one with extension, one without
+	RenderShader shader = RenderShader("Empty", "Empty.frag");
+	GLERRTEST;
+
+	int v_id = shader.GetShaderID(VERTEX_SHADER);
+	int f_id = shader.GetShaderID(FRAGMENT_SHADER);
+	EXPECT_NE(v_id, f_id);
+	EXPECT_NE(v_id, -1);
+	EXPECT_NE(f_id, -1);
 }
 
 glm::vec4 SAT(const std::vector<glm::vec4>& d, int index, int width = 4) {

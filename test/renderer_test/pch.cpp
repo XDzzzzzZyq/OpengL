@@ -28,6 +28,10 @@ void RendererEnvir::SetUp()
 
 	EXPECT_TRUE(glfwInit()) << "glfw init error" << std::endl;
 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	GLFWwindow* window = glfwCreateWindow(100, 100, "TEST_WINDOW", NULL, NULL);
 	EXPECT_TRUE(window) << "window error" << std::endl;
 	glfwMakeContextCurrent(window);

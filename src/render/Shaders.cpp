@@ -466,8 +466,16 @@ void RenderShader::ParseShaderFile(std::string _name, ShaderType _type) {
 
 	shader_data[_type].sh_struct->is_struct_changed = false;
 
-	if (_name.find(Shaders::folder_root) == std::string::npos)
-		_name = Shaders::folder_root + _name + Shaders::file_type[_type];
+	if (_name.find(Shaders::folder_root) == std::string::npos) {
+		// Check if the name already has a file extension
+		if (Shaders::ParseFileEXT(_name) == NONE_SHADER) {
+			// No extension found, add the appropriate one
+			_name = Shaders::folder_root + _name + Shaders::file_type[_type];
+		} else {
+			// Extension already present, just add folder_root
+			_name = Shaders::folder_root + _name;
+		}
+	}
 
 	std::ifstream Stream(_name);
 

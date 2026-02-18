@@ -87,7 +87,7 @@ jobs:
     - name: Install Mesa
       shell: cmd
       run: |
-        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/21.2.2/mesa3d-21.2.2-release-msvc.7z
+        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/25.3.5/mesa3d-25.3.5-release-msvc.7z
         mkdir mesa
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
         cd mesa
@@ -97,6 +97,4 @@ jobs:
         tree /f
 
     - name: Run tests
-      run: |
-        cd test
-        .\renderer_test.exe
+      run: .\test\renderer_test.exe
