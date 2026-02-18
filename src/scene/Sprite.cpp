@@ -19,6 +19,8 @@ Sprite::Sprite()
 void Sprite::RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::vec3& col, int id)
 {
 	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	if (!cam) return;
+	
 	spr_shader.UseShader();
 	spr_tex.Bind(SPIRIT_TEXURE);
 
@@ -46,6 +48,8 @@ void Sprite::RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::v
 void Sprite::RenderSprite(const Context& ctx)
 {
 	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
+	if (!cam) return;
+	
 	if (cam->is_invUniform_changed)
 		spr_shader.SetValue("U_cam_trans", cam->o_InvTransform);
 
