@@ -384,3 +384,6 @@ _deps
 
 # Output executable
 OpenGL
+
+# CodeQL artifacts
+_codeql_detected_source_root
