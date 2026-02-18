@@ -198,10 +198,12 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 					skip_first_brace = false;
 					continue;
 				}
-				shader->sh_struct->Main += Line + "\n";
+				// Don't add the closing brace line to Main (GenerateShader will add it)
+				if (blanc_count != 0) {
+					shader->sh_struct->Main += Line + "\n";
+				}
 
 			} while (blanc_count != 0);
-			shader->sh_struct->Main.erase(shader->sh_struct->Main.size() - 3, 3);
 		}
 		else {
 			std::istringstream str(Line);
