@@ -1,6 +1,9 @@
 #include "PostProcessing.h"
 #include "MeshData.h"
 
+#include "shaders/RenderShader.h"
+#include "shaders/ComputeShader.h"
+
 PostProcessing::PostProcessing(const std::string& _shader_name, ShaderType _type)
 	:pps_type(_type)
 {

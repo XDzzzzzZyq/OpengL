@@ -405,7 +405,7 @@ inline void Texture::SetTexParam(GLuint _id, GLuint _fil_min, GLuint _fil_max, G
 	}
 }
 
-#include "Shaders.h"
+#include "shaders/ComputeShader.h"
 #include "LtcMatrix.h"
 
 void Texture::GenIrradiaceConvFrom(const Texture& _Tar_Tex)

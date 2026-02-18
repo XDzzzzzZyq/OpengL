@@ -276,6 +276,12 @@
     <ClCompile Include="src\editor\controllers\ShaderController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\shaders\RenderShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\shaders\ComputeShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -630,6 +636,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\events\MaterialEvents.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\shaders\RenderShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\shaders\ComputeShader.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

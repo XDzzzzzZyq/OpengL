@@ -75,6 +75,12 @@
     <ClCompile Include="..\..\src\editor\Input.cpp">
       <Filter>src\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render\shaders\ComputeShader.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\shaders\RenderShader.cpp">
+      <Filter>src\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

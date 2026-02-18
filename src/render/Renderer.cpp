@@ -2,6 +2,7 @@
 #include "SDFField.h"
 #include "SceneManager.h"
 #include "Input.h"
+#include "shaders/ComputeShader.h"
 
 #include "xdz_math.h"
 

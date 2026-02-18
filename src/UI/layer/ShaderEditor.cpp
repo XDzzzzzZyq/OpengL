@@ -8,7 +8,7 @@
 #include "events/EditorEvents.h"
 #include "events/ShaderEvents.h"
 
-const std::string edit_mode[3] = { "Shader Code", "Hierarchy", "Nodes" };
+const std::string edit_mode[3] = { "Code", "Structure", "Nodes" };
 
 ShaderEditor::ShaderEditor()
 	:ShaderEditor("Shader Editor")

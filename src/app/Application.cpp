@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "SceneManager.h"
 
+#include "shaders/ComputeShader.h"
+
 #include "controllers/CameraController.h"
 #include "controllers/ViewportController.h"
 #include "controllers/ShaderController.h"

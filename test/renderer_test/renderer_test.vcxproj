@@ -179,6 +179,8 @@
     <ClCompile Include="..\..\src\render\ShaderLib.cpp" />
     <ClCompile Include="..\..\src\render\ShaderParser.cpp" />
     <ClCompile Include="..\..\src\render\Shaders.cpp" />
+    <ClCompile Include="..\..\src\render\shaders\ComputeShader.cpp" />
+    <ClCompile Include="..\..\src\render\shaders\RenderShader.cpp" />
     <ClCompile Include="..\..\src\render\Texture.cpp" />
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />

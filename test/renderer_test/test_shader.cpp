@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "macros.h"
 
-#include "Shaders.h"
+#include "shaders/RenderShader.h"
+#include "shaders/ComputeShader.h"
 #include "Texture.h"
 TEST_F(RendererEnvir, RenderShader) {
 	if (gl_version < 4.0)

@@ -7,7 +7,7 @@
 #include "Context.h"
 
 #include "Texture.h"
-#include "Shaders.h"
+#include "shaders/RenderShader.h"
 
 #define SPRITE_SIZE 0.7f
 
