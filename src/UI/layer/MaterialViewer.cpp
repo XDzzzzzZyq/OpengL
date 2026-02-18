@@ -28,21 +28,22 @@ Material* GetActiveMatPtr(ObjectID* obj)
 	return (Material*)(obj->GetMaterial());
 }
 
-Material::MatDataType SelectType(Material::MatParaType tar, Material::MatDataType type) {
+std::optional<Material::MatDataType> SelectType(Material::MatParaType tar, Material::MatDataType type) {
 	static std::string type_name[3] = {"float", "vec3", "tex"};
-	bool sel;
-	int new_type = -1;
+	std::optional<Material::MatDataType> new_type = std::nullopt;
 
 	ImGui::SetNextItemWidth(75);
 	if (ImGui::BeginCombo(("m_tar" + std::to_string(tar)).c_str(), type_name[type].c_str(), ImGuiComboFlags_NoName)) {
-		LOOP(3)
+		LOOP(3) {
+			bool sel = (i == type);
 			if (ImGui::Selectable(type_name[i].c_str(), &sel))
-				new_type = i;
+				new_type = Material::MatDataType(i);
+		}
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine(100.0f, 0.0);
 
-	return Material::MatDataType(new_type);
+	return new_type;
 }
 
 struct MaterialParamEdit
@@ -108,9 +109,9 @@ void MaterialViewer::RenderLayer(const Context& ctx, const EventPool& evt)
 		const auto& [data_type, value, color, texture] = param;
 		const char* pname = Material::mat_uniform_name[prop].c_str();
 
-		const Material::MatDataType new_type = SelectType(prop, data_type);
-		if (new_type != -1 && new_type != data_type) {
-			evt.emit<MaterialTypeChangedEvent>({ active_object, active_material, prop, new_type });
+		const std::optional<Material::MatDataType> new_type = SelectType(prop, data_type);
+		if (new_type && *new_type != data_type) {
+			evt.emit<MaterialTypeChangedEvent>({ active_object, active_material, prop, *new_type });
 		}
 
 		std::optional<MaterialParamEdit> edit;
