@@ -52,10 +52,10 @@ void ImguiManager::DefultViewports() {
 	menu5->PushSubMenu<UI::ImguiMOption>("Ambient Occlusion", OPTIONS("None", "SSAO", "HBAO (future)"));
 
 	auto layer1 = CreateImguiLayer<ParamControl>("test layer");
-	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "testf", 0.0, 1.0);
-	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Metalness", 0.0, 1.0);
-	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Roughness", 0.0, 1.0);
-	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Specular", 0.0, 1.0, 1.0);
+	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "testf", 0.0f, 1.0f);
+	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Metalness", 0.0f, 1.0f);
+	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Roughness", 0.0f, 1.0f);
+	layer1->PushItem<UI::ParaInput>(FLOAT_INP, "Specular", 0.0f, 1.0f, 1.0f);
 	layer1->PushItem<UI::ParaInput>(INT_INP, "test");
 	layer1->PushItem<UI::ParaInput>(BOOL_INP, "test");
 	layer1->PushItem<UI::ParaInput>(RGB_INP, "test");

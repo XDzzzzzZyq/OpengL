@@ -96,11 +96,11 @@ private:
 	void _updateDirections();
 
 public:
-	[[nodiscard("You could receive the state")]] bool ApplyTransform(bool _forced = false) override;
-	[[nodiscard("You could receive the state")]] bool ApplyAllTransform() override;
-	[[nodiscard("You could receive the state")]] bool GetInvTransform() const override;
+	bool ApplyTransform(bool _forced = false) override;
+	bool ApplyAllTransform() override;
+	bool GetInvTransform() const override;
 
-	[[nodiscard("You could receive the state")]] int _debug() const override;
+	int _debug() const override;
 
 };
 
@@ -145,10 +145,10 @@ public:
 		void SetParent(Transform2D* _p_trans, bool _keep_offset = true);
 	void UnsetParent(bool _keep_offset = true) override;
 public:
-	[[nodiscard("You can receive the state")]] bool ApplyTransform(bool _forced = false) override;
-	[[nodiscard("You can receive the state")]] bool ApplyAllTransform() override;
-	[[nodiscard("You can receive the state")]] bool GetInvTransform() const override;
+	bool ApplyTransform(bool _forced = false) override;
+	bool ApplyAllTransform() override;
+	bool GetInvTransform() const override;
 
-	[[nodiscard("You can receive the state")]] int _debug() const override;
+	int _debug() const override;
 
 };

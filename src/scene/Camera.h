@@ -19,7 +19,7 @@ public:
 
 public:
 
-	Camera(float w,float h,float per,float n,float f);
+	Camera(float w, float h, float per, float n, float f);
 	Camera();
 
 public:

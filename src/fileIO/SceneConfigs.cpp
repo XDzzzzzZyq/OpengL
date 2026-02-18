@@ -13,7 +13,7 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	SceneManager::sce_configs[_name] = config1;
 
 	DEBUG("\n---------------CAMERA----------------");
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70.0f, 0.1f, 300.0f);
 	camera->SetPos({ 0.0f, 20.0f, 0.0f });
 	camera->SetRot({ 90, 0, 180 });
 	camera->ApplyTransform();
@@ -302,7 +302,7 @@ std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF t
 	SceneManager::sce_configs[_name] = config3;
 
 	DEBUG("\n---------------CAMERA----------------");
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70.0f, 0.1f, 300.0f);
 	camera->SetPos({ 10, 0, 10 });
 	camera->SetRot({ 45, 0, 90 });
 	camera->ApplyTransform();
@@ -367,7 +367,7 @@ std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shado
 	SceneManager::sce_configs[_name] = config4;
 
 	DEBUG("\n---------------CAMERA----------------");
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70, 0.1f, 300.0f);
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(10.0f, 10.0f, 70.0f, 0.1f, 300.0f);
 	camera->SetCamPos({ 4, -4, 2 });
 	camera->ApplyTransform();
 	camera->GetInvTransform();
