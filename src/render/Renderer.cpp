@@ -41,12 +41,14 @@ void Renderer::Init(EventPool& evt)
 
 	glEnable(GL_MULTISAMPLE);
 
-	//glEnable(GL_STENCIL_TEST);
-	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	//glStencilFunc(GL_ALWAYS, 1, 0xff);
-	//glStencilMask(0xff);
+	/* Stencil buffer (currently disabled). */
+	// glEnable(GL_STENCIL_TEST);
+	// glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	// glStencilFunc(GL_ALWAYS, 1, 0xff);
+	// glStencilMask(0xff);
 
-	//glEnable(GL_CONVOLUTION_2D);
+	/* Convolution (currently disabled). */
+	// glEnable(GL_CONVOLUTION_2D);
 
 	InitFrameBuffer();
 	r_light_data.Init();
@@ -115,7 +117,7 @@ void Renderer::NewFrame()
 
 void RenderShadowMap(Light* light, SceneResource::ResPool<Mesh> mesh_list, const RenderConfigs& config)
 {
-	//TODO: not necessary for every frame update
+	/* TODO: not necessary for every frame update. */
 	const GLuint map_w = light->light_shadow_map.GetW();
 	const GLuint map_h = light->light_shadow_map.GetH();
 
