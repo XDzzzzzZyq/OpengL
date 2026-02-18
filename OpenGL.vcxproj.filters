@@ -111,6 +111,12 @@
     <ClCompile Include="src\render\Shaders.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\shaders\ComputeShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\shaders\RenderShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="src\render\Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -456,6 +462,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\render\Shaders.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\shaders\ComputeShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\shaders\RenderShader.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\render\Texture.h">
