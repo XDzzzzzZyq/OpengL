@@ -3,6 +3,11 @@
 #include "Shaders.h"
 #include "RenderConfigs.h"
 
+#include <memory>
+#include <unordered_map>
+#include <vector>
+#include <string>
+
 class ComputeShader : public Shaders {
 
 private:

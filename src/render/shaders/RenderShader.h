@@ -2,6 +2,9 @@
 
 #include "Shaders.h"
 
+#include <string>
+#include <istream>
+
 class RenderShader : public Shaders
 {
 private:
