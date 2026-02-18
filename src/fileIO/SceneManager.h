@@ -11,8 +11,6 @@
 
 #include "SDFField.h"
 
-#include "SelectionManager.h"
-
 class SceneResource : public UID
 {
 public:
@@ -68,8 +66,6 @@ public:
 	ResList<PostProcessing>		pps_list;
 
 	Resource<SDFField>          sdf_field;
-
-	SelectionManager<ObjectID>scene_selection;
 
 public:
 
