@@ -675,7 +675,7 @@ void Texture::ConvertDepthCube(GLuint _tar_ID, int _w, int _h, TextureType _tar_
 
 	to_texture.UseShader();
 	to_texture.SetValue("U_depth", 0);
-	to_texture.RunComputeShader(_w / 4, _h / 4, 6);
+	to_texture.RunComputeShader((_w + 3) / 4, (_h + 3) / 4, 6);
 
 	_resetTexID(ID);
 
