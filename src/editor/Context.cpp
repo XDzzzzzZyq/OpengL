@@ -50,6 +50,8 @@ void Context::Init(EventPool& pool)
 		const ObjectID* selected_obj = editor.selections.GetSelectedObjects();
 
 		SceneResource* active_scene = dynamic_cast<SceneResource*>(scene.active_scene);
+		if (active_scene == nullptr) return;
+
 		ObjectID* obj = active_scene->GetObjectID(e.UID);
 		if (obj == selected_obj) return;
 
@@ -59,14 +61,19 @@ void Context::Init(EventPool& pool)
 
 	pool.subscribe<RenderSurfaceResizedEvent>([this, &pool](RenderSurfaceResizedEvent e) {
 		Camera* cam = (Camera*)scene.GetActiveCamera();
+		if (cam == nullptr) return;
+
 		pool.emit(CameraResizeEvent{ cam, e.width, e.height });
 
 		SceneResource* active_scene = dynamic_cast<SceneResource*>(scene.active_scene);
+		if (active_scene == nullptr) return;
+
 		active_scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
 		});
 
 	pool.subscribe<RenderConfigChangedEvent>([this, &pool](RenderConfigChangedEvent e) {
 		SceneResource* active_scene = dynamic_cast<SceneResource*>(scene.active_scene);
+		if (active_scene == nullptr) return;
 
 		active_scene->SetSceneStatus(SceneResource::LightChanged, true);
 		for (auto& [id, light] : active_scene->light_list) {
