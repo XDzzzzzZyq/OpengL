@@ -34,7 +34,7 @@ private:
 public:
 	/**
 	 * @brief Constructs a UID and assigns a unique ID.
-	 * @note ID is assigned from global counter and incremented atomically.
+	 * @note ID is assigned from global counter; increment is not atomic and UID is not thread-safe.
 	 */
 	UID();
 	

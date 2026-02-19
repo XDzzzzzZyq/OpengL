@@ -96,7 +96,7 @@ inline std::string glDebug_xdz() {
  * // Output: "Init : 42 : Framebuffer created"
  * @endcode
  */
-#define DEBUGS(x) std::cout<__func__<<" : "<<__LINE__<<" : "<<(x)<<"\n"
+#define DEBUGS(x) std::cout<<__func__<<" : "<<__LINE__<<" : "<<(x)<<"\n"
 
 /**
  * @brief Check and print OpenGL error state with source location (DEBUG builds only).

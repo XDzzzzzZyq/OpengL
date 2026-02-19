@@ -160,6 +160,7 @@ public:
 	/**
 	 * @brief Copy constructor (shares texture references).
 	 * @param fb Source framebuffer
+	 * @note TODO: Current implementation copies GL IDs without ref counting - may cause double-deletion
 	 */
 	FrameBuffer(const FrameBuffer& fb);
 	

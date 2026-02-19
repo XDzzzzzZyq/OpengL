@@ -32,6 +32,7 @@
  * 
  * @note Thread-safety: Not thread-safe. Must be used from OpenGL context thread.
  * @note Ownership: Owns OpenGL VBO and releases it in destructor.
+ * @note TODO: Fix copy semantics - current implementation duplicates VBO ID without deep copy or ref counting
  */
 class VertexBuffer
 {
@@ -76,7 +77,7 @@ public:
 	/**
 	 * @brief Copy constructor.
 	 * @param vbo Source vertex buffer
-	 * @note Creates a new GPU buffer with copied data
+	 * @note TODO: Current implementation duplicates VBO ID - fix to deep copy or delete
 	 */
 	VertexBuffer(const VertexBuffer& vbo);
 	

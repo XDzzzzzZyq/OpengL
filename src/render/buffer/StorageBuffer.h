@@ -75,6 +75,8 @@ struct is_not_vector<std::vector<T, C>> : std::false_type {};
  * @note Thread-safety: Not thread-safe. Must be used from OpenGL context thread.
  * @note Ownership: Owns OpenGL SSBO and releases it in destructor.
  * @note Performance: Reading back from GPU is slow. Minimize CPU readbacks.
+ * @note TODO: Fix deletion - should use glDeleteBuffers not glDeleteFramebuffers
+ * @note TODO: Fix copy semantics - current implementation duplicates IDs without ownership
  */
 class StorageBuffer  //shader storage buffer object SSBO
 {
@@ -152,7 +154,8 @@ public:
 	
 	/**
 	 * @brief Binds SSBO to its binding point for shader access.
-	 * @param _base Binding point override (default: use stored binding)
+	 * @param _base Binding point override (currently ignored - uses stored binding)
+	 * @note TODO: Implement _base parameter override or remove from API
 	 */
 	void BindBufferBase(GLuint _base = -1) const;
 	

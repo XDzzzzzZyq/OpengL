@@ -120,10 +120,14 @@ UI action → Event emitted → Handlers notified → State updated → UI refre
 
 ### Controllers
 
-**Base Pattern:**
+**Base Pattern (Event-Driven):**
 ```cpp
 class Controller {
-    virtual void Update(Context& ctx, EventPool& events);
+public:
+    virtual ~Controller() = default;
+
+    // Called once to subscribe controller-specific handlers to the EventPool.
+    virtual void bind(EventPool& events) = 0;
 };
 ```
 

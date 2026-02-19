@@ -50,12 +50,23 @@ The UI layer is a **pure presentation layer** built on ImGui. It displays data f
 ### ImguiLayer (Base Class)
 ```cpp
 class ImguiLayer {
-    virtual void OnUpdate();      // Called every frame
-    virtual void OnRender();      // Draw UI elements
-    virtual void OnEvent(Event&); // Handle events
-    
-    bool is_visible;
-    std::string panel_name;
+public:
+    virtual ~ImguiLayer() = default;
+
+    // Register UI-relevant events with the event system
+    virtual void RegisterEvents(EventPool& pool) {};
+
+    // Called every frame to render this UI layer
+    virtual void RenderLayer(const Context& ctx, const EventPool& evt) {};
+
+    // Control whether this layer is currently active / rendered
+    bool uly_activate = true;      // Whether layer is active (receives events)
+    bool uly_is_rendered = true;   // Whether layer is rendered (visible)
+
+protected:
+    std::string uly_name;          // Layer name for display and lookup
+    GLuint uly_ID = -1;            // Unique layer ID assigned by ImguiManager
+    ImLayerType uly_type;          // Layer type identifier
 };
 ```
 

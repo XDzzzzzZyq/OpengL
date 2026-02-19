@@ -37,6 +37,8 @@
  * @note Thread-safety: Not thread-safe. Must be used from OpenGL context thread.
  * @note Ownership: Owns OpenGL UBO and releases it in destructor.
  * @note Binding point: UBOs use binding points to link with shader uniform blocks.
+ * @note TODO: Fix deletion - should use glDeleteBuffers not glDeleteFramebuffers
+ * @note TODO: Fix copy semantics - current implementation duplicates IDs without ownership
  */
 class UniformBuffer
 {

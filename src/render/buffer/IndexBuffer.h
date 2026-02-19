@@ -45,8 +45,9 @@ public:
 	/**
 	 * @brief Constructs IBO from index array.
 	 * @param data Pointer to index data (GLuint array)
-	 * @param size Number of indices
+	 * @param size Size in bytes (not element count)
 	 * @note Uploads data to GPU using GL_STATIC_DRAW
+	 * @note TODO: Clarify if size should be element count vs bytes for consistency
 	 */
 	IndexBuffer(const GLuint* data, GLuint size);
 	
@@ -114,5 +115,5 @@ public:
 private:
 
 	GLuint ibo_id;   ///< OpenGL index buffer object ID
-	GLuint ibo_size; ///< Number of indices
+	GLuint ibo_size; ///< Buffer size in bytes
 };
