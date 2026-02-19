@@ -313,19 +313,3 @@ public:
 	static std::shared_ptr<SceneResource> GetSceneConfig(std::string _name);
 };
 
-class SceneManager
-{
-private: 
-
-	static std::unordered_map<std::string, std::shared_ptr<SceneResource>> sce_configs;
-
-public:                        
-
-	static std::shared_ptr<SceneResource> Main(std::string _name="scene1");
-	static std::shared_ptr<SceneResource> CornellBox(std::string _name="cornellbox");
-	static std::shared_ptr<SceneResource> SDF_Test(std::string _name="SDF test");
-	static std::shared_ptr<SceneResource> Shadow(std::string _name = "shadow test");
-
-	static std::shared_ptr<SceneResource> GetSceneConfig(std::string _name);
-};
-

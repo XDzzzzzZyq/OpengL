@@ -47,7 +47,7 @@
  * @return String representation of current OpenGL error state
  * 
  * @note Calling glGetError() clears the error flag - only call once per check.
- * @note Unknown errors return "UNKOWN_ERROR" with numeric code.
+ * @note Unknown errors return "UNKNOWN_ERROR" with numeric code.
  */
 inline std::string glDebug_xdz() {
 	const GLuint err = glGetError();
@@ -61,7 +61,7 @@ inline std::string glDebug_xdz() {
 		GL_ERR(INVALID_FRAMEBUFFER_OPERATION);
 		GL_ERR(OUT_OF_MEMORY);
 	default:
-		return "UNKOWN_ERROR" + std::to_string(err);
+		return "UNKNOWN_ERROR" + std::to_string(err);
 	}
 }
 

@@ -36,8 +36,8 @@ enum EnvironmentType
 {
 	NONE_ENVIR,     ///< No environment (black background)
 	TEXTURE_ENVIR,  ///< HDR texture skybox with IBL
-	COLOR_ENVIRN,   ///< Solid color background (no IBL)
-	NOISE_ENVIRN    ///< Procedural noise background
+	COLOR_ENVIR,    ///< Solid color background (no IBL)
+	NOISE_ENVIR     ///< Procedural noise background
 };
 
 /**
@@ -104,7 +104,7 @@ public:
 	
 	/**
 	 * @brief Changes environment type.
-	 * @param type New environment type (TEXTURE_ENVIR, COLOR_ENVIRN, etc.)
+	 * @param type New environment type (TEXTURE_ENVIR, COLOR_ENVIR, etc.)
 	 * @note Switches rendering mode and IBL availability.
 	 */
 	void ChangeEnvirType(EnvironmentType type) const;
