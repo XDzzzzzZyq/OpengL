@@ -22,7 +22,7 @@ void Sprite::RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::v
 	if (!cam) return;
 	
 	spr_shader.UseShader();
-	spr_tex.Bind(3);
+	spr_tex.Bind(Texture::RGBA_TEXTURE);
 
 	// transform settings
 
@@ -79,7 +79,7 @@ void Sprite::SetTex()
 	spr_shader.UseShader();
 	//o_shader.SetValue("blen", 0.5f);
 	spr_shader.SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-	spr_shader.SetValue("U_Texture", 3);
+	spr_shader.SetValue("U_Texture", Texture::RGBA_TEXTURE);
 	spr_shader.UnuseShader();
 }
 
