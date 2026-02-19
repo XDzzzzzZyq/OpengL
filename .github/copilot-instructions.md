@@ -76,6 +76,15 @@ When reviewing pull requests:
 - Be direct and precise.
 - If something is ambiguous, explicitly state what is unclear.
 
+## Documentation Standards
+
+For each PR review and coding session:
+- Check documentation of newly added features for consistency and format.
+- Ensure Doxygen-style comments follow established patterns (@brief, @param, @return, @note).
+- Verify inline comments follow Blender C/C++ style (space after //, concise, non-trivial).
+- Confirm architectural boundaries and ownership semantics are documented.
+- Validate that documentation matches code behavior (no stale comments).
+
 ## Required Before Commit
 
 - Code builds in Debug and Release (x64).
