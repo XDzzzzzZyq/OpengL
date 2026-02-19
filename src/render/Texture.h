@@ -85,7 +85,7 @@ public:
 		RGBA_TEXTURE,            ///< RGBA 8-bit LDR (GL_RGBA8, GL_UNSIGNED_BYTE)
 		RGB_TEXTURE,             ///< RGB 8-bit LDR (GL_RGB8, GL_UNSIGNED_BYTE)
 		HDR_TEXTURE = 4,         ///< RGBA 32-bit float HDR (GL_RGBA32F, GL_FLOAT)
-		IBL_CUBE_TEXTURE = 5,    ///< HDR cubemap (GL_RGBA32F, GL_FLOAT, GL_TEXTURE_CUBE_MAP)
+		HDR_CUBE_TEXTURE = 5,    ///< HDR cubemap (GL_RGBA32F, GL_FLOAT, GL_TEXTURE_CUBE_MAP)
 		BUFFER_TEXTURE = 6,      ///< RGBA 8-bit framebuffer; base slot offset for shader uniforms
 		HDR_BUFFER_TEXTURE,      ///< RGBA 32F HDR framebuffer (GL_RGBA32F, GL_FLOAT)
 		FLOAT_BUFFER_TEXTURE,    ///< Two-channel RG 16F (GL_RG16F, GL_FLOAT)

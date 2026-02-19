@@ -71,7 +71,7 @@ void Light::InitShadowMap(bool using_moment_shadow)
 	assert(light_type != LightType::NONELIGHT);
 
 	const Texture::TextureType flat_map = using_moment_shadow ? Texture::HDR_TEXTURE : Texture::DEPTH_TEXTURE;
-	const Texture::TextureType cube_map = using_moment_shadow ? Texture::IBL_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
+	const Texture::TextureType cube_map = using_moment_shadow ? Texture::HDR_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
 
 	switch (light_type)
 	{
@@ -555,7 +555,7 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 	bool using_moment_shadow = config->RequiresMomentShadow();
 
 	const Texture::TextureType flat_map = using_moment_shadow ? Texture::HDR_TEXTURE : Texture::DEPTH_TEXTURE;
-	const Texture::TextureType cube_map = using_moment_shadow ? Texture::IBL_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
+	const Texture::TextureType cube_map = using_moment_shadow ? Texture::HDR_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
 
 
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;

@@ -107,7 +107,7 @@ private:
 	/**
 	 * @brief Converts FBType to OpenGL texture type.
 	 * @param _type Framebuffer type
-	 * @return Corresponding TextureType
+	 * @return Corresponding Texture::TextureType
 	 */
 	static Texture::TextureType PareseTexType(FBType _type);
 

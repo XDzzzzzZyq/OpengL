@@ -214,7 +214,7 @@ TEST_F(RendererEnvir, ComputeShader_SAT) {
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
 	GLERRTEST;
 	{
-		Texture cube_temp = Texture(w, w, Texture::IBL_CUBE_TEXTURE);
+		Texture cube_temp = Texture(w, w, Texture::HDR_CUBE_TEXTURE);
 		GLERRTEST;
 		/* SAT construction */
 
