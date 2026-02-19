@@ -14,7 +14,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
-	stbi_set_flip_vertically_on_load(0);
+	stbi_set_flip_vertically_on_load(1);
 	glGenTextures(1, &tex_ID);
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 

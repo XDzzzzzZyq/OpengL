@@ -121,7 +121,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 		glGetTexImage(gl_type, 0, layout, type, data.data());
 		GLERRTEST;
 
-		Texture tex_temp = Texture(tex->GetW(), tex->GetH(), Texture::Texture::HDR_TEXTURE);
+		Texture tex_temp = Texture(tex->GetW(), tex->GetH(), Texture::HDR_TEXTURE);
 
 		/* SAT construction */
 
@@ -153,7 +153,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		{
 			DEBUG(" >>> Box Blur with radius 0");
-			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), Texture::Texture::HDR_TEXTURE);
+			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), Texture::HDR_TEXTURE);
 			tex->BindC(0, GL_READ_ONLY);
 			tex_rec.BindC(1, GL_WRITE_ONLY);
 			blur.UseShader();
@@ -176,7 +176,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		{
 			DEBUG(" >>> Box Blur with radius 1");
-			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), Texture::Texture::HDR_TEXTURE);
+			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), Texture::HDR_TEXTURE);
 			tex->BindC(0, GL_READ_ONLY);
 			tex_rec.BindC(1, GL_WRITE_ONLY);
 			blur.UseShader();

@@ -134,7 +134,7 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR");
-	pps1->AddBinding("U_color", Texture::Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_color", Texture::BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", Texture::BUFFER_TEXTURE + POS_FB);
 	pps1->AddBinding("U_normal", Texture::BUFFER_TEXTURE + NORMAL_FB);
 	pps1->AddBinding("U_albedo", Texture::BUFFER_TEXTURE + ALBEDO_FB);
@@ -150,7 +150,7 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
-	pps2->AddBinding("U_combine", Texture::Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps2->AddBinding("U_combine", Texture::BUFFER_TEXTURE + COMBINE_FB);
 	pps2->AddBinding("U_select", Texture::BUFFER_TEXTURE + MASK_FB);
 	config1->UsePostProcessing(pps2);
 
@@ -277,7 +277,7 @@ std::shared_ptr<SceneResource> SceneManager::CornellBox(std::string _name/*="cor
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color", Texture::Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_color", Texture::BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", Texture::BUFFER_TEXTURE + POS_FB);
 	pps1->AddBinding("U_normal", Texture::BUFFER_TEXTURE + NORMAL_FB);
 	pps1->AddBinding("U_albedo", Texture::BUFFER_TEXTURE + ALBEDO_FB);
@@ -342,7 +342,7 @@ std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF t
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color", Texture::Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_color", Texture::BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos", Texture::BUFFER_TEXTURE + POS_FB);
 	pps1->AddBinding("U_normal", Texture::BUFFER_TEXTURE + NORMAL_FB);
 	pps1->AddBinding("U_albedo", Texture::BUFFER_TEXTURE + ALBEDO_FB);
@@ -445,7 +445,7 @@ std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shado
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color",		Texture::Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_color",		Texture::BUFFER_TEXTURE + COMBINE_FB);
 	pps1->AddBinding("U_pos",		Texture::BUFFER_TEXTURE + POS_FB);
 	pps1->AddBinding("U_normal",	Texture::BUFFER_TEXTURE + NORMAL_FB);
 	pps1->AddBinding("U_albedo",	Texture::BUFFER_TEXTURE + ALBEDO_FB);
