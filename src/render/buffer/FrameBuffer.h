@@ -109,7 +109,7 @@ private:
 	 * @param _type Framebuffer type
 	 * @return Corresponding TextureType
 	 */
-	static TextureType PareseTexType(FBType _type);
+	static Texture::TextureType PareseTexType(FBType _type);
 
 	void _cpyInfo(const FrameBuffer& fb);     ///< Copies framebuffer info
 	void _delFB();                             ///< Deletes OpenGL framebuffer

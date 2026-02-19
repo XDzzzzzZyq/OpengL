@@ -18,8 +18,8 @@ std::array<glm::mat4, 6> Light::_point_6side = {
 
 void Light::EnableShadowMap()
 {
-	_shadowmap_buffer[0] = FrameBuffer(Texture(1024, 1024, DEPTH_CUBE_TEXTURE));
-	_shadowmap_buffer[1] = FrameBuffer(Texture(1024, 1024, DEPTH_TEXTURE));
+	_shadowmap_buffer[0] = FrameBuffer(Texture(1024, 1024, Texture::DEPTH_CUBE_TEXTURE));
+	_shadowmap_buffer[1] = FrameBuffer(Texture(1024, 1024, Texture::DEPTH_TEXTURE));
 
 	_shadowmap_shader[SUNLIGHT] = ChainedShader::ImportShader("Depth_Rast.vert", "Empty.frag");
 
@@ -70,8 +70,8 @@ void Light::InitShadowMap(bool using_moment_shadow)
 {
 	assert(light_type != LightType::NONELIGHT);
 
-	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
-	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
+	const Texture::TextureType flat_map = using_moment_shadow ? Texture::HDR_TEXTURE : Texture::DEPTH_TEXTURE;
+	const Texture::TextureType cube_map = using_moment_shadow ? Texture::IBL_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
 
 	switch (light_type)
 	{
@@ -287,7 +287,7 @@ void Light::ConstructSAT(const RenderConfigs* config)
 	if (gl_type == GL_TEXTURE_2D) {
 		ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
 
-		static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), IBL_TEXTURE);
+		static Texture light_shadow_temp = Texture(light_shadow_map.GetW(), light_shadow_map.GetH(), Texture::HDR_TEXTURE);
 
 		light_shadow_map.BindC(0, GL_READ_ONLY);
 		light_shadow_temp.BindC(1, GL_WRITE_ONLY);
@@ -398,7 +398,7 @@ void LightArrayBuffer::ParseLightData(const std::unordered_map<int, std::shared_
 	{
 		light->UpdateProjMatrix();
 
-		shadow_cache[id] = Texture((int)cache_w, (int)cache_h, LIGHTING_CACHE);
+		shadow_cache[id] = Texture((int)cache_w, (int)cache_h, Texture::LIGHTING_CACHE);
 
 		switch (light->light_type)
 		{
@@ -554,8 +554,8 @@ void LightArrayBuffer::UpdateLightingCache(int frame, RenderConfigs* config)
 
 	bool using_moment_shadow = config->RequiresMomentShadow();
 
-	const TextureType flat_map = using_moment_shadow ? IBL_TEXTURE : DEPTH_TEXTURE;
-	const TextureType cube_map = using_moment_shadow ? IBL_CUBE_TEXTURE : DEPTH_CUBE_TEXTURE;
+	const Texture::TextureType flat_map = using_moment_shadow ? Texture::HDR_TEXTURE : Texture::DEPTH_TEXTURE;
+	const Texture::TextureType cube_map = using_moment_shadow ? Texture::IBL_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
 
 
 	const bool is_incr_aver = config->r_sampling_average == RenderConfigs::SamplingType::IncrementAverage;

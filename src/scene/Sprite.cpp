@@ -22,7 +22,7 @@ void Sprite::RenderSprite(const Context& ctx, const glm::vec3& pos, const glm::v
 	if (!cam) return;
 	
 	spr_shader.UseShader();
-	spr_tex.Bind(SPIRIT_TEXURE);
+	spr_tex.Bind(3);
 
 	// transform settings
 
@@ -74,12 +74,12 @@ void Sprite::SetSpriteShader()
 
 void Sprite::SetTex()
 {
-	spr_tex = Texture(ParsePath(), SPIRIT_TEXURE, GL_REPEAT);
+	spr_tex = Texture(ParsePath(), Texture::RGBA_TEXTURE, GL_REPEAT);
 
 	spr_shader.UseShader();
 	//o_shader.SetValue("blen", 0.5f);
 	spr_shader.SetValue("U_color", 1.0f, 0.0f, 1.0f, 1.0f);
-	spr_shader.SetValue("U_Texture", SPIRIT_TEXURE);
+	spr_shader.SetValue("U_Texture", 3);
 	spr_shader.UnuseShader();
 }
 
