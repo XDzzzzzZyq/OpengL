@@ -15,7 +15,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
-	stbi_set_flip_vertically_on_load(1);
+	stbi_set_flip_vertically_on_load(0);
 	glGenTextures(1, &tex_ID);
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
@@ -798,7 +798,7 @@ void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) co
 	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
 	static std::string root = "result/";
 	int status = -1;
-	stbi_flip_vertically_on_write(1);
+	stbi_flip_vertically_on_write(0);
 	glBindTexture(gl_type, tex_ID);
 	if (gl_type == GL_TEXTURE_CUBE_MAP && !force_cube) {
 		Texture rect_map;
