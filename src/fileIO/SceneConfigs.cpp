@@ -134,24 +134,24 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR");
-	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
-	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
-	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
-	pps1->AddBinding("LUT", PNG_TEXTURE);
+	pps1->AddBinding("U_color", Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos", Texture::BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal", Texture::BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo", Texture::BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse", Texture::BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission", Texture::BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha", Texture::BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture_diff", Texture::HDR_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec", Texture::HDR_TEXTURE + 1);
+	pps1->AddBinding("LUT", Texture::RGBA_TEXTURE);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config1->UsePostProcessing(pps1);
 
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps2 = std::make_shared<PostProcessing>("Post_Visual");
-	pps2->AddBinding("U_combine", BUFFER_TEXTURE + COMBINE_FB);
-	pps2->AddBinding("U_select", BUFFER_TEXTURE + MASK_FB);
+	pps2->AddBinding("U_combine", Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps2->AddBinding("U_select", Texture::BUFFER_TEXTURE + MASK_FB);
 	config1->UsePostProcessing(pps2);
 
 	return config1;
@@ -277,15 +277,15 @@ std::shared_ptr<SceneResource> SceneManager::CornellBox(std::string _name/*="cor
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
-	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
-	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
+	pps1->AddBinding("U_color", Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos", Texture::BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal", Texture::BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo", Texture::BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse", Texture::BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission", Texture::BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha", Texture::BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture_diff", Texture::HDR_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec", Texture::HDR_TEXTURE + 1);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config2->UsePostProcessing(pps1);
@@ -342,15 +342,15 @@ std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF t
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color", BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos", BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal", BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo", BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse", BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission", BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha", BUFFER_TEXTURE + MASK_FB);
-	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
-	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
+	pps1->AddBinding("U_color", Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos", Texture::BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal", Texture::BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo", Texture::BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse", Texture::BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission", Texture::BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha", Texture::BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture_diff", Texture::HDR_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec", Texture::HDR_TEXTURE + 1);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config3->UsePostProcessing(pps1);
@@ -445,15 +445,15 @@ std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shado
 	DEBUG("\n---------------POSTPRCS----------------");
 	std::shared_ptr<PostProcessing> pps1 = std::make_shared<PostProcessing>("pps/PBR", COMPUTE_SHADER);
 	pps1->pps_field.SetPos({ 5, 5, 5 });
-	pps1->AddBinding("U_color",		BUFFER_TEXTURE + COMBINE_FB);
-	pps1->AddBinding("U_pos",		BUFFER_TEXTURE + POS_FB);
-	pps1->AddBinding("U_normal",	BUFFER_TEXTURE + NORMAL_FB);
-	pps1->AddBinding("U_albedo",	BUFFER_TEXTURE + ALBEDO_FB);
-	pps1->AddBinding("U_mrse",		BUFFER_TEXTURE + MRSE_FB);
-	pps1->AddBinding("U_emission",	BUFFER_TEXTURE + EMIS_COL_FB);
-	pps1->AddBinding("U_alpha",		BUFFER_TEXTURE + MASK_FB);
-	pps1->AddBinding("Envir_Texture_diff", IBL_TEXTURE);
-	pps1->AddBinding("Envir_Texture_spec", IBL_TEXTURE + 1);
+	pps1->AddBinding("U_color",		Texture::BUFFER_TEXTURE + COMBINE_FB);
+	pps1->AddBinding("U_pos",		Texture::BUFFER_TEXTURE + POS_FB);
+	pps1->AddBinding("U_normal",	Texture::BUFFER_TEXTURE + NORMAL_FB);
+	pps1->AddBinding("U_albedo",	Texture::BUFFER_TEXTURE + ALBEDO_FB);
+	pps1->AddBinding("U_mrse",		Texture::BUFFER_TEXTURE + MRSE_FB);
+	pps1->AddBinding("U_emission",	Texture::BUFFER_TEXTURE + EMIS_COL_FB);
+	pps1->AddBinding("U_alpha",		Texture::BUFFER_TEXTURE + MASK_FB);
+	pps1->AddBinding("Envir_Texture_diff", Texture::HDR_TEXTURE);
+	pps1->AddBinding("Envir_Texture_spec", Texture::HDR_TEXTURE + 1);
 	pps1->AddBinding("LTC1", 13);	// Pass LTC matrix lookup tables for poly & area lights
 	pps1->AddBinding("LTC2", 14);	// Texture slot 0-12 are currently occupied, so 13 and 14 are used for these two tables
 	config4->UsePostProcessing(pps1);

@@ -26,33 +26,6 @@
 
 #include "glm/glm.hpp"
 
-/**
- * @brief Texture format types supported by the renderer.
- * 
- * Discriminates texture formats for appropriate OpenGL configuration.
- * Values are not sequential to allow grouping of related formats.
- */
-enum TextureType
-{
-	NONE_TEXTURE,         ///< Invalid/uninitialized texture
-	RGBA_TEXTURE,         ///< RGBA 8-bit LDR texture
-	PNG_TEXTURE = 1,      ///< PNG file (RGBA)
-	RGB_TEXTURE,          ///< RGB 8-bit LDR texture
-	JPG_TEXTURE = 2,      ///< JPEG file (RGB)
-	SPIRIT_TEXURE,        ///< Sprite texture (unused)
-	IBL_TEXTURE,          ///< Image-based lighting HDR texture
-	HDR_TEXTURE = 4,      ///< HDR file (RGB 16/32-bit float)
-	IBL_CUBE_TEXTURE = 5, ///< IBL cubemap (HDR)
-	BUFFER_TEXTURE = 6,   ///< Framebuffer texture (LDR, [0, 1])
-	HDR_BUFFER_TEXTURE,   ///< Framebuffer texture (HDR, [-inf, +inf])
-	FLOAT_BUFFER_TEXTURE, ///< Single-channel float texture
-	RG_TEXTURE,           ///< Two-channel (RG) texture
-	LAYERED_TEXTURE,      ///< Layered/array texture
-	LIGHTING_CACHE = 30,  ///< Light cache texture
-	DEPTH_CUBE_TEXTURE = 31, ///< Depth cubemap (shadow mapping)
-	DEPTH_TEXTURE         ///< Depth texture (shadow mapping)
-};
-
 /*
  * How to add a texture:
  * 1. Assign a (GLuint) slot for the texture (slot 0-14 are currently in use)
@@ -77,7 +50,7 @@ enum TextureType
  * Usage:
  * @code
  * // Load from file
- * Texture tex("albedo.png", PNG_TEXTURE, GL_REPEAT);
+ * Texture tex("albedo.png", Texture::RGBA_TEXTURE, GL_REPEAT);
  * tex.Bind(0);  // Bind to texture unit 0
  * 
  * // Create framebuffer texture
@@ -93,6 +66,35 @@ enum TextureType
  */
 class Texture
 {
+public:
+
+	/**
+	 * @brief OpenGL texture format and channel layout.
+	 * 
+	 * Abstracts the OpenGL pixel format (channels and data type) used when
+	 * allocating or uploading texture data. Values also serve as default
+	 * texture unit slot bases: e.g. BUFFER_TEXTURE (6) is the base slot
+	 * offset for framebuffer textures passed as shader uniforms.
+	 * 
+	 * @note BUFFER_TEXTURE must be kept as value 6; it is used as an offset
+	 *       for framebuffer texture slots (BUFFER_TEXTURE + FBType = slot).
+	 */
+	enum TextureType
+	{
+		NONE_TEXTURE,            ///< Invalid/uninitialized texture
+		RGBA_TEXTURE,            ///< RGBA 8-bit LDR (GL_RGBA8, GL_UNSIGNED_BYTE)
+		RGB_TEXTURE,             ///< RGB 8-bit LDR (GL_RGB8, GL_UNSIGNED_BYTE)
+		HDR_TEXTURE = 4,         ///< RGBA 32-bit float HDR (GL_RGBA32F, GL_FLOAT)
+		HDR_CUBE_TEXTURE = 5,    ///< HDR cubemap (GL_RGBA32F, GL_FLOAT, GL_TEXTURE_CUBE_MAP)
+		BUFFER_TEXTURE = 6,      ///< RGBA 8-bit framebuffer; base slot offset for shader uniforms
+		HDR_BUFFER_TEXTURE,      ///< RGBA 32F HDR framebuffer (GL_RGBA32F, GL_FLOAT)
+		FLOAT_BUFFER_TEXTURE,    ///< Two-channel RG 16F (GL_RG16F, GL_FLOAT)
+		RG_TEXTURE,              ///< Two-channel RG 16F (GL_RG16F, GL_FLOAT)
+		LAYERED_TEXTURE,         ///< RGBA 32F texture array (GL_TEXTURE_2D_ARRAY)
+		LIGHTING_CACHE = 30,     ///< Single-channel R 16F for light caching (GL_R16F)
+		DEPTH_CUBE_TEXTURE = 31, ///< Depth cubemap for shadow mapping (GL_DEPTH_COMPONENT32F)
+		DEPTH_TEXTURE            ///< Depth 2D for shadow mapping (GL_DEPTH_COMPONENT32F)
+	};
 private:
 
 	int im_w = 0, im_h = 0, im_bpp = 0; ///< Image width, height, bytes per pixel
@@ -111,6 +113,12 @@ private:
 	void _delTexture();
 	
 	/**
+	 * @brief Deep-copies texture metadata and GPU storage from another texture.
+	 * @param _tex Source texture
+	 */
+	void _deepCopyFrom(const Texture& _tex);
+	
+	/**
 	 * @brief Resets texture ID, deleting old texture if needed.
 	 * @param _ID New texture ID to assign
 	 */
@@ -118,13 +126,13 @@ private:
 
 public:
 
-	TextureType tex_type = TextureType::NONE_TEXTURE; ///< Texture format type
+	TextureType tex_type = NONE_TEXTURE; ///< Texture format type
 	GLuint tex_slot_offset = 0;                       ///< Texture unit offset for binding
 
 	/**
 	 * @brief Constructs texture from image file.
 	 * @param texpath Path to image file
-	 * @param tex_type Texture type (PNG_TEXTURE, HDR_TEXTURE, etc.)
+	 * @param tex_type Texture type (RGBA_TEXTURE, HDR_TEXTURE, etc.)
 	 * @param Tile_type Texture wrapping mode (GL_REPEAT, GL_CLAMP_TO_EDGE, etc.)
 	 * @note Automatically loads file and uploads to GPU
 	 */
@@ -408,11 +416,11 @@ private:
 	 * Implementation details for texture processing.
 	 */
 	///@{
-	void GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE);
-	void GenIBLSpecular(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
-	void GenIBLDiffuse(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = IBL_TEXTURE, bool to_cubemap = false);
-	void GenCubeMap(GLuint _tar_ID, int _tar_res, TextureType _tar_type = IBL_TEXTURE);
-	void GenERectMap(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = IBL_TEXTURE);
+	void GenIrradianceConv(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = HDR_TEXTURE);
+	void GenIBLSpecular(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = HDR_TEXTURE, bool to_cubemap = false);
+	void GenIBLDiffuse(GLuint _tar_ID, int _tar_w, int _tar_h, TextureType _tar_type = HDR_TEXTURE, bool to_cubemap = false);
+	void GenCubeMap(GLuint _tar_ID, int _tar_res, TextureType _tar_type = HDR_TEXTURE);
+	void GenERectMap(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = HDR_TEXTURE);
 	void ConvertDepth(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = DEPTH_TEXTURE);
 	void ConvertDepthCube(GLuint _tar_ID, int _w, int _h, TextureType _tar_type = DEPTH_CUBE_TEXTURE);
 	void ConvertPNG(GLuint _tar_ID, int _w, int _h);
@@ -470,9 +478,9 @@ public:
 	/**
 	 * @brief Infers texture type from file extension.
 	 * @param path File path
-	 * @return TextureType enum (.png → PNG_TEXTURE, .hdr → HDR_TEXTURE, etc.)
+	 * @return TextureType enum (.png → RGBA_TEXTURE, .jpg → RGB_TEXTURE, .hdr → HDR_TEXTURE)
 	 */
-	static TextureType ParseFileEXT(std::string path);
+	static Texture::TextureType ParseFileEXT(std::string path);
 
 	using TextureRes = std::shared_ptr<Texture>; ///< Shared pointer to Texture (for resource sharing)
 

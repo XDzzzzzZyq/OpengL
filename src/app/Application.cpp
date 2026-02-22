@@ -129,7 +129,7 @@ int Application::Run()
 		tex_type++;
 		if (tex_type >= MAX_FB)tex_type = 0;
 		scene->GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
-		scene->GetPPS(0)->SetShaderValue("U_color", BUFFER_TEXTURE + tex_type);
+		scene->GetPPS(0)->SetShaderValue("U_color", Texture::BUFFER_TEXTURE + tex_type);
 		//renderer.r_using_fxaa = !renderer.r_using_fxaa;
 		renderer.ScreenShot();
 		});

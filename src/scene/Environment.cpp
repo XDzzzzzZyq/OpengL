@@ -11,7 +11,7 @@ Environment::Environment(const std::string& texpath)
 
 	const bool is_using_HDR = texpath.substr(texpath.find("."), texpath.length()-1)==".hdr";
 
-	Texture rough_tex(texpath, is_using_HDR ? IBL_TEXTURE : RGBA_TEXTURE, GL_MIRRORED_REPEAT);
+	Texture rough_tex(texpath, is_using_HDR ? Texture::HDR_TEXTURE : Texture::RGBA_TEXTURE, GL_MIRRORED_REPEAT);
 	envir_IBL_diff.GenIBLDiffuseFrom(rough_tex, true);
 	envir_IBL_spec.GenIBLSpecularFrom(rough_tex, true);
 
@@ -24,10 +24,10 @@ Environment::Environment(const std::string& texpath)
 
 	envir_shader.InitShader = [&] {
 		envir_shader.UseShader();
-		envir_shader.SetValue("hdr_texture",	IBL_TEXTURE);
-		envir_shader.SetValue("buffer_texture",	BUFFER_TEXTURE + COMBINE_FB);
-		envir_shader.SetValue("id_texture",		BUFFER_TEXTURE + ID_FB);
-		envir_shader.SetValue("select_texture",	BUFFER_TEXTURE + MASK_FB);
+		envir_shader.SetValue("hdr_texture",	Texture::HDR_TEXTURE);
+		envir_shader.SetValue("buffer_texture",	Texture::BUFFER_TEXTURE + COMBINE_FB);
+		envir_shader.SetValue("id_texture",		Texture::BUFFER_TEXTURE + ID_FB);
+		envir_shader.SetValue("select_texture",	Texture::BUFFER_TEXTURE + MASK_FB);
 		envir_shader.SetValue("ID_color",		xdzm::get_id_color(GetObjectID()));
 		envir_shader.SetValue("RAND_color",		xdzm::get_random_color(GetObjectID()));
 		envir_shader.UnuseShader();
@@ -64,13 +64,13 @@ void Environment::UnbindFrameBuffer() const
 void Environment::SwapFrameBuffer(FBType type)
 {
 	envir_shader.UseShader();
-	envir_shader.SetValue("buffer_texture", BUFFER_TEXTURE + type);
+	envir_shader.SetValue("buffer_texture", Texture::BUFFER_TEXTURE + type);
 }
 
 void Environment::BindEnvironTexture() const
 {
-	envir_IBL_diff.Bind(IBL_TEXTURE);
-	envir_IBL_spec.Bind(IBL_TEXTURE + 1);
+	envir_IBL_diff.Bind(Texture::HDR_TEXTURE);
+	envir_IBL_spec.Bind(Texture::HDR_TEXTURE + 1);
 }
 
 void Environment::UnbindEnvironTexture() const
@@ -84,7 +84,7 @@ void Environment::RenderEnvironment(const Context& ctx)
 	const Camera* cam = dynamic_cast<const Camera*>(ctx.scene.GetActiveCamera());
 	envir_shader.UseShader();
 	//envir_frameBuffer->BindFrameBufferTex(AVAIL_PASSES);
-	envir_IBL_spec.Bind(IBL_TEXTURE);
+	envir_IBL_spec.Bind(Texture::HDR_TEXTURE);
 	//DEBUG(envir_frameBuffer->GetFBCount())
 
 	if (envir_shader.is_shader_changed)

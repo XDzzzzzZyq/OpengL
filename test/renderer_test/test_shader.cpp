@@ -121,7 +121,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 		glGetTexImage(gl_type, 0, layout, type, data.data());
 		GLERRTEST;
 
-		Texture tex_temp = Texture(tex->GetW(), tex->GetH(), IBL_TEXTURE);
+		Texture tex_temp = Texture(tex->GetW(), tex->GetH(), Texture::HDR_TEXTURE);
 
 		/* SAT construction */
 
@@ -153,7 +153,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		{
 			DEBUG(" >>> Box Blur with radius 0");
-			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), IBL_TEXTURE);
+			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), Texture::HDR_TEXTURE);
 			tex->BindC(0, GL_READ_ONLY);
 			tex_rec.BindC(1, GL_WRITE_ONLY);
 			blur.UseShader();
@@ -176,7 +176,7 @@ TEST_F(RendererEnvir, ComputeShader) {
 
 		{
 			DEBUG(" >>> Box Blur with radius 1");
-			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), IBL_TEXTURE);
+			Texture tex_rec = Texture(tex->GetW(), tex->GetH(), Texture::HDR_TEXTURE);
 			tex->BindC(0, GL_READ_ONLY);
 			tex_rec.BindC(1, GL_WRITE_ONLY);
 			blur.UseShader();
@@ -201,7 +201,7 @@ TEST_F(RendererEnvir, ComputeShader_SAT) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 
-	auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
+	auto tex = Texture("hdr/room.hdr", Texture::HDR_TEXTURE, GL_MIRRORED_REPEAT);
 	EXPECT_TRUE(tex.GetTexID() != 0);
 	std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
 
@@ -214,7 +214,7 @@ TEST_F(RendererEnvir, ComputeShader_SAT) {
 	EXPECT_TRUE(sat.GetShaderID(COMPUTE_SHADER) != 0);
 	GLERRTEST;
 	{
-		Texture cube_temp = Texture(w, w, IBL_CUBE_TEXTURE);
+		Texture cube_temp = Texture(w, w, Texture::HDR_CUBE_TEXTURE);
 		GLERRTEST;
 		/* SAT construction */
 

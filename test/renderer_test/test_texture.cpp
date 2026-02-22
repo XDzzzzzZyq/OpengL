@@ -8,13 +8,13 @@ TEST_F(RendererEnvir, Texture) {
 
 	{
 		auto tex = TextureLib::Noise_2D_4x4xN(5);
-		EXPECT_TRUE(tex->GetTexID() != 0);
+		EXPECT_NE(tex->GetTexID(), 0);
 		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
 		GLERRTEST;
 	}
 	{
 		auto tex = TextureLib::Noise_2D_4x4();
-		EXPECT_TRUE(tex->GetTexID() != 0);
+		EXPECT_NE(tex->GetTexID(), 0);
 		std::cout << tex->GetTexID() << " : " << tex->GetTexName() << "\n";
 		GLERRTEST;
 
@@ -30,8 +30,8 @@ TEST_F(RendererEnvir, Texture) {
 		EXPECT_TRUE(sum != glm::vec4(-4 * 4));
 	}
 	{
-		auto tex2 = Texture("testImg.png", PNG_TEXTURE, GL_REPEAT);
-		EXPECT_TRUE(tex2.GetTexID() != 0);
+		auto tex2 = Texture("testImg.png", Texture::RGBA_TEXTURE, GL_REPEAT);
+		EXPECT_NE(tex2.GetTexID(), 0);
 		std::cout << tex2.GetTexID() << " : " << tex2.GetTexName() << "\n";
 		GLERRTEST;
 	}
@@ -42,8 +42,8 @@ TEST_F(RendererEnvir, Texture_CubeMap) {
 		GTEST_SKIP();
 
 	{
-		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
-		EXPECT_TRUE(tex.GetTexID() != 0);
+		auto tex = Texture("hdr/room.hdr", Texture::HDR_TEXTURE, GL_MIRRORED_REPEAT);
+		EXPECT_NE(tex.GetTexID(), 0);
 		std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
 		GLERRTEST;
 
@@ -93,14 +93,72 @@ TEST_F(RendererEnvir, Texture_CubeMap) {
 	}
 }
 
+Texture get_texture(const std::string& path, Texture::TextureType type) {
+	return Texture(path, type, GL_REPEAT);
+}
+
+TEST_F(RendererEnvir, Texture_RAII) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	int temp_id = 0;
+	Texture tex{};
+	EXPECT_EQ(tex.GetTexID(), 0);
+	{
+		auto temp = Texture("avatar1.png", Texture::RGBA_TEXTURE, GL_REPEAT);
+		temp_id = temp.GetTexID();
+		EXPECT_EQ(temp_id, 1);
+		GLERRTEST;
+
+		tex = temp;
+		GLERRTEST;
+	}
+	GLERRTEST;
+	EXPECT_EQ(tex.GetTexID(), 2);
+	EXPECT_EQ(tex.tex_type, Texture::RGBA_TEXTURE);
+
+	{
+		auto temp = get_texture("avatar1.png", Texture::RGBA_TEXTURE);
+		temp_id = temp.GetTexID();
+		EXPECT_EQ(temp_id, 1);
+		GLERRTEST;
+
+		tex = temp;
+		GLERRTEST;
+	}
+	GLERRTEST;
+	EXPECT_EQ(tex.GetTexID(), 2);
+	EXPECT_EQ(tex.tex_type, Texture::RGBA_TEXTURE);
+
+	{
+		auto temp = Texture("hdr/room.hdr", Texture::HDR_TEXTURE, GL_MIRRORED_REPEAT);
+		temp_id = temp.GetTexID();
+		EXPECT_EQ(temp_id, 1);
+		GLERRTEST;
+
+		tex = temp;
+		GLERRTEST;
+	}
+	GLERRTEST;
+	EXPECT_EQ(tex.GetTexID(), 2);
+	EXPECT_EQ(tex.tex_type, Texture::HDR_TEXTURE);
+
+	Texture tex2 = tex;
+	GLERRTEST;
+	tex2.SaveTexture("copy_test", false, false);
+	GLERRTEST;
+	EXPECT_EQ(tex.GetTexID(),  2);
+	EXPECT_EQ(tex2.GetTexID(), 1);
+}
+
 #include <filesystem>
 TEST_F(RendererEnvir, Texture_Save) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 
 	{
-		auto tex = Texture("hdr/room.hdr", HDR_TEXTURE, GL_MIRRORED_REPEAT);
-		EXPECT_TRUE(tex.GetTexID() != 0);
+		auto tex = Texture("hdr/room.hdr", Texture::HDR_TEXTURE, GL_MIRRORED_REPEAT);
+		EXPECT_NE(tex.GetTexID(), 0);
 		std::cout << tex.GetTexID() << " : " << tex.GetTexName() << "\n";
 		GLERRTEST;
 
@@ -133,13 +191,21 @@ TEST_F(RendererEnvir, Texture_Save) {
 			EXPECT_TRUE(std::filesystem::exists(outputPath));
 		}
 	}
+	{
+		auto tex = Texture("avatar1.png", Texture::RGBA_TEXTURE, GL_REPEAT);
+		EXPECT_NE(tex.GetTexID(), 0);
+		GLERRTEST;
+
+		tex.SaveTexture("png_save");
+		EXPECT_TRUE(std::filesystem::exists("result/png_save.png"));
+	}
 }
 
 TEST_F(RendererEnvir, Depth_Texture_Save) {
 	if (gl_version < 4.0)
 		GTEST_SKIP();
 	{
-		auto depth2d = Texture(32, 32, DEPTH_TEXTURE);
+		auto depth2d = Texture(32, 32, Texture::DEPTH_TEXTURE);
 		float depth_val = 0.5f;
 		glClearTexImage(depth2d.GetTexID(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth_val);
 		GLERRTEST;
@@ -153,7 +219,7 @@ TEST_F(RendererEnvir, Depth_Texture_Save) {
 		EXPECT_TRUE(std::filesystem::exists("result/depth2d_png.png"));
 	}
 	{
-		auto depth_cube = Texture(32, 32, DEPTH_CUBE_TEXTURE);
+		auto depth_cube = Texture(32, 32, Texture::DEPTH_CUBE_TEXTURE);
 		float depth_val = 0.75f;
 		glClearTexImage(depth_cube.GetTexID(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth_val);
 		GLERRTEST;

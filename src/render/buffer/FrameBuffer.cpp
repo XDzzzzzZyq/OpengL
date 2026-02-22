@@ -1,15 +1,15 @@
 #include "FrameBuffer.h"
 #include "macros.h"
 
-TextureType FrameBuffer::PareseTexType(FBType _type)
+Texture::TextureType FrameBuffer::PareseTexType(FBType _type)
 {
-	TextureType textype = NONE_TEXTURE;
+	Texture::TextureType textype = Texture::NONE_TEXTURE;
 	if (ISIN(_type, 0, 1, 2, 3, 4, 5))
-		textype = HDR_BUFFER_TEXTURE;
+		textype = Texture::HDR_BUFFER_TEXTURE;
 	else if (ISIN(_type, ALBEDO_FB, MASK_FB, RAND_FB, ID_FB))
-		textype = BUFFER_TEXTURE;
+		textype = Texture::BUFFER_TEXTURE;
 	else if (ISIN(_type, SINGLE_FB, SHADOW_FB))
-		textype = FLOAT_BUFFER_TEXTURE;
+		textype = Texture::FLOAT_BUFFER_TEXTURE;
 	else if (_type == -32) {}
 
 	return textype;
@@ -34,7 +34,7 @@ FrameBuffer::FrameBuffer(FBType type/*=NONE_FB*/, GLuint attach)
 	:renderBuffer(RenderBuffer(GL_DEPTH24_STENCIL8)), fb_w(SCREEN_W), fb_h(SCREEN_H)
 {
 	fb_type_list[(FBType)type] = 0;
-	TextureType textype = FrameBuffer::PareseTexType(type);
+	Texture::TextureType textype = FrameBuffer::PareseTexType(type);
 	fb_tex_list.emplace_back("", textype, GL_LINEAR);
 	fb_tex_list[0].OffsetSlot(type);
 
@@ -72,7 +72,7 @@ FrameBuffer::FrameBuffer(int count, ...)
 	va_start(arg_ptr, count);
 	LOOP(count) {
 		int type_inp = va_arg(arg_ptr, int);
-		TextureType textype = FrameBuffer::PareseTexType((FBType)type_inp);
+		Texture::TextureType textype = FrameBuffer::PareseTexType((FBType)type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
 		fb_tex_list.emplace_back("", textype, GL_LINEAR);
@@ -108,7 +108,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 	fb_tex_list.reserve(_tars.size());
 
 	for (int i = 0; auto type_inp : _tars) {
-		TextureType textype = FrameBuffer::PareseTexType(type_inp);
+		Texture::TextureType textype = FrameBuffer::PareseTexType(type_inp);
 
 		fb_type_list[(FBType)type_inp] = i;
 
@@ -357,7 +357,7 @@ void FrameBuffer::BindFrameBufferTex(int count, ...) const
 {
 	if (count == 0) {
 		for(auto& pair : fb_type_list)
-			fb_tex_list[pair.second].Bind(BUFFER_TEXTURE + pair.first);
+			fb_tex_list[pair.second].Bind(Texture::BUFFER_TEXTURE + pair.first);
 		return;
 	}
 
@@ -365,7 +365,7 @@ void FrameBuffer::BindFrameBufferTex(int count, ...) const
 	va_start(arg_ptr, count);
 	LOOP(count) {
 		int type = va_arg(arg_ptr, int);
-		fb_tex_list[fb_type_list[(FBType)type]].Bind(BUFFER_TEXTURE + type);
+		fb_tex_list[fb_type_list[(FBType)type]].Bind(Texture::BUFFER_TEXTURE + type);
 	}
 	va_end(arg_ptr);
 }
@@ -373,7 +373,7 @@ void FrameBuffer::BindFrameBufferTex(int count, ...) const
 void FrameBuffer::BindFrameBufferTex(const std::vector<FBType>& _tars) const
 {
 	for (FBType tar : _tars) {
-		fb_tex_list[fb_type_list[tar]].Bind(BUFFER_TEXTURE + tar);
+		fb_tex_list[fb_type_list[tar]].Bind(Texture::BUFFER_TEXTURE + tar);
 	}
 }
 

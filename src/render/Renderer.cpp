@@ -362,12 +362,12 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 		TextureLib::LTC1()->Bind(13);
 		TextureLib::LTC2()->Bind(14);
 		r_light_data.Bind();
-		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB,		BUFFER_TEXTURE + POS_FB);
-		r_buffer_list[_RASTER].BindFrameBufferTex(NORMAL_FB,	BUFFER_TEXTURE + NORMAL_FB);
-		r_buffer_list[_RASTER].BindFrameBufferTex(ALBEDO_FB,	BUFFER_TEXTURE + ALBEDO_FB);
-		r_buffer_list[_RASTER].BindFrameBufferTex(MRSE_FB,		BUFFER_TEXTURE + MRSE_FB);
-		r_buffer_list[_RASTER].BindFrameBufferTex(MASK_FB,		BUFFER_TEXTURE + MASK_FB);
-		r_buffer_list[_RASTER].BindFrameBufferTex(EMIS_COL_FB,	BUFFER_TEXTURE + EMIS_COL_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB,		Texture::BUFFER_TEXTURE + POS_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(NORMAL_FB,	Texture::BUFFER_TEXTURE + NORMAL_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(ALBEDO_FB,	Texture::BUFFER_TEXTURE + ALBEDO_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(MRSE_FB,		Texture::BUFFER_TEXTURE + MRSE_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(MASK_FB,		Texture::BUFFER_TEXTURE + MASK_FB);
+		r_buffer_list[_RASTER].BindFrameBufferTex(EMIS_COL_FB,	Texture::BUFFER_TEXTURE + EMIS_COL_FB);
 
 		r_render_result->BindFrameBufferTexR(COMBINE_FB, 0);
 		r_render_result->BindFrameBufferTexR(DIR_DIFF_FB, 1);
