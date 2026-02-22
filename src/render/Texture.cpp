@@ -2,6 +2,7 @@
 #include "stb_image.h"
 #include "macros.h"
 #include "xdz_math.h"
+#include <algorithm>
 
 void Texture::_cpyInfo(const Texture& tex)
 {
@@ -195,8 +196,11 @@ Texture::Texture(int _w, int _h, TextureType _type)
 
 Texture::Texture(const Texture& tex)
 {
-	_resetTexID(tex.GetTexID());
-	_cpyInfo(tex);
+	if (this == &tex)
+		return;
+	if (tex_ID != 0)
+		_delTexture();
+	_deepCopyFrom(tex);
 }
 
 Texture::Texture(Texture&& tex) noexcept
@@ -209,8 +213,9 @@ Texture& Texture::operator=(const Texture& tex)
 {
 	if (this == &tex)
 		return *this;
-	_resetTexID(tex.GetTexID());
-	_cpyInfo(tex);
+	if (tex_ID != 0)
+		_delTexture();
+	_deepCopyFrom(tex);
 	return *this;
 }
 
@@ -234,6 +239,112 @@ void Texture::_delTexture()
 {
 	glDeleteTextures(1, &tex_ID);
 	tex_ID = 0;
+}
+
+void Texture::_deepCopyFrom(const Texture& tex)
+{
+	_cpyInfo(tex);
+
+	if (tex.tex_ID == 0)
+		return;
+
+	auto [interlayout, layout, type, gl_type] = Texture::ParseFormat(tex_type);
+	if (gl_type == GL_NONE)
+		return;
+
+	glGenTextures(1, &tex_ID);
+
+	GLint min_filter = GL_LINEAR;
+	GLint mag_filter = GL_LINEAR;
+	GLint wrap_s = GL_REPEAT;
+	GLint wrap_t = GL_REPEAT;
+	GLint wrap_r = GL_REPEAT;
+	GLint base_level = 0;
+	GLint max_level = 0;
+	GLint width = 0;
+	GLint height = 0;
+	GLint depth = 1;
+	GLint src_internal = 0;
+	GLint dst_internal = 0;
+	GLint immutable_levels = 0;
+
+	glBindTexture(gl_type, tex.tex_ID);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_MIN_FILTER, &min_filter);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_MAG_FILTER, &mag_filter);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_WRAP_S, &wrap_s);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_WRAP_T, &wrap_t);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_WRAP_R, &wrap_r);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_BASE_LEVEL, &base_level);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_MAX_LEVEL, &max_level);
+	glGetTexParameteriv(gl_type, GL_TEXTURE_IMMUTABLE_LEVELS, &immutable_levels);
+	glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_WIDTH, &width);
+	glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_HEIGHT, &height);
+	glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_DEPTH, &depth);
+	glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_INTERNAL_FORMAT, &src_internal);
+	assert(im_w == width);
+	assert(im_h == height);
+
+	int computed_levels = 1;
+	int level_w = std::max(1, width);
+	int level_h = std::max(1, height);
+	int level_d = std::max(1, depth);
+	while (level_w > 1 || level_h > 1 || level_d > 1) {
+		level_w = std::max(1, level_w / 2);
+		level_h = std::max(1, level_h / 2);
+		level_d = std::max(1, level_d / 2);
+		++computed_levels;
+	}
+	int levels = immutable_levels > 0 ? immutable_levels : std::min(computed_levels, max_level + 1);
+
+	glBindTexture(gl_type, tex_ID);
+	glTexParameteri(gl_type, GL_TEXTURE_MIN_FILTER, min_filter);
+	glTexParameteri(gl_type, GL_TEXTURE_MAG_FILTER, mag_filter);
+	glTexParameteri(gl_type, GL_TEXTURE_WRAP_S, wrap_s);
+	glTexParameteri(gl_type, GL_TEXTURE_WRAP_T, wrap_t);
+	glTexParameteri(gl_type, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(gl_type, GL_TEXTURE_MAX_LEVEL, levels - 1);
+
+	if (gl_type == GL_TEXTURE_2D) {
+		glTexStorage2D(gl_type, levels, interlayout, width, height);
+		glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_INTERNAL_FORMAT, &dst_internal);
+		for (int level = 0; level < levels; ++level) {
+			int copy_w = std::max(1, width >> level);
+			int copy_h = std::max(1, height >> level);
+			glCopyImageSubData(
+				tex.tex_ID, gl_type, level,
+				0, 0, 0,
+				tex_ID, gl_type, level,
+				0, 0, 0,
+				copy_w, copy_h, 1);
+		}
+	}
+	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+		glTexParameteri(gl_type, GL_TEXTURE_WRAP_R, wrap_r);
+		glTexStorage2D(gl_type, levels, interlayout, width, height);
+		glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_INTERNAL_FORMAT, &dst_internal);
+		for (int level = 0; level < levels; ++level) {
+			int copy_w = std::max(1, width >> level);
+			int copy_h = std::max(1, height >> level);
+			glCopyImageSubData(tex.tex_ID, gl_type, level, 0, 0, 0,
+				tex_ID, gl_type, level, 0, 0, 0,
+				copy_w, copy_h, 6);
+		}
+	}
+	else if (gl_type == GL_TEXTURE_2D_ARRAY) {
+		glTexParameteri(gl_type, GL_TEXTURE_WRAP_R, wrap_r);
+		glTexStorage3D(gl_type, levels, interlayout, width, height, depth);
+		glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_INTERNAL_FORMAT, &dst_internal);
+		for (int level = 0; level < levels; ++level) {
+			int copy_w = std::max(1, width >> level);
+			int copy_h = std::max(1, height >> level);
+			int copy_d = std::max(1, depth >> level);
+			glCopyImageSubData(tex.tex_ID, gl_type, level, 0, 0, 0,
+				tex_ID, gl_type, level, 0, 0, 0,
+				copy_w, copy_h, copy_d);
+		}
+	}
+
+	glBindTexture(gl_type, 0); GLDEBUG;
 }
 
 void Texture::Resize(const glm::vec2& size)

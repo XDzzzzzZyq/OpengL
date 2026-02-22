@@ -113,6 +113,12 @@ private:
 	void _delTexture();
 	
 	/**
+	 * @brief Deep-copies texture metadata and GPU storage from another texture.
+	 * @param _tex Source texture
+	 */
+	void _deepCopyFrom(const Texture& _tex);
+	
+	/**
 	 * @brief Resets texture ID, deleting old texture if needed.
 	 * @param _ID New texture ID to assign
 	 */
