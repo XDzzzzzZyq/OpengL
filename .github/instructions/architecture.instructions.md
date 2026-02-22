@@ -111,10 +111,20 @@ This is a C++20 OpenGL 4.6 real-time renderer designed for experimentation with 
 
 ### Naming Conventions
 - Classes: PascalCase (e.g., `FrameBuffer`, `CameraController`)
-- Members: snake_case with prefix (e.g., `r_` for renderer, `m_` for members)
-- Functions: PascalCase for public API, camelCase for internal
-- Constants: UPPER_SNAKE_CASE
-- Private members: Leading underscore for internals (e.g., `_BuildinPPS`)
+- Members: prefixes are common (e.g., `r_` for renderer, `o_` for object, `is_` for flags, `tex_` for textures). Match local file usage.
+- Functions: PascalCase for public API; follow surrounding conventions for internals.
+- Constants: UPPER_SNAKE_CASE when present; match local file usage.
+- Private members: Leading underscore used for some internals (e.g., `_BuildinPPS`); match local style.
+
+### Formatting / Includes
+- Indentation: tabs are common.
+- Braces: Allman style in headers and cpp files.
+- Includes: local headers before system; group local, third-party (GL/GLFW/GLM), STL; use `#pragma once`.
+
+### Ownership / Error Handling
+- Prefer RAII for GPU resources; use `std::unique_ptr`/`std::shared_ptr` for explicit ownership.
+- Avoid owning raw pointers; use raw pointers for non-owning references only.
+- Use `GLERRTEST` / `GLDEBUG` where available; early return on invalid state.
 
 ### Extension Points
 - New scene object types inherit from ObjectID
