@@ -8,7 +8,7 @@
  * skybox rotation).
  * 
  * Architecture:
- * - Owned by scene graph (shared_ptr in SceneResource containers)
+ * - Owned by scene graph (shared_ptr in Scene containers)
  * - Active environment selected via SceneContext
  * - Renderer reads IBL textures as immutable data for lighting pass
  * - Editor manipulates environment properties via events

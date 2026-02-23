@@ -8,7 +8,7 @@
  * produce final images.
  * 
  * Architecture:
- * - Owned by scene graph (shared_ptr in SceneResource containers)
+ * - Owned by scene graph (shared_ptr in Scene containers)
  * - Renderer reads mesh data, material, and transform as immutable
  * - Editor mutates mesh properties via events and controllers
  * - Supports LOD via optional low-poly proxy mesh

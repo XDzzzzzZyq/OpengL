@@ -78,7 +78,7 @@ int Application::Init()
 	renderer.GetConfig()->r_ao_radius = 0.8f;
 	Light::area_blur_range = 0.03f;
 
-	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
+	Scene* scene = dynamic_cast<Scene*>(Ctx.scene.active_scene);
 	EventPool.emit<FrameBufferResetEvent>({ &renderer.r_buffer_list[0], renderer.GetFrameBufferPtr() });
 	EventPool.emit<RenderConfigChangedEvent>({ renderer.GetConfig(), ModifyFlags::ShadowChanged});
 	for (const auto& [id, mesh] : scene->mesh_list)
@@ -125,7 +125,7 @@ int Application::Run()
 
 
 	UI.SetButtonFunc("__Parameters__", "Debug", [&] {
-		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
+		Scene* scene = dynamic_cast<Scene*>(Ctx.scene.active_scene);
 		tex_type++;
 		if (tex_type >= MAX_FB)tex_type = 0;
 		scene->GetActiveEnvironment()->SwapFrameBuffer((FBType)(tex_type));
@@ -144,7 +144,7 @@ int Application::Run()
 		});
 
 	UI.FindImguiLayerAs<Viewport>("Viewport")->display_grid = false;
-	SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
+	Scene* scene = dynamic_cast<Scene*>(Ctx.scene.active_scene);
 	UI.FindImguiMenuItem("Render", "Rendering PipeLine")->BindOption(&renderer.GetConfig()->r_pipeline);
 	UI.FindImguiMenuItem("Render", "Optical Flow")->BindOption(&renderer.GetConfig()->r_of_algorithm);
 	UI.FindImguiMenuItem("Render", "Anti Aliasing")->BindOption(&renderer.GetConfig()->r_anti_alias);
@@ -195,7 +195,7 @@ int Application::Run()
 
 		UI.RenderUI(Ctx, EventPool);
 
-		SceneResource* scene = dynamic_cast<SceneResource*>(Ctx.scene.active_scene);
+		Scene* scene = dynamic_cast<Scene*>(Ctx.scene.active_scene);
 		/* Render here */		
 		renderer.Render(Ctx);
 
