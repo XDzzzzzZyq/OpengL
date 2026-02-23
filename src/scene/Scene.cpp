@@ -175,10 +175,14 @@ void Scene::UpdateObjTransforms()
 {
 	// The update of transform should ignore the visibility of objects
 
-	GetActiveCamera()->ApplyTransform();
-	GetActiveCamera()->GetInvTransform();
-	GetActiveCamera()->GenFloatData();
-	UpdateSceneStatus(ObjectTransChanged | CameraChanged, GetActiveCamera()->is_Uniform_changed);
+	auto* activeCamera = GetActiveCamera();
+	if (activeCamera)
+	{
+		activeCamera->ApplyTransform();
+		activeCamera->GetInvTransform();
+		activeCamera->GenFloatData();
+		UpdateSceneStatus(ObjectTransChanged | CameraChanged, activeCamera->is_Uniform_changed);
+	}
 
 	for (auto& [id, mesh] : mesh_list)
 	{
@@ -268,7 +272,11 @@ void Scene::ResetStatus()
 		pps->pps_shader->is_shader_changed = false;
 	}
 
-	GetActiveCamera()->is_Uniform_changed = false;
-	GetActiveCamera()->is_invUniform_changed = false;
-	GetActiveCamera()->is_frustum_changed = false;
+	auto* activeCamera = GetActiveCamera();
+	if (activeCamera)
+	{
+		activeCamera->is_Uniform_changed = false;
+		activeCamera->is_invUniform_changed = false;
+		activeCamera->is_frustum_changed = false;
+	}
 }
