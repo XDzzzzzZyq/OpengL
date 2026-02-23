@@ -1,6 +1,18 @@
 #pragma once
 #include "Texture.h"
 
+/**
+ * @brief OpenGL renderbuffer object wrapper.
+ *
+ * RenderBuffer encapsulates a GL renderbuffer (glGenRenderbuffers) used as
+ * a depth/stencil attachment in FrameBuffer. Move semantics transfer the
+ * renderbuffer ownership; copy assigns the same renderbuffer ID (shallow).
+ *
+ * @note Deep copy of a renderbuffer requires framebuffer blitting and is not
+ *       implemented. Prefer moving renderbuffers rather than copying them.
+ * @note GPU Resource Ownership: Owns rb_ID, released via glDeleteRenderbuffers
+ *       in destructor.
+ */
 class RenderBuffer
 {
 private:

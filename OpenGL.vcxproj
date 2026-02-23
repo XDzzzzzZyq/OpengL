@@ -229,6 +229,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\editor\SelectionManager.cpp" />
     <ClCompile Include="src\compo\Nodes.cpp" />
     <ClCompile Include="src\render\buffers\BufferLayout.cpp" />
+    <ClCompile Include="src\render\Buffers.cpp" />
     <ClCompile Include="src\render\buffers\FrameBuffer.cpp" />
     <ClCompile Include="src\render\buffers\IndexBuffer.cpp" />
     <ClCompile Include="src\render\buffers\RenderBuffer.cpp" />
@@ -401,6 +402,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\compo\Nodes.h" />
     <ClInclude Include="src\extra\xdz_matrix.h" />
     <ClInclude Include="src\render\buffers\BufferLayout.h" />
+    <ClInclude Include="src\render\Buffers.h" />
     <ClInclude Include="src\render\buffers\FrameBuffer.h" />
     <ClInclude Include="src\render\buffers\IndexBuffer.h" />
     <ClInclude Include="src\render\buffers\RenderBuffer.h" />

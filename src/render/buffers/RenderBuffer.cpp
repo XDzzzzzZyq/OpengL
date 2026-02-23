@@ -3,7 +3,7 @@
 
 void RenderBuffer::_delRB()
 {
-	glDeleteFramebuffers(1, &rb_ID);
+	glDeleteRenderbuffers(1, &rb_ID);
 	rb_ID = 0;
 }
 

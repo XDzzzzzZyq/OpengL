@@ -1,73 +1,46 @@
 #include "UniformBuffer.h"
 
 UniformBuffer::UniformBuffer(GLuint _bind)
-	:ubo_bind(_bind)
+	: ubo_bind(_bind)
 {
-	glGenBuffers(1, &ubo_ID);
-	glBindBuffer(GL_UNIFORM_BUFFER, ubo_ID);
+	glGenBuffers(1, &buf_ID);
+	glBindBuffer(GL_UNIFORM_BUFFER, buf_ID);
 }
-
-UniformBuffer::~UniformBuffer()
-{
-	if (ubo_ID != 0)
-		_delUB();
-}
-
-void UniformBuffer::_cpyInfo(const UniformBuffer& ubo)
-{
-	ubo_ID = ubo.ubo_ID; ubo_bind = ubo.ubo_bind;
-}
-
-
-void UniformBuffer::_delUB()
-{
-	glDeleteFramebuffers(1, &ubo_ID);
-	ubo_ID = 0;
-}
-
 
 UniformBuffer::UniformBuffer(const UniformBuffer& ubo)
+	: GLBuffer(ubo), ubo_bind(ubo.ubo_bind)
 {
-	_resetUBID(ubo.ubo_ID);
-	_cpyInfo(ubo);
 }
-
 
 UniformBuffer::UniformBuffer(UniformBuffer&& ubo) noexcept
+	: GLBuffer(std::move(ubo)), ubo_bind(ubo.ubo_bind)
 {
-	_cpyInfo(ubo);
-	ubo.ubo_ID = 0;
 }
-
 
 UniformBuffer& UniformBuffer::operator=(const UniformBuffer& ubo)
 {
 	if (this == &ubo)
 		return *this;
 
-	_resetUBID(ubo.ubo_ID);
-	_cpyInfo(ubo);
-
+	GLBuffer::operator=(ubo);
+	ubo_bind = ubo.ubo_bind;
 	return *this;
 }
-
 
 UniformBuffer& UniformBuffer::operator=(UniformBuffer&& ubo) noexcept
 {
 	if (this == &ubo)
 		return *this;
 
-	_cpyInfo(ubo);
-	ubo.ubo_ID = 0;
-
+	GLBuffer::operator=(std::move(ubo));
+	ubo_bind = ubo.ubo_bind;
 	return *this;
 }
 
-void UniformBuffer::Bind(GLuint _bind /*= -1*/) const
+void UniformBuffer::Bind(GLuint _bind) const
 {
-	if (_bind == -1) _bind = ubo_bind;
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, _bind, ubo_ID);
+	if (_bind == static_cast<GLuint>(-1)) _bind = ubo_bind;
+	glBindBufferBase(GL_UNIFORM_BUFFER, _bind, buf_ID);
 }
 
 void UniformBuffer::Unbind() const

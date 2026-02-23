@@ -182,9 +182,15 @@
     <ClCompile Include="..\..\src\render\shaders\ComputeShader.cpp" />
     <ClCompile Include="..\..\src\render\shaders\RenderShader.cpp" />
     <ClCompile Include="..\..\src\render\Texture.cpp" />
+    <ClCompile Include="..\..\src\render\Buffers.cpp" />
+    <ClCompile Include="..\..\src\render\buffers\VertexBuffer.cpp" />
+    <ClCompile Include="..\..\src\render\buffers\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\render\buffers\StorageBuffer.cpp" />
+    <ClCompile Include="..\..\src\render\buffers\UniformBuffer.cpp" />
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="test_buffers.cpp" />
     <ClCompile Include="test_core.cpp" />
     <ClCompile Include="test_input.cpp" />
     <ClCompile Include="test_shader.cpp" />
