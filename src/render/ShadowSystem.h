@@ -19,6 +19,11 @@
 #pragma once
 
 #include "Light.h"
+#include "RenderConfigs.h"
+#include "Texture.h"
+#include "buffer/StorageBuffer.h"
+#include "buffer/UniformBuffer.h"
+#include "PolygonLight.h"
 
 #include <unordered_map>
 #include <vector>
@@ -198,6 +203,7 @@ private:
 	std::unordered_map<int, _LightInfo> light_info_cache;            ///< Maps light ID to slot and pointer
 	GLuint cache_w{};                                                ///< Cached shadow map width
 	GLuint cache_h{};                                                ///< Cached shadow map height
+	bool prev_moment_shadow{ false };                                ///< Tracks previous moment shadow mode for format-change detection
 
 public:
 	/**
