@@ -60,5 +60,6 @@ void StorageBuffer::SetBufferBase(GLuint base)
 
 void StorageBuffer::BindBufferBase(GLuint _base) const
 {
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, ssbo_base, buf_ID);
+	if (_base == static_cast<GLuint>(-1)) _base = ssbo_base;
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, _base, buf_ID);
 }

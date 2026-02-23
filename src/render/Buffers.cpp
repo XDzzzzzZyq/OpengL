@@ -45,7 +45,8 @@ GLBuffer::GLBuffer(GLBuffer&& buf) noexcept
 {
 	buf_ID   = buf.buf_ID;
 	buf_size = buf.buf_size;
-	buf.buf_ID = 0;
+	buf.buf_ID   = 0;
+	buf.buf_size = 0;
 }
 
 GLBuffer& GLBuffer::operator=(const GLBuffer& buf)
@@ -70,6 +71,7 @@ GLBuffer& GLBuffer::operator=(GLBuffer&& buf) noexcept
 
 	buf_ID   = buf.buf_ID;
 	buf_size = buf.buf_size;
-	buf.buf_ID = 0;
+	buf.buf_ID   = 0;
+	buf.buf_size = 0;
 	return *this;
 }
