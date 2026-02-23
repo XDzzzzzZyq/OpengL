@@ -190,19 +190,19 @@ public:
 		ViewportState viewport{};  ///< Viewport state (TODO: refactor out)
 	};
 
-public:
+private:
 
 	/**
 	 * @brief Current frame input state.
-	 * @note TODO: Make private and provide getters
 	 */
 	static InputState input_state;
 	
 	/**
 	 * @brief Previous frame input state.
-	 * @note TODO: Make private
 	 */
 	static InputState input_state_b;
+
+	void static ScrollCallback(GLFWwindow* /*window*/, double xoffset, double yoffset);
 
 public:
 
@@ -216,6 +216,14 @@ public:
 	 * @note Must be called once per frame before input queries
 	 */
 	void UpdateState(GLFWwindow* window) const;
+
+	/**
+	 * @brief Returns current input state snapshot.
+	 * @return Current InputState
+	 * @note Provides read-only access to input state for queries
+	 */
+	static const InputState GetInputState() { return Input::input_state; }
+	static const RandomState GetRandomState() { return Input::input_state.random; }
 
 public:
 	/**

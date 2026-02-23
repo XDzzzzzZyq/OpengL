@@ -87,7 +87,7 @@ Input::KeyState Input::ParseKeyState(const std::string& hotkey)
 	return state;
 }
 
-static void ScrollCallback(GLFWwindow* /*window*/, double xoffset, double yoffset)
+ void Input::ScrollCallback(GLFWwindow* /*window*/, double xoffset, double yoffset)
 {
 	Input::input_state.mouse.scroll_x = static_cast<float>(xoffset);
 	Input::input_state.mouse.scroll_y = static_cast<float>(yoffset);
@@ -110,7 +110,7 @@ void Input::UpdateState(GLFWwindow* window) const
 	input_state.mouse.mouse_x = static_cast<float>(_mouse_x);
 	input_state.mouse.mouse_y = static_cast<float>(_mouse_y);
 
-	glfwSetScrollCallback(window, ScrollCallback);
+	glfwSetScrollCallback(window, Input::ScrollCallback);
 
 	/*	  KeyBoard Input 	*/
 

@@ -405,7 +405,7 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 			ssr.SetValue("std_ud_rate", 1.0f / Input::GetFrameCount());
 			ssr.SetValue("cam_pos", cam->o_position);
 			ssr.SetValue("cam_trans", cam->cam_frustum * cam->o_InvTransform);
-			ssr.SetValue("noise", Input::input_state.random.random_float1);
+			ssr.SetValue("noise", Input::GetRandomState().random_float1);
 			ssr.RunComputeShaderSCR(r_render_result->GetSize(), 16);
 		}
 
@@ -500,7 +500,7 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 
 void Renderer::ScreenShot()
 {
-	std::string name = "result""-" + std::to_string(Input::input_state.random.random_float1);
+	std::string name = "result""-" + std::to_string(Input::GetRandomState().random_float1);
 	DEBUG("saving to: " + name);
 	r_render_result->GetFBTexturePtr(COMBINE_FB)->SaveTexture(name, true);
 }

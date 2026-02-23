@@ -122,7 +122,7 @@ void NodeEditor::ResetState()
 	editing_cn_type = O_I;
 	tar_pin_pos = { 0,0 };
 
-	if (Input::input_state.key.special != Input::SHIFT)
+	if (Input::IsKeyPressed(Input::SHIFT))
 		is_node_movable = true;
 }
 

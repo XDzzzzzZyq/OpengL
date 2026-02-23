@@ -5,7 +5,7 @@
 
 void EventPool::EmitGlobalEvent()
 {
-	const Input::InputState state = Input::input_state;
+	const Input::InputState state = Input::GetInputState();
 	if (Input::IsMouseClicked()) {
 		emit(MouseClickEvent{ 
 			state.key.special,
