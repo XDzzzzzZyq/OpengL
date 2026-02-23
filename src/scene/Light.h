@@ -10,10 +10,7 @@
  * - Light inherits ObjectID (scene identity) and Transform3D (spatial placement)
  * - ShadowSystem converts scene lights into GPU-friendly buffers
  * - Renderer reads light data via ShadowSystem bindings
- * - Shadow maps are lazily allocated and cached per-light
- *
- * @note TODO: Light should not own runtime properties like shadow maps (move to ShadowSystem).
- * @note TODO: Move shadow configuration statics to RenderConfigs.
+ * - Shadow maps and projection matrices are owned by ShadowSystem
  */
 
 #pragma once
@@ -58,7 +55,6 @@ enum LightType
  * 
  * @note Inheritance: ObjectID for scene identity, Transform3D for spatial transform.
  * @note Thread-safety: Not thread-safe. Access from main thread only.
- * @note TODO: Shadow map and projection matrix should move to ShadowSystem.
  */
 class Light : public ObjectID, public Transform3D
 {
@@ -80,9 +76,7 @@ public:
 	float area_ratio{ 1.0f }; ///< Aspect ratio (width/height) of rectangular area light
 
 public:
-	Sprite light_sprite;           ///< Visual gizmo for editor viewport
-	Texture light_shadow_map;      ///< Shadow map texture (TODO: move to ShadowSystem)
-	glm::mat4 light_proj{ 1.0f };  ///< Light projection matrix for shadow mapping (TODO: move to ShadowSystem)
+	Sprite light_sprite; ///< Visual gizmo for editor viewport
 
 public:
 	// TODO: Move to RenderConfigs
@@ -115,13 +109,6 @@ public:
 	 * @param color RGB color (default: white)
 	 */
 	Light(LightType type, float power = 10, glm::vec3 color = glm::vec3{ 1, 1, 1 });
-	
-	/**
-	 * @brief Initializes shadow map texture for this light.
-	 * @param using_moment_shadow Use moment-based shadow maps (variance/ESM) vs. standard depth
-	 * @note Allocates GPU texture based on light type (2D for sun/spot, cubemap for point).
-	 */
-	void InitShadowMap(bool using_moment_shadow);
 	
 	/**
 	 * @brief Parses light type to sprite icon and name.
@@ -192,14 +179,6 @@ public:
 	 * @note Called once during renderer initialization.
 	 */
 	static void EnableShadowMap();
-	
-	/**
-	 * @brief Constructs Summed Area Table (SAT) for soft shadows.
-	 * @param config Render configuration specifying shadow quality
-	 * @note SAT enables efficient variable-size blur for soft shadow filtering.
-	 * @note TODO: Move to ShadowSystem or shadow pipeline.
-	 */
-	void ConstructSAT(const RenderConfigs* config);
 
 public:
 	/**
@@ -212,34 +191,23 @@ public:
 public:
 	/**
 	 * @brief Binds shadow map framebuffer for rendering.
-	 * @note Sets render target to this light's shadow map texture.
+	 * @param shadow_map Shadow map texture owned by ShadowSystem
+	 * @note Sets render target to the provided shadow map texture.
 	 */
-	void BindShadowMapBuffer();
+	void BindShadowMapBuffer(Texture& shadow_map);
 	
 	/**
 	 * @brief Binds shadow map generation shader.
+	 * @param proj Light-space projection matrix owned by ShadowSystem
 	 * @note Shader writes depth or moment data to shadow map.
 	 */
-	void BindShadowMapShader();
+	void BindShadowMapShader(const glm::mat4& proj);
 	
 	/**
 	 * @brief Binds transform matrix for shadow-casting object.
 	 * @param _trans Model matrix of geometry to render into shadow map
 	 */
 	void BindTargetTrans(const glm::mat4& _trans);
-	
-	/**
-	 * @brief Updates light projection matrix based on current parameters.
-	 * @note Projection type depends on light type (perspective for spot, ortho for sun, etc.).
-	 */
-	void UpdateProjMatrix();
-	
-	/**
-	 * @brief Binds shadow map texture to shader slot.
-	 * @param _slot OpenGL texture slot (default: GL_TEXTURE31)
-	 * @note Used during lighting pass to sample shadow map.
-	 */
-	void BindShadowMap(GLuint _slot = GL_TEXTURE31);
 
 public:
 	/**

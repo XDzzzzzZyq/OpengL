@@ -1,14 +1,16 @@
 /**
  * @file ShadowSystem.h
- * @brief GPU light buffer management and shadow map caching for PBR lighting.
+ * @brief GPU light buffer management, shadow map caching, and shadow computation.
  *
  * Provides ShadowSystem for aggregating scene lights into typed GPU storage
- * buffers (SSBO) and managing per-light shadow map caching.
+ * buffers (SSBO), owning per-light shadow map textures and projection matrices,
+ * and managing the shadow computation pipeline.
  *
  * Architecture:
  * - ShadowSystem converts scene lights into GPU-friendly buffers
+ * - ShadowSystem owns per-light shadow maps (raw depth/moment textures)
+ * - ShadowSystem owns per-light projection matrices
  * - Renderer reads light data via ShadowSystem bindings
- * - Shadow maps are lazily allocated and cached per-light
  *
  * @note Separated from Light (scene layer) because ShadowSystem is a render-layer
  *       concern: it manages GPU resources and shadow computation, not scene objects.
@@ -23,11 +25,11 @@
 #include <memory>
 
 /**
- * @brief Converts scene lights into GPU-friendly buffers and manages shadow map caching.
+ * @brief Owns per-light GPU resources, shadow maps, and shadow computation.
  *
  * ShadowSystem aggregates all lights in the scene and packs them into typed
- * storage buffers (SSBO) for efficient GPU access. Each light type has its own
- * buffer to enable type-specific shader processing.
+ * storage buffers (SSBO) for efficient GPU access. It also owns the per-light
+ * shadow map textures and projection matrices that were previously held by Light.
  *
  * GPU Layout:
  * - PointStruct: Point lights (position, color, power, radius, shadow flag)
@@ -37,7 +39,8 @@
  * - PolyStruct + PolyVertStruct: Polygonal area lights (vertex list)
  *
  * Shadow Map Management:
- * - Caches shadow map textures per-light for efficient binding
+ * - Owns shadow map textures per-light (raw depth / moment maps)
+ * - Owns projection matrices per-light
  * - Handles shadow map resizing on viewport changes
  * - Binds shadow maps to dedicated texture slots (16-31)
  *
@@ -75,10 +78,11 @@ public:
 	struct SunStruct
 	{
 		/**
-		 * @brief Constructs SunStruct from Light object.
+		 * @brief Constructs SunStruct from Light object and its projection matrix.
 		 * @param light Source light (must be SUNLIGHT type)
+		 * @param proj Light-space projection matrix owned by ShadowSystem
 		 */
-		SunStruct(const Light& light);
+		SunStruct(const Light& light, const glm::mat4& proj);
 
 		alignas(16) glm::vec3 color{ 1 };         ///< RGB color in linear space
 		alignas(16) glm::vec3 pos{ 0 };           ///< World position (for visualization)
@@ -176,7 +180,9 @@ public:
 	std::vector<PolyStruct> poly_list;   ///< List of polygonal light headers for GPU upload
 	std::vector<PolyVertStruct> poly_verts; ///< List of polygonal light vertices for GPU upload
 
-	mutable std::unordered_map<int, Texture> shadow_cache; ///< Shadow map texture cache (light ID -> texture)
+	mutable std::unordered_map<int, Texture> shadow_cache;   ///< Processed shadow cache per light (light ID -> texture)
+	std::unordered_map<int, Texture> shadow_maps;            ///< Raw per-light shadow map textures (depth / moment)
+	std::unordered_map<int, glm::mat4> proj_matrices;        ///< Per-light projection matrices for shadow rendering
 
 	StorageBuffer point_buffer;      ///< GPU buffer for point light data
 	StorageBuffer sun_buffer;        ///< GPU buffer for sun light data
@@ -223,9 +229,11 @@ public:
 	/**
 	 * @brief Parses basic lights (point, sun, spot, area) into GPU buffers.
 	 * @param light_list Map of light ID to Light shared_ptr
+	 * @param using_moment_shadow Initialize shadow maps with moment-based (HDR) format
 	 * @note Populates point_list, sun_list, spot_list, area_list and uploads to GPU.
+	 * @note Also initializes shadow_maps and proj_matrices for each light.
 	 */
-	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list);
+	void ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list, bool using_moment_shadow = false);
 
 	/**
 	 * @brief Parses polygonal lights into GPU buffers.
@@ -274,7 +282,7 @@ public:
 	 * @brief Updates shadow maps for the current frame.
 	 * @param frame Current frame number
 	 * @param config Render configuration for shadow quality
-	 * @note Manages shadow map allocation and per-light shadow cache updates.
+	 * @note Manages per-light shadow cache updates and format changes.
 	 */
 	void Update(int frame, RenderConfigs* config);
 
@@ -283,4 +291,29 @@ public:
 	 * @note Binds cached shadow maps to slots 16-31 for shader sampling.
 	 */
 	void BindShadowMap() const;
+
+public:
+	/**
+	 * @brief Initializes the raw shadow map texture for a single light.
+	 * @param light Light to initialize shadow map for
+	 * @param using_moment_shadow Use moment-based (HDR) format instead of depth
+	 * @note Allocates GPU texture based on light type (2D for sun/spot, cubemap for point).
+	 */
+	void InitShadowMap(Light* light, bool using_moment_shadow);
+
+	/**
+	 * @brief Computes and stores the projection matrix for a light.
+	 * @param light Light whose projection matrix should be updated
+	 * @note Result is stored in proj_matrices keyed by light ID.
+	 */
+	void UpdateProjMatrix(Light* light);
+
+	/**
+	 * @brief Constructs Summed Area Table (SAT) for soft shadows.
+	 * @param light Light whose shadow map should be processed
+	 * @param config Render configuration specifying shadow quality
+	 * @note SAT enables efficient variable-size blur for soft shadow filtering.
+	 */
+	void ConstructSAT(Light* light, const RenderConfigs* config);
 };
+

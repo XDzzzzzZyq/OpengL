@@ -77,7 +77,7 @@ void Context::Init(EventPool& pool)
 
 		active_scene->SetSceneStatus(SceneResource::LightChanged, true);
 		for (auto& [id, light] : active_scene->light_list) {
-			light->InitShadowMap(e.config->RequiresMomentShadow());
+			// Shadow map format change is handled by ShadowSystem::Update internally.
 			light->is_light_changed = true;
 		}
 		});

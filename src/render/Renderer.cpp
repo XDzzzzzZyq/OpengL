@@ -115,16 +115,18 @@ void Renderer::NewFrame()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// START RENDERING //////////////////////////////////////////////
 
-void RenderShadowMap(Light* light, SceneResource::ResPool<Mesh> mesh_list, const RenderConfigs& config)
+void RenderShadowMap(Light* light, ShadowSystem& shadow_sys, SceneResource::ResPool<Mesh> mesh_list, const RenderConfigs& config)
 {
 	/* TODO: not necessary for every frame update. */
-	const GLuint map_w = light->light_shadow_map.GetW();
-	const GLuint map_h = light->light_shadow_map.GetH();
+	Texture& shadow_map = shadow_sys.shadow_maps[light->GetObjectID()];
+	const glm::mat4& proj = shadow_sys.proj_matrices[light->GetObjectID()];
+	const GLuint map_w = shadow_map.GetW();
+	const GLuint map_h = shadow_map.GetH();
 
 	glViewport(0, 0, map_w, map_h);
 
-	light->BindShadowMapBuffer();
-	light->BindShadowMapShader();
+	light->BindShadowMapBuffer(shadow_map);
+	light->BindShadowMapShader(proj);
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
@@ -140,7 +142,7 @@ void RenderShadowMap(Light* light, SceneResource::ResPool<Mesh> mesh_list, const
 	FrameBuffer::UnbindFrameBuffer();
 
 	if (config.RequiresMomentShadow()) {
-		light->ConstructSAT(&config);
+		shadow_sys.ConstructSAT(light, &config);
 	}
 }
 
@@ -200,12 +202,12 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 		}
 
 		if (light->is_light_changed || scene->CheckStatus(SceneResource::ObjectTransChanged)) {
-			RenderShadowMap(light.get(), scene->mesh_list, r_config);
+			RenderShadowMap(light.get(), r_light_data, scene->mesh_list, r_config);
 		}
 
 		/* Depth Test for Shadow Map */
 		if (light->is_Uniform_changed)
-			light->UpdateProjMatrix();
+			r_light_data.UpdateProjMatrix(light.get());
 	}
 	
 	///////////   Begin buffering    ///////////

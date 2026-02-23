@@ -44,14 +44,14 @@ ShadowSystem::PointStruct::PointStruct(const Light& light)
 	assert(light.light_type == POINTLIGHT);
 }
 
-ShadowSystem::SunStruct::SunStruct(const Light& light)
+ShadowSystem::SunStruct::SunStruct(const Light& light, const glm::mat4& proj)
 	:color(light.light_color),
 	pos(light.o_position),
 	dir(glm::cross(light.o_dir_up, light.o_dir_right)),
 
 	power(light.light_power),
 	use_shadow((int)light.use_shadow),
-	proj_trans(light.light_proj)
+	proj_trans(proj)
 {
 	assert(light.light_type == SUNLIGHT);
 }
@@ -80,7 +80,7 @@ ShadowSystem::AreaStruct::AreaStruct(const Light& light)
 	assert(light.light_type == AREALIGHT);
 }
 
-void ShadowSystem::ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list)
+void ShadowSystem::ParseLightData(const std::unordered_map<int, std::shared_ptr<Light>>& light_list, bool using_moment_shadow)
 {
 	point_list.clear();
 	sun_list.clear();
@@ -90,7 +90,8 @@ void ShadowSystem::ParseLightData(const std::unordered_map<int, std::shared_ptr<
 
 	for (auto& [id, light] : light_list)
 	{
-		light->UpdateProjMatrix();
+		UpdateProjMatrix(light.get());
+		InitShadowMap(light.get(), using_moment_shadow);
 
 		shadow_cache[id] = Texture((int)cache_w, (int)cache_h, Texture::LIGHTING_CACHE);
 
@@ -104,7 +105,7 @@ void ShadowSystem::ParseLightData(const std::unordered_map<int, std::shared_ptr<
 			break;
 		case SUNLIGHT:
 			light_info_cache[id] = _LightInfo(sun_list.size(), light.get());
-			sun_list.emplace_back(*light.get());
+			sun_list.emplace_back(*light.get(), proj_matrices[id]);
 			break;
 		case SPOTLIGHT:
 			light_info_cache[id] = _LightInfo(spot_list.size(), light.get());
@@ -210,8 +211,9 @@ void ShadowSystem::UpdateLight(Light* light)
 		return;
 	}
 
-	int loc = std::get<0>(light_info_cache[light->GetObjectID()]);
-	light->UpdateProjMatrix();
+	int id = light->GetObjectID();
+	int loc = std::get<0>(light_info_cache[id]);
+	UpdateProjMatrix(light);
 
 	switch (light->light_type)
 	{
@@ -220,7 +222,7 @@ void ShadowSystem::UpdateLight(Light* light)
 		point_buffer.GenStorageBuffer(point_list);
 		break;
 	case SUNLIGHT:
-		sun_list[loc] = *light;
+		sun_list[loc] = SunStruct(*light, proj_matrices[id]);
 		sun_buffer.GenStorageBuffer(sun_list);
 		break;
 	case SPOTLIGHT:
@@ -265,7 +267,9 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 
 	for (const auto& [id, info] : light_info_cache) {
 		const auto& [loc, light] = info;
-		const GLuint map_id = light->light_shadow_map.GetTexID();
+		Texture& shadow_map = shadow_maps[id];
+		const glm::mat4& proj = proj_matrices[id];
+		const GLuint map_id = shadow_map.GetTexID();
 		const LightType type = light->light_type;
 
 		ComputeShader& shadow_shader = ComputeShader::ImportShader(ComputeShader::GetShadowShaderName(char(config->r_shadow_algorithm), type));
@@ -273,7 +277,7 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 		shadow_shader.UseShader();
 		shadow_shader.SetValue("offset", xdzm::map01_11(random));
 		shadow_shader.SetValue("frame", frame);
-		shadow_shader.SetValue("map_size", glm::vec2(light->light_shadow_map.GetW(), light->light_shadow_map.GetH()));
+		shadow_shader.SetValue("map_size", glm::vec2(shadow_map.GetW(), shadow_map.GetH()));
 
 		shadow_cache[id].BindC(4);
 		switch (type)
@@ -281,7 +285,8 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 		case POINTLIGHT:
 
 			if (using_moment_shadow != using_moment_shadow_b) {
-				light->light_shadow_map.SaveTexture(using_moment_shadow ? "depth_vssm" : "depth_shadow", false);
+				shadow_map.SaveTexture(using_moment_shadow ? "depth_vssm" : "depth_shadow", false);
+				InitShadowMap(light, using_moment_shadow);
 			}
 
 			Texture::BindM(map_id, 31, cube_map);
@@ -297,14 +302,15 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 
 			Texture::BindM(map_id, 31, flat_map);
 
-			shadow_shader.SetValue("proj_trans", light->light_proj);
+			shadow_shader.SetValue("proj_trans", proj);
 			shadow_shader.SetValue("dir", sun_list[loc].dir);
 			shadow_shader.SetValue("radius", Light::point_blur_range);
 			shadow_shader.SetValue("light_size", Light::sun_shaodow_field);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
 
 			if (using_moment_shadow != using_moment_shadow_b) {
-				light->light_shadow_map.SaveTexture(using_moment_shadow ? "depth_sun_vssm" : "depth_sun_shadow", false);
+				shadow_map.SaveTexture(using_moment_shadow ? "depth_sun_vssm" : "depth_sun_shadow", false);
+				InitShadowMap(light, using_moment_shadow);
 			}
 
 			break;
@@ -350,5 +356,113 @@ void ShadowSystem::BindShadowMap() const
 		const LightType type = light->light_type;
 		const GLuint slot = 31 - (GetSlotOffset(type) + loc);
 		shadow_cache[id].Bind(slot);
+	}
+}
+
+void ShadowSystem::InitShadowMap(Light* light, bool using_moment_shadow)
+{
+	assert(light->light_type != LightType::NONELIGHT);
+
+	const int id = light->GetObjectID();
+	const Texture::TextureType flat_map = using_moment_shadow ? Texture::HDR_TEXTURE : Texture::DEPTH_TEXTURE;
+	const Texture::TextureType cube_map = using_moment_shadow ? Texture::HDR_CUBE_TEXTURE : Texture::DEPTH_CUBE_TEXTURE;
+
+	switch (light->light_type)
+	{
+	case SUNLIGHT:
+		shadow_maps[id] = Texture(1024, 1024, flat_map);
+		break;
+	case POINTLIGHT:
+		shadow_maps[id] = Texture(1024, 1024, cube_map);
+		break;
+	case SPOTLIGHT:
+		// TODO
+		break;
+	case AREALIGHT:
+		shadow_maps[id] = Texture(1024, 1024, cube_map);
+		break;
+	default:
+		assert(false && "Unknown Light Type");
+		break;
+	}
+}
+
+void ShadowSystem::UpdateProjMatrix(Light* light)
+{
+	const int id = light->GetObjectID();
+
+	switch (light->light_type)
+	{
+	case POINTLIGHT:
+		proj_matrices[id] = glm::perspective(
+			glm::radians(90.0f),
+			1.0f,
+			Light::point_shaodow_near,
+			Light::point_shaodow_far
+		);
+		break;
+	case SUNLIGHT:
+	{
+		const glm::mat4 lightProjection = glm::ortho(
+			-Light::sun_shaodow_field,
+			Light::sun_shaodow_field,
+			-Light::sun_shaodow_field,
+			Light::sun_shaodow_field,
+			Light::sun_shaodow_near,
+			Light::sun_shaodow_far
+		);
+		const glm::mat4 lightView = glm::lookAt(glm::vec3(0), glm::cross(light->o_dir_up, light->o_dir_right), glm::vec3(0, 0, 1));
+		proj_matrices[id] = lightProjection * lightView;
+		break;
+	}
+	case SPOTLIGHT:
+		proj_matrices[id] = glm::perspective(
+			glm::radians(90.0f),
+			1.0f,
+			Light::spot_shaodow_near,
+			Light::spot_shaodow_far
+		);
+		break;
+	case AREALIGHT:
+		proj_matrices[id] = glm::perspective(
+			glm::radians(90.0f),
+			1.0f,
+			Light::spot_shaodow_near,
+			Light::spot_shaodow_far
+		);
+		break;
+	default:
+		assert(false && "Unknown Light Type");
+		break;
+	}
+}
+
+void ShadowSystem::ConstructSAT(Light* light, const RenderConfigs* config)
+{
+	if (!config->RequiresMomentShadow())
+		return;
+
+	const int id = light->GetObjectID();
+	Texture& shadow_map = shadow_maps[id];
+
+	auto [_1, _2, _3, gl_type] = Texture::ParseFormat(shadow_map.tex_type);
+	const int pass_count = config->r_shadow_algorithm == RenderConfigs::ShadowAlg::VSSM ? 2 : 4;
+
+	if (gl_type == GL_TEXTURE_2D) {
+		ComputeShader& SAT = ComputeShader::ImportShader("convert/SAT");
+
+		static Texture light_shadow_temp = Texture(shadow_map.GetW(), shadow_map.GetH(), Texture::HDR_TEXTURE);
+
+		shadow_map.BindC(0, GL_READ_ONLY);
+		light_shadow_temp.BindC(1, GL_WRITE_ONLY);
+		SAT.RunComputeShader({ shadow_map.GetW(), 1 });
+
+		light_shadow_temp.BindC(0, GL_READ_ONLY);
+		shadow_map.BindC(1, GL_WRITE_ONLY);
+		SAT.RunComputeShader({ shadow_map.GetH(), 1 });
+	}
+	else if (gl_type == GL_TEXTURE_CUBE_MAP) {
+		// ComputeShader& SAT_cube = ComputeShader::ImportShader("convert/SAT_Cube");
+		// Skip for now, not necessary to use SAT filtering
 	}
 }
