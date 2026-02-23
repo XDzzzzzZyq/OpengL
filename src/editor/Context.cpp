@@ -7,7 +7,7 @@
 #include "macros.h"
 
 const ObjectID* SceneContext::GetActiveCamera() const {
-	SceneResource* scene = dynamic_cast<SceneResource*>(active_scene);
+	Scene* scene = dynamic_cast<Scene*>(active_scene);
 	if (scene == nullptr) {
 		return nullptr;
 	}
@@ -15,7 +15,7 @@ const ObjectID* SceneContext::GetActiveCamera() const {
 }
 
 const ObjectID* SceneContext::GetActiveEnvironment() const {
-	SceneResource* scene = dynamic_cast<SceneResource*>(active_scene);
+	Scene* scene = dynamic_cast<Scene*>(active_scene);
 	if (scene == nullptr) {
 		return nullptr;
 	}
@@ -23,7 +23,7 @@ const ObjectID* SceneContext::GetActiveEnvironment() const {
 }
 
 const ObjectID* SceneContext::GetPPS(int _tar) const {
-	SceneResource* scene = dynamic_cast<SceneResource*>(active_scene);
+	Scene* scene = dynamic_cast<Scene*>(active_scene);
 	if (scene == nullptr) {
 		return nullptr;
 	}
@@ -32,7 +32,7 @@ const ObjectID* SceneContext::GetPPS(int _tar) const {
 
 const std::vector<const ObjectID*> SceneContext::GetObjectIDs() const
 {
-	SceneResource* scene = dynamic_cast<SceneResource*>(active_scene);
+	Scene* scene = dynamic_cast<Scene*>(active_scene);
 	if (scene == nullptr) {
 		return {};
 	}
@@ -49,7 +49,7 @@ void Context::Init(EventPool& pool)
 	pool.subscribe<ObjectSelectedEvent>([this, &pool](const ObjectSelectedEvent& e) {
 		const ObjectID* selected_obj = editor.selections.GetSelectedObjects();
 
-		SceneResource* active_scene = dynamic_cast<SceneResource*>(scene.active_scene);
+		Scene* active_scene = dynamic_cast<Scene*>(scene.active_scene);
 		if (active_scene == nullptr) return;
 
 		ObjectID* obj = active_scene->GetObjectID(e.UID);
@@ -65,17 +65,17 @@ void Context::Init(EventPool& pool)
 
 		pool.emit(CameraResizeEvent{ cam, e.width, e.height });
 
-		SceneResource* active_scene = dynamic_cast<SceneResource*>(scene.active_scene);
+		Scene* active_scene = dynamic_cast<Scene*>(scene.active_scene);
 		if (active_scene == nullptr) return;
 
-		active_scene->UpdateSceneStatus(SceneResource::SceneChanged, true);
+		active_scene->UpdateSceneStatus(Scene::SceneChanged, true);
 		});
 
 	pool.subscribe<RenderConfigChangedEvent>([this, &pool](RenderConfigChangedEvent e) {
-		SceneResource* active_scene = dynamic_cast<SceneResource*>(scene.active_scene);
+		Scene* active_scene = dynamic_cast<Scene*>(scene.active_scene);
 		if (active_scene == nullptr) return;
 
-		active_scene->SetSceneStatus(SceneResource::LightChanged, true);
+		active_scene->SetSceneStatus(Scene::LightChanged, true);
 		for (auto& [id, light] : active_scene->light_list) {
 			light->InitShadowMap(e.config->RequiresMomentShadow());
 			light->is_light_changed = true;
