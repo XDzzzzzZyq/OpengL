@@ -26,7 +26,7 @@
 
 #include "Context.h"
 
-#include "buffer/FrameBuffer.h"
+#include "buffers/FrameBuffer.h"
 #include "shaders/RenderShader.h"
 
 /**

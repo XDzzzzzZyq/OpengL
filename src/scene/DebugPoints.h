@@ -6,10 +6,10 @@
 #include "Transform.h"
 
 #include "VertexArray.h"
-#include "buffer/IndexBuffer.h"
+#include "buffers/IndexBuffer.h"
 #include "shaders/RenderShader.h"
 
-#include "buffer/StorageBuffer.h"
+#include "buffers/StorageBuffer.h"
 
 enum PointType {
 	SQUARE_POINT, RHOMBUS_POINT, CIR_POINT, CUBE_POINT

@@ -21,9 +21,9 @@
 #include "Light.h"
 #include "RenderConfigs.h"
 #include "Texture.h"
-#include "buffer/StorageBuffer.h"
-#include "buffer/UniformBuffer.h"
-#include "buffer/FrameBuffer.h"
+#include "buffers/StorageBuffer.h"
+#include "buffers/UniformBuffer.h"
+#include "buffers/FrameBuffer.h"
 #include "PolygonLight.h"
 #include "shaders/RenderShader.h"
 

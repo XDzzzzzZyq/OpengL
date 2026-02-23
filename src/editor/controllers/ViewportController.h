@@ -34,7 +34,7 @@
 #pragma once
 
 #include "Controllers.h"
-#include "buffer/FrameBuffer.h"
+#include "buffers/FrameBuffer.h"
 
 /**
  * @brief Controller for viewport interaction and object selection.

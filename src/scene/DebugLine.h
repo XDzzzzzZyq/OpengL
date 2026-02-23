@@ -5,7 +5,7 @@
 #include "Transform.h"
 
 #include "VertexArray.h"
-#include "buffer/IndexBuffer.h"
+#include "buffers/IndexBuffer.h"
 #include "shaders/RenderShader.h"
 
 #include "Parameters.h"

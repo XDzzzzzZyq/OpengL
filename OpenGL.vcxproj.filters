@@ -72,24 +72,6 @@
     <ClCompile Include="src\fileIO\SceneManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\buffer\FrameBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\buffer\IndexBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\buffer\RenderBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\buffer\StorageBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\buffer\UniformBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\buffer\VertexBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\Material.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -178,9 +160,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\UI\NodesColor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\buffer\BufferLayout.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\render\RenderConfigs.cpp">
@@ -283,6 +262,30 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\render\shaders\ComputeShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\ShadowSystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\BufferLayout.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\FrameBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\IndexBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\RenderBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\StorageBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\UniformBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\buffers\VertexBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,24 +437,6 @@
     <ClInclude Include="src\fileIO\SceneManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\render\buffer\FrameBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\buffer\IndexBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\buffer\RenderBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\buffer\StorageBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\buffer\UniformBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\buffer\VertexBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\render\Material.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -528,9 +513,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\UI\ImguiTheme.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render\buffer\BufferLayout.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\render\RenderConfigs.h">
@@ -648,6 +630,30 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\render\shaders\ComputeShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\ShadowSystem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\BufferLayout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\FrameBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\IndexBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\RenderBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\StorageBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\UniformBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\buffers\VertexBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

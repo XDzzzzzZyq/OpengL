@@ -9,7 +9,7 @@
 
 #include "Shaders.h"
 #include "Texture.h"
-#include "buffer/FrameBuffer.h"
+#include "buffers/FrameBuffer.h"
 
 #include "Sprite.h"
 

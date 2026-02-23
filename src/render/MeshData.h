@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VertexArray.h"
-#include "buffer/IndexBuffer.h"
+#include "buffers/IndexBuffer.h"
 
 #include <numeric>
 #include <unordered_map>

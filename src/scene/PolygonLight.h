@@ -3,7 +3,7 @@
 #include "Context.h"
 
 #include "VertexArray.h"
-#include "buffer/IndexBuffer.h"
+#include "buffers/IndexBuffer.h"
 
 #include "Texture.h"
 #include "shaders/RenderShader.h"

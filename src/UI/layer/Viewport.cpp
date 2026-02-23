@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "SceneManager.h"
-#include "buffer/FrameBuffer.h"
+#include "buffers/FrameBuffer.h"
 
 #include "events/CameraEvents.h"
 #include "events/KeyMouseEvents.h"

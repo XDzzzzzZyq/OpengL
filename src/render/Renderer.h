@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "buffer/FrameBuffer.h"
+#include "buffers/FrameBuffer.h"
 #include "ShadowSystem.h"
 
 #include "RenderConfigs.h"
