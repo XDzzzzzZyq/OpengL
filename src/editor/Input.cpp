@@ -124,8 +124,6 @@ void Input::UpdateState(GLFWwindow* window) const
 	input_state.random.random_float2 = xdzm::rand01();
 	input_state.random.random_float3 = xdzm::rand01();
 	input_state.random.random_float4 = xdzm::rand01();
-
-	input_state.viewport.frame_count++;
 }
 
 bool Input::IsMouseClicked()
@@ -205,14 +203,4 @@ float Input::GetScrollX()
 float Input::GetScrollY()
 {
 	return input_state.mouse.scroll_y;
-}
-
-void Input::ResetFrameCount(int count)
-{
-	input_state.viewport.frame_count = count;
-}
-
-int Input::GetFrameCount()
-{
-	return input_state.viewport.frame_count;
 }

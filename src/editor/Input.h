@@ -152,25 +152,13 @@ public:
 public:
 
 	/**
-	 * @brief Random value state (purpose unclear).
-	 * @note TODO: Document or remove if unused
+	 * @brief Global random value state for random algorithms.
 	 */
 	struct RandomState{
 		float random_float1{ 0.0f };
 		float random_float2{ 0.0f };
 		float random_float3{ 0.0f };
 		float random_float4{ 0.0f };
-	};
-
-// ViewportState
-public:
-
-	/**
-	 * @brief Viewport-specific state tracking.
-	 * @note TODO: This should be moved to ViewportController, not part of Input
-	 */
-	struct ViewportState {
-		int frame_count{ 0 };              ///< Frame counter (TODO: move to editor context)
 	};
 
 // AllState
@@ -184,8 +172,7 @@ public:
 	struct InputState {
 		KeyState key{};            ///< Keyboard state
 		MouseState mouse{};        ///< Mouse state
-		RandomState random{};      ///< Random values (TODO: clarify usage)
-		ViewportState viewport{};  ///< Viewport state (TODO: refactor out)
+		RandomState random{};      ///< Random values
 	};
 
 private:
@@ -315,18 +302,4 @@ public:
 	 * @return Scroll Y delta
 	 */
 	static float GetScrollY();
-	
-	/**
-	 * @brief Resets frame counter.
-	 * @param count New frame count value
-	 * @note TODO: Move to EditorContext
-	 */
-	static void ResetFrameCount(int count);
-	
-	/**
-	 * @brief Returns current frame count.
-	 * @return Frame count
-	 * @note TODO: Move to EditorContext
-	 */
-	static int GetFrameCount();
 };

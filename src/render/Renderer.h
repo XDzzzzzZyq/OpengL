@@ -78,6 +78,12 @@ public:
 	GLuint r_frame_height{}; ///< Current frame height (to be moved to RenderContext)
 
 private:
+	/**
+	 * @brief The sampling step of progressive rendering.
+	*/
+	int r_sample_step{ 1 };
+
+private:
 
 	// TODO: remove for stateless renderer
 	std::shared_ptr<FrameBuffer> r_render_result; ///< Main render output (to be externalized)
