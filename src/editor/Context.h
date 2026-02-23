@@ -86,7 +86,7 @@ public:
  */
 class RenderContext
 {
-public: // TODO: private
+private:
 	RenderConfigs* config{ nullptr }; ///< Non-owning pointer to render settings
 	
 public:

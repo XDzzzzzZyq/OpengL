@@ -4,7 +4,8 @@
  * 
  * Input provides a unified interface for querying user input state. It captures
  * keyboard keys, mouse buttons, mouse position/delta, scroll, and special keys
- * (Shift, Ctrl, Alt) into a consistent state snapshot updated each frame.
+ * (Shift, Ctrl, Alt) into a consistent state snapshot updated each frame. Four global
+ * random values are also considered as apart of the input state for use in random algorithms.
  * 
  * Architecture:
  * - Input state is captured via UpdateState() from GLFW each frame
@@ -41,11 +42,11 @@
 /**
  * @brief Input handling system for keyboard, mouse, and viewport state.
  * 
- * Input captures and tracks user input state each frame, providing a consistent
+ * Input captures both user and system input state each frame, providing a consistent
  * interface for querying input changes. It supports:
  * - Keyboard: Individual keys + special modifiers (Shift, Ctrl, Alt)
  * - Mouse: Buttons (LMB, RMB, MMB), position, delta, scroll
- * - Viewport: Frame count, selection state (TODO: refactor out)
+ * - Random: Global random state for algorithms
  * 
  * State Management:
  * - input_state: Current frame state
@@ -57,8 +58,6 @@
  * - IsKeyClicked(): Key just pressed (transition)
  * - IsMousePressed(button): Mouse button held
  * - GetDeltaMouseX/Y(): Mouse movement since last frame
- * 
- * @note TODO: Viewport-specific state (frame_count, is_sprite_selected) should move to ViewportController
  */
 class Input{
 
@@ -67,7 +66,6 @@ public:
 
 	/**
 	 * @brief Special modifier keys (Shift, Ctrl, Alt).
-	 * @note TODO: Use proper flag enum for multi-modifier support
 	 */
 	enum SpecialKeys
 	{
@@ -96,7 +94,7 @@ public:
 	 */
 	struct KeyState
 	{
-		SpecialKeys special{ SpecialKeys::NONE }; ///< Active special modifiers (TODO: support multiple)
+		SpecialKeys special{ SpecialKeys::NONE }; ///< Active special modifiers
 		int normal{ 0 };                          ///< Active normal key (1-36 mapping a-z and extras)
 		
 		/**
