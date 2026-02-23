@@ -23,11 +23,14 @@
 #include "Texture.h"
 #include "buffer/StorageBuffer.h"
 #include "buffer/UniformBuffer.h"
+#include "buffer/FrameBuffer.h"
 #include "PolygonLight.h"
+#include "shaders/RenderShader.h"
 
 #include <unordered_map>
 #include <vector>
 #include <memory>
+#include <array>
 
 /**
  * @brief Owns per-light GPU resources, shadow maps, and shadow computation.
@@ -205,6 +208,10 @@ private:
 	GLuint cache_h{};                                                ///< Cached shadow map height
 	bool prev_moment_shadow{ false };                                ///< Tracks previous moment shadow mode for format-change detection
 
+	static std::array<FrameBuffer, 4> _shadowmap_buffer;  ///< Shared framebuffers for shadow map rendering (one per light type)
+	static std::array<ChainedShader, 4> _shadowmap_shader; ///< Shaders for shadow map generation (one per light type); shared across all lights of the same type
+	static std::array<glm::mat4, 6> _point_6side;          ///< Six view matrices for point light cubemap faces; shared constant, computed once at startup
+
 public:
 	/**
 	 * @brief Constructs an empty ShadowSystem.
@@ -321,5 +328,33 @@ public:
 	 * @note SAT enables efficient variable-size blur for soft shadow filtering.
 	 */
 	void ConstructSAT(Light* light, const RenderConfigs* config);
+
+public:
+	/**
+	 * @brief Initializes static shadow map framebuffers and shaders.
+	 * @note Must be called once after OpenGL context creation, before rendering any shadows.
+	 */
+	static void EnableShadowMap();
+
+	/**
+	 * @brief Binds the shadow map framebuffer for a light, targeting its shadow map texture.
+	 * @param light Light whose shadow map framebuffer to bind
+	 * @param shadow_map Shadow map texture to use as render target
+	 */
+	void BindShadowMapBuffer(Light* light, Texture& shadow_map);
+
+	/**
+	 * @brief Binds the shadow map generation shader and sets per-light uniforms.
+	 * @param light Light providing position, direction, and type-specific parameters
+	 * @param proj Light-space projection matrix for this light
+	 */
+	void BindShadowMapShader(Light* light, const glm::mat4& proj);
+
+	/**
+	 * @brief Sets the model matrix uniform for a shadow-casting object.
+	 * @param light Light whose shadow shader is currently bound
+	 * @param _trans Model matrix of the geometry to render into the shadow map
+	 */
+	void BindTargetTrans(Light* light, const glm::mat4& _trans);
 };
 

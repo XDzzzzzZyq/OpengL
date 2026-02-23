@@ -2,15 +2,14 @@
  * @file Light.h
  * @brief Light source objects for PBR lighting.
  *
- * Provides the Light class (point, sun, spot, area lights) with shadow mapping
- * support. GPU buffer management and shadow caching are handled by ShadowSystem
- * (src/render/ShadowSystem.h).
+ * Provides the Light class (point, sun, spot, area lights).
+ * All GPU buffer management, shadow map rendering, and shadow computation
+ * are handled by ShadowSystem (src/render/ShadowSystem.h).
  *
  * Architecture:
  * - Light inherits ObjectID (scene identity) and Transform3D (spatial placement)
  * - ShadowSystem converts scene lights into GPU-friendly buffers
- * - Renderer reads light data via ShadowSystem bindings
- * - Shadow maps and projection matrices are owned by ShadowSystem
+ * - ShadowSystem owns all shadow map rendering resources and projection matrices
  */
 
 #pragma once
@@ -18,15 +17,8 @@
 #include "ID.h"
 #include "Transform.h"
 #include "Sprite.h"
-#include "PolygonLight.h"
-
-#include "buffer/FrameBuffer.h"
-#include "buffer/StorageBuffer.h"
-#include "buffer/UniformBuffer.h"
 
 #include "RenderConfigs.h"
-
-#include <array>
 
 /**
  * @brief Enumeration of supported light types.
@@ -43,16 +35,12 @@ enum LightType
 /**
  * @brief Light source object supporting point, sun, spot, and area lights.
  * 
- * Light provides PBR lighting with configurable type, color, power, and shadows.
+ * Light provides PBR lighting with configurable type, color, power, and shadow flags.
  * Transform3D determines position/orientation, while type-specific parameters
  * control light shape (radius for point, cutoff for spot, ratio for area).
  * 
- * Shadow Mapping:
- * - Each light can cast shadows via dedicated shadow map texture
- * - Shadow maps are allocated lazily on first use
- * - Supports standard and moment-based shadow techniques
- * - Projection matrix computed based on light type
- * 
+ * @note Shadow map rendering, projection matrices, and GPU resources are managed
+ *       by ShadowSystem (src/render/ShadowSystem.h).
  * @note Inheritance: ObjectID for scene identity, Transform3D for spatial transform.
  * @note Thread-safety: Not thread-safe. Access from main thread only.
  */
@@ -167,19 +155,6 @@ public:
 	 */
 	void SetRatio(float _ratio);
 
-private:
-	static std::array <FrameBuffer, 4> _shadowmap_buffer;  ///< Shared framebuffers for shadow rendering
-	static std::array<ChainedShader, 4> _shadowmap_shader; ///< Shaders for shadow map generation
-	static std::array<glm::mat4, 6> _point_6side;          ///< Six view matrices for point light cubemap
-
-public:
-	// TODO: Remove runtime construction
-	/**
-	 * @brief Initializes static shadow map resources (framebuffers, shaders).
-	 * @note Called once during renderer initialization.
-	 */
-	static void EnableShadowMap();
-
 public:
 	/**
 	 * @brief Renders light sprite gizmo in viewport.
@@ -187,27 +162,6 @@ public:
 	 * @note Used by editor to display light icons (not part of scene rendering).
 	 */
 	void RenderLightSpr(const Context& ctx);
-
-public:
-	/**
-	 * @brief Binds shadow map framebuffer for rendering.
-	 * @param shadow_map Shadow map texture owned by ShadowSystem
-	 * @note Sets render target to the provided shadow map texture.
-	 */
-	void BindShadowMapBuffer(Texture& shadow_map);
-	
-	/**
-	 * @brief Binds shadow map generation shader.
-	 * @param proj Light-space projection matrix owned by ShadowSystem
-	 * @note Shader writes depth or moment data to shadow map.
-	 */
-	void BindShadowMapShader(const glm::mat4& proj);
-	
-	/**
-	 * @brief Binds transform matrix for shadow-casting object.
-	 * @param _trans Model matrix of geometry to render into shadow map
-	 */
-	void BindTargetTrans(const glm::mat4& _trans);
 
 public:
 	/**

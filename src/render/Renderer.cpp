@@ -54,7 +54,7 @@ void Renderer::Init(EventPool& evt)
 	r_light_data.Init();
 
 	ComputeShader::InitComputeLib(GetConfig());
-	Light::EnableShadowMap();
+	r_light_data.EnableShadowMap();
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
@@ -125,8 +125,8 @@ void RenderShadowMap(Light* light, ShadowSystem& shadow_sys, SceneResource::ResP
 
 	glViewport(0, 0, map_w, map_h);
 
-	light->BindShadowMapBuffer(shadow_map);
-	light->BindShadowMapShader(proj);
+	shadow_sys.BindShadowMapBuffer(light, shadow_map);
+	shadow_sys.BindShadowMapShader(light, proj);
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
@@ -135,7 +135,7 @@ void RenderShadowMap(Light* light, ShadowSystem& shadow_sys, SceneResource::ResP
 		if (!mesh->using_shadow) continue;
 		if (!mesh->is_viewport) continue;
 
-		light->BindTargetTrans(mesh->o_Transform);
+		shadow_sys.BindTargetTrans(light, mesh->o_Transform);
 		mesh->RenderObjProxy();
 	}
 
