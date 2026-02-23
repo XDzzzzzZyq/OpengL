@@ -88,8 +88,8 @@ int Application::Init()
 	}
 
 	// TODO: event system
-	renderer.r_light_data.ParseLightData(scene->light_list, renderer.GetConfig()->RequiresMomentShadow());
-	renderer.r_light_data.ParsePolygonLightData(scene->poly_light_list);
+	renderer.r_shadow_system.ParseLightData(scene->light_list, renderer.GetConfig()->RequiresMomentShadow());
+	renderer.r_shadow_system.ParsePolygonLightData(scene->poly_light_list);
 	Ctx.render.UseConfig(renderer.GetConfig());
 	//renderer.r_render_icons = false;
 

@@ -160,7 +160,7 @@ public:
 public:
 
 	// TODO: remove for stateless renderer
-	ShadowSystem r_light_data; ///< Shadow system managing light GPU buffers and shadow map caching
+	ShadowSystem r_shadow_system;  ///< Shadow system managing light GPU buffers and shadow map caching
 	RenderConfigs r_config;        ///< Render configuration (should use RenderContext)
 	
 	/**
