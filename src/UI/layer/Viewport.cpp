@@ -237,7 +237,7 @@ void Viewport::RenderAxis(const Context& ctx)
 
 void Viewport::RenderHandle(const Context& ctx)
 {
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
+	Scene* scene = dynamic_cast<Scene*>(ctx.scene.active_scene);
 	Camera* active_cam = dynamic_cast<Camera*>(scene->GetActiveCamera());
 
 	const SelectionManager<ObjectID>& sel = ctx.editor.selections;

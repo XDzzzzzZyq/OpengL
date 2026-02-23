@@ -8,7 +8,7 @@
  * (spatial placement).
  * 
  * Architecture:
- * - Owned by scene graph (shared_ptr in SceneResource containers)
+ * - Owned by scene graph (shared_ptr in Scene containers)
  * - Never rendered directly (has no geometry or visual representation)
  * - Used as parent for grouping objects with shared transforms
  * - Can act as anchor point for post-processing effects or field volumes

@@ -115,7 +115,7 @@ void Renderer::NewFrame()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// START RENDERING //////////////////////////////////////////////
 
-void RenderShadowMap(Light* light, ShadowSystem& shadow_sys, SceneResource::ResPool<Mesh> mesh_list, const RenderConfigs& config)
+void RenderShadowMap(Light* light, ShadowSystem& shadow_sys, Scene::ResPool<Mesh> mesh_list, const RenderConfigs& config)
 {
 	/* TODO: not necessary for every frame update. */
 	Texture& shadow_map = shadow_sys.shadow_maps[light->GetObjectID()];
@@ -150,7 +150,7 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 
 
 	/* Check at least one camera and environment */
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
+	Scene* scene = dynamic_cast<Scene*>(ctx.scene.active_scene);
 	if (scene->cam_list.find(0) == scene->cam_list.end()) assert(false && "NONE ACTIVE CAMERA");
 	if (scene->envir_list.find(0) == scene->envir_list.end()) assert(false && "NONE ACTIVE ENVIRONMENT");
 
@@ -167,7 +167,7 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 	////////////  TRANSFORM UDPATE  /////////////
 	
 	scene->UpdateObjTransforms();
-	if (scene->CheckStatus(SceneResource::SceneChanged) && r_config.r_sampling_average == RenderConfigs::SamplingType::Average)
+	if (scene->CheckStatus(Scene::SceneChanged) && r_config.r_sampling_average == RenderConfigs::SamplingType::Average)
 		r_sample_step = 1;
 	
 
@@ -187,8 +187,8 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 	/////////// Signed Distance Field ///////////
 
 	const bool requires_sdf = r_config.RequiresSDF();
-	const bool realtime_sdf = (!scene->CheckStatus(SceneResource::ObjectTransChanged)) || r_config.r_sampling_average == RenderConfigs::SamplingType::Average;
-	if (requires_sdf && scene->CheckStatus(SceneResource::SDFChanged) && realtime_sdf)
+	const bool realtime_sdf = (!scene->CheckStatus(Scene::ObjectTransChanged)) || r_config.r_sampling_average == RenderConfigs::SamplingType::Average;
+	if (requires_sdf && scene->CheckStatus(Scene::SDFChanged) && realtime_sdf)
 		ConstructSDF(ctx);
 
 	
@@ -203,7 +203,7 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 		if (light->is_Uniform_changed)
 			r_shadow_system.UpdateProjMatrix(light.get());
 
-		if (light->is_light_changed || scene->CheckStatus(SceneResource::ObjectTransChanged))
+		if (light->is_light_changed || scene->CheckStatus(Scene::ObjectTransChanged))
 			RenderShadowMap(light.get(), r_shadow_system, scene->mesh_list, r_config);
 	}
 	
@@ -449,7 +449,7 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 
 void Renderer::ConstructSDF(const Context& ctx)
 {
-	SceneResource* scene = dynamic_cast<SceneResource*>(ctx.scene.active_scene);
+	Scene* scene = dynamic_cast<Scene*>(ctx.scene.active_scene);
 	scene->sdf_field->Bind();
 	scene->sdf_field->ResetDistance();
 
@@ -464,7 +464,7 @@ void Renderer::ConstructSDF(const Context& ctx)
 		mesh->RenderObjProxy(false);
 	}
 
-	scene->SetSceneStatus(SceneResource::SDFChanged, false);
+	scene->SetSceneStatus(Scene::SDFChanged, false);
 
 	scene->sdf_field->Unbind();
 	scene->sdf_field->UnbindShader();

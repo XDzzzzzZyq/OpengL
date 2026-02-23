@@ -3,13 +3,13 @@
 #include "operator.h"
 #include "macros.h"
 
-std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/)
+std::shared_ptr<Scene> SceneManager::Main(std::string _name/*="scene1"*/)
 {
 
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
 
-	std::shared_ptr<SceneResource> config1 = std::make_shared<SceneResource>();
+	std::shared_ptr<Scene> config1 = std::make_shared<Scene>();
 	SceneManager::sce_configs[_name] = config1;
 
 	DEBUG("\n---------------CAMERA----------------");
@@ -157,12 +157,12 @@ std::shared_ptr<SceneResource> SceneManager::Main(std::string _name/*="scene1"*/
 	return config1;
 }
 
-std::shared_ptr<SceneResource> SceneManager::CornellBox(std::string _name/*="cornellbox"*/)
+std::shared_ptr<Scene> SceneManager::CornellBox(std::string _name/*="cornellbox"*/)
 {
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
 
-	std::shared_ptr<SceneResource> config2 = std::make_shared<SceneResource>();
+	std::shared_ptr<Scene> config2 = std::make_shared<Scene>();
 	SceneManager::sce_configs[_name] = config2;
 
 	DEBUG("\n---------------CAMERA----------------");
@@ -293,12 +293,12 @@ std::shared_ptr<SceneResource> SceneManager::CornellBox(std::string _name/*="cor
 	return config2;
 }
 
-std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF test"*/)
+std::shared_ptr<Scene> SceneManager::SDF_Test(std::string _name/*="SDF test"*/)
 {
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
 
-	std::shared_ptr<SceneResource> config3 = std::make_shared<SceneResource>();
+	std::shared_ptr<Scene> config3 = std::make_shared<Scene>();
 	SceneManager::sce_configs[_name] = config3;
 
 	DEBUG("\n---------------CAMERA----------------");
@@ -358,12 +358,12 @@ std::shared_ptr<SceneResource> SceneManager::SDF_Test(std::string _name/*="SDF t
 	return config3;
 }
 
-std::shared_ptr<SceneResource> SceneManager::Shadow(std::string _name /*= "shadow test"*/)
+std::shared_ptr<Scene> SceneManager::Shadow(std::string _name /*= "shadow test"*/)
 {
 	if (SceneManager::sce_configs.find(_name) != SceneManager::sce_configs.end())
 		return SceneManager::sce_configs[_name];
 
-	std::shared_ptr<SceneResource> config4 = std::make_shared<SceneResource>();
+	std::shared_ptr<Scene> config4 = std::make_shared<Scene>();
 	SceneManager::sce_configs[_name] = config4;
 
 	DEBUG("\n---------------CAMERA----------------");
