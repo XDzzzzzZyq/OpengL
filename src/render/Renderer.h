@@ -19,7 +19,7 @@
 #pragma once
 
 #include "buffer/FrameBuffer.h"
-#include "Light.h"
+#include "ShadowSystem.h"
 
 #include "RenderConfigs.h"
 #include "Context.h"
@@ -160,7 +160,7 @@ public:
 public:
 
 	// TODO: remove for stateless renderer
-	LightArrayBuffer r_light_data; ///< Light data buffer (should be computed on-demand)
+	ShadowSystem r_light_data; ///< Shadow system managing light GPU buffers and shadow map caching
 	RenderConfigs r_config;        ///< Render configuration (should use RenderContext)
 	
 	/**

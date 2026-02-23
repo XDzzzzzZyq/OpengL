@@ -349,14 +349,14 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
 		if (r_config.RequiresSDF()) scene->sdf_field->Bind();
-		r_light_data.UpdateLightingCache(r_sample_step, GetConfig());
+		r_light_data.Update(r_sample_step, GetConfig());
 		
 
 		////////////  PBR COMPOSE  ////////////
 
 		//r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
-		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
+		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), ShadowSystem::shadow_slot, VEC1_ARRAY);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		TextureLib::LTC1()->Bind(13);
 		TextureLib::LTC2()->Bind(14);

@@ -245,6 +245,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClCompile Include="src\render\Material.cpp" />
     <ClCompile Include="src\render\MeshData.cpp" />
     <ClCompile Include="src\render\Renderer.cpp" />
+    <ClCompile Include="src\render\ShadowSystem.cpp" />
     <ClCompile Include="src\render\ShaderBuildIn.cpp" />
     <ClCompile Include="src\render\ShaderLib.cpp" />
     <ClCompile Include="src\render\ShaderParser.cpp" />
@@ -419,6 +420,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\render\Material.h" />
     <ClInclude Include="src\render\MeshData.h" />
     <ClInclude Include="src\render\Renderer.h" />
+    <ClInclude Include="src\render\ShadowSystem.h" />
     <ClInclude Include="src\render\ShaderLib.h" />
     <ClInclude Include="src\render\Shaders.h" />
     <ClInclude Include="src\render\shaders\ComputeShader.h" />
