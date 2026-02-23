@@ -207,16 +207,6 @@ float Input::GetScrollY()
 	return input_state.mouse.scroll_y;
 }
 
-bool Input::IsGOListChanged()
-{
-	return input_state.viewport.is_GOlist_changed;
-}
-
-bool Input::IsSpriteSelected()
-{
-	return input_state.viewport.is_sprite_selected;
-}
-
 void Input::ResetFrameCount(int count)
 {
 	input_state.viewport.frame_count = count;

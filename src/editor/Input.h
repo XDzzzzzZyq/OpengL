@@ -171,8 +171,6 @@ public:
 	 */
 	struct ViewportState {
 		int frame_count{ 0 };              ///< Frame counter (TODO: move to editor context)
-		bool is_sprite_selected{ false };  ///< Sprite selection flag (TODO: use SelectionManager)
-		bool is_GOlist_changed{ false };   ///< Game object list change flag (TODO: use Event)
 	};
 
 // AllState
@@ -317,20 +315,6 @@ public:
 	 * @return Scroll Y delta
 	 */
 	static float GetScrollY();
-
-	/**
-	 * @brief Checks if game object list changed.
-	 * @return true if object list modified
-	 * @note TODO: Replace with Event-based notification
-	 */
-	static bool IsGOListChanged();
-	
-	/**
-	 * @brief Checks if a sprite is selected.
-	 * @return true if sprite selected
-	 * @note TODO: Use SelectionManager instead
-	 */
-	static bool IsSpriteSelected();
 	
 	/**
 	 * @brief Resets frame counter.
