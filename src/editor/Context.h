@@ -95,6 +95,7 @@ public:
 	 * @return Non-owning pointer to RenderConfigs
 	 */
 	RenderConfigs* GetConfig() const { return config; }
+	void UseConfig(RenderConfigs* _config) { config = _config; };
 };
 
 /**
