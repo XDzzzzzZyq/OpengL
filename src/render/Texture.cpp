@@ -344,7 +344,7 @@ void Texture::_deepCopyFrom(const Texture& tex)
 		}
 	}
 
-	glBindTexture(gl_type, 0); GLDEBUG;
+	glBindTexture(gl_type, 0);
 }
 
 void Texture::Resize(const glm::vec2& size)

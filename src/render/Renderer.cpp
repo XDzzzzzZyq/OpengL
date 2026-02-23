@@ -51,10 +51,10 @@ void Renderer::Init(EventPool& evt)
 	// glEnable(GL_CONVOLUTION_2D);
 
 	InitFrameBuffer();
-	r_light_data.Init();
+	r_shadow_system.Init();
 
 	ComputeShader::InitComputeLib(GetConfig());
-	Light::EnableShadowMap();
+	r_shadow_system.EnableShadowMap();
 
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &max_resolution_w);
 	glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &max_resolution_h);
@@ -115,16 +115,18 @@ void Renderer::NewFrame()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// START RENDERING //////////////////////////////////////////////
 
-void RenderShadowMap(Light* light, Scene::ResPool<Mesh> mesh_list, const RenderConfigs& config)
+void RenderShadowMap(Light* light, ShadowSystem& shadow_sys, Scene::ResPool<Mesh> mesh_list, const RenderConfigs& config)
 {
 	/* TODO: not necessary for every frame update. */
-	const GLuint map_w = light->light_shadow_map.GetW();
-	const GLuint map_h = light->light_shadow_map.GetH();
+	Texture& shadow_map = shadow_sys.shadow_maps[light->GetObjectID()];
+	const glm::mat4& proj = shadow_sys.proj_matrices[light->GetObjectID()];
+	const GLuint map_w = shadow_map.GetW();
+	const GLuint map_h = shadow_map.GetH();
 
 	glViewport(0, 0, map_w, map_h);
 
-	light->BindShadowMapBuffer();
-	light->BindShadowMapShader();
+	shadow_sys.BindShadowMapBuffer(light, shadow_map);
+	shadow_sys.BindShadowMapShader(light, proj);
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
@@ -133,14 +135,14 @@ void RenderShadowMap(Light* light, Scene::ResPool<Mesh> mesh_list, const RenderC
 		if (!mesh->using_shadow) continue;
 		if (!mesh->is_viewport) continue;
 
-		light->BindTargetTrans(mesh->o_Transform);
+		shadow_sys.BindTargetTrans(light, mesh->o_Transform);
 		mesh->RenderObjProxy();
 	}
 
 	FrameBuffer::UnbindFrameBuffer();
 
 	if (config.RequiresMomentShadow()) {
-		light->ConstructSAT(&config);
+		shadow_sys.ConstructSAT(light, &config);
 	}
 }
 
@@ -195,17 +197,14 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 	for (auto& [id, light] : scene->light_list) {
 		if (!light->is_viewport) continue;
 
-		if (light->is_light_changed || light->is_Uniform_changed) {
-			r_light_data.UpdateLight(light.get());
-		}
+		if (light->is_light_changed || light->is_Uniform_changed)
+			r_shadow_system.UpdateLight(light.get());
 
-		if (light->is_light_changed || scene->CheckStatus(Scene::ObjectTransChanged)) {
-			RenderShadowMap(light.get(), scene->mesh_list, r_config);
-		}
-
-		/* Depth Test for Shadow Map */
 		if (light->is_Uniform_changed)
-			light->UpdateProjMatrix();
+			r_shadow_system.UpdateProjMatrix(light.get());
+
+		if (light->is_light_changed || scene->CheckStatus(Scene::ObjectTransChanged))
+			RenderShadowMap(light.get(), r_shadow_system, scene->mesh_list, r_config);
 	}
 	
 	///////////   Begin buffering    ///////////
@@ -246,7 +245,7 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 			if (!polyLight->is_viewport)continue;
 			polyLight->RenderPolygon(ctx);
 			if (polyLight->is_Uniform_changed)
-				r_light_data.ParsePolygonLightData(scene->poly_light_list);
+				r_shadow_system.ParsePolygonLightData(scene->poly_light_list);
 		}
 		
 		/////////    DEBUG MESHES    /////////
@@ -349,18 +348,18 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 		r_buffer_list[_RASTER].BindFrameBufferTexR(MASK_FB, 5);
 		r_buffer_list[_AO_ELS].BindFrameBufferTex(OPT_FLW_FB, 6);
 		if (r_config.RequiresSDF()) scene->sdf_field->Bind();
-		r_light_data.UpdateLightingCache(r_sample_step, GetConfig());
+		r_shadow_system.Update(r_sample_step, GetConfig());
 		
 
 		////////////  PBR COMPOSE  ////////////
 
 		//r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("point_far", Light::point_shaodow_far);
-		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_light_data.GetTotalCount(), LightArrayBuffer::shadow_slot, VEC1_ARRAY);
+		scene->pps_list[_PBR_COMP_PPS]->SetShaderValue("U_Shadow", r_shadow_system.GetTotalCount(), ShadowSystem::shadow_slot, VEC1_ARRAY);
 		r_buffer_list[_RASTER].BindFrameBufferTex(AVAIL_PASSES);
 		TextureLib::LTC1()->Bind(13);
 		TextureLib::LTC2()->Bind(14);
-		r_light_data.Bind();
+		r_shadow_system.Bind();
 		r_buffer_list[_RASTER].BindFrameBufferTex(POS_FB,		Texture::BUFFER_TEXTURE + POS_FB);
 		r_buffer_list[_RASTER].BindFrameBufferTex(NORMAL_FB,	Texture::BUFFER_TEXTURE + NORMAL_FB);
 		r_buffer_list[_RASTER].BindFrameBufferTex(ALBEDO_FB,	Texture::BUFFER_TEXTURE + ALBEDO_FB);
@@ -496,7 +495,7 @@ void Renderer::FrameResize(GLuint _w, GLuint _h)
 
 	FrameBufferResize({ (float)_w, (float)_h });
 
-	r_light_data.Resize(_w, _h);
+	r_shadow_system.Resize(_w, _h);
 }
 
 void Renderer::ScreenShot()
