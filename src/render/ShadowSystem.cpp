@@ -283,11 +283,6 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 		{
 		case POINTLIGHT:
 
-			if (using_moment_shadow != prev_moment_shadow) {
-				shadow_map.SaveTexture(using_moment_shadow ? "depth_vssm" : "depth_shadow", false);
-				InitShadowMap(light, using_moment_shadow);
-			}
-
 			Texture::BindM(map_id, 31, cube_map);
 
 			shadow_shader.SetValue("light_pos", light->o_position);
@@ -306,11 +301,6 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 			shadow_shader.SetValue("radius", Light::point_blur_range);
 			shadow_shader.SetValue("light_size", Light::sun_shaodow_field);
 			shadow_shader.SetValue("update_rate", sun_ud_rate);
-
-			if (using_moment_shadow != prev_moment_shadow) {
-				shadow_map.SaveTexture(using_moment_shadow ? "depth_sun_vssm" : "depth_sun_shadow", false);
-				InitShadowMap(light, using_moment_shadow);
-			}
 
 			break;
 		case SPOTLIGHT:
@@ -344,8 +334,6 @@ void ShadowSystem::Update(int frame, RenderConfigs* config)
 
 		shadow_shader.RunComputeShader(cache_w / 16, cache_h / 16);
 	}
-
-	prev_moment_shadow = using_moment_shadow;
 }
 
 void ShadowSystem::BindShadowMap() const

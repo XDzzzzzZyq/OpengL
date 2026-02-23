@@ -197,17 +197,14 @@ void Renderer::Render(const Context& ctx, bool rend, bool buff) {
 	for (auto& [id, light] : scene->light_list) {
 		if (!light->is_viewport) continue;
 
-		if (light->is_light_changed || light->is_Uniform_changed) {
+		if (light->is_light_changed || light->is_Uniform_changed)
 			r_light_data.UpdateLight(light.get());
-		}
 
-		if (light->is_light_changed || scene->CheckStatus(SceneResource::ObjectTransChanged)) {
-			RenderShadowMap(light.get(), r_light_data, scene->mesh_list, r_config);
-		}
-
-		/* Depth Test for Shadow Map */
 		if (light->is_Uniform_changed)
 			r_light_data.UpdateProjMatrix(light.get());
+
+		if (light->is_light_changed || scene->CheckStatus(SceneResource::ObjectTransChanged))
+			RenderShadowMap(light.get(), r_light_data, scene->mesh_list, r_config);
 	}
 	
 	///////////   Begin buffering    ///////////
