@@ -38,7 +38,7 @@ The Renderer is a **pure rendering service** that consumes immutable Scene data 
 ## Data Flow
 
 ```
-Context (immutable Scene) → Renderer → GPU → FrameBuffer
+Context (immutable Scene) → Renderer (RAII) → GPU → FrameBuffer
                 ↑
          RenderConfigs (settings)
 ```
@@ -59,15 +59,38 @@ Context (immutable Scene) → Renderer → GPU → FrameBuffer
 - Rendered frame in `FrameBuffer`
 - Accessible via `GetFrameBufferPtr()`
 
+Note: Renderer is constructed with a Window reference to guarantee a current GL context at construction time.
+
 ## Key Methods
 
-### Initialization
+-### RAII Initialization (Constructor)
 ```cpp
-void Init(EventPool& evt);
+// New RAII constructor signature
+Renderer(EventPool& evt, Window& w);
 ```
-- Subscribes to viewport resize events
-- Initializes framebuffers
-- Loads default shaders
+
+- Requirements:
+- A `Window&` is passed to guarantee a current GL context before resource creation.
+- In the constructor path, set `glewExperimental = GL_TRUE` before `glewInit()` as recommended.
+- Subscribes to necessary events as part of construction.
+- Renderer is non-copyable:
+```cpp
+Renderer(const Renderer&) = delete;
+Renderer& operator=(const Renderer&) = delete;
+```
+```cpp
+// Example (conceptual)
+Renderer(EventPool& evt, Window& w)
+{
+    // must be called after window creation and context is current
+    glewExperimental = GL_TRUE; // recommended prior to glewInit()
+    glewInit();
+    // subscribe to events, allocate GPU resources, etc.
+}
+```
+
+- Note: There is no separate `Init(EventPool&)` phase; initialization occurs in construction, aligning with RAII semantics.
+- The destructor (~Renderer) will clean up GPU resources deterministically.
 
 ### Rendering
 ```cpp
@@ -135,10 +158,9 @@ The Renderer is undergoing a refactor to achieve true statelessness:
 - **RenderBuffer** - Non-texture attachments (depth/stencil)
 
 ### Lifetime Management
-- Resources created in `Init()` or on-demand
-- RAII ensures cleanup in destructors
-- Explicit `Reset()` for manual cleanup
-- No GPU resource leaks tolerated
+- Resources created in the constructor and released in the destructor (RAII).
+- No separate `Init()` or `Reset()` required for typical usage.
+- All GPU resources are owned and cleaned up by the Renderer instance.
 
 ## Rendering Pipeline Stages
 
