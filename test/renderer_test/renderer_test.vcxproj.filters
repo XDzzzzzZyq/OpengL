@@ -22,6 +22,12 @@
     <Filter Include="src\editor">
       <UniqueIdentifier>{8d624631-f57c-4414-a77b-64c26e6abac2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\render\buffers">
+      <UniqueIdentifier>{f1b3ccde-99eb-4f60-aaca-f697d3b1688d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\shaders">
+      <UniqueIdentifier>{630cb720-1af4-4005-b3eb-69cc6847be9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -34,18 +40,6 @@
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\RenderConfigs.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\ShaderLib.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\ShaderParser.cpp">
-      <Filter>src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\render\Shaders.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\Texture.cpp">
@@ -75,11 +69,47 @@
     <ClCompile Include="..\..\src\editor\Input.cpp">
       <Filter>src\editor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\render\buffers\UniformBuffer.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\buffers\VertexBuffer.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\buffers\IndexBuffer.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\buffers\FrameBuffer.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\Buffers.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\buffers\RenderBuffer.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\buffers\StorageBuffer.cpp">
+      <Filter>src\render\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="test_buffers.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\render\shaders\ComputeShader.cpp">
-      <Filter>src\render</Filter>
+      <Filter>src\render\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\ShaderLib.cpp">
+      <Filter>src\render\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\ShaderParser.cpp">
+      <Filter>src\render\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\ShaderBuildIn.cpp">
+      <Filter>src\render\shaders</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\render\shaders\RenderShader.cpp">
-      <Filter>src\render</Filter>
+      <Filter>src\render\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\render\Shaders.cpp">
+      <Filter>src\render\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

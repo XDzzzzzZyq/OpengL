@@ -250,7 +250,7 @@ TEST_F(RendererEnvir, FrameBuffer_RAII) {
 		GTEST_SKIP();
 
 	// Multi-target color FBO
-	FrameBuffer fb({ EMIS_COL_FB, POS_FB, NORMAL_FB });
+	FrameBuffer fb(std::vector<FBType>{ EMIS_COL_FB, POS_FB, NORMAL_FB });
 	EXPECT_NE(fb.GetFrameBufferID(), 0u);
 	GLERRTEST;
 
