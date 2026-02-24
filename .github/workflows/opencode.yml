@@ -14,21 +14,23 @@ jobs:
       contains(github.event.comment.body, ' /opencode') ||
       startsWith(github.event.comment.body, '/opencode')
     runs-on: ubuntu-latest
+
     permissions:
-      id-token: write
       contents: write
       pull-requests: write
       issues: write
+      id-token: write
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
-           fetch-depth: 1
-           persist-credentials: false
+          fetch-depth: 0
 
       - name: Configure Git committer
         run: |
           git config user.name "OpenCode"
+          git config user.email "actions@github.com"
 
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
