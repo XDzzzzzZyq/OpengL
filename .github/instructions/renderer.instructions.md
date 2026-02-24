@@ -63,7 +63,7 @@ Note: Renderer is constructed with a Window reference to guarantee a current GL 
 
 ## Key Methods
 
--### RAII Initialization (Constructor)
+### RAII Initialization (Constructor)
 ```cpp
 // New RAII constructor signature
 Renderer(EventPool& evt, Window& w);
