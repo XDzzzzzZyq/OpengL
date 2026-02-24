@@ -5,6 +5,7 @@
 #include "buffers/IndexBuffer.h"
 #include "buffers/StorageBuffer.h"
 #include "buffers/UniformBuffer.h"
+#include "buffers/FrameBuffer.h"
 
 // ---------------------------------------------------------------------------
 // VertexBuffer
@@ -212,4 +213,105 @@ TEST_F(RendererEnvir, UniformBuffer_RAII) {
 		EXPECT_FLOAT_EQ(read_back.c, src_td.c);
 		EXPECT_FLOAT_EQ(read_back.d, src_td.d);
 	}
+}
+
+// ---------------------------------------------------------------------------
+// RenderBuffer
+// ---------------------------------------------------------------------------
+
+TEST_F(RendererEnvir, RenderBuffer_RAII) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	RenderBuffer rb(GL_DEPTH24_STENCIL8);
+	EXPECT_NE(rb.GetRenderBufferID(), 0u);
+	GLERRTEST;
+
+	// Copy constructor - new renderbuffer with same format/size
+	RenderBuffer rb_copy = rb;
+	EXPECT_NE(rb_copy.GetRenderBufferID(), 0u);
+	EXPECT_NE(rb_copy.GetRenderBufferID(), rb.GetRenderBufferID());
+	GLERRTEST;
+
+	// Move constructor
+	GLuint orig_id = rb.GetRenderBufferID();
+	RenderBuffer rb_moved = std::move(rb);
+	EXPECT_EQ(rb_moved.GetRenderBufferID(), orig_id);
+	EXPECT_EQ(rb.GetRenderBufferID(), 0u);
+	GLERRTEST;
+}
+
+// ---------------------------------------------------------------------------
+// FrameBuffer
+// ---------------------------------------------------------------------------
+
+TEST_F(RendererEnvir, FrameBuffer_RAII) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	// Multi-target color FBO
+	FrameBuffer fb({ EMIS_COL_FB, POS_FB, NORMAL_FB });
+	EXPECT_NE(fb.GetFrameBufferID(), 0u);
+	GLERRTEST;
+
+	// Copy constructor - deep copy: new FBO, new textures, new renderbuffer
+	FrameBuffer fb_copy = fb;
+	EXPECT_NE(fb_copy.GetFrameBufferID(), 0u);
+	EXPECT_NE(fb_copy.GetFrameBufferID(), fb.GetFrameBufferID());
+	EXPECT_EQ(fb_copy.GetFBCount(), fb.GetFBCount());
+	// Each texture in the copy must be a distinct GL object
+	EXPECT_NE(fb_copy.GetFBTextureID(EMIS_COL_FB), fb.GetFBTextureID(EMIS_COL_FB));
+	EXPECT_NE(fb_copy.GetFBTextureID(POS_FB),     fb.GetFBTextureID(POS_FB));
+	EXPECT_NE(fb_copy.GetFBTextureID(NORMAL_FB),  fb.GetFBTextureID(NORMAL_FB));
+	GLERRTEST;
+
+	// Move constructor - ownership transferred, source FBO ID zeroed
+	GLuint orig_id = fb.GetFrameBufferID();
+	FrameBuffer fb_moved = std::move(fb);
+	EXPECT_EQ(fb_moved.GetFrameBufferID(), orig_id);
+	EXPECT_EQ(fb.GetFrameBufferID(), 0u);
+	GLERRTEST;
+
+	// Copy assignment
+	FrameBuffer fb_assign;
+	fb_assign = fb_copy;
+	EXPECT_NE(fb_assign.GetFrameBufferID(), 0u);
+	EXPECT_NE(fb_assign.GetFrameBufferID(), fb_copy.GetFrameBufferID());
+	EXPECT_EQ(fb_assign.GetFBCount(), fb_copy.GetFBCount());
+	GLERRTEST;
+
+	// Move assignment
+	GLuint copy_id = fb_copy.GetFrameBufferID();
+	FrameBuffer fb_mova;
+	fb_mova = std::move(fb_copy);
+	EXPECT_EQ(fb_mova.GetFrameBufferID(), copy_id);
+	EXPECT_EQ(fb_copy.GetFrameBufferID(), 0u);
+	GLERRTEST;
+}
+
+TEST_F(RendererEnvir, FrameBuffer_DepthOnly_RAII) {
+	if (gl_version < 4.0)
+		GTEST_SKIP();
+
+	// Depth-only FBO (FrameBuffer(Texture&&) path)
+	Texture depth_tex(512, 512, Texture::DEPTH_TEXTURE);
+	EXPECT_NE(depth_tex.GetTexID(), 0u);
+	GLERRTEST;
+
+	FrameBuffer fb(std::move(depth_tex));
+	EXPECT_NE(fb.GetFrameBufferID(), 0u);
+	GLERRTEST;
+
+	// Copy - independent FBO with independent depth texture
+	FrameBuffer fb_copy = fb;
+	EXPECT_NE(fb_copy.GetFrameBufferID(), 0u);
+	EXPECT_NE(fb_copy.GetFrameBufferID(), fb.GetFrameBufferID());
+	GLERRTEST;
+
+	// Move
+	GLuint orig_id = fb.GetFrameBufferID();
+	FrameBuffer fb_moved = std::move(fb);
+	EXPECT_EQ(fb_moved.GetFrameBufferID(), orig_id);
+	EXPECT_EQ(fb.GetFrameBufferID(), 0u);
+	GLERRTEST;
 }

@@ -187,6 +187,8 @@
     <ClCompile Include="..\..\src\render\buffers\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\render\buffers\StorageBuffer.cpp" />
     <ClCompile Include="..\..\src\render\buffers\UniformBuffer.cpp" />
+    <ClCompile Include="..\..\src\render\buffers\RenderBuffer.cpp" />
+    <ClCompile Include="..\..\src\render\buffers\FrameBuffer.cpp" />
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />
     <ClCompile Include="pch.cpp" />
