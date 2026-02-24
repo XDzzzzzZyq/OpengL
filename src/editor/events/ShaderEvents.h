@@ -57,6 +57,27 @@ struct ShaderStructAddStructEvent
 	Args args;
 };
 
+struct ShaderStructAddGlobEvent
+{
+	Shaders* shader;
+	ShaderType type;
+	S_glob glob;
+};
+
+struct ShaderStructAddConstEvent
+{
+	Shaders* shader;
+	ShaderType type;
+	S_const con;
+};
+
+struct ShaderStructAddFuncEvent
+{
+	Shaders* shader;
+	ShaderType type;
+	S_func func;
+};
+
 struct ShaderStructCompileEvent
 {
 	Shaders* shader;

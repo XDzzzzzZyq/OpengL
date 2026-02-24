@@ -144,6 +144,27 @@ void ShaderController::bind(EventPool& pool)
 		unit->sh_struct->DefStruct(e.name, e.args);
 		});
 
+	pool.subscribe<ShaderStructAddGlobEvent>([this](ShaderStructAddGlobEvent e) {
+		auto* unit = e.shader->GetShaderUnit(e.type);
+		if (!unit || !unit->sh_struct.has_value()) return;
+		const auto& [name, type, val] = e.glob;
+		unit->sh_struct->SetGlob(type, val, name);
+		});
+
+	pool.subscribe<ShaderStructAddConstEvent>([this](ShaderStructAddConstEvent e) {
+		auto* unit = e.shader->GetShaderUnit(e.type);
+		if (!unit || !unit->sh_struct.has_value()) return;
+		const auto& [type, name, content, _] = e.con;
+		unit->sh_struct->SetConst(type, name, content);
+		});
+
+	pool.subscribe<ShaderStructAddFuncEvent>([this](ShaderStructAddFuncEvent e) {
+		auto* unit = e.shader->GetShaderUnit(e.type);
+		if (!unit || !unit->sh_struct.has_value()) return;
+		const auto& [type, name, content, args] = e.func;
+		unit->sh_struct->DefFunc(type, name, content, args);
+		});
+
 	// Material Edit
 
 	pool.subscribe<MaterialNameChangedEvent>([this](MaterialNameChangedEvent e) {

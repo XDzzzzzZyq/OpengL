@@ -221,8 +221,13 @@ void RenderShader::ParseShaderStream(std::istream& _stream, ShaderType _type)
 					do {
 						getline(_stream, Line);
 						//shaders[type] << Line << "\n";
-						if (blanc_count != 0)
-							cache += Line + "\n";
+						if (blanc_count != 0) {
+							// strip first indent level from function body lines
+							if (!Line.empty() && Line[0] == '\t')
+								cache += Line.substr(1) + "\n";
+							else
+								cache += Line + "\n";
+						}
 						if (Line.find("{") != std::string::npos) blanc_count++;
 						if (Line.find("}") != std::string::npos) blanc_count--;
 
@@ -391,8 +396,15 @@ std::string ShaderStruct::GenerateShader()
 		code_block += "// [FUNCTION_DEFINE]\n";
 		for (const auto& [rtype, name, cont, args] : func_list) {
 			code_block += ShaderStruct::ParseType(rtype) + " " + name + ShaderStruct::ParseArgs(args) + "{\n";
-			code_block += cont;
-			code_block += "\n}\n\n";
+			// trim trailing newlines, then add one tab indent per line
+			std::string trimmed = cont;
+			while (!trimmed.empty() && trimmed.back() == '\n')
+				trimmed.pop_back();
+			std::istringstream s(trimmed);
+			std::string l;
+			while (std::getline(s, l))
+				code_block += "\t" + l + "\n";
+			code_block += "}\n\n";
 		}
 	}
 	code_result += code_block;
