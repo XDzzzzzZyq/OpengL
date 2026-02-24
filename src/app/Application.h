@@ -2,12 +2,10 @@
 
 #include <memory>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "Input.h"
 #include "Context.h"
 #include "Controllers.h"
+#include "Window.h"
 #include "Renderer.h"
 #include "ImguiManager.h"
 
@@ -25,10 +23,10 @@ public:
 	Input InputManager{};
 	EventPool EventPool{};
 	ControllerManager Controllers{};
-	Context Ctx;
-	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<ImguiManager> UI;
-	GLFWwindow* window{ nullptr };
+	Window window;                      ///< GLFW window and OpenGL context owner
+	Context Ctx;                        ///< Event-subscribed context (depends on EventPool)
+	std::unique_ptr<Renderer> renderer; ///< Renderer (constructed after window)
+	std::unique_ptr<ImguiManager> UI;   ///< UI (constructed after window and renderer)
 
 public:
 	int Run();

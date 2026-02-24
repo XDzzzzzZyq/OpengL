@@ -30,6 +30,8 @@
 #include <vector>
 #include <unordered_map>
 
+class Window; ///< Forward declaration — see app/Window.h
+
 /*#define ParaUpdate ParaUpdate*/
 
 /**
@@ -75,7 +77,8 @@ public:
 	/**
 	 * @brief Constructs and fully initializes the ImguiManager.
 	 *
-	 * Requires an active ImGui context (created before this call).
+	 * Takes Window& to enforce that the GLFW/GL context (steps 1–3) is active
+	 * before ImGui backend initialization. Creates the ImGui context internally.
 	 * Sets up:
 	 * - ImGui context with GLFW + OpenGL3 backends
 	 * - Configuration flags (docking, viewports, etc.)
@@ -84,13 +87,17 @@ public:
 	 * - Event subscriptions for all UI components
 	 *
 	 * @param evt EventPool for subscribing to UI-related events
+	 * @param w   Active Window — used for GLFW backend initialization
 	 */
-	ImguiManager(EventPool& evt);
+	ImguiManager(EventPool& evt, Window& w);
 
 	/**
 	 * @brief Shuts down ImGui backends and destroys context.
 	 */
 	~ImguiManager();
+
+	ImguiManager(const ImguiManager&) = delete;
+	ImguiManager& operator=(const ImguiManager&) = delete;
 
 	/**
 	 * @brief Debug utility for printing UI component hierarchy.

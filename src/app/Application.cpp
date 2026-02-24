@@ -14,35 +14,15 @@
 
 #include "xdz_math.h"
 
-#include <stdexcept>
-
 Application::Application()
-	: Ctx(EventPool)
+	: window(SCREEN_W + 100, SCREEN_H, "TEST_WINDOW")
+	, Ctx(EventPool)
 {
 	std::iostream::sync_with_stdio(false);
 	std::cout << std::boolalpha;
 
-	/* Initialize the library */
-	if (!glfwInit())
-		throw std::runtime_error("glfwInit failed");
-
-	/* Create a windowed mode window and its OpenGL context */
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	window = glfwCreateWindow(SCREEN_W + 100, SCREEN_H, "TEST_WINDOW", NULL, NULL);
-	if (!window)
-	{
-		glfwTerminate();
-		throw std::runtime_error("glfwCreateWindow failed");
-	}
-	glfwMakeContextCurrent(window);
-	ImGui::CreateContext();
-	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
-
 	// Editor Layer
-	renderer = std::make_unique<Renderer>(EventPool);
+	renderer = std::make_unique<Renderer>(EventPool, window);
 	MeshLib::MeshLibInit();
 
 	// Controllers
@@ -51,7 +31,7 @@ Application::Application()
 	Controllers.RegisterController<ShaderController>(EventPool);
 
 	// UI Layer
-	UI = std::make_unique<ImguiManager>(EventPool);
+	UI = std::make_unique<ImguiManager>(EventPool, window);
 
 	UI->SetConfigFlag(ImGuiConfigFlags_DockingEnable);
 	//UI->SetConfigFlag(ImGuiConfigFlags_ViewportsEnable);
@@ -88,10 +68,8 @@ Application::~Application()
 {
 	TextureLib::ResetTexLib();
 	ComputeShader::ResetComputeLib();
-	// Destroy UI and renderer before glfwTerminate to ensure proper shutdown order
-	UI.reset();
-	renderer.reset();
-	glfwTerminate();
+	// UI and renderer are destroyed automatically (reverse declaration order)
+	// before window destructor runs glfwDestroyWindow + glfwTerminate
 }
 
 int Application::Run()
@@ -177,13 +155,13 @@ int Application::Run()
 	};
 
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
+	while (!window.ShouldClose())
 	{
 		/* Update here */
 		UI->NewFrame();
 
 		AvTime.Update(UI->GetIO()->Framerate);
-		InputManager.UpdateState(window);
+		InputManager.UpdateState(window.Get());
 		EventPool.EmitGlobalEvent();
 
 		UI->RenderUI(Ctx, EventPool);
@@ -202,7 +180,7 @@ int Application::Run()
 #endif
 
 		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
+		window.SwapBuffers();
 	}
 	DEBUG(std::to_string(1000 / AvTime.result) + "ms");
 	std::cout << std::endl << "[ Finished ]" << std::endl;

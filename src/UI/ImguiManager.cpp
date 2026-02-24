@@ -9,10 +9,16 @@
 
 #include "events/KeyMouseEvents.h"
 
+#include "../app/Window.h"
+
 bool ImguiManager::is_prefW_open = false;
 
-ImguiManager::ImguiManager(EventPool& evt)
+ImguiManager::ImguiManager(EventPool& evt, Window& w)
 {
+	// Create the ImGui context; must happen before any ImGui::GetIO() / GetStyle() calls.
+	// Moved here from Application so ImguiManager fully owns its context lifetime.
+	ImGui::CreateContext();
+
 	io = &ImGui::GetIO();
 	m_style = &ImGui::GetStyle();
 
@@ -20,10 +26,8 @@ ImguiManager::ImguiManager(EventPool& evt)
 	RegistarMenuEvents(evt);
 	RegisterLayerEvents(evt);
 
-	GLFWwindow* window = glfwGetCurrentContext();
-
 	ImGui_ImplOpenGL3_Init();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(w.Get(), true);
 	ImGui::StyleColorsDark();
 
 	ImGui::GetStyle().Colors[ImGuiCol_Header] = ImVec4(1, 1, 1, 0);

@@ -121,5 +121,8 @@ public:
 	 * @param pool EventPool for subscribing to context-related events
 	 */
 	explicit Context(EventPool& pool);
+
+	Context(const Context&) = delete;
+	Context& operator=(const Context&) = delete;
 };
 
