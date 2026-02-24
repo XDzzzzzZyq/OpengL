@@ -112,7 +112,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 		fb_type_list[(FBType)type_inp] = i;
 
-		fb_tex_list.emplace_back("", textype, GL_LINEAR);
+		fb_tex_list.emplace_back(SCREEN_W, SCREEN_H, textype, GL_LINEAR);
 		fb_tex_list[i].OffsetSlot(type_inp);
 
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
@@ -183,15 +183,103 @@ FrameBuffer::FrameBuffer(Texture&& tex)
 	fb_tex_list.emplace_back(std::move(tex));
 }
 
-FrameBuffer::FrameBuffer(const FrameBuffer& fb)
+void FrameBuffer::_deepCopyFrom(const FrameBuffer& fb)
 {
-	_resetFBID(fb.GetFrameBufferID());
-	_cpyInfo(fb);
+	fb_attach    = fb.fb_attach;
+	fb_w         = fb.fb_w;
+	fb_h         = fb.fb_h;
 	fb_type_list = fb.fb_type_list;
-	fb_tex_list = fb.fb_tex_list;
+	fb_tex_list  = fb.fb_tex_list; // Texture has correct deep copy
 
 	if (fb.renderBuffer)
-		renderBuffer = fb.renderBuffer;
+		renderBuffer = fb.renderBuffer; // RenderBuffer now has correct deep copy
+
+	if (fb.fb_ID == 0)
+	{
+		fb_ID = 0;
+		return;
+	}
+
+	glGenFramebuffers(1, &fb_ID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fb_ID);
+
+	std::vector<GLenum> drawAttachments;
+	bool has_depth_tex = false;
+
+	auto attach_tex = [&](int idx, GLenum attachment)
+	{
+		const Texture& tex = fb_tex_list[idx];
+		auto [_1, _2, _3, gl_tex_type] = Texture::ParseFormat(tex.tex_type);
+		switch (gl_tex_type)
+		{
+		case GL_TEXTURE_2D:
+			glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, tex.GetTexID(), 0);
+			break;
+		default:
+			glFramebufferTexture(GL_FRAMEBUFFER, attachment, tex.GetTexID(), 0);
+			break;
+		}
+	};
+
+	if (!fb_type_list.empty())
+	{
+		// Standard multi-target FBO: re-attach each texture at its original slot.
+		for (auto& [type, idx] : fb_type_list)
+		{
+			auto [_1, format, _3, _4] = Texture::ParseFormat(fb_tex_list[idx].tex_type);
+			const bool is_depth = (format == GL_DEPTH_COMPONENT);
+			if (is_depth)
+			{
+				has_depth_tex = true;
+				attach_tex(idx, GL_DEPTH_ATTACHMENT);
+			}
+			else
+			{
+				GLenum att = GL_COLOR_ATTACHMENT0 + idx;
+				attach_tex(idx, att);
+				drawAttachments.push_back(att);
+			}
+		}
+	}
+	else if (!fb_tex_list.empty())
+	{
+		// Texture-only FBO (FrameBuffer(Texture&&) constructor path).
+		for (int i = 0; i < (int)fb_tex_list.size(); i++)
+		{
+			auto [_1, format, _3, _4] = Texture::ParseFormat(fb_tex_list[i].tex_type);
+			const bool is_depth = (format == GL_DEPTH_COMPONENT);
+			if (is_depth)
+			{
+				has_depth_tex = true;
+				attach_tex(i, GL_DEPTH_ATTACHMENT);
+			}
+			else
+			{
+				GLenum att = GL_COLOR_ATTACHMENT0;
+				attach_tex(i, att);
+				drawAttachments.push_back(att);
+			}
+		}
+	}
+
+	if (renderBuffer)
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
+			GL_RENDERBUFFER, renderBuffer->GetRenderBufferID());
+
+	if (!drawAttachments.empty())
+		glDrawBuffers((GLsizei)drawAttachments.size(), drawAttachments.data());
+	else if (has_depth_tex)
+	{
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+FrameBuffer::FrameBuffer(const FrameBuffer& fb)
+{
+	_deepCopyFrom(fb);
 }
 
 FrameBuffer::FrameBuffer(FrameBuffer&& fb) noexcept
@@ -211,15 +299,14 @@ FrameBuffer& FrameBuffer::operator=(const FrameBuffer& fb)
 	if (this == &fb)
 		return *this;
 
-	_resetFBID(fb.GetFrameBufferID());
-	_cpyInfo(fb);
+	if (fb_ID != 0)
+		_delFB();
 
-	fb_type_list = fb.fb_type_list;
-	fb_tex_list = fb.fb_tex_list;
+	renderBuffer.reset();
+	fb_type_list.clear();
+	fb_tex_list.clear();
 
-	if (fb.renderBuffer)
-		renderBuffer = fb.renderBuffer;
-
+	_deepCopyFrom(fb);
 	return *this;
 }
 
@@ -227,6 +314,11 @@ FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fb) noexcept
 {
 	if (this == &fb)
 		return *this;
+
+	if (fb_ID != 0)
+		_delFB();
+
+	renderBuffer.reset();
 
 	_cpyInfo(fb);
 

@@ -111,8 +111,22 @@ private:
 	 */
 	static Texture::TextureType PareseTexType(FBType _type);
 
-	void _cpyInfo(const FrameBuffer& fb);     ///< Copies framebuffer info
+	void _cpyInfo(const FrameBuffer& fb);     ///< Copies scalar metadata (dimensions, attach flags)
 	void _delFB();                             ///< Deletes OpenGL framebuffer
+
+	/**
+	 * @brief Creates a new FBO that is an independent deep copy of @p fb.
+	 *
+	 * Steps performed:
+	 * 1. Copies scalar metadata via _cpyInfo.
+	 * 2. Deep-copies all textures (each Texture gets its own GL object).
+	 * 3. Deep-copies the optional RenderBuffer (new GL renderbuffer same format/size).
+	 * 4. Generates a new FBO and re-attaches all textures and renderbuffer.
+	 * 5. Restores draw-buffer and read-buffer state.
+	 *
+	 * @param fb Source framebuffer.
+	 */
+	void _deepCopyFrom(const FrameBuffer& fb);
 	
 	/**
 	 * @brief Resets framebuffer ID, deleting old FBO if different.
@@ -158,9 +172,13 @@ public:
 	FrameBuffer(Texture&& _depth);
 	
 	/**
-	 * @brief Copy constructor (shares texture references).
-	 * @param fb Source framebuffer
-	 * @note TODO: Current implementation copies GL IDs without ref counting - may cause double-deletion
+	 * @brief Copy constructor. Performs a GPU-side deep copy.
+	 *
+	 * Allocates a new FBO and deep-copies all attached textures and the
+	 * optional depth/stencil renderbuffer. The resulting FrameBuffer is
+	 * fully independent of the source.
+	 *
+	 * @param fb Source framebuffer.
 	 */
 	FrameBuffer(const FrameBuffer& fb);
 	

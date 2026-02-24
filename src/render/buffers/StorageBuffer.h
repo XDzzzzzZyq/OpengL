@@ -1,18 +1,18 @@
 /**
  * @file StorageBuffer.h
  * @brief OpenGL shader storage buffer object (SSBO) abstraction.
- * 
- * StorageBuffer provides RAII wrapper around OpenGL SSBO for large read/write
- * data accessible from shaders. Supports template-based operations for type-safe
- * data transfer with CPU-GPU bidirectional communication.
- * 
- * @note All OpenGL resources are released in destructor.
+ *
+ * StorageBuffer provides a RAII wrapper around an OpenGL SSBO for large
+ * read/write data accessible from shaders. Inherits copy, move, and
+ * deep-copy semantics from GLBuffer. Supports template-based operations for
+ * type-safe CPU↔GPU data transfer.
+ *
+ * @note All OpenGL resources are released deterministically in the destructor.
  */
 
 #pragma once
 
-#include <GL/glew.h>
-#include <iostream>
+#include "Buffers.h"
 #include <vector>
 #include <cstring>
 
@@ -46,153 +46,143 @@ struct is_not_vector<std::vector<T, C>> : std::false_type {};
 
 /**
  * @brief OpenGL shader storage buffer object wrapper.
- * 
- * StorageBuffer (SSBO) provides read/write access to large buffers from shaders.
+ *
+ * StorageBuffer (SSBO) provides read/write access to large buffers from
+ * shaders. It inherits RAII resource management from GLBuffer, including
+ * GPU-side deep copy via glCopyBufferSubData. buf_size is updated by
+ * GenStorageBuffer/GenStorageBuffers so deep copy always reflects the
+ * current allocation.
+ *
  * Unlike UBO, SSBO supports:
  * - Much larger buffers (up to GPU memory limit)
  * - Write access from shaders
  * - Dynamic sizing
  * - Atomic operations
- * 
+ *
  * Common use cases:
  * - Light arrays for deferred rendering
  * - Particle systems
  * - Compute shader outputs
  * - GPU sorting and reduction
- * 
+ *
  * Usage:
  * @code
  * StorageBuffer ssbo(FLOAT_LIST, 3);
  * std::vector<float> data = {...};
  * ssbo.GenStorageBuffer(data);
  * ssbo.BindBufferBase();
- * 
+ *
  * // After compute shader
  * std::vector<float> result;
  * ssbo.ReadStorageBuffer(result);
+ *
+ * // Deep copy (new GPU buffer allocated):
+ * StorageBuffer copy = ssbo;
  * @endcode
- * 
- * @note Thread-safety: Not thread-safe. Must be used from OpenGL context thread.
- * @note Ownership: Owns OpenGL SSBO and releases it in destructor.
- * @note Performance: Reading back from GPU is slow. Minimize CPU readbacks.
- * @note TODO: Fix deletion - should use glDeleteBuffers not glDeleteFramebuffers
- * @note TODO: Fix copy semantics - current implementation duplicates IDs without ownership
+ *
+ * @note Thread-safety: Not thread-safe. Must be used from the OpenGL context thread.
+ * @note Ownership: Inherits GLBuffer ownership; releases via glDeleteBuffers in destructor.
+ * @note Performance: Reading back from GPU is slow. Minimise CPU readbacks.
  */
-class StorageBuffer  //shader storage buffer object SSBO
+class StorageBuffer : public GLBuffer
 {
 private:
-	GLuint ssbo_ID = 0;            ///< OpenGL storage buffer object ID
-	GLuint ssbo_base = 3;          ///< Binding point index
-	SSBType ssbo_type = NONE_LIST; ///< Buffer data type
-
-	void _cpyInfo(const StorageBuffer& ssbo); ///< Copies SSBO info
-	void _delSSB();                            ///< Deletes OpenGL storage buffer
-	
-	/**
-	 * @brief Resets SSBO ID, deleting old buffer if different.
-	 * @param _ID New SSBO ID
-	 */
-	void _resetSSBID(GLuint _ID) { if (ssbo_ID > 0 && ssbo_ID != _ID)_delSSB(); ssbo_ID = _ID; }
+	GLuint  ssbo_base = 3;          ///< Binding point index
+	SSBType ssbo_type = NONE_LIST;  ///< Buffer data type
 
 public:
+
 	/**
 	 * @brief Default constructor (empty buffer).
 	 */
-	StorageBuffer();
-	
+	StorageBuffer() = default;
+
 	/**
-	 * @brief Constructs SSBO with type classification.
+	 * @brief Constructs SSBO with type classification (binding point defaults to 0).
 	 * @param type Data type classification
 	 */
 	StorageBuffer(SSBType type);
-	
+
 	/**
 	 * @brief Constructs SSBO with type and binding point.
-	 * @param type Data type classification
-	 * @param base Binding point index
+	 * @param type  Data type classification
+	 * @param base  Binding point index
 	 */
 	StorageBuffer(SSBType type, GLuint base);
-	
+
 	/**
-	 * @brief Destructor. Releases OpenGL SSBO.
+	 * @brief Destructor. Releases OpenGL SSBO (via GLBuffer).
 	 */
-	~StorageBuffer();
-
+	~StorageBuffer() = default;
 
 	/**
-	 * @brief Copy constructor.
-	 * @param ssbo Source storage buffer
+	 * @brief Copy constructor. Deep-copies GPU buffer content and metadata.
+	 * @param ssbo Source storage buffer.
 	 */
 	StorageBuffer(const StorageBuffer& ssbo);
-	
+
 	/**
-	 * @brief Move constructor.
-	 * @param ssbo Source storage buffer (invalidated)
+	 * @brief Move constructor. Transfers ownership; @p ssbo is left empty.
+	 * @param ssbo Source storage buffer (invalidated after move).
 	 */
 	StorageBuffer(StorageBuffer&& ssbo) noexcept;
 
 	/**
-	 * @brief Copy assignment operator.
-	 * @param ssbo Source storage buffer
-	 * @return Reference to this
+	 * @brief Copy assignment. Deep-copies GPU buffer content and metadata.
+	 * @param ssbo Source storage buffer.
+	 * @return Reference to this.
 	 */
 	StorageBuffer& operator=(const StorageBuffer& ssbo);
-	
+
 	/**
-	 * @brief Move assignment operator.
-	 * @param ssbo Source storage buffer (invalidated)
-	 * @return Reference to this
+	 * @brief Move assignment. Transfers ownership; @p ssbo is left empty.
+	 * @param ssbo Source storage buffer (invalidated after move).
+	 * @return Reference to this.
 	 */
 	StorageBuffer& operator=(StorageBuffer&& ssbo) noexcept;
 
 public:
 
 	/**
-	 * @brief Binds this SSBO (GL_SHADER_STORAGE_BUFFER target).
+	 * @brief Binds this SSBO to GL_SHADER_STORAGE_BUFFER.
 	 */
 	void BindBuffer() const;
-	
+
 	/**
 	 * @brief Binds SSBO to its binding point for shader access.
-	 * @param _base Binding point override (currently ignored - uses stored binding)
-	 * @note TODO: Implement _base parameter override or remove from API
+	 * @param _base Binding point override (-1 to use stored binding).
 	 */
-	void BindBufferBase(GLuint _base = -1) const;
-	
+	void BindBufferBase(GLuint _base = static_cast<GLuint>(-1)) const;
+
 	/**
 	 * @brief Unbinds the current SSBO.
 	 */
 	void UnbindBuffer() const;
-	
+
 	/**
 	 * @brief Sets the binding point index.
-	 * @param base New binding point
+	 * @param base New binding point.
 	 */
 	void SetBufferBase(GLuint base);
 
 public:
+
 	/**
-	 * @brief Returns OpenGL buffer object ID.
-	 * @return SSBO ID
+	 * @brief Returns the binding point index.
+	 * @return Binding point.
 	 */
-	GLuint GetID() const { return ssbo_ID; }
-	
+	GLuint  GetBase() const { return ssbo_base; }
+
 	/**
-	 * @brief Returns binding point index.
-	 * @return Binding point
-	 */
-	GLuint GetBase() const { return ssbo_base; }
-	
-	/**
-	 * @brief Returns buffer data type classification.
-	 * @return SSBType
+	 * @brief Returns the buffer data type classification.
+	 * @return SSBType.
 	 */
 	SSBType GetType() const { return ssbo_type; }
 
 public:
 
 	/**
-	 * @brief Uploads vector data to SSBO.
+	 * @brief Uploads vector data to SSBO and records the buffer size.
 	 * @tparam T Element type
 	 * @param src Source vector (copied to GPU)
 	 * @note Uses GL_STATIC_DRAW. For frequently updated data, consider dynamic approach.
@@ -203,31 +193,32 @@ public:
 	/**
 	 * @brief Reads data from SSBO back to CPU.
 	 * @tparam T Element type
-	 * @param tar Target vector (resized if empty)
+	 * @param tar Target vector (resized to buffer size if empty)
 	 * @param _offset Byte offset into buffer
-	 * @note Performance: GPU readback is slow. Minimize usage.
+	 * @note Performance: GPU readback is slow. Minimise usage.
 	 */
 	template <typename T>
 	void ReadStorageBuffer(std::vector<T>& tar, GLuint _offset = 0);
 
 	/**
-	 * @brief Uploads structured data (header + array) to SSBO.
+	 * @brief Uploads structured data (header + array) to SSBO and records the buffer size.
 	 * @tparam _Info Header structure type
-	 * @tparam _Ele Array element type
+	 * @tparam _Ele  Array element type
 	 * @param _info Header data
 	 * @param _data Array data
-	 * @note Useful for arrays with metadata (e.g., count, bounds)
+	 * @note Useful for arrays with metadata (e.g., count, bounds).
 	 */
 	template <typename _Info, typename _Ele> requires is_not_vector<_Info>::value
 	void GenStorageBuffers(const _Info& _info, const std::vector<_Ele>& _data);
 
 };
 
-template <typename _Info, typename _Ele> requires is_not_vector<_Info>	::value
+template <typename _Info, typename _Ele> requires is_not_vector<_Info>::value
 void StorageBuffer::GenStorageBuffers(const _Info& _info, const std::vector<_Ele>& _data)
 {
+	buf_size = static_cast<GLuint>(sizeof(_Info) + _data.size() * sizeof(_Ele));
 	BindBuffer();
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(_Info) + _data.size()*sizeof(_Ele), nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, buf_size, nullptr, GL_STATIC_DRAW);
 
 	void* bufferData = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
 	std::memcpy(static_cast<char*>(bufferData), &_info, sizeof(_Info));
@@ -238,12 +229,13 @@ void StorageBuffer::GenStorageBuffers(const _Info& _info, const std::vector<_Ele
 }
 
 template <typename T>
-void StorageBuffer::GenStorageBuffer(const std::vector<T>& list)
+void StorageBuffer::GenStorageBuffer(const std::vector<T>& src)
 {
-	if (list.size() == 0) return;
+	if (src.size() == 0) return;
 
+	buf_size = static_cast<GLuint>(src.size() * sizeof(T));
 	BindBuffer();
-	glBufferData(GL_SHADER_STORAGE_BUFFER, list.size() * sizeof(T), list.data(), GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, buf_size, src.data(), GL_STATIC_DRAW);
 	UnbindBuffer();
 }
 
@@ -266,7 +258,7 @@ void StorageBuffer::ReadStorageBuffer(std::vector<T>& tar, GLuint _offset)
 	}
 
 	std::memcpy(tar.data(), static_cast<char*>(dataPtr) + _offset, tar.size() * sizeof(T));
-	
+
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 	UnbindBuffer();
 }

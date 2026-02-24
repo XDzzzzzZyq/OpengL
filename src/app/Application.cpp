@@ -13,6 +13,7 @@
 #include "layer/Viewport.h"
 
 #include "xdz_math.h"
+#include "structs.h"
 
 Application& Application::Get()
 {

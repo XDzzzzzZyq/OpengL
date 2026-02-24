@@ -1,5 +1,6 @@
 #include "MeshData.h"
 #include "macros.h"
+#include "structs.h"
 #include "operator.h"
 
 std::string MeshData::obj_file_root = "res/obj/";
