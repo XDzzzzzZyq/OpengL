@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -9,29 +11,26 @@
 #include "Renderer.h"
 #include "ImguiManager.h"
 
-// using singleton
 class Application
 {
-private:
-	Application() =default;
-
 public:
-	~Application() =default;
-	static Application& Get();
+	Application();
+	~Application();
+
+	Application(const Application&) = delete;
+	Application& operator=(const Application&) = delete;
 
 public:
 	// TODO: separate Editor
 	Input InputManager{};
 	EventPool EventPool{};
 	ControllerManager Controllers{};
-	Context Ctx{};
-	Renderer renderer{};
-	ImguiManager UI{};
+	Context Ctx;
+	std::unique_ptr<Renderer> renderer;
+	std::unique_ptr<ImguiManager> UI;
 	GLFWwindow* window{ nullptr };
 
 public:
-	int Init();
 	int Run();
-	int Terminate();
 };
 

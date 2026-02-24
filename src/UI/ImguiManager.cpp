@@ -11,10 +11,7 @@
 
 bool ImguiManager::is_prefW_open = false;
 
-ImguiManager::ImguiManager()
-{}
-
-void ImguiManager::Init(EventPool& evt)
+ImguiManager::ImguiManager(EventPool& evt)
 {
 	io = &ImGui::GetIO();
 	m_style = &ImGui::GetStyle();
@@ -57,6 +54,13 @@ void ImguiManager::Init(EventPool& evt)
 	//config.GlyphMinAdvanceX = 13.0f;// Use if you want to make the icon monospaced
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
+}
+
+ImguiManager::~ImguiManager()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }
 
 void ImguiManager::_debug() const
@@ -290,11 +294,4 @@ void ImguiManager::RenderUI(const Context& ctx, const EventPool& evt, bool rend)
 			});
 		//glfwMakeContextCurrent(window);
 	}
-}
-
-void ImguiManager::Terminate() const
-{
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 }

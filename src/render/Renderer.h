@@ -133,17 +133,14 @@ public:
 public:
 
 	/**
-	 * @brief Constructs a Renderer instance.
-	 * @note Does not initialize GPU resources. Call Init() after construction.
-	 */
-	Renderer();
-	
-	/**
-	 * @brief Initializes the renderer and subscribes to events.
+	 * @brief Constructs and fully initializes the renderer.
+	 *
+	 * Requires an active OpenGL context. Initializes glew, OpenGL state,
+	 * framebuffers, shadow system, and subscribes to viewport resize events.
+	 *
 	 * @param evt EventPool for subscribing to viewport resize and other events
-	 * @note Must be called before Render()
 	 */
-	void Init(EventPool& evt);
+	Renderer(EventPool& evt);
 
 	/**
 	 * @brief Destroys the renderer and releases all GPU resources.
