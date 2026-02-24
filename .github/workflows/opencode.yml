@@ -26,6 +26,10 @@ jobs:
            fetch-depth: 1
            persist-credentials: false
 
+      - name: Configure Git committer
+        run: |
+          git config --global user.name "OpenCode"
+
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
