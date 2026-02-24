@@ -11,7 +11,7 @@ void Texture::_cpyInfo(const Texture& tex)
 	tex_type = tex.tex_type; tex_slot_offset = tex.tex_slot_offset;
 }
 
-Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type)
+Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint tile_type)
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
@@ -33,10 +33,10 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 
 		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 4);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, tile_type, tile_type, 0, 4);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-		glTexStorage2D(GL_TEXTURE_2D, 1, interlayout, im_w, im_h);
+		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer);
 #if 1
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -62,7 +62,7 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 	case HDR_TEXTURE:
 		m_buffer_f = stbi_loadf(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
 
-		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, Tile_type, Tile_type, 0, 8);
+		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, tile_type, tile_type, 0, 8);
 
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
 		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
@@ -88,21 +88,9 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_t
 			_delTexture();
 		}
 		break;
-
-	case BUFFER_TEXTURE:
-	case HDR_BUFFER_TEXTURE:
-	case FLOAT_BUFFER_TEXTURE:
-
-		glTexImage2D(GL_TEXTURE_2D, 0, interlayout, SCREEN_W, SCREEN_H, 0, layout, type, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		break;
+	default:
+		assert(false && "Unsupported texture type for file loading");
 	}
-
-
 }
 
 Texture::Texture()
@@ -110,16 +98,21 @@ Texture::Texture()
 
 }
 
-Texture::Texture(GLuint Tile_type, int x, int y)
-	:tex_path(NULL), tex_type(BUFFER_TEXTURE),
-	im_bpp(8), im_h(y), im_w(x)
+Texture::Texture(int _w, int _h, TextureType tex_type, GLuint tile_type)
+	:tex_path(""), tex_type(tex_type),
+	im_bpp(32), im_h(_h), im_w(_w)
 {
+	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
+
 	glGenTextures(1, &tex_ID);
 	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT);
+	glTexImage2D(GL_TEXTURE_2D, 0, interlayout, im_w, im_h, 0, layout, type, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tile_type);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tile_type);
+
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -284,17 +277,7 @@ void Texture::_deepCopyFrom(const Texture& tex)
 	assert(im_w == width);
 	assert(im_h == height);
 
-	int computed_levels = 1;
-	int level_w = std::max(1, width);
-	int level_h = std::max(1, height);
-	int level_d = std::max(1, depth);
-	while (level_w > 1 || level_h > 1 || level_d > 1) {
-		level_w = std::max(1, level_w / 2);
-		level_h = std::max(1, level_h / 2);
-		level_d = std::max(1, level_d / 2);
-		++computed_levels;
-	}
-	int levels = immutable_levels > 0 ? immutable_levels : std::min(computed_levels, max_level + 1);
+	int levels = std::min(std::max(immutable_levels, 1), max_level + 1);
 
 	glBindTexture(gl_type, tex_ID);
 	glTexParameteri(gl_type, GL_TEXTURE_MIN_FILTER, min_filter);
@@ -303,7 +286,7 @@ void Texture::_deepCopyFrom(const Texture& tex)
 	glTexParameteri(gl_type, GL_TEXTURE_WRAP_T, wrap_t);
 	glTexParameteri(gl_type, GL_TEXTURE_BASE_LEVEL, 0);
 	glTexParameteri(gl_type, GL_TEXTURE_MAX_LEVEL, levels - 1);
-
+	
 	if (gl_type == GL_TEXTURE_2D) {
 		glTexStorage2D(gl_type, levels, interlayout, width, height);
 		glGetTexLevelParameteriv(gl_type, 0, GL_TEXTURE_INTERNAL_FORMAT, &dst_internal);

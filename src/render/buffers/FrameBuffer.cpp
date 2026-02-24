@@ -112,7 +112,7 @@ FrameBuffer::FrameBuffer(const std::vector<FBType>& _tars)
 
 		fb_type_list[(FBType)type_inp] = i;
 
-		fb_tex_list.emplace_back("", textype, GL_LINEAR);
+		fb_tex_list.emplace_back(SCREEN_W, SCREEN_H, textype, GL_LINEAR);
 		fb_tex_list[i].OffsetSlot(type_inp);
 
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;

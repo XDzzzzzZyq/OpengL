@@ -133,19 +133,20 @@ public:
 	 * @brief Constructs texture from image file.
 	 * @param texpath Path to image file
 	 * @param tex_type Texture type (RGBA_TEXTURE, HDR_TEXTURE, etc.)
-	 * @param Tile_type Texture wrapping mode (GL_REPEAT, GL_CLAMP_TO_EDGE, etc.)
+	 * @param tile_type Texture wrapping mode (GL_REPEAT, GL_CLAMP_TO_EDGE, etc.)
 	 * @note Automatically loads file and uploads to GPU
 	 */
-	Texture(const std::string& texpath, TextureType tex_type, GLuint Tile_type);
+	Texture(const std::string& texpath, TextureType tex_type, GLuint tile_type);
 	
 	/**
 	 * @brief Constructs empty texture for framebuffer attachment.
-	 * @param Tile_type Texture wrapping mode
-	 * @param x Width in pixels
-	 * @param y Height in pixels
+	 * @param _w Width in pixels
+	 * @param _h Height in pixels
+	 * @param tex_type Texture type (RGBA_TEXTURE, HDR_TEXTURE, etc.)
+	 * @param tile_type Texture wrapping mode
 	 * @note Allocates GPU storage but does not initialize pixel data
 	 */
-	Texture(GLuint Tile_type, int x, int y);
+	Texture(int _w, int _h, TextureType tex_type, GLuint tile_type);
 	
 	/**
 	 * @brief Constructs texture from raw pixel data.
