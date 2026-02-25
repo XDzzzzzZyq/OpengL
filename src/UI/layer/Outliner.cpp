@@ -30,7 +30,7 @@ void Outliner::UpdateStyle()
 
 }
 
-void Outliner::RenderLayer(const Context& ctx, const EventPool& evt)
+void Outliner::RenderLayer(const Context& ctx, EventPool& evt)
 {
 	const SelectionManager<ObjectID>& sel_mgr = ctx.editor.selections;
 	const auto obj_list = ctx.scene.GetObjectIDs();

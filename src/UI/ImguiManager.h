@@ -173,7 +173,7 @@ public:
 	 * @note UI reads Context but never mutates it
 	 * @note User actions emit Events via evt
 	 */
-	void RenderUI(const Context& ctx, const EventPool& evt, bool rend = true);
+	void RenderUI(const Context& ctx, EventPool& evt, bool rend = true);
 	
 	/**
 	 * @brief Terminates ImGui and cleans up resources.

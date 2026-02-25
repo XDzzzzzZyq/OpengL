@@ -10,7 +10,7 @@ struct EvC { int value; };
 // Basic enqueue / process behaviour
 // ---------------------------------------------------------------------------
 
-TEST(EventPool, EmitEnqueuesEventsNotDispatchedImmediately)
+TEST(EventPool, Event_Count)
 {
 	EventPool pool;
 	int received = 0;
@@ -28,7 +28,7 @@ TEST(EventPool, EmitEnqueuesEventsNotDispatchedImmediately)
 	EXPECT_EQ(received, 2);
 }
 
-TEST(EventPool, ProcessDispatchesInFIFOOrder)
+TEST(EventPool, Event_Order)
 {
 	EventPool pool;
 	std::vector<int> order;
@@ -47,7 +47,7 @@ TEST(EventPool, ProcessDispatchesInFIFOOrder)
 	EXPECT_EQ(order[2], 30);
 }
 
-TEST(EventPool, MixedEventTypesFIFOOrder)
+TEST(EventPool, Event_Order2)
 {
 	EventPool pool;
 	std::vector<int> order;
@@ -67,7 +67,7 @@ TEST(EventPool, MixedEventTypesFIFOOrder)
 	EXPECT_EQ(order[2], 3);
 }
 
-TEST(EventPool, ProcessIsIdempotentOnEmptyQueue)
+TEST(EventPool, Event_Empty)
 {
 	EventPool pool;
 	int received = 0;
@@ -87,7 +87,7 @@ TEST(EventPool, ProcessIsIdempotentOnEmptyQueue)
 
 // When EvA is handled it emits EvB; when EvB is handled it emits EvC.
 // Expected dispatch sequence: A → B → C  (breadth-first / FIFO).
-TEST(EventPool, EventChainAppendsSubEventToQueueEnd)
+TEST(EventPool, Event_Chain)
 {
 	EventPool pool;
 	std::vector<std::string> order;
@@ -117,7 +117,7 @@ TEST(EventPool, EventChainAppendsSubEventToQueueEnd)
 
 // Two independent EvA events each trigger a chain.
 // Expected order: A1 → A2 → B1 → B2 → C1 → C2  (breadth-first across chains).
-TEST(EventPool, MultipleEventChainsBreadthFirstOrder)
+TEST(EventPool, Event_MultiChain)
 {
 	EventPool pool;
 	std::vector<std::string> order;
