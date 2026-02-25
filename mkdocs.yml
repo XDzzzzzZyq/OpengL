@@ -9,8 +9,12 @@ theme:
     - navigation.tabs
     - content.code.copy
 
+markdown_extensions:
+  - pymdownx.superfences
+
 nav:
-  - Architecture: index.md
+  - Architecture: architecture.md
+  - API: api.md
 
 plugins:
   - search
@@ -22,3 +26,7 @@ plugins:
           doxy-cfg:         # standard doxygen configuration (key: value)
             FILE_PATTERNS: "*.cpp *.h*" # specify file patterns to filter out
             RECURSIVE: True # recursive search in source directories
+            GENERATE_XML: True
+            EXTRACT_ALL: True
+            EXTRACT_PRIVATE: True
+            EXTRACT_STATIC: True

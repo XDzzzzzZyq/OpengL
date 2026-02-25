@@ -7,6 +7,7 @@
  * Cameras compute view/projection matrices used by the Renderer to transform geometry.
  * 
  * Architecture:
+ * 
  * - Owned by scene graph (shared_ptr in scene containers)
  * - Active camera selected via SceneContext
  * - Renderer reads camera matrices as immutable data
