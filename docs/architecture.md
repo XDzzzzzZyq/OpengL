@@ -1,6 +1,6 @@
 # Architecture
 
-This project follows a three-layer architecture: [Renderer](renderer.md), [Editor](editor.md), and UI. They communicate only through the [`Context`](http://127.0.0.1:8000/XDzzzzzZyq/OpengL/Renderer/class_context/) and event system to keep explicit data flow and avoid direct coupling.
+This project follows a three-layer architecture: [Renderer](architecture/renderer.md), [Editor](architecture/editor.md), and UI. They communicate only through the [`Context`](http://127.0.0.1:8000/XDzzzzzZyq/OpengL/Renderer/class_context/) and event system to keep explicit data flow and avoid direct coupling.
 
 ## Design Principles
 
