@@ -114,18 +114,22 @@ public:
 	/**
 	 * @brief Dispatches all enqueued events in FIFO order.
 	 * 
-	 * Processes every event currently in the queue. Events emitted by handlers
-	 * during processing are appended to the end of the queue and handled within
-	 * the same call, guaranteeing deterministic breadth-first ordering for
-	 * event chains.
+	 * Processes every event currently in the queue, up to @p max_events per call.
+	 * Events emitted by handlers during processing are appended to the end of the
+	 * queue and handled within the same call, guaranteeing deterministic breadth-first
+	 * ordering for event chains. The cap prevents an infinite loop if a badly-formed
+	 * handler continuously re-emits events.
 	 * 
+	 * @param max_events Maximum number of events to dispatch in a single call (default: 1000).
 	 * @note Call once per frame, after the UI layer has finished rendering.
 	 */
-	void process() {
-		while (!event_queue.empty()) {
+	void Process(int max_events = 1000) {
+		int count = 0;
+		while (!event_queue.empty() && count < max_events) {
 			auto fn = std::move(event_queue.front());
 			event_queue.pop();
 			fn();
+			++count;
 		}
 	}
 

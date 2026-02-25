@@ -7,7 +7,7 @@ struct EvB { int value; };
 struct EvC { int value; };
 
 // ---------------------------------------------------------------------------
-// Basic enqueue / process behaviour
+// Basic enqueue / Process behaviour
 // ---------------------------------------------------------------------------
 
 TEST(EventPool, Event_Count)
@@ -23,7 +23,7 @@ TEST(EventPool, Event_Count)
 	// Nothing dispatched yet
 	EXPECT_EQ(received, 0);
 
-	pool.process();
+	pool.Process();
 
 	EXPECT_EQ(received, 2);
 }
@@ -39,7 +39,7 @@ TEST(EventPool, Event_Order)
 	pool.emit(EvA{ 20 });
 	pool.emit(EvA{ 30 });
 
-	pool.process();
+	pool.Process();
 
 	ASSERT_EQ(order.size(), 3u);
 	EXPECT_EQ(order[0], 10);
@@ -59,7 +59,7 @@ TEST(EventPool, Event_Order2)
 	pool.emit(EvB{ 2 });
 	pool.emit(EvA{ 3 });
 
-	pool.process();
+	pool.Process();
 
 	ASSERT_EQ(order.size(), 3u);
 	EXPECT_EQ(order[0], 1);
@@ -74,9 +74,9 @@ TEST(EventPool, Event_Empty)
 
 	pool.subscribe<EvA>([&](const EvA&) { received++; });
 
-	// process() on an empty queue must not throw or crash
-	pool.process();
-	pool.process();
+	// Process() on an empty queue must not throw or crash
+	pool.Process();
+	pool.Process();
 
 	EXPECT_EQ(received, 0);
 }
@@ -107,7 +107,7 @@ TEST(EventPool, Event_Chain)
 	});
 
 	pool.emit(EvA{ 1 });
-	pool.process();
+	pool.Process();
 
 	ASSERT_EQ(order.size(), 3u);
 	EXPECT_EQ(order[0], "A");
@@ -138,7 +138,7 @@ TEST(EventPool, Event_MultiChain)
 
 	pool.emit(EvA{ 1 });
 	pool.emit(EvA{ 2 });
-	pool.process();
+	pool.Process();
 
 	// A1 and A2 were in queue first → dispatched first.
 	// B1 and B2 are enqueued (in that order) while A1/A2 are processed.
@@ -150,4 +150,20 @@ TEST(EventPool, Event_MultiChain)
 	EXPECT_EQ(order[3], "B2");
 	EXPECT_EQ(order[4], "C1");
 	EXPECT_EQ(order[5], "C2");
+}
+
+// Verify that Process() stops after max_events even if more events remain.
+TEST(EventPool, Event_MaxCap)
+{
+	EventPool pool;
+	int received = 0;
+
+	pool.subscribe<EvA>([&](const EvA&) { received++; });
+
+	for (int i = 0; i < 20; i++)
+		pool.emit(EvA{ i });
+
+	pool.Process(5);
+
+	EXPECT_EQ(received, 5);
 }

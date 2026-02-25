@@ -55,7 +55,7 @@ Application::Application()
 		if(mesh->using_material)
 			EventPool.emit<MaterialStructChangedEvent>({ dynamic_cast<ObjectID*>(mesh.get()), mesh->o_material.get() });
 	}
-	EventPool.process();
+	EventPool.Process();
 
 	// TODO: event system
 	renderer->r_shadow_system.ParseLightData(scene->light_list, renderer->GetConfig()->RequiresMomentShadow());
@@ -168,7 +168,7 @@ int Application::Run()
 
 		UI->RenderUI(Ctx, EventPool);
 
-		EventPool.process();
+		EventPool.Process();
 
 		Scene* scene = dynamic_cast<Scene*>(Ctx.scene.active_scene);
 		/* Render here */		
