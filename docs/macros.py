@@ -16,4 +16,4 @@ def define_env(env):
 
     @env.macro
     def cls(name):
-        return f"[`{name}`](Renderer/class_{camel_to_snake(name)}.md)"
+        return f"[`{name}`](Renderer/class{name}.md)"
