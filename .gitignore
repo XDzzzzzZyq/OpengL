@@ -387,3 +387,6 @@ OpenGL
 
 # CodeQL artifacts
 _codeql_detected_source_root
+
+# Doxygen output
+docs/

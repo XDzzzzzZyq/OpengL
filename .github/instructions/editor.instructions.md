@@ -79,7 +79,10 @@ class Context {
     EditorContext editor;
     RenderContext render;
     
-    void Init(EventPool& pool);
+    // Subscribes event handlers at construction time (RAII — no Init() call needed)
+    explicit Context(EventPool& pool);
+    Context(const Context&) = delete;
+    Context& operator=(const Context&) = delete;
 };
 ```
 - Aggregates all context types

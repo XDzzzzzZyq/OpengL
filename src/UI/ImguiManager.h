@@ -30,6 +30,8 @@
 #include <vector>
 #include <unordered_map>
 
+class Window; ///< Forward declaration — see app/Window.h
+
 /*#define ParaUpdate ParaUpdate*/
 
 /**
@@ -45,7 +47,7 @@
  * UI Rendering Flow:
  * - NewFrame() - Prepare ImGui for new frame
  * - RenderUI() - Render all active layers and menus
- * - Terminate() - Cleanup ImGui resources
+ * - Destructor - Cleanup ImGui resources
  * 
  * Component Management:
  * - Layers: Dockable UI panels (Viewport, Outliner, etc.)
@@ -73,26 +75,30 @@ public:
 public:
 
 	/**
-	 * @brief Constructs ImguiManager instance.
-	 * @note Does not initialize ImGui. Call Init() after construction.
-	 */
-	ImguiManager();
-	
-	/**
-	 * @brief Initializes ImGui context, backends, and UI components.
-	 * 
+	 * @brief Constructs and fully initializes the ImguiManager.
+	 *
+	 * Takes Window& to enforce that the GLFW/GL context (steps 1–3) is active
+	 * before ImGui backend initialization. Creates the ImGui context internally.
 	 * Sets up:
 	 * - ImGui context with GLFW + OpenGL3 backends
 	 * - Configuration flags (docking, viewports, etc.)
 	 * - UI theme and style
 	 * - Default layers and menus
 	 * - Event subscriptions for all UI components
-	 * 
+	 *
 	 * @param evt EventPool for subscribing to UI-related events
-	 * @note Must be called before RenderUI()
+	 * @param w   Active Window — used for GLFW backend initialization
 	 */
-	void Init(EventPool& evt);
-	
+	ImguiManager(EventPool& evt, Window& w);
+
+	/**
+	 * @brief Shuts down ImGui backends and destroys context.
+	 */
+	~ImguiManager();
+
+	ImguiManager(const ImguiManager&) = delete;
+	ImguiManager& operator=(const ImguiManager&) = delete;
+
 	/**
 	 * @brief Debug utility for printing UI component hierarchy.
 	 * @note Development/diagnostic use only
@@ -174,14 +180,6 @@ public:
 	 * @note User actions emit Events via evt
 	 */
 	void RenderUI(const Context& ctx, EventPool& evt, bool rend = true);
-	
-	/**
-	 * @brief Terminates ImGui and cleans up resources.
-	 * 
-	 * Shuts down ImGui backends and destroys context.
-	 * Call before application exit.
-	 */
-	void Terminate() const;
 
 public:
 	/**

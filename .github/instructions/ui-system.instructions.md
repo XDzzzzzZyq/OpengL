@@ -218,9 +218,10 @@ if (ImGui::Selectable(obj->name, is_selected)) {
 ## ImGui Integration
 
 ### Initialization
-- ImGui context created in `ImguiManager::Init()`
+- `ImguiManager(EventPool&, Window&)` constructor creates the ImGui context, initializes GLFW + OpenGL3 backends, and applies theme/style (RAII — no separate `Init()` call)
 - ImGui backends: GLFW + OpenGL3
 - Custom font and theme applied
+- Destructor (`~ImguiManager`) shuts down backends and destroys the ImGui context
 
 ### Rendering Loop
 ```cpp

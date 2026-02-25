@@ -29,6 +29,8 @@
 #include <vector>
 #include <unordered_map>
 
+class Window; ///< Forward declaration — see app/Window.h
+
 /**
  * @brief OpenGL 4.6 renderer providing real-time rendering pipeline.
  * 
@@ -133,23 +135,26 @@ public:
 public:
 
 	/**
-	 * @brief Constructs a Renderer instance.
-	 * @note Does not initialize GPU resources. Call Init() after construction.
-	 */
-	Renderer();
-	
-	/**
-	 * @brief Initializes the renderer and subscribes to events.
+	 * @brief Constructs and fully initializes the renderer.
+	 *
+	 * Takes Window& to enforce that steps 1–3 of the required initialization
+	 * sequence (glfwInit, glfwCreateWindow, glfwMakeContextCurrent) have already
+	 * completed. Sets glewExperimental, calls glewInit, configures OpenGL state,
+	 * initializes framebuffers and shadow system, and subscribes to events.
+	 *
 	 * @param evt EventPool for subscribing to viewport resize and other events
-	 * @note Must be called before Render()
+	 * @param w   Active Window — proves the OpenGL context is current
 	 */
-	void Init(EventPool& evt);
+	Renderer(EventPool& evt, Window& w);
 
 	/**
 	 * @brief Destroys the renderer and releases all GPU resources.
 	 * @note All OpenGL objects are deleted deterministically
 	 */
 	~Renderer();
+
+	Renderer(const Renderer&) = delete;
+	Renderer& operator=(const Renderer&) = delete;
 
 public:
 

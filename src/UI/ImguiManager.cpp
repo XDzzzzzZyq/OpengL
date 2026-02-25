@@ -9,13 +9,16 @@
 
 #include "events/KeyMouseEvents.h"
 
+#include "../app/Window.h"
+
 bool ImguiManager::is_prefW_open = false;
 
-ImguiManager::ImguiManager()
-{}
-
-void ImguiManager::Init(EventPool& evt)
+ImguiManager::ImguiManager(EventPool& evt, Window& w)
 {
+	// Create the ImGui context; must happen before any ImGui::GetIO() / GetStyle() calls.
+	// Moved here from Application so ImguiManager fully owns its context lifetime.
+	ImGui::CreateContext();
+
 	io = &ImGui::GetIO();
 	m_style = &ImGui::GetStyle();
 
@@ -23,10 +26,8 @@ void ImguiManager::Init(EventPool& evt)
 	RegistarMenuEvents(evt);
 	RegisterLayerEvents(evt);
 
-	GLFWwindow* window = glfwGetCurrentContext();
-
 	ImGui_ImplOpenGL3_Init();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(w.Get(), true);
 	ImGui::StyleColorsDark();
 
 	ImGui::GetStyle().Colors[ImGuiCol_Header] = ImVec4(1, 1, 1, 0);
@@ -57,6 +58,13 @@ void ImguiManager::Init(EventPool& evt)
 	//config.GlyphMinAdvanceX = 13.0f;// Use if you want to make the icon monospaced
 	static const ImWchar icon_ranges[] = { ICON_MIN,ICON_MAX,0 };
 	ImguiTheme::th_data.font_data.push_back(ImGui::GetIO().Fonts->AddFontFromFileTTF("res/icon/OpenFontIcons.ttf", 13.0f, &config, icon_ranges));
+}
+
+ImguiManager::~ImguiManager()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }
 
 void ImguiManager::_debug() const
@@ -290,11 +298,4 @@ void ImguiManager::RenderUI(const Context& ctx, EventPool& evt, bool rend)
 			});
 		//glfwMakeContextCurrent(window);
 	}
-}
-
-void ImguiManager::Terminate() const
-{
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 }
