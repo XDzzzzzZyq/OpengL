@@ -1,0 +1,24 @@
+site_name: OpenGL Renderer
+site_description: Modern C++ Rendering Engine with OpenGL 4.6
+site_url: https://github.com/XDzzzzzZyq/OpengL
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - content.code.copy
+
+nav:
+  - Architecture: index.md
+
+plugins:
+  - search
+  - mkdoxy:
+      projects:
+        Renderer:    # name of project must be alphanumeric + numbers (without spaces)
+          src-dirs: src/    # path to source code (support multiple paths separated by space) => INPUT
+          full-doc: True    # if you want to generate full documentation
+          doxy-cfg:         # standard doxygen configuration (key: value)
+            FILE_PATTERNS: "*.cpp *.h*" # specify file patterns to filter out
+            RECURSIVE: True # recursive search in source directories

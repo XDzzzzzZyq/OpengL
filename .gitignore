@@ -389,4 +389,7 @@ OpenGL
 _codeql_detected_source_root
 
 # Doxygen output
-docs/
+docs/html/
+docs/xml/
+docs/theme/
+site/

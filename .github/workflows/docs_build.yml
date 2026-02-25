@@ -2,7 +2,7 @@ name: Build and Deploy Doxygen
 
 on:
   push:
-    branches: [ main, web-document ]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -28,7 +28,7 @@ jobs:
         pip install mkdocs mkdocs-material mkdocstrings mkdocstrings-python mkdoxy
 
     - name: Generate Docs
-      run: mkdocs build
+      run: doxygen Doxyfile
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
@@ -36,7 +36,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ./site
+        path: ./docs/html
 
     - name: Deploy
       id: deployment
