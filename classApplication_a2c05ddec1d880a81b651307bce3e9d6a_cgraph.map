@@ -1,0 +1,99 @@
+<map id="Application::Init" name="Application::Init">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,695,129,720"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="524,301,649,327"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,694,76,647,94,578,108,540,126,502,148,467,175,436,213,406,254,381,298,361,344,345,433,324,510,314,511,320,434,329,345,350,300,366,256,386,216,410,179,440,153,470,131,505,113,542,99,579,81,648,73,695"/>
+<area shape="rect" id="Node000003" href="$classRenderer.html#ad2b6970c9029c85e3899a9f6b2ccc38f" title="Returns pointer to render configuration." alt="" coords="510,5,663,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="67,694,75,587,94,421,109,333,127,253,149,185,161,159,175,139,208,107,246,81,287,61,330,45,417,24,496,16,496,21,418,30,332,50,289,66,249,86,212,111,179,142,166,162,154,187,132,254,114,334,100,422,80,588,72,694"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#af3229ff63b2414ea99320dd491d501ad" title="Returns pointer to the main render result framebuffer." alt="" coords="189,616,400,641"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="89,692,129,671,176,650,203,642,205,647,178,655,131,675,91,697"/>
+<area shape="rect" id="Node000005" href="$classRenderer.html#a0e26f4caeddf76ac46fb21ba02a8fcde" title="Initializes the renderer and subscribes to events." alt="" coords="239,153,350,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="69,694,103,550,134,447,175,344,198,299,225,256,273,188,277,191,229,259,203,301,180,346,139,448,108,551,74,695"/>
+<area shape="rect" id="Node000021" href="$classContext.html#adcb0dfebb5417e96ce3f45f58c924820" title="Initializes the context system." alt="" coords="243,451,346,476"/>
+<area shape="poly" id="edge23_Node000001_Node000021" title=" " alt="" coords="78,693,270,485,274,489,82,696"/>
+<area shape="rect" id="Node000029" href="$classMeshLib.html#a9b010ea791f4df4e85edc9fbd0751882" title=" " alt="" coords="215,665,374,691"/>
+<area shape="poly" id="edge34_Node000001_Node000029" title=" " alt="" coords="129,697,201,687,202,693,130,702"/>
+<area shape="rect" id="Node000031" href="$structShadowSystem.html#a8881456b3b0449dab5252e94fd859124" title="Parses basic lights (point, sun, spot, area) into GPU buffers." alt="" coords="181,780,409,805"/>
+<area shape="poly" id="edge36_Node000001_Node000031" title=" " alt="" coords="89,718,129,742,178,765,207,774,206,779,176,770,127,747,86,722"/>
+<area shape="rect" id="Node000040" href="$structShadowSystem.html#acb2c868aa63489e887365acb77640e08" title="Parses polygonal lights into GPU buffers." alt="" coords="186,715,403,755"/>
+<area shape="poly" id="edge46_Node000001_Node000040" title=" " alt="" coords="130,712,172,718,172,723,129,718"/>
+<area shape="rect" id="Node000041" href="$classRenderConfigs.html#a3284b84ea398f3fd31edd8e9d57b0ec2" title="Checks if moment&#45;based shadow algorithm is selected." alt="" coords="177,830,412,870"/>
+<area shape="poly" id="edge50_Node000001_Node000041" title=" " alt="" coords="80,719,120,765,147,792,179,814,194,822,191,827,176,819,144,796,116,769,76,722"/>
+<area shape="rect" id="Node000042" href="$classSceneManager.html#a848f8de847a2e89dce03514ee80b84fa" title="Creates or retrieves the shadow test scene." alt="" coords="206,895,383,920"/>
+<area shape="poly" id="edge51_Node000001_Node000042" title=" " alt="" coords="75,719,88,752,109,796,139,842,158,862,179,880,195,889,192,893,176,884,154,866,135,845,104,799,83,755,70,721"/>
+<area shape="rect" id="Node000043" href="$classRenderContext.html#a7067379a30505953f28f005240206a7b" title=" " alt="" coords="198,944,391,969"/>
+<area shape="poly" id="edge52_Node000001_Node000043" title=" " alt="" coords="73,720,83,762,102,819,133,880,154,907,179,931,187,936,184,940,176,935,150,911,129,883,97,821,78,763,68,721"/>
+<area shape="rect" id="Node000044" href="$classSceneContext.html#a2f33864931d1f403a7acb641bc9b0fa4" title="Sets the active scene." alt="" coords="203,993,387,1019"/>
+<area shape="poly" id="edge53_Node000001_Node000044" title=" " alt="" coords="72,720,79,769,96,840,109,878,128,916,151,950,179,980,192,989,189,993,176,984,146,954,123,919,105,880,91,842,74,770,67,720"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="315,151,410,84,433,60,443,50,459,40,496,26,497,31,461,44,446,54,437,64,414,88,318,155"/>
+<area shape="rect" id="Node000006" href="$structShadowSystem.html#a1b482835faae40702772786d6930b5ca" title="Initializes static shadow map framebuffers and shaders." alt="" coords="460,104,713,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="350,154,497,129,498,134,351,159"/>
+<area shape="rect" id="Node000008" href="$structShadowSystem.html#af28f61e53e2997f3997e183a51ccadeb" title="Initializes GPU buffers." alt="" coords="511,153,662,179"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="350,163,497,163,497,169,350,169"/>
+<area shape="rect" id="Node000009" href="$classComputeShader.html#a8cf455c6314750da486bd021d2d9a74f" title="Initializes compute shader library with default shaders." alt="" coords="470,203,703,228"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="351,173,498,198,497,203,350,178"/>
+<area shape="rect" id="Node000019" href="$classRenderer.html#a310de64823ed1fcd010af4b0ef36d124" title="Initializes all framebuffers for the rendering pipeline." alt="" coords="491,55,682,80"/>
+<area shape="poly" id="edge21_Node000005_Node000019" title=" " alt="" coords="318,151,381,120,459,89,490,80,491,86,461,94,383,125,320,156"/>
+<area shape="rect" id="Node000020" href="$classEventPool.html#acb94d3258db23f862676ed4fa9983069" title="Subscribes a handler to events of type Event." alt="" coords="508,252,665,277"/>
+<area shape="poly" id="edge22_Node000005_Node000020" title=" " alt="" coords="321,177,384,207,461,237,496,246,494,251,459,242,382,211,319,181"/>
+<area shape="rect" id="Node000007" href="$classChainedShader.html#a23356f85a2f8d931a91ddafecd09594f" title="Imports or retrieves a cached chained shader." alt="" coords="765,104,981,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="714,114,751,114,751,119,714,119"/>
+<area shape="rect" id="Node000010" href="$classComputeShader.html#aec5bef1bb79068634f8268186804d637" title="Stores default uniform configs for a shader." alt="" coords="761,253,984,293"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="656,225,714,237,765,247,764,252,713,242,655,231"/>
+<area shape="rect" id="Node000011" href="$namespacexdzm.html#a1a0322662262871a40679d44110c2428" title=" " alt="" coords="797,153,949,179"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="661,200,785,178,785,184,661,205"/>
+<area shape="rect" id="Node000017" href="$namespacexdzm.html#a62679f0355224dff46e71990ffc725a8" title=" " alt="" coords="813,203,932,228"/>
+<area shape="poly" id="edge18_Node000009_Node000017" title=" " alt="" coords="704,213,800,213,800,218,704,218"/>
+<area shape="rect" id="Node000012" href="$namespacexdzm.html#abe0a3100dafb4cb521676977fa2aaef4" title=" " alt="" coords="1520,104,1631,129"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="942,151,1032,138,1163,127,1294,120,1506,115,1506,120,1294,126,1163,133,1032,143,943,156"/>
+<area shape="rect" id="Node000013" href="$namespacexdzm.html#ac0156d6b38db1bca60618eadff9809e8" title=" " alt="" coords="1032,153,1151,179"/>
+<area shape="poly" id="edge13_Node000011_Node000013" title=" " alt="" coords="949,163,1018,163,1018,169,949,169"/>
+<area shape="rect" id="Node000014" href="$namespacexdzm.html#a0c6da45fc724d8cdfe3670a3ceb358ac" title=" " alt="" coords="1199,153,1301,179"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1151,163,1185,163,1185,169,1151,169"/>
+<area shape="rect" id="Node000015" href="$namespacexdzm.html#a676bfa626cf05dc1493321fde6e636ab" title=" " alt="" coords="1349,153,1460,179"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="1302,163,1335,163,1335,169,1302,169"/>
+<area shape="poly" id="edge17_Node000015_Node000012" title=" " alt="" coords="1449,151,1516,131,1518,136,1450,156"/>
+<area shape="rect" id="Node000016" href="$namespacexdzm.html#aad1f3d1a5609e463296492b6173ab3df" title=" " alt="" coords="1508,153,1643,179"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="1460,163,1494,163,1494,169,1460,169"/>
+<area shape="rect" id="Node000018" href="$namespacexdzm.html#abdf4385353606fb241189c607bee2b39" title=" " alt="" coords="1036,203,1147,228"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="932,213,1023,213,1023,218,932,218"/>
+<area shape="poly" id="edge20_Node000018_Node000014" title=" " alt="" coords="1132,200,1194,180,1196,185,1134,205"/>
+<area shape="poly" id="edge24_Node000021_Node000002" title=" " alt="" coords="314,448,410,380,433,356,443,346,459,336,509,319,511,324,461,340,446,350,437,360,414,384,317,453"/>
+<area shape="poly" id="edge32_Node000021_Node000020" title=" " alt="" coords="302,449,325,415,360,371,405,325,459,286,494,272,496,277,461,291,409,329,364,374,329,418,306,452"/>
+<area shape="rect" id="Node000022" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="469,501,704,527"/>
+<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="347,470,499,496,499,502,346,475"/>
+<area shape="rect" id="Node000024" href="$classScene.html#acea22b0995bd536f595fab03648df2ed" title="Retrieves object by UID." alt="" coords="513,551,661,576"/>
+<area shape="poly" id="edge27_Node000021_Node000024" title=" " alt="" coords="321,474,383,505,461,535,500,546,499,551,459,541,381,509,319,479"/>
+<area shape="rect" id="Node000025" href="$classSelectionManager.html#a03e105cb66d9d5044dedeadb9b281c3b" title="Returns the first selected object." alt="" coords="473,601,700,641"/>
+<area shape="poly" id="edge28_Node000021_Node000025" title=" " alt="" coords="311,474,373,528,415,558,461,585,481,594,479,598,459,590,412,563,370,532,308,478"/>
+<area shape="rect" id="Node000026" href="$classSelectionManager.html#aec9476c27a4e07d5bd88628366b41352" title="Selects an object." alt="" coords="493,351,680,376"/>
+<area shape="poly" id="edge29_Node000021_Node000026" title=" " alt="" coords="318,448,381,416,459,385,490,376,491,382,461,390,383,421,320,453"/>
+<area shape="rect" id="Node000027" href="$classScene.html#a4de0c5fbd28c486aacd76e4d55c1e79a" title="Directly sets scene status (replaces existing)." alt="" coords="501,400,672,425"/>
+<area shape="poly" id="edge30_Node000021_Node000027" title=" " alt="" coords="346,452,499,425,499,430,347,457"/>
+<area shape="rect" id="Node000028" href="$classScene.html#a9a74ae8223afe65f4135eade107dbd15" title="Updates scene status flag (bitwise OR)." alt="" coords="775,425,971,451"/>
+<area shape="poly" id="edge33_Node000021_Node000028" title=" " alt="" coords="346,458,761,440,761,446,346,464"/>
+<area shape="rect" id="Node000023" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="781,501,965,527"/>
+<area shape="poly" id="edge26_Node000022_Node000023" title=" " alt="" coords="704,511,767,511,767,517,704,517"/>
+<area shape="poly" id="edge31_Node000027_Node000028" title=" " alt="" coords="672,418,761,425,761,431,672,423"/>
+<area shape="rect" id="Node000030" href="$classMeshLib.html#a6783cfe2a5f7b50e50e979742e8381ba" title=" " alt="" coords="511,665,662,691"/>
+<area shape="poly" id="edge35_Node000029_Node000030" title=" " alt="" coords="374,675,497,675,497,681,374,681"/>
+<area shape="rect" id="Node000032" href="$classStorageBuffer.html#ad02152ea87ab19c44d2e69833b7234d5" title="Uploads vector data to SSBO and records the buffer size." alt="" coords="489,715,684,755"/>
+<area shape="poly" id="edge37_Node000031_Node000032" title=" " alt="" coords="360,777,475,755,476,760,361,783"/>
+<area shape="rect" id="Node000035" href="$structShadowSystem.html#aeaf0a86d8251dd3f5f1460bac2fa4c6d" title="Returns light count statistics for current scene." alt="" coords="478,780,695,805"/>
+<area shape="poly" id="edge40_Node000031_Node000035" title=" " alt="" coords="409,790,464,790,464,795,409,795"/>
+<area shape="rect" id="Node000036" href="$structShadowSystem.html#a1dc6c5a1bab1f023b759eb557f0ac87e" title="Initializes the raw shadow map texture for a single light." alt="" coords="471,879,702,904"/>
+<area shape="poly" id="edge41_Node000031_Node000036" title=" " alt="" coords="383,803,413,816,429,828,438,841,447,854,461,865,475,871,473,876,459,870,443,857,434,844,425,832,411,820,381,808"/>
+<area shape="rect" id="Node000038" href="$classUniformBuffer.html#a47c6f897c626a9461c494137188b180f" title="Uploads new data to the UBO and records the buffer size." alt="" coords="502,829,671,855"/>
+<area shape="poly" id="edge43_Node000031_Node000038" title=" " alt="" coords="371,803,498,824,497,830,370,808"/>
+<area shape="rect" id="Node000039" href="$structShadowSystem.html#a2e1bf5030aee1ffa3f0cc70610419884" title="Computes and stores the projection matrix for a light." alt="" coords="485,929,688,969"/>
+<area shape="poly" id="edge44_Node000031_Node000039" title=" " alt="" coords="392,803,414,816,426,828,433,841,439,866,444,892,451,903,462,915,474,923,471,928,458,919,447,906,439,893,434,868,428,843,421,831,410,820,389,808"/>
+<area shape="rect" id="Node000033" href="$classStorageBuffer.html#a90960c29347d1c08eb1819d62a77788e" title="Binds this SSBO to GL_SHADER_STORAGE_BUFFER." alt="" coords="779,748,966,773"/>
+<area shape="poly" id="edge38_Node000032_Node000033" title=" " alt="" coords="685,741,766,749,766,754,684,747"/>
+<area shape="rect" id="Node000034" href="$classStorageBuffer.html#a44ab1ddd14ad49f9e837e6c4ce138e0e" title="Unbinds the current SSBO." alt="" coords="771,699,975,724"/>
+<area shape="poly" id="edge39_Node000032_Node000034" title=" " alt="" coords="684,725,757,718,757,724,685,730"/>
+<area shape="rect" id="Node000037" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="806,907,939,932"/>
+<area shape="poly" id="edge42_Node000036_Node000037" title=" " alt="" coords="702,900,793,909,792,914,702,905"/>
+<area shape="poly" id="edge45_Node000039_Node000037" title=" " alt="" coords="688,936,792,925,793,930,689,941"/>
+<area shape="poly" id="edge47_Node000040_Node000032" title=" " alt="" coords="404,733,475,733,475,738,404,738"/>
+<area shape="poly" id="edge48_Node000040_Node000035" title=" " alt="" coords="398,753,509,775,508,780,397,758"/>
+<area shape="poly" id="edge49_Node000040_Node000038" title=" " alt="" coords="388,753,413,765,429,778,438,791,447,803,461,814,490,826,488,831,459,819,443,807,434,794,425,781,411,770,386,758"/>
+</map>

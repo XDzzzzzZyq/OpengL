@@ -1,0 +1,89 @@
+<map id="ShaderEditor::RenderLayer" name="ShaderEditor::RenderLayer">
+<area shape="rect" id="Node000001" title="Renders the layer&#39;s UI elements." alt="" coords="5,367,200,392"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="299,5,424,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,366,112,307,136,218,154,169,179,122,209,78,246,40,264,29,284,21,286,26,267,33,250,44,213,81,183,125,159,172,141,220,118,308,108,367"/>
+<area shape="rect" id="Node000003" href="$ShaderEditor_8cpp.html#a946624451f5cf4432eb7df9b61542605" title=" " alt="" coords="287,55,436,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="104,366,116,314,142,239,161,198,184,158,213,121,246,89,272,75,275,80,250,93,217,124,189,161,166,200,147,241,121,315,109,367"/>
+<area shape="rect" id="Node000005" href="$classShaders.html#aecb74e4da338c83bcb65066330877ed0" title="Returns list of all shader stages in this program." alt="" coords="259,104,463,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="105,366,121,322,149,260,191,195,217,165,246,140,258,133,261,137,250,144,220,169,195,198,154,263,126,324,110,367"/>
+<area shape="rect" id="Node000006" href="$classSelectionManager.html#a03e105cb66d9d5044dedeadb9b281c3b" title="Returns the first selected object." alt="" coords="248,154,475,194"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="109,365,128,333,159,289,199,243,246,204,257,198,260,202,250,208,203,247,163,292,133,336,113,368"/>
+<area shape="rect" id="Node000007" href="$ShaderEditor_8cpp.html#a70ef063886abf9832527d30db8695006" title=" " alt="" coords="294,219,429,244"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="113,365,166,310,204,279,247,253,280,241,281,246,249,258,208,283,170,314,117,368"/>
+<area shape="rect" id="Node000009" href="$classTextEditor.html#a581e92e7aff81a99dcd1ab8dcc95e909" title=" " alt="" coords="289,292,434,317"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="136,364,247,326,280,318,281,323,249,331,138,369"/>
+<area shape="rect" id="Node000010" href="$classInput.html#ad08cd8e2a56642363c7154e3a147f44b" title="Checks if any key is currently held down." alt="" coords="287,341,436,367"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="200,367,273,360,273,365,200,372"/>
+<area shape="rect" id="Node000011" href="$classInput.html#a7b4a5f294cc7090fd601292c3013b6c3" title="Checks if any mouse button is currently held down." alt="" coords="546,612,714,637"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="115,390,167,455,205,492,249,524,319,557,394,583,467,600,533,612,532,617,466,605,392,588,317,562,247,528,202,496,163,458,111,394"/>
+<area shape="rect" id="Node000012" href="$classInput.html#ab2fbebcb2677e7555941acdb385a2bc8" title="Checks if mouse scroll changed this frame." alt="" coords="277,735,446,760"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="108,392,117,451,140,541,159,590,183,638,213,682,250,720,265,730,262,735,246,724,209,685,178,640,154,592,135,542,112,453,103,392"/>
+<area shape="rect" id="Node000013" href="$classNodeEditor.html#a6260e41127416b206cd0300c0d69a2e0" title=" " alt="" coords="276,391,447,416"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="200,386,262,391,262,397,200,391"/>
+<area shape="rect" id="Node000020" href="$classNodeEditor.html#ac927b2f869e28f594e38f75642eccce5" title=" " alt="" coords="279,440,444,465"/>
+<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="140,390,249,425,286,434,285,440,247,430,138,395"/>
+<area shape="rect" id="Node000025" href="$classTextEditor.html#ad57e3b1808cfbcff881222ef55ed8958" title=" " alt="" coords="291,808,432,833"/>
+<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="108,392,117,457,140,557,158,613,182,669,213,722,250,769,272,787,298,801,295,805,269,792,246,773,208,725,178,671,153,615,135,558,112,458,102,392"/>
+<area shape="rect" id="Node000026" href="$classNodeEditor.html#abc395f9dfca8389e1ae1ed8666cb466b" title=" " alt="" coords="287,685,435,711"/>
+<area shape="poly" id="edge31_Node000001_Node000026" title=" " alt="" coords="113,391,167,478,206,536,250,592,294,637,335,674,332,678,290,641,246,596,202,539,162,481,109,394"/>
+<area shape="rect" id="Node000036" href="$classNodeEditor.html#ae8fe0ec227afdf24bb2d6c146f3eddf5" title=" " alt="" coords="275,489,447,515"/>
+<area shape="poly" id="edge46_Node000001_Node000036" title=" " alt="" coords="120,390,175,432,211,455,249,474,273,483,272,488,247,479,208,459,172,436,117,394"/>
+<area shape="rect" id="Node000004" href="$classObjectID.html#a6d24a698a155e5e6c12c55ba5face254" title="Returns pointer to object&#39;s shader, if applicable." alt="" coords="553,55,707,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="436,65,539,65,539,70,436,70"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#a49c802de67580604398ecb6ff76bd450" title="Returns pointer to shader unit for a specific stage." alt="" coords="541,168,719,193"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="428,216,548,193,549,199,429,221"/>
+<area shape="poly" id="edge9_Node000009_Node000009" title=" " alt="" coords="320,294,310,284,315,274,332,267,361,265,398,269,408,274,412,280,408,283,405,278,396,274,361,271,334,273,319,278,316,283,323,290"/>
+<area shape="rect" id="Node000014" href="$classInput.html#abfacdc0b3ff658ef5b4ac4d8fd96c23a" title="Returns mouse X delta since last frame." alt="" coords="543,464,717,489"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="436,413,476,425,500,437,524,449,552,458,551,463,522,454,498,442,474,430,434,419"/>
+<area shape="rect" id="Node000015" href="$classInput.html#af25cbe56644fa80498e65332363a2e29" title="Returns mouse Y delta since last frame." alt="" coords="544,415,716,440"/>
+<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="447,408,531,416,530,421,447,414"/>
+<area shape="rect" id="Node000016" href="$classInput.html#a903d735c909fb9ce6546868b8c9a2e2f" title="Returns current mouse X position." alt="" coords="549,267,711,292"/>
+<area shape="poly" id="edge16_Node000013_Node000016" title=" " alt="" coords="446,389,473,376,489,359,496,340,504,320,521,301,535,293,538,298,524,305,508,323,501,342,494,361,476,380,448,394"/>
+<area shape="rect" id="Node000017" href="$classInput.html#a7d9e4710228d7442c72ec0509f81ea38" title="Returns current mouse Y position." alt="" coords="550,365,710,391"/>
+<area shape="poly" id="edge17_Node000013_Node000017" title=" " alt="" coords="447,393,536,384,536,389,447,398"/>
+<area shape="rect" id="Node000018" href="$classTransform2D.html#a6f0bc06c9b1f9d0cc4f17fe12a97c52e" title="Translates position by offset." alt="" coords="555,217,705,243"/>
+<area shape="poly" id="edge18_Node000013_Node000018" title=" " alt="" coords="446,392,473,376,486,362,492,347,496,316,500,284,507,267,521,252,541,239,544,244,524,256,512,270,505,285,501,316,497,348,490,365,476,380,448,396"/>
+<area shape="rect" id="Node000019" href="$classTransform2D.html#a77910250765ced260e4f8f5135069639" title="Sets world position." alt="" coords="791,217,949,243"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="705,227,778,227,778,233,705,233"/>
+<area shape="poly" id="edge23_Node000020_Node000014" title=" " alt="" coords="445,457,530,465,529,470,444,463"/>
+<area shape="poly" id="edge24_Node000020_Node000015" title=" " alt="" coords="444,442,530,434,531,439,445,448"/>
+<area shape="poly" id="edge25_Node000020_Node000016" title=" " alt="" coords="443,442,473,425,486,411,492,396,496,365,500,333,507,317,521,301,535,291,538,296,524,305,512,320,505,334,501,366,497,398,490,414,476,429,446,447"/>
+<area shape="poly" id="edge26_Node000020_Node000017" title=" " alt="" coords="431,437,474,425,497,412,522,400,546,392,548,397,524,404,500,417,476,430,433,442"/>
+<area shape="rect" id="Node000021" href="$namespacexdzm.html#aa237d4bbe97d987254b83eef8d677a5d" title=" " alt="" coords="555,316,705,341"/>
+<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="443,440,473,425,489,408,496,389,504,369,521,351,540,340,543,345,524,355,508,372,501,391,494,411,476,429,445,445"/>
+<area shape="rect" id="Node000023" href="$classTransform2D.html#ae98aa828971cbf0e239445accfa31d54" title="Scales by factor (uniform)." alt="" coords="555,513,705,539"/>
+<area shape="poly" id="edge27_Node000020_Node000023" title=" " alt="" coords="436,463,476,474,500,486,524,498,552,507,551,512,522,503,498,491,474,479,434,468"/>
+<area shape="rect" id="Node000022" href="$namespacexdzm.html#aebb8c86460482ccc04d78a3a7fd9e199" title=" " alt="" coords="807,316,933,341"/>
+<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="706,326,793,326,793,331,706,331"/>
+<area shape="rect" id="Node000024" href="$classTransform2D.html#ad0ac73d4cbdfafb923bd8ed5a02c9cc8" title="Sets local scale." alt="" coords="785,513,955,539"/>
+<area shape="poly" id="edge28_Node000023_Node000024" title=" " alt="" coords="706,523,771,523,771,529,706,529"/>
+<area shape="poly" id="edge30_Node000025_Node000025" title=" " alt="" coords="320,810,310,800,315,790,332,783,361,781,398,785,408,790,412,796,408,799,405,794,396,790,361,787,334,789,319,794,316,799,323,806"/>
+<area shape="poly" id="edge40_Node000026_Node000011" title=" " alt="" coords="400,683,522,646,555,638,556,643,523,651,402,688"/>
+<area shape="poly" id="edge35_Node000026_Node000014" title=" " alt="" coords="367,684,388,646,422,596,467,543,493,519,521,498,533,492,536,497,524,503,496,523,470,547,426,599,392,649,372,686"/>
+<area shape="poly" id="edge36_Node000026_Node000015" title=" " alt="" coords="369,684,472,525,492,483,502,466,521,449,530,444,533,448,524,453,507,470,497,486,477,527,373,687"/>
+<area shape="rect" id="Node000027" href="$classTransform2D.html#a37656faefb4086f369a01a6fdae6290e" title="Recomputes transform matrix if dirty." alt="" coords="523,883,737,908"/>
+<area shape="poly" id="edge32_Node000026_Node000027" title=" " alt="" coords="436,700,458,707,476,720,492,739,499,758,501,796,503,834,510,852,525,869,529,873,526,877,521,873,506,855,498,835,496,797,494,759,487,741,473,724,455,712,435,705"/>
+<area shape="rect" id="Node000028" href="$classNodes.html#ab28da08d51f7434bc4c8c66bdef6b686" title=" " alt="" coords="562,1033,698,1059"/>
+<area shape="poly" id="edge33_Node000026_Node000028" title=" " alt="" coords="436,698,458,706,477,720,492,739,502,758,511,796,509,834,501,872,494,910,492,947,500,984,510,1002,524,1020,550,1037,548,1041,521,1024,506,1005,495,986,487,948,489,909,496,871,504,834,506,797,497,760,487,742,473,724,455,711,435,703"/>
+<area shape="rect" id="Node000030" href="$classNodes.html#a36fca04a1e49c9f1171803f2e30d860a" title=" " alt="" coords="551,984,709,1009"/>
+<area shape="poly" id="edge37_Node000026_Node000030" title=" " alt="" coords="437,699,458,707,477,720,498,750,507,781,507,812,503,843,498,873,498,903,505,933,525,963,541,976,537,980,521,966,500,935,492,904,493,873,497,842,502,812,502,782,493,753,473,724,455,711,435,704"/>
+<area shape="rect" id="Node000031" href="$classInput.html#ac2e4eb3738e6bf944734bbfa6f1e830b" title="Checks if any mouse button was just clicked." alt="" coords="788,797,952,823"/>
+<area shape="poly" id="edge38_Node000026_Node000031" title=" " alt="" coords="436,699,458,707,477,720,495,745,502,772,502,798,499,824,496,850,497,874,505,897,524,919,551,937,576,948,600,953,624,952,676,940,736,918,770,901,801,879,848,831,852,835,805,883,773,906,738,923,677,945,625,958,600,958,574,953,548,941,521,923,500,900,492,875,491,850,494,824,497,798,497,772,490,748,473,724,455,712,435,704"/>
+<area shape="rect" id="Node000032" href="$classInput.html#aa8e4b3ef5920b2960cda064c1e488f9a" title="Checks if mouse button was just released." alt="" coords="559,711,701,736"/>
+<area shape="poly" id="edge39_Node000026_Node000032" title=" " alt="" coords="436,702,546,713,546,718,435,708"/>
+<area shape="rect" id="Node000033" href="$classNodeEditor.html#a6d1f92570d54a65d56227913019ab795" title=" " alt="" coords="539,784,721,809"/>
+<area shape="poly" id="edge41_Node000026_Node000033" title=" " alt="" coords="437,708,476,720,500,731,524,745,589,776,587,781,521,750,498,736,474,724,435,713"/>
+<area shape="rect" id="Node000034" href="$classUI_1_1ParaInput.html#ab1805007c75a1b3712c5bb81ddf5cce2" title=" " alt="" coords="530,833,730,859"/>
+<area shape="poly" id="edge43_Node000026_Node000034" title=" " alt="" coords="437,701,457,708,476,720,488,732,496,745,501,771,507,797,513,809,524,820,531,825,528,829,521,824,509,812,502,799,496,772,491,747,484,735,473,724,455,713,435,706"/>
+<area shape="rect" id="Node000035" href="$classNodeEditor.html#aaca281423a30fbe1a78fa6dd4362f556" title=" " alt="" coords="561,661,699,687"/>
+<area shape="poly" id="edge44_Node000026_Node000035" title=" " alt="" coords="435,689,547,679,548,684,436,694"/>
+<area shape="rect" id="Node000029" href="$classNodes.html#ad35f91a6e5c8636a15221e02c9032084" title=" " alt="" coords="793,1033,947,1059"/>
+<area shape="poly" id="edge34_Node000028_Node000029" title=" " alt="" coords="698,1043,780,1043,780,1049,698,1049"/>
+<area shape="poly" id="edge42_Node000033_Node000033" title=" " alt="" coords="591,786,583,776,587,766,603,760,630,757,664,761,677,771,673,775,662,766,630,763,604,765,591,770,588,775,595,782"/>
+<area shape="poly" id="edge45_Node000035_Node000031" title=" " alt="" coords="701,682,738,696,772,716,803,740,851,785,847,789,799,744,769,720,736,700,699,687"/>
+<area shape="poly" id="edge47_Node000036_Node000016" title=" " alt="" coords="446,491,473,475,489,454,496,434,496,390,496,345,504,323,521,301,535,291,538,295,525,305,509,326,502,346,501,390,501,435,493,457,476,479,449,495"/>
+<area shape="poly" id="edge48_Node000036_Node000017" title=" " alt="" coords="446,488,473,475,489,457,496,438,504,419,521,400,536,391,539,396,524,404,508,421,501,440,494,460,476,479,449,493"/>
+<area shape="poly" id="edge50_Node000036_Node000023" title=" " alt="" coords="448,507,541,515,541,521,447,512"/>
+<area shape="rect" id="Node000037" href="$classInput.html#a2cc2b858e16ef9e0e048af378c8bb60b" title="Returns vertical scroll delta." alt="" coords="565,563,695,588"/>
+<area shape="poly" id="edge49_Node000036_Node000037" title=" " alt="" coords="403,512,523,547,560,557,559,562,522,553,402,517"/>
+</map>

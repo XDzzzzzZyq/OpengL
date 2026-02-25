@@ -1,0 +1,37 @@
+<map id="Renderer::Init" name="Renderer::Init">
+<area shape="rect" id="Node000001" title="Initializes the renderer and subscribes to events." alt="" coords="5,129,116,155"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a1b482835faae40702772786d6930b5ca" title="Initializes static shadow map framebuffers and shaders." alt="" coords="164,5,417,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,127,106,84,133,60,163,40,178,33,180,38,165,44,136,64,110,87,73,131"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#ad2b6970c9029c85e3899a9f6b2ccc38f" title="Returns pointer to render configuration." alt="" coords="214,55,367,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="82,127,119,107,163,89,200,79,201,84,165,94,122,112,85,131"/>
+<area shape="rect" id="Node000005" href="$structShadowSystem.html#af28f61e53e2997f3997e183a51ccadeb" title="Initializes GPU buffers." alt="" coords="215,104,366,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="116,133,201,124,202,129,117,139"/>
+<area shape="rect" id="Node000006" href="$classComputeShader.html#a8cf455c6314750da486bd021d2d9a74f" title="Initializes compute shader library with default shaders." alt="" coords="174,153,407,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="117,145,160,150,160,155,116,150"/>
+<area shape="rect" id="Node000016" href="$classRenderer.html#a310de64823ed1fcd010af4b0ef36d124" title="Initializes all framebuffers for the rendering pipeline." alt="" coords="195,203,386,228"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="85,152,122,171,165,189,194,197,192,202,163,194,120,176,83,157"/>
+<area shape="rect" id="Node000017" href="$classEventPool.html#acb94d3258db23f862676ed4fa9983069" title="Subscribes a handler to events of type Event." alt="" coords="212,252,369,277"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="73,153,110,196,136,219,165,238,199,251,197,256,163,243,133,223,106,200,69,156"/>
+<area shape="rect" id="Node000003" href="$classChainedShader.html#a23356f85a2f8d931a91ddafecd09594f" title="Imports or retrieves a cached chained shader." alt="" coords="469,5,685,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="418,15,455,15,455,21,418,21"/>
+<area shape="rect" id="Node000007" href="$classComputeShader.html#aec5bef1bb79068634f8268186804d637" title="Stores default uniform configs for a shader." alt="" coords="465,89,688,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="355,151,417,138,462,129,463,134,418,143,356,156"/>
+<area shape="rect" id="Node000008" href="$namespacexdzm.html#a1a0322662262871a40679d44110c2428" title=" " alt="" coords="501,153,653,179"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="408,163,487,163,487,169,408,169"/>
+<area shape="rect" id="Node000014" href="$namespacexdzm.html#a62679f0355224dff46e71990ffc725a8" title=" " alt="" coords="517,203,636,228"/>
+<area shape="poly" id="edge14_Node000006_Node000014" title=" " alt="" coords="365,176,504,200,503,205,365,181"/>
+<area shape="rect" id="Node000009" href="$namespacexdzm.html#abe0a3100dafb4cb521676977fa2aaef4" title=" " alt="" coords="1224,104,1335,129"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="646,151,736,138,867,127,998,120,1210,115,1210,120,998,126,867,133,736,143,647,156"/>
+<area shape="rect" id="Node000010" href="$namespacexdzm.html#ac0156d6b38db1bca60618eadff9809e8" title=" " alt="" coords="736,153,855,179"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="653,163,722,163,722,169,653,169"/>
+<area shape="rect" id="Node000011" href="$namespacexdzm.html#a0c6da45fc724d8cdfe3670a3ceb358ac" title=" " alt="" coords="903,153,1005,179"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="855,163,889,163,889,169,855,169"/>
+<area shape="rect" id="Node000012" href="$namespacexdzm.html#a676bfa626cf05dc1493321fde6e636ab" title=" " alt="" coords="1053,153,1164,179"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1006,163,1039,163,1039,169,1006,169"/>
+<area shape="poly" id="edge13_Node000012_Node000009" title=" " alt="" coords="1153,151,1220,131,1222,136,1154,156"/>
+<area shape="rect" id="Node000013" href="$namespacexdzm.html#aad1f3d1a5609e463296492b6173ab3df" title=" " alt="" coords="1212,153,1347,179"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="1164,163,1198,163,1198,169,1164,169"/>
+<area shape="rect" id="Node000015" href="$namespacexdzm.html#abdf4385353606fb241189c607bee2b39" title=" " alt="" coords="740,203,851,228"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="636,213,727,213,727,218,636,218"/>
+<area shape="poly" id="edge16_Node000015_Node000011" title=" " alt="" coords="836,200,898,180,900,185,838,205"/>
+</map>

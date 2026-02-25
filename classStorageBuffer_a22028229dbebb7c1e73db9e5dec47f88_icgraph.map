@@ -1,0 +1,5 @@
+<map id="StorageBuffer::ReadStorageBuffer" name="StorageBuffer::ReadStorageBuffer">
+<area shape="rect" id="Node000001" title="Reads data from SSBO back to CPU." alt="" coords="200,5,403,45"/>
+<area shape="rect" id="Node000002" href="$classSDFField.html#a323ad564284eb03e76a06f0ba6c3de9b" title=" " alt="" coords="5,13,152,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,28,153,28,153,23,186,23"/>
+</map>

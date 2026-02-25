@@ -1,0 +1,5 @@
+<map id="ObjectID::~ObjectID" name="ObjectID::~ObjectID">
+<area shape="rect" id="Node000001" title="Destroys the ObjectID." alt="" coords="5,5,159,31"/>
+<area shape="rect" id="Node000002" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="207,5,340,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,15,193,15,193,21,159,21"/>
+</map>

@@ -1,0 +1,40 @@
+<map id="ShadowSystem::Update" name="ShadowSystem::Update">
+<area shape="rect" id="Node000001" title="Updates shadow maps for the current frame." alt="" coords="5,317,183,343"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a008b37a015b1018a54d8702e50947a54" title="Static method to bind texture by ID." alt="" coords="289,5,407,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,317,105,265,129,189,147,148,169,108,196,72,229,40,251,27,274,20,276,25,253,32,232,44,200,75,173,111,151,151,134,191,111,266,100,318"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#ab3ec7cbd6bf20945f5e4e6608ef05431" title="Returns texture height." alt="" coords="293,55,403,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="96,316,110,272,136,210,175,145,200,115,229,89,253,76,278,69,280,74,255,81,232,94,204,118,179,148,140,213,115,274,101,318"/>
+<area shape="rect" id="Node000005" href="$classInput.html#a959c34ed9a30227746f181411fc19502" title=" " alt="" coords="261,104,435,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="98,316,115,280,143,232,181,182,204,159,229,140,246,131,249,135,232,144,207,163,185,186,147,235,120,283,103,318"/>
+<area shape="rect" id="Node000006" href="$classComputeShader.html#afae262885bbab1ee19b76373b8e8bbb8" title="Returns shader name for shadow rendering." alt="" coords="244,154,452,194"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="104,315,154,261,190,230,229,204,243,197,245,202,232,208,193,235,158,265,108,319"/>
+<area shape="rect" id="Node000007" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="279,219,417,244"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="113,315,164,284,230,253,265,242,266,247,232,258,167,288,116,319"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#af65caec5303d06ec883d7aabe8e1880c" title="Returns texture width." alt="" coords="291,268,405,293"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="160,315,277,292,278,297,161,320"/>
+<area shape="rect" id="Node000009" href="$classComputeShader.html#aefa0207f36b1aadd174e9e10798ac883" title="Imports or retrieves a cached compute shader." alt="" coords="237,317,459,343"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="183,327,223,327,223,333,183,333"/>
+<area shape="rect" id="Node000011" href="$namespacexdzm.html#aad1f3d1a5609e463296492b6173ab3df" title=" " alt="" coords="281,367,415,392"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="161,340,269,361,268,367,160,345"/>
+<area shape="rect" id="Node000012" href="$classRenderConfigs.html#a3284b84ea398f3fd31edd8e9d57b0ec2" title="Checks if moment&#45;based shadow algorithm is selected." alt="" coords="231,417,465,457"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="117,341,168,370,232,401,256,410,254,415,230,406,166,375,114,345"/>
+<area shape="rect" id="Node000013" href="$classRenderConfigs.html#ae614f36ab9d546d6c93b8f02b7c702c8" title="Checks if shadow rendering is enabled." alt="" coords="232,481,464,507"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="106,341,154,402,191,437,232,466,249,474,247,479,229,471,187,441,150,406,102,344"/>
+<area shape="rect" id="Node000014" href="$classComputeShader.html#aad204737be588c2b5fb0045c67aa4cf3" title="Dispatches compute shader with explicit size." alt="" coords="239,555,457,595"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="104,342,151,421,188,471,232,516,282,547,279,552,229,520,184,475,147,424,100,344"/>
+<area shape="rect" id="Node000016" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="804,620,956,645"/>
+<area shape="poly" id="edge20_Node000001_Node000016" title=" " alt="" coords="100,342,110,394,132,468,150,507,172,544,199,578,232,605,275,623,334,636,406,644,486,647,650,645,790,637,790,643,650,651,486,653,406,649,334,641,273,629,229,610,195,581,167,547,145,509,127,469,104,395,94,343"/>
+<area shape="rect" id="Node000017" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="279,671,417,696"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="99,342,109,398,131,481,149,527,171,572,199,613,232,649,248,660,267,669,264,674,246,665,229,653,194,617,166,574,144,529,126,483,104,400,94,343"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="555,5,714,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="407,15,542,15,542,21,407,21"/>
+<area shape="rect" id="Node000010" href="$classComputeShader.html#a9d6f660513c9000424bbc765e44dd02a" title="Imports compute shader and returns shared_ptr." alt="" coords="513,317,756,343"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="460,327,500,327,500,333,460,333"/>
+<area shape="poly" id="edge14_Node000014_Node000014" title=" " alt="" coords="301,556,298,546,306,536,322,531,348,529,377,532,393,539,391,544,376,537,348,534,323,536,309,541,303,547,306,554"/>
+<area shape="rect" id="Node000015" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="551,519,719,544"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="457,556,538,543,539,549,458,561"/>
+<area shape="poly" id="edge16_Node000014_Node000016" title=" " alt="" coords="458,581,756,611,790,616,790,621,756,617,457,587"/>
+<area shape="rect" id="Node000018" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="565,671,704,696"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="417,681,551,681,551,686,417,686"/>
+<area shape="poly" id="edge19_Node000018_Node000016" title=" " alt="" coords="697,668,804,646,805,651,698,673"/>
+</map>

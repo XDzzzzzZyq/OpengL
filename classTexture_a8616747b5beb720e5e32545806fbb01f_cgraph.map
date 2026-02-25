@@ -1,0 +1,5 @@
+<map id="Texture::Resize" name="Texture::Resize">
+<area shape="rect" id="Node000001" title="Resizes the texture." alt="" coords="5,5,127,31"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="175,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,15,161,15,161,21,127,21"/>
+</map>

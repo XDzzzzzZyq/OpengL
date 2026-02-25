@@ -1,0 +1,17 @@
+<map id="ImguiManager::RenderUI" name="ImguiManager::RenderUI">
+<area shape="rect" id="Node000001" title="Renders all active UI layers and menus." alt="" coords="5,129,189,155"/>
+<area shape="rect" id="Node000002" href="$ImguiManager_8cpp.html#a370ab6566358eb7518f2658f55c6f945" title=" " alt="" coords="237,129,341,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,139,223,139,223,145,189,145"/>
+<area shape="rect" id="Node000003" href="$classImguiLayer.html#ab5e12ce9435aca45964bbcc83cc1ba47" title="Returns current layer position." alt="" coords="391,5,577,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="298,127,334,84,359,60,388,40,401,33,404,38,391,44,363,64,338,88,302,131"/>
+<area shape="rect" id="Node000004" href="$classImguiLayer.html#a196250c4926920102f66dc5e7c0ff665" title="Returns current layer size." alt="" coords="389,55,579,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="311,127,346,108,388,89,411,81,413,86,390,94,349,112,313,132"/>
+<area shape="rect" id="Node000005" href="$classInput.html#a903d735c909fb9ce6546868b8c9a2e2f" title="Returns current mouse X position." alt="" coords="403,104,565,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="341,133,390,126,390,132,342,138"/>
+<area shape="rect" id="Node000006" href="$classInput.html#a7d9e4710228d7442c72ec0509f81ea38" title="Returns current mouse Y position." alt="" coords="404,153,564,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="342,146,391,152,390,157,341,151"/>
+<area shape="rect" id="Node000007" href="$namespaceItem.html#a514c8bacb0681893bbd1ef54506ac6dd" title="Checks if mouse position is inside a window region." alt="" coords="425,203,543,228"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="315,152,390,188,417,196,415,201,388,192,313,157"/>
+<area shape="rect" id="Node000008" href="$classImguiLayer.html#a7ba0a2eda63cbcddafd23121ee96e706" title="Renders the layer&#39;s UI elements." alt="" coords="391,252,577,277"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="302,153,338,195,363,218,391,237,407,245,404,250,388,242,360,222,334,198,298,157"/>
+</map>

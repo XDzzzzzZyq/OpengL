@@ -1,0 +1,7 @@
+<map id="ObjectID::GetTransform" name="ObjectID::GetTransform">
+<area shape="rect" id="Node000001" title="Returns pointer to object&#39;s transform, if applicable." alt="" coords="452,5,627,31"/>
+<area shape="rect" id="Node000002" href="$TransformPanel_8cpp.html#a2eb79fe2b453bd8d598d0fd33e4daa38" title=" " alt="" coords="265,5,404,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="438,21,404,21,404,15,438,15"/>
+<area shape="rect" id="Node000003" href="$classTransformPanel.html#ac1d03f2b7870d2e29f112e6ef20c374d" title="Renders the layer&#39;s UI elements." alt="" coords="5,5,217,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="252,21,217,21,217,15,252,15"/>
+</map>

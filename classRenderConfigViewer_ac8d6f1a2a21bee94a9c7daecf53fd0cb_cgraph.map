@@ -1,0 +1,9 @@
+<map id="RenderConfigViewer::RenderLayer" name="RenderConfigViewer::RenderLayer">
+<area shape="rect" id="Node000001" title="Renders the layer&#39;s UI elements." alt="" coords="5,47,160,87"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="241,5,366,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,47,232,31,233,36,161,53"/>
+<area shape="rect" id="Node000003" href="$classRenderContext.html#a96c70ae2f3e34da610645eab0c63e8a4" title="Returns pointer to render configuration." alt="" coords="208,55,399,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,65,194,65,194,70,160,70"/>
+<area shape="rect" id="Node000004" href="$classRenderConfigViewer.html#a21394f4463eb552405020bbe33b746fc" title=" " alt="" coords="226,105,381,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,85,213,99,212,104,160,90"/>
+</map>

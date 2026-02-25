@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classImguiItem.html" title="Base class for all UI widgets (buttons, sliders, inputs, etc.)." alt="" coords="5,104,95,129"/>
+<area shape="rect" id="Node000001" href="$classUI_1_1Button.html" title=" " alt="" coords="168,5,255,31"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="72,93,104,66,141,40,167,28,169,33,144,44,107,70,75,97"/>
+<area shape="rect" id="Node000002" href="$classUI_1_1OpaButton.html" title=" " alt="" coords="155,55,268,80"/>
+<area shape="poly" id="edge9_Node000000_Node000002" title=" " alt="" coords="105,97,168,78,170,83,106,102"/>
+<area shape="rect" id="Node000003" href="$classUI_1_1ParaInput.html" title=" " alt="" coords="159,104,264,129"/>
+<area shape="poly" id="edge10_Node000000_Node000003" title=" " alt="" coords="108,114,158,114,158,119,108,119"/>
+<area shape="rect" id="Node000004" href="$classUI_1_1Text.html" title=" " alt="" coords="176,153,247,179"/>
+<area shape="poly" id="edge11_Node000000_Node000004" title=" " alt="" coords="106,131,177,153,175,158,105,136"/>
+<area shape="rect" id="Node000005" href="$classUI_1_1TextureViewer.html" title=" " alt="" coords="143,203,280,228"/>
+<area shape="poly" id="edge12_Node000000_Node000005" title=" " alt="" coords="76,137,107,163,144,188,171,200,169,205,141,192,104,167,73,141"/>
+</map>

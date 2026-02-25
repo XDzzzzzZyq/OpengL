@@ -1,0 +1,28 @@
+<map id="PolygonLight::RenderPolygon" name="PolygonLight::RenderPolygon">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,228,217,253"/>
+<area shape="rect" id="Node000002" href="$classIndexBuffer.html#ac8bdd0495f718173fb46691ad1b7e4af" title="Binds this IBO to GL_ELEMENT_ARRAY_BUFFER." alt="" coords="315,5,450,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,227,135,189,167,138,210,85,236,60,264,40,301,24,303,29,267,44,239,64,214,88,171,141,140,192,121,229"/>
+<area shape="rect" id="Node000003" href="$classVertexArray.html#ad5059455f0864327028636c628d5a661" title=" " alt="" coords="315,55,450,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,226,175,160,216,121,264,89,301,75,303,80,267,94,220,125,179,164,124,230"/>
+<area shape="rect" id="Node000004" href="$classIndexBuffer.html#af792bc51d9abddfa2219aeebbe52d68b" title="Returns the number of indices." alt="" coords="311,104,454,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="126,226,185,182,223,158,264,138,297,127,299,133,266,143,226,163,188,187,130,230"/>
+<area shape="rect" id="Node000005" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="265,153,500,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="147,225,265,187,299,179,301,184,266,193,148,230"/>
+<area shape="rect" id="Node000007" href="$classSelectionManager.html#a7a41e38c7756892e5fd1237960bd68ae" title="Checks if an object is selected." alt="" coords="275,203,490,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="217,228,261,224,262,229,218,233"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="313,252,452,277"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="218,247,300,255,299,260,217,253"/>
+<area shape="rect" id="Node000010" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="780,277,932,303"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="143,251,199,271,266,287,402,302,538,305,664,302,766,296,767,301,664,308,538,311,401,307,265,293,198,276,141,256"/>
+<area shape="rect" id="Node000011" href="$classIndexBuffer.html#a5a1cfc46339ea7d6e72d22a096da5a77" title="Unbinds the current IBO (binds GL_ELEMENT_ARRAY_BUFFER to 0)." alt="" coords="307,353,458,379"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="132,251,190,290,266,332,311,347,309,352,264,336,187,295,129,256"/>
+<area shape="rect" id="Node000012" href="$classVertexArray.html#a73f0d868a6c76622bcd57063a2c2d8d4" title=" " alt="" coords="307,403,459,428"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="124,252,179,319,220,357,267,389,294,400,292,405,264,394,216,361,175,322,120,255"/>
+<area shape="rect" id="Node000013" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="299,452,467,477"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="121,252,140,290,171,341,214,394,239,418,267,438,287,448,284,453,264,443,236,422,210,398,167,344,135,292,116,255"/>
+<area shape="rect" id="Node000006" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="548,153,732,179"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="500,163,534,163,534,169,500,169"/>
+<area shape="rect" id="Node000009" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="571,252,709,277"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="452,262,557,262,557,267,452,267"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="710,270,767,277,766,282,709,275"/>
+</map>

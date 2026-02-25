@@ -1,0 +1,7 @@
+<map id="TextEditor::MoveRight" name="TextEditor::MoveRight">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,171,56"/>
+<area shape="rect" id="Node000002" href="$classTextEditor.html#af4de0071d66058fdf453af53e346fb36" title=" " alt="" coords="219,5,395,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,31,205,27,205,32,171,36"/>
+<area shape="rect" id="Node000003" href="$TextEditor_8cpp.html#aceba6d048800dffb9e099dfc48674683" title=" " alt="" coords="241,55,372,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,50,228,56,227,61,171,55"/>
+</map>

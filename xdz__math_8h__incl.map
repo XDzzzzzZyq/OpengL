@@ -1,0 +1,32 @@
+<map id="src/extra/xdz_math.h" name="src/extra/xdz_math.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="545,5,703,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,152,109,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="580,33,116,151,115,146,578,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="134,152,351,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="594,33,286,150,285,145,592,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="376,152,549,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="573,33,529,51,508,64,490,80,474,108,467,138,462,137,469,106,486,77,505,60,526,46,571,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="612,79,799,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="639,29,684,68,680,72,635,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="823,79,1014,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="672,28,858,73,857,78,671,33"/>
+<area shape="rect" id="Node000007" href="$macros_8h.html" title="Utility macros for debugging, iteration, and variadic operations." alt="" coords="1039,79,1121,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="704,27,849,47,1025,76,1024,81,849,53,703,32"/>
+<area shape="rect" id="Node000008" href="$operator_8h.html" title=" " alt="" coords="500,79,588,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="613,33,569,72,565,68,609,29"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="1145,79,1217,104"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="704,23,895,42,1132,76,1131,81,894,48,703,28"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="500,101,123,155,122,149,499,96"/>
+<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="500,106,305,151,304,146,499,100"/>
+<area shape="poly" id="edge12_Node000008_Node000004" title=" " alt="" coords="533,106,488,145,484,141,529,102"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="661,152,747,177"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="571,102,666,144,664,149,569,106"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="771,152,882,177"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="589,101,769,146,767,151,588,106"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="907,152,1021,177"/>
+<area shape="poly" id="edge13_Node000008_Node000011" title=" " alt="" coords="589,99,600,101,893,149,893,154,600,107,588,104"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1045,152,1125,177"/>
+<area shape="poly" id="edge14_Node000008_Node000012" title=" " alt="" coords="589,99,600,101,720,117,814,125,910,133,1032,149,1031,155,909,138,814,130,719,122,600,107,588,105"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="574,152,637,177"/>
+<area shape="poly" id="edge15_Node000008_Node000013" title=" " alt="" coords="556,103,588,140,584,143,552,106"/>
+</map>

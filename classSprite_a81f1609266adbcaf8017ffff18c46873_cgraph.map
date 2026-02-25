@@ -1,0 +1,13 @@
+<map id="Sprite::RenderSprite" name="Sprite::RenderSprite">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,157,56"/>
+<area shape="rect" id="Node000002" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="205,5,440,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,33,192,29,192,34,158,38"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="253,55,392,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="158,48,240,56,239,62,157,54"/>
+<area shape="rect" id="Node000003" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="488,5,672,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="440,15,474,15,474,21,440,21"/>
+<area shape="rect" id="Node000005" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="511,55,649,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="392,65,497,65,497,70,392,70"/>
+<area shape="rect" id="Node000006" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="720,55,872,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="649,65,706,65,706,70,649,70"/>
+</map>

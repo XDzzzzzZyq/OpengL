@@ -1,0 +1,20 @@
+<map id="Light::Light" name="Light::Light">
+<area shape="rect" id="Node000001" title="Constructs a light with specified type, power, and color." alt="" coords="5,55,100,80"/>
+<area shape="rect" id="Node000002" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="165,5,299,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,52,171,32,172,37,100,57"/>
+<area shape="rect" id="Node000003" href="$classLight.html#a589fcb42c502bf9f45381655eb231d16" title="Parses light type to sprite icon and name." alt="" coords="148,55,316,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="100,65,134,65,134,70,100,70"/>
+<area shape="rect" id="Node000004" href="$classSprite.html#a457ffeff64d40bdeb187d95c7f33bb6d" title=" " alt="" coords="177,104,287,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="100,77,172,98,171,103,99,83"/>
+<area shape="rect" id="Node000005" href="$classSprite.html#a3ad1e7d1823b86d54db970713834479a" title=" " alt="" coords="383,29,513,55"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="279,101,315,89,363,64,383,56,385,61,365,68,317,94,281,106"/>
+<area shape="rect" id="Node000006" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="379,79,517,104"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="287,108,365,98,366,104,288,113"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="767,104,919,129"/>
+<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="288,114,753,114,753,119,288,119"/>
+<area shape="rect" id="Node000009" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="364,180,532,205"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="270,127,399,173,397,178,268,132"/>
+<area shape="rect" id="Node000007" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="580,79,719,104"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="518,89,566,89,566,94,518,94"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="719,98,753,102,753,108,719,103"/>
+</map>

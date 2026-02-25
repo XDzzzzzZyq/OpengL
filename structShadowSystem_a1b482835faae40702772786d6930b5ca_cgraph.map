@@ -1,0 +1,5 @@
+<map id="ShadowSystem::EnableShadowMap" name="ShadowSystem::EnableShadowMap">
+<area shape="rect" id="Node000001" title="Initializes static shadow map framebuffers and shaders." alt="" coords="5,5,259,31"/>
+<area shape="rect" id="Node000002" href="$classChainedShader.html#a23356f85a2f8d931a91ddafecd09594f" title="Imports or retrieves a cached chained shader." alt="" coords="307,5,523,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,15,293,15,293,21,259,21"/>
+</map>

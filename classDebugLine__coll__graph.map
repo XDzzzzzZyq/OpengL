@@ -1,0 +1,15 @@
+<map id="DebugLine" name="DebugLine">
+<area shape="rect" id="Node000001" title=" " alt="" coords="115,168,206,193"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="5,80,84,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,111,146,166,143,170,70,116"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="21,5,68,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,45,47,80,42,80,42,45"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="108,80,213,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,119,163,167,158,167,158,119"/>
+<area shape="rect" id="Node000005" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="117,5,204,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="163,45,163,80,158,80,158,45"/>
+<area shape="rect" id="Node000006" href="$classRenderShader.html" title="Standard render shader with vertex and fragment stages." alt="" coords="237,80,351,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="266,115,180,170,177,165,263,111"/>
+<area shape="rect" id="Node000007" href="$classShaders.html" title="Base class for OpenGL shader programs." alt="" coords="257,5,331,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="297,45,297,80,291,80,291,45"/>
+</map>

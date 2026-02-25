@@ -1,0 +1,9 @@
+<map id="src/UI/menu/ImguiMSwitch.h" name="src/UI/menu/ImguiMSwitch.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="212,5,420,31"/>
+<area shape="rect" id="Node000002" href="$DefultViewports_8cpp.html" title=" " alt="" coords="5,79,200,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,37,138,81,136,76,268,32"/>
+<area shape="rect" id="Node000003" href="$ImguiManager_8cpp.html" title=" " alt="" coords="225,79,407,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="319,44,319,79,313,79,313,44"/>
+<area shape="rect" id="Node000004" href="$ImguiMSwitch_8cpp.html" title=" " alt="" coords="431,79,654,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="366,32,507,76,505,81,365,37"/>
+</map>

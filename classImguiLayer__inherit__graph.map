@@ -1,0 +1,17 @@
+<map id="ImguiLayer" name="ImguiLayer">
+<area shape="rect" id="Node000001" title="Base class for all UI panels (dockable ImGui windows)." alt="" coords="5,153,100,179"/>
+<area shape="rect" id="Node000002" href="$classMaterialViewer.html" title=" " alt="" coords="165,5,286,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,140,97,89,120,63,146,40,168,28,171,33,150,44,124,66,101,92,69,143"/>
+<area shape="rect" id="Node000003" href="$classOutliner.html" title=" " alt="" coords="188,55,263,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,142,108,115,147,89,187,73,189,78,149,94,111,119,79,146"/>
+<area shape="rect" id="Node000004" href="$classParamControl.html" title=" " alt="" coords="170,104,281,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="110,147,179,127,181,132,111,152"/>
+<area shape="rect" id="Node000005" href="$classRenderConfigViewer.html" title=" " alt="" coords="148,153,303,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="114,163,148,163,148,169,114,169"/>
+<area shape="rect" id="Node000006" href="$classShaderEditor.html" title=" " alt="" coords="173,203,278,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="111,180,181,200,179,205,110,185"/>
+<area shape="rect" id="Node000007" href="$classTransformPanel.html" title=" " alt="" coords="164,252,287,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="79,186,111,212,149,237,179,250,176,254,147,242,108,217,76,190"/>
+<area shape="rect" id="Node000008" href="$classViewport.html" title=" " alt="" coords="185,301,265,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="69,189,102,239,124,264,149,286,186,303,184,308,147,291,120,268,97,242,65,192"/>
+</map>

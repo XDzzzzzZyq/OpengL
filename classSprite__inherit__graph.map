@@ -1,0 +1,7 @@
+<map id="Sprite" name="Sprite">
+<area shape="rect" id="Node000001" title=" " alt="" coords="15,152,75,177"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="5,79,84,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="47,118,47,152,42,152,42,118"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="21,5,68,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,44,47,79,42,79,42,44"/>
+</map>

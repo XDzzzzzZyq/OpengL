@@ -1,0 +1,12 @@
+<map id="UniformBuffer::Bind" name="UniformBuffer::Bind">
+<area shape="rect" id="Node000001" title="Binds UBO to its binding point." alt="" coords="857,5,1008,31"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a726abfc6b74f84230a6014305b89630d" title="Binds all light buffers to shader binding points." alt="" coords="364,5,523,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="843,21,523,21,523,15,843,15"/>
+<area shape="rect" id="Node000005" href="$structShadowSystem.html#a9cc11b99010e36b4b1bb8ec3937d299a" title="Binds all shadow map textures to shader slots." alt="" coords="571,31,809,56"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="843,30,810,34,809,28,843,25"/>
+<area shape="rect" id="Node000003" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,5,316,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,21,316,21,316,15,350,15"/>
+<area shape="rect" id="Node000004" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,21,134,21,134,15,167,15"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="557,32,523,29,523,23,558,27"/>
+</map>

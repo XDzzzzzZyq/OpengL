@@ -1,0 +1,9 @@
+<map id="SDFField::SDFRadialGrad" name="SDFField::SDFRadialGrad">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,191,88"/>
+<area shape="rect" id="Node000002" href="$SDFField_8cpp.html#ac5f0cfed77c1c275dcaf7c600f1b7086" title=" " alt="" coords="293,5,379,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,60,279,29,280,34,152,65"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#a613df42d68a097de900e56f54bc36d99" title="Uploads structured data (header + array) to SSBO and records the buffer size." alt="" coords="239,55,433,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,73,225,73,225,78,191,78"/>
+<area shape="rect" id="Node000004" href="$classSDFField.html#a3a1ac40c3c2e583b901bce9a065a58c1" title=" " alt="" coords="250,120,422,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,85,270,114,269,119,151,91"/>
+</map>

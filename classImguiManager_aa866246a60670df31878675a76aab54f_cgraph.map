@@ -1,0 +1,44 @@
+<map id="ImguiManager::Init" name="ImguiManager::Init">
+<area shape="rect" id="Node000001" title="Initializes ImGui context, backends, and UI components." alt="" coords="5,353,151,379"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a9fdc62994444dcabcf57ae132443b222" title="Sets up default viewport layout configuration." alt="" coords="199,179,428,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,351,283,210,286,214,98,355"/>
+<area shape="rect" id="Node000016" href="$classImguiManager.html#afe851915063764d1aaebed08dce64227" title="Registers all menu event subscriptions." alt="" coords="206,346,421,386"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="151,363,192,363,192,369,151,369"/>
+<area shape="rect" id="Node000021" href="$classImguiManager.html#a57b704191a6921b968c745223315cfba" title="Registers all layer event subscriptions." alt="" coords="206,410,421,450"/>
+<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="127,376,226,404,225,409,125,381"/>
+<area shape="rect" id="Node000003" href="$classImguiManager.html#a175fa21a7346ce63b6764c16e9a07dc2" title="Activates (shows) a layer by name." alt="" coords="496,104,711,129"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,176,475,138,513,129,514,135,477,143,352,181"/>
+<area shape="rect" id="Node000004" href="$classImguiMenuItem.html#a5e293d5ae5a530d7bfb31f30c163787b" title=" " alt="" coords="501,153,706,179"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="428,179,487,173,487,179,428,184"/>
+<area shape="rect" id="Node000005" href="$classImguiManager.html#a2c44842c36b9535bbb343c634ed3a88d" title="Creates and registers a new menu." alt="" coords="483,255,723,280"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="361,201,477,233,538,249,537,254,475,238,360,207"/>
+<area shape="rect" id="Node000007" href="$classImguiManager.html#a6efe93a306bc60097b7a0341782d0e04" title="Finds an item within a layer by name." alt="" coords="783,129,1002,155"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="428,197,573,199,652,196,730,187,791,174,845,157,847,162,792,179,731,193,653,201,573,205,428,202"/>
+<area shape="rect" id="Node000010" href="$classImguiManager.html#a9ecb86c952d2d2f9607925eebbe4d44d" title="Finds a menu item within a menu." alt="" coords="476,304,731,329"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="333,202,394,245,434,269,477,289,505,298,503,303,475,294,432,274,391,250,329,206"/>
+<area shape="rect" id="Node000013" href="$classImguiManager.html#a0454c7f2f257bf73254cab9c43c76aca" title="Retrieves parameter value from a parameter input item." alt="" coords="498,5,709,31"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="322,177,381,110,425,72,475,40,491,33,493,38,477,44,428,76,385,114,326,180"/>
+<area shape="rect" id="Node000015" href="$classImguiItem.html#aafdfe38c9f038a53e82f0ebe29d80541" title="Sets variable argument list for text output items." alt="" coords="518,55,689,80"/>
+<area shape="poly" id="edge15_Node000002_Node000015" title=" " alt="" coords="329,176,391,133,432,109,475,89,504,80,505,85,477,94,434,114,394,137,333,181"/>
+<area shape="rect" id="Node000006" href="$classImguiManager.html#ac0d3df68c192bfa7ab93ab3e2f0aa8a3" title="Adds a menu to the menu bar." alt="" coords="779,255,1007,280"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="723,265,765,265,765,270,723,270"/>
+<area shape="rect" id="Node000008" href="$classImguiLayer.html#a922bfc7cd142fecd22d8990a8b68d949" title="Finds an item by name." alt="" coords="1068,105,1265,131"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1002,130,1054,125,1054,130,1002,135"/>
+<area shape="rect" id="Node000009" href="$classImguiManager.html#ae75cb0c6a0b0c44ba2c24f84eac3928b" title="Finds a layer by name." alt="" coords="1055,155,1279,180"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="1002,149,1041,153,1041,158,1002,155"/>
+<area shape="rect" id="Node000011" href="$classImguiManager.html#a10233c52f6b37f8b913552f2baf6b112" title="Finds a menu by name." alt="" coords="781,304,1005,329"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="731,314,767,314,767,319,731,319"/>
+<area shape="rect" id="Node000012" href="$classImguiMenu.html#a394ba4eb1eecd0a5434bd0402460eb9f" title=" " alt="" coords="795,353,991,379"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="679,327,804,348,803,354,678,332"/>
+<area shape="poly" id="edge13_Node000013_Node000007" title=" " alt="" coords="694,28,732,40,770,57,807,78,866,119,863,123,804,83,767,62,730,44,693,33"/>
+<area shape="rect" id="Node000014" href="$classImguiItem.html#a6b9fdbd5b827a223e34421e7171feeba" title="Returns pointer to parameter value." alt="" coords="819,5,967,31"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="709,15,805,15,805,21,709,21"/>
+<area shape="rect" id="Node000017" href="$classInput.html#aeb9ad12d09855e5c1600ca575cf28b26" title="Parses a hotkey string into KeyState." alt="" coords="525,403,681,428"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="421,382,515,398,514,403,420,387"/>
+<area shape="rect" id="Node000020" href="$classEventPool.html#acb94d3258db23f862676ed4fa9983069" title="Subscribes a handler to events of type Event." alt="" coords="525,353,682,379"/>
+<area shape="poly" id="edge20_Node000016_Node000020" title=" " alt="" coords="421,363,511,363,511,369,421,369"/>
+<area shape="rect" id="Node000018" href="$classInput.html#a39b9b7093369e78b409383398aa33aab" title="Converts character to normal key index." alt="" coords="793,452,992,477"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="679,425,804,447,803,452,678,431"/>
+<area shape="rect" id="Node000019" href="$Input_8cpp.html#a8c7f671a4eaae43db4839df0abcb514a" title=" " alt="" coords="868,403,917,428"/>
+<area shape="poly" id="edge19_Node000017_Node000019" title=" " alt="" coords="681,413,854,413,854,418,681,418"/>
+</map>

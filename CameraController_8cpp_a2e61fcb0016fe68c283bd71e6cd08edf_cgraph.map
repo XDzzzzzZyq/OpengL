@@ -1,0 +1,5 @@
+<map id="CameraRotate" name="CameraRotate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,121,31"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#a0f1e2bfa385e038233b2a1c41857d441" title="Rotates around arbitrary axis through anchor point." alt="" coords="169,5,311,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,15,155,15,155,21,122,21"/>
+</map>

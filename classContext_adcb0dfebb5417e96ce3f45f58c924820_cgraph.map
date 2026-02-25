@@ -1,0 +1,22 @@
+<map id="Context::Init" name="Context::Init">
+<area shape="rect" id="Node000001" title="Initializes the context system." alt="" coords="5,191,108,216"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="211,5,336,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,189,71,158,90,118,118,75,154,40,175,29,196,22,198,27,177,34,158,44,122,79,95,120,76,161,64,191"/>
+<area shape="rect" id="Node000003" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="156,55,391,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="63,189,98,140,124,112,155,89,167,83,170,87,157,94,128,116,102,143,67,192"/>
+<area shape="rect" id="Node000005" href="$classScene.html#acea22b0995bd536f595fab03648df2ed" title="Retrieves object by UID." alt="" coords="199,104,347,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="73,188,109,163,155,140,185,129,187,134,157,144,112,168,76,193"/>
+<area shape="rect" id="Node000006" href="$classSelectionManager.html#a03e105cb66d9d5044dedeadb9b281c3b" title="Returns the first selected object." alt="" coords="160,154,387,194"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="108,194,146,189,147,194,109,199"/>
+<area shape="rect" id="Node000007" href="$classSelectionManager.html#aec9476c27a4e07d5bd88628366b41352" title="Selects an object." alt="" coords="180,219,367,244"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="109,207,167,215,166,220,108,213"/>
+<area shape="rect" id="Node000008" href="$classScene.html#a4de0c5fbd28c486aacd76e4d55c1e79a" title="Directly sets scene status (replaces existing)." alt="" coords="188,268,359,293"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="80,214,115,234,157,253,187,262,186,267,155,258,113,239,77,219"/>
+<area shape="rect" id="Node000009" href="$classScene.html#a9a74ae8223afe65f4135eade107dbd15" title="Updates scene status flag (bitwise OR)." alt="" coords="439,293,635,319"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="68,215,102,261,127,285,157,304,196,317,237,326,321,333,400,329,468,319,469,324,401,334,321,338,236,331,195,322,155,308,124,290,98,265,63,218"/>
+<area shape="rect" id="Node000010" href="$classEventPool.html#acb94d3258db23f862676ed4fa9983069" title="Subscribes a handler to events of type Event." alt="" coords="195,369,352,395"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="65,215,97,279,124,316,158,348,184,362,181,367,154,352,120,320,93,282,61,217"/>
+<area shape="rect" id="Node000004" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="445,55,629,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="391,65,431,65,431,70,391,70"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="359,286,425,293,424,298,359,292"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="ShadowSystem::InitShadowMap" name="ShadowSystem::InitShadowMap">
+<area shape="rect" id="Node000001" title="Initializes the raw shadow map texture for a single light." alt="" coords="453,5,684,31"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a8881456b3b0449dab5252e94fd859124" title="Parses basic lights (point, sun, spot, area) into GPU buffers." alt="" coords="177,5,405,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="440,21,406,21,406,15,440,15"/>
+<area shape="rect" id="Node000003" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="5,5,129,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="163,21,130,21,130,15,163,15"/>
+</map>

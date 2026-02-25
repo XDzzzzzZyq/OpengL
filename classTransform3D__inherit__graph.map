@@ -1,0 +1,27 @@
+<map id="Transform3D" name="Transform3D">
+<area shape="rect" id="Node000001" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="140,252,245,277"/>
+<area shape="rect" id="Node000003" href="$classCamera.html" title="Camera object defining viewpoint and projection for rendering." alt="" coords="310,5,383,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,238,208,196,227,143,254,89,291,40,308,28,311,32,295,44,259,92,232,145,213,197,202,239"/>
+<area shape="rect" id="Node000004" href="$classDebugLine.html" title=" " alt="" coords="301,55,392,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="201,237,234,165,260,125,292,89,308,78,311,82,295,93,264,128,239,168,205,240"/>
+<area shape="rect" id="Node000005" href="$classDebugPoints.html" title=" " alt="" coords="295,104,399,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="206,239,242,189,265,162,292,139,310,127,313,132,295,143,269,166,246,193,211,242"/>
+<area shape="rect" id="Node000006" href="$classEmpty.html" title="Empty transform node for scene hierarchy organization." alt="" coords="315,153,379,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="218,241,292,188,313,177,316,181,295,192,221,246"/>
+<area shape="rect" id="Node000007" href="$classEnvironment.html" title="Environment object providing skybox and Image&#45;Based Lighting." alt="" coords="294,203,399,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="245,245,305,226,307,231,247,250"/>
+<area shape="rect" id="Node000008" href="$classField.html" title=" " alt="" coords="320,252,373,277"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="259,262,320,262,320,267,259,267"/>
+<area shape="rect" id="Node000009" href="$classImagePlane.html" title=" " alt="" coords="297,301,396,327"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="247,279,307,299,305,304,245,284"/>
+<area shape="rect" id="Node000010" href="$classLight.html" title="Light source object supporting point, sun, spot, and area lights." alt="" coords="319,351,374,376"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="221,284,295,337,320,350,318,355,292,342,218,288"/>
+<area shape="rect" id="Node000011" href="$classMesh.html" title="3D mesh object representing renderable geometry with material and transform." alt="" coords="318,400,375,425"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="211,288,246,337,269,363,295,387,319,400,316,405,292,391,265,367,242,340,206,291"/>
+<area shape="rect" id="Node000012" href="$classPolygonLight.html" title=" " alt="" coords="293,449,400,475"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="205,290,239,361,264,401,295,436,311,447,308,451,292,440,260,404,234,364,201,292"/>
+<area shape="rect" id="Node000013" href="$classSDFField.html" title=" " alt="" coords="307,499,386,524"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="202,290,213,332,232,384,259,438,295,485,310,496,307,501,291,489,254,440,227,386,208,334,197,292"/>
+<area shape="rect" id="Node000002" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="5,252,92,277"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,262,140,262,140,267,105,267"/>
+</map>

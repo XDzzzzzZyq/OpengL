@@ -1,0 +1,6 @@
+<map id="Texture::ConvertPNGFrom" name="Texture::ConvertPNGFrom">
+<area shape="rect" id="Node000001" title="Converts texture to PNG&#45;compatible format (RGBA8)." alt="" coords="212,29,403,55"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#aecde0aa6567b4708962380c0c3a726fd" title="Saves texture to file." alt="" coords="5,29,164,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,45,164,45,164,39,198,39"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="124,20,113,11,85,8,61,10,48,15,46,20,53,28,49,31,41,21,45,11,60,5,85,3,115,6,128,15"/>
+</map>

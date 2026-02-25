@@ -1,0 +1,5 @@
+<map id="Scene::ResetStatus" name="Scene::ResetStatus">
+<area shape="rect" id="Node000001" title="Resets scene status to NoChanges." alt="" coords="181,5,328,31"/>
+<area shape="rect" id="Node000002" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,21,133,21,133,15,168,15"/>
+</map>

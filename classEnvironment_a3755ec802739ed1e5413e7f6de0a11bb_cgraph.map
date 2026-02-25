@@ -1,0 +1,33 @@
+<map id="Environment::Environment" name="Environment::Environment">
+<area shape="rect" id="Node000001" title="Constructs an environment from HDR texture file." alt="" coords="5,205,201,231"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#ae2f62aee8fbcfd0638f6f5f1d1d09d8a" title="Generates diffuse IBL map." alt="" coords="255,5,457,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,204,128,170,159,125,199,79,248,40,259,34,262,38,251,44,203,83,163,129,133,173,114,206"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#a28ed737457a0133192d452e65d46491d" title="Generates specular IBL map with importance sampling." alt="" coords="249,55,463,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="115,203,170,152,207,123,248,97,285,82,287,87,251,102,210,127,173,156,119,207"/>
+<area shape="rect" id="Node000005" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="522,131,667,156"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="121,203,176,170,212,153,249,141,316,129,385,125,450,126,508,130,508,135,450,131,385,130,317,135,250,146,213,158,179,174,124,207"/>
+<area shape="rect" id="Node000006" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="265,156,447,181"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="169,203,276,181,277,187,170,208"/>
+<area shape="rect" id="Node000007" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="289,205,423,231"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="202,215,276,215,276,221,202,221"/>
+<area shape="rect" id="Node000008" href="$classSprite.html#a457ffeff64d40bdeb187d95c7f33bb6d" title=" " alt="" coords="301,307,411,332"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="129,228,184,256,250,285,296,300,294,305,248,290,182,261,127,233"/>
+<area shape="rect" id="Node000010" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="525,207,664,232"/>
+<area shape="poly" id="edge16_Node000001_Node000010" title=" " alt="" coords="168,228,250,239,356,245,462,239,520,232,520,237,463,245,356,251,249,245,167,233"/>
+<area shape="rect" id="Node000012" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="913,307,1065,332"/>
+<area shape="poly" id="edge18_Node000001_Node000012" title=" " alt="" coords="113,229,132,262,162,305,202,349,225,367,251,382,297,401,345,415,394,425,444,430,545,431,645,420,738,401,822,378,946,335,947,340,823,383,739,406,645,425,546,436,444,436,393,430,343,421,295,406,248,387,222,372,198,353,158,309,127,265,109,232"/>
+<area shape="rect" id="Node000013" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="511,357,679,383"/>
+<area shape="poly" id="edge17_Node000001_Node000013" title=" " alt="" coords="116,229,169,286,207,318,250,342,312,362,376,373,439,377,497,376,497,382,439,382,376,378,311,367,248,347,204,322,165,290,113,233"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="526,31,663,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="458,26,513,32,512,37,457,31"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="463,54,512,49,512,54,463,59"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="447,156,508,150,509,155,448,162"/>
+<area shape="rect" id="Node000009" href="$classSprite.html#a3ad1e7d1823b86d54db970713834479a" title=" " alt="" coords="529,256,660,281"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="411,305,520,282,521,287,412,310"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="411,305,461,285,475,274,485,264,494,252,509,241,522,235,525,239,512,246,498,256,489,267,479,278,464,290,413,310"/>
+<area shape="poly" id="edge15_Node000008_Node000012" title=" " alt="" coords="412,317,899,317,899,322,412,322"/>
+<area shape="poly" id="edge14_Node000008_Node000013" title=" " alt="" coords="412,328,521,352,520,357,411,334"/>
+<area shape="rect" id="Node000011" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="727,232,865,257"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="665,225,713,232,713,237,664,231"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="831,255,944,299,942,304,829,260"/>
+</map>

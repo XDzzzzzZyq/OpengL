@@ -1,0 +1,34 @@
+<map id="src/UI/item/TextEditor.h" name="src/UI/item/TextEditor.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="483,5,656,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,152,85,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="483,28,295,48,206,63,144,81,100,110,66,143,62,139,96,106,142,76,205,58,294,43,482,23"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="109,152,168,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="483,24,396,29,303,40,221,56,189,67,167,81,157,93,149,108,142,139,137,138,144,106,152,90,164,77,187,63,219,51,302,34,395,24,482,19"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="275,152,338,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="483,32,386,51,346,64,321,81,312,93,308,108,306,139,301,138,303,107,308,91,317,77,343,60,384,46,482,27"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="331,79,387,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="536,33,401,79,399,74,535,28"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="411,79,488,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="551,33,482,74,480,69,549,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="512,79,627,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="572,31,572,65,567,65,567,31"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="651,79,775,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="594,28,679,70,676,75,591,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="800,79,851,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="614,28,787,76,786,81,612,33"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="875,79,933,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="633,28,862,76,860,81,631,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="957,79,1021,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="656,28,788,48,944,76,943,81,787,53,656,33"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1045,79,1131,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="657,26,826,46,1032,76,1031,81,826,51,656,31"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1155,79,1269,104"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="657,24,873,45,1141,76,1141,81,872,50,656,29"/>
+<area shape="rect" id="Node000014" href="$structs_8h.html" title="Common utility structures for timing and performance measurement." alt="" coords="177,79,255,104"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="513,33,269,82,268,77,512,28"/>
+<area shape="poly" id="edge17_Node000014_Node000002" title=" " alt="" coords="190,106,87,149,85,144,188,102"/>
+<area shape="poly" id="edge14_Node000014_Node000003" title=" " alt="" coords="205,106,163,144,160,141,202,102"/>
+<area shape="poly" id="edge15_Node000014_Node000004" title=" " alt="" coords="232,102,283,141,279,145,229,106"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="192,152,251,177"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="220,104,222,138,217,139,214,105"/>
+</map>

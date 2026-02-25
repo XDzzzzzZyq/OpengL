@@ -1,0 +1,38 @@
+<map id="src/UI/menu/ImguiMOption.h" name="src/UI/menu/ImguiMOption.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="171,5,379,31"/>
+<area shape="rect" id="Node000002" href="$ImguiMenuItem_8h.html" title=" " alt="" coords="206,79,343,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="277,31,277,65,272,65,272,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,85,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="239,107,97,150,95,145,237,101"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="109,152,160,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="253,106,171,148,168,143,251,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="467,299,530,324"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="282,103,317,170,345,211,379,249,416,274,455,293,453,297,414,279,376,253,341,215,312,173,277,105"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="98,299,185,324"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="270,106,158,288,153,285,265,103"/>
+<area shape="rect" id="Node000007" href="$Context_8h.html" title="Context system providing explicit data flow across Renderer, Editor, and UI layers." alt="" coords="400,152,485,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="303,102,404,144,402,149,301,106"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="509,152,624,177"/>
+<area shape="poly" id="edge19_Node000002_Node000017" title=" " alt="" coords="322,101,507,146,506,151,321,107"/>
+<area shape="rect" id="Node000008" href="$ID_8h.html" title="Unique identifier system for all scene objects." alt="" coords="541,225,589,251"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="464,175,535,216,532,221,461,180"/>
+<area shape="rect" id="Node000010" href="$SelectionManager_8h.html" title="Generic selection state management for objects." alt="" coords="614,225,765,251"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="483,175,637,219,636,224,482,180"/>
+<area shape="rect" id="Node000013" href="$Events_8h.html" title="Type&#45;safe event system for decoupled communication across layers." alt="" coords="235,225,314,251"/>
+<area shape="poly" id="edge14_Node000007_Node000013" title=" " alt="" coords="417,180,316,222,314,217,415,175"/>
+<area shape="rect" id="Node000016" href="$RenderConfigs_8h.html" title="User&#45;configurable rendering settings and algorithm selections." alt="" coords="389,225,517,251"/>
+<area shape="poly" id="edge18_Node000007_Node000016" title=" " alt="" coords="447,177,452,211,447,212,442,178"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="555,299,613,324"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="571,250,580,285,575,286,566,252"/>
+<area shape="poly" id="edge12_Node000010_Node000005" title=" " alt="" coords="660,253,544,296,542,291,658,248"/>
+<area shape="poly" id="edge11_Node000010_Node000009" title=" " alt="" coords="674,253,614,293,611,289,671,248"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="776,299,861,324"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="711,248,786,289,784,294,709,253"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="637,299,752,324"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="693,251,695,285,690,285,688,251"/>
+<area shape="poly" id="edge15_Node000013_Node000006" title=" " alt="" coords="254,253,176,294,174,290,252,248"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="357,299,443,324"/>
+<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="296,248,369,289,366,294,293,253"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="209,299,333,324"/>
+<area shape="poly" id="edge17_Node000013_Node000015" title=" " alt="" coords="277,251,275,285,269,285,271,251"/>
+</map>

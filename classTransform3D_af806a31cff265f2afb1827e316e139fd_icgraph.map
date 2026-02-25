@@ -1,0 +1,17 @@
+<map id="Transform3D::SetScale" name="Transform3D::SetScale">
+<area shape="rect" id="Node000001" title="Sets local scale." alt="" coords="684,31,853,56"/>
+<area shape="rect" id="Node000002" href="$TransformPanel_8cpp.html#a92a0ef7de40630815ed35c2cef178c38" title=" " alt="" coords="482,5,622,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="670,35,622,29,623,24,671,29"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html#a6f3f2ca7e5e64f74fc8128c1577e34f0" title="Sets transform from 4x4 matrix." alt="" coords="468,55,636,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="671,57,636,61,636,55,670,52"/>
+<area shape="rect" id="Node000003" href="$classTransformPanel.html#ac1d03f2b7870d2e29f112e6ef20c374d" title="Renders the layer&#39;s UI elements." alt="" coords="208,5,420,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="468,21,420,21,420,15,468,15"/>
+<area shape="rect" id="Node000005" href="$classTransform3D.html#a923519706fb1e49c8f888f83e8bca3ec" title="Orients transform to look at target position." alt="" coords="235,55,393,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="454,70,394,70,394,65,454,65"/>
+<area shape="rect" id="Node000008" href="$classTransform3D.html#a3a04e27fbddaa4b94fec2b7d4aa9e03d" title="Sets parent transform for hierarchy." alt="" coords="227,104,401,129"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="478,85,377,107,376,101,476,80"/>
+<area shape="rect" id="Node000006" href="$classCamera.html#a1e475cb1c98cc0f9c77babaebca9a018" title="Sets camera position in world space." alt="" coords="5,31,160,56"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="221,60,160,54,160,49,221,55"/>
+<area shape="rect" id="Node000007" href="$classCamera.html#a92495e306c20fc23cf8129a470396668" title="Sets look&#45;at target position." alt="" coords="11,80,155,105"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="221,80,155,87,155,82,221,75"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Texture::BindC" name="Texture::BindC">
+<area shape="rect" id="Node000001" title="Binds texture as compute shader image (read/write)." alt="" coords="5,5,121,31"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="169,5,328,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,15,156,15,156,21,121,21"/>
+</map>

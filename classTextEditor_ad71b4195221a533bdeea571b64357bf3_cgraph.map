@@ -1,0 +1,10 @@
+<map id="TextEditor::Copy" name="TextEditor::Copy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,133,80"/>
+<area shape="rect" id="Node000002" href="$classTextEditor.html#ae65cee8d0412c79c93af5b1fd53ccc66" title=" " alt="" coords="181,29,383,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,57,168,53,168,58,134,62"/>
+<area shape="rect" id="Node000004" href="$classTextEditor.html#a5097fdb7707db742bbfdfb36333c43ce" title=" " alt="" coords="192,79,372,104"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="134,72,179,77,178,82,133,77"/>
+<area shape="rect" id="Node000003" href="$classTextEditor.html#a581e92e7aff81a99dcd1ab8dcc95e909" title=" " alt="" coords="431,29,576,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,39,417,39,417,45,383,45"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="467,31,459,21,463,11,478,5,503,3,534,6,546,15,543,20,532,11,503,8,480,10,467,15,465,20,471,28"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="ShadowSystem::UpdateLight" name="ShadowSystem::UpdateLight">
+<area shape="rect" id="Node000001" title="Updates a single light&#39;s GPU data." alt="" coords="5,87,215,112"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html#ad02152ea87ab19c44d2e69833b7234d5" title="Uploads vector data to SSBO and records the buffer size." alt="" coords="267,22,461,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,84,261,62,262,68,168,89"/>
+<area shape="rect" id="Node000005" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="549,112,682,137"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="215,102,535,118,535,123,215,107"/>
+<area shape="rect" id="Node000006" href="$structShadowSystem.html#a2e1bf5030aee1ffa3f0cc70610419884" title="Computes and stores the projection matrix for a light." alt="" coords="263,137,465,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="168,109,262,131,261,136,167,115"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#a90960c29347d1c08eb1819d62a77788e" title="Binds this SSBO to GL_SHADER_STORAGE_BUFFER." alt="" coords="522,5,709,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="461,30,508,26,509,31,462,35"/>
+<area shape="rect" id="Node000004" href="$classStorageBuffer.html#a44ab1ddd14ad49f9e837e6c4ce138e0e" title="Unbinds the current SSBO." alt="" coords="513,55,717,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="462,49,500,53,500,58,461,54"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="465,141,535,132,535,137,466,146"/>
+</map>

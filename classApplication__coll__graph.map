@@ -1,0 +1,36 @@
+<map id="Application" name="Application">
+<area shape="rect" id="Node000001" title=" " alt="" coords="293,417,388,443"/>
+<area shape="rect" id="Node000002" href="$classInput.html" title="Input handling system for keyboard, mouse, and viewport state." alt="" coords="5,329,60,355"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,363,69,379,88,391,126,402,180,411,293,423,293,428,179,416,125,407,86,396,66,383,49,367"/>
+<area shape="rect" id="Node000003" href="$classEventPool.html" title="Type&#45;safe event dispatcher using template&#45;based publish&#45;subscribe." alt="" coords="99,329,185,355"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,361,214,391,254,406,294,417,292,422,252,411,211,396,164,365"/>
+<area shape="rect" id="Node000004" href="$classControllerManager.html" title="Centralized manager for controller registration and ownership." alt="" coords="209,329,352,355"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="287,367,298,392,322,415,319,419,293,395,282,369"/>
+<area shape="rect" id="Node000005" href="$classContext.html" title="Unified context container aggregating all context types." alt="" coords="376,329,449,355"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="396,367,373,395,353,419,349,415,369,392,392,364"/>
+<area shape="rect" id="Node000006" href="$classSceneContext.html" title="Provides read&#45;only access to the active scene and its objects." alt="" coords="77,241,189,267"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="180,268,287,303,377,328,375,333,285,308,178,273"/>
+<area shape="rect" id="Node000007" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="103,80,149,105"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="130,119,135,241,130,241,124,119"/>
+<area shape="rect" id="Node000008" href="$classEditorContext.html" title="Stores editor&#45;specific state (selections, tools, etc.)." alt="" coords="219,241,329,267"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="306,272,395,327,392,331,303,276"/>
+<area shape="rect" id="Node000009" href="$classSelectionManager.html" title=" " alt="" coords="173,80,399,105"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="287,119,278,241,272,241,281,119"/>
+<area shape="rect" id="Node000010" href="$classRenderContext.html" title="Links to rendering configuration without owning it." alt="" coords="353,241,472,267"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="415,281,415,329,410,329,410,281"/>
+<area shape="rect" id="Node000011" href="$classRenderer.html" title="OpenGL 4.6 renderer providing real&#45;time rendering pipeline." alt="" coords="483,329,564,355"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="487,363,367,419,364,415,485,358"/>
+<area shape="rect" id="Node000012" href="$structShadowSystem.html" title="Owns per&#45;light GPU resources, shadow maps, and shadow computation." alt="" coords="497,241,619,267"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="551,281,531,330,526,328,546,279"/>
+<area shape="rect" id="Node000013" href="$classStorageBuffer.html" title="OpenGL shader storage buffer object wrapper." alt="" coords="472,80,583,105"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="525,119,520,165,522,191,528,216,546,240,541,243,524,218,517,192,515,165,519,118"/>
+<area shape="rect" id="Node000014" href="$classGLBuffer.html" title="RAII base class for OpenGL buffer objects (GL_ARRAY_BUFFER family)." alt="" coords="556,5,635,31"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="577,43,540,81,536,78,573,39"/>
+<area shape="rect" id="Node000015" href="$classUniformBuffer.html" title="OpenGL uniform buffer object wrapper with template&#45;based updates." alt="" coords="610,80,725,105"/>
+<area shape="poly" id="edge15_Node000015_Node000014" title=" " alt="" coords="619,39,658,78,654,82,615,43"/>
+<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="671,120,665,169,656,195,641,219,625,234,605,244,603,239,622,229,637,216,651,193,659,167,665,119"/>
+<area shape="rect" id="Node000016" href="$classRenderConfigs.html" title="Rendering configuration container for pipeline and algorithm settings." alt="" coords="644,241,760,267"/>
+<area shape="poly" id="edge16_Node000011_Node000016" title=" " alt="" coords="693,280,683,295,670,308,565,334,563,329,667,303,679,291,689,277"/>
+<area shape="rect" id="Node000017" href="$classImguiManager.html" title="Central UI coordinator managing ImGui lifecycle, layers, and menus." alt="" coords="588,329,704,355"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="606,362,508,396,389,423,388,418,507,391,604,357"/>
+</map>

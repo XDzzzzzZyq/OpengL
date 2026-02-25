@@ -1,0 +1,7 @@
+<map id="Scene::UpdateObjTransforms" name="Scene::UpdateObjTransforms">
+<area shape="rect" id="Node000001" title="Updates all object transforms in hierarchy." alt="" coords="5,31,216,56"/>
+<area shape="rect" id="Node000002" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="270,5,454,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,30,256,26,256,31,216,35"/>
+<area shape="rect" id="Node000003" href="$classScene.html#a9a74ae8223afe65f4135eade107dbd15" title="Updates scene status flag (bitwise OR)." alt="" coords="264,55,460,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,51,251,54,250,59,216,56"/>
+</map>

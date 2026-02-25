@@ -1,0 +1,9 @@
+<map id="Transform2D" name="Transform2D">
+<area shape="rect" id="Node000001" title="2D transform component for sprites and UI elements." alt="" coords="51,79,156,104"/>
+<area shape="rect" id="Node000003" href="$classNodeEditor.html" title=" " alt="" coords="5,152,100,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="89,117,63,153,59,150,85,114"/>
+<area shape="rect" id="Node000004" href="$classNodes.html" title=" " alt="" coords="124,152,187,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="122,114,149,150,145,153,118,117"/>
+<area shape="rect" id="Node000002" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="60,5,147,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,44,106,79,101,79,101,44"/>
+</map>

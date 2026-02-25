@@ -1,0 +1,13 @@
+<map id="Context" name="Context">
+<area shape="rect" id="Node000001" title="Unified context container aggregating all context types." alt="" coords="173,181,246,207"/>
+<area shape="rect" id="Node000002" href="$classSceneContext.html" title="Provides read&#45;only access to the active scene and its objects." alt="" coords="5,93,117,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,123,191,179,188,183,92,128"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="31,5,78,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="59,44,63,93,58,93,54,45"/>
+<area shape="rect" id="Node000004" href="$classEditorContext.html" title="Stores editor&#45;specific state (selections, tools, etc.)." alt="" coords="154,93,265,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,133,212,181,207,181,207,133"/>
+<area shape="rect" id="Node000005" href="$classSelectionManager.html" title=" " alt="" coords="102,5,327,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="216,45,213,93,207,93,210,44"/>
+<area shape="rect" id="Node000006" href="$classRenderContext.html" title="Links to rendering configuration without owning it." alt="" coords="289,93,407,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="319,128,230,183,227,179,316,124"/>
+</map>

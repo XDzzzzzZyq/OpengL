@@ -1,0 +1,27 @@
+<map id="Texture::FillColor" name="Texture::FillColor">
+<area shape="rect" id="Node000001" title="Fills texture with solid color." alt="" coords="5,136,136,161"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a31908e25c7d72d29827534e733f71bd8" title="Binds texture as compute shader image (read/write)." alt="" coords="237,5,353,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,134,123,92,151,68,183,48,223,31,225,36,185,52,155,72,127,96,85,138"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="497,20,655,45"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="92,134,133,112,183,91,261,71,340,55,483,37,483,42,341,60,262,76,185,97,135,117,94,138"/>
+<area shape="rect" id="Node000004" href="$classComputeShader.html#aefa0207f36b1aadd174e9e10798ac883" title="Imports or retrieves a cached compute shader." alt="" coords="184,107,407,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="136,138,184,131,185,136,137,143"/>
+<area shape="rect" id="Node000006" href="$classComputeShader.html#a6dd385706a13123881762c16665593e7" title="Dispatches compute shader scaled to screen resolution." alt="" coords="186,157,405,197"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="137,154,172,159,172,164,136,159"/>
+<area shape="rect" id="Node000009" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="753,221,905,247"/>
+<area shape="poly" id="edge14_Node000001_Node000009" title=" " alt="" coords="91,159,132,184,185,206,259,223,335,235,487,246,627,246,740,240,740,246,627,252,487,252,334,240,258,228,183,211,130,189,88,164"/>
+<area shape="rect" id="Node000010" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="226,272,365,297"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="84,160,126,204,154,229,185,250,220,265,217,270,183,255,151,233,122,208,80,163"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="354,18,483,25,482,30,353,24"/>
+<area shape="rect" id="Node000005" href="$classComputeShader.html#a9d6f660513c9000424bbc765e44dd02a" title="Imports compute shader and returns shared_ptr." alt="" coords="455,83,697,108"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="407,107,441,104,441,110,407,112"/>
+<area shape="rect" id="Node000007" href="$classComputeShader.html#aad204737be588c2b5fb0045c67aa4cf3" title="Dispatches compute shader with explicit size." alt="" coords="467,157,685,197"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="405,174,452,174,452,179,405,179"/>
+<area shape="poly" id="edge8_Node000007_Node000007" title=" " alt="" coords="529,157,526,147,534,138,550,132,576,130,605,133,621,140,619,145,604,138,576,135,551,137,537,142,531,148,534,155"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="745,164,913,189"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="685,174,732,174,732,179,685,179"/>
+<area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="666,194,760,216,759,221,664,199"/>
+<area shape="rect" id="Node000011" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="507,272,645,297"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="365,282,493,282,493,287,365,287"/>
+<area shape="poly" id="edge13_Node000011_Node000009" title=" " alt="" coords="640,269,751,247,752,252,641,274"/>
+</map>

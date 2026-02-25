@@ -1,0 +1,5 @@
+<map id="FrameBuffer::GetFrameBufferID" name="FrameBuffer::GetFrameBufferID">
+<area shape="rect" id="Node000001" title="Returns OpenGL framebuffer object ID." alt="" coords="255,5,481,31"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#aef8be9884e8cc0fc3f3692e6c6968fa1" title="Destructor. Releases all OpenGL resources." alt="" coords="5,5,207,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="241,21,207,21,207,15,241,15"/>
+</map>

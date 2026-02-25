@@ -1,0 +1,13 @@
+<map id="Sprite" name="Sprite">
+<area shape="rect" id="Node000001" title=" " alt="" coords="113,168,173,193"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="5,80,84,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,112,131,165,128,169,67,116"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="21,5,68,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,45,47,80,42,80,42,45"/>
+<area shape="rect" id="Node000004" href="$classTexture.html" title="OpenGL texture object wrapper with RAII semantics." alt="" coords="108,80,179,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,119,146,167,141,167,141,119"/>
+<area shape="rect" id="Node000005" href="$classRenderShader.html" title="Standard render shader with vertex and fragment stages." alt="" coords="203,80,316,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="239,117,204,146,166,170,163,166,200,142,236,113"/>
+<area shape="rect" id="Node000006" href="$classShaders.html" title="Base class for OpenGL shader programs." alt="" coords="222,5,297,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="262,45,262,80,257,80,257,45"/>
+</map>

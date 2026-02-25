@@ -1,0 +1,18 @@
+<map id="src/compo/Nodes.h" name="src/compo/Nodes.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="252,5,399,31"/>
+<area shape="rect" id="Node000002" href="$Parameters_8h.html" title="Generic parameter system for exposing tweakable properties to UI." alt="" coords="207,79,315,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,33,283,70,279,67,313,29"/>
+<area shape="rect" id="Node000007" href="$Transform_8h.html" title="Transform component system for 2D and 3D spatial hierarchies." alt="" coords="340,79,439,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="338,29,372,67,368,70,334,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="329,152,433,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="282,102,351,142,348,147,279,106"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,152,64,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="226,107,78,153,76,148,224,101"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="89,152,213,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="245,106,182,147,179,142,242,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="237,152,305,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="266,104,270,138,265,139,260,105"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="391,105,387,139,381,138,385,104"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="457,152,543,177"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="409,102,472,142,469,147,406,106"/>
+</map>

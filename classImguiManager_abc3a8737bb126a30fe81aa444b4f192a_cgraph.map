@@ -1,0 +1,8 @@
+<map id="ImguiManager::PushImguiLayer" name="ImguiManager::PushImguiLayer">
+<area shape="rect" id="Node000001" title="Adds a layer (UI panel) to the manager." alt="" coords="5,43,233,68"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a10233c52f6b37f8b913552f2baf6b112" title="Finds a menu by name." alt="" coords="281,5,505,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,40,286,30,287,35,213,45"/>
+<area shape="rect" id="Node000003" href="$classImguiMenu.html#a5aa424b21852d8caf6a495f1f5df8e58" title=" " alt="" coords="296,79,491,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,65,283,74,282,79,216,71"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="350,80,340,70,345,60,363,54,393,52,432,56,443,61,447,67,442,70,439,65,431,61,393,57,364,59,348,64,345,70,353,77"/>
+</map>

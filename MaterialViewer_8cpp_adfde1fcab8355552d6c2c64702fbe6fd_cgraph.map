@@ -1,0 +1,5 @@
+<map id="GetActiveMatPtr" name="GetActiveMatPtr">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,135,31"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html#adfb6b42800642a3016539b94f0ce2659" title="Returns pointer to object&#39;s material, if applicable." alt="" coords="183,5,345,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,15,169,15,169,21,135,21"/>
+</map>

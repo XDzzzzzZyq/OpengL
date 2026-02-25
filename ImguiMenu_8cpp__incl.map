@@ -1,0 +1,42 @@
+<map id="src/UI/ImguiMenu.cpp" name="src/UI/ImguiMenu.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="177,5,340,31"/>
+<area shape="rect" id="Node000002" href="$ImguiMenu_8h.html" title=" " alt="" coords="205,79,312,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,31,261,65,256,65,256,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,85,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="243,106,76,219,73,215,240,102"/>
+<area shape="rect" id="Node000004" href="$ImguiMenuItem_8h.html" title=" " alt="" coords="190,152,327,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="261,104,261,138,256,138,256,104"/>
+<area shape="rect" id="Node000008" href="$Context_8h.html" title="Context system providing explicit data flow across Renderer, Editor, and UI layers." alt="" coords="435,225,520,251"/>
+<area shape="poly" id="edge22_Node000002_Node000008" title=" " alt="" coords="278,102,450,215,447,220,275,106"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="225,180,94,223,92,218,224,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="299,225,349,251"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="271,176,306,213,302,217,267,179"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="487,372,550,397"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="289,175,327,195,363,224,381,250,389,274,397,297,414,322,444,346,477,364,474,369,441,351,410,326,392,300,384,276,376,252,359,227,324,199,287,180"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="82,372,169,397"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="219,180,182,198,164,211,150,227,134,259,126,295,124,329,125,358,120,359,119,329,121,294,129,257,146,224,161,207,179,194,217,175"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="295,175,430,218,428,224,293,180"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="160,225,275,251"/>
+<area shape="poly" id="edge21_Node000004_Node000018" title=" " alt="" coords="254,179,233,215,229,212,250,176"/>
+<area shape="rect" id="Node000009" href="$ID_8h.html" title="Unique identifier system for all scene objects." alt="" coords="576,299,624,324"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="498,248,570,289,567,294,496,253"/>
+<area shape="rect" id="Node000011" href="$SelectionManager_8h.html" title="Generic selection state management for objects." alt="" coords="649,299,799,324"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="518,248,672,292,670,297,516,253"/>
+<area shape="rect" id="Node000014" href="$Events_8h.html" title="Type&#45;safe event system for decoupled communication across layers." alt="" coords="254,299,333,324"/>
+<area shape="poly" id="edge16_Node000008_Node000014" title=" " alt="" coords="449,253,337,296,335,291,447,248"/>
+<area shape="rect" id="Node000017" href="$RenderConfigs_8h.html" title="User&#45;configurable rendering settings and algorithm selections." alt="" coords="424,299,552,324"/>
+<area shape="poly" id="edge20_Node000008_Node000017" title=" " alt="" coords="482,251,487,285,482,286,476,251"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="580,372,639,397"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="604,324,609,358,603,359,599,325"/>
+<area shape="poly" id="edge14_Node000011_Node000006" title=" " alt="" coords="692,327,564,371,562,366,690,321"/>
+<area shape="poly" id="edge13_Node000011_Node000010" title=" " alt="" coords="707,326,641,367,638,362,704,322"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="804,372,889,397"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="745,322,816,363,814,367,742,326"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="665,372,780,397"/>
+<area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="726,324,726,359,720,358,721,324"/>
+<area shape="poly" id="edge17_Node000014_Node000007" title=" " alt="" coords="267,326,166,369,164,364,265,322"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="365,372,451,397"/>
+<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="313,322,379,362,376,367,310,326"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="217,372,341,397"/>
+<area shape="poly" id="edge19_Node000014_Node000016" title=" " alt="" coords="294,325,286,359,281,358,288,324"/>
+</map>

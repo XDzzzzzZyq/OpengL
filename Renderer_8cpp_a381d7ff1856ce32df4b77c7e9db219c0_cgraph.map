@@ -1,0 +1,43 @@
+<map id="RenderShadowMap" name="RenderShadowMap">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,287,152,312"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#ab3ebec3acf1e7df731e57b3ffa789024" title="Binds the shadow map framebuffer for a light, targeting its shadow map texture." alt="" coords="203,43,414,83"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,286,95,248,118,196,153,141,174,115,198,93,206,88,209,92,202,97,178,119,157,144,123,199,100,250,86,287"/>
+<area shape="rect" id="Node000003" href="$structShadowSystem.html#a4ce6ace19ba2a8f8685eb6d3e2a8cc97" title="Binds the shadow map generation shader and sets per&#45;light uniforms." alt="" coords="203,107,414,147"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,285,128,224,161,188,198,157,209,151,212,156,202,162,164,192,132,227,90,288"/>
+<area shape="rect" id="Node000005" href="$structShadowSystem.html#ae9436161d6d5c1c9f3b3443306ee43cf" title="Sets the model matrix uniform for a shadow&#45;casting object." alt="" coords="209,171,408,211"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="98,284,144,257,199,228,232,214,234,219,201,232,146,261,101,289"/>
+<area shape="rect" id="Node000006" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="200,287,417,312"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="153,297,186,297,186,302,153,302"/>
+<area shape="rect" id="Node000009" href="$classTexture.html#ab3ec7cbd6bf20945f5e4e6608ef05431" title="Returns texture height." alt="" coords="527,55,638,80"/>
+<area shape="poly" id="edge19_Node000001_Node000009" title=" " alt="" coords="139,284,312,246,416,221,429,206,435,190,439,157,442,123,449,106,464,89,487,75,513,67,515,72,489,80,467,93,454,108,447,124,444,157,441,192,433,209,419,226,313,252,140,289"/>
+<area shape="rect" id="Node000010" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="516,344,649,369"/>
+<area shape="poly" id="edge20_Node000001_Node000010" title=" " alt="" coords="134,309,200,322,361,340,503,350,502,356,361,346,200,327,133,315"/>
+<area shape="rect" id="Node000011" href="$classTexture.html#af65caec5303d06ec883d7aabe8e1880c" title="Returns texture width." alt="" coords="525,393,640,419"/>
+<area shape="poly" id="edge21_Node000001_Node000011" title=" " alt="" coords="105,310,149,331,201,350,283,370,367,384,512,399,511,405,366,389,282,375,199,355,147,336,102,315"/>
+<area shape="rect" id="Node000014" href="$classRenderConfigs.html#a3284b84ea398f3fd31edd8e9d57b0ec2" title="Checks if moment&#45;based shadow algorithm is selected." alt="" coords="465,443,700,483"/>
+<area shape="poly" id="edge22_Node000001_Node000014" title=" " alt="" coords="93,310,137,353,168,376,201,396,263,419,327,436,392,448,452,455,451,460,391,453,326,441,261,424,199,400,165,381,134,357,89,314"/>
+<area shape="rect" id="Node000018" href="$classFrameBuffer.html#ac14affb041d62c8685a6afe5ab63c842" title="Unbinds the current framebuffer (binds default FBO 0)." alt="" coords="210,489,407,529"/>
+<area shape="poly" id="edge23_Node000001_Node000018" title=" " alt="" coords="88,311,128,385,161,429,202,468,222,480,219,485,198,472,157,433,124,387,83,313"/>
+<area shape="rect" id="Node000004" href="$classInput.html#a959c34ed9a30227746f181411fc19502" title=" " alt="" coords="495,5,670,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="393,105,416,93,430,80,439,67,448,53,464,40,481,32,483,36,467,44,452,56,443,70,434,84,419,98,395,110"/>
+<area shape="rect" id="Node000007" href="$classTexture.html#a31908e25c7d72d29827534e733f71bd8" title="Binds texture as compute shader image (read/write)." alt="" coords="525,205,641,231"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="358,284,416,265,440,253,464,241,511,228,512,233,466,246,442,257,418,270,360,289"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="790,180,949,205"/>
+<area shape="poly" id="edge13_Node000006_Node000008" title=" " alt="" coords="378,284,416,265,431,247,438,227,445,207,464,190,508,171,554,159,602,153,649,152,739,160,812,174,811,179,738,165,649,157,602,159,555,165,509,176,467,195,450,210,443,229,436,250,419,269,380,289"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="387,284,415,265,431,244,438,223,438,178,436,156,438,134,446,111,464,89,487,74,513,66,515,71,489,79,467,93,451,114,443,135,442,156,443,178,443,224,436,247,419,269,390,289"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="371,309,508,338,507,344,370,315"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="331,310,390,345,466,379,512,392,511,398,464,385,388,349,328,315"/>
+<area shape="rect" id="Node000012" href="$classComputeShader.html#aefa0207f36b1aadd174e9e10798ac883" title="Imports or retrieves a cached compute shader." alt="" coords="471,104,694,129"/>
+<area shape="poly" id="edge11_Node000006_Node000012" title=" " alt="" coords="384,284,416,265,427,251,434,237,439,207,443,177,451,162,464,147,484,133,487,137,467,151,455,165,448,179,444,208,439,239,432,254,419,269,386,289"/>
+<area shape="poly" id="edge14_Node000006_Node000014" title=" " alt="" coords="323,310,381,368,422,401,467,429,481,436,479,441,464,434,419,405,378,372,320,314"/>
+<area shape="rect" id="Node000015" href="$classComputeShader.html#aad204737be588c2b5fb0045c67aa4cf3" title="Dispatches compute shader with explicit size." alt="" coords="473,279,692,319"/>
+<area shape="poly" id="edge15_Node000006_Node000015" title=" " alt="" coords="418,297,460,297,460,302,418,302"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="641,210,776,198,776,204,641,216"/>
+<area shape="rect" id="Node000013" href="$classComputeShader.html#a9d6f660513c9000424bbc765e44dd02a" title="Imports compute shader and returns shared_ptr." alt="" coords="748,104,991,129"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="694,114,735,114,735,119,694,119"/>
+<area shape="poly" id="edge16_Node000015_Node000015" title=" " alt="" coords="532,280,529,270,537,260,555,255,583,253,614,255,631,263,629,268,613,261,583,258,556,260,540,265,534,271,537,278"/>
+<area shape="rect" id="Node000016" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="785,271,953,296"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="692,291,772,286,772,291,692,296"/>
+<area shape="rect" id="Node000017" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="793,320,945,345"/>
+<area shape="poly" id="edge18_Node000015_Node000017" title=" " alt="" coords="692,309,780,320,780,325,692,315"/>
+</map>

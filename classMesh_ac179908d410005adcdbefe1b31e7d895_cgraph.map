@@ -1,0 +1,5 @@
+<map id="Mesh::SetCenter" name="Mesh::SetCenter">
+<area shape="rect" id="Node000001" title="Centers mesh pivot at geometry centroid." alt="" coords="5,5,135,31"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#a2f7ec6f9e11613ff0cb614309d9124ea" title="Sets world position." alt="" coords="183,5,340,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,15,169,15,169,21,135,21"/>
+</map>

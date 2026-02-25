@@ -1,0 +1,9 @@
+<map id="Sprite::SetTex" name="Sprite::SetTex">
+<area shape="rect" id="Node000001" title=" " alt="" coords="280,55,391,80"/>
+<area shape="rect" id="Node000002" href="$classEnvironment.html#a3755ec802739ed1e5413e7f6de0a11bb" title="Constructs an environment from HDR texture file." alt="" coords="21,5,217,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,54,231,45,181,33,182,28,233,39,272,49"/>
+<area shape="rect" id="Node000003" href="$classLight.html#aed9395ef33f128fb5c923901cc563f73" title="Constructs a light with specified type, power, and color." alt="" coords="71,55,166,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="266,70,166,70,166,65,266,65"/>
+<area shape="rect" id="Node000004" href="$classPostProcessing.html#a0a071d546465728893661fb9346c1fe8" title=" " alt="" coords="5,104,232,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="268,86,233,94,178,106,176,101,231,89,267,80"/>
+</map>

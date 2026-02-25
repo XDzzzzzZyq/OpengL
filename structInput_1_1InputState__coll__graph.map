@@ -1,0 +1,9 @@
+<map id="Input::InputState" name="Input::InputState">
+<area shape="rect" id="Node000001" title="Combined input state snapshot." alt="" coords="155,93,286,119"/>
+<area shape="rect" id="Node000002" href="$structInput_1_1KeyState.html" title="Keyboard state snapshot." alt="" coords="5,5,127,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,35,201,91,198,95,97,40"/>
+<area shape="rect" id="Node000003" href="$structInput_1_1MouseState.html" title="Mouse state snapshot." alt="" coords="151,5,291,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,45,223,93,218,93,218,45"/>
+<area shape="rect" id="Node000004" href="$structInput_1_1RandomState.html" title="Global random value state for random algorithms." alt="" coords="315,5,465,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="356,39,245,95,242,91,354,34"/>
+</map>

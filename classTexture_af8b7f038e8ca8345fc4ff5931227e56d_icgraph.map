@@ -1,0 +1,20 @@
+<map id="Texture::Bind" name="Texture::Bind">
+<area shape="rect" id="Node000001" title="Binds texture to a texture unit for sampling." alt="" coords="739,70,845,95"/>
+<area shape="rect" id="Node000002" href="$classEnvironment.html#a23f97b5b583a0c35e77439cb68d6cdf0" title="Binds IBL textures to shader slots." alt="" coords="474,5,665,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="728,69,647,48,648,43,729,64"/>
+<area shape="rect" id="Node000005" href="$classEnvironment.html#a05f52c3bdeae9f3d54890805c12b5ba2" title="Renders environment skybox to active framebuffer." alt="" coords="448,70,691,95"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="725,85,691,85,691,80,725,80"/>
+<area shape="rect" id="Node000006" href="$classSprite.html#a601c33a7d1aa252ae8723e5625bd858c" title=" " alt="" coords="493,119,645,145"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="726,101,691,109,633,122,632,117,690,104,725,96"/>
+<area shape="rect" id="Node000003" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="223,17,358,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="460,30,358,31,358,26,460,24"/>
+<area shape="rect" id="Node000004" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,17,133,42"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="210,32,134,32,134,27,210,27"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="489,70,357,45,358,39,490,65"/>
+<area shape="rect" id="Node000007" href="$classEnvironment.html#aa38193f2b8f2881c379c20a97a20de99" title="Renders environment sprite gizmo in viewport." alt="" coords="184,70,397,95"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="483,120,363,98,364,93,484,114"/>
+<area shape="rect" id="Node000008" href="$classLight.html#a5b40699d68b47ece3070992d2dcd1cde" title="Renders light sprite gizmo in viewport." alt="" coords="210,119,371,145"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="480,135,372,135,372,129,480,129"/>
+<area shape="rect" id="Node000009" href="$classPostProcessing.html#a4a54548b77df77e1db3e429a249ffce1" title=" " alt="" coords="181,169,400,194"/>
+<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="484,150,364,171,363,166,483,144"/>
+</map>

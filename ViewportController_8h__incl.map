@@ -1,0 +1,39 @@
+<map id="src/editor/controllers/ViewportController.h" name="src/editor/controllers/ViewportController.h">
+<area shape="rect" id="Node000001" title="Viewport interaction controller for object picking and viewport management." alt="" coords="263,5,421,45"/>
+<area shape="rect" id="Node000002" href="$Controllers_8h.html" title="Base controller architecture for event&#45;driven application logic." alt="" coords="141,167,247,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="325,48,217,158,213,155,321,44"/>
+<area shape="rect" id="Node000008" href="$FrameBuffer_8h.html" title="OpenGL framebuffer abstraction with multi&#45;target support." alt="" coords="362,93,525,119"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="368,43,419,82,416,87,365,48"/>
+<area shape="rect" id="Node000003" href="$Events_8h.html" title="Type&#45;safe event system for decoupled communication across layers." alt="" coords="155,240,233,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="197,192,197,226,191,226,191,192"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,313,92,339"/>
+<area shape="poly" id="edge7_Node000002_Node000005" title=" " alt="" coords="142,189,115,195,87,206,63,221,43,241,37,255,36,270,41,300,36,301,30,270,32,254,38,239,59,217,85,201,113,190,141,183"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="260,313,384,339"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="206,191,305,301,301,305,202,194"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="53,240,130,265"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="179,194,121,234,118,230,176,190"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="149,313,236,339"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="196,266,196,300,190,300,191,266"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="172,268,86,310,83,305,169,263"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="216,263,290,304,288,309,213,268"/>
+<area shape="poly" id="edge19_Node000008_Node000006" title=" " alt="" coords="413,121,378,140,363,153,350,168,334,201,326,236,323,300,317,299,320,235,329,199,345,165,359,149,376,135,410,116"/>
+<area shape="rect" id="Node000009" href="$RenderBuffer_8h.html" title=" " alt="" coords="641,167,760,192"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="485,116,647,160,645,166,484,121"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="360,167,431,192"/>
+<area shape="poly" id="edge17_Node000008_Node000015" title=" " alt="" coords="438,121,413,157,408,154,433,118"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="455,167,530,192"/>
+<area shape="poly" id="edge18_Node000008_Node000016" title=" " alt="" coords="454,117,479,154,475,157,449,121"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="555,167,617,192"/>
+<area shape="poly" id="edge20_Node000008_Node000017" title=" " alt="" coords="467,116,552,158,549,163,465,121"/>
+<area shape="rect" id="Node000010" href="$Texture_8h.html" title="Texture wrapper for OpenGL texture objects and texture resource management." alt="" coords="627,240,710,265"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="698,193,682,229,677,227,693,191"/>
+<area shape="poly" id="edge16_Node000010_Node000006" title=" " alt="" coords="628,265,392,313,390,308,627,260"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="598,313,678,339"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="666,267,651,302,646,300,661,265"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="702,313,761,339"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="681,264,714,301,710,305,677,267"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="785,313,870,339"/>
+<area shape="poly" id="edge14_Node000010_Node000013" title=" " alt="" coords="695,263,790,305,788,310,693,268"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="470,313,574,339"/>
+<area shape="poly" id="edge15_Node000010_Node000014" title=" " alt="" coords="646,268,559,310,557,305,644,263"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="FastLoadShader::FastLoadShader" name="FastLoadShader::FastLoadShader">
+<area shape="rect" id="Node000001" title="Constructs and loads a fast shader from files." alt="" coords="5,23,195,63"/>
+<area shape="rect" id="Node000002" href="$classFastLoadShader.html#a5bd7e7dff4b81c34cf086fe7305d1ce4" title="Creates shader program from vertex and fragment shader names." alt="" coords="243,5,455,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,31,229,28,229,33,195,36"/>
+<area shape="rect" id="Node000005" href="$classShaders.html#acefe332d3c3f5ded6c2c0445c2455798" title="Reads shader source from file." alt="" coords="257,55,440,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="195,50,244,55,243,60,194,55"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#a8c169838ee7e468c08c6675c7f7bc2dd" title="Compiles GLSL source code into an OpenGL shader object." alt="" coords="503,5,717,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,15,489,15,489,21,455,21"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#a342c5970a2879be5b6089645dcc44090" title="Parses shader type to metadata tuple." alt="" coords="765,5,957,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="718,15,752,15,752,21,718,21"/>
+<area shape="rect" id="Node000006" href="$classShaders.html#ab46fab95158b2204b29d4c66baa18a68" title="Infers shader type from file extension." alt="" coords="527,55,693,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="440,65,514,65,514,70,440,70"/>
+</map>

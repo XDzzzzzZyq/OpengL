@@ -1,0 +1,13 @@
+<map id="ShaderEditor::ShaderEditor" name="ShaderEditor::ShaderEditor">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,201,117"/>
+<area shape="rect" id="Node000002" href="$classTextEditor.html#ada540edcbafe4325b43c46cd8a8f4ff7" title=" " alt="" coords="249,92,365,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,102,236,102,236,107,202,107"/>
+<area shape="rect" id="Node000003" href="$classTextEditor.html#a36a929a82d045b43480326c73f383cb8" title=" " alt="" coords="437,5,632,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="325,90,364,65,412,41,441,32,442,37,414,46,366,69,328,94"/>
+<area shape="rect" id="Node000004" href="$structTextEditor_1_1LanguageDefinition.html#ac57152f855eed0755732f395ccff8d3a" title=" " alt="" coords="424,55,645,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="365,95,410,89,411,94,366,100"/>
+<area shape="rect" id="Node000005" href="$classTextEditor.html#afaa8970fac64b10c6a25b5fd4874bd29" title=" " alt="" coords="413,120,656,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="366,109,419,116,418,121,365,114"/>
+<area shape="rect" id="Node000006" href="$classTextEditor.html#a8d5d8543bd078aa1c22a0b35c45c197d" title=" " alt="" coords="454,169,615,195"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="332,115,370,135,414,154,446,163,444,169,412,159,367,140,329,120"/>
+</map>

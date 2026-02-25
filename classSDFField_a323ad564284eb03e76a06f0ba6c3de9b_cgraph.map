@@ -1,0 +1,9 @@
+<map id="SDFField::ReadSDF" name="SDFField::ReadSDF">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,152,56"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html#a22028229dbebb7c1e73db9e5dec47f88" title="Reads data from SSBO back to CPU." alt="" coords="200,23,403,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,41,186,41,186,46,152,46"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#a90960c29347d1c08eb1819d62a77788e" title="Binds this SSBO to GL_SHADER_STORAGE_BUFFER." alt="" coords="459,5,646,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="402,30,445,26,446,31,403,36"/>
+<area shape="rect" id="Node000004" href="$classStorageBuffer.html#a44ab1ddd14ad49f9e837e6c4ce138e0e" title="Unbinds the current SSBO." alt="" coords="451,55,655,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="403,50,437,54,437,59,402,56"/>
+</map>

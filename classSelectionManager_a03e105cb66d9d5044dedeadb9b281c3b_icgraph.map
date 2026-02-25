@@ -1,0 +1,20 @@
+<map id="SelectionManager::GetSelectedObjects" name="SelectionManager::GetSelectedObjects">
+<area shape="rect" id="Node000001" title="Returns the first selected object." alt="" coords="524,125,751,165"/>
+<area shape="rect" id="Node000002" href="$TransformPanel_8cpp.html#a2eb79fe2b453bd8d598d0fd33e4daa38" title=" " alt="" coords="301,5,440,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="594,119,538,85,475,52,421,33,423,28,477,48,541,80,596,115"/>
+<area shape="rect" id="Node000003" href="$classTransformPanel.html#ac1d03f2b7870d2e29f112e6ef20c374d" title="Renders the layer&#39;s UI elements." alt="" coords="5,31,217,56"/>
+<area shape="poly" id="edge9_Node000001_Node000003" title=" " alt="" coords="567,123,475,97,342,72,217,56,218,51,342,67,477,91,569,118"/>
+<area shape="rect" id="Node000004" href="$classContext.html#adcb0dfebb5417e96ce3f45f58c924820" title="Initializes the context system." alt="" coords="319,107,422,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="510,135,422,127,423,122,511,130"/>
+<area shape="rect" id="Node000006" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="303,156,438,181"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="510,159,438,165,438,160,510,153"/>
+<area shape="rect" id="Node000008" href="$classMaterialViewer.html#a8a684c58dbaed9586a41826eaa0b7b12" title="Renders the layer&#39;s UI elements." alt="" coords="265,205,476,231"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="563,171,477,197,431,208,430,203,475,191,561,166"/>
+<area shape="rect" id="Node000009" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="273,255,468,280"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="599,175,543,212,477,246,443,257,441,252,475,241,541,207,596,171"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="288,29,218,36,217,30,287,23"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="49,107,173,132"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="305,122,173,122,173,117,305,117"/>
+<area shape="rect" id="Node000007" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="47,156,175,181"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="289,171,175,171,175,166,289,166"/>
+</map>

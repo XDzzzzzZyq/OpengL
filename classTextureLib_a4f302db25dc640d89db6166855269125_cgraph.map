@@ -1,0 +1,5 @@
+<map id="TextureLib::LoadTexture" name="TextureLib::LoadTexture">
+<area shape="rect" id="Node000001" title="Loads texture from file or returns cached instance." alt="" coords="5,5,181,31"/>
+<area shape="rect" id="Node000002" href="$classTextureLib.html#a7667c762da4eaaf30887569d63483cbf" title="Infers texture type from file extension." alt="" coords="229,5,409,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,15,215,15,215,21,182,21"/>
+</map>

@@ -1,0 +1,29 @@
+<map id="PostProcessing::RenderPPSSpr" name="PostProcessing::RenderPPSSpr">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,108,224,133"/>
+<area shape="rect" id="Node000002" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="281,83,415,108"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,106,267,101,268,107,225,111"/>
+<area shape="rect" id="Node000003" href="$classSprite.html#a601c33a7d1aa252ae8723e5625bd858c" title=" " alt="" coords="272,132,424,157"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,129,259,133,258,138,224,135"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#af8b7f038e8ca8345fc4ff5931227e56d" title="Binds texture to a texture unit for sampling." alt="" coords="536,5,643,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="400,130,422,117,438,101,445,83,454,65,470,48,495,34,522,25,523,30,497,39,474,52,458,68,450,85,442,103,426,121,403,134"/>
+<area shape="rect" id="Node000007" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="774,81,919,107"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="390,129,423,117,446,103,471,91,547,78,624,74,697,75,761,80,760,85,697,80,624,79,547,84,473,97,449,108,425,122,392,134"/>
+<area shape="rect" id="Node000008" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="498,107,681,132"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="424,134,484,128,484,133,424,139"/>
+<area shape="rect" id="Node000009" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="472,156,707,181"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="424,150,459,153,458,158,424,155"/>
+<area shape="rect" id="Node000011" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="520,205,659,231"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="379,155,473,190,509,200,507,205,471,195,377,160"/>
+<area shape="rect" id="Node000013" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="990,231,1142,256"/>
+<area shape="poly" id="edge14_Node000003_Node000013" title=" " alt="" coords="362,156,407,200,438,224,473,241,541,260,612,272,684,278,755,279,887,271,991,256,992,261,887,276,756,285,684,284,612,278,540,265,471,246,435,228,403,204,358,159"/>
+<area shape="rect" id="Node000005" href="$classTexture.html#a008b37a015b1018a54d8702e50947a54" title="Static method to bind texture by ID." alt="" coords="787,5,906,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="643,15,773,15,773,21,643,21"/>
+<area shape="rect" id="Node000006" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="987,5,1145,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="906,15,973,15,973,21,906,21"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="681,108,760,100,761,105,681,113"/>
+<area shape="rect" id="Node000010" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="755,156,939,181"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="707,166,741,166,741,171,707,171"/>
+<area shape="rect" id="Node000012" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="777,205,916,231"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="659,215,763,215,763,221,659,221"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="917,223,977,230,976,236,916,229"/>
+</map>

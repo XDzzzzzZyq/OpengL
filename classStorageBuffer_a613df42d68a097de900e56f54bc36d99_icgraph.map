@@ -1,0 +1,13 @@
+<map id="StorageBuffer::GenStorageBuffers" name="StorageBuffer::GenStorageBuffers">
+<area shape="rect" id="Node000001" title="Uploads structured data (header + array) to SSBO and records the buffer size." alt="" coords="437,73,632,113"/>
+<area shape="rect" id="Node000002" href="$classSDFField.html#a3a7365a5a7e2ed27d1eb22488d943bff" title=" " alt="" coords="215,55,378,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="424,84,378,79,379,73,424,78"/>
+<area shape="rect" id="Node000006" href="$classSDFField.html#a88b7aadb2b3db882ec34f756029da5f0" title=" " alt="" coords="204,104,389,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="424,106,390,110,389,105,424,101"/>
+<area shape="rect" id="Node000003" href="$classSDFField.html#a99eb4d2d3007926cf87c0fa249e79e59" title=" " alt="" coords="15,5,146,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="227,54,137,33,138,28,228,49"/>
+<area shape="rect" id="Node000004" href="$classSDFField.html#ad005b97b263be3d2bc8e8ad5b959767d" title=" " alt="" coords="9,55,153,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="202,70,153,70,153,65,202,65"/>
+<area shape="rect" id="Node000005" href="$classSDFField.html#a9084b60ff641304aa6a0c0f0493a6a0c" title=" " alt="" coords="5,104,156,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="228,86,138,107,137,101,227,80"/>
+</map>

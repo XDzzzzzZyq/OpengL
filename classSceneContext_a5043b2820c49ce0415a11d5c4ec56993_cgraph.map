@@ -1,0 +1,5 @@
+<map id="SceneContext::GetActiveEnvironment" name="SceneContext::GetActiveEnvironment">
+<area shape="rect" id="Node000001" title="Returns the currently active environment for IBL." alt="" coords="5,5,272,31"/>
+<area shape="rect" id="Node000002" href="$classScene.html#a0ff0eeefdded59011c5a00090783eda3" title="Returns the active environment." alt="" coords="320,5,536,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,15,306,15,306,21,272,21"/>
+</map>

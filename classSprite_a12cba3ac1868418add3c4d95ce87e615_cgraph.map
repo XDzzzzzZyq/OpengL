@@ -1,0 +1,22 @@
+<map id="Sprite::Sprite" name="Sprite::Sprite">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,81,112,107"/>
+<area shape="rect" id="Node000002" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="405,5,538,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,82,391,30,392,35,113,87"/>
+<area shape="rect" id="Node000003" href="$classSprite.html#a8fc11ae8ef117340eb1b268e3d90874f" title=" " alt="" coords="160,107,332,132"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="113,99,147,103,146,109,112,104"/>
+<area shape="poly" id="edge6_Node000003_Node000002" title=" " alt="" coords="268,104,318,77,379,48,417,33,419,38,381,52,321,82,271,109"/>
+<area shape="rect" id="Node000004" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="611,81,756,107"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="301,104,380,91,493,86,597,87,597,92,493,91,380,97,302,109"/>
+<area shape="rect" id="Node000005" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="380,107,563,132"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="332,117,366,117,366,122,332,122"/>
+<area shape="rect" id="Node000006" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="402,156,541,181"/>
+<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="305,129,400,150,399,156,304,135"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="804,181,956,207"/>
+<area shape="poly" id="edge11_Node000003_Node000008" title=" " alt="" coords="265,130,315,163,347,179,381,191,434,203,489,211,599,216,703,213,790,205,790,210,703,218,599,222,488,216,433,208,379,197,345,184,312,168,262,135"/>
+<area shape="rect" id="Node000009" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="387,257,555,283"/>
+<area shape="poly" id="edge10_Node000003_Node000009" title=" " alt="" coords="260,130,310,181,344,210,381,236,412,250,409,255,379,240,341,214,306,185,257,134"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="563,106,597,102,597,107,564,111"/>
+<area shape="rect" id="Node000007" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="614,156,753,181"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="541,166,600,166,600,171,541,171"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="753,175,791,180,790,185,753,180"/>
+</map>

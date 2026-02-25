@@ -1,0 +1,9 @@
+<map id="Environment::BindEnvironTexture" name="Environment::BindEnvironTexture">
+<area shape="rect" id="Node000001" title="Binds IBL textures to shader slots." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#af8b7f038e8ca8345fc4ff5931227e56d" title="Binds texture to a texture unit for sampling." alt="" coords="244,13,351,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a008b37a015b1018a54d8702e50947a54" title="Static method to bind texture by ID." alt="" coords="399,13,517,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,23,385,23,385,28,351,28"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="565,13,724,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="518,23,552,23,552,28,518,28"/>
+</map>

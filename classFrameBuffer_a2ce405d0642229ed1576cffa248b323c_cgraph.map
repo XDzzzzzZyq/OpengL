@@ -1,0 +1,18 @@
+<map id="FrameBuffer::LinkTexture" name="FrameBuffer::LinkTexture">
+<area shape="rect" id="Node000001" title="Links an existing texture to this framebuffer." alt="" coords="5,153,191,179"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#a3004f825ec624640136069c76928493f" title="Binds this framebuffer for rendering." alt="" coords="239,5,457,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,151,159,97,196,66,237,40,253,33,255,38,240,44,199,70,163,101,112,155"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#ab3ec7cbd6bf20945f5e4e6608ef05431" title="Returns texture height." alt="" coords="293,55,403,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,151,170,120,238,89,278,77,280,82,240,94,173,125,120,156"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="279,104,417,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,151,269,129,270,135,164,156"/>
+<area shape="rect" id="Node000005" href="$classTexture.html#af65caec5303d06ec883d7aabe8e1880c" title="Returns texture width." alt="" coords="291,153,405,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="191,163,277,163,277,169,191,169"/>
+<area shape="rect" id="Node000006" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="269,203,427,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="164,176,270,197,269,203,163,181"/>
+<area shape="rect" id="Node000007" href="$classFrameBuffer.html#afed202cb4cfb8384b091bc315dc1a8e6" title="Resizes all or selected attachments." alt="" coords="271,276,425,301"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="124,176,240,237,306,268,304,273,237,242,122,181"/>
+<area shape="rect" id="Node000008" href="$classFrameBuffer.html#ac14affb041d62c8685a6afe5ab63c842" title="Unbinds the current framebuffer (binds default FBO 0)." alt="" coords="249,326,447,366"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="110,177,160,241,198,278,240,310,254,318,251,323,237,315,194,282,156,244,106,180"/>
+<area shape="poly" id="edge7_Node000007_Node000007" title=" " alt="" coords="308,278,299,268,304,258,320,252,348,249,383,253,393,258,397,264,392,267,389,262,382,258,348,255,321,257,307,262,304,267,312,274"/>
+</map>

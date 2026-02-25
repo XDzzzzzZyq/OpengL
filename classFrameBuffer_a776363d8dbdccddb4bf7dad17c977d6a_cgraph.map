@@ -1,0 +1,5 @@
+<map id="FrameBuffer::FrameBuffer" name="FrameBuffer::FrameBuffer">
+<area shape="rect" id="Node000001" title="Constructs a multi&#45;target framebuffer (runtime list)." alt="" coords="5,13,196,38"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#ac14affb041d62c8685a6afe5ab63c842" title="Unbinds the current framebuffer (binds default FBO 0)." alt="" coords="244,5,441,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

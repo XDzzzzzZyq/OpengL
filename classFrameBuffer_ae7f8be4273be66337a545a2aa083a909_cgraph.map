@@ -1,0 +1,7 @@
+<map id="FrameBuffer::AppendTexture" name="FrameBuffer::AppendTexture">
+<area shape="rect" id="Node000001" title="Appends a new texture attachment." alt="" coords="5,31,212,56"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="271,5,408,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,29,257,24,257,30,213,35"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="260,55,419,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,51,247,55,246,60,212,57"/>
+</map>

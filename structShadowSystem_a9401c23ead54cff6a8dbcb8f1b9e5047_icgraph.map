@@ -1,0 +1,12 @@
+<map id="ShadowSystem::GetSlotOffset" name="ShadowSystem::GetSlotOffset">
+<area shape="rect" id="Node000001" title="Returns shadow map slot offset for a given light type." alt="" coords="857,29,1075,55"/>
+<area shape="poly" id="edge5_Node000001_Node000001" title=" " alt="" coords="1015,20,1013,16,1004,12,966,8,936,10,921,15,917,20,926,27,922,31,912,21,917,11,935,5,966,3,1005,7,1016,12,1020,18"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a9cc11b99010e36b4b1bb8ec3937d299a" title="Binds all shadow map textures to shader slots." alt="" coords="571,29,809,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="843,45,810,45,810,39,843,39"/>
+<area shape="rect" id="Node000003" href="$structShadowSystem.html#a726abfc6b74f84230a6014305b89630d" title="Binds all light buffers to shader binding points." alt="" coords="364,29,523,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="557,45,523,45,523,39,557,39"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,29,316,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="350,45,316,45,316,39,350,39"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,29,133,55"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,45,134,45,134,39,167,39"/>
+</map>

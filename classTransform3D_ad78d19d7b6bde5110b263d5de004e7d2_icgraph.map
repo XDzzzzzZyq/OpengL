@@ -1,0 +1,5 @@
+<map id="Transform3D::GetChildTransPtr" name="Transform3D::GetChildTransPtr">
+<area shape="rect" id="Node000001" title="Returns pointer to first child transform." alt="" coords="285,5,507,31"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#af16059a72f4411ac5c479192724109b4" title="Recomputes transform and all parent transforms." alt="" coords="5,5,237,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,21,238,21,238,15,272,15"/>
+</map>

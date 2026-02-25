@@ -1,0 +1,14 @@
+<map id="Sprite::SetTex" name="Sprite::SetTex">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,116,105"/>
+<area shape="rect" id="Node000002" href="$classSprite.html#a3ad1e7d1823b86d54db970713834479a" title=" " alt="" coords="183,5,313,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,78,163,40,183,32,185,37,165,44,86,82"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="179,55,317,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="116,83,165,76,165,81,117,88"/>
+<area shape="rect" id="Node000005" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="567,80,719,105"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="117,90,553,90,553,95,117,95"/>
+<area shape="rect" id="Node000006" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="164,156,332,181"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="92,103,165,134,201,149,199,154,163,139,90,108"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="380,55,519,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="318,65,366,65,366,70,318,70"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="519,74,553,78,553,84,519,79"/>
+</map>

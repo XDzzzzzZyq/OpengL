@@ -1,0 +1,9 @@
+<map id="Outliner" name="Outliner">
+<area shape="rect" id="Node000001" title=" " alt="" coords="31,168,106,193"/>
+<area shape="rect" id="Node000002" href="$classImguiLayer.html" title="Base class for all UI panels (dockable ImGui windows)." alt="" coords="5,93,100,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,132,69,167,63,168,56,133"/>
+<area shape="rect" id="Node000003" href="$classImguiTheme.html" title=" " alt="" coords="125,93,229,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="149,129,87,170,84,166,146,124"/>
+<area shape="rect" id="Node000004" href="$structThemeData.html" title=" " alt="" coords="127,5,226,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="179,45,179,93,174,93,174,45"/>
+</map>

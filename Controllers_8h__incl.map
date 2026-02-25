@@ -1,0 +1,15 @@
+<map id="src/editor/Controllers.h" name="src/editor/Controllers.h">
+<area shape="rect" id="Node000001" title="Base controller architecture for event&#45;driven application logic." alt="" coords="113,5,283,31"/>
+<area shape="rect" id="Node000002" href="$Events_8h.html" title="Type&#45;safe event system for decoupled communication across layers." alt="" coords="120,79,199,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,32,174,68,170,65,189,30"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,152,92,177"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="178,33,144,53,111,81,84,111,64,142,60,139,80,108,107,77,141,49,175,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="227,152,351,177"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="208,30,276,139,272,142,203,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="274,79,351,104"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="218,28,284,69,281,74,215,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="116,152,203,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="162,104,162,138,157,138,157,104"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="143,106,80,147,77,142,140,102"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="181,102,256,143,254,147,179,106"/>
+</map>

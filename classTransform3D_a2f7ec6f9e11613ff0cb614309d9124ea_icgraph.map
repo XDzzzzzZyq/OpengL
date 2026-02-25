@@ -1,0 +1,31 @@
+<map id="Transform3D::SetPos" name="Transform3D::SetPos">
+<area shape="rect" id="Node000001" title="Sets world position." alt="" coords="684,179,841,204"/>
+<area shape="rect" id="Node000002" href="$CameraController_8cpp.html#ad88808c58761334308c22fbe38ceb82b" title=" " alt="" coords="499,5,605,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="745,168,701,106,670,73,635,44,604,30,606,25,637,40,673,69,705,102,749,165"/>
+<area shape="rect" id="Node000004" href="$CameraController_8cpp.html#ab2fac17391c0b73d879dd67fc0900c9d" title=" " alt="" coords="497,55,607,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="737,171,692,132,635,94,606,82,608,77,637,89,695,127,741,167"/>
+<area shape="rect" id="Node000005" href="$classMesh.html#a243b2f81e54bb1bdb39e6d8ec6993a43" title="Constructs a mesh from OBJ file." alt="" coords="502,104,602,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="719,176,635,143,600,132,601,127,637,138,721,171"/>
+<area shape="rect" id="Node000006" href="$TransformPanel_8cpp.html#a92a0ef7de40630815ed35c2cef178c38" title=" " alt="" coords="482,153,622,179"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="670,183,622,177,623,172,671,178"/>
+<area shape="rect" id="Node000008" href="$classCamera.html#a1e475cb1c98cc0f9c77babaebca9a018" title="Sets camera position in world space." alt="" coords="5,217,160,243"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="670,199,160,228,160,223,670,194"/>
+<area shape="rect" id="Node000009" href="$classCamera.html#a5e6fa7b3c3549b0e2a4756b476c0817e" title="Sets camera transform from 4x4 matrix." alt="" coords="469,255,635,280"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="715,211,589,257,587,252,713,206"/>
+<area shape="rect" id="Node000010" href="$classMesh.html#ac179908d410005adcdbefe1b31e7d895" title="Centers mesh pivot at geometry centroid." alt="" coords="487,304,617,329"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="741,216,695,255,637,294,607,306,605,301,635,289,692,251,737,212"/>
+<area shape="rect" id="Node000011" href="$classTransform3D.html#a6f3f2ca7e5e64f74fc8128c1577e34f0" title="Sets transform from 4x4 matrix." alt="" coords="468,353,636,379"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="749,218,705,280,673,314,637,343,612,356,609,351,635,338,670,310,700,277,745,214"/>
+<area shape="rect" id="Node000003" href="$classCameraController.html#ae7a446010eae8ff05acc6ca86fc57017" title="Bind to EventPool to subscribe to input events." alt="" coords="227,31,401,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="486,28,401,37,401,31,485,22"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="482,63,401,55,401,49,483,58"/>
+<area shape="rect" id="Node000007" href="$classTransformPanel.html#ac1d03f2b7870d2e29f112e6ef20c374d" title="Renders the layer&#39;s UI elements." alt="" coords="208,153,420,179"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="468,169,420,169,420,163,468,163"/>
+<area shape="rect" id="Node000012" href="$classTransform3D.html#a923519706fb1e49c8f888f83e8bca3ec" title="Orients transform to look at target position." alt="" coords="235,279,393,304"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="495,352,467,343,353,307,355,302,469,338,496,347"/>
+<area shape="rect" id="Node000014" href="$classTransform3D.html#a3a04e27fbddaa4b94fec2b7d4aa9e03d" title="Sets parent transform for hierarchy." alt="" coords="227,353,401,379"/>
+<area shape="poly" id="edge15_Node000011_Node000014" title=" " alt="" coords="454,369,402,369,402,363,454,363"/>
+<area shape="poly" id="edge13_Node000012_Node000008" title=" " alt="" coords="252,278,131,245,132,240,253,273"/>
+<area shape="rect" id="Node000013" href="$classCamera.html#a92495e306c20fc23cf8129a470396668" title="Sets look&#45;at target position." alt="" coords="11,279,155,304"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="221,294,155,294,155,289,221,289"/>
+</map>

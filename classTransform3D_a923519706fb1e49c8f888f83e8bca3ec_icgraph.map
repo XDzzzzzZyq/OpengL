@@ -1,0 +1,7 @@
+<map id="Transform3D::LookAt" name="Transform3D::LookAt">
+<area shape="rect" id="Node000001" title="Orients transform to look at target position." alt="" coords="208,31,367,56"/>
+<area shape="rect" id="Node000002" href="$classCamera.html#a1e475cb1c98cc0f9c77babaebca9a018" title="Sets camera position in world space." alt="" coords="5,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,35,160,30,161,25,195,29"/>
+<area shape="rect" id="Node000003" href="$classCamera.html#a92495e306c20fc23cf8129a470396668" title="Sets look&#45;at target position." alt="" coords="11,55,155,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,57,156,62,155,56,194,52"/>
+</map>

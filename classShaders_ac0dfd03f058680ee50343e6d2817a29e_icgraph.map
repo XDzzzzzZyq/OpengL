@@ -1,0 +1,17 @@
+<map id="Shaders::_resetProgramID" name="Shaders::_resetProgramID">
+<area shape="rect" id="Node000001" title="Resets program ID, deleting old program if needed." alt="" coords="273,153,464,179"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#a7809ca6a1a576626e8a1823dec74a48a" title="Copy assignment operator." alt="" coords="41,5,189,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="346,145,294,93,261,67,224,44,189,31,191,26,226,40,264,62,298,89,350,141"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#adcbc2d4bdbd64199584baaae94c4b6ae" title="Move assignment operator (transfers ownership)." alt="" coords="41,55,189,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="334,148,284,120,224,94,187,83,188,78,226,89,286,115,337,144"/>
+<area shape="rect" id="Node000004" href="$classComputeShader.html#a91c46abedfff7c7dc6cf05b889ac0a04" title="Relinks the compute shader program." alt="" coords="5,104,225,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,153,181,132,182,127,290,148"/>
+<area shape="rect" id="Node000005" href="$classRenderShader.html#a6da36be56ef93f0b1558cde3c4e75bee" title="Relinks the shader program." alt="" coords="12,153,219,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="260,169,219,169,219,163,260,163"/>
+<area shape="rect" id="Node000006" href="$classChainedShader.html#a92144620e8ed51238e16dfc86dca3d32" title="Relinks the shader program." alt="" coords="8,203,223,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="290,184,182,205,181,200,289,179"/>
+<area shape="rect" id="Node000007" href="$classShaders.html#ab0898af209c33c75ea69bd0865e3db9c" title="Copy constructor." alt="" coords="48,252,183,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="336,188,285,216,226,242,184,255,182,249,224,237,283,211,334,183"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#a06542ba734ad1e0da67d68617e2ab54f" title="Move constructor (transfers ownership of GPU resources)." alt="" coords="48,301,183,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="350,191,297,242,263,268,226,291,184,306,182,301,224,286,260,264,294,238,346,187"/>
+</map>

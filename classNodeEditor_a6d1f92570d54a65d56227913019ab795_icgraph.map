@@ -1,0 +1,8 @@
+<map id="NodeEditor::RenderMark" name="NodeEditor::RenderMark">
+<area shape="rect" id="Node000001" title=" " alt="" coords="444,29,625,55"/>
+<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="572,20,562,11,535,8,512,10,500,15,498,20,504,28,500,31,493,21,497,11,511,5,535,3,564,6,576,15"/>
+<area shape="rect" id="Node000002" href="$classNodeEditor.html#abc395f9dfca8389e1ae1ed8666cb466b" title=" " alt="" coords="248,29,396,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="430,45,396,45,396,39,430,39"/>
+<area shape="rect" id="Node000003" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,29,200,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="234,45,200,45,200,39,234,39"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="src/extra/structs.h" name="src/extra/structs.h">
+<area shape="rect" id="Node000001" title="Common utility structures for timing and performance measurement." alt="" coords="430,5,569,31"/>
+<area shape="rect" id="Node000002" href="$TextEditor_8h.html" title=" " alt="" coords="13,86,186,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="428,36,158,89,157,83,427,31"/>
+<area shape="rect" id="Node000004" href="$Application_8cpp.html" title=" " alt="" coords="210,86,383,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="458,38,327,88,325,83,456,33"/>
+<area shape="rect" id="Node000005" href="$MeshData_8cpp.html" title=" " alt="" coords="407,86,591,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="502,44,502,86,497,86,497,44"/>
+<area shape="rect" id="Node000006" href="$ShaderParser_8cpp.html" title=" " alt="" coords="615,86,818,111"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="545,33,686,83,684,88,543,38"/>
+<area shape="rect" id="Node000007" href="$RenderShader_8cpp.html" title=" " alt="" coords="843,79,985,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="581,30,831,76,843,79,842,84,829,81,580,36"/>
+<area shape="rect" id="Node000003" href="$TextEditor_8cpp.html" title=" " alt="" coords="5,167,193,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,125,102,166,97,166,97,125"/>
+</map>

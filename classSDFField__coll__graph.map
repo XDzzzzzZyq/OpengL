@@ -1,0 +1,11 @@
+<map id="SDFField" name="SDFField">
+<area shape="rect" id="Node000001" title=" " alt="" coords="63,152,141,177"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="5,79,84,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,113,95,150,91,154,60,116"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="21,5,68,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,44,47,79,42,79,42,44"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="108,79,213,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,116,114,154,109,150,140,113"/>
+<area shape="rect" id="Node000005" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="117,5,204,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="163,44,163,79,158,79,158,44"/>
+</map>

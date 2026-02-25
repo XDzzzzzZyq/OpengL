@@ -1,0 +1,7 @@
+<map id="SelectionChangedEvent" name="SelectionChangedEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,181,193"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="54,80,133,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,119,96,167,91,167,91,119"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="70,5,117,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="96,45,96,80,91,80,91,45"/>
+</map>

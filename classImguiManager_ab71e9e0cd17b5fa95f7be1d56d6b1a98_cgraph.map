@@ -1,0 +1,9 @@
+<map id="ImguiManager::SetButtonFunc" name="ImguiManager::SetButtonFunc">
+<area shape="rect" id="Node000001" title="Sets the callback function for a button item." alt="" coords="5,31,224,56"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a6efe93a306bc60097b7a0341782d0e04" title="Finds an item within a layer by name." alt="" coords="272,31,491,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,41,258,41,258,46,224,46"/>
+<area shape="rect" id="Node000003" href="$classImguiLayer.html#a922bfc7cd142fecd22d8990a8b68d949" title="Finds an item by name." alt="" coords="552,5,749,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="490,30,538,26,538,31,491,36"/>
+<area shape="rect" id="Node000004" href="$classImguiManager.html#ae75cb0c6a0b0c44ba2c24f84eac3928b" title="Finds a layer by name." alt="" coords="539,55,763,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="491,50,525,53,525,59,491,56"/>
+</map>

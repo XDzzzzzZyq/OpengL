@@ -1,0 +1,7 @@
+<map id="src/render/buffers/IndexBuffer.h" name="src/render/buffers/IndexBuffer.h">
+<area shape="rect" id="Node000001" title="OpenGL index buffer object (IBO/EBO) abstraction." alt="" coords="5,5,141,45"/>
+<area shape="rect" id="Node000002" href="$Buffers_8h.html" title="RAII base class for OpenGL buffer objects." alt="" coords="33,93,113,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,46,76,79,71,79,71,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="31,167,116,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="76,119,76,153,71,153,71,119"/>
+</map>

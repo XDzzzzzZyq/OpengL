@@ -1,0 +1,7 @@
+<map id="StorageBuffer::GenStorageBuffers" name="StorageBuffer::GenStorageBuffers">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,200,63"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html#a90960c29347d1c08eb1819d62a77788e" title="Binds this SSBO to GL_SHADER_STORAGE_BUFFER." alt="" coords="257,5,443,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,31,243,26,243,32,201,36"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#a44ab1ddd14ad49f9e837e6c4ce138e0e" title="Unbinds the current SSBO." alt="" coords="248,55,452,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,50,235,53,234,59,200,55"/>
+</map>

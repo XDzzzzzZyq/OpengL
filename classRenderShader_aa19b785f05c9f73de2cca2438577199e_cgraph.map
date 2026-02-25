@@ -1,0 +1,5 @@
+<map id="RenderShader::GenerateShader" name="RenderShader::GenerateShader">
+<area shape="rect" id="Node000001" title="Generates shader code (unused for standard shaders)." alt="" coords="5,5,232,31"/>
+<area shape="rect" id="Node000002" href="$classRenderShader.html#a409899ffc91896655e93a7ee75dc80ae" title="Returns pointer to shader unit for a specific stage." alt="" coords="280,5,496,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,15,266,15,266,21,232,21"/>
+</map>

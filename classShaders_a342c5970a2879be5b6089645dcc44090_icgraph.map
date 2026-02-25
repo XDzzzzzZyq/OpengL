@@ -1,0 +1,33 @@
+<map id="Shaders::ParseShaderType" name="Shaders::ParseShaderType">
+<area shape="rect" id="Node000001" title="Parses shader type to metadata tuple." alt="" coords="829,179,1021,204"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#a8c169838ee7e468c08c6675c7f7bc2dd" title="Compiles GLSL source code into an OpenGL shader object." alt="" coords="567,153,781,179"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="816,183,781,179,782,174,816,178"/>
+<area shape="rect" id="Node000016" href="$classChainedShader.html#afab830fcaa231639db25d73848fba21c" title="Prints debug information about all shaders in chain." alt="" coords="572,203,776,228"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="816,204,777,208,776,203,816,199"/>
+<area shape="rect" id="Node000003" href="$classRenderShader.html#a603c55988a54718c98fafe61e0b5b0d0" title="Compiles a shader stage." alt="" coords="295,5,515,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="650,145,593,94,557,67,518,44,487,33,489,28,520,40,560,62,596,90,653,141"/>
+<area shape="rect" id="Node000005" href="$classChainedShader.html#a17c40b6137a6a37bb8957900f0b56d12" title="Compiles a shader stage." alt="" coords="292,55,519,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="638,149,582,121,518,94,478,83,479,77,520,89,584,116,640,144"/>
+<area shape="rect" id="Node000007" href="$classComputeShader.html#abcd2ceafa2a8e6962234e752ce79bb06" title="Creates compute shader program from file." alt="" coords="294,104,517,129"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="590,153,475,132,476,127,591,148"/>
+<area shape="rect" id="Node000009" href="$classChainedShader.html#adfcd778e36a4b9e8ca524744358631e3" title="Creates shader program from loaded shader chain." alt="" coords="301,153,509,179"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="553,169,510,169,510,163,553,163"/>
+<area shape="rect" id="Node000011" href="$classRenderShader.html#af01707bc6ecce11ee3aaf2b75ecdb94a" title="Creates shader program from vertex and fragment shader names." alt="" coords="305,203,506,228"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="591,184,476,205,475,200,590,179"/>
+<area shape="rect" id="Node000013" href="$classFastLoadShader.html#a5bd7e7dff4b81c34cf086fe7305d1ce4" title="Creates shader program from vertex and fragment shader names." alt="" coords="299,252,511,277"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="581,186,568,192,554,204,545,217,536,230,520,243,493,254,491,249,517,238,532,227,540,214,550,200,565,188,579,181"/>
+<area shape="rect" id="Node000015" href="$classComputeShader.html#a91c46abedfff7c7dc6cf05b889ac0a04" title="Relinks the compute shader program." alt="" coords="295,301,515,327"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="575,187,568,192,557,203,551,215,545,241,540,267,532,280,520,292,502,303,499,299,517,288,528,277,535,265,540,240,546,213,553,200,565,188,572,183"/>
+<area shape="rect" id="Node000004" href="$classRenderShader.html#a6da36be56ef93f0b1558cde3c4e75bee" title="Relinks the shader program." alt="" coords="21,5,228,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="282,21,228,21,228,15,282,15"/>
+<area shape="rect" id="Node000006" href="$classChainedShader.html#a92144620e8ed51238e16dfc86dca3d32" title="Relinks the shader program." alt="" coords="17,55,232,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="278,70,232,70,232,65,278,65"/>
+<area shape="rect" id="Node000008" href="$classComputeShader.html#a237e10a88c7f8f29a3014cb64ba99399" title="Constructs a compute shader from file." alt="" coords="5,104,244,129"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="280,119,244,119,244,114,280,114"/>
+<area shape="rect" id="Node000010" href="$classChainedShader.html#a2e90fa8d5f4792f03fe22026c3930b46" title="Constructs a chained shader from a list of shader file names." alt="" coords="11,153,238,179"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="288,169,238,169,238,163,288,163"/>
+<area shape="rect" id="Node000012" href="$classRenderShader.html#a3cd7635d76dfe544729c452f331d3fe7" title="Constructs and loads a render shader from files." alt="" coords="19,203,231,228"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="291,218,231,218,231,213,291,213"/>
+<area shape="rect" id="Node000014" href="$classFastLoadShader.html#a1dcef24a576ffd8550531caac361be80" title="Constructs and loads a fast shader from files." alt="" coords="30,253,219,293"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="286,271,220,273,220,267,286,265"/>
+</map>

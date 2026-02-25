@@ -1,0 +1,5 @@
+<map id="DebugPoints::GetTransform" name="DebugPoints::GetTransform">
+<area shape="rect" id="Node000001" title="Returns pointer to object&#39;s transform, if applicable." alt="" coords="5,5,205,31"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#ae3f7c933770184d03b1aae441448f681" title="Returns pointer to this transform." alt="" coords="253,5,472,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,15,240,15,240,21,205,21"/>
+</map>

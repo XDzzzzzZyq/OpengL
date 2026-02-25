@@ -1,0 +1,5 @@
+<map id="Shaders::ReadShaderFile" name="Shaders::ReadShaderFile">
+<area shape="rect" id="Node000001" title="Reads shader source from file." alt="" coords="5,5,188,31"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#ab46fab95158b2204b29d4c66baa18a68" title="Infers shader type from file extension." alt="" coords="236,5,401,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,15,222,15,222,21,188,21"/>
+</map>

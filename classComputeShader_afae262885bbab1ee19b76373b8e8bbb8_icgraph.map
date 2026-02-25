@@ -1,0 +1,11 @@
+<map id="ComputeShader::GetShadowShaderName" name="ComputeShader::GetShadowShaderName">
+<area shape="rect" id="Node000001" title="Returns shader name for shadow rendering." alt="" coords="589,23,797,63"/>
+<area shape="rect" id="Node000002" href="$classLight.html#a82c4b1f13914f0114d0b704c70fc0378" title="Returns pointer to shadow map shader." alt="" coords="387,5,518,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="575,34,518,27,518,22,576,28"/>
+<area shape="rect" id="Node000003" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="364,55,541,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="576,58,542,61,541,56,575,52"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,55,316,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="350,70,316,70,316,65,350,65"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,55,133,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,70,134,70,134,65,167,65"/>
+</map>

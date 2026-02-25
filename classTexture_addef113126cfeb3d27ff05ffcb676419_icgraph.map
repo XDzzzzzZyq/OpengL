@@ -1,0 +1,6 @@
+<map id="Texture::ConvertDepthCubeFrom" name="Texture::ConvertDepthCubeFrom">
+<area shape="rect" id="Node000001" title="Converts texture to depth cubemap format." alt="" coords="212,29,447,55"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#aecde0aa6567b4708962380c0c3a726fd" title="Saves texture to file." alt="" coords="5,29,164,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,45,164,45,164,39,199,39"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="128,20,125,15,118,12,85,8,59,10,45,15,42,20,49,27,45,31,37,21,41,11,58,5,85,3,119,7,129,11,132,17"/>
+</map>

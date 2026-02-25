@@ -1,0 +1,7 @@
+<map id="GetShaderUnitPtr" name="GetShaderUnitPtr">
+<area shape="rect" id="Node000001" title=" " alt="" coords="264,31,399,56"/>
+<area shape="rect" id="Node000002" href="$classShaderEditor.html#a28ca53767e2582169aec8f1c6bc86b29" title="Registers layer&#39;s event subscriptions." alt="" coords="5,5,216,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,37,216,33,217,27,250,31"/>
+<area shape="rect" id="Node000003" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="13,55,208,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="250,55,209,59,208,54,250,49"/>
+</map>

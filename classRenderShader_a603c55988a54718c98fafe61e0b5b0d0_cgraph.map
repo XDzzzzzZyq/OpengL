@@ -1,0 +1,9 @@
+<map id="RenderShader::CompileShader" name="RenderShader::CompileShader">
+<area shape="rect" id="Node000001" title="Compiles a shader stage." alt="" coords="5,31,225,56"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#a8c169838ee7e468c08c6675c7f7bc2dd" title="Compiles GLSL source code into an OpenGL shader object." alt="" coords="274,5,489,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,30,260,27,260,32,226,36"/>
+<area shape="rect" id="Node000004" href="$classRenderShader.html#a409899ffc91896655e93a7ee75dc80ae" title="Returns pointer to shader unit for a specific stage." alt="" coords="273,55,489,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="226,51,260,54,260,59,225,56"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#a342c5970a2879be5b6089645dcc44090" title="Parses shader type to metadata tuple." alt="" coords="537,5,729,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="489,15,524,15,524,21,489,21"/>
+</map>

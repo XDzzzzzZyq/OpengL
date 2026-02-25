@@ -1,0 +1,9 @@
+<map id="SDFField::SDFField" name="SDFField::SDFField">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,149,56"/>
+<area shape="rect" id="Node000002" href="$classChainedShader.html#a23356f85a2f8d931a91ddafecd09594f" title="Imports or retrieves a cached chained shader." alt="" coords="197,5,413,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,33,184,29,184,34,150,38"/>
+<area shape="rect" id="Node000003" href="$classSDFField.html#a3a7365a5a7e2ed27d1eb22488d943bff" title=" " alt="" coords="224,55,387,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,48,211,55,210,60,149,54"/>
+<area shape="rect" id="Node000004" href="$classStorageBuffer.html#a613df42d68a097de900e56f54bc36d99" title="Uploads structured data (header + array) to SSBO and records the buffer size." alt="" coords="461,47,656,87"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="387,65,448,65,448,70,387,70"/>
+</map>

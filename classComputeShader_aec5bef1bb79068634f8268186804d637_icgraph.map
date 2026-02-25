@@ -1,0 +1,11 @@
+<map id="ComputeShader::ImportShaderConfigs" name="ComputeShader::ImportShaderConfigs">
+<area shape="rect" id="Node000001" title="Stores default uniform configs for a shader." alt="" coords="627,23,849,63"/>
+<area shape="rect" id="Node000002" href="$classComputeShader.html#afe123d67d60c8ce0659bed7574a245f0" title=" " alt="" coords="336,5,579,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="613,35,579,32,579,26,613,29"/>
+<area shape="rect" id="Node000003" href="$classComputeShader.html#a8cf455c6314750da486bd021d2d9a74f" title="Initializes compute shader library with default shaders." alt="" coords="341,55,574,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="613,57,575,60,574,55,613,51"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a0e26f4caeddf76ac46fb21ba02a8fcde" title="Initializes the renderer and subscribes to events." alt="" coords="177,55,288,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="327,70,289,70,289,65,327,65"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="5,55,129,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="164,70,130,70,130,65,164,65"/>
+</map>

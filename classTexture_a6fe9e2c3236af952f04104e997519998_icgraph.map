@@ -1,0 +1,61 @@
+<map id="Texture::ParseFormat" name="Texture::ParseFormat">
+<area shape="rect" id="Node000001" title="Parses TextureType enum to OpenGL format constants." alt="" coords="1259,332,1417,357"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#ae7f8be4273be66337a545a2aa083a909" title="Appends a new texture attachment." alt="" coords="1004,5,1211,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1330,319,1319,264,1297,192,1281,154,1261,117,1237,82,1209,52,1176,33,1179,28,1212,48,1241,79,1265,114,1285,151,1302,190,1324,262,1336,318"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a31908e25c7d72d29827534e733f71bd8" title="Binds texture as compute shader image (read/write)." alt="" coords="1049,107,1165,132"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1324,320,1307,283,1282,238,1249,192,1209,153,1188,141,1165,132,1166,127,1190,136,1212,149,1253,189,1287,235,1312,280,1329,318"/>
+<area shape="rect" id="Node000004" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="739,101,956,127"/>
+<area shape="poly" id="edge20_Node000001_Node000004" title=" " alt="" coords="1330,319,1318,269,1296,206,1280,174,1261,144,1237,118,1209,96,1168,77,1123,67,1077,64,1031,66,945,83,880,104,879,99,944,78,1030,61,1077,58,1124,61,1170,72,1212,92,1241,114,1265,141,1285,172,1301,204,1323,267,1335,318"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#ac0041d7c34d3b8609d26f9d7d0cbd11f" title="Fills texture with solid color." alt="" coords="782,155,913,180"/>
+<area shape="poly" id="edge21_Node000001_Node000008" title=" " alt="" coords="1322,321,1304,291,1278,257,1247,224,1209,198,1173,182,1134,170,1054,158,978,156,913,161,913,155,978,151,1055,153,1135,165,1175,177,1212,193,1250,220,1282,253,1308,288,1326,318"/>
+<area shape="rect" id="Node000009" href="$classTexture.html#a008b37a015b1018a54d8702e50947a54" title="Static method to bind texture by ID." alt="" coords="1048,208,1167,233"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1313,324,1267,284,1239,264,1210,247,1166,232,1168,227,1212,242,1242,260,1271,280,1316,320"/>
+<area shape="rect" id="Node000018" href="$classFrameBuffer.html#a4341b4e1aae1bcd4cc95318fe8a060b6" title="Constructs a depth&#45;only framebuffer." alt="" coords="1012,257,1203,283"/>
+<area shape="poly" id="edge22_Node000001_Node000018" title=" " alt="" coords="1295,329,1210,297,1169,285,1170,280,1211,291,1297,324"/>
+<area shape="rect" id="Node000019" href="$classFrameBuffer.html#a2ce405d0642229ed1576cffa248b323c" title="Links an existing texture to this framebuffer." alt="" coords="1015,307,1200,332"/>
+<area shape="poly" id="edge23_Node000001_Node000019" title=" " alt="" coords="1245,337,1200,332,1201,327,1245,332"/>
+<area shape="rect" id="Node000020" href="$classTexture.html#a428ce0d2053d87fdb5c5ffbfd58552d4" title="Prints texture metadata to console." alt="" coords="1029,356,1185,381"/>
+<area shape="poly" id="edge24_Node000001_Node000020" title=" " alt="" coords="1245,357,1186,363,1185,358,1244,352"/>
+<area shape="rect" id="Node000021" href="$classTexture.html#a8616747b5beb720e5e32545806fbb01f" title="Resizes the texture." alt="" coords="1047,405,1168,431"/>
+<area shape="poly" id="edge25_Node000001_Node000021" title=" " alt="" coords="1295,365,1211,395,1166,408,1164,403,1210,390,1293,360"/>
+<area shape="rect" id="Node000022" href="$classTexture.html#aecde0aa6567b4708962380c0c3a726fd" title="Saves texture to file." alt="" coords="1028,479,1187,504"/>
+<area shape="poly" id="edge26_Node000001_Node000022" title=" " alt="" coords="1314,368,1268,405,1212,444,1140,481,1138,476,1209,440,1265,401,1310,364"/>
+<area shape="rect" id="Node000023" href="$classTexture.html#a7f4b95cf8cb1ed8db0ca88cc0473feb6" title="Constructs texture from image file." alt="" coords="1044,528,1171,553"/>
+<area shape="poly" id="edge28_Node000001_Node000023" title=" " alt="" coords="1327,371,1309,405,1284,444,1251,484,1212,518,1172,535,1170,530,1209,513,1247,480,1280,441,1305,402,1323,369"/>
+<area shape="rect" id="Node000024" href="$classTexture.html#adc8c5f0c084ce0e38bb63b53f7ca130c" title="Constructs empty texture with specified type." alt="" coords="1044,577,1171,603"/>
+<area shape="poly" id="edge29_Node000001_Node000024" title=" " alt="" coords="1332,372,1317,415,1292,468,1258,522,1236,547,1212,568,1193,579,1172,586,1170,581,1191,574,1209,564,1233,543,1253,519,1288,466,1312,413,1327,370"/>
+<area shape="rect" id="Node000025" href="$classTexture.html#ab53556a0402a2cd9f98d5b3265dc64c7" title="Constructs empty texture for framebuffer attachment." alt="" coords="1044,627,1171,652"/>
+<area shape="poly" id="edge30_Node000001_Node000025" title=" " alt="" coords="1335,372,1322,424,1300,491,1264,559,1240,590,1212,617,1193,629,1172,636,1170,631,1191,624,1209,613,1236,587,1259,556,1295,489,1317,423,1330,371"/>
+<area shape="rect" id="Node000026" href="$classTexture.html#a0bff249ecfb46e9b08c6ba52d64a921e" title="Unbinds texture from texture unit." alt="" coords="1045,676,1169,701"/>
+<area shape="poly" id="edge31_Node000001_Node000026" title=" " alt="" coords="1337,371,1328,432,1307,512,1291,554,1270,595,1244,634,1212,667,1193,679,1171,687,1169,682,1190,674,1209,663,1240,630,1265,593,1286,552,1302,510,1322,431,1332,371"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1035,121,956,119,956,114,1035,115"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="1036,135,913,158,912,153,1035,130"/>
+<area shape="rect" id="Node000005" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="496,101,643,127"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="725,117,643,117,643,111,725,111"/>
+<area shape="rect" id="Node000006" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="223,180,358,205"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="483,132,449,141,325,182,324,177,447,135,482,127"/>
+<area shape="rect" id="Node000007" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,180,133,205"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="210,195,134,195,134,190,210,190"/>
+<area shape="rect" id="Node000010" href="$classTexture.html#af8b7f038e8ca8345fc4ff5931227e56d" title="Binds texture to a texture unit for sampling." alt="" coords="794,263,901,288"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1035,239,901,267,900,262,1034,233"/>
+<area shape="rect" id="Node000017" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="481,151,658,176"/>
+<area shape="poly" id="edge18_Node000009_Node000017" title=" " alt="" coords="1034,219,897,210,738,194,638,179,639,173,739,189,897,204,1034,214"/>
+<area shape="rect" id="Node000011" href="$classEnvironment.html#a23f97b5b583a0c35e77439cb68d6cdf0" title="Binds IBL textures to shader slots." alt="" coords="474,201,665,241"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="780,265,664,242,665,237,781,260"/>
+<area shape="rect" id="Node000012" href="$classEnvironment.html#a05f52c3bdeae9f3d54890805c12b5ba2" title="Renders environment skybox to active framebuffer." alt="" coords="448,265,691,291"/>
+<area shape="poly" id="edge12_Node000010_Node000012" title=" " alt="" coords="780,279,691,280,691,274,780,273"/>
+<area shape="rect" id="Node000013" href="$classSprite.html#a601c33a7d1aa252ae8723e5625bd858c" title=" " alt="" coords="493,315,645,340"/>
+<area shape="poly" id="edge14_Node000010_Node000013" title=" " alt="" coords="781,290,639,317,638,312,780,285"/>
+<area shape="poly" id="edge11_Node000011_Node000006" title=" " alt="" coords="460,212,358,202,359,197,461,207"/>
+<area shape="poly" id="edge13_Node000012_Node000006" title=" " alt="" coords="484,265,447,255,378,231,320,208,322,203,380,226,449,250,486,260"/>
+<area shape="rect" id="Node000014" href="$classEnvironment.html#aa38193f2b8f2881c379c20a97a20de99" title="Renders environment sprite gizmo in viewport." alt="" coords="184,265,397,291"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="483,315,363,293,364,288,484,310"/>
+<area shape="rect" id="Node000015" href="$classLight.html#a5b40699d68b47ece3070992d2dcd1cde" title="Renders light sprite gizmo in viewport." alt="" coords="210,315,371,340"/>
+<area shape="poly" id="edge16_Node000013_Node000015" title=" " alt="" coords="480,330,372,330,372,325,480,325"/>
+<area shape="rect" id="Node000016" href="$classPostProcessing.html#a4a54548b77df77e1db3e429a249ffce1" title=" " alt="" coords="181,364,400,389"/>
+<area shape="poly" id="edge17_Node000013_Node000016" title=" " alt="" coords="484,345,364,367,363,361,483,340"/>
+<area shape="poly" id="edge19_Node000017_Node000006" title=" " alt="" coords="467,177,358,188,358,183,466,171"/>
+<area shape="poly" id="edge27_Node000022_Node000022" title=" " alt="" coords="1149,470,1138,461,1107,457,1083,459,1070,464,1067,470,1074,477,1070,480,1062,470,1066,460,1082,454,1107,452,1140,456,1152,465"/>
+<area shape="rect" id="Node000027" href="$classEnvironment.html#ab582fb92f64e4225ff3224f5749d1f4d" title="Unbinds IBL textures." alt="" coords="743,669,951,709"/>
+<area shape="poly" id="edge32_Node000026_Node000027" title=" " alt="" coords="1032,691,951,691,951,686,1032,686"/>
+</map>

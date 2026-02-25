@@ -1,0 +1,14 @@
+<map id="ShadowSystem::GetSceneInfo" name="ShadowSystem::GetSceneInfo">
+<area shape="rect" id="Node000001" title="Returns light count statistics for current scene." alt="" coords="640,35,857,60"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a8881456b3b0449dab5252e94fd859124" title="Parses basic lights (point, sun, spot, area) into GPU buffers." alt="" coords="364,5,592,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="626,37,592,33,592,28,627,31"/>
+<area shape="rect" id="Node000004" href="$structShadowSystem.html#acb2c868aa63489e887365acb77640e08" title="Parses polygonal lights into GPU buffers." alt="" coords="369,55,587,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="627,63,587,67,587,61,626,57"/>
+<area shape="rect" id="Node000003" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="187,9,311,35"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,23,311,24,311,18,350,18"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="378,55,303,37,305,32,379,50"/>
+<area shape="rect" id="Node000005" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,63,316,88"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="356,78,316,78,316,73,356,73"/>
+<area shape="rect" id="Node000006" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,63,133,88"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="167,78,134,78,134,73,167,73"/>
+</map>

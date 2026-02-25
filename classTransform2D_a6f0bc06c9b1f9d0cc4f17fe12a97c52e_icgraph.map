@@ -1,0 +1,7 @@
+<map id="Transform2D::Move" name="Transform2D::Move">
+<area shape="rect" id="Node000001" title="Translates position by offset." alt="" coords="467,5,616,31"/>
+<area shape="rect" id="Node000002" href="$classNodeEditor.html#a6260e41127416b206cd0300c0d69a2e0" title=" " alt="" coords="248,5,419,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="453,21,419,21,419,15,453,15"/>
+<area shape="rect" id="Node000003" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,5,200,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="234,21,200,21,200,15,234,15"/>
+</map>

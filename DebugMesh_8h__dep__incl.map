@@ -1,0 +1,52 @@
+<map id="src/scene/DebugMesh.h" name="src/scene/DebugMesh.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1065,5,1241,31"/>
+<area shape="rect" id="Node000002" href="$Camera_8h.html" title="Camera class providing view and projection matrices for rendering." alt="" coords="980,79,1131,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1127,41,1073,81,1070,76,1124,37"/>
+<area shape="rect" id="Node000023" href="$DebugMesh_8cpp.html" title=" " alt="" coords="1155,79,1345,104"/>
+<area shape="poly" id="edge27_Node000001_Node000023" title=" " alt="" coords="1181,37,1236,76,1233,81,1178,41"/>
+<area shape="rect" id="Node000003" href="$Viewport_8cpp.html" title=" " alt="" coords="196,394,381,419"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="966,100,728,119,611,135,528,155,459,181,406,207,362,243,316,300,304,324,297,350,291,394,286,393,291,349,299,322,312,297,358,239,403,203,457,176,527,149,610,130,727,114,966,95"/>
+<area shape="rect" id="Node000004" href="$CameraEvents_8h.html" title=" " alt="" coords="326,299,513,339"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="966,99,863,105,748,116,643,132,601,142,570,154,524,186,484,227,453,267,432,300,428,297,449,264,480,223,520,182,567,150,599,137,642,127,747,111,862,100,966,93"/>
+<area shape="rect" id="Node000007" href="$Camera_8cpp.html" title=" " alt="" coords="774,152,939,177"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="1011,111,890,154,888,149,1010,106"/>
+<area shape="rect" id="Node000008" href="$DebugLine_8cpp.html" title=" " alt="" coords="964,152,1147,177"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="1058,118,1058,152,1053,152,1053,118"/>
+<area shape="rect" id="Node000009" href="$DebugPoints_8cpp.html" title=" " alt="" coords="1171,152,1367,177"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="1103,106,1235,149,1233,154,1102,111"/>
+<area shape="rect" id="Node000010" href="$Environment_8cpp.html" title=" " alt="" coords="1391,152,1589,177"/>
+<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="1139,104,1420,149,1420,155,1138,109"/>
+<area shape="rect" id="Node000011" href="$Mesh_8cpp.html" title=" " alt="" coords="1613,152,1762,177"/>
+<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="1145,101,1601,149,1613,151,1612,156,1600,155,1144,107"/>
+<area shape="rect" id="Node000012" href="$PolygonLight_8cpp.html" title=" " alt="" coords="1787,152,1985,177"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="1144,101,1323,117,1461,127,1774,149,1787,150,1786,156,1774,155,1461,132,1322,123,1144,107"/>
+<area shape="rect" id="Node000013" href="$SDFField_8h.html" title=" " alt="" coords="593,152,749,177"/>
+<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="981,109,734,155,733,149,980,104"/>
+<area shape="rect" id="Node000016" href="$Scene_8h.html" title="Scene container holding all scene objects and scene&#45;wide state." alt="" coords="545,225,683,251"/>
+<area shape="poly" id="edge25_Node000002_Node000016" title=" " alt="" coords="967,100,735,120,635,135,601,144,584,154,578,170,582,189,593,208,605,223,601,227,588,211,577,191,572,170,580,150,599,139,634,130,735,115,966,95"/>
+<area shape="rect" id="Node000022" href="$Sprite_8cpp.html" title=" " alt="" coords="2010,152,2162,177"/>
+<area shape="poly" id="edge26_Node000002_Node000022" title=" " alt="" coords="1145,101,1386,119,1573,125,1760,132,1998,149,2010,151,2009,156,1998,155,1760,137,1573,131,1385,124,1145,107"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="380,349,308,396,305,392,377,344"/>
+<area shape="rect" id="Node000005" href="$Context_8cpp.html" title=" " alt="" coords="406,394,571,419"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="445,348,481,392,477,395,441,351"/>
+<area shape="rect" id="Node000006" href="$CameraController_8cpp.html" title=" " alt="" coords="5,387,172,427"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="334,345,162,389,160,384,333,339"/>
+<area shape="rect" id="Node000014" href="$Renderer_8cpp.html" title=" " alt="" coords="1243,394,1419,419"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="734,178,809,198,891,223,1015,268,1135,316,1307,391,1305,396,1133,321,1013,273,889,228,808,203,733,183"/>
+<area shape="rect" id="Node000015" href="$SDFField_8cpp.html" title=" " alt="" coords="707,225,878,251"/>
+<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="704,182,774,223,771,227,702,187"/>
+<area shape="poly" id="edge16_Node000013_Node000016" title=" " alt="" coords="656,190,625,227,621,224,651,186"/>
+<area shape="rect" id="Node000017" href="$SceneManager_8h.html" title="Factory for creating preset scenes." alt="" coords="715,306,905,331"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="656,253,782,304,780,308,654,258"/>
+<area shape="rect" id="Node000021" href="$Scene_8cpp.html" title=" " alt="" coords="537,306,691,331"/>
+<area shape="poly" id="edge24_Node000016_Node000021" title=" " alt="" coords="617,264,617,306,611,306,611,264"/>
+<area shape="poly" id="edge18_Node000017_Node000003" title=" " alt="" coords="733,336,704,341,394,389,352,397,351,391,394,384,703,336,732,331"/>
+<area shape="poly" id="edge20_Node000017_Node000005" title=" " alt="" coords="754,338,533,396,531,391,753,332"/>
+<area shape="poly" id="edge23_Node000017_Node000014" title=" " alt="" coords="900,331,1232,384,1272,391,1271,397,1231,389,899,336"/>
+<area shape="rect" id="Node000018" href="$Application_8cpp.html" title=" " alt="" coords="595,394,769,419"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="783,341,701,396,698,392,780,337"/>
+<area shape="rect" id="Node000019" href="$SceneConfigs_8cpp.html" title=" " alt="" coords="793,394,990,419"/>
+<area shape="poly" id="edge21_Node000017_Node000019" title=" " alt="" coords="832,340,882,392,878,395,828,343"/>
+<area shape="rect" id="Node000020" href="$SceneManager_8cpp.html" title=" " alt="" coords="1014,394,1219,419"/>
+<area shape="poly" id="edge22_Node000017_Node000020" title=" " alt="" coords="865,333,1076,391,1075,396,864,338"/>
+</map>

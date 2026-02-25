@@ -1,0 +1,6 @@
+<map id="TextEditor::Render" name="TextEditor::Render">
+<area shape="rect" id="Node000001" title=" " alt="" coords="248,29,389,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="357,20,347,11,319,8,296,10,283,15,281,20,287,28,283,31,276,21,280,11,294,5,319,3,349,6,361,15"/>
+<area shape="rect" id="Node000002" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,29,200,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="234,45,200,45,200,39,234,39"/>
+</map>

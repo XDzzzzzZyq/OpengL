@@ -1,0 +1,24 @@
+<map id="src/render/Material.h" name="src/render/Material.h">
+<area shape="rect" id="Node000001" title="Material system for PBR rendering with texture and parameter management." alt="" coords="293,5,450,31"/>
+<area shape="rect" id="Node000002" href="$Parameters_8h.html" title="Generic parameter system for exposing tweakable properties to UI." alt="" coords="197,79,305,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,33,284,74,282,69,351,28"/>
+<area shape="rect" id="Node000007" href="$Texture_8h.html" title="Texture wrapper for OpenGL texture objects and texture resource management." alt="" coords="330,79,413,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="374,31,374,65,369,65,369,31"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="437,79,493,104"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="388,29,440,68,437,72,385,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="98,152,202,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="237,106,179,146,176,142,234,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="226,152,285,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="255,104,257,138,251,139,249,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="309,152,433,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="272,102,341,142,338,147,269,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,152,73,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="218,107,87,150,86,145,216,101"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="337,107,199,150,198,145,335,101"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="354,106,287,147,285,142,351,102"/>
+<area shape="poly" id="edge11_Node000007_Node000005" title=" " alt="" coords="374,104,374,138,369,138,369,104"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="458,152,538,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="393,102,467,143,464,147,390,106"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="562,152,647,177"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="410,101,555,145,553,151,408,107"/>
+</map>

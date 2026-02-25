@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['vec3_5fstdvec3_0',['vec3_stdVec3',['../namespacexdzm.html#a413deafa7654a0d0d907e8a80c0a8d47',1,'xdzm']]],
+  ['vec3_5fstdvec6_1',['vec3_stdVec6',['../namespacexdzm.html#a4152ebcb5f12a96b3598862d195c92c9',1,'xdzm']]],
+  ['vec3spin_2',['Vec3Spin',['../namespacexdzm.html#a3f8c61acbc7a8a055c0aaf4cecfb0849',1,'xdzm']]],
+  ['vecconvert_3',['VecConvert',['../operator_8h.html#a67ad883144669b7e7bf63367438c38cd',1,'operator.h']]],
+  ['vertexarray_4',['vertexarray',['../classVertexArray.html#ab8a2dcce9698f96dac5f9a19c6979d03',1,'VertexArray::VertexArray()'],['../classVertexArray.html#a4f9f430d8bdc1cf1b51a91c2b8a6d789',1,'VertexArray::VertexArray(const VertexArray &amp;vao)'],['../classVertexArray.html#a1b0704f8543c3a79b8361aff5dead7ea',1,'VertexArray::VertexArray(VertexArray &amp;&amp;vao) noexcept']]],
+  ['vertexbuffer_5',['vertexbuffer',['../classVertexBuffer.html#afbef2446b156b236cf1af824457230ae',1,'VertexBuffer::VertexBuffer()=default'],['../classVertexBuffer.html#a75bc6a9848dfb6dede932189dc2a7952',1,'VertexBuffer::VertexBuffer(float *data, GLuint size)=delete'],['../classVertexBuffer.html#ae0ba33de9fda4690c53d6efd3d69b34b',1,'VertexBuffer::VertexBuffer(const std::vector&lt; float &gt; &amp;data)'],['../classVertexBuffer.html#aa0fc5d4d84dabb9b88767eb70c9efc70',1,'VertexBuffer::VertexBuffer(const VertexBuffer &amp;vbo)'],['../classVertexBuffer.html#a2d71d4386da4f8a12d00da90982e182f',1,'VertexBuffer::VertexBuffer(VertexBuffer &amp;&amp;vbo) noexcept']]],
+  ['viewport_6',['viewport',['../classViewport.html#a9fde8f966d9802dd42254acf0ed05386',1,'Viewport::Viewport()'],['../classViewport.html#a5f87fece1d5c4a84321fb73d22270e9f',1,'Viewport::Viewport(const std::string &amp;name)'],['../classViewport.html#a5688123a830436c94e084b0f80d22a09',1,'Viewport::Viewport(const std::string &amp;name, GLuint texID)'],['../classViewport.html#a833b04e867a6a4406e963a8fe30c003f',1,'Viewport::Viewport(const std::string &amp;name, GLuint texID, const ImVec2 &amp;vp_size)']]]
+];

@@ -1,0 +1,9 @@
+<map id="ShadowSystem::ConstructSAT" name="ShadowSystem::ConstructSAT">
+<area shape="rect" id="Node000001" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="559,5,776,31"/>
+<area shape="rect" id="Node000002" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="364,5,511,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="545,21,511,21,511,15,545,15"/>
+<area shape="rect" id="Node000003" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,5,316,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,21,316,21,316,15,350,15"/>
+<area shape="rect" id="Node000004" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,21,134,21,134,15,167,15"/>
+</map>

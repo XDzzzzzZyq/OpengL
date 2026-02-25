@@ -1,0 +1,10 @@
+<map id="ShadowSystem" name="ShadowSystem">
+<area shape="rect" id="Node000001" title="Owns per&#45;light GPU resources, shadow maps, and shadow computation." alt="" coords="69,241,191,267"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html" title="OpenGL shader storage buffer object wrapper." alt="" coords="5,80,116,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,119,50,167,52,192,62,216,74,229,90,239,88,244,71,234,57,219,47,194,44,167,51,118"/>
+<area shape="rect" id="Node000003" href="$classGLBuffer.html" title="RAII base class for OpenGL buffer objects (GL_ARRAY_BUFFER family)." alt="" coords="89,5,168,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="110,43,74,81,70,78,106,39"/>
+<area shape="rect" id="Node000004" href="$classUniformBuffer.html" title="OpenGL uniform buffer object wrapper with template&#45;based updates." alt="" coords="142,80,257,105"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="152,39,190,78,186,82,148,43"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="201,119,195,167,187,194,175,219,151,243,147,239,170,216,182,192,189,166,196,119"/>
+</map>

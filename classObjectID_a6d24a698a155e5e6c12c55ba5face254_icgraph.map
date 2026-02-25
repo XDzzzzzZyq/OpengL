@@ -1,0 +1,7 @@
+<map id="ObjectID::GetShader" name="ObjectID::GetShader">
+<area shape="rect" id="Node000001" title="Returns pointer to object&#39;s shader, if applicable." alt="" coords="445,5,600,31"/>
+<area shape="rect" id="Node000002" href="$ShaderEditor_8cpp.html#a946624451f5cf4432eb7df9b61542605" title=" " alt="" coords="248,5,397,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="431,21,397,21,397,15,431,15"/>
+<area shape="rect" id="Node000003" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,5,200,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="234,21,200,21,200,15,234,15"/>
+</map>

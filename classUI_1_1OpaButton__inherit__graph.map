@@ -1,0 +1,5 @@
+<map id="UI::OpaButton" name="UI::OpaButton">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,119,104"/>
+<area shape="rect" id="Node000002" href="$classImguiItem.html" title="Base class for all UI widgets (buttons, sliders, inputs, etc.)." alt="" coords="17,5,107,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,44,65,79,59,79,59,44"/>
+</map>

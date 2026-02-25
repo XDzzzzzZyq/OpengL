@@ -1,0 +1,19 @@
+<map id="Mesh::RenderMesh" name="Mesh::RenderMesh">
+<area shape="rect" id="Node000001" title="Renders the mesh to active framebuffer." alt="" coords="5,80,152,105"/>
+<area shape="rect" id="Node000002" href="$Mesh_8cpp.html#ac2f9170ab0afc2393e86eca11f9a4dec" title=" " alt="" coords="262,5,373,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,77,199,41,248,28,249,33,201,46,108,82"/>
+<area shape="rect" id="Node000006" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="200,55,435,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="152,82,186,79,187,84,152,88"/>
+<area shape="rect" id="Node000008" href="$classSelectionManager.html#a7a41e38c7756892e5fd1237960bd68ae" title="Checks if an object is selected." alt="" coords="210,104,425,129"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="152,97,197,102,196,107,152,103"/>
+<area shape="rect" id="Node000009" href="$classMesh.html#aadbecb62432cccdb0e8f03e6b73b0fe2" title="Renders low&#45;poly proxy or original mesh." alt="" coords="232,153,403,179"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="108,103,201,139,231,148,230,153,199,145,106,108"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="505,5,644,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="373,15,492,15,492,21,373,21"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="715,5,853,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="644,15,701,15,701,21,644,21"/>
+<area shape="rect" id="Node000005" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="901,5,1053,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="854,15,888,15,888,21,854,21"/>
+<area shape="rect" id="Node000007" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="483,55,667,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="435,65,469,65,469,70,435,70"/>
+</map>

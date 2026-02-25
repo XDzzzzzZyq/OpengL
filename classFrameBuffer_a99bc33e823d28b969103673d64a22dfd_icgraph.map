@@ -1,0 +1,5 @@
+<map id="FrameBuffer::GetFBTextureID" name="FrameBuffer::GetFBTextureID">
+<area shape="rect" id="Node000001" title="Returns OpenGL texture ID for a given type." alt="" coords="197,13,409,38"/>
+<area shape="rect" id="Node000002" href="$classViewportController.html#ad42bd4f660bf64c78447566c4eed199f" title="Bind to EventPool to subscribe to viewport interaction events." alt="" coords="5,5,149,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,28,149,28,149,23,183,23"/>
+</map>

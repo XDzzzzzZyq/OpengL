@@ -1,0 +1,29 @@
+<map id="EventPool::emit" name="EventPool::emit">
+<area shape="rect" id="Node000001" title="Emits an event to all subscribed handlers." alt="" coords="440,297,565,323"/>
+<area shape="rect" id="Node000002" href="$classShaderController.html#a1b904579a3b541b4fd26a8db1f350ec4" title="Subscribe to relevant events in the EventPool." alt="" coords="203,5,370,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="496,284,487,233,468,168,437,102,416,72,390,45,369,32,371,28,394,41,420,68,441,99,473,166,492,232,501,283"/>
+<area shape="rect" id="Node000003" href="$classViewportController.html#ad42bd4f660bf64c78447566c4eed199f" title="Bind to EventPool to subscribe to viewport interaction events." alt="" coords="215,55,359,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="492,285,479,246,458,199,428,150,390,109,358,91,360,87,394,105,433,147,462,196,484,244,497,283"/>
+<area shape="rect" id="Node000004" href="$classEventPool.html#abed4f780945a247c0f074257ba7e6c52" title="Emits a global event to all systems." alt="" coords="185,120,389,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="487,286,449,226,422,194,391,167,351,148,353,143,393,162,426,190,453,223,491,284"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,145,133,171"/>
+<area shape="poly" id="edge14_Node000001_Node000005" title=" " alt="" coords="475,291,437,262,391,236,324,211,255,192,133,168,134,163,257,187,326,206,393,232,439,258,478,286"/>
+<area shape="rect" id="Node000006" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="7,247,131,272"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="467,293,431,276,391,263,323,253,253,250,132,255,132,249,253,244,323,248,393,258,433,271,469,288"/>
+<area shape="rect" id="Node000007" href="$classContext.html#adcb0dfebb5417e96ce3f45f58c924820" title="Initializes the context system." alt="" coords="235,272,338,297"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="426,304,338,293,338,288,426,298"/>
+<area shape="rect" id="Node000008" href="$classViewport.html#a4098a93e903c5fbb1017391851dcfb81" title="Registers layer&#39;s event subscriptions." alt="" coords="193,321,380,347"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="427,321,380,326,380,321,426,316"/>
+<area shape="rect" id="Node000009" href="$classMaterialViewer.html#a8a684c58dbaed9586a41826eaa0b7b12" title="Renders the layer&#39;s UI elements." alt="" coords="181,371,392,396"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="466,331,393,362,353,373,352,368,391,357,464,326"/>
+<area shape="rect" id="Node000010" href="$classOutliner.html#ac1b38d0912a9b95457025c759128bb37" title="Renders the layer&#39;s UI elements." alt="" coords="205,420,369,445"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="484,335,445,374,420,394,393,411,365,422,363,417,391,406,417,390,441,370,480,331"/>
+<area shape="rect" id="Node000011" href="$classRenderConfigViewer.html#ac8d6f1a2a21bee94a9c7daecf53fd0cb" title="Renders the layer&#39;s UI elements." alt="" coords="209,470,364,510"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="492,336,454,398,426,432,394,460,366,475,363,470,390,456,422,428,449,395,487,334"/>
+<area shape="rect" id="Node000012" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="189,535,384,560"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="498,337,485,378,465,429,435,480,416,504,394,524,371,537,369,532,390,520,412,500,430,477,460,427,480,377,493,335"/>
+<area shape="rect" id="Node000013" href="$classViewport.html#a3b138f5fca3f363f908a3d1ddcdd3ed0" title="Renders the layer&#39;s UI elements." alt="" coords="201,584,372,609"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="501,337,492,387,473,452,441,518,420,548,394,575,373,587,371,583,390,571,415,545,436,515,468,450,486,386,496,336"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="171,149,134,153,134,148,171,144"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="221,280,131,269,132,264,222,274"/>
+</map>

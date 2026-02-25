@@ -1,0 +1,39 @@
+<map id="PolygonLight::PolygonLight" name="PolygonLight::PolygonLight">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,324,204,349"/>
+<area shape="rect" id="Node000002" href="$classVertexArray.html#abe390eaf129bac27897b865439070e3e" title=" " alt="" coords="260,179,431,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,321,310,209,313,214,129,326"/>
+<area shape="rect" id="Node000010" href="$classBufferLayout.html#a6a7273d43535a6b43937eecf0f39d9e0" title=" " alt="" coords="273,324,417,349"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="204,334,260,334,260,339,204,339"/>
+<area shape="rect" id="Node000011" href="$classPolygonLight.html#a5007c038ae53331574cd5883ccb68586" title=" " alt="" coords="252,445,439,485"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="131,347,295,436,293,440,128,352"/>
+<area shape="rect" id="Node000003" href="$classVertexBuffer.html#a13019e8580ca3e369fad4166500ad2b9" title="Binds this VBO to GL_ARRAY_BUFFER." alt="" coords="517,5,657,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="353,177,403,111,441,72,485,40,503,31,505,36,488,44,444,76,407,115,357,180"/>
+<area shape="rect" id="Node000004" href="$classVertexArray.html#ad5059455f0864327028636c628d5a661" title=" " alt="" coords="520,55,655,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="359,176,412,133,448,109,486,89,505,81,507,86,488,94,450,114,415,138,362,181"/>
+<area shape="rect" id="Node000005" href="$classBufferLayout.html#a5854ce9e5149858144afbe34a0e5e495" title=" " alt="" coords="506,104,669,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="378,176,486,138,515,130,516,135,487,143,379,181"/>
+<area shape="rect" id="Node000006" href="$classBufferLayout.html#a8645323856045e2457d4f24d45fb9481" title=" " alt="" coords="500,153,675,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="430,180,486,174,487,179,431,185"/>
+<area shape="rect" id="Node000007" href="$structBufferElement.html#ab13af85e2bb2f76f51c1f9759bb3dbad" title=" " alt="" coords="487,203,688,228"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="431,197,473,201,473,207,430,202"/>
+<area shape="rect" id="Node000008" href="$classVertexBuffer.html#abfdb36238d60f2cd7bf63093f914b61f" title="Unbinds the current VBO (binds GL_ARRAY_BUFFER to 0)." alt="" coords="509,252,666,277"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="382,202,487,237,520,246,519,251,486,242,381,207"/>
+<area shape="rect" id="Node000009" href="$classVertexArray.html#a73f0d868a6c76622bcd57063a2c2d8d4" title=" " alt="" coords="511,301,663,327"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="363,202,416,243,451,266,488,286,510,295,508,300,486,291,448,271,413,248,359,206"/>
+<area shape="rect" id="Node000012" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="736,377,881,403"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="373,442,424,412,454,398,486,387,547,377,609,372,722,376,722,382,609,378,547,382,487,393,456,403,426,417,376,447"/>
+<area shape="rect" id="Node000013" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="496,403,679,428"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="438,443,511,428,512,433,439,448"/>
+<area shape="rect" id="Node000014" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="521,452,654,477"/>
+<area shape="poly" id="edge14_Node000011_Node000014" title=" " alt="" coords="439,462,507,462,507,467,439,467"/>
+<area shape="rect" id="Node000015" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="518,501,657,527"/>
+<area shape="poly" id="edge15_Node000011_Node000015" title=" " alt="" coords="439,481,512,496,511,501,438,486"/>
+<area shape="rect" id="Node000017" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="929,527,1081,552"/>
+<area shape="poly" id="edge19_Node000011_Node000017" title=" " alt="" coords="376,483,426,513,456,526,487,537,543,548,601,556,717,561,825,558,915,550,916,555,825,563,717,567,601,561,543,554,486,542,454,531,424,517,373,487"/>
+<area shape="rect" id="Node000018" href="$classShaders.html#a927b3c681b78377a4d1be0394124412a" title="Unbinds this shader program." alt="" coords="503,603,671,628"/>
+<area shape="poly" id="edge18_Node000011_Node000018" title=" " alt="" coords="367,483,419,532,452,558,488,581,521,596,519,601,485,586,449,562,416,536,364,487"/>
+<area shape="poly" id="edge13_Node000013_Node000012" title=" " alt="" coords="679,402,722,397,723,403,679,408"/>
+<area shape="rect" id="Node000016" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="739,501,878,527"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="657,511,725,511,725,517,657,517"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="879,520,916,525,915,530,878,526"/>
+</map>

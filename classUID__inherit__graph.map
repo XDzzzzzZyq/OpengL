@@ -1,0 +1,31 @@
+<map id="UID" name="UID">
+<area shape="rect" id="Node000001" title="Base class providing globally unique integer IDs." alt="" coords="5,303,52,328"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="100,277,179,303"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,304,99,296,101,302,66,310"/>
+<area shape="rect" id="Node000015" href="$classScene.html" title="Container for all scene objects and scene&#45;wide state." alt="" coords="109,327,170,352"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="66,321,109,330,108,335,65,326"/>
+<area shape="rect" id="Node000003" href="$classCamera.html" title="Camera object defining viewpoint and projection for rendering." alt="" coords="250,5,323,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="140,264,147,217,161,158,186,95,204,66,225,40,248,25,251,29,228,44,208,69,191,98,167,159,152,218,145,264"/>
+<area shape="rect" id="Node000004" href="$classDebugLine.html" title=" " alt="" coords="241,55,332,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="143,263,152,225,168,179,192,131,225,89,241,78,244,82,229,93,197,134,173,181,158,226,148,264"/>
+<area shape="rect" id="Node000005" href="$classDebugPoints.html" title=" " alt="" coords="235,104,339,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="147,263,176,202,198,168,225,139,243,127,246,132,228,143,202,171,180,204,152,265"/>
+<area shape="rect" id="Node000006" href="$classEmpty.html" title="Empty transform node for scene hierarchy organization." alt="" coords="255,153,319,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="154,264,184,226,225,188,253,173,255,178,228,192,188,229,158,268"/>
+<area shape="rect" id="Node000007" href="$classEnvironment.html" title="Environment object providing skybox and Image&#45;Based Lighting." alt="" coords="234,203,339,228"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="170,268,225,237,250,226,253,231,228,242,173,273"/>
+<area shape="rect" id="Node000008" href="$classImagePlane.html" title=" " alt="" coords="237,252,336,277"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="192,278,237,270,238,276,193,284"/>
+<area shape="rect" id="Node000009" href="$classLight.html" title="Light source object supporting point, sun, spot, and area lights." alt="" coords="259,301,314,327"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="193,296,259,307,259,312,192,301"/>
+<area shape="rect" id="Node000010" href="$classMesh.html" title="3D mesh object representing renderable geometry with material and transform." alt="" coords="258,351,315,376"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="175,307,228,336,259,350,257,354,225,340,173,312"/>
+<area shape="rect" id="Node000011" href="$classPolygonLight.html" title=" " alt="" coords="233,400,340,425"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="177,309,181,312,196,332,204,350,213,368,228,385,248,398,245,402,225,389,208,371,199,353,191,335,177,316,174,313"/>
+<area shape="rect" id="Node000012" href="$classPostProcessing.html" title=" " alt="" coords="227,449,347,475"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="179,310,181,312,192,329,199,346,204,376,210,405,217,420,229,435,246,447,243,451,225,439,212,423,205,407,199,377,194,347,187,332,177,316,175,313"/>
+<area shape="rect" id="Node000013" href="$classSDFField.html" title=" " alt="" coords="247,499,326,524"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="179,310,181,312,195,336,201,359,204,401,206,442,214,463,229,484,249,499,246,503,225,488,209,465,201,443,198,402,196,360,190,338,176,316,175,314"/>
+<area shape="rect" id="Node000014" href="$classSprite.html" title=" " alt="" coords="257,548,317,573"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="179,310,181,313,197,343,204,372,203,427,201,453,203,479,211,506,229,534,242,544,257,552,255,557,239,549,225,537,206,508,198,480,196,453,198,426,199,373,192,345,176,315,175,314"/>
+</map>

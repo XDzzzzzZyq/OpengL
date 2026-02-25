@@ -1,0 +1,33 @@
+<map id="xdzm::get_random_color" name="xdzm::get_random_color">
+<area shape="rect" id="Node000001" title=" " alt="" coords="535,208,717,233"/>
+<area shape="rect" id="Node000002" href="$classEnvironment.html#a3755ec802739ed1e5413e7f6de0a11bb" title="Constructs an environment from HDR texture file." alt="" coords="281,44,477,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="606,199,557,140,523,109,485,83,459,72,461,67,488,78,526,105,560,136,610,195"/>
+<area shape="rect" id="Node000003" href="$classSprite.html#a601c33a7d1aa252ae8723e5625bd858c" title=" " alt="" coords="303,93,455,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="596,202,547,167,486,134,448,121,450,116,488,129,549,162,600,197"/>
+<area shape="rect" id="Node000007" href="$classDebugPoints.html#a583ca66452d619f74402e332bf00f58a" title=" " alt="" coords="272,143,487,183"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="557,207,465,186,466,181,558,202"/>
+<area shape="rect" id="Node000009" href="$classDebugLine.html#a3836e456743cb8867c3a99c750e80fa7" title=" " alt="" coords="278,208,481,233"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="521,223,481,223,481,218,521,218"/>
+<area shape="rect" id="Node000012" href="$classMesh.html#aa8f8e5cda60a8ec188694979deaa2346" title="Sets custom shader for this mesh." alt="" coords="303,257,456,283"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="549,239,444,260,443,255,548,233"/>
+<area shape="rect" id="Node000013" href="$classPolygonLight.html#a5007c038ae53331574cd5883ccb68586" title=" " alt="" coords="286,307,473,347"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="593,242,544,270,488,296,452,310,450,305,486,292,542,265,591,238"/>
+<area shape="rect" id="Node000015" href="$classSprite.html#a8fc11ae8ef117340eb1b268e3d90874f" title=" " alt="" coords="293,372,465,397"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="610,246,560,305,526,336,488,362,458,374,456,369,485,357,523,331,556,301,606,243"/>
+<area shape="rect" id="Node000004" href="$classEnvironment.html#aa38193f2b8f2881c379c20a97a20de99" title="Renders environment sprite gizmo in viewport." alt="" coords="8,5,221,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="292,92,271,83,256,73,246,63,237,53,223,44,193,33,195,28,225,40,240,49,250,59,259,69,273,78,294,87"/>
+<area shape="rect" id="Node000005" href="$classLight.html#a5b40699d68b47ece3070992d2dcd1cde" title="Renders light sprite gizmo in viewport." alt="" coords="34,55,195,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="290,96,195,82,196,76,290,90"/>
+<area shape="rect" id="Node000006" href="$classPostProcessing.html#a4a54548b77df77e1db3e429a249ffce1" title=" " alt="" coords="5,104,224,129"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="290,112,224,115,224,110,290,107"/>
+<area shape="rect" id="Node000008" href="$classDebugPoints.html#a0819d57c78a0a7490ed25ff37182e9f1" title=" " alt="" coords="17,153,212,179"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="258,167,212,168,212,162,258,162"/>
+<area shape="rect" id="Node000010" href="$classDebugLine.html#a7ad2cf93e99cc10d0d56ed1f321f8580" title=" " alt="" coords="31,207,199,232"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="264,223,199,222,199,217,264,217"/>
+<area shape="rect" id="Node000011" href="$classDebugLine.html#a26d97f81c46f6bf50c78564b8bf65693" title=" " alt="" coords="31,256,199,281"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="296,238,186,259,185,253,295,233"/>
+<area shape="rect" id="Node000014" href="$classPolygonLight.html#a7880d7e021a0e484f3a0e7b400b878e5" title=" " alt="" coords="15,315,214,340"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="272,330,214,330,214,325,272,325"/>
+<area shape="rect" id="Node000016" href="$classSprite.html#a12cba3ac1868418add3c4d95ce87e615" title=" " alt="" coords="61,372,168,397"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="280,387,168,387,168,382,280,382"/>
+</map>

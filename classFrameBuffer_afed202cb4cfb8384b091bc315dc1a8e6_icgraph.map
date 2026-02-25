@@ -1,0 +1,6 @@
+<map id="FrameBuffer::Resize" name="FrameBuffer::Resize">
+<area shape="rect" id="Node000001" title="Resizes all or selected attachments." alt="" coords="239,29,392,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="354,20,343,11,315,8,292,10,280,15,278,20,284,28,280,31,272,21,276,11,291,5,315,3,345,6,357,15"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#a2ce405d0642229ed1576cffa248b323c" title="Links an existing texture to this framebuffer." alt="" coords="5,29,191,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,45,191,45,191,39,225,39"/>
+</map>

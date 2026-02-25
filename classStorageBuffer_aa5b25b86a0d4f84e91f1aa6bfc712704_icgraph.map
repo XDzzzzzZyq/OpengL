@@ -1,0 +1,13 @@
+<map id="StorageBuffer::BindBufferBase" name="StorageBuffer::BindBufferBase">
+<area shape="rect" id="Node000001" title="Binds SSBO to its binding point for shader access." alt="" coords="612,55,831,80"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a726abfc6b74f84230a6014305b89630d" title="Binds all light buffers to shader binding points." alt="" coords="385,5,543,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="641,55,531,33,532,28,642,49"/>
+<area shape="rect" id="Node000005" href="$classSDFField.html#ad65b5076c0b2489680c6e886ff127387" title=" " alt="" coords="406,55,522,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="599,70,522,70,522,65,599,65"/>
+<area shape="rect" id="Node000006" href="$classDebugPoints.html#ad0ecd042652caf47c65b1001c3463e87" title=" " alt="" coords="364,105,564,145"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="651,86,555,107,554,102,650,80"/>
+<area shape="rect" id="Node000003" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,5,316,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,21,316,21,316,15,370,15"/>
+<area shape="rect" id="Node000004" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,21,134,21,134,15,167,15"/>
+</map>

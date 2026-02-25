@@ -1,0 +1,11 @@
+<map id="UpdateMaterial" name="UpdateMaterial">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,128,105"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#ab8874a8b2c3d218feec7b21bcc2f4e2c" title="Generates shader code (for procedural shaders)." alt="" coords="176,5,363,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,77,175,40,198,32,200,37,177,44,93,82"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#a49c802de67580604398ecb6ff76bd450" title="Returns pointer to shader unit for a specific stage." alt="" coords="181,55,358,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,82,167,77,167,83,128,88"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#a9ac7027c94965deb542253f74d3f96f4" title="Relinks the shader program after shader unit changes." alt="" coords="185,104,353,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="128,97,172,102,171,108,128,103"/>
+<area shape="rect" id="Node000005" href="$classShaderStruct.html#af4275ec98112f11215912dbbab2f3b29" title=" " alt="" coords="191,153,347,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="95,103,177,138,204,147,202,152,175,143,93,108"/>
+</map>

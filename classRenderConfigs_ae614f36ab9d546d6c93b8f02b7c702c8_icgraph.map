@@ -1,0 +1,9 @@
+<map id="RenderConfigs::RequiresShadow" name="RenderConfigs::RequiresShadow">
+<area shape="rect" id="Node000001" title="Checks if shadow rendering is enabled." alt="" coords="589,5,821,31"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="364,5,541,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="576,21,541,21,541,15,576,15"/>
+<area shape="rect" id="Node000003" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,5,316,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,21,316,21,316,15,350,15"/>
+<area shape="rect" id="Node000004" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,21,134,21,134,15,167,15"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="MaterialStructChangedEvent" name="MaterialStructChangedEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="14,168,222,193"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="5,80,84,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,114,110,166,106,169,61,118"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="21,5,68,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,45,47,80,42,80,42,45"/>
+<area shape="rect" id="Node000004" href="$classMaterial.html" title="Material descriptor for PBR rendering." alt="" coords="108,80,184,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="141,119,124,168,119,167,136,117"/>
+</map>

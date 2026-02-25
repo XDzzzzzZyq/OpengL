@@ -1,0 +1,5 @@
+<map id="SceneContext::GetObjectIDs" name="SceneContext::GetObjectIDs">
+<area shape="rect" id="Node000001" title="Returns all renderable objects in the scene." alt="" coords="217,5,424,31"/>
+<area shape="rect" id="Node000002" href="$classOutliner.html#ac1b38d0912a9b95457025c759128bb37" title="Renders the layer&#39;s UI elements." alt="" coords="5,5,169,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,21,170,21,170,15,204,15"/>
+</map>

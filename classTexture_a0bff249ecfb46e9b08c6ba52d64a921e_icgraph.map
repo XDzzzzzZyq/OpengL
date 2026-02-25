@@ -1,0 +1,5 @@
+<map id="Texture::Unbind" name="Texture::Unbind">
+<area shape="rect" id="Node000001" title="Unbinds texture from texture unit." alt="" coords="261,13,385,38"/>
+<area shape="rect" id="Node000002" href="$classEnvironment.html#ab582fb92f64e4225ff3224f5749d1f4d" title="Unbinds IBL textures." alt="" coords="5,5,213,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,28,213,28,213,23,247,23"/>
+</map>

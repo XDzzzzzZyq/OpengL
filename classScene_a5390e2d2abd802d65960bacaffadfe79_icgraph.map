@@ -1,0 +1,7 @@
+<map id="Scene::GetPPS" name="Scene::GetPPS">
+<area shape="rect" id="Node000001" title="Returns post&#45;processing effect by index." alt="" coords="220,31,336,56"/>
+<area shape="rect" id="Node000002" href="$classSceneContext.html#a0e0770306996a75c469fb0dc77147363" title="Returns the post&#45;processing stack for a given target." alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,36,172,32,172,26,207,31"/>
+<area shape="rect" id="Node000003" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="25,55,153,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,55,154,62,153,57,206,50"/>
+</map>

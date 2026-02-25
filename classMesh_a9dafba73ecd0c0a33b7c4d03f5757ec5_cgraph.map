@@ -1,0 +1,5 @@
+<map id="Mesh::GetTransform" name="Mesh::GetTransform">
+<area shape="rect" id="Node000001" title="Returns pointer to transform." alt="" coords="5,5,159,31"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#ae3f7c933770184d03b1aae441448f681" title="Returns pointer to this transform." alt="" coords="207,5,425,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,15,193,15,193,21,159,21"/>
+</map>

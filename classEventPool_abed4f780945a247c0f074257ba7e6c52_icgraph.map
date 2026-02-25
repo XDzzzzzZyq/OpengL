@@ -1,0 +1,5 @@
+<map id="EventPool::EmitGlobalEvent" name="EventPool::EmitGlobalEvent">
+<area shape="rect" id="Node000001" title="Emits a global event to all systems." alt="" coords="181,5,385,31"/>
+<area shape="rect" id="Node000002" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,5,133,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,21,134,21,134,15,168,15"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Texture::ConvertPNGFrom" name="Texture::ConvertPNGFrom">
+<area shape="rect" id="Node000001" title="Converts texture to PNG&#45;compatible format (RGBA8)." alt="" coords="5,55,196,80"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#ab3ec7cbd6bf20945f5e4e6608ef05431" title="Returns texture height." alt="" coords="257,5,368,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,52,243,31,245,36,157,57"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="244,55,381,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,65,230,65,230,70,196,70"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#af65caec5303d06ec883d7aabe8e1880c" title="Returns texture width." alt="" coords="255,104,370,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,77,245,98,243,103,155,83"/>
+</map>

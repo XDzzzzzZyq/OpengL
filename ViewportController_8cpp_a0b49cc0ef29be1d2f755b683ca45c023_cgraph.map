@@ -1,0 +1,9 @@
+<map id="GetSelectID" name="GetSelectID">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,104,80"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#a697952d6cff096927da45acbca4be08c" title="Returns framebuffer dimensions." alt="" coords="152,5,392,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,52,151,39,190,31,191,36,153,45,103,57"/>
+<area shape="rect" id="Node000003" href="$structFBPixel.html#a0b10328038a09a96d59a8eff89056e57" title="Extracts integer ID from first component (for ID buffers)." alt="" coords="215,55,329,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="104,65,201,65,201,70,104,70"/>
+<area shape="rect" id="Node000004" href="$classFrameBuffer.html#aca1cc95c2cdb9ae91ea01a7b88b7c3d9" title="Reads a pixel from the specified attachment." alt="" coords="191,104,353,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="105,77,153,89,196,98,195,104,151,94,104,82"/>
+</map>

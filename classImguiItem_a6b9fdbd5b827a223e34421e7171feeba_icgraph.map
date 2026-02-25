@@ -1,0 +1,9 @@
+<map id="ImguiItem::GetPara" name="ImguiItem::GetPara">
+<area shape="rect" id="Node000001" title="Returns pointer to parameter value." alt="" coords="735,5,883,31"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a0454c7f2f257bf73254cab9c43c76aca" title="Retrieves parameter value from a parameter input item." alt="" coords="476,5,687,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="721,21,687,21,687,15,721,15"/>
+<area shape="rect" id="Node000003" href="$classImguiManager.html#a9fdc62994444dcabcf57ae132443b222" title="Sets up default viewport layout configuration." alt="" coords="199,5,428,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="463,21,428,21,428,15,463,15"/>
+<area shape="rect" id="Node000004" href="$classImguiManager.html#aa866246a60670df31878675a76aab54f" title="Initializes ImGui context, backends, and UI components." alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,21,151,21,151,15,185,15"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="RenderConfigs::RequiresMomentShadow" name="RenderConfigs::RequiresMomentShadow">
+<area shape="rect" id="Node000001" title="Checks if moment&#45;based shadow algorithm is selected." alt="" coords="855,74,1089,114"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="589,5,807,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="885,73,744,33,746,28,887,68"/>
+<area shape="rect" id="Node000003" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="379,56,526,81"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="840,90,526,75,526,70,840,85"/>
+<area shape="rect" id="Node000006" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="636,107,760,132"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="841,109,760,116,760,111,841,103"/>
+<area shape="rect" id="Node000007" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="364,131,541,156"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="908,121,859,136,807,147,738,155,667,157,541,154,542,148,667,152,737,149,806,142,858,131,906,116"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="623,36,515,59,514,53,622,31"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,107,316,132"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="388,87,301,109,300,104,387,82"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,107,133,132"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,122,134,122,134,117,167,117"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="350,134,316,130,317,125,350,129"/>
+</map>

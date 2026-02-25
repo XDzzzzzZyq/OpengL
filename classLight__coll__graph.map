@@ -1,0 +1,20 @@
+<map id="Light" name="Light">
+<area shape="rect" id="Node000001" title="Light source object supporting point, sun, spot, and area lights." alt="" coords="259,256,313,281"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="237,80,316,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,119,288,256,283,256,275,119"/>
+<area shape="rect" id="Node000006" href="$classSprite.html" title=" " alt="" coords="143,168,203,193"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="262,118,236,146,198,170,195,166,232,142,258,115"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="253,5,300,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="279,45,279,80,274,80,274,45"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="327,168,432,193"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="358,205,301,257,297,253,355,201"/>
+<area shape="rect" id="Node000005" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="340,80,427,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="385,119,383,168,377,167,379,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="179,206,184,219,192,230,207,242,224,251,259,261,258,266,222,256,204,246,188,234,179,221,174,207"/>
+<area shape="rect" id="Node000007" href="$classTexture.html" title="OpenGL texture object wrapper with RAII semantics." alt="" coords="5,80,76,105"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="64,113,99,142,145,166,143,170,97,146,60,117"/>
+<area shape="rect" id="Node000008" href="$classRenderShader.html" title="Standard render shader with vertex and fragment stages." alt="" coords="100,80,213,105"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="158,119,161,143,169,167,164,169,155,145,153,120"/>
+<area shape="rect" id="Node000009" href="$classShaders.html" title="Base class for OpenGL shader programs." alt="" coords="119,5,194,31"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="159,45,159,80,154,80,154,45"/>
+</map>

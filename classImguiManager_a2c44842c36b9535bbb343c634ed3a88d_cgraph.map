@@ -1,0 +1,5 @@
+<map id="ImguiManager::CreateImguiMenu" name="ImguiManager::CreateImguiMenu">
+<area shape="rect" id="Node000001" title="Creates and registers a new menu." alt="" coords="5,5,245,31"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#ac0d3df68c192bfa7ab93ab3e2f0aa8a3" title="Adds a menu to the menu bar." alt="" coords="293,5,521,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,15,279,15,279,21,246,21"/>
+</map>

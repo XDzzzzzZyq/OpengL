@@ -1,0 +1,7 @@
+<map id="Transform3D::ApplyTransform" name="Transform3D::ApplyTransform">
+<area shape="rect" id="Node000001" title="Recomputes transform matrix if dirty." alt="" coords="285,31,500,56"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#af16059a72f4411ac5c479192724109b4" title="Recomputes transform and all parent transforms." alt="" coords="5,5,237,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,35,237,31,238,26,272,29"/>
+<area shape="rect" id="Node000003" href="$classTransform3D.html#a3a04e27fbddaa4b94fec2b7d4aa9e03d" title="Sets parent transform for hierarchy." alt="" coords="34,55,209,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,57,209,62,209,57,271,51"/>
+</map>

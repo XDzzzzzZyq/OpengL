@@ -1,0 +1,5 @@
+<map id="Texture::GenIBLSpecularFrom" name="Texture::GenIBLSpecularFrom">
+<area shape="rect" id="Node000001" title="Generates specular IBL map with importance sampling." alt="" coords="5,5,219,31"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="267,5,404,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,15,253,15,253,21,219,21"/>
+</map>

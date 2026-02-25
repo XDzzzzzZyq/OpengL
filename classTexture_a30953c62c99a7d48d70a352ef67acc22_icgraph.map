@@ -1,0 +1,38 @@
+<map id="Texture::GetTexID" name="Texture::GetTexID">
+<area shape="rect" id="Node000001" title="Returns OpenGL texture ID." alt="" coords="708,252,845,277"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#ae7f8be4273be66337a545a2aa083a909" title="Appends a new texture attachment." alt="" coords="439,5,646,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="767,239,754,195,733,142,701,89,681,65,658,44,639,33,642,28,662,40,685,61,705,86,737,140,759,194,772,237"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#addef113126cfeb3d27ff05ffcb676419" title="Converts texture to depth cubemap format." alt="" coords="425,55,660,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="763,240,748,206,725,166,695,126,658,94,637,83,640,78,662,89,699,123,730,163,753,204,768,238"/>
+<area shape="rect" id="Node000005" href="$classTexture.html#a6bf43dcd50050ac49116eb30dc40d123" title="Converts texture to depth format." alt="" coords="442,104,643,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="758,242,717,191,689,165,659,143,633,132,635,127,661,138,693,160,721,187,762,239"/>
+<area shape="rect" id="Node000006" href="$classTexture.html#a1d4e85d44a81d03a348691394130b345" title="Converts texture to PNG&#45;compatible format (RGBA8)." alt="" coords="447,153,638,179"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="747,246,707,218,659,192,624,181,626,176,661,188,710,213,750,241"/>
+<area shape="rect" id="Node000007" href="$classTexture.html#af6ea36eb2554c55de65edd5e4cded9e3" title="Converts equirectangular map to cubemap." alt="" coords="443,203,642,228"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="704,252,659,242,605,231,607,225,661,237,705,246"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#a3cbe71e16c5bd45a3e40db6f8269e4c2" title="Converts cubemap to equirectangular map." alt="" coords="441,252,644,277"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="694,267,644,267,644,262,694,262"/>
+<area shape="rect" id="Node000009" href="$classTexture.html#ae2f62aee8fbcfd0638f6f5f1d1d09d8a" title="Generates diffuse IBL map." alt="" coords="441,301,644,327"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="703,283,604,304,603,299,702,278"/>
+<area shape="rect" id="Node000011" href="$classTexture.html#a28ed737457a0133192d452e65d46491d" title="Generates specular IBL map with importance sampling." alt="" coords="436,351,649,376"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="750,288,709,315,661,340,621,353,620,348,659,336,707,311,747,283"/>
+<area shape="rect" id="Node000012" href="$classTexture.html#a2dac592fd50835d6815b27fd5c6c0b1d" title="Generates irradiance convolution map for diffuse IBL." alt="" coords="429,400,656,425"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="762,290,721,341,693,368,661,390,631,402,629,397,659,385,689,363,717,338,758,287"/>
+<area shape="rect" id="Node000013" href="$classFrameBuffer.html#a2ce405d0642229ed1576cffa248b323c" title="Links an existing texture to this framebuffer." alt="" coords="450,449,635,475"/>
+<area shape="poly" id="edge17_Node000001_Node000013" title=" " alt="" coords="768,291,752,325,729,365,699,405,662,439,637,452,634,447,658,434,695,402,725,362,748,322,763,289"/>
+<area shape="rect" id="Node000014" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="454,499,631,524"/>
+<area shape="poly" id="edge18_Node000001_Node000014" title=" " alt="" coords="772,292,759,335,737,388,705,443,685,467,662,488,633,503,630,499,658,484,681,463,701,439,732,386,754,333,767,290"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#aecde0aa6567b4708962380c0c3a726fd" title="Saves texture to file." alt="" coords="200,129,359,155"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="460,86,426,94,314,132,312,127,425,89,458,80"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="316,120,306,111,279,108,257,110,245,115,243,120,249,128,245,131,238,121,242,111,256,105,279,103,308,106,320,115"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="428,130,359,137,359,132,428,125"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="434,159,359,152,359,147,434,153"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="449,251,424,242,385,222,349,199,294,157,297,153,352,194,388,217,426,237,451,246"/>
+<area shape="rect" id="Node000010" href="$classEnvironment.html#a3755ec802739ed1e5413e7f6de0a11bb" title="Constructs an environment from HDR texture file." alt="" coords="181,325,377,351"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="428,327,378,332,377,326,428,322"/>
+<area shape="poly" id="edge15_Node000011_Node000010" title=" " alt="" coords="422,354,377,350,378,345,422,349"/>
+<area shape="rect" id="Node000015" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="212,499,347,524"/>
+<area shape="poly" id="edge19_Node000014_Node000015" title=" " alt="" coords="440,514,347,514,347,509,440,509"/>
+<area shape="rect" id="Node000016" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,499,133,524"/>
+<area shape="poly" id="edge20_Node000015_Node000016" title=" " alt="" coords="198,514,133,514,133,509,198,509"/>
+</map>

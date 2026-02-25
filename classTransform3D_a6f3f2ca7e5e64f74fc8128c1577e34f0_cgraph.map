@@ -1,0 +1,9 @@
+<map id="Transform3D::SetTrans" name="Transform3D::SetTrans">
+<area shape="rect" id="Node000001" title="Sets transform from 4x4 matrix." alt="" coords="5,55,173,80"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#a2f7ec6f9e11613ff0cb614309d9124ea" title="Sets world position." alt="" coords="227,5,385,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,52,236,31,237,36,146,57"/>
+<area shape="rect" id="Node000003" href="$classTransform3D.html#ab7d1b4a18bd9accbffec1d5d47e89f3e" title="Sets rotation via Euler angles." alt="" coords="228,55,384,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,65,214,65,214,70,173,70"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html#af806a31cff265f2afb1827e316e139fd" title="Sets local scale." alt="" coords="221,104,391,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,77,237,98,236,104,145,83"/>
+</map>

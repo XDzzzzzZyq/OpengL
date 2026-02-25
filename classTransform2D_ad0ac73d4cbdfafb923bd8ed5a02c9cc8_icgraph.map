@@ -1,0 +1,16 @@
+<map id="Transform2D::SetScale" name="Transform2D::SetScale">
+<area shape="rect" id="Node000001" title="Sets local scale." alt="" coords="669,31,839,56"/>
+<area shape="rect" id="Node000002" href="$classTransform2D.html#ac309e6570be15f645734f22b406f3752" title="Scales by factor (non&#45;uniform)." alt="" coords="471,5,621,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="655,34,621,30,622,25,656,29"/>
+<area shape="rect" id="Node000003" href="$classTransform2D.html#ae98aa828971cbf0e239445accfa31d54" title="Scales by factor (uniform)." alt="" coords="471,55,621,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="656,57,622,61,621,56,655,52"/>
+<area shape="rect" id="Node000004" href="$classNodeEditor.html#aa55d27a6df977c6c8b70e3178eb8913e" title=" " alt="" coords="248,5,423,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="477,54,390,33,391,28,479,49"/>
+<area shape="rect" id="Node000005" href="$classNodeEditor.html#ac927b2f869e28f594e38f75642eccce5" title=" " alt="" coords="253,55,418,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="456,70,418,70,418,65,456,65"/>
+<area shape="rect" id="Node000007" href="$classNodeEditor.html#ae8fe0ec227afdf24bb2d6c146f3eddf5" title=" " alt="" coords="249,104,421,129"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="479,86,391,107,390,101,477,81"/>
+<area shape="rect" id="Node000006" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,80,200,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="239,80,200,85,200,79,239,75"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="235,109,200,105,201,100,236,104"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Texture::GenERectMapFrom" name="Texture::GenERectMapFrom">
+<area shape="rect" id="Node000001" title="Converts cubemap to equirectangular map." alt="" coords="212,29,415,55"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#aecde0aa6567b4708962380c0c3a726fd" title="Saves texture to file." alt="" coords="5,29,164,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,45,164,45,164,39,198,39"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="125,20,115,11,85,8,60,10,48,15,45,20,52,27,48,31,40,21,44,11,59,5,85,3,117,7,129,16"/>
+</map>

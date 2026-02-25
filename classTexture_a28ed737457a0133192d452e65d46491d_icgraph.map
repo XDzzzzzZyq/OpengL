@@ -1,0 +1,5 @@
+<map id="Texture::GenIBLSpecularFrom" name="Texture::GenIBLSpecularFrom">
+<area shape="rect" id="Node000001" title="Generates specular IBL map with importance sampling." alt="" coords="249,5,463,31"/>
+<area shape="rect" id="Node000002" href="$classEnvironment.html#a3755ec802739ed1e5413e7f6de0a11bb" title="Constructs an environment from HDR texture file." alt="" coords="5,5,201,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,21,202,21,202,15,236,15"/>
+</map>

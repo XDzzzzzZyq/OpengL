@@ -1,0 +1,13 @@
+<map id="src/render/Texture.h" name="src/render/Texture.h">
+<area shape="rect" id="Node000001" title="Texture wrapper for OpenGL texture objects and texture resource management." alt="" coords="159,5,310,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,85,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,33,90,76,88,71,203,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="109,79,168,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="221,33,167,72,164,68,218,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="192,79,277,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="237,31,237,65,232,65,232,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="301,79,405,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="255,28,323,69,321,74,252,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="430,79,554,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="277,28,438,72,437,78,275,33"/>
+</map>

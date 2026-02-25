@@ -1,0 +1,25 @@
+<map id="Sprite::RenderSprite" name="Sprite::RenderSprite">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,132,157,157"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#af8b7f038e8ca8345fc4ff5931227e56d" title="Binds texture to a texture unit for sampling." alt="" coords="269,5,376,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,130,140,90,171,67,204,48,255,29,257,34,206,52,174,72,143,94,97,134"/>
+<area shape="rect" id="Node000005" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="507,81,653,107"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="105,129,150,108,205,91,281,81,357,77,494,82,494,87,357,82,281,86,206,97,152,113,107,134"/>
+<area shape="rect" id="Node000006" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="231,107,414,132"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="157,134,217,128,218,133,158,139"/>
+<area shape="rect" id="Node000007" href="$classSceneContext.html#acaa197d50538d7dbec91e4040e523adb" title="Returns the currently active camera." alt="" coords="205,156,440,181"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="158,150,192,153,192,158,157,155"/>
+<area shape="rect" id="Node000009" href="$classShaders.html#afbaee4204620bbff08615b7fdebe4b3b" title=" " alt="" coords="253,205,392,231"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="112,155,206,190,242,200,241,205,205,195,111,160"/>
+<area shape="rect" id="Node000011" href="$classShaders.html#aea29df40f695fd9901d81e1b92982a5b" title="Binds this shader program for rendering." alt="" coords="723,231,875,256"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="95,156,140,200,171,224,206,241,275,260,346,272,418,278,489,279,620,271,724,256,725,261,621,276,489,285,418,284,345,278,273,265,204,246,168,228,136,204,91,159"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a008b37a015b1018a54d8702e50947a54" title="Static method to bind texture by ID." alt="" coords="521,5,639,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,15,507,15,507,21,376,21"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="720,5,879,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="639,15,706,15,706,21,639,21"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="414,108,493,100,494,105,414,113"/>
+<area shape="rect" id="Node000008" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="488,156,672,181"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="440,166,474,166,474,171,440,171"/>
+<area shape="rect" id="Node000010" href="$classShaders.html#ae9877ad04f5b74404a54e751a074fc4a" title="Gets uniform location ID for a uniform variable." alt="" coords="511,205,649,231"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="392,215,497,215,497,221,392,221"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="650,223,710,230,709,236,650,229"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Input::UpdateState" name="Input::UpdateState">
+<area shape="rect" id="Node000001" title="Updates input state snapshot from GLFW." alt="" coords="5,80,149,105"/>
+<area shape="rect" id="Node000002" href="$Input_8cpp.html#acb78fd0bc1503d337affb34c240376ae" title=" " alt="" coords="212,5,353,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,77,196,39,219,32,221,37,198,45,107,82"/>
+<area shape="rect" id="Node000003" href="$Input_8cpp.html#a579acf3ca982214663f71a15811fc4af" title=" " alt="" coords="197,55,368,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="149,81,183,77,184,82,150,86"/>
+<area shape="rect" id="Node000004" href="$Input_8cpp.html#aed503b63de7a70b72fbc1b73be2a07ab" title=" " alt="" coords="198,104,367,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,98,185,103,184,108,149,104"/>
+<area shape="rect" id="Node000005" href="$namespacexdzm.html#abe0a3100dafb4cb521676977fa2aaef4" title=" " alt="" coords="227,153,338,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="109,103,198,138,224,147,222,152,196,143,107,108"/>
+</map>

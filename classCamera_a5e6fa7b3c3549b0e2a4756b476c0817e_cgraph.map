@@ -1,0 +1,9 @@
+<map id="Camera::SetCamTrans" name="Camera::SetCamTrans">
+<area shape="rect" id="Node000001" title="Sets camera transform from 4x4 matrix." alt="" coords="5,55,172,80"/>
+<area shape="rect" id="Node000002" href="$namespacexdzm.html#a31dcb76d9fc2fef165e20d557db729bc" title=" " alt="" coords="230,5,367,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,52,230,31,231,36,144,57"/>
+<area shape="rect" id="Node000003" href="$classTransform3D.html#a2f7ec6f9e11613ff0cb614309d9124ea" title="Sets world position." alt="" coords="220,55,377,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,65,206,65,206,70,173,70"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html#a0f1e2bfa385e038233b2a1c41857d441" title="Rotates around arbitrary axis through anchor point." alt="" coords="228,104,369,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,77,231,98,230,103,143,83"/>
+</map>

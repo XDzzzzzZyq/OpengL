@@ -1,0 +1,5 @@
+<map id="Light::ParseLightName" name="Light::ParseLightName">
+<area shape="rect" id="Node000001" title="Parses light type to sprite icon and name." alt="" coords="148,5,316,31"/>
+<area shape="rect" id="Node000002" href="$classLight.html#aed9395ef33f128fb5c923901cc563f73" title="Constructs a light with specified type, power, and color." alt="" coords="5,5,100,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,21,100,21,100,15,134,15"/>
+</map>

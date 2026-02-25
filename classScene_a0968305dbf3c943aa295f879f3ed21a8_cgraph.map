@@ -1,0 +1,5 @@
+<map id="Scene::UseSDF" name="Scene::UseSDF">
+<area shape="rect" id="Node000001" title="Assigns the scene&#39;s SDF field." alt="" coords="5,5,125,31"/>
+<area shape="rect" id="Node000002" href="$classScene.html#a9a74ae8223afe65f4135eade107dbd15" title="Updates scene status flag (bitwise OR)." alt="" coords="173,5,369,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,15,159,15,159,21,125,21"/>
+</map>

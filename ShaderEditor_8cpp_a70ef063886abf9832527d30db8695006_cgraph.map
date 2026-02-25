@@ -1,0 +1,5 @@
+<map id="GetShaderUnitPtr" name="GetShaderUnitPtr">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#a49c802de67580604398ecb6ff76bd450" title="Returns pointer to shader unit for a specific stage." alt="" coords="188,5,365,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,15,174,15,174,21,140,21"/>
+</map>

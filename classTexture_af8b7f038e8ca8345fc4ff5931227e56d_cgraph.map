@@ -1,0 +1,7 @@
+<map id="Texture::Bind" name="Texture::Bind">
+<area shape="rect" id="Node000001" title="Binds texture to a texture unit for sampling." alt="" coords="5,5,112,31"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a008b37a015b1018a54d8702e50947a54" title="Static method to bind texture by ID." alt="" coords="160,5,279,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,15,146,15,146,21,112,21"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="327,5,485,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="279,15,313,15,313,21,279,21"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Transform2D::SetPos" name="Transform2D::SetPos">
+<area shape="rect" id="Node000001" title="Sets world position." alt="" coords="689,31,847,56"/>
+<area shape="rect" id="Node000002" href="$classTransform2D.html#a6f0bc06c9b1f9d0cc4f17fe12a97c52e" title="Translates position by offset." alt="" coords="479,5,629,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="675,35,629,29,629,24,676,30"/>
+<area shape="rect" id="Node000005" href="$classNodeEditor.html#aa55d27a6df977c6c8b70e3178eb8913e" title=" " alt="" coords="467,55,641,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="676,56,642,60,641,55,676,51"/>
+<area shape="rect" id="Node000003" href="$classNodeEditor.html#a6260e41127416b206cd0300c0d69a2e0" title=" " alt="" coords="248,5,419,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="465,21,419,21,419,15,465,15"/>
+<area shape="rect" id="Node000004" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,5,200,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="234,21,200,21,200,15,234,15"/>
+</map>

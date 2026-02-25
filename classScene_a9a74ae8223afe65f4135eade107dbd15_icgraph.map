@@ -1,0 +1,24 @@
+<map id="Scene::UpdateSceneStatus" name="Scene::UpdateSceneStatus">
+<area shape="rect" id="Node000001" title="Updates scene status flag (bitwise OR)." alt="" coords="848,105,1044,131"/>
+<area shape="rect" id="Node000002" href="$classContext.html#adcb0dfebb5417e96ce3f45f58c924820" title="Initializes the context system." alt="" coords="401,5,504,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="913,100,861,71,799,46,720,29,639,20,565,18,504,18,504,13,565,12,640,15,721,24,801,41,864,66,916,96"/>
+<area shape="rect" id="Node000004" href="$classScene.html#a7bdd75a613ba7128a00335a0782b550b" title="Resets scene status to NoChanges." alt="" coords="379,156,526,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="868,136,800,146,654,160,526,168,526,163,654,155,800,141,867,130"/>
+<area shape="rect" id="Node000006" href="$classScene.html#a4de0c5fbd28c486aacd76e4d55c1e79a" title="Directly sets scene status (replaces existing)." alt="" coords="609,56,780,81"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="867,105,760,84,761,79,868,100"/>
+<area shape="rect" id="Node000009" href="$classScene.html#a525b10e9c1993fc7830a2e8541469a31" title="Updates all object transforms in hierarchy." alt="" coords="589,105,800,131"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="834,121,800,121,800,115,834,115"/>
+<area shape="rect" id="Node000010" href="$classScene.html#a0968305dbf3c943aa295f879f3ed21a8" title="Assigns the scene&#39;s SDF field." alt="" coords="635,207,755,232"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="910,140,801,190,743,209,742,204,799,185,908,135"/>
+<area shape="rect" id="Node000003" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="187,5,311,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="387,21,311,21,311,15,387,15"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,131,133,156"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="365,166,133,150,134,145,366,160"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="619,56,504,31,505,26,620,50"/>
+<area shape="rect" id="Node000007" href="$classRenderer.html#a2f7417cdb916c5591c682294b7f54d78" title="Constructs SDF (Signed Distance Field) for soft shadows." alt="" coords="364,55,541,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="596,71,541,70,542,65,596,65"/>
+<area shape="rect" id="Node000008" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,105,316,131"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="388,86,301,108,300,103,387,81"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="168,132,134,137,133,132,167,127"/>
+<area shape="poly" id="edge11_Node000009_Node000008" title=" " alt="" coords="575,121,317,121,317,115,575,115"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="FrameBuffer::ReadPix" name="FrameBuffer::ReadPix">
+<area shape="rect" id="Node000001" title="Reads a pixel from the specified attachment." alt="" coords="344,13,507,38"/>
+<area shape="rect" id="Node000002" href="$ViewportController_8cpp.html#a0b49cc0ef29be1d2f755b683ca45c023" title=" " alt="" coords="197,13,296,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="330,28,296,28,296,23,330,23"/>
+<area shape="rect" id="Node000003" href="$classViewportController.html#ad42bd4f660bf64c78447566c4eed199f" title="Bind to EventPool to subscribe to viewport interaction events." alt="" coords="5,5,149,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="184,28,150,28,150,23,184,23"/>
+</map>

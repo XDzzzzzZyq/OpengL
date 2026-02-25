@@ -1,0 +1,17 @@
+<map id="ViewportController::bind" name="ViewportController::bind">
+<area shape="rect" id="Node000001" title="Bind to EventPool to subscribe to viewport interaction events." alt="" coords="5,73,149,113"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="241,5,366,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,70,196,39,227,31,228,36,198,45,122,75"/>
+<area shape="rect" id="Node000003" href="$classFrameBuffer.html#a99bc33e823d28b969103673d64a22dfd" title="Returns OpenGL texture ID for a given type." alt="" coords="197,55,409,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,82,183,78,184,83,150,87"/>
+<area shape="rect" id="Node000004" href="$ViewportController_8cpp.html#a0b49cc0ef29be1d2f755b683ca45c023" title=" " alt="" coords="254,104,353,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,98,241,107,240,113,150,103"/>
+<area shape="rect" id="Node000008" href="$classEventPool.html#acb94d3258db23f862676ed4fa9983069" title="Subscribes a handler to events of type Event." alt="" coords="225,153,382,179"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="125,110,198,138,230,147,229,153,196,143,123,115"/>
+<area shape="rect" id="Node000005" href="$classFrameBuffer.html#a697952d6cff096927da45acbca4be08c" title="Returns framebuffer dimensions." alt="" coords="457,55,697,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="353,105,492,80,493,85,354,110"/>
+<area shape="rect" id="Node000006" href="$structFBPixel.html#a0b10328038a09a96d59a8eff89056e57" title="Extracts integer ID from first component (for ID buffers)." alt="" coords="520,104,635,129"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="353,114,506,114,506,119,353,119"/>
+<area shape="rect" id="Node000007" href="$classFrameBuffer.html#aca1cc95c2cdb9ae91ea01a7b88b7c3d9" title="Reads a pixel from the specified attachment." alt="" coords="496,153,659,179"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="354,123,493,148,492,153,353,128"/>
+</map>

@@ -1,0 +1,64 @@
+<map id="UID::GetObjectID" name="UID::GetObjectID">
+<area shape="rect" id="Node000001" title="Returns the unique ID of this object." alt="" coords="919,520,1052,545"/>
+<area shape="rect" id="Node000002" href="$classCamera.html#accb98be844eb920456354228b0eff665" title="Constructs a camera with explicit parameters." alt="" coords="689,5,821,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="979,506,966,406,944,269,929,200,911,138,891,86,869,52,847,36,821,26,822,21,849,31,873,48,896,84,916,136,934,199,949,268,972,405,984,506"/>
+<area shape="rect" id="Node000003" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="647,951,864,976"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="987,559,985,633,970,733,956,787,936,840,908,890,872,933,842,953,839,948,869,929,904,887,931,838,951,785,965,732,979,632,982,559"/>
+<area shape="rect" id="Node000004" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="405,951,551,976"/>
+<area shape="poly" id="edge17_Node000001_Node000004" title=" " alt="" coords="984,559,973,657,951,788,936,853,918,912,897,960,872,991,827,1017,778,1030,725,1033,673,1029,623,1019,576,1006,506,979,508,974,578,1001,624,1014,674,1023,725,1028,777,1025,825,1012,869,987,893,957,913,910,931,852,946,787,968,656,979,559"/>
+<area shape="rect" id="Node000007" href="$classDebugLine.html#a7ad2cf93e99cc10d0d56ed1f321f8580" title=" " alt="" coords="394,81,562,107"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="979,506,967,413,945,287,930,225,912,169,892,124,869,96,827,71,780,56,731,50,681,50,632,55,587,64,515,84,513,79,586,59,631,50,680,45,731,45,781,51,829,66,872,92,896,122,917,167,935,223,950,286,972,412,984,506"/>
+<area shape="rect" id="Node000008" href="$classDebugLine.html#a26d97f81c46f6bf50c78564b8bf65693" title=" " alt="" coords="394,144,562,169"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="981,507,977,442,961,357,947,312,927,269,902,230,869,197,847,185,817,176,737,164,646,158,562,157,562,152,647,153,737,158,818,171,849,181,872,193,906,227,932,267,952,310,966,355,982,441,987,506"/>
+<area shape="rect" id="Node000009" href="$classDebugPoints.html#a0819d57c78a0a7490ed25ff37182e9f1" title=" " alt="" coords="381,244,575,269"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="976,507,964,463,944,409,912,356,892,332,869,312,848,301,819,292,743,277,657,268,575,262,576,257,658,262,744,272,820,286,850,296,872,308,896,328,917,353,949,407,969,461,981,506"/>
+<area shape="rect" id="Node000010" href="$classEnvironment.html#a3755ec802739ed1e5413e7f6de0a11bb" title="Constructs an environment from HDR texture file." alt="" coords="657,323,853,348"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="972,508,957,474,935,434,906,394,869,362,848,350,850,346,872,357,910,391,940,431,962,472,977,506"/>
+<area shape="rect" id="Node000011" href="$structShadowSystem.html#a1dc6c5a1bab1f023b759eb557f0ac87e" title="Initializes the raw shadow map texture for a single light." alt="" coords="640,372,871,397"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="967,510,927,459,900,433,869,411,844,400,846,395,872,406,903,429,931,455,971,507"/>
+<area shape="rect" id="Node000014" href="$classLight.html#aed9395ef33f128fb5c923901cc563f73" title="Constructs a light with specified type, power, and color." alt="" coords="708,421,803,447"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="956,513,917,485,870,460,836,449,802,442,803,437,837,444,872,456,919,481,959,509"/>
+<area shape="rect" id="Node000015" href="$classEnvironment.html#aa38193f2b8f2881c379c20a97a20de99" title="Renders environment sprite gizmo in viewport." alt="" coords="649,471,862,496"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="914,520,870,510,817,499,818,493,871,505,915,514"/>
+<area shape="rect" id="Node000016" href="$classLight.html#a5b40699d68b47ece3070992d2dcd1cde" title="Renders light sprite gizmo in viewport." alt="" coords="675,520,836,545"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="905,535,836,535,836,530,905,530"/>
+<area shape="rect" id="Node000017" href="$classPostProcessing.html#a4a54548b77df77e1db3e429a249ffce1" title=" " alt="" coords="646,569,865,595"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="913,551,816,572,815,567,912,546"/>
+<area shape="rect" id="Node000018" href="$classDebugPoints.html#a583ca66452d619f74402e332bf00f58a" title=" " alt="" coords="648,207,863,247"/>
+<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="978,507,967,457,947,393,915,326,894,295,869,268,841,250,844,245,872,264,898,292,919,323,952,391,972,456,983,506"/>
+<area shape="rect" id="Node000019" href="$classDebugLine.html#a3836e456743cb8867c3a99c750e80fa7" title=" " alt="" coords="654,107,857,132"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="982,507,978,436,963,341,949,290,929,241,902,194,869,153,839,134,842,130,872,149,907,191,934,238,954,289,968,340,983,436,987,506"/>
+<area shape="rect" id="Node000020" href="$classMesh.html#aa8f8e5cda60a8ec188694979deaa2346" title="Sets custom shader for this mesh." alt="" coords="679,735,832,760"/>
+<area shape="poly" id="edge23_Node000001_Node000020" title=" " alt="" coords="977,559,962,595,940,638,910,681,872,718,833,737,831,732,869,713,906,677,935,635,958,593,973,557"/>
+<area shape="rect" id="Node000021" href="$classPolygonLight.html#a5007c038ae53331574cd5883ccb68586" title=" " alt="" coords="662,785,849,825"/>
+<area shape="poly" id="edge24_Node000001_Node000021" title=" " alt="" coords="981,560,969,606,948,663,917,722,896,750,872,773,851,787,848,783,869,769,892,746,912,720,943,661,964,604,976,558"/>
+<area shape="rect" id="Node000023" href="$classSprite.html#a8fc11ae8ef117340eb1b268e3d90874f" title=" " alt="" coords="669,849,841,875"/>
+<area shape="poly" id="edge26_Node000001_Node000023" title=" " alt="" coords="985,559,977,617,959,693,945,733,926,772,902,808,872,839,843,856,840,851,869,835,898,804,921,769,940,731,954,691,972,616,980,558"/>
+<area shape="rect" id="Node000024" href="$classSprite.html#a12cba3ac1868418add3c4d95ce87e615" title=" " alt="" coords="425,875,531,900"/>
+<area shape="poly" id="edge28_Node000001_Node000024" title=" " alt="" coords="988,559,985,628,971,719,957,767,936,813,908,854,872,888,829,913,781,927,731,934,681,934,632,929,587,922,515,903,517,898,588,916,633,924,681,929,731,929,780,922,827,908,869,884,904,851,931,810,952,765,966,718,980,627,982,559"/>
+<area shape="rect" id="Node000025" href="$structShadowSystem.html#ac5b5a770e1d07921e034fba5d8950a4d" title="Updates a single light&#39;s GPU data." alt="" coords="373,683,583,708"/>
+<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="974,559,958,587,935,619,906,650,872,674,833,690,792,702,708,715,626,716,556,711,557,705,627,711,707,710,791,697,831,685,869,669,903,646,931,616,953,584,970,556"/>
+<area shape="rect" id="Node000026" href="$structShadowSystem.html#a2e1bf5030aee1ffa3f0cc70610419884" title="Computes and stores the projection matrix for a light." alt="" coords="654,619,857,659"/>
+<area shape="poly" id="edge31_Node000001_Node000026" title=" " alt="" coords="958,556,918,583,872,608,837,622,835,617,870,604,916,578,955,552"/>
+<area shape="rect" id="Node000027" href="$classObjectID.html#a4c62b67e90ede212f819640470f9b89c" title="Destroys the ObjectID." alt="" coords="679,1052,832,1077"/>
+<area shape="poly" id="edge35_Node000001_Node000027" title=" " alt="" coords="984,559,972,663,950,805,935,877,917,943,897,997,873,1034,854,1049,833,1058,831,1053,852,1044,869,1031,892,995,912,941,930,876,945,804,967,662,979,559"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="633,966,551,966,551,961,633,961"/>
+<area shape="rect" id="Node000005" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,683,316,708"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="419,948,389,933,362,913,339,888,319,860,286,802,264,748,251,709,256,707,269,746,291,800,323,858,343,885,366,909,392,929,421,943"/>
+<area shape="rect" id="Node000006" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,683,133,708"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="167,698,134,698,134,693,167,693"/>
+<area shape="rect" id="Node000012" href="$structShadowSystem.html#a8881456b3b0449dab5252e94fd859124" title="Parses basic lights (point, sun, spot, area) into GPU buffers." alt="" coords="364,475,592,500"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="668,403,641,411,563,444,502,477,500,472,561,439,639,406,666,398"/>
+<area shape="rect" id="Node000013" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="187,475,311,500"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="350,490,311,490,311,485,350,485"/>
+<area shape="poly" id="edge19_Node000018_Node000009" title=" " alt="" coords="635,243,576,249,575,244,634,237"/>
+<area shape="poly" id="edge21_Node000019_Node000007" title=" " alt="" coords="640,111,562,104,563,99,640,106"/>
+<area shape="poly" id="edge22_Node000019_Node000008" title=" " alt="" coords="648,136,563,148,562,143,647,131"/>
+<area shape="rect" id="Node000022" href="$classPolygonLight.html#a7880d7e021a0e484f3a0e7b400b878e5" title=" " alt="" coords="379,792,577,817"/>
+<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="648,807,577,807,577,802,648,802"/>
+<area shape="poly" id="edge27_Node000023_Node000024" title=" " alt="" coords="656,874,532,885,531,880,655,868"/>
+<area shape="poly" id="edge30_Node000025_Node000005" title=" " alt="" coords="360,698,316,698,316,693,360,693"/>
+<area shape="poly" id="edge33_Node000026_Node000005" title=" " alt="" coords="640,647,508,656,364,673,301,685,300,680,364,667,507,651,640,641"/>
+<area shape="poly" id="edge32_Node000026_Node000012" title=" " alt="" coords="658,617,639,608,594,583,553,553,492,502,495,498,556,549,597,578,641,604,660,612"/>
+<area shape="poly" id="edge34_Node000026_Node000025" title=" " alt="" coords="643,665,542,685,541,680,642,659"/>
+</map>

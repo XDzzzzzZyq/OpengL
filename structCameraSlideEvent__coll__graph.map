@@ -1,0 +1,13 @@
+<map id="CameraSlideEvent" name="CameraSlideEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="31,243,173,268"/>
+<area shape="rect" id="Node000002" href="$classCamera.html" title="Camera object defining viewpoint and projection for rendering." alt="" coords="65,155,139,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,194,105,242,99,242,99,194"/>
+<area shape="rect" id="Node000003" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="5,80,84,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="65,115,95,153,91,156,60,118"/>
+<area shape="rect" id="Node000004" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="21,5,68,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="47,45,47,80,42,80,42,45"/>
+<area shape="rect" id="Node000005" href="$classTransform3D.html" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="108,80,213,105"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="144,118,114,156,109,153,140,115"/>
+<area shape="rect" id="Node000006" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="117,5,204,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="163,45,163,80,158,80,158,45"/>
+</map>

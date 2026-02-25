@@ -1,0 +1,9 @@
+<map id="UI::ParaInput" name="UI::ParaInput">
+<area shape="rect" id="Node000001" title=" " alt="" coords="19,181,124,207"/>
+<area shape="rect" id="Node000002" href="$classImguiItem.html" title="Base class for all UI widgets (buttons, sliders, inputs, etc.)." alt="" coords="5,93,95,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,131,71,180,66,181,54,133"/>
+<area shape="rect" id="Node000003" href="$classParameters.html" title="Generic parameter container with type&#45;safe runtime access." alt="" coords="119,93,215,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,130,86,183,83,179,143,126"/>
+<area shape="rect" id="Node000004" href="$structParameters_1_1ParaData.html" title="Internal storage for parameter value and range." alt="" coords="86,5,249,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="170,45,170,93,165,93,165,45"/>
+</map>

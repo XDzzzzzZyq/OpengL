@@ -1,0 +1,22 @@
+<map id="Environment" name="Environment">
+<area shape="rect" id="Node000001" title="Environment object providing skybox and Image&#45;Based Lighting." alt="" coords="247,260,352,285"/>
+<area shape="rect" id="Node000002" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="277,80,356,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,119,303,260,298,260,312,119"/>
+<area shape="rect" id="Node000009" href="$classSprite.html" title=" " alt="" coords="337,170,397,195"/>
+<area shape="poly" id="edge9_Node000009_Node000002" title=" " alt="" coords="332,116,363,168,358,171,328,118"/>
+<area shape="rect" id="Node000003" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="293,5,340,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,45,319,80,314,80,314,45"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="5,170,111,195"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="85,201,112,218,142,234,195,251,247,262,246,267,194,256,140,238,109,223,82,206"/>
+<area shape="rect" id="Node000005" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="15,80,101,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="61,119,61,170,55,170,55,119"/>
+<area shape="rect" id="Node000006" href="$classRenderShader.html" title="Standard render shader with vertex and fragment stages." alt="" coords="136,80,249,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="195,119,200,157,214,196,228,215,245,232,280,258,277,262,242,236,224,219,209,199,194,158,190,119"/>
+<area shape="poly" id="edge11_Node000009_Node000006" title=" " alt="" coords="216,112,257,142,298,160,338,172,336,177,296,165,254,146,213,116"/>
+<area shape="rect" id="Node000007" href="$classShaders.html" title="Base class for OpenGL shader programs." alt="" coords="155,5,230,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="195,45,195,80,190,80,190,45"/>
+<area shape="rect" id="Node000008" href="$classTexture.html" title="OpenGL texture object wrapper with RAII semantics." alt="" coords="397,80,468,105"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="442,118,446,145,446,177,441,209,425,238,410,252,392,262,353,272,351,267,390,257,407,247,421,234,436,207,441,177,440,146,436,119"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="397,115,380,131,372,150,370,170,365,169,367,149,376,128,393,111"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="352,208,311,261,306,258,348,204"/>
+</map>

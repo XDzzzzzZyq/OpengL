@@ -1,0 +1,10 @@
+<map id="Mesh::SetObjShader" name="Mesh::SetObjShader">
+<area shape="rect" id="Node000001" title="Sets custom shader for this mesh." alt="" coords="5,31,159,56"/>
+<area shape="rect" id="Node000002" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="437,5,583,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,28,206,15,320,9,424,11,424,16,320,15,207,21,134,33"/>
+<area shape="rect" id="Node000003" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="207,31,389,56"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,41,193,41,193,46,159,46"/>
+<area shape="rect" id="Node000004" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="231,80,365,105"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="139,53,229,74,228,80,138,59"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="390,30,423,26,424,31,390,35"/>
+</map>

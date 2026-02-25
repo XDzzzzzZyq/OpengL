@@ -1,0 +1,13 @@
+<map id="ShadowSystem::ParsePolygonLightData" name="ShadowSystem::ParsePolygonLightData">
+<area shape="rect" id="Node000001" title="Parses polygonal lights into GPU buffers." alt="" coords="5,79,223,119"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html#ad02152ea87ab19c44d2e69833b7234d5" title="Uploads vector data to SSBO and records the buffer size." alt="" coords="282,22,477,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,77,272,62,273,68,208,82"/>
+<area shape="rect" id="Node000005" href="$structShadowSystem.html#aeaf0a86d8251dd3f5f1460bac2fa4c6d" title="Returns light count statistics for current scene." alt="" coords="271,87,488,112"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="223,97,257,97,257,102,223,102"/>
+<area shape="rect" id="Node000006" href="$classUniformBuffer.html#a47c6f897c626a9461c494137188b180f" title="Uploads new data to the UBO and records the buffer size." alt="" coords="295,136,464,161"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="223,117,297,131,296,136,222,122"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#a90960c29347d1c08eb1819d62a77788e" title="Binds this SSBO to GL_SHADER_STORAGE_BUFFER." alt="" coords="545,5,731,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="476,30,531,25,531,31,477,36"/>
+<area shape="rect" id="Node000004" href="$classStorageBuffer.html#a44ab1ddd14ad49f9e837e6c4ce138e0e" title="Unbinds the current SSBO." alt="" coords="536,55,740,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="477,49,523,53,522,59,476,54"/>
+</map>

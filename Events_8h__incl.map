@@ -1,0 +1,9 @@
+<map id="src/editor/Events.h" name="src/editor/Events.h">
+<area shape="rect" id="Node000001" title="Type&#45;safe event system for decoupled communication across layers." alt="" coords="88,5,231,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,92,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,33,80,73,77,69,140,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="116,79,203,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,31,162,65,157,65,157,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="227,79,351,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="181,28,256,69,254,74,179,33"/>
+</map>

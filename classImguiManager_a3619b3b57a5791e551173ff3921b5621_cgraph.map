@@ -1,0 +1,7 @@
+<map id="ImguiManager::FindImguiItem" name="ImguiManager::FindImguiItem">
+<area shape="rect" id="Node000001" title="Finds an item by layer ID and item ID." alt="" coords="5,31,224,56"/>
+<area shape="rect" id="Node000002" href="$classImguiLayer.html#a922bfc7cd142fecd22d8990a8b68d949" title="Finds an item by name." alt="" coords="285,5,483,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,30,271,26,272,31,224,36"/>
+<area shape="rect" id="Node000003" href="$classImguiManager.html#ae75cb0c6a0b0c44ba2c24f84eac3928b" title="Finds a layer by name." alt="" coords="272,55,496,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,50,259,53,258,59,224,56"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="Input::GetDeltaMouseY" name="Input::GetDeltaMouseY">
+<area shape="rect" id="Node000001" title="Returns mouse Y delta since last frame." alt="" coords="467,80,639,105"/>
+<area shape="rect" id="Node000002" href="$classNodeEditor.html#a6260e41127416b206cd0300c0d69a2e0" title=" " alt="" coords="248,5,419,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="506,77,418,45,381,33,383,28,420,39,508,72"/>
+<area shape="rect" id="Node000004" href="$classNodeEditor.html#ac927b2f869e28f594e38f75642eccce5" title=" " alt="" coords="251,55,416,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="453,84,416,80,417,74,453,79"/>
+<area shape="rect" id="Node000005" href="$classNodeEditor.html#abc395f9dfca8389e1ae1ed8666cb466b" title=" " alt="" coords="259,104,407,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="453,106,408,111,407,106,453,101"/>
+<area shape="rect" id="Node000006" href="$classViewport.html#a3b138f5fca3f363f908a3d1ddcdd3ed0" title="Renders the layer&#39;s UI elements." alt="" coords="248,153,419,179"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="506,113,420,143,379,156,378,151,418,138,504,108"/>
+<area shape="rect" id="Node000003" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,55,200,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="261,36,163,57,162,52,260,31"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="237,70,200,70,200,65,237,65"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="260,104,162,83,163,77,261,99"/>
+</map>

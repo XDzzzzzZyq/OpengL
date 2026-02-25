@@ -1,0 +1,21 @@
+<map id="ComputeShader::ImportShader" name="ComputeShader::ImportShader">
+<area shape="rect" id="Node000001" title="Imports or retrieves a cached compute shader." alt="" coords="855,132,1077,157"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="589,5,807,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="934,126,876,89,806,52,751,33,752,28,808,48,878,85,937,122"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,56,316,81"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="920,130,866,111,806,97,671,79,535,70,412,67,316,69,316,63,412,62,535,64,671,73,807,91,867,106,921,125"/>
+<area shape="rect" id="Node000006" href="$classTexture.html#ac0041d7c34d3b8609d26f9d7d0cbd11f" title="Fills texture with solid color." alt="" coords="633,107,763,132"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="841,136,763,128,764,123,841,130"/>
+<area shape="rect" id="Node000007" href="$classLight.html#a82c4b1f13914f0114d0b704c70fc0378" title="Returns pointer to shadow map shader." alt="" coords="633,156,763,181"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="841,159,764,165,763,160,841,153"/>
+<area shape="rect" id="Node000008" href="$classSDFField.html#aef797adf8a3af8a5d2e41c69a29e1719" title=" " alt="" coords="607,205,789,231"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="913,164,807,195,757,208,756,203,806,190,912,159"/>
+<area shape="rect" id="Node000009" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="364,181,541,207"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="941,169,883,211,846,231,807,246,747,260,699,262,650,257,589,246,529,229,479,209,481,204,531,224,590,241,651,252,699,257,747,254,806,241,844,226,880,206,938,164"/>
+<area shape="rect" id="Node000003" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="379,5,526,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,21,526,21,526,15,576,15"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="388,37,301,59,300,53,387,31"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,56,133,81"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,71,134,71,134,66,167,66"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="418,176,269,84,272,79,421,172"/>
+</map>

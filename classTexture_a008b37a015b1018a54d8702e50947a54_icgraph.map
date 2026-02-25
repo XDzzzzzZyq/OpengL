@@ -1,0 +1,25 @@
+<map id="Texture::BindM" name="Texture::BindM">
+<area shape="rect" id="Node000001" title="Static method to bind texture by ID." alt="" coords="964,167,1083,192"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#af8b7f038e8ca8345fc4ff5931227e56d" title="Binds texture to a texture unit for sampling." alt="" coords="774,141,881,167"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="950,173,880,163,881,158,951,167"/>
+<area shape="rect" id="Node000011" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="739,191,916,216"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="951,191,917,195,916,190,950,186"/>
+<area shape="rect" id="Node000003" href="$classEnvironment.html#a23f97b5b583a0c35e77439cb68d6cdf0" title="Binds IBL textures to shader slots." alt="" coords="474,105,665,145"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="760,149,664,138,665,133,761,144"/>
+<area shape="rect" id="Node000006" href="$classEnvironment.html#a05f52c3bdeae9f3d54890805c12b5ba2" title="Renders environment skybox to active framebuffer." alt="" coords="448,169,691,195"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="760,164,687,172,686,167,760,159"/>
+<area shape="rect" id="Node000007" href="$classSprite.html#a601c33a7d1aa252ae8723e5625bd858c" title=" " alt="" coords="493,55,645,80"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="789,137,742,116,690,95,643,83,644,78,691,90,744,111,791,133"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="223,169,358,195"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="461,150,354,172,353,167,460,144"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,169,133,195"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="210,185,134,185,134,179,210,179"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="434,185,358,185,358,179,434,179"/>
+<area shape="rect" id="Node000008" href="$classEnvironment.html#aa38193f2b8f2881c379c20a97a20de99" title="Renders environment sprite gizmo in viewport." alt="" coords="184,55,397,80"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="480,70,398,70,398,65,480,65"/>
+<area shape="rect" id="Node000009" href="$classLight.html#a5b40699d68b47ece3070992d2dcd1cde" title="Renders light sprite gizmo in viewport." alt="" coords="210,104,371,129"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="484,85,364,107,363,101,483,80"/>
+<area shape="rect" id="Node000010" href="$classPostProcessing.html#a4a54548b77df77e1db3e429a249ffce1" title=" " alt="" coords="181,5,400,31"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="483,55,363,33,364,28,484,50"/>
+<area shape="poly" id="edge12_Node000011_Node000004" title=" " alt="" coords="725,209,691,210,569,214,448,210,355,197,356,192,448,205,569,209,691,205,725,204"/>
+</map>

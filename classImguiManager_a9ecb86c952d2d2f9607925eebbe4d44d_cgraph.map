@@ -1,0 +1,7 @@
+<map id="ImguiManager::FindImguiMenuItem" name="ImguiManager::FindImguiMenuItem">
+<area shape="rect" id="Node000001" title="Finds a menu item within a menu." alt="" coords="5,31,260,56"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a10233c52f6b37f8b913552f2baf6b112" title="Finds a menu by name." alt="" coords="308,5,532,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,29,294,26,295,32,260,35"/>
+<area shape="rect" id="Node000003" href="$classImguiMenu.html#a394ba4eb1eecd0a5434bd0402460eb9f" title=" " alt="" coords="322,55,518,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,51,308,55,308,61,260,57"/>
+</map>

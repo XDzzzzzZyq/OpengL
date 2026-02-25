@@ -1,0 +1,7 @@
+<map id="Environment::UnbindEnvironTexture" name="Environment::UnbindEnvironTexture">
+<area shape="rect" id="Node000001" title="Unbinds IBL textures." alt="" coords="5,5,213,45"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a0bff249ecfb46e9b08c6ba52d64a921e" title="Unbinds texture from texture unit." alt="" coords="261,13,385,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,23,247,23,247,28,214,28"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="433,13,592,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="386,23,420,23,420,28,386,28"/>
+</map>

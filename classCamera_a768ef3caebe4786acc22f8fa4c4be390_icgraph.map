@@ -1,0 +1,7 @@
+<map id="Camera::ChangeCamRatio" name="Camera::ChangeCamRatio">
+<area shape="rect" id="Node000001" title="Updates aspect ratio from width and height." alt="" coords="391,5,585,31"/>
+<area shape="rect" id="Node000002" href="$CameraController_8cpp.html#aa56413b3e9da27ef6c69534e32be2b50" title=" " alt="" coords="227,5,343,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="377,21,343,21,343,15,377,15"/>
+<area shape="rect" id="Node000003" href="$classCameraController.html#ae7a446010eae8ff05acc6ca86fc57017" title="Bind to EventPool to subscribe to input events." alt="" coords="5,5,179,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="213,21,179,21,179,15,213,15"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="IndexBuffer::Count" name="IndexBuffer::Count">
+<area shape="rect" id="Node000001" title="Returns the number of indices." alt="" coords="265,70,408,95"/>
+<area shape="rect" id="Node000002" href="$classDebugPoints.html#ad0ecd042652caf47c65b1001c3463e87" title=" " alt="" coords="11,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,69,190,48,191,43,274,64"/>
+<area shape="rect" id="Node000003" href="$classMeshData.html#a84f42546650438601107e55e3367137b" title=" " alt="" coords="11,70,212,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="251,85,212,85,212,80,251,80"/>
+<area shape="rect" id="Node000004" href="$classPolygonLight.html#a8bb236ca5725ef3280d2daf4fd2bbad1" title=" " alt="" coords="5,119,217,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="265,101,171,122,170,117,264,96"/>
+</map>

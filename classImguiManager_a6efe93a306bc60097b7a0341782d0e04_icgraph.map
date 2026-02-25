@@ -1,0 +1,14 @@
+<map id="ImguiManager::FindImguiItem" name="ImguiManager::FindImguiItem">
+<area shape="rect" id="Node000001" title="Finds an item within a layer by name." alt="" coords="759,52,977,77"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a9fdc62994444dcabcf57ae132443b222" title="Sets up default viewport layout configuration." alt="" coords="199,26,428,52"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="824,49,770,31,710,16,621,9,531,11,448,19,379,29,378,24,447,13,530,5,621,3,711,11,772,26,825,44"/>
+<area shape="rect" id="Node000004" href="$classImguiManager.html#a48ec4d7bd2a44968ea893a813979601d" title="Finds an item and casts to derived type." alt="" coords="476,26,711,52"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="745,56,711,53,711,47,745,50"/>
+<area shape="rect" id="Node000005" href="$classImguiManager.html#a0454c7f2f257bf73254cab9c43c76aca" title="Retrieves parameter value from a parameter input item." alt="" coords="488,76,699,101"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="745,78,699,82,699,77,745,73"/>
+<area shape="rect" id="Node000006" href="$classImguiManager.html#ab71e9e0cd17b5fa95f7be1d56d6b1a98" title="Sets the callback function for a button item." alt="" coords="484,125,703,150"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="816,84,711,115,658,128,657,122,710,110,815,79"/>
+<area shape="rect" id="Node000003" href="$classImguiManager.html#aa866246a60670df31878675a76aab54f" title="Initializes ImGui context, backends, and UI components." alt="" coords="5,26,151,52"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="185,42,151,42,151,36,185,36"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="507,76,386,54,387,49,508,71"/>
+</map>

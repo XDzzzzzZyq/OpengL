@@ -1,0 +1,5 @@
+<map id="ImguiManager::FindImguiLayerAs" name="ImguiManager::FindImguiLayerAs">
+<area shape="rect" id="Node000001" title="Finds a layer and casts to derived type." alt="" coords="5,5,245,31"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#ae75cb0c6a0b0c44ba2c24f84eac3928b" title="Finds a layer by name." alt="" coords="293,5,517,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,15,280,15,280,21,245,21"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="xdzm::float_dist" name="xdzm::float_dist">
+<area shape="rect" id="Node000001" title=" " alt="" coords="660,31,787,56"/>
+<area shape="rect" id="Node000002" href="$namespacexdzm.html#aa237d4bbe97d987254b83eef8d677a5d" title=" " alt="" coords="461,31,612,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="646,46,612,46,612,41,646,41"/>
+<area shape="rect" id="Node000003" href="$CameraController_8cpp.html#a243d4195ace13c7ccd111c03ae99f861" title=" " alt="" coords="279,5,383,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="447,35,383,27,383,22,448,30"/>
+<area shape="rect" id="Node000005" href="$classNodeEditor.html#ac927b2f869e28f594e38f75642eccce5" title=" " alt="" coords="248,55,413,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="448,56,414,60,413,55,447,51"/>
+<area shape="rect" id="Node000004" href="$classCameraController.html#ae7a446010eae8ff05acc6ca86fc57017" title="Bind to EventPool to subscribe to input events." alt="" coords="16,5,189,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="265,21,189,21,189,15,265,15"/>
+<area shape="rect" id="Node000006" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,55,200,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="234,70,200,70,200,65,234,65"/>
+</map>

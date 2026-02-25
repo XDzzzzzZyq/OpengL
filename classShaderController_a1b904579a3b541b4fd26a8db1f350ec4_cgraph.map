@@ -1,0 +1,17 @@
+<map id="ShaderController::bind" name="ShaderController::bind">
+<area shape="rect" id="Node000001" title="Subscribe to relevant events in the EventPool." alt="" coords="5,55,172,80"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="236,5,361,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,52,230,31,231,36,144,57"/>
+<area shape="rect" id="Node000003" href="$classEventPool.html#acb94d3258db23f862676ed4fa9983069" title="Subscribes a handler to events of type Event." alt="" coords="220,55,377,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,65,206,65,206,70,173,70"/>
+<area shape="rect" id="Node000004" href="$ShaderController_8cpp.html#a277431fcccc01e6eb2349844bf261066" title=" " alt="" coords="237,104,360,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,77,231,98,230,103,143,83"/>
+<area shape="rect" id="Node000005" href="$classShaders.html#ab8874a8b2c3d218feec7b21bcc2f4e2c" title="Generates shader code (for procedural shaders)." alt="" coords="425,29,612,55"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="343,101,376,89,400,76,424,64,446,56,448,61,426,68,402,81,378,94,344,106"/>
+<area shape="rect" id="Node000006" href="$classShaders.html#a49c802de67580604398ecb6ff76bd450" title="Returns pointer to shader unit for a specific stage." alt="" coords="430,79,607,104"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="360,107,416,100,416,106,361,112"/>
+<area shape="rect" id="Node000007" href="$classShaders.html#a9ac7027c94965deb542253f74d3f96f4" title="Relinks the shader program after shader unit changes." alt="" coords="435,128,603,153"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="361,121,421,127,421,133,360,126"/>
+<area shape="rect" id="Node000008" href="$classShaderStruct.html#af4275ec98112f11215912dbbab2f3b29" title=" " alt="" coords="441,177,597,203"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="332,127,426,162,455,171,454,176,424,167,330,132"/>
+</map>

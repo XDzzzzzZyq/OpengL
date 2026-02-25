@@ -1,0 +1,12 @@
+<map id="TextEditor::HasSelection" name="TextEditor::HasSelection">
+<area shape="rect" id="Node000001" title=" " alt="" coords="357,81,537,107"/>
+<area shape="rect" id="Node000002" href="$classTextEditor.html#ad71b4195221a533bdeea571b64357bf3" title=" " alt="" coords="176,5,304,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="398,79,275,33,277,28,400,74"/>
+<area shape="rect" id="Node000003" href="$classTextEditor.html#a5cb9031218039668bb2b68dfdc99fc4f" title=" " alt="" coords="5,31,123,56"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="343,83,122,54,123,48,344,78"/>
+<area shape="rect" id="Node000004" href="$classTextEditor.html#a480028d578e5ba0254e848b61e613636" title=" " alt="" coords="171,107,309,132"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="344,109,310,113,310,108,343,104"/>
+<area shape="rect" id="Node000005" href="$classTextEditor.html#a55c18a394c0264054dcc3be9e794186c" title=" " alt="" coords="175,156,305,181"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="399,114,277,159,275,153,397,109"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="162,32,123,38,123,32,162,27"/>
+</map>

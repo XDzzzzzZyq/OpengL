@@ -1,0 +1,5 @@
+<map id="ImguiItem::ResetBufferID" name="ImguiItem::ResetBufferID">
+<area shape="rect" id="Node000001" title="Updates texture/framebuffer ID for viewport items." alt="" coords="240,5,427,31"/>
+<area shape="rect" id="Node000002" href="$classViewport.html#a4098a93e903c5fbb1017391851dcfb81" title="Registers layer&#39;s event subscriptions." alt="" coords="5,5,192,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,21,192,21,192,15,227,15"/>
+</map>

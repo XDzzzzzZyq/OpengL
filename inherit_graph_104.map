@@ -1,0 +1,52 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classTransform.html" title="Abstract base class for transform components." alt="" coords="5,191,92,216"/>
+<area shape="rect" id="Node000001" href="$classTransform2D.html" title="2D transform component for sprites and UI elements." alt="" coords="140,55,245,80"/>
+<area shape="poly" id="edge30_Node000000_Node000001" title=" " alt="" coords="72,179,176,78,180,82,75,183"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html" title="3D transform component for scene objects (Camera, Light, Mesh)." alt="" coords="140,325,245,351"/>
+<area shape="poly" id="edge33_Node000000_Node000004" title=" " alt="" coords="75,224,180,323,176,327,72,228"/>
+<area shape="rect" id="Node000002" href="$classNodeEditor.html" title=" " alt="" coords="306,55,401,80"/>
+<area shape="poly" id="edge31_Node000001_Node000002" title=" " alt="" coords="259,65,305,65,305,70,259,70"/>
+<area shape="rect" id="Node000003" href="$classNodes.html" title=" " alt="" coords="322,5,385,31"/>
+<area shape="poly" id="edge32_Node000001_Node000003" title=" " alt="" coords="247,48,321,25,323,30,248,53"/>
+<area shape="rect" id="Node000005" href="$classCamera.html" title="Camera object defining viewpoint and projection for rendering." alt="" coords="317,203,390,228"/>
+<area shape="poly" id="edge34_Node000004_Node000005" title=" " alt="" coords="211,313,246,275,292,237,315,225,317,230,295,242,250,279,215,316"/>
+<area shape="rect" id="Node000007" href="$classDebugLine.html" title=" " alt="" coords="308,252,399,277"/>
+<area shape="poly" id="edge35_Node000004_Node000007" title=" " alt="" coords="230,317,292,286,318,275,321,280,294,291,232,321"/>
+<area shape="rect" id="Node000008" href="$classDebugPoints.html" title=" " alt="" coords="301,301,405,327"/>
+<area shape="poly" id="edge36_Node000004_Node000008" title=" " alt="" coords="259,325,301,319,302,324,259,331"/>
+<area shape="rect" id="Node000009" href="$classEmpty.html" title="Empty transform node for scene hierarchy organization." alt="" coords="321,351,385,376"/>
+<area shape="poly" id="edge37_Node000004_Node000009" title=" " alt="" coords="260,346,321,356,320,361,259,351"/>
+<area shape="rect" id="Node000010" href="$classEnvironment.html" title="Environment object providing skybox and Image&#45;Based Lighting." alt="" coords="301,400,406,425"/>
+<area shape="poly" id="edge38_Node000004_Node000010" title=" " alt="" coords="232,354,294,385,322,397,320,402,292,390,230,359"/>
+<area shape="rect" id="Node000020" href="$classField.html" title=" " alt="" coords="327,104,380,129"/>
+<area shape="poly" id="edge39_Node000004_Node000020" title=" " alt="" coords="198,311,210,274,229,228,256,180,292,139,308,128,325,120,327,125,310,132,295,143,261,183,234,230,215,276,203,313"/>
+<area shape="rect" id="Node000011" href="$classImagePlane.html" title=" " alt="" coords="304,449,403,475"/>
+<area shape="poly" id="edge40_Node000004_Node000011" title=" " alt="" coords="215,360,250,397,295,434,318,447,315,452,292,439,246,401,211,363"/>
+<area shape="rect" id="Node000012" href="$classLight.html" title="Light source object supporting point, sun, spot, and area lights." alt="" coords="326,499,381,524"/>
+<area shape="poly" id="edge41_Node000004_Node000012" title=" " alt="" coords="214,361,248,410,268,451,278,468,295,485,327,502,324,507,292,489,274,471,264,453,243,413,209,364"/>
+<area shape="rect" id="Node000013" href="$classMesh.html" title="3D mesh object representing renderable geometry with material and transform." alt="" coords="325,548,382,573"/>
+<area shape="poly" id="edge42_Node000004_Node000013" title=" " alt="" coords="215,360,248,410,261,446,267,477,275,505,295,535,309,545,325,552,323,557,306,550,291,539,270,508,262,478,256,448,243,413,210,363"/>
+<area shape="rect" id="Node000014" href="$classPolygonLight.html" title=" " alt="" coords="300,597,407,623"/>
+<area shape="poly" id="edge43_Node000004_Node000014" title=" " alt="" coords="216,360,248,410,258,437,262,461,265,503,271,543,280,563,295,584,309,595,306,599,291,588,275,566,266,544,259,504,257,461,252,438,243,413,211,363"/>
+<area shape="rect" id="Node000016" href="$classSDFField.html" title=" " alt="" coords="314,153,393,179"/>
+<area shape="poly" id="edge44_Node000004_Node000016" title=" " alt="" coords="203,311,237,250,262,217,292,188,312,176,315,180,295,192,266,221,242,253,207,314"/>
+<area shape="rect" id="Node000018" href="$classUID.html" title="Base class providing globally unique integer IDs." alt="" coords="25,448,72,473"/>
+<area shape="rect" id="Node000006" href="$classObjectID.html" title="Base class for all scene graph objects with type and component access." alt="" coords="153,424,232,449"/>
+<area shape="poly" id="edge45_Node000018_Node000006" title=" " alt="" coords="85,452,152,441,153,446,86,457"/>
+<area shape="rect" id="Node000019" href="$classScene.html" title="Container for all scene objects and scene&#45;wide state." alt="" coords="162,473,223,499"/>
+<area shape="poly" id="edge58_Node000018_Node000019" title=" " alt="" coords="86,464,162,478,161,483,85,470"/>
+<area shape="poly" id="edge46_Node000006_Node000005" title=" " alt="" coords="210,411,243,361,256,326,262,296,270,268,291,237,315,222,318,227,295,241,275,270,267,298,261,328,248,363,215,414"/>
+<area shape="poly" id="edge47_Node000006_Node000007" title=" " alt="" coords="209,411,243,361,264,321,274,304,292,287,310,275,313,280,295,291,278,308,269,324,248,363,213,414"/>
+<area shape="poly" id="edge48_Node000006_Node000008" title=" " alt="" coords="211,411,246,373,292,336,313,325,316,329,295,340,250,377,215,415"/>
+<area shape="poly" id="edge49_Node000006_Node000009" title=" " alt="" coords="230,415,292,385,320,373,322,378,294,390,232,420"/>
+<area shape="poly" id="edge50_Node000006_Node000010" title=" " alt="" coords="245,426,300,418,301,423,246,431"/>
+<area shape="poly" id="edge51_Node000006_Node000011" title=" " alt="" coords="246,442,304,452,303,457,245,448"/>
+<area shape="poly" id="edge52_Node000006_Node000012" title=" " alt="" coords="236,453,247,458,295,485,326,499,324,504,292,490,244,463,233,458"/>
+<area shape="poly" id="edge53_Node000006_Node000013" title=" " alt="" coords="242,455,247,459,263,479,272,498,279,516,295,535,326,551,323,556,292,539,275,519,267,500,259,481,243,463,239,459"/>
+<area shape="poly" id="edge54_Node000006_Node000014" title=" " alt="" coords="243,455,247,459,260,476,267,492,272,523,277,554,283,569,295,584,311,595,307,599,291,588,279,572,271,555,266,524,262,493,255,478,243,462,240,459"/>
+<area shape="poly" id="edge56_Node000006_Node000016" title=" " alt="" coords="211,412,243,361,252,336,257,313,259,271,266,231,275,210,291,188,312,174,315,178,295,192,280,213,271,233,265,272,262,313,257,337,248,363,215,414"/>
+<area shape="rect" id="Node000015" href="$classPostProcessing.html" title=" " alt="" coords="293,696,413,721"/>
+<area shape="poly" id="edge55_Node000006_Node000015" title=" " alt="" coords="245,456,247,459,265,489,273,518,274,546,271,574,269,601,270,628,278,655,295,683,309,694,306,698,291,686,273,657,265,628,263,600,266,573,268,546,268,519,260,491,243,462,241,460"/>
+<area shape="rect" id="Node000017" href="$classSprite.html" title=" " alt="" coords="323,647,383,672"/>
+<area shape="poly" id="edge57_Node000006_Node000017" title=" " alt="" coords="244,456,247,459,263,482,270,505,271,548,273,591,280,612,295,634,309,644,324,651,322,656,306,649,291,637,276,614,268,592,266,549,265,506,258,485,243,462,240,459"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Transform3D::Spin" name="Transform3D::Spin">
+<area shape="rect" id="Node000001" title="Rotates around arbitrary axis through anchor point." alt="" coords="441,31,583,56"/>
+<area shape="rect" id="Node000002" href="$CameraController_8cpp.html#a2e61fcb0016fe68c283bd71e6cd08edf" title=" " alt="" coords="252,5,368,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="427,35,368,28,369,23,428,30"/>
+<area shape="rect" id="Node000004" href="$classCamera.html#a5e6fa7b3c3549b0e2a4756b476c0817e" title="Sets camera transform from 4x4 matrix." alt="" coords="227,55,393,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="428,56,394,60,393,55,427,51"/>
+<area shape="rect" id="Node000003" href="$classCameraController.html#ae7a446010eae8ff05acc6ca86fc57017" title="Bind to EventPool to subscribe to input events." alt="" coords="5,5,179,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="238,21,179,21,179,15,238,15"/>
+</map>

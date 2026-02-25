@@ -1,0 +1,5 @@
+<map id="FastLoadShader::CreatShader" name="FastLoadShader::CreatShader">
+<area shape="rect" id="Node000001" title="Creates shader program from vertex and fragment shader names." alt="" coords="243,13,455,38"/>
+<area shape="rect" id="Node000002" href="$classFastLoadShader.html#a1dcef24a576ffd8550531caac361be80" title="Constructs and loads a fast shader from files." alt="" coords="5,5,195,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,28,195,28,195,23,229,23"/>
+</map>

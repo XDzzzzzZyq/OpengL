@@ -1,0 +1,11 @@
+<map id="Shaders::ReadShaderFile" name="Shaders::ReadShaderFile">
+<area shape="rect" id="Node000001" title="Reads shader source from file." alt="" coords="567,55,749,80"/>
+<area shape="rect" id="Node000002" href="$classComputeShader.html#a237e10a88c7f8f29a3014cb64ba99399" title="Constructs a compute shader from file." alt="" coords="280,5,519,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="577,55,466,33,467,28,578,49"/>
+<area shape="rect" id="Node000003" href="$classChainedShader.html#adfcd778e36a4b9e8ca524744358631e3" title="Creates shader program from loaded shader chain." alt="" coords="295,55,503,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="553,70,504,70,504,65,553,65"/>
+<area shape="rect" id="Node000005" href="$classFastLoadShader.html#a1dcef24a576ffd8550531caac361be80" title="Constructs and loads a fast shader from files." alt="" coords="305,105,494,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="587,86,491,107,489,102,586,80"/>
+<area shape="rect" id="Node000004" href="$classChainedShader.html#a2e90fa8d5f4792f03fe22026c3930b46" title="Constructs a chained shader from a list of shader file names." alt="" coords="5,55,232,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="282,70,232,70,232,65,282,65"/>
+</map>

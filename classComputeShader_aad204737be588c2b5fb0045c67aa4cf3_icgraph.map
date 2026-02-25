@@ -1,0 +1,22 @@
+<map id="ComputeShader::RunComputeShader" name="ComputeShader::RunComputeShader">
+<area shape="rect" id="Node000001" title="Dispatches compute shader with explicit size." alt="" coords="856,77,1075,117"/>
+<area shape="poly" id="edge6_Node000001_Node000001" title=" " alt="" coords="1011,65,995,58,965,55,939,57,924,62,918,68,921,75,916,77,913,67,921,58,938,52,965,50,996,53,1013,60"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="590,5,807,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="898,74,807,45,762,33,764,28,809,39,900,69"/>
+<area shape="rect" id="Node000006" href="$classSDFField.html#aef797adf8a3af8a5d2e41c69a29e1719" title=" " alt="" coords="608,55,789,80"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="842,86,789,80,790,75,843,80"/>
+<area shape="rect" id="Node000007" href="$classComputeShader.html#a6dd385706a13123881762c16665593e7" title="Dispatches compute shader scaled to screen resolution." alt="" coords="589,105,808,145"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="843,112,809,116,808,111,842,107"/>
+<area shape="rect" id="Node000009" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="364,165,541,191"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="911,125,862,144,809,159,739,171,669,178,542,183,541,177,668,173,738,166,807,154,860,139,909,120"/>
+<area shape="rect" id="Node000003" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="379,9,526,35"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,23,526,23,526,18,576,17"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,64,316,89"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="392,41,297,67,296,61,391,36"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,64,133,89"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,79,134,79,134,74,167,74"/>
+<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="575,109,541,105,316,84,316,79,542,99,576,104"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#ac0041d7c34d3b8609d26f9d7d0cbd11f" title="Fills texture with solid color." alt="" coords="387,115,518,140"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="576,129,518,129,518,124,575,123"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="384,164,363,155,307,123,264,92,267,87,310,118,365,150,386,159"/>
+</map>

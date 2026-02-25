@@ -1,0 +1,13 @@
+<map id="ImguiItem" name="ImguiItem">
+<area shape="rect" id="Node000001" title="Base class for all UI widgets (buttons, sliders, inputs, etc.)." alt="" coords="261,5,351,31"/>
+<area shape="rect" id="Node000002" href="$classUI_1_1Button.html" title=" " alt="" coords="5,79,92,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,37,91,81,90,76,251,32"/>
+<area shape="rect" id="Node000003" href="$classUI_1_1OpaButton.html" title=" " alt="" coords="116,79,229,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="274,39,196,81,193,76,271,35"/>
+<area shape="rect" id="Node000004" href="$classUI_1_1ParaInput.html" title=" " alt="" coords="253,79,359,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="309,44,309,79,303,79,303,44"/>
+<area shape="rect" id="Node000005" href="$classUI_1_1Text.html" title=" " alt="" coords="383,79,453,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="337,36,401,76,398,81,334,40"/>
+<area shape="rect" id="Node000006" href="$classUI_1_1TextureViewer.html" title=" " alt="" coords="477,79,615,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="359,32,508,76,506,81,357,37"/>
+</map>

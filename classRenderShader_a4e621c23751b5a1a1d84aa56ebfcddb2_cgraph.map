@@ -1,0 +1,5 @@
+<map id="RenderShader::ResetID" name="RenderShader::ResetID">
+<area shape="rect" id="Node000001" title="Resets shader ID for a specific stage." alt="" coords="5,5,177,31"/>
+<area shape="rect" id="Node000002" href="$classRenderShader.html#a409899ffc91896655e93a7ee75dc80ae" title="Returns pointer to shader unit for a specific stage." alt="" coords="225,5,441,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,15,212,15,212,21,177,21"/>
+</map>

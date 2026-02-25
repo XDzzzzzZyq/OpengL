@@ -1,0 +1,5 @@
+<map id="Mesh::RenderObjProxy" name="Mesh::RenderObjProxy">
+<area shape="rect" id="Node000001" title="Renders low&#45;poly proxy or original mesh." alt="" coords="200,5,371,31"/>
+<area shape="rect" id="Node000002" href="$classMesh.html#a86a6ae63ae2e4ae8937d4981a824a071" title="Renders the mesh to active framebuffer." alt="" coords="5,5,152,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,21,152,21,152,15,186,15"/>
+</map>

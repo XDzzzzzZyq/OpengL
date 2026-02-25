@@ -1,0 +1,29 @@
+<map id="StorageBuffer::UnbindBuffer" name="StorageBuffer::UnbindBuffer">
+<area shape="rect" id="Node000001" title="Unbinds the current SSBO." alt="" coords="891,212,1095,237"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html#ad02152ea87ab19c44d2e69833b7234d5" title="Uploads vector data to SSBO and records the buffer size." alt="" coords="644,109,839,149"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="950,209,842,163,808,151,809,146,844,158,952,204"/>
+<area shape="rect" id="Node000010" href="$classStorageBuffer.html#a613df42d68a097de900e56f54bc36d99" title=" " alt="" coords="644,173,839,213"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="879,213,838,208,839,202,880,208"/>
+<area shape="rect" id="Node000011" href="$classStorageBuffer.html#a22028229dbebb7c1e73db9e5dec47f88" title="Reads data from SSBO back to CPU." alt="" coords="640,237,843,277"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="879,242,843,246,842,241,879,236"/>
+<area shape="rect" id="Node000013" href="$classSDFField.html#a8d2cb2384fb526e989984ed1e3e19ab7" title=" " alt="" coords="675,301,808,327"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="954,246,844,291,800,304,799,299,842,286,952,241"/>
+<area shape="rect" id="Node000003" href="$structShadowSystem.html#a8881456b3b0449dab5252e94fd859124" title="Parses basic lights (point, sun, spot, area) into GPU buffers." alt="" coords="364,5,592,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="699,103,648,73,591,46,550,33,552,28,593,41,651,69,701,99"/>
+<area shape="rect" id="Node000005" href="$structShadowSystem.html#acb2c868aa63489e887365acb77640e08" title="Parses polygonal lights into GPU buffers." alt="" coords="369,55,587,95"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="630,109,577,98,578,93,631,104"/>
+<area shape="rect" id="Node000008" href="$classDebugPoints.html#ad0ecd042652caf47c65b1001c3463e87" title=" " alt="" coords="378,119,578,159"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="630,136,578,138,578,133,630,131"/>
+<area shape="rect" id="Node000009" href="$structShadowSystem.html#ac5b5a770e1d07921e034fba5d8950a4d" title="Updates a single light&#39;s GPU data." alt="" coords="373,184,583,209"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="661,155,593,174,540,187,539,181,591,169,659,150"/>
+<area shape="rect" id="Node000004" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="187,35,311,60"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="365,35,311,42,311,37,365,30"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="355,63,310,57,311,52,356,58"/>
+<area shape="rect" id="Node000006" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,120,316,145"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="385,101,301,123,300,117,384,96"/>
+<area shape="rect" id="Node000007" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,120,133,145"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="167,135,134,135,134,130,167,130"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="400,183,363,174,284,148,285,143,365,169,402,178"/>
+<area shape="rect" id="Node000012" href="$classSDFField.html#a323ad564284eb03e76a06f0ba6c3de9b" title=" " alt="" coords="405,244,551,269"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="626,259,552,259,552,254,626,254"/>
+</map>

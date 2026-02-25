@@ -1,0 +1,22 @@
+<map id="TransformPanel::RenderLayer" name="TransformPanel::RenderLayer">
+<area shape="rect" id="Node000001" title="Renders the layer&#39;s UI elements." alt="" coords="5,69,217,94"/>
+<area shape="rect" id="Node000002" href="$TransformPanel_8cpp.html#a2eb79fe2b453bd8d598d0fd33e4daa38" title=" " alt="" coords="266,69,405,94"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,79,252,79,252,84,217,84"/>
+<area shape="rect" id="Node000003" href="$classSelectionManager.html#a03e105cb66d9d5044dedeadb9b281c3b" title="Returns the first selected object." alt="" coords="453,5,680,45"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="183,66,265,53,440,34,440,39,266,59,184,71"/>
+<area shape="rect" id="Node000005" href="$TransformPanel_8cpp.html#a92a0ef7de40630815ed35c2cef178c38" title=" " alt="" coords="265,193,405,218"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="137,92,300,183,298,188,134,96"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="388,66,470,46,471,51,389,71"/>
+<area shape="rect" id="Node000004" href="$classObjectID.html#a6453b65d63a62d672ecdf8a5e43808eb" title="Returns pointer to object&#39;s transform, if applicable." alt="" coords="479,70,654,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="405,79,465,79,465,85,405,84"/>
+<area shape="rect" id="Node000006" href="$TransformPanel_8cpp.html#a503a2fa92ef24e880f16c47aa1785b6f" title=" " alt="" coords="519,119,614,145"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="362,190,453,153,505,140,506,145,454,159,364,195"/>
+<area shape="rect" id="Node000007" href="$classTransform3D.html#ae3f7c933770184d03b1aae441448f681" title="Returns pointer to this transform." alt="" coords="457,169,676,194"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="406,195,443,191,444,197,406,201"/>
+<area shape="rect" id="Node000008" href="$classTransform3D.html#a2f7ec6f9e11613ff0cb614309d9124ea" title="Sets world position." alt="" coords="488,218,645,243"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="406,210,475,218,474,223,406,216"/>
+<area shape="rect" id="Node000009" href="$classTransform3D.html#ab7d1b4a18bd9accbffec1d5d47e89f3e" title="Sets rotation via Euler angles." alt="" coords="489,267,645,293"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="363,216,405,235,454,253,483,262,481,267,452,259,403,240,361,221"/>
+<area shape="rect" id="Node000010" href="$classTransform3D.html#af806a31cff265f2afb1827e316e139fd" title="Sets local scale." alt="" coords="482,317,651,342"/>
+<area shape="poly" id="edge10_Node000005_Node000010" title=" " alt="" coords="349,216,392,259,422,283,455,303,471,310,469,315,452,308,419,288,389,263,346,220"/>
+</map>

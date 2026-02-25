@@ -1,0 +1,26 @@
+var structTextEditor_1_1LanguageDefinition =
+[
+    [ "TokenizeCallback", "structTextEditor_1_1LanguageDefinition.html#a8ab84264ac8f88f35c4de22102507399", null ],
+    [ "TokenRegexString", "structTextEditor_1_1LanguageDefinition.html#abfb75894b7d636fc35af95b28127a418", null ],
+    [ "TokenRegexStrings", "structTextEditor_1_1LanguageDefinition.html#a8d9d3b1eff76ed1b7e8192626d1984ec", null ],
+    [ "LanguageDefinition", "structTextEditor_1_1LanguageDefinition.html#ac40f4cc01836db6f18dbf21f25121f2d", null ],
+    [ "AngelScript", "structTextEditor_1_1LanguageDefinition.html#aa1aa65bebcb0632e2a933df3a52ec93e", null ],
+    [ "C", "structTextEditor_1_1LanguageDefinition.html#a5f41009cf034aefa31ffda1985f44a03", null ],
+    [ "CPlusPlus", "structTextEditor_1_1LanguageDefinition.html#aba26ce5704845dd024521fed8c19a9c9", null ],
+    [ "GLSL", "structTextEditor_1_1LanguageDefinition.html#a6bbb79cc9c996f12d49b5707013070ce", null ],
+    [ "HLSL", "structTextEditor_1_1LanguageDefinition.html#ac57152f855eed0755732f395ccff8d3a", null ],
+    [ "Lua", "structTextEditor_1_1LanguageDefinition.html#a4e811b43370cba9ec8b8869ae2bfc4ff", null ],
+    [ "SQL", "structTextEditor_1_1LanguageDefinition.html#a0a05e293330d96c3966b5c04c9740926", null ],
+    [ "mAutoIndentation", "structTextEditor_1_1LanguageDefinition.html#ab0c6722298c1d597ae4f3e266935b318", null ],
+    [ "mCaseSensitive", "structTextEditor_1_1LanguageDefinition.html#a77668454aaac7f3aa9358d01acda0376", null ],
+    [ "mCommentEnd", "structTextEditor_1_1LanguageDefinition.html#abf9ed270616ed79eb80c5f97805b184b", null ],
+    [ "mCommentStart", "structTextEditor_1_1LanguageDefinition.html#a56144eb2c6152d4321fd16f6c8bb7f19", null ],
+    [ "mIdentifiers", "structTextEditor_1_1LanguageDefinition.html#a587cbc53434504d0c584004ebe03f7b6", null ],
+    [ "mKeywords", "structTextEditor_1_1LanguageDefinition.html#a711208616bcfb7d671e268e8811bd64d", null ],
+    [ "mName", "structTextEditor_1_1LanguageDefinition.html#a2854052aa0b3b789c128895538e0bbe2", null ],
+    [ "mPreprocChar", "structTextEditor_1_1LanguageDefinition.html#a68dd7ed9ff3f921cdd5eba80ac61ec6b", null ],
+    [ "mPreprocIdentifiers", "structTextEditor_1_1LanguageDefinition.html#a67baa43cd1ef6d9aef8739e2369fc8b7", null ],
+    [ "mSingleLineComment", "structTextEditor_1_1LanguageDefinition.html#a42439c9419dc8c07138db9d86ea89fb1", null ],
+    [ "mTokenize", "structTextEditor_1_1LanguageDefinition.html#a67120ee6d2c4c9cecd7bb0f2ada62d5f", null ],
+    [ "mTokenRegexStrings", "structTextEditor_1_1LanguageDefinition.html#a392b1db196a2fffbb3debc127238e8b0", null ]
+];

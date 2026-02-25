@@ -1,0 +1,29 @@
+<map id="Texture::SaveTexture" name="Texture::SaveTexture">
+<area shape="rect" id="Node000001" title="Saves texture to file." alt="" coords="5,138,164,163"/>
+<area shape="poly" id="edge18_Node000001_Node000001" title=" " alt="" coords="45,139,37,129,41,119,58,113,85,111,119,115,129,120,132,126,128,128,125,124,118,120,85,116,59,118,45,123,42,129,49,136"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#addef113126cfeb3d27ff05ffcb676419" title="Converts texture to depth cubemap format." alt="" coords="212,39,447,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,135,150,104,211,73,235,65,237,70,213,78,152,109,105,140"/>
+<area shape="rect" id="Node000003" href="$classTexture.html#ab3ec7cbd6bf20945f5e4e6608ef05431" title="Returns texture height." alt="" coords="508,138,619,163"/>
+<area shape="poly" id="edge15_Node000001_Node000003" title=" " alt="" coords="103,161,150,194,180,210,213,222,277,238,330,244,381,239,446,222,471,213,496,199,536,170,539,174,498,204,474,217,447,228,382,244,330,249,277,243,211,228,178,215,147,199,100,165"/>
+<area shape="rect" id="Node000005" href="$classTexture.html#af65caec5303d06ec883d7aabe8e1880c" title="Returns texture width." alt="" coords="506,39,621,64"/>
+<area shape="poly" id="edge16_Node000001_Node000005" title=" " alt="" coords="92,136,110,110,137,78,171,47,211,24,250,11,291,5,333,3,374,5,451,16,514,32,512,37,450,21,374,10,333,8,292,10,252,17,213,29,174,52,141,82,114,113,96,139"/>
+<area shape="rect" id="Node000006" href="$classTexture.html#a6bf43dcd50050ac49116eb30dc40d123" title="Converts texture to depth format." alt="" coords="229,88,430,114"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="148,135,251,114,253,119,149,140"/>
+<area shape="rect" id="Node000007" href="$classTexture.html#a1d4e85d44a81d03a348691394130b345" title="Converts texture to PNG&#45;compatible format (RGBA8)." alt="" coords="234,138,425,163"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="164,148,220,148,220,153,164,153"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#a3cbe71e16c5bd45a3e40db6f8269e4c2" title="Converts cubemap to equirectangular map." alt="" coords="228,187,431,212"/>
+<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="149,160,253,182,251,187,148,166"/>
+<area shape="rect" id="Node000009" href="$classTexture.html#a6fe9e2c3236af952f04104e997519998" title="Parses TextureType enum to OpenGL format constants." alt="" coords="250,288,409,314"/>
+<area shape="poly" id="edge17_Node000001_Node000009" title=" " alt="" coords="98,161,144,213,177,242,213,267,248,282,246,287,211,271,174,246,140,216,94,165"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="421,62,448,73,464,85,473,98,482,111,496,123,509,130,506,134,493,127,478,114,469,101,460,89,445,78,419,67"/>
+<area shape="rect" id="Node000004" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="495,88,632,114"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="393,62,447,73,492,83,491,88,446,78,392,67"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="447,49,492,49,492,54,447,54"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="393,111,447,122,495,133,494,138,446,128,392,116"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="430,98,481,98,481,104,430,104"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="390,86,492,64,493,69,391,91"/>
+<area shape="poly" id="edge10_Node000007_Node000003" title=" " alt="" coords="425,148,494,148,494,153,425,153"/>
+<area shape="poly" id="edge11_Node000007_Node000004" title=" " alt="" coords="390,135,488,114,489,119,391,140"/>
+<area shape="poly" id="edge12_Node000007_Node000005" title=" " alt="" coords="415,135,445,123,460,112,469,99,478,86,493,74,504,68,506,72,496,78,482,90,473,103,464,115,448,127,417,140"/>
+<area shape="poly" id="edge14_Node000008_Node000004" title=" " alt="" coords="420,184,445,173,460,162,469,150,478,136,493,123,503,117,506,122,496,127,482,140,473,153,464,166,448,178,422,189"/>
+</map>

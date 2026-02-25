@@ -1,0 +1,13 @@
+<map id="ImguiManager::FindImguiMenu" name="ImguiManager::FindImguiMenu">
+<area shape="rect" id="Node000001" title="Finds a menu by name." alt="" coords="779,35,1003,60"/>
+<area shape="rect" id="Node000002" href="$classImguiManager.html#a9ecb86c952d2d2f9607925eebbe4d44d" title="Finds a menu item within a menu." alt="" coords="476,8,731,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="765,38,731,35,731,30,765,33"/>
+<area shape="rect" id="Node000005" href="$classImguiManager.html#abc3a8737bb126a30fe81aa444b4f192a" title="Adds a layer (UI panel) to the manager." alt="" coords="489,59,717,84"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="765,60,718,64,717,59,765,55"/>
+<area shape="rect" id="Node000003" href="$classImguiManager.html#a9fdc62994444dcabcf57ae132443b222" title="Sets up default viewport layout configuration." alt="" coords="199,5,428,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="463,22,428,22,428,16,463,17"/>
+<area shape="rect" id="Node000004" href="$classImguiManager.html#aa866246a60670df31878675a76aab54f" title="Initializes ImGui context, backends, and UI components." alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,21,151,21,151,15,185,15"/>
+<area shape="rect" id="Node000006" href="$classImguiManager.html#aacd93cb32a5e85860137d244c3b2ebf9" title="Creates and registers a new typed layer." alt="" coords="211,55,415,95"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="475,76,415,77,415,71,475,70"/>
+</map>

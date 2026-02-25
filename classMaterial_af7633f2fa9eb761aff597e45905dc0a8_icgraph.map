@@ -1,0 +1,5 @@
+<map id="Material::InitParamData" name="Material::InitParamData">
+<area shape="rect" id="Node000001" title="Initializes all material parameters to default values." alt="" coords="192,5,369,31"/>
+<area shape="rect" id="Node000002" href="$classMaterial.html#a137e987401b63eb7c6c27c3e38bc74b5" title="Default constructor (creates default PBR material)." alt="" coords="5,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,21,144,21,144,15,178,15"/>
+</map>

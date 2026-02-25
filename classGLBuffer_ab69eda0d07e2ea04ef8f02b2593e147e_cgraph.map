@@ -1,0 +1,5 @@
+<map id="GLBuffer::~GLBuffer" name="GLBuffer::~GLBuffer">
+<area shape="rect" id="Node000001" title="Destructor. Releases the OpenGL buffer object if valid." alt="" coords="5,5,159,31"/>
+<area shape="rect" id="Node000002" href="$classGLBuffer.html#aed31385b5470af98f7f17ccab082ec5e" title="Deletes the OpenGL buffer object and resets buf_ID to 0." alt="" coords="207,5,359,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,15,193,15,193,21,159,21"/>
+</map>

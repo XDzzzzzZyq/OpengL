@@ -1,0 +1,9 @@
+<map id="IndexBuffer::operator=" name="IndexBuffer::operator=">
+<area shape="rect" id="Node000001" title="Copy assignment. Deep&#45;copies GPU buffer content." alt="" coords="5,31,176,56"/>
+<area shape="rect" id="Node000002" href="$classGLBuffer.html#a0ec96ea9584456e1ff9d0f22d9fe93c8" title="Copy assignment. Performs a GPU&#45;side deep copy of buf." alt="" coords="224,31,376,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,41,210,41,210,46,176,46"/>
+<area shape="rect" id="Node000003" href="$classGLBuffer.html#ad9e934f10deb7117d465b5010b5eaed4" title="GPU&#45;side deep copy from src." alt="" coords="424,5,615,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,32,410,28,411,33,377,37"/>
+<area shape="rect" id="Node000004" href="$classGLBuffer.html#aed31385b5470af98f7f17ccab082ec5e" title="Deletes the OpenGL buffer object and resets buf_ID to 0." alt="" coords="443,55,595,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="377,49,430,55,430,60,376,54"/>
+</map>

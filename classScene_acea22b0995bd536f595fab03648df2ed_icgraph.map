@@ -1,0 +1,7 @@
+<map id="Scene::GetObjectID" name="Scene::GetObjectID">
+<area shape="rect" id="Node000001" title="Retrieves object by UID." alt="" coords="328,5,476,31"/>
+<area shape="rect" id="Node000002" href="$classContext.html#adcb0dfebb5417e96ce3f45f58c924820" title="Initializes the context system." alt="" coords="177,5,280,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="314,21,280,21,280,15,314,15"/>
+<area shape="rect" id="Node000003" href="$classApplication.html#a2c05ddec1d880a81b651307bce3e9d6a" title=" " alt="" coords="5,5,129,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,21,130,21,130,15,164,15"/>
+</map>

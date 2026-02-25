@@ -1,0 +1,7 @@
+<map id="IndexBuffer::Unbind" name="IndexBuffer::Unbind">
+<area shape="rect" id="Node000001" title="Unbinds the current IBO (binds GL_ELEMENT_ARRAY_BUFFER to 0)." alt="" coords="265,31,416,56"/>
+<area shape="rect" id="Node000002" href="$classMeshData.html#a84f42546650438601107e55e3367137b" title=" " alt="" coords="11,5,212,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,36,212,32,212,26,252,31"/>
+<area shape="rect" id="Node000003" href="$classPolygonLight.html#a8bb236ca5725ef3280d2daf4fd2bbad1" title=" " alt="" coords="5,55,217,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,55,218,59,217,54,251,50"/>
+</map>

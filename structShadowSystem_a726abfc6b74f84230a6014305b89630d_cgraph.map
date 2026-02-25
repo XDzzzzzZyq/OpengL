@@ -1,0 +1,13 @@
+<map id="ShadowSystem::Bind" name="ShadowSystem::Bind">
+<area shape="rect" id="Node000001" title="Binds all light buffers to shader binding points." alt="" coords="5,43,164,68"/>
+<area shape="rect" id="Node000002" href="$classUniformBuffer.html#a3c059271724ed974f1dd4c52ca015618" title="Binds UBO to its binding point." alt="" coords="532,5,683,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,40,212,27,374,16,518,14,518,19,374,21,212,33,139,45"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#aa5b25b86a0d4f84e91f1aa6bfc712704" title="Binds SSBO to its binding point for shader access." alt="" coords="222,43,441,68"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,53,208,53,208,58,164,58"/>
+<area shape="rect" id="Node000004" href="$structShadowSystem.html#a9cc11b99010e36b4b1bb8ec3937d299a" title="Binds all shadow map textures to shader slots." alt="" coords="212,92,451,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,65,254,87,253,92,148,71"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="410,89,450,78,474,67,498,54,554,33,556,38,500,59,476,72,452,83,411,94"/>
+<area shape="rect" id="Node000005" href="$structShadowSystem.html#a9401c23ead54cff6a8dbcb8f1b9e5047" title="Returns shadow map slot offset for a given light type." alt="" coords="499,92,716,117"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="451,102,485,102,485,107,451,107"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="563,94,553,84,558,74,577,67,607,65,647,69,657,74,661,80,657,83,654,78,645,75,607,71,578,73,562,78,559,83,567,90"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="KeyClickEvent" name="KeyClickEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,93,123,119"/>
+<area shape="rect" id="Node000002" href="$structInput_1_1KeyState.html" title="Keyboard state snapshot." alt="" coords="5,5,127,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,45,69,93,63,93,63,45"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="Input::IsMouseClicked" name="Input::IsMouseClicked">
+<area shape="rect" id="Node000001" title="Checks if any mouse button was just clicked." alt="" coords="696,56,860,81"/>
+<area shape="rect" id="Node000002" href="$classEventPool.html#abed4f780945a247c0f074257ba7e6c52" title="Emits a global event to all systems." alt="" coords="444,5,648,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="705,56,604,33,605,28,706,50"/>
+<area shape="rect" id="Node000004" href="$classNodeEditor.html#abc395f9dfca8389e1ae1ed8666cb466b" title=" " alt="" coords="248,81,396,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="682,77,396,93,396,87,682,71"/>
+<area shape="rect" id="Node000006" href="$classNodeEditor.html#aaca281423a30fbe1a78fa6dd4362f556" title=" " alt="" coords="477,107,615,132"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="706,87,605,109,604,104,705,82"/>
+<area shape="rect" id="Node000003" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="258,5,386,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="430,21,386,21,386,15,430,15"/>
+<area shape="rect" id="Node000005" href="$classShaderEditor.html#a1e38ca6edb4078b651a3587faa4d15ac" title="Renders the layer&#39;s UI elements." alt="" coords="5,81,200,107"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="234,97,200,97,200,91,234,91"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="463,113,396,105,397,100,463,107"/>
+</map>

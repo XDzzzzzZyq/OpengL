@@ -1,0 +1,15 @@
+<map id="RenderLayer" name="RenderLayer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,129,109,155"/>
+<area shape="rect" id="Node000002" href="$classImguiLayer.html#ab5e12ce9435aca45964bbcc83cc1ba47" title="Returns current layer position." alt="" coords="159,5,345,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,127,102,84,127,60,156,40,169,33,172,38,159,44,131,64,106,88,70,131"/>
+<area shape="rect" id="Node000003" href="$classImguiLayer.html#a196250c4926920102f66dc5e7c0ff665" title="Returns current layer size." alt="" coords="157,55,347,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="79,127,114,108,156,89,179,81,181,86,158,94,117,112,81,132"/>
+<area shape="rect" id="Node000004" href="$classInput.html#a903d735c909fb9ce6546868b8c9a2e2f" title="Returns current mouse X position." alt="" coords="171,104,333,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="109,133,158,126,158,132,110,138"/>
+<area shape="rect" id="Node000005" href="$classInput.html#a7d9e4710228d7442c72ec0509f81ea38" title="Returns current mouse Y position." alt="" coords="172,153,332,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="110,146,159,152,158,157,109,151"/>
+<area shape="rect" id="Node000006" href="$namespaceItem.html#a514c8bacb0681893bbd1ef54506ac6dd" title="Checks if mouse position is inside a window region." alt="" coords="193,203,311,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="83,152,158,188,185,196,183,201,156,192,81,157"/>
+<area shape="rect" id="Node000007" href="$classImguiLayer.html#a7ba0a2eda63cbcddafd23121ee96e706" title="Renders the layer&#39;s UI elements." alt="" coords="159,252,345,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="70,153,106,195,131,218,159,237,175,245,172,250,156,242,128,222,102,198,66,157"/>
+</map>

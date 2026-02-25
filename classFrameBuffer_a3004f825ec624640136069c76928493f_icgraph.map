@@ -1,0 +1,5 @@
+<map id="FrameBuffer::BindFrameBuffer" name="FrameBuffer::BindFrameBuffer">
+<area shape="rect" id="Node000001" title="Binds this framebuffer for rendering." alt="" coords="239,5,457,31"/>
+<area shape="rect" id="Node000002" href="$classFrameBuffer.html#a2ce405d0642229ed1576cffa248b323c" title="Links an existing texture to this framebuffer." alt="" coords="5,5,191,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,21,191,21,191,15,225,15"/>
+</map>

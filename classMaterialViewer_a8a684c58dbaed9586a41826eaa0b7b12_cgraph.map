@@ -1,0 +1,21 @@
+<map id="MaterialViewer::RenderLayer" name="MaterialViewer::RenderLayer">
+<area shape="rect" id="Node000001" title="Renders the layer&#39;s UI elements." alt="" coords="5,179,216,204"/>
+<area shape="rect" id="Node000002" href="$MaterialViewer_8cpp.html#a0a0f12fea573fecda46ab04aad8d05e0" title=" " alt="" coords="324,5,431,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,177,174,111,215,72,263,40,310,23,311,28,265,44,219,76,178,114,123,180"/>
+<area shape="rect" id="Node000003" href="$MaterialViewer_8cpp.html#af6198f55e453a2abf835aa9bc73a53ff" title=" " alt="" coords="325,55,430,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,176,184,133,222,109,263,89,311,74,312,79,265,94,225,114,187,138,129,181"/>
+<area shape="rect" id="Node000004" href="$MaterialViewer_8cpp.html#aca3b203f25a1645c16ed311ed5f96161" title=" " alt="" coords="317,104,437,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,176,263,138,303,128,305,133,265,143,147,181"/>
+<area shape="rect" id="Node000005" href="$MaterialViewer_8cpp.html#a22155bf42599d45389673a635395ca8d" title=" " alt="" coords="334,153,421,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="216,179,320,169,320,174,217,184"/>
+<area shape="rect" id="Node000006" href="$classEventPool.html#a53a6b9b351416dbf3e48debb1e0eebf8" title="Emits an event to all subscribed handlers." alt="" coords="315,203,440,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="217,198,301,206,301,211,216,203"/>
+<area shape="rect" id="Node000007" href="$MaterialViewer_8cpp.html#adfde1fcab8355552d6c2c64702fbe6fd" title=" " alt="" coords="313,252,442,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="150,201,265,237,303,246,302,251,263,242,148,207"/>
+<area shape="rect" id="Node000009" href="$classSelectionManager.html#a03e105cb66d9d5044dedeadb9b281c3b" title="Returns the first selected object." alt="" coords="264,302,491,342"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="130,202,188,243,265,286,286,295,284,300,263,291,185,247,127,206"/>
+<area shape="rect" id="Node000010" href="$MaterialViewer_8cpp.html#ae55b5621c3a6ff04a4b0cf4da0185c8f" title=" " alt="" coords="331,367,423,392"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="122,203,144,234,176,274,217,317,265,352,291,363,318,370,317,376,289,368,263,356,214,321,172,278,139,237,118,206"/>
+<area shape="rect" id="Node000008" href="$classObjectID.html#adfb6b42800642a3016539b94f0ce2659" title="Returns pointer to object&#39;s material, if applicable." alt="" coords="539,252,701,277"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="442,262,525,262,525,267,442,267"/>
+</map>

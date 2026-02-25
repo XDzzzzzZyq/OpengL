@@ -1,0 +1,15 @@
+<map id="NodeEditor::MoveView" name="NodeEditor::MoveView">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,176,129"/>
+<area shape="rect" id="Node000002" href="$classInput.html#abfacdc0b3ff658ef5b4ac4d8fd96c23a" title="Returns mouse X delta since last frame." alt="" coords="224,5,397,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,101,160,71,223,40,243,32,244,37,225,44,163,76,113,106"/>
+<area shape="rect" id="Node000003" href="$classInput.html#af25cbe56644fa80498e65332363a2e29" title="Returns mouse Y delta since last frame." alt="" coords="225,55,397,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,101,239,80,240,86,149,107"/>
+<area shape="rect" id="Node000004" href="$classInput.html#a903d735c909fb9ce6546868b8c9a2e2f" title="Returns current mouse X position." alt="" coords="230,104,391,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="176,114,216,114,216,119,176,119"/>
+<area shape="rect" id="Node000005" href="$classInput.html#a7d9e4710228d7442c72ec0509f81ea38" title="Returns current mouse Y position." alt="" coords="231,153,391,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="149,127,240,148,239,153,147,132"/>
+<area shape="rect" id="Node000006" href="$classTransform2D.html#a6f0bc06c9b1f9d0cc4f17fe12a97c52e" title="Translates position by offset." alt="" coords="236,203,385,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="113,127,163,157,225,188,248,196,246,201,223,192,161,162,111,132"/>
+<area shape="rect" id="Node000007" href="$classTransform2D.html#a77910250765ced260e4f8f5135069639" title="Sets world position." alt="" coords="445,203,603,228"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="386,213,432,213,432,218,386,218"/>
+</map>

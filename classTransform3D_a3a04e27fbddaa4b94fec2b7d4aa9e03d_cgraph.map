@@ -1,0 +1,17 @@
+<map id="Transform3D::SetParent" name="Transform3D::SetParent">
+<area shape="rect" id="Node000001" title="Sets parent transform for hierarchy." alt="" coords="5,55,180,80"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#a1b318ac6e16775102b413c2bf653eb11" title="Recomputes transform matrix if dirty." alt="" coords="231,5,446,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,52,261,31,262,36,157,57"/>
+<area shape="rect" id="Node000004" href="$classTransform3D.html#a495f55c9671669bbb4324c01bf024799" title="Computes inverse transform matrix." alt="" coords="228,55,449,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,65,214,65,214,70,180,70"/>
+<area shape="rect" id="Node000005" href="$classTransform3D.html#a6f3f2ca7e5e64f74fc8128c1577e34f0" title="Sets transform from 4x4 matrix." alt="" coords="255,104,423,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="157,77,262,99,261,104,156,83"/>
+<area shape="rect" id="Node000003" href="$Transform_8cpp.html#a3adc662af420547f832a0404cf8d75b8" title=" " alt="" coords="519,5,645,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="446,15,505,15,505,21,446,21"/>
+<area shape="rect" id="Node000006" href="$classTransform3D.html#a2f7ec6f9e11613ff0cb614309d9124ea" title="Sets world position." alt="" coords="503,55,661,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="401,101,505,80,506,85,403,107"/>
+<area shape="rect" id="Node000007" href="$classTransform3D.html#ab7d1b4a18bd9accbffec1d5d47e89f3e" title="Sets rotation via Euler angles." alt="" coords="504,104,660,129"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="423,114,490,114,490,119,423,119"/>
+<area shape="rect" id="Node000008" href="$classTransform3D.html#af806a31cff265f2afb1827e316e139fd" title="Sets local scale." alt="" coords="497,153,667,179"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="403,127,506,148,505,153,401,132"/>
+</map>

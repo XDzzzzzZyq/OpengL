@@ -1,0 +1,7 @@
+<map id="SDFField::Bind" name="SDFField::Bind">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,121,56"/>
+<area shape="rect" id="Node000002" href="$classStorageBuffer.html#aa5b25b86a0d4f84e91f1aa6bfc712704" title="Binds SSBO to its binding point for shader access." alt="" coords="169,5,388,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,34,157,30,158,35,122,39"/>
+<area shape="rect" id="Node000003" href="$classStorageBuffer.html#aea4a2e3fece5887bb2d3885029143f37" title="Sets the binding point index." alt="" coords="173,55,384,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="122,47,160,51,159,57,121,52"/>
+</map>

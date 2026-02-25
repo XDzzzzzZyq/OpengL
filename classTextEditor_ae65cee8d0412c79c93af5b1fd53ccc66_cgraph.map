@@ -1,0 +1,6 @@
+<map id="TextEditor::GetSelectedText" name="TextEditor::GetSelectedText">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,207,55"/>
+<area shape="rect" id="Node000002" href="$classTextEditor.html#a581e92e7aff81a99dcd1ab8dcc95e909" title=" " alt="" coords="255,29,400,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,39,241,39,241,45,207,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="291,31,283,21,287,11,302,5,327,3,358,6,370,15,367,20,356,11,327,8,304,10,291,15,289,20,295,28"/>
+</map>

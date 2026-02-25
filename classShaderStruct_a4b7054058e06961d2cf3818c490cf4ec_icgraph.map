@@ -1,0 +1,13 @@
+<map id="ShaderStruct::ParseArgs" name="ShaderStruct::ParseArgs">
+<area shape="rect" id="Node000001" title=" " alt="" coords="815,35,992,60"/>
+<area shape="rect" id="Node000002" href="$classShaderStruct.html#a0f3c8bf8d1965dc793b5dec7415f66bf" title=" " alt="" coords="548,5,767,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="801,38,764,33,764,28,801,32"/>
+<area shape="rect" id="Node000003" href="$classRenderShader.html#ab8057b8f57d9d7de0ec792048e42a470" title="Parses shader code from an input stream." alt="" coords="557,55,758,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="801,62,759,67,758,61,801,56"/>
+<area shape="rect" id="Node000004" href="$classRenderShader.html#a1ea596c43af6ec9eacb65a9e1786580b" title="Parses raw GLSL code string." alt="" coords="265,37,500,63"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="543,67,500,63,500,58,543,62"/>
+<area shape="rect" id="Node000005" href="$classRenderShader.html#a43b965cab386567a2461d16f79f6427d" title="Parses shader code from a file." alt="" coords="271,87,495,112"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="544,88,495,92,495,87,543,83"/>
+<area shape="rect" id="Node000006" href="$classRenderShader.html#a3cd7635d76dfe544729c452f331d3fe7" title="Constructs and loads a render shader from files." alt="" coords="5,87,217,112"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="257,102,218,102,218,97,257,97"/>
+</map>

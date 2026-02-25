@@ -1,0 +1,26 @@
+<map id="src/editor/Controllers.h" name="src/editor/Controllers.h">
+<area shape="rect" id="Node000001" title="Base controller architecture for event&#45;driven application logic." alt="" coords="474,5,645,31"/>
+<area shape="rect" id="Node000002" href="$Application_8h.html" title=" " alt="" coords="663,86,821,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="600,34,716,84,714,88,598,39"/>
+<area shape="rect" id="Node000005" href="$Controllers_8cpp.html" title=" " alt="" coords="845,86,1031,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="628,31,883,83,882,89,627,36"/>
+<area shape="rect" id="Node000006" href="$CameraController_8h.html" title="Camera manipulation controller for interactive viewpoint control." alt="" coords="120,79,276,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="494,36,277,83,276,78,493,31"/>
+<area shape="rect" id="Node000008" href="$ShaderController_8h.html" title=" " alt="" coords="300,79,456,119"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="522,39,423,81,421,76,519,34"/>
+<area shape="rect" id="Node000010" href="$ViewportController_8h.html" title="Viewport interaction controller for object picking and viewport management." alt="" coords="480,79,639,119"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="562,44,562,79,557,79,557,44"/>
+<area shape="rect" id="Node000003" href="$Application_8cpp.html" title=" " alt="" coords="382,174,555,199"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="693,118,506,176,505,171,691,113"/>
+<area shape="rect" id="Node000004" href="$MAIN_8cpp.html" title=" " alt="" coords="779,174,913,199"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="768,118,834,172,830,176,765,122"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="271,120,433,171,432,177,270,125"/>
+<area shape="rect" id="Node000007" href="$CameraController_8cpp.html" title=" " alt="" coords="5,167,172,207"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="165,129,115,169,111,164,161,125"/>
+<area shape="poly" id="edge9_Node000008_Node000003" title=" " alt="" coords="410,126,458,172,454,175,406,130"/>
+<area shape="rect" id="Node000009" href="$ShaderController_8cpp.html" title=" " alt="" coords="196,167,357,207"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="347,130,301,168,297,164,343,126"/>
+<area shape="poly" id="edge12_Node000010_Node000003" title=" " alt="" coords="531,130,483,175,479,172,528,126"/>
+<area shape="rect" id="Node000011" href="$ViewportController_8cpp.html" title=" " alt="" coords="580,167,755,207"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="596,125,645,164,642,169,592,129"/>
+</map>

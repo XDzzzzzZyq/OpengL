@@ -1,0 +1,5 @@
+<map id="Texture::GenCubeMapFrom" name="Texture::GenCubeMapFrom">
+<area shape="rect" id="Node000001" title="Converts equirectangular map to cubemap." alt="" coords="5,5,204,31"/>
+<area shape="rect" id="Node000002" href="$classTexture.html#a30953c62c99a7d48d70a352ef67acc22" title="Returns OpenGL texture ID." alt="" coords="252,5,389,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,15,238,15,238,21,205,21"/>
+</map>

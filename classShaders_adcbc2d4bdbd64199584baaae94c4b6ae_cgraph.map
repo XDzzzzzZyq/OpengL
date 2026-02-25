@@ -1,0 +1,7 @@
+<map id="Shaders::operator=" name="Shaders::operator=">
+<area shape="rect" id="Node000001" title="Move assignment operator (transfers ownership)." alt="" coords="5,5,153,31"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#ac0dfd03f058680ee50343e6d2817a29e" title="Resets program ID, deleting old program if needed." alt="" coords="201,5,392,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,15,187,15,187,21,153,21"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#a8e67a98671efa77c4bab332009be8f45" title="Deletes the OpenGL program object." alt="" coords="440,5,549,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="392,15,426,15,426,21,392,21"/>
+</map>

@@ -1,0 +1,30 @@
+<map id="src/editor/events/MaterialEvents.h" name="src/editor/events/MaterialEvents.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,195,45"/>
+<area shape="rect" id="Node000002" href="$Material_8h.html" title="Material system for PBR rendering with texture and parameter management." alt="" coords="235,93,323,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,43,241,85,239,90,142,48"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="9,240,68,265"/>
+<area shape="poly" id="edge16_Node000001_Node000005" title=" " alt="" coords="98,46,60,193,49,227,44,226,55,191,93,45"/>
+<area shape="rect" id="Node000012" href="$ID_8h.html" title="Unique identifier system for all scene objects." alt="" coords="15,93,63,119"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="87,47,58,84,54,81,83,44"/>
+<area shape="rect" id="Node000003" href="$Parameters_8h.html" title="Generic parameter system for exposing tweakable properties to UI." alt="" coords="165,167,273,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,121,239,158,235,154,267,117"/>
+<area shape="rect" id="Node000008" href="$Texture_8h.html" title="Texture wrapper for OpenGL texture objects and texture resource management." alt="" coords="297,167,380,192"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="291,117,322,154,318,158,287,121"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="404,167,460,192"/>
+<area shape="poly" id="edge13_Node000002_Node000011" title=" " alt="" coords="304,116,396,158,394,163,302,121"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="333,240,437,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="246,190,347,232,345,237,244,194"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="191,195,82,237,80,232,189,190"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="185,240,309,265"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="226,191,240,226,235,228,221,193"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="93,240,161,265"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="206,194,154,234,151,229,202,190"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="349,191,372,227,368,230,344,194"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="298,192,82,243,82,243,80,238,81,237,297,187"/>
+<area shape="poly" id="edge12_Node000008_Node000006" title=" " alt="" coords="326,194,274,234,271,229,322,190"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="571,240,651,265"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="381,189,558,235,557,240,380,194"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="461,240,547,265"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="366,190,466,232,463,237,364,194"/>
+<area shape="poly" id="edge15_Node000012_Node000005" title=" " alt="" coords="41,119,41,226,36,226,36,119"/>
+</map>

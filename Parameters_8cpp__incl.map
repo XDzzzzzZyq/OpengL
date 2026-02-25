@@ -1,0 +1,13 @@
+<map id="src/compo/Parameters.cpp" name="src/compo/Parameters.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="123,5,317,31"/>
+<area shape="rect" id="Node000002" href="$Parameters_8h.html" title="Generic parameter system for exposing tweakable properties to UI." alt="" coords="166,79,274,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,31,223,65,217,65,217,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,109,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="195,106,98,149,95,144,193,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="133,152,192,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="213,106,183,143,179,139,208,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="217,152,341,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="232,103,263,140,259,143,228,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="365,152,433,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="250,102,358,144,356,149,248,107"/>
+</map>

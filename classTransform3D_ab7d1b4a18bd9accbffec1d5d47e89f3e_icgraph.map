@@ -1,0 +1,23 @@
+<map id="Transform3D::SetRot" name="Transform3D::SetRot">
+<area shape="rect" id="Node000001" title="Sets rotation via Euler angles." alt="" coords="684,80,840,105"/>
+<area shape="rect" id="Node000002" href="$CameraController_8cpp.html#afbd0f2c066b13af166fc87085c0f4397" title=" " alt="" coords="501,5,603,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="718,77,635,45,600,33,601,28,637,39,720,72"/>
+<area shape="rect" id="Node000004" href="$TransformPanel_8cpp.html#a92a0ef7de40630815ed35c2cef178c38" title=" " alt="" coords="482,55,622,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="670,84,622,78,622,73,670,79"/>
+<area shape="rect" id="Node000006" href="$classTransform3D.html#a6f3f2ca7e5e64f74fc8128c1577e34f0" title="Sets transform from 4x4 matrix." alt="" coords="468,104,636,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="670,106,636,110,636,104,670,101"/>
+<area shape="rect" id="Node000011" href="$classTransform3D.html#a8c8b315724e3845fbfdfadac2fa3fce6" title="Rotates around anchor with pitch/yaw." alt="" coords="481,153,623,179"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="718,113,637,143,598,156,596,151,635,138,716,108"/>
+<area shape="rect" id="Node000003" href="$classCameraController.html#ae7a446010eae8ff05acc6ca86fc57017" title="Bind to EventPool to subscribe to input events." alt="" coords="227,5,401,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="488,21,401,21,401,15,488,15"/>
+<area shape="rect" id="Node000005" href="$classTransformPanel.html#ac1d03f2b7870d2e29f112e6ef20c374d" title="Renders the layer&#39;s UI elements." alt="" coords="208,55,420,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="468,70,420,70,420,65,468,65"/>
+<area shape="rect" id="Node000007" href="$classTransform3D.html#a923519706fb1e49c8f888f83e8bca3ec" title="Orients transform to look at target position." alt="" coords="235,104,393,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="454,119,394,119,394,114,454,114"/>
+<area shape="rect" id="Node000010" href="$classTransform3D.html#a3a04e27fbddaa4b94fec2b7d4aa9e03d" title="Sets parent transform for hierarchy." alt="" coords="227,153,401,179"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="478,135,377,156,376,151,476,130"/>
+<area shape="rect" id="Node000008" href="$classCamera.html#a1e475cb1c98cc0f9c77babaebca9a018" title="Sets camera position in world space." alt="" coords="5,80,160,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="221,110,160,103,160,98,221,104"/>
+<area shape="rect" id="Node000009" href="$classCamera.html#a92495e306c20fc23cf8129a470396668" title="Sets look&#45;at target position." alt="" coords="11,129,155,155"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="221,129,155,137,155,132,221,124"/>
+</map>

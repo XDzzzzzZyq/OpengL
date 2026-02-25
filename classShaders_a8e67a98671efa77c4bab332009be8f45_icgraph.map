@@ -1,0 +1,21 @@
+<map id="Shaders::_del" name="Shaders::_del">
+<area shape="rect" id="Node000001" title="Deletes the OpenGL program object." alt="" coords="512,183,621,208"/>
+<area shape="rect" id="Node000002" href="$classShaders.html#ac0dfd03f058680ee50343e6d2817a29e" title="Resets program ID, deleting old program if needed." alt="" coords="273,153,464,179"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="498,188,454,181,455,176,499,183"/>
+<area shape="rect" id="Node000010" href="$classShaders_1_1ShaderUnit.html#a9997d635587edae2a4734601663ad150" title="Destructor (releases OpenGL shader object)." alt="" coords="291,203,446,243"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="499,208,446,215,446,210,498,202"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#a7809ca6a1a576626e8a1823dec74a48a" title="Copy assignment operator." alt="" coords="41,5,189,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="346,145,294,93,261,67,224,44,189,31,191,26,226,40,264,62,298,89,350,141"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#adcbc2d4bdbd64199584baaae94c4b6ae" title="Move assignment operator (transfers ownership)." alt="" coords="41,55,189,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="334,148,284,120,224,94,187,83,188,78,226,89,286,115,337,144"/>
+<area shape="rect" id="Node000005" href="$classComputeShader.html#a91c46abedfff7c7dc6cf05b889ac0a04" title="Relinks the compute shader program." alt="" coords="5,104,225,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="289,153,181,132,182,127,290,148"/>
+<area shape="rect" id="Node000006" href="$classRenderShader.html#a6da36be56ef93f0b1558cde3c4e75bee" title="Relinks the shader program." alt="" coords="12,153,219,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="260,169,219,169,219,163,260,163"/>
+<area shape="rect" id="Node000007" href="$classChainedShader.html#a92144620e8ed51238e16dfc86dca3d32" title="Relinks the shader program." alt="" coords="8,203,223,228"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="290,184,182,205,181,200,289,179"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#ab0898af209c33c75ea69bd0865e3db9c" title="Copy constructor." alt="" coords="48,252,183,277"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="291,186,275,194,260,205,252,217,242,230,227,242,184,258,182,253,224,237,238,226,247,214,257,201,272,189,289,181"/>
+<area shape="rect" id="Node000009" href="$classShaders.html#a06542ba734ad1e0da67d68617e2ab54f" title="Move constructor (transfers ownership of GPU resources)." alt="" coords="48,301,183,327"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="284,187,275,193,264,205,258,217,252,242,246,267,239,280,227,292,206,304,184,312,182,307,204,299,224,288,235,277,241,265,247,240,253,215,260,202,272,189,280,183"/>
+</map>

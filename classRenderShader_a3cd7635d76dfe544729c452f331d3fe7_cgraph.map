@@ -1,0 +1,31 @@
+<map id="RenderShader::RenderShader" name="RenderShader::RenderShader">
+<area shape="rect" id="Node000001" title="Constructs and loads a render shader from files." alt="" coords="5,56,217,81"/>
+<area shape="rect" id="Node000002" href="$classRenderShader.html#af01707bc6ecce11ee3aaf2b75ecdb94a" title="Creates shader program from vertex and fragment shader names." alt="" coords="278,7,479,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,53,295,32,296,37,181,59"/>
+<area shape="rect" id="Node000005" href="$classRenderShader.html#aa19b785f05c9f73de2cca2438577199e" title="Generates shader code (unused for standard shaders)." alt="" coords="265,56,492,81"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="218,66,252,66,252,71,218,71"/>
+<area shape="rect" id="Node000007" href="$classRenderShader.html#a43b965cab386567a2461d16f79f6427d" title="Parses shader code from a file." alt="" coords="267,107,491,132"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="180,79,298,101,297,107,179,84"/>
+<area shape="rect" id="Node000003" href="$classShaders.html#a8c169838ee7e468c08c6675c7f7bc2dd" title="Compiles GLSL source code into an OpenGL shader object." alt="" coords="540,5,755,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="479,16,526,16,526,21,479,22"/>
+<area shape="rect" id="Node000004" href="$classShaders.html#a342c5970a2879be5b6089645dcc44090" title="Parses shader type to metadata tuple." alt="" coords="815,5,1007,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="755,15,801,15,801,21,755,21"/>
+<area shape="rect" id="Node000006" href="$classRenderShader.html#a409899ffc91896655e93a7ee75dc80ae" title="Returns pointer to shader unit for a specific stage." alt="" coords="803,56,1019,81"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="492,66,789,66,789,71,492,71"/>
+<area shape="rect" id="Node000008" href="$classShaders.html#ab46fab95158b2204b29d4c66baa18a68" title="Infers shader type from file extension." alt="" coords="565,107,730,132"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="491,117,551,117,551,122,491,122"/>
+<area shape="rect" id="Node000009" href="$classRenderShader.html#ab8057b8f57d9d7de0ec792048e42a470" title="Parses shader code from an input stream." alt="" coords="547,157,748,197"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="440,129,541,151,540,156,438,135"/>
+<area shape="poly" id="edge11_Node000009_Node000006" title=" " alt="" coords="730,154,753,142,768,130,776,118,786,104,801,92,818,84,820,88,804,96,789,108,781,121,772,134,756,147,732,159"/>
+<area shape="rect" id="Node000010" href="$classShaders.html#affed8ed17761803872fbc65fb57f7ebb" title="Checks if a uniform name has already been linked." alt="" coords="821,105,1001,131"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="737,154,839,131,841,136,738,159"/>
+<area shape="rect" id="Node000011" href="$classShaderStruct.html#a84e207f254ef09a35e8daf729d945475" title=" " alt="" coords="820,155,1001,180"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="748,170,806,168,806,174,748,176"/>
+<area shape="rect" id="Node000012" href="$classShaderStruct.html#a589247d4a07a46e7fa0d3ad6528ee5b6" title=" " alt="" coords="817,204,1004,229"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="749,189,813,199,813,205,748,195"/>
+<area shape="rect" id="Node000013" href="$classShaderStruct.html#a4b7054058e06961d2cf3818c490cf4ec" title=" " alt="" coords="822,253,999,279"/>
+<area shape="poly" id="edge13_Node000009_Node000013" title=" " alt="" coords="691,194,744,218,803,239,832,247,830,253,802,245,742,222,689,199"/>
+<area shape="rect" id="Node000014" href="$classShaderStruct.html#ade0cae2cd27e093bef59fe0fc693a03f" title=" " alt="" coords="1067,279,1245,304"/>
+<area shape="poly" id="edge15_Node000009_Node000014" title=" " alt="" coords="669,195,725,245,763,270,804,289,872,305,943,310,1010,309,1071,303,1071,309,1011,314,942,316,871,310,802,294,760,275,722,250,665,199"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1000,272,1053,278,1053,283,999,278"/>
+</map>

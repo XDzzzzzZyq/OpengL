@@ -1,0 +1,5 @@
+<map id="Transform3D::Spin" name="Transform3D::Spin">
+<area shape="rect" id="Node000001" title="Rotates around anchor with pitch/yaw." alt="" coords="5,5,147,31"/>
+<area shape="rect" id="Node000002" href="$classTransform3D.html#ab7d1b4a18bd9accbffec1d5d47e89f3e" title="Sets rotation via Euler angles." alt="" coords="195,5,351,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,15,181,15,181,21,147,21"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="MeshLib::ToGeoCenter" name="MeshLib::ToGeoCenter">
+<area shape="rect" id="Node000001" title=" " alt="" coords="153,5,320,31"/>
+<area shape="rect" id="Node000002" href="$classMesh.html#a243b2f81e54bb1bdb39e6d8ec6993a43" title="Constructs a mesh from OBJ file." alt="" coords="5,5,105,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,21,106,21,106,15,140,15"/>
+</map>

@@ -1,0 +1,31 @@
+<map id="DebugPoints::DebugPoints" name="DebugPoints::DebugPoints">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,319,200,344"/>
+<area shape="rect" id="Node000002" href="$classVertexArray.html#abe390eaf129bac27897b865439070e3e" title=" " alt="" coords="270,179,441,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,316,318,209,320,213,128,321"/>
+<area shape="rect" id="Node000010" href="$classUID.html#acdbf019ddf981949a5e73a0399e946c8" title="Returns the unique ID of this object." alt="" coords="545,351,678,376"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="200,323,325,321,463,329,551,345,550,350,462,334,325,327,200,328"/>
+<area shape="rect" id="Node000011" href="$classBufferLayout.html#a6a7273d43535a6b43937eecf0f39d9e0" title=" " alt="" coords="283,344,427,369"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="201,338,270,345,269,351,200,344"/>
+<area shape="rect" id="Node000012" href="$classDebugPoints.html#a583ca66452d619f74402e332bf00f58a" title=" " alt="" coords="248,394,463,434"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="140,342,249,379,274,387,272,392,247,385,138,347"/>
+<area shape="rect" id="Node000003" href="$classVertexBuffer.html#a13019e8580ca3e369fad4166500ad2b9" title="Binds this VBO to GL_ARRAY_BUFFER." alt="" coords="541,5,681,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,177,420,111,462,72,509,40,527,32,529,36,512,44,465,77,424,115,368,180"/>
+<area shape="rect" id="Node000004" href="$classVertexArray.html#ad5059455f0864327028636c628d5a661" title=" " alt="" coords="544,55,679,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="371,176,429,134,468,110,510,89,530,81,532,86,512,94,471,114,432,138,374,181"/>
+<area shape="rect" id="Node000005" href="$classBufferLayout.html#a5854ce9e5149858144afbe34a0e5e495" title=" " alt="" coords="530,104,693,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="392,176,510,138,540,130,542,135,511,143,393,181"/>
+<area shape="rect" id="Node000006" href="$classBufferLayout.html#a8645323856045e2457d4f24d45fb9481" title=" " alt="" coords="524,153,699,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="440,180,510,173,511,179,441,186"/>
+<area shape="rect" id="Node000007" href="$structBufferElement.html#ab13af85e2bb2f76f51c1f9759bb3dbad" title=" " alt="" coords="511,203,712,228"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="441,197,497,202,497,207,440,202"/>
+<area shape="rect" id="Node000008" href="$classVertexBuffer.html#abfdb36238d60f2cd7bf63093f914b61f" title="Unbinds the current VBO (binds GL_ARRAY_BUFFER to 0)." alt="" coords="533,252,690,277"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="397,202,511,237,545,246,544,251,510,242,395,207"/>
+<area shape="rect" id="Node000009" href="$classVertexArray.html#a73f0d868a6c76622bcd57063a2c2d8d4" title=" " alt="" coords="535,301,687,327"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="375,202,433,243,472,266,512,286,536,295,534,300,510,291,469,271,431,248,372,206"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="456,391,533,376,534,381,457,397"/>
+<area shape="rect" id="Node000013" href="$namespacexdzm.html#a5e2622adf5f4e9ca1992bfc82ff24d85" title=" " alt="" coords="760,427,905,452"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="463,417,747,432,746,437,463,422"/>
+<area shape="rect" id="Node000014" href="$namespacexdzm.html#a1b8551d2a15653500c429eaca354b05d" title=" " alt="" coords="520,452,703,477"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="457,431,534,447,533,452,456,437"/>
+<area shape="poly" id="edge14_Node000014_Node000013" title=" " alt="" coords="703,452,746,447,747,452,703,457"/>
+</map>

@@ -1,0 +1,29 @@
+<map id="Texture::GetH" name="Texture::GetH">
+<area shape="rect" id="Node000001" title="Returns texture height." alt="" coords="872,183,983,208"/>
+<area shape="rect" id="Node000002" href="$structShadowSystem.html#ae1804b59be1150a9344939a7a7458351" title="Constructs Summed Area Table (SAT) for soft shadows." alt="" coords="598,5,815,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="913,172,878,111,853,79,823,52,783,33,785,28,825,48,857,75,882,108,917,169"/>
+<area shape="rect" id="Node000003" href="$Renderer_8cpp.html#a381d7ff1856ce32df4b77c7e9db219c0" title=" " alt="" coords="379,56,526,81"/>
+<area shape="poly" id="edge13_Node000001_Node000003" title=" " alt="" coords="908,173,872,132,849,112,823,96,786,82,747,72,668,60,592,58,526,62,526,57,592,53,668,55,748,67,788,77,825,92,852,107,876,128,912,169"/>
+<area shape="rect" id="Node000006" href="$classTexture.html#addef113126cfeb3d27ff05ffcb676419" title="Converts texture to depth cubemap format." alt="" coords="589,107,824,132"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="886,179,823,154,759,135,761,129,825,149,888,174"/>
+<area shape="rect" id="Node000007" href="$classTexture.html#aecde0aa6567b4708962380c0c3a726fd" title="Saves texture to file." alt="" coords="373,183,532,208"/>
+<area shape="poly" id="edge14_Node000001_Node000007" title=" " alt="" coords="858,198,532,198,532,193,858,193"/>
+<area shape="rect" id="Node000008" href="$classTexture.html#a6bf43dcd50050ac49116eb30dc40d123" title="Converts texture to depth format." alt="" coords="606,208,807,233"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="858,206,808,212,807,206,858,201"/>
+<area shape="rect" id="Node000009" href="$classTexture.html#a1d4e85d44a81d03a348691394130b345" title="Converts texture to PNG&#45;compatible format (RGBA8)." alt="" coords="611,257,802,283"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="893,217,825,247,780,260,779,255,823,242,891,212"/>
+<area shape="rect" id="Node000010" href="$classFrameBuffer.html#a2ce405d0642229ed1576cffa248b323c" title="Links an existing texture to this framebuffer." alt="" coords="614,307,799,332"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="911,221,874,261,851,281,825,298,798,309,796,304,823,293,848,277,871,257,907,217"/>
+<area shape="rect" id="Node000011" href="$structShadowSystem.html#a9ebcb77631dd02312349ca0d5d8b368c" title="Updates shadow maps for the current frame." alt="" coords="364,281,541,307"/>
+<area shape="poly" id="edge15_Node000001_Node000011" title=" " alt="" coords="920,222,906,253,886,288,859,321,825,347,779,365,729,372,679,371,630,363,541,337,478,309,480,304,543,332,631,358,680,365,729,366,777,359,823,342,856,317,882,285,901,250,915,220"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="629,36,517,59,516,53,628,31"/>
+<area shape="rect" id="Node000004" href="$classRenderer.html#a020502baa63440ed80f5e34667817ba0" title="Executes the full rendering pipeline." alt="" coords="181,181,316,207"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="421,91,272,184,269,179,418,86"/>
+<area shape="rect" id="Node000005" href="$classApplication.html#a02799e64b246a6b6b8fa58477882a4be" title=" " alt="" coords="5,181,133,207"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,197,134,197,134,191,167,191"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="645,138,590,154,493,185,491,180,589,149,643,133"/>
+<area shape="poly" id="edge7_Node000007_Node000007" title=" " alt="" coords="489,173,479,165,453,161,431,163,420,168,417,174,424,181,419,184,412,174,416,164,430,158,453,156,481,160,492,169"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="592,212,532,206,532,201,593,207"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="626,257,589,247,484,211,486,206,590,242,628,252"/>
+<area shape="poly" id="edge16_Node000011_Node000004" title=" " alt="" coords="412,277,275,209,277,204,414,273"/>
+</map>

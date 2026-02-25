@@ -1,0 +1,7 @@
+<map id="Scene::ResetStatus" name="Scene::ResetStatus">
+<area shape="rect" id="Node000001" title="Resets scene status to NoChanges." alt="" coords="5,31,152,56"/>
+<area shape="rect" id="Node000002" href="$classScene.html#af0770745ccbaa5867c8b6b44bb9808b6" title="Returns the active camera." alt="" coords="206,5,390,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,32,192,28,193,33,152,38"/>
+<area shape="rect" id="Node000003" href="$classScene.html#a9a74ae8223afe65f4135eade107dbd15" title="Updates scene status flag (bitwise OR)." alt="" coords="200,55,396,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,49,187,52,186,58,152,54"/>
+</map>

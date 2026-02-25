@@ -1,0 +1,5 @@
+<map id="ImguiLayer::IsResized" name="ImguiLayer::IsResized">
+<area shape="rect" id="Node000001" title="Checks if layer was resized since last frame." alt="" coords="224,5,389,31"/>
+<area shape="rect" id="Node000002" href="$classViewport.html#a3b138f5fca3f363f908a3d1ddcdd3ed0" title="Renders the layer&#39;s UI elements." alt="" coords="5,5,176,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,21,176,21,176,15,210,15"/>
+</map>
