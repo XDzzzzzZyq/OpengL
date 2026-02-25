@@ -217,7 +217,7 @@ public:
 	 * 
 	 * @note Must not mutate Context - emit Events instead
 	 */
-	virtual void RenderLayer(const Context& ctx, const EventPool& evt) {};
+	virtual void RenderLayer(const Context& ctx, EventPool& evt) {};
 };
 
 template<class ItemType, class... Args>

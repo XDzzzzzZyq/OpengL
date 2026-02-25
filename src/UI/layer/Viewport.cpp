@@ -148,7 +148,7 @@ void Viewport::RegisterEvents(EventPool& evt)
 		});
 }
 
-void Viewport::RenderLayer(const Context& ctx, const EventPool& evt)
+void Viewport::RenderLayer(const Context& ctx, EventPool& evt)
 {
 	item_list[0]->RenderItem();
 

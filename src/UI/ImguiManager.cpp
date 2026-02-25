@@ -237,7 +237,7 @@ Parameters* ImguiManager::GetParaValue(const std::string& ly_name, const std::st
 	return item->GetPara();
 }
 
-void RenderLayer(ImguiLayer* layer, const Context& ctx, const EventPool& evt)
+void RenderLayer(ImguiLayer* layer, const Context& ctx, EventPool& evt)
 {
 	if (layer->uly_is_rendered) {
 		if (ImGui::Begin(layer->uly_name.c_str(), &layer->uly_is_rendered)) {
@@ -260,7 +260,7 @@ void RenderLayer(ImguiLayer* layer, const Context& ctx, const EventPool& evt)
 	}
 }
 
-void ImguiManager::RenderUI(const Context& ctx, const EventPool& evt, bool rend)
+void ImguiManager::RenderUI(const Context& ctx, EventPool& evt, bool rend)
 {
 	if (rend) {
 		

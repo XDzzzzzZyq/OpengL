@@ -52,7 +52,7 @@ private:
 public:
 
 	void RegisterEvents(EventPool& evt) override;
-	void RenderLayer(const Context& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, EventPool& evt) override;
 
 private:
 	void UpdateCoderEditor(ObjectID* active_obj);
@@ -60,5 +60,5 @@ private:
 
 	void RenderName(const std::string& _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
 	void RenderName(const char* _label, std::string* _name, float _width = 0.0f, bool read_only = true) const;
-	void RenderShaderStruct(ObjectID* active_obj, const EventPool& evt);
+	void RenderShaderStruct(ObjectID* active_obj, EventPool& evt);
 };

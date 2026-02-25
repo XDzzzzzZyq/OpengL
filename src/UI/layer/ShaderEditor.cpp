@@ -311,7 +311,7 @@ void ShaderEditor::RenderName(const char* _label, std::string* _name, float _wid
 		*_name = std::string(name);
 }
 
-void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, const EventPool& evt)
+void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, EventPool& evt)
 {
 	Shaders* shader = GetActiveShaderPtr(active_obj);
 	Shaders::ShaderUnit* active_unit = GetShaderUnitPtr(shader, (ShaderType)current_shad_type);
@@ -541,7 +541,7 @@ void ShaderEditor::UpdateCoderEditor(ObjectID* obj) {
 	UpdateKeyword();
 }
 
-void ShaderEditor::RenderLayer(const Context& ctx, const EventPool& evt)
+void ShaderEditor::RenderLayer(const Context& ctx, EventPool& evt)
 {
 	ObjectID* active_obj = ctx.editor.selections.GetSelectedObjects();
 	Shaders* active_shader = GetActiveShaderPtr(active_obj);

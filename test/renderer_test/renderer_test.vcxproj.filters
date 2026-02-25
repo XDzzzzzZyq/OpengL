@@ -66,6 +66,9 @@
     <ClCompile Include="test_input.cpp">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="test_events.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\editor\Input.cpp">
       <Filter>src\editor</Filter>
     </ClCompile>

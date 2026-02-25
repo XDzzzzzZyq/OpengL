@@ -17,7 +17,7 @@ RenderConfigViewer::RenderConfigViewer(const std::string& _name)
 RenderConfigViewer::~RenderConfigViewer()
 {}
 
-void RenderConfigViewer::RenderLayer(const Context& ctx, const EventPool& evt)
+void RenderConfigViewer::RenderLayer(const Context& ctx, EventPool& evt)
 {
 	RenderConfigs* active_config = (RenderConfigs*)ctx.render.GetConfig();
 	if (active_config == nullptr) {
