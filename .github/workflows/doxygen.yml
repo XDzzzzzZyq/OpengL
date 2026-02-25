@@ -2,7 +2,7 @@ name: Build and Deploy Doxygen
 
 on:
   push:
-    branches: [ web-document ]
+    branches: [ main ]
 
 permissions:
   contents: write
