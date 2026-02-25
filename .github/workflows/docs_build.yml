@@ -25,7 +25,7 @@ jobs:
 
     - name: Install Python deps
       run: |
-        pip install mkdocs mkdocs-material mkdocstrings mkdocstrings-python mkdoxy
+        pip install mkdocs mkdocs-material mkdocstrings mkdocstrings-python mkdoxy mkdocs-macros-plugin
     - name: Generate Docs
       run: mkdocs build
 
