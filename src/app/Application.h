@@ -1,37 +1,34 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <memory>
 
 #include "Input.h"
 #include "Context.h"
 #include "Controllers.h"
+#include "Window.h"
 #include "Renderer.h"
 #include "ImguiManager.h"
 
-// using singleton
 class Application
 {
-private:
-	Application() =default;
-
 public:
-	~Application() =default;
-	static Application& Get();
+	Application();
+	~Application();
+
+	Application(const Application&) = delete;
+	Application& operator=(const Application&) = delete;
 
 public:
 	// TODO: separate Editor
 	Input InputManager{};
 	EventPool EventPool{};
 	ControllerManager Controllers{};
-	Context Ctx{};
-	Renderer renderer{};
-	ImguiManager UI{};
-	GLFWwindow* window{ nullptr };
+	Window window;                      ///< GLFW window and OpenGL context owner
+	Context Ctx;                        ///< Event-subscribed context (depends on EventPool)
+	std::unique_ptr<Renderer> renderer; ///< Renderer (constructed after window)
+	std::unique_ptr<ImguiManager> UI;   ///< UI (constructed after window and renderer)
 
 public:
-	int Init();
 	int Run();
-	int Terminate();
 };
 

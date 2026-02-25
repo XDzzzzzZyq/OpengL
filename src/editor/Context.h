@@ -117,9 +117,12 @@ public:
 
 public:
 	/**
-	 * @brief Initializes the context system.
+	 * @brief Constructs the context and subscribes to relevant events.
 	 * @param pool EventPool for subscribing to context-related events
 	 */
-	void Init(EventPool& pool);
+	explicit Context(EventPool& pool);
+
+	Context(const Context&) = delete;
+	Context& operator=(const Context&) = delete;
 };
 

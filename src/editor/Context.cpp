@@ -44,7 +44,7 @@ const std::vector<const ObjectID*> SceneContext::GetObjectIDs() const
 	return obj_list;
 }
 
-void Context::Init(EventPool& pool)
+Context::Context(EventPool& pool)
 {
 	pool.subscribe<ObjectSelectedEvent>([this, &pool](const ObjectSelectedEvent& e) {
 		const ObjectID* selected_obj = editor.selections.GetSelectedObjects();

@@ -24,6 +24,11 @@ class Context {
     SceneContext scene;      // Scene graph read-only view
     EditorContext editor;    // Editor state (selections, etc.)
     RenderContext render;    // Render settings
+
+    // Subscribes event handlers at construction time (RAII)
+    explicit Context(EventPool& pool);
+    Context(const Context&) = delete;
+    Context& operator=(const Context&) = delete;
 };
 ```
 
@@ -216,9 +221,10 @@ private:
 
 ### Usage Patterns
 
-**Subscribing:**
+**Subscribing (in constructor):**
 ```cpp
-void Init(EventPool& pool) {
+// Subscribe event handlers in the constructor — no separate Init() needed
+MyComponent(EventPool& pool) {
     pool.subscribe<ViewportResizeEvent>([this](const auto& e) {
         this->OnViewportResize(e.width, e.height);
     });

@@ -8,15 +8,15 @@
 
 #include "events/EditorEvents.h"
 
+#include "../app/Window.h"
+
 GLint Renderer::max_resolution_w = 0;
 GLint Renderer::max_resolution_h = 0;
 
-Renderer::Renderer()
+Renderer::Renderer(EventPool& evt, [[maybe_unused]] Window& w)
 	:r_frame_width(SCREEN_W), r_frame_height(SCREEN_H)
-{}
-
-void Renderer::Init(EventPool& evt)
 {
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 		std::cout << "glew error" << std::endl;
 	else
