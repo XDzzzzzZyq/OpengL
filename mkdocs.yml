@@ -14,7 +14,7 @@ markdown_extensions:
 
 nav:
   - Architecture: architecture.md
-  - API: api.md
+  - API: Renderer\classes.md
 
 plugins:
   - search
@@ -25,8 +25,11 @@ plugins:
           full-doc: True    # if you want to generate full documentation
           doxy-cfg:         # standard doxygen configuration (key: value)
             FILE_PATTERNS: "*.cpp *.h*" # specify file patterns to filter out
+            EXCLUDE_PATTERNS: "TextEditor.*" # specify patterns to exclude"
             RECURSIVE: True # recursive search in source directories
             GENERATE_XML: True
             EXTRACT_ALL: True
             EXTRACT_PRIVATE: True
             EXTRACT_STATIC: True
+  - macros:
+        module_name: docs/macros

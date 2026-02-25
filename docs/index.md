@@ -6,13 +6,13 @@ This project is a C++20 OpenGL 4.6 real-time renderer focused on experimentation
 
 - Strict layer isolation (Renderer ↔ Editor ↔ UI)
 - Minimal global state
-- Explicit data flow via `Context` and event systems
+- Explicit data flow via {{cls("Context")}} and event systems
 - Renderer remains stateless with respect to application logic
 - GPU resources are owned and managed explicitly
 
 ## Layers
 
-- Renderer: Pure rendering service depending on immutable `Scene` and `RenderConfig`.
+- Renderer: Pure rendering service depending on immutable {{cls("Scene")}} and {{cls("RenderConfigs")}}.
 - Editor: Application logic and scene mutation through controllers.
 - UI: Presentation-only layer driven through controllers or events.
 
