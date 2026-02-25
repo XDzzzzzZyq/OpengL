@@ -14,7 +14,7 @@ markdown_extensions:
 
 nav:
   - Architecture: architecture.md
-  - API: Renderer\classes.md
+  - API: Renderer\classes
 
 plugins:
   - search
