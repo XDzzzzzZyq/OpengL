@@ -1,6 +1,6 @@
 site_name: OpenGL Renderer
 site_description: Modern C++ Rendering Engine with OpenGL 4.6
-site_url: https://github.com/XDzzzzzZyq/OpengL
+site_url: https://xdzzzzzzyq.github.io/OpengL/
 
 theme:
   name: material
@@ -13,8 +13,15 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Architecture: architecture.md
-  - API: Renderer\classes
+  - Home: index.md
+  - Features: features.md
+  - Release: release.md
+  - Developer Handbook:
+    - Overview: handbook/index.md
+    - Architecture: handbook/architecture.md
+    - Renderer Layer: handbook/renderer.md
+    - Editor Layer: handbook/editor.md
+  - API Reference: Renderer\classes
 
 plugins:
   - search
