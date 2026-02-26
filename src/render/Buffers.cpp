@@ -1,12 +1,12 @@
 #include "Buffers.h"
 
-void GLBuffer::_delBuffer()
+void Buffers::_delBuffer()
 {
 	glDeleteBuffers(1, &buf_ID);
 	buf_ID = 0;
 }
 
-void GLBuffer::_deepCopyFrom(const GLBuffer& src)
+void Buffers::_deepCopyFrom(const Buffers& src)
 {
 	buf_size = src.buf_size;
 
@@ -30,18 +30,18 @@ void GLBuffer::_deepCopyFrom(const GLBuffer& src)
 	glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
 }
 
-GLBuffer::~GLBuffer()
+Buffers::~Buffers()
 {
 	if (buf_ID != 0)
 		_delBuffer();
 }
 
-GLBuffer::GLBuffer(const GLBuffer& buf)
+Buffers::Buffers(const Buffers& buf)
 {
 	_deepCopyFrom(buf);
 }
 
-GLBuffer::GLBuffer(GLBuffer&& buf) noexcept
+Buffers::Buffers(Buffers&& buf) noexcept
 {
 	buf_ID   = buf.buf_ID;
 	buf_size = buf.buf_size;
@@ -49,7 +49,7 @@ GLBuffer::GLBuffer(GLBuffer&& buf) noexcept
 	buf.buf_size = 0;
 }
 
-GLBuffer& GLBuffer::operator=(const GLBuffer& buf)
+Buffers& Buffers::operator=(const Buffers& buf)
 {
 	if (this == &buf)
 		return *this;
@@ -61,7 +61,7 @@ GLBuffer& GLBuffer::operator=(const GLBuffer& buf)
 	return *this;
 }
 
-GLBuffer& GLBuffer::operator=(GLBuffer&& buf) noexcept
+Buffers& Buffers::operator=(Buffers&& buf) noexcept
 {
 	if (this == &buf)
 		return *this;

@@ -4,7 +4,7 @@
  *
  * StorageBuffer provides a RAII wrapper around an OpenGL SSBO for large
  * read/write data accessible from shaders. Inherits copy, move, and
- * deep-copy semantics from GLBuffer. Supports template-based operations for
+ * deep-copy semantics from Buffers. Supports template-based operations for
  * type-safe CPU↔GPU data transfer.
  *
  * @note All OpenGL resources are released deterministically in the destructor.
@@ -48,7 +48,7 @@ struct is_not_vector<std::vector<T, C>> : std::false_type {};
  * @brief OpenGL shader storage buffer object wrapper.
  *
  * StorageBuffer (SSBO) provides read/write access to large buffers from
- * shaders. It inherits RAII resource management from GLBuffer, including
+ * shaders. It inherits RAII resource management from Buffers, including
  * GPU-side deep copy via glCopyBufferSubData. buf_size is updated by
  * GenStorageBuffer/GenStorageBuffers so deep copy always reflects the
  * current allocation.
@@ -81,10 +81,10 @@ struct is_not_vector<std::vector<T, C>> : std::false_type {};
  * @endcode
  *
  * @note Thread-safety: Not thread-safe. Must be used from the OpenGL context thread.
- * @note Ownership: Inherits GLBuffer ownership; releases via glDeleteBuffers in destructor.
+ * @note Ownership: Inherits Buffers ownership; releases via glDeleteBuffers in destructor.
  * @note Performance: Reading back from GPU is slow. Minimise CPU readbacks.
  */
-class StorageBuffer : public GLBuffer
+class StorageBuffer : public Buffers
 {
 private:
 	GLuint  ssbo_base = 3;          ///< Binding point index
@@ -111,7 +111,7 @@ public:
 	StorageBuffer(SSBType type, GLuint base);
 
 	/**
-	 * @brief Destructor. Releases OpenGL SSBO (via GLBuffer).
+	 * @brief Destructor. Releases OpenGL SSBO (via Buffers).
 	 */
 	~StorageBuffer() = default;
 

@@ -9,12 +9,12 @@ UniformBuffer::UniformBuffer(GLuint _bind)
 }
 
 UniformBuffer::UniformBuffer(const UniformBuffer& ubo)
-	: GLBuffer(ubo), ubo_bind(ubo.ubo_bind)
+	: Buffers(ubo), ubo_bind(ubo.ubo_bind)
 {
 }
 
 UniformBuffer::UniformBuffer(UniformBuffer&& ubo) noexcept
-	: GLBuffer(std::move(ubo)), ubo_bind(ubo.ubo_bind)
+	: Buffers(std::move(ubo)), ubo_bind(ubo.ubo_bind)
 {
 }
 
@@ -23,7 +23,7 @@ UniformBuffer& UniformBuffer::operator=(const UniformBuffer& ubo)
 	if (this == &ubo)
 		return *this;
 
-	GLBuffer::operator=(ubo);
+	Buffers::operator=(ubo);
 	ubo_bind = ubo.ubo_bind;
 	return *this;
 }
@@ -33,7 +33,7 @@ UniformBuffer& UniformBuffer::operator=(UniformBuffer&& ubo) noexcept
 	if (this == &ubo)
 		return *this;
 
-	GLBuffer::operator=(std::move(ubo));
+	Buffers::operator=(std::move(ubo));
 	ubo_bind = ubo.ubo_bind;
 	return *this;
 }

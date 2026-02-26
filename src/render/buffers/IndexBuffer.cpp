@@ -9,19 +9,19 @@ IndexBuffer::IndexBuffer(const GLuint* data, GLuint size)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, buf_size, data, GL_STATIC_DRAW);
 }
 
-IndexBuffer::IndexBuffer(const IndexBuffer& ibo) : GLBuffer(ibo) {}
+IndexBuffer::IndexBuffer(const IndexBuffer& ibo) : Buffers(ibo) {}
 
-IndexBuffer::IndexBuffer(IndexBuffer&& ibo) noexcept : GLBuffer(std::move(ibo)) {}
+IndexBuffer::IndexBuffer(IndexBuffer&& ibo) noexcept : Buffers(std::move(ibo)) {}
 
 IndexBuffer& IndexBuffer::operator=(const IndexBuffer& ibo)
 {
-	GLBuffer::operator=(ibo);
+	Buffers::operator=(ibo);
 	return *this;
 }
 
 IndexBuffer& IndexBuffer::operator=(IndexBuffer&& ibo) noexcept
 {
-	GLBuffer::operator=(std::move(ibo));
+	Buffers::operator=(std::move(ibo));
 	return *this;
 }
 

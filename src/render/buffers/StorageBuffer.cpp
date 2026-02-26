@@ -12,12 +12,12 @@ StorageBuffer::StorageBuffer(SSBType type, GLuint base)
 }
 
 StorageBuffer::StorageBuffer(const StorageBuffer& ssbo)
-	: GLBuffer(ssbo), ssbo_base(ssbo.ssbo_base), ssbo_type(ssbo.ssbo_type)
+	: Buffers(ssbo), ssbo_base(ssbo.ssbo_base), ssbo_type(ssbo.ssbo_type)
 {
 }
 
 StorageBuffer::StorageBuffer(StorageBuffer&& ssbo) noexcept
-	: GLBuffer(std::move(ssbo)), ssbo_base(ssbo.ssbo_base), ssbo_type(ssbo.ssbo_type)
+	: Buffers(std::move(ssbo)), ssbo_base(ssbo.ssbo_base), ssbo_type(ssbo.ssbo_type)
 {
 }
 
@@ -26,7 +26,7 @@ StorageBuffer& StorageBuffer::operator=(const StorageBuffer& ssbo)
 	if (this == &ssbo)
 		return *this;
 
-	GLBuffer::operator=(ssbo);
+	Buffers::operator=(ssbo);
 	ssbo_base = ssbo.ssbo_base;
 	ssbo_type = ssbo.ssbo_type;
 	return *this;
@@ -37,7 +37,7 @@ StorageBuffer& StorageBuffer::operator=(StorageBuffer&& ssbo) noexcept
 	if (this == &ssbo)
 		return *this;
 
-	GLBuffer::operator=(std::move(ssbo));
+	Buffers::operator=(std::move(ssbo));
 	ssbo_base = ssbo.ssbo_base;
 	ssbo_type = ssbo.ssbo_type;
 	return *this;

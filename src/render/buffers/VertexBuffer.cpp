@@ -8,19 +8,19 @@ VertexBuffer::VertexBuffer(const std::vector<float>& data)
 	glBufferData(GL_ARRAY_BUFFER, buf_size, data.data(), GL_STATIC_DRAW);
 }
 
-VertexBuffer::VertexBuffer(const VertexBuffer& vbo) : GLBuffer(vbo) {}
+VertexBuffer::VertexBuffer(const VertexBuffer& vbo) : Buffers(vbo) {}
 
-VertexBuffer::VertexBuffer(VertexBuffer&& vbo) noexcept : GLBuffer(std::move(vbo)) {}
+VertexBuffer::VertexBuffer(VertexBuffer&& vbo) noexcept : Buffers(std::move(vbo)) {}
 
 VertexBuffer& VertexBuffer::operator=(const VertexBuffer& vbo)
 {
-	GLBuffer::operator=(vbo);
+	Buffers::operator=(vbo);
 	return *this;
 }
 
 VertexBuffer& VertexBuffer::operator=(VertexBuffer&& vbo) noexcept
 {
-	GLBuffer::operator=(std::move(vbo));
+	Buffers::operator=(std::move(vbo));
 	return *this;
 }
 

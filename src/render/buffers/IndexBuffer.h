@@ -4,7 +4,7 @@
  *
  * IndexBuffer provides a RAII wrapper around an OpenGL element buffer for
  * storing triangle indices. Inherits copy, move, and deep-copy semantics
- * from GLBuffer.
+ * from Buffers.
  *
  * @note All OpenGL resources are released deterministically in the destructor.
  */
@@ -17,7 +17,7 @@
  * @brief OpenGL element buffer object wrapper.
  *
  * IndexBuffer encapsulates a single IBO/EBO bound to GL_ELEMENT_ARRAY_BUFFER
- * for indexed rendering. It inherits RAII resource management from GLBuffer,
+ * for indexed rendering. It inherits RAII resource management from Buffers,
  * including GPU-side deep copy via glCopyBufferSubData.
  *
  * Usage:
@@ -35,10 +35,10 @@
  * @endcode
  *
  * @note Thread-safety: Not thread-safe. Must be used from the OpenGL context thread.
- * @note Ownership: Inherits GLBuffer ownership; releases via glDeleteBuffers in destructor.
+ * @note Ownership: Inherits Buffers ownership; releases via glDeleteBuffers in destructor.
  * @note @p size parameter in the main constructor is in bytes, not element count.
  */
-class IndexBuffer : public GLBuffer
+class IndexBuffer : public Buffers
 {
 public:
 
@@ -56,7 +56,7 @@ public:
 	IndexBuffer() = default;
 
 	/**
-	 * @brief Destructor. Releases OpenGL IBO (via GLBuffer).
+	 * @brief Destructor. Releases OpenGL IBO (via Buffers).
 	 */
 	~IndexBuffer() = default;
 
@@ -106,7 +106,7 @@ public:
 	GLuint Count() const;
 
 	/**
-	 * @brief Returns the OpenGL buffer object ID (inherited from GLBuffer).
+	 * @brief Returns the OpenGL buffer object ID (inherited from Buffers).
 	 * @return buf_ID.
 	 */
 	GLuint GetID() const { return buf_ID; }
