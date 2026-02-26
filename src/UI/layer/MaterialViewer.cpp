@@ -87,7 +87,7 @@ bool EditName(std::string& name)
 	return name != current_name;
 }
 
-void MaterialViewer::RenderLayer(const Context& ctx, const EventPool& evt)
+void MaterialViewer::RenderLayer(const Context& ctx, EventPool& evt)
 {
 	ObjectID* active_object = ctx.editor.selections.GetSelectedObjects();
 	Material* active_material = GetActiveMatPtr(active_object);

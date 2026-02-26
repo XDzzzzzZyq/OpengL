@@ -194,6 +194,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="test_buffers.cpp" />
     <ClCompile Include="test_core.cpp" />
+    <ClCompile Include="test_events.cpp" />
     <ClCompile Include="test_input.cpp" />
     <ClCompile Include="test_shader.cpp" />
     <ClCompile Include="test_texture.cpp" />

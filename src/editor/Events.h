@@ -10,11 +10,19 @@
  * - Editor subscribes to events and mutates state
  * - Renderer subscribes to config changes
  * - No layer directly calls into another layer
+ * 
+ * Execution model:
+ * - emit() enqueues an event for deferred dispatch.
+ * - process() drains the queue, dispatching all pending events in FIFO order.
+ * - Events emitted from within a handler are appended to the end of the queue,
+ *   ensuring deterministic breadth-first ordering for event chains.
+ * - Call process() once per frame, after the UI layer has finished rendering.
  */
 
 #pragma once
 
 #include <functional>
+#include <queue>
 #include <typeindex>
 #include <unordered_map>
 
@@ -28,11 +36,11 @@ class Events
 };
 
 /**
- * @brief Type-safe event dispatcher using template-based publish-subscribe.
+ * @brief Type-safe event dispatcher with deferred execution queue.
  * 
  * EventPool allows any component to subscribe to events of a specific type and
- * emit events to all registered handlers. Type safety is enforced at compile time
- * via templates, while runtime dispatch uses std::type_index.
+ * emit events to be dispatched in a controlled, deferred manner. Type safety is
+ * enforced at compile time via templates, while runtime dispatch uses std::type_index.
  * 
  * Usage:
  * @code
@@ -43,12 +51,16 @@ class Events
  *     // Handle event
  * });
  * 
- * // Emit an event
+ * // Enqueue an event (not dispatched yet)
  * pool.emit(MyEvent{param1, param2});
+ * 
+ * // Dispatch all queued events (call once per frame, after UI rendering)
+ * pool.process();
  * @endcode
  * 
- * @note Thread-safety: Not thread-safe. All subscribe/emit must occur on main thread.
- * @note Event lifetime: Events are passed by const reference and must not be modified.
+ * @note Thread-safety: Not thread-safe. All subscribe/emit/process must occur on main thread.
+ * @note Event chains: If a handler calls emit(), the new event is appended to the end of
+ *       the queue and processed in the same process() call (breadth-first ordering).
  */
 class EventPool {
 public:
@@ -62,15 +74,14 @@ public:
 	/**
 	 * @brief Subscribes a handler to events of type Event.
 	 * 
-	 * Registers a callback to be invoked whenever an event of type Event is emitted.
-	 * Multiple handlers can subscribe to the same event type and will be called
-	 * in subscription order.
+	 * Registers a callback to be invoked whenever an event of type Event is
+	 * dispatched via process(). Multiple handlers can subscribe to the same
+	 * event type and will be called in subscription order.
 	 * 
 	 * @tparam Event The event type to subscribe to
 	 * @param handler Callback function receiving const Event&
 	 * 
 	 * @note Handlers should not assume execution order relative to other handlers.
-	 * @note Handlers execute synchronously within emit() call.
 	 */
 	template<typename Event>
 	void subscribe(Handler<Event> handler) {
@@ -83,20 +94,54 @@ public:
 	}
 
 	/**
-	 * @brief Emits an event to all subscribed handlers.
+	 * @brief Enqueues an event for deferred dispatch.
 	 * 
-	 * Invokes all handlers registered for the Event type. Handlers are called
-	 * synchronously in subscription order. If no handlers are registered,
-	 * this is a no-op.
+	 * The event is copied and stored in the internal queue. It will not be
+	 * dispatched until process() is called. If called from within a handler
+	 * during process(), the new event is appended to the end of the queue
+	 * and processed in the same process() call.
 	 * 
 	 * @tparam Event The event type to emit
-	 * @param event The event instance to pass to handlers (by const reference)
-	 * 
-	 * @note Events are immutable from handlers (const Event&).
-	 * @note All handlers complete before emit() returns.
+	 * @param event The event instance to enqueue (copied into the queue)
 	 */
 	template<typename Event>
-	void emit(const Event& event) const {
+	void emit(const Event& event) {
+		event_queue.push([this, ev = event]() {
+			dispatch(ev);
+		});
+	}
+
+	/**
+	 * @brief Dispatches all enqueued events in FIFO order.
+	 * 
+	 * Processes every event currently in the queue, up to @p max_events per call.
+	 * Events emitted by handlers during processing are appended to the end of the
+	 * queue and handled within the same call, guaranteeing deterministic breadth-first
+	 * ordering for event chains. The cap prevents an infinite loop if a badly-formed
+	 * handler continuously re-emits events.
+	 * 
+	 * @param max_events Maximum number of events to dispatch in a single call (default: 1000).
+	 * @note Call once per frame, after the UI layer has finished rendering.
+	 */
+	void Process(int max_events = 1000) {
+		int count = 0;
+		while (!event_queue.empty() && count < max_events) {
+			auto fn = std::move(event_queue.front());
+			event_queue.pop();
+			fn();
+			++count;
+		}
+	}
+
+private:
+	/**
+	 * @brief Immediately dispatches an event to all registered handlers.
+	 * 
+	 * @tparam Event The event type to dispatch
+	 * @param event The event instance to pass to handlers
+	 */
+	template<typename Event>
+	void dispatch(const Event& event) {
 		auto it = handlers.find(typeid(Event));
 		if (it == handlers.end()) return;
 
@@ -105,7 +150,6 @@ public:
 		}
 	}
 
-private:
 	/**
 	 * @brief Maps event types to handler lists.
 	 * 
@@ -116,6 +160,9 @@ private:
 		std::type_index,
 		std::vector<std::function<void(const void*)>>
 	> handlers;
+
+	/// @brief Queue of pending event dispatch closures.
+	std::queue<std::function<void()>> event_queue;
 
 public:
 	/**

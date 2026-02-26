@@ -12,6 +12,6 @@ public:
 
 public:
 
-	void RenderLayer(const Context& ctx, const EventPool& evt) override;
+	void RenderLayer(const Context& ctx, EventPool& evt) override;
 };
 

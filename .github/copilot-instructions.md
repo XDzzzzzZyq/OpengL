@@ -68,7 +68,7 @@ Direct coupling across layers is forbidden.
 - Formatting: tabs are common; Allman braces; keep lines reasonable.
 - Includes: local headers before system; group local, third-party, STL; use `#pragma once`.
 - Naming: types/classes and methods use PascalCase; members use local prefixes like `r_`, `o_`, `is_`, `tex_`; match surrounding conventions.
-- Ownership: prefer RAII; use `std::unique_ptr`/`std::shared_ptr` for explicit ownership; avoid owning raw pointers.
+- Ownership: prefer RAII; use `std::unique_ptr`/`std::shared_ptr` for explicit ownership; avoid owning raw pointers. All classes that manage resources must follow RAII — initialize fully in the constructor, release in the destructor, no separate `Init()`/`Terminate()` methods. Classes that own GPU or OS resources must delete copy constructor and copy assignment (`= delete`).
 - Const correctness: use `const` for non-mutating methods; Renderer takes `const Context&`.
 - Error handling: use `GLERRTEST` / `GLDEBUG` where available; early returns for invalid state; use `GTEST_SKIP()` when GL is insufficient.
 - Comments: public APIs use Doxygen (`@brief`, `@param`, `@return`, `@note`); inline comments use `// comment`.
@@ -103,4 +103,5 @@ For each PR review and coding session:
 - All tests pass.
 - No cross-layer dependency violations.
 - No new OpenGL state leaks.
+- No RAII violations: new resource-owning classes must initialize fully in the constructor, release in the destructor, and delete copy semantics.
 

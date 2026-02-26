@@ -108,6 +108,7 @@ This is a C++20 OpenGL 4.6 real-time renderer designed for experimentation with 
 3. **Immutable scene reads** - Renderer sees const Scene data
 4. **Explicit GPU ownership** - No shared_ptr to GPU resources across layers
 5. **Event-driven updates** - State changes propagate via EventPool
+6. **Full RAII** - No two-phase initialization; no `Init()`/`Terminate()` methods on resource-owning classes
 
 ### Naming Conventions
 - Classes: PascalCase (e.g., `FrameBuffer`, `CameraController`)
@@ -122,9 +123,11 @@ This is a C++20 OpenGL 4.6 real-time renderer designed for experimentation with 
 - Includes: local headers before system; group local, third-party (GL/GLFW/GLM), STL; use `#pragma once`.
 
 ### Ownership / Error Handling
-- Prefer RAII for GPU resources; use `std::unique_ptr`/`std::shared_ptr` for explicit ownership.
-- Avoid owning raw pointers; use raw pointers for non-owning references only.
+- All resource-owning classes follow RAII: fully initialize in the constructor, release in the destructor. No separate `Init()`/`Terminate()` methods.
+- Classes owning GPU or OS resources delete copy constructor and copy assignment (`= delete`).
+- Prefer `std::unique_ptr`/`std::shared_ptr` for explicit ownership; use raw pointers for non-owning references only.
 - Use `GLERRTEST` / `GLDEBUG` where available; early return on invalid state.
+- Constructors that require an active OpenGL context must take a `Window&` parameter to enforce initialization order at the type level.
 
 ### Extension Points
 - New scene object types inherit from ObjectID
