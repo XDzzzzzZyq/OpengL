@@ -13,9 +13,9 @@ They communicate only through the {{cls("Context")}} and event system to keep ex
 
 ## Directory Layout
 
-- `src/render/`: Rendering and GPU resource management.
-- `src/editor/`: Editor logic, controllers, and events.
-- `src/UI/`: ImGui UI layer.
-- `src/scene/`: Scene objects and data structures.
-- `res/`: Assets and shaders.
-- `test/`: Unit tests.
+- {{file("src/render/")}}: Rendering and GPU resource management.
+- {{file("src/editor/")}}: Editor logic, controllers, and events.
+- {{file("src/UI/")}}: ImGui UI layer.
+- {{file("src/scene/")}}: Scene objects and data structures.
+- {{file("res/")}}: Assets and shaders.
+- {{file("test/")}}: Unit tests.

@@ -16,4 +16,11 @@ def define_env(env):
 
     @env.macro
     def cls(name):
+        """Link to a class in Web Doc."""
         return f"[`{name}`](/OpengL/Renderer/class{name}/)"
+
+    @env.macro
+    def file(path):
+        """Link to a source file on GitHub."""
+        base = "https://github.com/XDzzzzzZyq/OpengL/tree/master/"
+        return f"[`{path}`]({base}{path})"

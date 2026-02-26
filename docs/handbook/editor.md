@@ -1,6 +1,6 @@
 # Editor
 
-The Editor layer handles application logic and scene state management, including controllers and the event system. It does not operate GPU resources directly, and instead passes data to the Renderer through the `Context`.
+The Editor layer handles application logic and scene state management, including controllers and the event system. It does not operate GPU resources directly, and instead passes data to the Renderer through the {{cls("Context")}}.
 
 ## Responsibilities
 
@@ -13,10 +13,10 @@ The Editor layer handles application logic and scene state management, including
 
 - Must not depend on Renderer implementation details.
 - Must not own GPU resources.
-- All cross-layer communication must go through `Context` or events.
+- All cross-layer communication must go through {{cls("Context")}} or events.
 
 ## Related Directories
 
-- `src/editor/`: Core implementation.
-- `src/editor/controllers/`: Controller logic.
-- `src/editor/events/`: Event definitions.
+- {{file("src/editor/")}}: Core implementation.
+- {{file("src/editor/controllers/")}}: Controller logic.
+- {{file("src/editor/events/")}}: Event definitions.

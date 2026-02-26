@@ -1,11 +1,11 @@
 # Renderer
 
-The Renderer layer provides pure rendering services. It depends on immutable `Scene` data and `Context` input, and focuses on OpenGL resources and rendering flow. The Renderer must not contain application logic.
+The Renderer layer provides pure rendering services. It depends on immutable {{cls("Scene")}} data and {{cls("Context")}} input, and focuses on OpenGL resources and rendering flow. The Renderer must not contain application logic.
 
 ## Responsibilities
 
-- Create and manage GPU resources (textures, buffers, shaders).
-- Organize rendering flow based on `Scene` and `RenderConfig`.
+- Create and manage GPU resources ({{cls("Texture")}}, {{cls("Buffers")}}, {{cls("Shaders")}}).
+- Organize rendering flow based on {{cls("Scene")}} and {{cls("RenderConfigs")}}.
 - Stay isolated from Editor and UI.
 
 ## Constraints
@@ -16,6 +16,6 @@ The Renderer layer provides pure rendering services. It depends on immutable `Sc
 
 ## Related Directories
 
-- `src/render/`: Rendering and resource management.
-- `src/render/shaders/`: Shader wrappers.
-- `res/shaders/`: Shader assets.
+- {{file("src/render/")}}: Rendering and resource management.
+- {{file("src/render/shaders/")}}: Shader wrappers.
+- {{file("res/shaders/")}}: Shader assets.

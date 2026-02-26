@@ -137,7 +137,7 @@ Add new `@env.macro` decorated functions to `docs/macros.py`:
 @env.macro
 def file(path):
     """Link to a source file on GitHub."""
-    base = "https://github.com/XDzzzzzZyq/OpengL/blob/main/"
+    base = "https://github.com/XDzzzzzZyq/OpengL/tree/master/"
     return f"[`{path}`]({base}{path})"
 ```
 

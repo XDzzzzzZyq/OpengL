@@ -24,7 +24,7 @@ msbuild /m /p:Configuration=Release,Platform=x64 OpenGL.sln
 
 ### Test
 
-Test binaries are output to `test/renderer_test/build/`.  
+Test binaries are output to {{file("test/renderer_test/build/")}}.  
 An OpenGL 4.6 environment is required for full coverage.  
 Expectations: no GL errors, no resource leaks, all assertions pass.
 
@@ -32,13 +32,13 @@ Expectations: no GL errors, no resource leaks, all assertions pass.
 
 | Path | Contents |
 |---|---|
-| `src/render/` | Renderer and GPU resource management |
-| `src/editor/` | Editor logic, controllers, events |
-| `src/UI/` | ImGui UI layer |
-| `src/scene/` | Scene objects (Mesh, Light, Camera, …) |
-| `res/shaders/` | Shader assets |
-| `test/` | Unit tests |
-| `dep/` | Third-party dependencies |
+| {{file("src/render/")}} | Renderer and GPU resource management |
+| {{file("src/editor/")}} | Editor logic, controllers, events |
+| {{file("src/UI/")}} | ImGui UI layer |
+| {{file("src/scene/")}} | Scene objects (Mesh, Light, Camera, …) |
+| {{file("res/shaders/")}} | Shader assets |
+| {{file("test/")}} | Unit tests |
+| {{file("dep/")}} | Third-party dependencies |
 
 ---
 
