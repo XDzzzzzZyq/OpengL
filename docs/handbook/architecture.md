@@ -1,6 +1,6 @@
 # Architecture
 
-This project follows a three-layer architecture: [Renderer](architecture/renderer.md), [Editor](architecture/editor.md), and UI. 
+This project follows a three-layer architecture: [Renderer](renderer.md), [Editor](editor.md), and UI. 
 They communicate only through the {{cls("Context")}} and event system to keep explicit data flow and avoid direct coupling.
 
 ## Design Principles
