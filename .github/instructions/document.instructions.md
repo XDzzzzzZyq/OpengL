@@ -114,7 +114,7 @@ Macros are defined in `docs/macros.py` and loaded by mkdocs-macros-plugin.
 ```python
 @env.macro
 def cls(name):
-    return f"[`{name}`](Renderer/class{name}.md)"
+    return f"[`{name}`](/OpengL/Renderer/class{name}/)"
 ```
 
 **Usage in Markdown:**
@@ -125,9 +125,9 @@ They communicate only through the {{cls("Context")}} and event system.
 
 **Rendered output:**
 
-> They communicate only through the [`Context`](Renderer/classContext.md) and event system.
+> They communicate only through the [`Context`](/OpengL/Renderer/classContext/) and event system.
 
-The macro constructs the path `Renderer/class<Name>.md`, which is the URL mkdoxy uses for class pages.
+The macro constructs the absolute path `/OpengL/Renderer/class<Name>/`, which is the URL mkdoxy uses for class pages on the deployed site.
 
 ### Adding New Macros
 

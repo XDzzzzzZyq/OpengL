@@ -16,4 +16,4 @@ def define_env(env):
 
     @env.macro
     def cls(name):
-        return f"[`{name}`](Renderer/class{name}.md)"
+        return f"[`{name}`](/OpengL/Renderer/class{name}/)"
