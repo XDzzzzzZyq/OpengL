@@ -4,7 +4,7 @@
  *
  * UniformBuffer provides a RAII wrapper around an OpenGL UBO for efficient
  * sharing of uniform data across multiple shaders. Inherits copy, move, and
- * deep-copy semantics from GLBuffer. Supports template-based updates for
+ * deep-copy semantics from Buffers. Supports template-based updates for
  * type-safe data transfer.
  *
  * @note All OpenGL resources are released deterministically in the destructor.
@@ -19,7 +19,7 @@
  * @brief OpenGL uniform buffer object wrapper with template-based updates.
  *
  * UniformBuffer encapsulates a UBO for sharing uniform blocks across shaders.
- * It inherits RAII resource management from GLBuffer, including GPU-side deep
+ * It inherits RAII resource management from Buffers, including GPU-side deep
  * copy via glCopyBufferSubData. buf_size is updated whenever Update() or the
  * initialising constructor is called.
  *
@@ -43,10 +43,10 @@
  * @endcode
  *
  * @note Thread-safety: Not thread-safe. Must be used from the OpenGL context thread.
- * @note Ownership: Inherits GLBuffer ownership; releases via glDeleteBuffers in destructor.
+ * @note Ownership: Inherits Buffers ownership; releases via glDeleteBuffers in destructor.
  * @note Binding point: UBOs use binding points to link with shader uniform blocks.
  */
-class UniformBuffer : public GLBuffer
+class UniformBuffer : public Buffers
 {
 	GLuint ubo_bind{ 0 }; ///< Binding point index
 
@@ -74,7 +74,7 @@ public:
 	UniformBuffer(GLuint _bind, _S _tar);
 
 	/**
-	 * @brief Destructor. Releases OpenGL UBO (via GLBuffer).
+	 * @brief Destructor. Releases OpenGL UBO (via Buffers).
 	 */
 	~UniformBuffer() = default;
 

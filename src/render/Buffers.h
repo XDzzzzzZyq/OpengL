@@ -2,13 +2,13 @@
  * @file Buffers.h
  * @brief RAII base class for OpenGL buffer objects.
  *
- * GLBuffer owns a single OpenGL buffer object created via glGenBuffers and
+ * Buffers owns a single OpenGL buffer object created via glGenBuffers and
  * provides canonical copy, move, and deep-copy semantics. Derived classes
  * (VertexBuffer, IndexBuffer, UniformBuffer, StorageBuffer) specialise the
  * binding target and extend with type-specific upload/download helpers.
  *
  * GPU Resource Ownership:
- * - GLBuffer owns buf_ID; released via glDeleteBuffers in destructor.
+ * - Buffers owns buf_ID; released via glDeleteBuffers in destructor.
  * - Move transfers ownership; source buf_ID is zeroed.
  * - Copy creates a new GPU buffer with identical content (deep copy).
  * - Deep copy uses glCopyBufferSubData; no CPU round-trip is required.
@@ -46,7 +46,7 @@
  * @note Only GL buffer objects (glGenBuffers) are managed here.
  *       Renderbuffers and framebuffers have separate RAII wrappers.
  */
-class GLBuffer
+class Buffers
 {
 protected:
 	GLuint buf_ID   = 0; ///< OpenGL buffer object ID (0 = invalid/empty)
@@ -67,41 +67,41 @@ protected:
 	 *
 	 * @param src Source buffer to copy from.
 	 */
-	void _deepCopyFrom(const GLBuffer& src);
+	void _deepCopyFrom(const Buffers& src);
 
 public:
-	GLBuffer() = default;
+	Buffers() = default;
 
 	/**
 	 * @brief Destructor. Releases the OpenGL buffer object if valid.
 	 */
-	~GLBuffer();
+	~Buffers();
 
 	/**
 	 * @brief Copy constructor. Performs a GPU-side deep copy of @p buf.
 	 * @param buf Source buffer.
 	 */
-	GLBuffer(const GLBuffer& buf);
+	Buffers(const Buffers& buf);
 
 	/**
 	 * @brief Move constructor. Transfers ownership from @p buf.
 	 * @param buf Source buffer (left in the empty state, buf_ID = 0).
 	 */
-	GLBuffer(GLBuffer&& buf) noexcept;
+	Buffers(Buffers&& buf) noexcept;
 
 	/**
 	 * @brief Copy assignment. Performs a GPU-side deep copy of @p buf.
 	 * @param buf Source buffer.
 	 * @return Reference to this.
 	 */
-	GLBuffer& operator=(const GLBuffer& buf);
+	Buffers& operator=(const Buffers& buf);
 
 	/**
 	 * @brief Move assignment. Transfers ownership from @p buf.
 	 * @param buf Source buffer (left in the empty state).
 	 * @return Reference to this.
 	 */
-	GLBuffer& operator=(GLBuffer&& buf) noexcept;
+	Buffers& operator=(Buffers&& buf) noexcept;
 
 	/**
 	 * @brief Returns the OpenGL buffer object ID.

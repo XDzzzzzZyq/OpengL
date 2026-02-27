@@ -4,7 +4,7 @@
  *
  * VertexBuffer provides a RAII wrapper around an OpenGL VBO for storing
  * vertex attribute data (positions, normals, UVs, etc.). Inherits copy,
- * move, and deep-copy semantics from GLBuffer.
+ * move, and deep-copy semantics from Buffers.
  *
  * @note All OpenGL resources are released deterministically in the destructor.
  */
@@ -18,7 +18,7 @@
  * @brief OpenGL vertex buffer object wrapper.
  *
  * VertexBuffer encapsulates a single VBO bound to GL_ARRAY_BUFFER. It
- * inherits RAII resource management from GLBuffer, including GPU-side deep
+ * inherits RAII resource management from Buffers, including GPU-side deep
  * copy via glCopyBufferSubData.
  *
  * Usage:
@@ -37,9 +37,9 @@
  * @endcode
  *
  * @note Thread-safety: Not thread-safe. Must be used from the OpenGL context thread.
- * @note Ownership: Inherits GLBuffer ownership; releases via glDeleteBuffers in destructor.
+ * @note Ownership: Inherits Buffers ownership; releases via glDeleteBuffers in destructor.
  */
-class VertexBuffer : public GLBuffer
+class VertexBuffer : public Buffers
 {
 public:
 
@@ -63,7 +63,7 @@ public:
 	VertexBuffer(const std::vector<float>& data);
 
 	/**
-	 * @brief Destructor. Releases OpenGL VBO (via GLBuffer).
+	 * @brief Destructor. Releases OpenGL VBO (via Buffers).
 	 */
 	~VertexBuffer() = default;
 
