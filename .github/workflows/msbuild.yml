@@ -19,9 +19,34 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-renderer:
     runs-on: windows-latest
 
+    strategy:
+      matrix:
+        CONFIG: [Release, Debug]
+        PLATFORM: [x86, x64]
+
+    steps:
+    - uses: actions/checkout@v4
+      name: Checkout
+      with:
+        submodules: true
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build Renderer
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} /t:OpenGL ${{env.SOLUTION_FILE_PATH}}
+
+  test:
+    runs-on: windows-latest
     strategy:
       matrix:
         CONFIG: [Release, Debug]
@@ -35,10 +60,10 @@ jobs:
         } else {
           echo "PLATFORM_DIR=Win32" >> $env:GITHUB_ENV
         }
-      
+
     - uses: actions/checkout@v4
       name: Checkout
-      with:   
+      with:
         submodules: true
 
     - name: Add MSBuild to PATH
@@ -48,41 +73,9 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Build
+    - name: Build Tests
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
-        path: test/renderer_test/build/${{env.PLATFORM_DIR}}/${{matrix.CONFIG}}/
-        overwrite: true
-
-  test:
-    needs: build
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        CONFIG: [Release, Debug]
-        PLATFORM: [x86, x64]
-
-    steps:
-
-    - name: Download Dlls
-      uses: actions/checkout@v4
-      with:
-        sparse-checkout: |
-          test\dll
-          res
-    
-    - name: Download test result
-      uses: actions/download-artifact@v4
-      with:
-        name: test-${{matrix.CONFIG}}-${{matrix.PLATFORM}}
-        path: test/
+      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} /t:renderer_test ${{env.SOLUTION_FILE_PATH}}
 
     - name: Install Mesa
       shell: cmd
@@ -90,11 +83,11 @@ jobs:
         curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/25.3.5/mesa3d-25.3.5-release-msvc.7z
         mkdir mesa
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
-        cd mesa
+        pushd mesa
         .\systemwidedeploy.cmd 1
-        copy ".\test\dll\glew32.dll" ".\test\glew32.dll"
-        copy ".\test\dll\glu32.dll" ".\test\glu32.dll"
-        tree /f
+        popd
+        copy "test\dll\glew32.dll" "test\renderer_test\build\${{env.PLATFORM_DIR}}\${{matrix.CONFIG}}\"
+        copy "test\dll\glu32.dll" "test\renderer_test\build\${{env.PLATFORM_DIR}}\${{matrix.CONFIG}}\"
 
     - name: Run tests
-      run: .\test\renderer_test.exe
+      run: .\test\renderer_test\build\${{env.PLATFORM_DIR}}\${{matrix.CONFIG}}\renderer_test.exe
