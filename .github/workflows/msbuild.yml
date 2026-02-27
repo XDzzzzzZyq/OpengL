@@ -28,7 +28,7 @@ jobs:
         PLATFORM: [x86, x64]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       name: Checkout
       with:
         submodules: true
@@ -61,7 +61,7 @@ jobs:
           echo "PLATFORM_DIR=Win32" >> $env:GITHUB_ENV
         }
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       name: Checkout
       with:
         submodules: true
