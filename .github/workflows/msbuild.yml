@@ -43,7 +43,7 @@ jobs:
     - name: Build Renderer
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} /t:OpenGL ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild OpenGL.sln /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}},BuildProjectReferences=false,Project=OpenGL  ${{env.SOLUTION_FILE_PATH}}
 
   test:
     runs-on: windows-latest
@@ -75,7 +75,7 @@ jobs:
 
     - name: Build Tests
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} /t:renderer_test ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}},BuildProjectReferences=false,Project=renderer_test ${{env.SOLUTION_FILE_PATH}}
 
     - name: Install Mesa
       shell: cmd
