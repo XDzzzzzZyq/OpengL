@@ -43,7 +43,7 @@ jobs:
     - name: Build Renderer
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild OpenGL.sln /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}},BuildProjectReferences=false,Project=OpenGL  ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild OpenGL.vcxproj /m /p:Configuration=${{matrix.CONFIG}},Platform=${{matrix.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
 
   test:
     runs-on: windows-latest
