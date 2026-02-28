@@ -433,7 +433,8 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, EventPool& evt)
 				}ImGui::PopID();
 			}
 			if (AddStruct()) {
-				evt.emit<ShaderStructAddStructEvent>({ shader, ShaderType(current_shad_type), std::get<1>(add_args), std::get<3>(add_args) });
+				evt.emit<ShaderStructAddStructEvent>({ shader, ShaderType(current_shad_type), std::string(prop_name), prop_args });
+				prop_args.clear();
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -448,9 +449,9 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, EventPool& evt)
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
-			{
-				// TODO
+			if (AddParam("Glob Variable", "default")) {
+				const auto& [name, type, count] = add_prop;
+				evt.emit<ShaderStructAddGlobEvent>({ shader, ShaderType(current_shad_type), S_glob{name, type, (float)count} });
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -469,9 +470,10 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, EventPool& evt)
 					ImGui::TreePop();
 				}ImGui::PopID();
 			}
-			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
-			{
-				// TODO
+			if (AddStruct(true)) {
+				evt.emit<ShaderStructAddConstEvent>({ shader, ShaderType(current_shad_type),
+					S_const{ (ParaType)se_panel.datatype, std::string(prop_name), std::string(prop_content), {} } });
+				prop_args.clear();
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
@@ -512,19 +514,57 @@ void ShaderEditor::RenderShaderStruct(ObjectID* active_obj, EventPool& evt)
 					if (se_code_editor.IsTextChanged())
 						std::get<2>(i) = se_code_editor.GetText();
 					active_unit->sh_struct->is_struct_changed = true;
-					// TODO: emit event to update shader code
+					evt.emit<ShaderStructCompileEvent>({ shader, ShaderType(current_shad_type) });
 				}
 			}
-			if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 15, 20)))
-			{
-				// TODO
+			if (AddStruct(true)) {
+				evt.emit<ShaderStructAddFuncEvent>({ shader, ShaderType(current_shad_type),
+					S_func{ (ParaType)se_panel.datatype, std::string(prop_name), std::string(prop_content), prop_args } });
+				prop_args.clear();
 			}ImGui::TreePop();
 		}ImGui::PopID(); vari_id = 0;
 	}
 
-	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 5, 20)))
-	{
-		// TODO
+	static int bottom_add_type = -1;
+	static MiniPropPanel bottom_panel;
+	static S_U bottom_add_prop;
+	static S_func bottom_add_args;
+
+	if (ImGui::Button("+", ImVec2(ImGui::GetContentRegionAvail().x - 5, 20))) {
+		ImGui::OpenPopup("##bottom_add_popup");
+	}
+	if (ImGui::BeginPopup("##bottom_add_popup")) {
+		if (ImGui::Selectable("Glob Variable"))  { bottom_add_type = 0; bottom_panel.is_open = false; prop_args.clear(); }
+		if (ImGui::Selectable("Constant"))       { bottom_add_type = 1; bottom_panel.is_open = false; prop_args.clear(); }
+		if (ImGui::Selectable("Function"))       { bottom_add_type = 2; bottom_panel.is_open = false; prop_args.clear(); }
+		ImGui::EndPopup();
+	}
+	const ImVec2 bottom_mouse_pos = ImVec2(Input::GetMousePosX(), Input::GetMousePosY());
+	if (bottom_add_type == 0) {
+		if (RenderPanel(bottom_panel, bottom_mouse_pos, &bottom_add_prop, "Glob Variable", "default")) {
+			const auto& [name, type, count] = bottom_add_prop;
+			evt.emit<ShaderStructAddGlobEvent>({ shader, ShaderType(current_shad_type), S_glob{name, type, (float)count} });
+			bottom_add_type = -1;
+		}
+		else if (!bottom_panel.is_open) bottom_add_type = -1;
+	}
+	else if (bottom_add_type == 1) {
+		if (RenderDefPanel(bottom_panel, true, bottom_mouse_pos, &bottom_add_args)) {
+			evt.emit<ShaderStructAddConstEvent>({ shader, ShaderType(current_shad_type),
+				S_const{ (ParaType)bottom_panel.datatype, std::string(prop_name), std::string(prop_content), {} } });
+			bottom_add_type = -1;
+			prop_args.clear();
+		}
+		else if (!bottom_panel.is_open) bottom_add_type = -1;
+	}
+	else if (bottom_add_type == 2) {
+		if (RenderDefPanel(bottom_panel, true, bottom_mouse_pos, &bottom_add_args)) {
+			evt.emit<ShaderStructAddFuncEvent>({ shader, ShaderType(current_shad_type),
+				S_func{ (ParaType)bottom_panel.datatype, std::string(prop_name), std::string(prop_content), prop_args } });
+			bottom_add_type = -1;
+			prop_args.clear();
+		}
+		else if (!bottom_panel.is_open) bottom_add_type = -1;
 	}
 }
 
