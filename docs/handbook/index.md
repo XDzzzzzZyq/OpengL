@@ -9,6 +9,7 @@ This section contains technical documentation for contributors and developers wo
 - [**Architecture**](architecture.md) — Three-layer design and communication patterns.
 - [**Renderer Layer**](renderer.md) — GPU resources, rendering pipeline, and constraints.
 - [**Editor Layer**](editor.md) — Application logic, controllers, and the event system.
+- [**File Management**](file-management.md) — AssetManager cache, fileIO layer, and Reset conventions.
 - [**API Reference**](../Renderer/classes) — Auto-generated class documentation.
 
 ---
@@ -36,6 +37,8 @@ Expectations: no GL errors, no resource leaks, all assertions pass.
 | {{file("src/editor/")}} | Editor logic, controllers, events |
 | {{file("src/UI/")}} | ImGui UI layer |
 | {{file("src/scene/")}} | Scene objects (Mesh, Light, Camera, …) |
+| {{file("src/core/")}} | Core utilities (AssetManager, ID system) |
+| {{file("src/fileIO/")}} | File I/O layer (MeshIO, TextureIO, ShaderIO) |
 | {{file("res/shaders/")}} | Shader assets |
 | {{file("test/")}} | Unit tests |
 | {{file("dep/")}} | Third-party dependencies |

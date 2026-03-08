@@ -153,7 +153,9 @@ An overview of what the OpenGL Renderer supports. Items marked ✅ are complete;
 - ✅ Multi-viewport support
 - 🔲 Theme system
 - 🔲 Tools layer
-- 🔲 Files management
+- ✅ Files management
+  - ✅ Unified asset cache (AssetManager)
+  - ✅ Dedicated file I/O layer (MeshIO, TextureIO, ShaderIO)
 - 🔲 Node system
 
 ---
@@ -184,6 +186,8 @@ An overview of what the OpenGL Renderer supports. Items marked ✅ are complete;
 - ✅ Explicit RAII ownership of all GPU resources.
 - ✅ VertexBuffer, IndexBuffer, UniformBuffer, StorageBuffer, FrameBuffer abstractions.
 - ✅ Deterministic resource cleanup.
+- ✅ Unified asset cache (AssetManager) — replaces per-class static maps in MeshLib, TextureLib, ComputeShader.
+- ✅ File I/O layer (MeshIO, TextureIO, ShaderIO) — zero OpenGL dependency; separates file access from GPU state.
 
 ## Build & Platform
 
