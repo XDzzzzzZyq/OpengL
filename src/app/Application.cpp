@@ -1,7 +1,6 @@
 #include "Application.h"
 #include "SceneManager.h"
 
-#include "AssetManager.h"
 #include "shaders/ComputeShader.h"
 
 #include "controllers/CameraController.h"
@@ -69,9 +68,9 @@ Application::Application()
 
 Application::~Application()
 {
-	AssetManager::Clear<Texture>();
-	AssetManager::Clear<ComputeShader>();
-	AssetManager::Clear<MeshData>();
+	TextureLib::ResetTexLib();
+	ComputeShader::ResetComputeLib();
+	MeshLib::ResetMeshLib();
 	// UI and renderer are destroyed automatically (reverse declaration order)
 	// before window destructor runs glfwDestroyWindow + glfwTerminate
 }

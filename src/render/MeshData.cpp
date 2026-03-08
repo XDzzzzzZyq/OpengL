@@ -97,6 +97,11 @@ MeshLib::MeshResource MeshLib::LoadMesh(const std::string path)
 	});
 }
 
+void MeshLib::ResetMeshLib()
+{
+	AssetManager::Clear<MeshData>();
+}
+
 void MeshLib::ToGeoCenter(MeshResource _tar)
 {
 	_tar->me_vertBuffer.Bind();

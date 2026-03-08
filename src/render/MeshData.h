@@ -76,6 +76,12 @@ public:
 
 	static MeshResource LoadMesh(const std::string path);
 
+	/**
+	 * @brief Resets the mesh library and evicts all entries from the asset cache.
+	 * @note Delegates to AssetManager::Clear<MeshData>(). Externally held shared_ptrs remain valid.
+	 */
+	static void ResetMeshLib();
+
 public:
 
 	static MeshResource Square;

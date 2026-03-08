@@ -303,6 +303,13 @@ public:
 	 * @note Loads all post-processing and shadow compute shaders
 	 */
 	static void InitComputeLib(RenderConfigs* config);
+
+	/**
+	 * @brief Resets the compute shader library and evicts all entries from the asset cache.
+	 * @note Delegates to AssetManager::Clear<ComputeShader>() and clears config_list.
+	 *       Externally held shared_ptrs remain valid.
+	 */
+	static void ResetComputeLib();
 };
 
 template<class... Tuples>

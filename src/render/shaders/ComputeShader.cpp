@@ -45,6 +45,12 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 		ComputeShader::ImportShaderConfigs("pps/SSR" + pref, Uni("U_pos", 1), Uni("U_dir_diff", 7), Uni("U_dir_spec", 8), Uni("U_ind_diff", 9), Uni("U_ind_spec", 10), Uni("U_emission", 11), Uni("U_opt_flow", 12), Uni("LTC1", 13));
 }
 
+void ComputeShader::ResetComputeLib()
+{
+	AssetManager::Clear<ComputeShader>();
+	config_list.clear();
+}
+
 ComputeShader::ComputeShader(const std::string& name)
 {
 	comp_shader.sh_name = name;

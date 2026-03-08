@@ -520,6 +520,12 @@ public:
 	 */
 	static GLuint GetTextureID(const std::string& _name);
 
+	/**
+	 * @brief Resets the texture library and evicts all entries from the asset cache.
+	 * @note Delegates to AssetManager::Clear<Texture>(). Externally held shared_ptrs remain valid.
+	 */
+	static void ResetTexLib();
+
 public:
 	/**
 	 * @brief Generates or retrieves 4x4 2D noise texture.
