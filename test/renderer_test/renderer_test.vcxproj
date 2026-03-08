@@ -192,6 +192,7 @@
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="test_assets.cpp" />
     <ClCompile Include="test_buffers.cpp" />
     <ClCompile Include="test_core.cpp" />
     <ClCompile Include="test_events.cpp" />

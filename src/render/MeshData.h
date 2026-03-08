@@ -65,8 +65,6 @@ class MeshLib
 {
 private:
 	using MeshResource = std::shared_ptr<MeshData>;
-private:
-	static std::unordered_map<std::string, MeshResource> mesh_list;
 public:
 
 	MeshLib();

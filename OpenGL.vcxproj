@@ -384,6 +384,7 @@ if not exist "$(ProjectDir)build\$(Platform)\$(Configuration)\res" mklink "$(Pro
     <ClInclude Include="src\editor\controllers\CameraController.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\core\AssetManager.h" />
     <ClInclude Include="src\core\ID.h" />
     <ClInclude Include="src\editor\Context.h" />
     <ClInclude Include="dep\cubicSpline\CubicSpline.h" />

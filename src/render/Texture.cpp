@@ -1,4 +1,5 @@
 ﻿#include "Texture.h"
+#include "AssetManager.h"
 #include "stb_image.h"
 #include "macros.h"
 #include "xdz_math.h"
@@ -908,7 +909,6 @@ void Texture::PrintTexture() const
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 
-std::unordered_map<std::string, std::shared_ptr<Texture>> TextureLib::t_tex_list{};
 std::string TextureLib::root_dir = "res/tex/";
 
 Texture::TextureType TextureLib::ParseFileEXT(std::string path)
@@ -921,20 +921,15 @@ Texture::TextureType TextureLib::ParseFileEXT(std::string path)
 
 std::shared_ptr<Texture> TextureLib::GetTexture(const std::string& _name)
 {
-	if (t_tex_list.find(_name) == t_tex_list.end())
-		return nullptr;
-
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 TextureLib::TextureRes TextureLib::LoadTexture(std::string _name)
 {
-	if (t_tex_list.find(_name) != t_tex_list.end())
-		return t_tex_list[_name];
-
-	Texture::TextureType _type = TextureLib::ParseFileEXT(_name);
-	t_tex_list[_name] = std::make_shared<Texture>(_name, _type, GL_REPEAT);
-	return t_tex_list[_name];
+	return AssetManager::Load<Texture>(_name, [_name]() {
+		Texture::TextureType _type = TextureLib::ParseFileEXT(_name);
+		return std::make_shared<Texture>(_name, _type, GL_REPEAT);
+	});
 }
 
 GLuint TextureLib::GetTextureID(const std::string& _name)
@@ -944,7 +939,7 @@ GLuint TextureLib::GetTextureID(const std::string& _name)
 
 void TextureLib::ResetTexLib()
 {
-	t_tex_list.clear();
+	AssetManager::Clear<Texture>();
 }
 
 TextureLib::TextureRes TextureLib::Noise_2D_4x4()
@@ -957,7 +952,7 @@ TextureLib::TextureRes TextureLib::Noise_2D_4x4()
 
 	GenNoiseTexture(UNI_2D_NOISE, 4, 4);
 
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 TextureLib::TextureRes TextureLib::Noise_2D_4x4xN(int n/*=6*/)
@@ -970,7 +965,7 @@ TextureLib::TextureRes TextureLib::Noise_2D_4x4xN(int n/*=6*/)
 
 	GenNoiseTextures(UNI_2D_NOISE, 4, 4, n);
 
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 TextureLib::TextureRes TextureLib::Noise_2D_16x16xN(int n/*=6*/)
@@ -983,7 +978,7 @@ TextureLib::TextureRes TextureLib::Noise_2D_16x16xN(int n/*=6*/)
 
 	GenNoiseTextures(UNI_2D_NOISE, 16, 16, n);
 
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 TextureLib::TextureRes TextureLib::IBL_LUT()
@@ -994,9 +989,9 @@ TextureLib::TextureRes TextureLib::IBL_LUT()
 	if (result != nullptr)
 		return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>("ibl_brdf_lut.png", Texture::RGBA_TEXTURE, GL_CLAMP);
+	AssetManager::Register<Texture>(_name, std::make_shared<Texture>("ibl_brdf_lut.png", Texture::RGBA_TEXTURE, GL_CLAMP));
 
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 TextureLib::TextureRes TextureLib::LTC1()
@@ -1006,9 +1001,9 @@ TextureLib::TextureRes TextureLib::LTC1()
 
 	if (result != nullptr) return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA32F, reinterpret_cast<const void*>(LTC1_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+	AssetManager::Register<Texture>(_name, std::make_shared<Texture>(64, 64, GL_RGBA32F, reinterpret_cast<const void*>(LTC1_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE));
 
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 TextureLib::TextureRes TextureLib::LTC2()
@@ -1018,9 +1013,9 @@ TextureLib::TextureRes TextureLib::LTC2()
 
 	if (result != nullptr) return result;
 
-	t_tex_list[_name] = std::make_shared<Texture>(64, 64, GL_RGBA32F, reinterpret_cast<const void*>(LTC2_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+	AssetManager::Register<Texture>(_name, std::make_shared<Texture>(64, 64, GL_RGBA32F, reinterpret_cast<const void*>(LTC2_DATA), GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE));
 
-	return t_tex_list[_name];
+	return AssetManager::Get<Texture>(_name);
 }
 
 void TextureLib::GenNoiseTexture(NoiseType _type, int _w, int _h)
@@ -1061,7 +1056,7 @@ void TextureLib::GenNoiseTexture(NoiseType _type, int _w, int _h)
 
 	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h);
 
-	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, Texture::HDR_BUFFER_TEXTURE, noise_name);
+	AssetManager::Register<Texture>(noise_name, std::make_shared<Texture>(_w, _h, id, Texture::HDR_BUFFER_TEXTURE, noise_name));
 }
 
 void TextureLib::GenNoiseTextures(NoiseType _type, int _w, int _h, int _n)
@@ -1105,5 +1100,5 @@ void TextureLib::GenNoiseTextures(NoiseType _type, int _w, int _h, int _n)
 
 	std::string noise_name = type_name + "." + std::to_string(dimension) + "D." + std::to_string(_w) + "." + std::to_string(_h) + "." + std::to_string(_n);
 
-	TextureLib::t_tex_list[noise_name] = std::make_shared<Texture>(_w, _h, id, Texture::LAYERED_TEXTURE, noise_name);
+	AssetManager::Register<Texture>(noise_name, std::make_shared<Texture>(_w, _h, id, Texture::LAYERED_TEXTURE, noise_name));
 }

@@ -1,6 +1,6 @@
 #include "ComputeShader.h"
+#include "AssetManager.h"
 
-std::unordered_map<std::string, std::shared_ptr<ComputeShader>> ComputeShader::comp_list = {};
 std::unordered_map<std::string, std::vector<ComputeShader::Default>> ComputeShader::config_list = {};
 
 void ComputeShader::PushDefult(std::string name, std::string para_name, AvailUnis def)
@@ -47,7 +47,7 @@ void ComputeShader::InitComputeLib(RenderConfigs* config)
 
 void ComputeShader::ResetComputeLib()
 {
-	comp_list.clear();
+	AssetManager::Clear<ComputeShader>();
 	config_list.clear();
 }
 
@@ -185,11 +185,13 @@ ComputeShader& ComputeShader::ImportShader(std::string _name)
 
 std::shared_ptr<ComputeShader> ComputeShader::ImportShaderSrc(std::string _name)
 {
-	if (comp_list.find(_name) != comp_list.end())
-		return comp_list[_name];
+	auto cached = AssetManager::Get<ComputeShader>(_name);
+	if (cached)
+		return cached;
 
-	comp_list[_name] = std::make_shared<ComputeShader>(_name);
-	return comp_list[_name];
+	auto shader = std::make_shared<ComputeShader>(_name);
+	AssetManager::Register<ComputeShader>(_name, shader);
+	return shader;
 }
 
 std::string ComputeShader::GetSSRShaderName(RenderConfigs* config)

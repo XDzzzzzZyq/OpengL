@@ -12,7 +12,7 @@
  * - Resources released via glDeleteShader/glDeleteProgram in destructor
  * 
  * Architecture:
- * - Global shader cache (comp_list) for reuse across renderer
+ * - Shader cache managed by AssetManager for reuse across renderer
  * - Config cache (config_list) for storing default uniform values
  * - Runtime dispatch with configurable workgroup sizes
  */
@@ -20,6 +20,7 @@
 #pragma once
 #include "Shaders.h"
 #include "RenderConfigs.h"
+#include "AssetManager.h"
 
 /**
  * @brief Compute shader for GPGPU parallel computation.
@@ -52,7 +53,6 @@ private:
 	using AvailUnis = std::variant<int, float, GLuint, Shaders::ArrayUni>; ///< Supported uniform types
 	using Default = std::pair<std::string, AvailUnis>;                     ///< Default uniform: (name, value)
 
-	static std::unordered_map<std::string, std::shared_ptr<ComputeShader>> comp_list; ///< Global compute shader cache
 	static std::unordered_map<std::string, std::vector<Default>> config_list;         ///< Default uniform configurations
 
 	/**
@@ -228,7 +228,7 @@ public:
 	 * @brief Imports or retrieves a cached compute shader.
 	 * @param _name Compute shader file name
 	 * @return Reference to cached ComputeShader instance
-	 * @note If shader exists in comp_list, returns cached instance
+	 * @note Returns cached instance from AssetManager if already loaded
 	 */
 	static ComputeShader& ImportShader(std::string _name);
 	
@@ -322,12 +322,14 @@ ComputeShader::ComputeShader(const std::string& name, const Tuples&... args)
 template<class... Tuples>
 static std::shared_ptr<ComputeShader> ComputeShader::ImportShaderSrc(std::string _name, const Tuples&... args)
 {
-	if (comp_list.find(_name) != comp_list.end())
-		return comp_list[_name];
+	auto cached = AssetManager::Get<ComputeShader>(_name);
+	if (cached)
+		return cached;
 
-	comp_list[_name] = std::make_shared<ComputeShader>(_name, args...);
+	auto shader = std::make_shared<ComputeShader>(_name, args...);
+	AssetManager::Register<ComputeShader>(_name, shader);
 	ImportShaderConfigs(_name, args...);
-	return comp_list[_name];
+	return shader;
 }
 
 template<class... Tuples>

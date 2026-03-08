@@ -497,9 +497,6 @@ public:
 		UNI_2D_NOISE    ///< 2D uniform noise
 	};
 
-private:
-	static std::unordered_map<std::string, TextureRes> t_tex_list; ///< Global texture cache
-
 public:
 	/**
 	 * @brief Retrieves a cached texture by name.

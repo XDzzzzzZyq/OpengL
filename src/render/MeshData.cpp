@@ -1,4 +1,5 @@
 #include "MeshData.h"
+#include "AssetManager.h"
 #include "macros.h"
 #include "structs.h"
 #include "operator.h"
@@ -239,8 +240,6 @@ std::string MeshData::GetMeshName() const
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
-std::unordered_map<std::string, MeshLib::MeshResource> MeshLib::mesh_list = {};
-
 MeshLib::MeshResource MeshLib::Square = nullptr;
 
 MeshLib::MeshLib()
@@ -260,13 +259,11 @@ void MeshLib::MeshLibInit()
 
 MeshLib::MeshResource MeshLib::LoadMesh(const std::string path)
 {
-	if (mesh_list.find(path) != mesh_list.end())
-		return mesh_list[path];
-
-	MeshLib::MeshResource mesh = std::make_shared<MeshData>();
-	mesh->LoadObj(path);
-
-	return mesh;
+	return AssetManager::Load<MeshData>(path, [path]() {
+		auto mesh = std::make_shared<MeshData>();
+		mesh->LoadObj(path);
+		return mesh;
+	});
 }
 
 void MeshLib::ToGeoCenter(MeshResource _tar)
