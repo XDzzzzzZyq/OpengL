@@ -520,12 +520,6 @@ public:
 	 */
 	static GLuint GetTextureID(const std::string& _name);
 
-	/**
-	 * @brief Resets texture library and clears cache.
-	 * @note Releases all cached textures (if no external references)
-	 */
-	static void ResetTexLib();
-
 public:
 	/**
 	 * @brief Generates or retrieves 4x4 2D noise texture.

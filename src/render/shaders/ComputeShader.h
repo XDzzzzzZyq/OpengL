@@ -303,12 +303,6 @@ public:
 	 * @note Loads all post-processing and shadow compute shaders
 	 */
 	static void InitComputeLib(RenderConfigs* config);
-	
-	/**
-	 * @brief Resets compute shader library and clears cache.
-	 * @note Releases all cached compute shaders
-	 */
-	static void ResetComputeLib();
 };
 
 template<class... Tuples>
