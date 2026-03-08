@@ -26,7 +26,7 @@ jobs:
     # You can define any steps you want, and they will run before the agent starts.
     # If you do not check out your code, Copilot will do this for you.
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v4
       name: Checkout
       with:   
         submodules: true
@@ -38,6 +38,11 @@ jobs:
       shell: cmd
       run: |
         curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/25.3.5/mesa3d-25.3.5-release-msvc.7z
+        curl.exe -L --output mesa.7z.sha256 --url https://github.com/pal1000/mesa-dist-win/releases/download/25.3.5/mesa3d-25.3.5-release-msvc.7z.sha256
+        certutil -hashfile mesa.7z SHA256 | findstr /v "hash" | findstr /v "CertUtil" > computed.sha256
+        for /f "tokens=1" %%a in (mesa.7z.sha256) do set EXPECTED=%%a
+        for /f %%b in (computed.sha256) do set COMPUTED=%%b
+        if /i not "%EXPECTED%"=="%COMPUTED%" (echo SHA256 mismatch & exit /b 1)
         mkdir mesa
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z -r -omesa
         cd mesa
