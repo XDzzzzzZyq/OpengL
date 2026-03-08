@@ -1,6 +1,6 @@
 ﻿#include "Texture.h"
 #include "AssetManager.h"
-#include "stb_image.h"
+#include "TextureIO.h"
 #include "macros.h"
 #include "xdz_math.h"
 #include <algorithm>
@@ -16,79 +16,53 @@ Texture::Texture(const std::string& texpath, TextureType tex_type, GLuint tile_t
 	:tex_path(texpath), tex_type(tex_type),
 	im_bpp(0), im_h(0), im_w(0)
 {
-	stbi_set_flip_vertically_on_load(0);
-	glGenTextures(1, &tex_ID);
-	glBindTexture(GL_TEXTURE_2D, tex_ID);
-
-	GLubyte* m_buffer = nullptr;
-	GLfloat* m_buffer_f = nullptr;
-
 	if (tex_path.find(TextureLib::root_dir) == std::string::npos)
 		tex_path = TextureLib::root_dir + tex_path;
 
+	auto img = TextureIO::Load(tex_path);
+	im_w = img.width;
+	im_h = img.height;
+	im_bpp = img.channels;
+
 	auto [interlayout, layout, type, _] = Texture::ParseFormat(tex_type);
+
+	glGenTextures(1, &tex_ID);
+	glBindTexture(GL_TEXTURE_2D, tex_ID);
 
 	switch (tex_type)
 	{
 	case RGBA_TEXTURE:
-
-		m_buffer = stbi_load(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
-
-		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, tile_type, tile_type, 0, 4);
-
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, im_w, im_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer);
-#if 1
-		glGenerateMipmap(GL_TEXTURE_2D);
-#else
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-#endif
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		if (m_buffer) {
-			stbi_image_free(m_buffer);
-#ifdef _DEBUG
-			std::cout << "Image texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
-#endif
+		if (!img.pixels.empty())
+		{
+			Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, tile_type, tile_type, 0, 4);
+			glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, img.pixels.data());
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else {
+		else
+		{
 			std::cout << "Image texture FAILED" << std::endl;
 			_delTexture();
 		}
 		break;
 
 	case HDR_TEXTURE:
-		m_buffer_f = stbi_loadf(tex_path.c_str(), &im_w, &im_h, &im_bpp, 4);
-
-		Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, tile_type, tile_type, 0, 8);
-
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, im_w, im_h, 0, GL_RGBA, GL_FLOAT, m_buffer_f); //
-		glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, m_buffer_f);
-
-#if 1
-		glGenerateMipmap(GL_TEXTURE_2D);
-#else
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-#endif
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		if (m_buffer_f) {
-			stbi_image_free(m_buffer_f);
-
-#ifdef _DEBUG
-			std::cout << "HDR texture has been load successfully! [" << im_w << ":" << im_h << "]" << std::endl;
-#endif
+		if (!img.pixels_hdr.empty())
+		{
+			Texture::SetTexParam<GL_TEXTURE_2D>(tex_ID, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, tile_type, tile_type, 0, 8);
+			glTexStorage2D(GL_TEXTURE_2D, 8, interlayout, im_w, im_h);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, im_w, im_h, layout, type, img.pixels_hdr.data());
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else {
+		else
+		{
 			std::cout << "HDR texture FAILED" << std::endl;
 			_delTexture();
 		}
 		break;
+
 	default:
 		assert(false && "Unsupported texture type for file loading");
 	}
@@ -776,13 +750,11 @@ void Texture::ConvertPNG(GLuint _tar_ID, int _w, int _h)
 	im_w = _w; im_h = _h;
 }
 
-#include "stb_image_write.h"
 void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) const
 {
 	auto [_, layout, type, gl_type] = Texture::ParseFormat(tex_type);
 	static std::string root = "result/";
 	int status = -1;
-	stbi_flip_vertically_on_write(0);
 	glBindTexture(gl_type, tex_ID);
 	if (gl_type == GL_TEXTURE_CUBE_MAP && !force_cube) {
 		Texture rect_map;
@@ -816,8 +788,7 @@ void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) co
 				odata[base + 3] = 1.0f;
 			}
 
-			std::string outputPath = root + _path + ".hdr";
-			status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
+			TextureIO::SaveHDR(root + _path + ".hdr", im_w, im_h, odata.data());
 		}
 		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
 			Texture depth_cube;
@@ -839,8 +810,7 @@ void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) co
 
 			glGetTexImage(gl_type, 0, layout, type, odata.data());
 
-			std::string outputPath = root + _path + ".hdr";
-			status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
+			TextureIO::SaveHDR(root + _path + ".hdr", im_w, im_h, odata.data());
 		}
 		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
 			auto odata = std::vector<GLfloat>(im_w * im_h * 4);
@@ -848,8 +818,7 @@ void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) co
 				glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, layout, type, odata.data());
 
 				// e.g. outputPath = result/hdr_cube/hdr_cube_1.hdr
-				std::string outputPath = root + _path + "/" + _path + "_" + std::to_string(i + 1) + ".hdr";
-				status = stbi_write_hdr(outputPath.c_str(), im_w, im_h, 4, odata.data());
+				TextureIO::SaveHDR(root + _path + "/" + _path + "_" + std::to_string(i + 1) + ".hdr", im_w, im_h, odata.data());
 			}
 		}
 		else {
@@ -859,22 +828,20 @@ void Texture::SaveTexture(std::string _path, bool force_png, bool force_cube) co
 	else if (type == GL_UNSIGNED_BYTE) {
 		if (gl_type == GL_TEXTURE_2D) {
 			assert(type == GL_UNSIGNED_BYTE);
-			auto odata = std::vector<GLbyte>(im_w * im_h * 4);
+			auto odata = std::vector<GLubyte>(im_w * im_h * 4);
 
 			glGetTexImage(gl_type, 0, layout, type, odata.data());
 
-			std::string outputPath = root + _path + ".png";
-			status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+			TextureIO::SavePNG(root + _path + ".png", im_w, im_h, odata.data());
 		}
 		else if (gl_type == GL_TEXTURE_CUBE_MAP) {
 			assert(type == GL_UNSIGNED_BYTE);
-			auto odata = std::vector<GLbyte>(im_w * im_h * 4);
+			auto odata = std::vector<GLubyte>(im_w * im_h * 4);
 
 			LOOP(6) {
 				glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, layout, type, odata.data());
 
-				std::string outputPath = root + _path + "/" + _path + "_" + std::to_string(i + 1) + ".png";
-				status = stbi_write_png(outputPath.c_str(), im_w, im_h, 4, odata.data(), 0);
+				TextureIO::SavePNG(root + _path + "/" + _path + "_" + std::to_string(i + 1) + ".png", im_w, im_h, odata.data());
 			}
 		}
 		else {

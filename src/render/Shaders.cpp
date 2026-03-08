@@ -1,4 +1,5 @@
 ﻿#include "Shaders.h"
+#include "ShaderIO.h"
 
 std::string const Shaders::shader_type[4] = { "Vertex Shader", "Fragment Shader", "Compute Shader", "Geometry Shader" };
 
@@ -128,14 +129,7 @@ std::string Shaders::ReadShaderFile(ShaderType _type, const std::string& name)
 	if (Shaders::ParseFileEXT(file_name) == NONE_SHADER)
 		file_name += Shaders::file_type[_type];
 
-	std::ifstream File(file_name);
-	std::stringstream Stream;
-
-	Stream << File.rdbuf();
-
-	File.close();
-
-	return Stream.str();
+	return ShaderIO::Read(file_name);
 }
 
 Shaders::Shaders(const Shaders& shader)
