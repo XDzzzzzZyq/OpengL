@@ -97,7 +97,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)src\fileIO;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -117,7 +117,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)src\fileIO;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW\include;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -137,7 +137,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)src\fileIO;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -157,7 +157,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;GLM_ENABLE_EXPERIMENTAL;STB_IMAGE_IMPLEMENTATION;STB_IMAGE_WRITE_IMPLEMENTATION;SOL_DIR=R"($(SolutionDir))";NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)test\gtest\googletest;$(SolutionDir)test\gtest\googletest\include;$(SolutionDir)src\core;$(SolutionDir)src\editor;$(SolutionDir)src\compo;$(SolutionDir)src\render;$(SolutionDir)src\extra;$(SolutionDir)src\fileIO;$(SolutionDir)dep\stb_image;$(SolutionDir)dep\glm;$(SolutionDir)dep\gui;$(SolutionDir)dep\GLEW\include;$(SolutionDir)dep\GLFW64\include;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4305</DisableSpecificWarnings>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -179,6 +179,8 @@
     <ClCompile Include="..\..\src\render\ShaderLib.cpp" />
     <ClCompile Include="..\..\src\render\ShaderParser.cpp" />
     <ClCompile Include="..\..\src\render\Shaders.cpp" />
+    <ClCompile Include="..\..\src\fileIO\ShaderIO.cpp" />
+    <ClCompile Include="..\..\src\fileIO\TextureIO.cpp" />
     <ClCompile Include="..\..\src\render\shaders\ComputeShader.cpp" />
     <ClCompile Include="..\..\src\render\shaders\RenderShader.cpp" />
     <ClCompile Include="..\..\src\render\Texture.cpp" />
@@ -192,6 +194,7 @@
     <ClCompile Include="..\gtest\googletest\src\gtest-all.cc" />
     <ClCompile Include="..\gtest\googletest\src\gtest_main.cc" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="test_assets.cpp" />
     <ClCompile Include="test_buffers.cpp" />
     <ClCompile Include="test_core.cpp" />
     <ClCompile Include="test_events.cpp" />

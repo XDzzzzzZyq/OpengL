@@ -497,9 +497,6 @@ public:
 		UNI_2D_NOISE    ///< 2D uniform noise
 	};
 
-private:
-	static std::unordered_map<std::string, TextureRes> t_tex_list; ///< Global texture cache
-
 public:
 	/**
 	 * @brief Retrieves a cached texture by name.
@@ -524,8 +521,8 @@ public:
 	static GLuint GetTextureID(const std::string& _name);
 
 	/**
-	 * @brief Resets texture library and clears cache.
-	 * @note Releases all cached textures (if no external references)
+	 * @brief Resets the texture library and evicts all entries from the asset cache.
+	 * @note Delegates to AssetManager::Clear<Texture>(). Externally held shared_ptrs remain valid.
 	 */
 	static void ResetTexLib();
 

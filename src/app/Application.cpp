@@ -70,6 +70,7 @@ Application::~Application()
 {
 	TextureLib::ResetTexLib();
 	ComputeShader::ResetComputeLib();
+	MeshLib::ResetMeshLib();
 	// UI and renderer are destroyed automatically (reverse declaration order)
 	// before window destructor runs glfwDestroyWindow + glfwTerminate
 }

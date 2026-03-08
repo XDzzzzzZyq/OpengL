@@ -21,6 +21,7 @@ nav:
     - Architecture: handbook/architecture.md
     - Renderer Layer: handbook/renderer.md
     - Editor Layer: handbook/editor.md
+    - File Management: handbook/file-management.md
   - API Reference: Renderer\classes
 
 plugins:

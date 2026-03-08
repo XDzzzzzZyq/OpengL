@@ -65,8 +65,6 @@ class MeshLib
 {
 private:
 	using MeshResource = std::shared_ptr<MeshData>;
-private:
-	static std::unordered_map<std::string, MeshResource> mesh_list;
 public:
 
 	MeshLib();
@@ -77,6 +75,12 @@ public:
 public:
 
 	static MeshResource LoadMesh(const std::string path);
+
+	/**
+	 * @brief Resets the mesh library and evicts all entries from the asset cache.
+	 * @note Delegates to AssetManager::Clear<MeshData>(). Externally held shared_ptrs remain valid.
+	 */
+	static void ResetMeshLib();
 
 public:
 
